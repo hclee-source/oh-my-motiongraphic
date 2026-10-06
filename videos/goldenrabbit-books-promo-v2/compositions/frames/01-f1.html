@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>01-f1 · AI는 매일 바뀐다 → 읽는다 → brand reveal</title>
+  </head>
+  <body>
+    <template id="f1_template">
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        #stage {
+          --f1-yellow: #FFE500;
+          --f1-ink: #0B0B0B;
+          --f1-paper: #F2F0EA;
+          --f1-ink-60: rgba(11, 11, 11, 0.6);
+          --f1-paper-60: rgba(242, 240, 234, 0.6);
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #0B0B0B;
+          color: #F2F0EA;
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 800;
+          -webkit-font-smoothing: antialiased;
+        }
+
+        /* ---------- groups ---------- */
+        .f1-g {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        #f1_g2 {
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f1_g1_bg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          background: #0B0B0B;
+        }
+        #f1_g1_flash {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          background: #F2F0EA;
+          opacity: 0;
+        }
+
+        /* one state per hit — all hidden except s0 at t=0 */
+        .f1-g1-state {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f1_g1_s0 {
+          opacity: 1;
+          visibility: inherit;
+        }
+        .f1-g1-col {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 30px;
+          padding-top: 8px;
+          box-sizing: border-box;
+        }
+        .f1-g1-line {
+          white-space: nowrap;
+          word-break: keep-all;
+        }
+        .f1-g1-ch {
+          display: inline-block;
+        }
+
+        /* type tokens (frame.md) */
+        .f1-g1-display {
+          font-size: 240px;
+          font-weight: 800;
+          line-height: 0.92;
+          letter-spacing: -0.045em;
+        }
+        .f1-g1-h1 {
+          font-size: 150px;
+          font-weight: 800;
+          line-height: 1;
+          letter-spacing: -0.04em;
+        }
+        .f1-g1-h1l {
+          font-size: 150px;
+          font-weight: 400;
+          line-height: 1;
+          letter-spacing: -0.03em;
+        }
+        .f1-g1-h2 {
+          font-size: 88px;
+          font-weight: 800;
+          line-height: 1.05;
+          letter-spacing: -0.03em;
+        }
+
+        /* pair chip */
+        .f1-g1-chip {
+          display: inline-block;
+          font-family: "Archivo Black", sans-serif;
+          font-weight: 400;
+          font-size: 30px;
+          line-height: 1;
+          letter-spacing: 0.02em;
+          text-transform: uppercase;
+          padding: 9px 16px 8px;
+          white-space: nowrap;
+          clip-path: inset(0% 100% 0% 0%);
+        }
+        .f1-g1-chip-y {
+          background: #FFE500;
+          color: #0B0B0B;
+        }
+        .f1-g1-chip-k {
+          background: #0B0B0B;
+          color: #FFE500;
+        }
+
+        /* s0 · blinking yellow square */
+        #f1_g1_sq {
+          position: absolute;
+          left: 951px;
+          top: 535px;
+          width: 18px;
+          height: 18px;
+          background: #FFE500;
+        }
+
+        /* s1 / s2 */
+        #f1_g1_s1_word {
+          display: inline-block;
+          color: #F2F0EA;
+        }
+        #f1_g1_s2_word {
+          display: inline-block;
+          color: #0B0B0B;
+        }
+
+        /* s3 · 바뀐다. + label box */
+        #f1_g1_s3_line {
+          color: #F2F0EA;
+        }
+        .f1-g1-boxwrap {
+          position: relative;
+          display: inline-block;
+          padding: 0.08em 0.14em;
+          margin-left: -0.14em;
+          margin-right: 0.08em;
+        }
+        #f1_g1_s3_hl {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          padding: 0.08em 0.14em;
+          box-sizing: border-box;
+          background: #FFE500;
+          color: #0B0B0B;
+          white-space: nowrap;
+          clip-path: inset(0% 100% 0% 0%);
+        }
+        .f1-g1-dot-y {
+          color: #FFE500;
+        }
+
+        /* s4 · 그래서 / 우리는 + confetti */
+        #f1_g1_s4 {
+          gap: 18px;
+        }
+        #f1_g1_s4_a {
+          color: rgba(11, 11, 11, 0.6);
+        }
+        #f1_g1_s4_b {
+          color: #0B0B0B;
+        }
+        .f1-g1-conf {
+          position: absolute;
+          display: block;
+          opacity: 0;
+        }
+        #f1_g1_tri {
+          left: 214px;
+          top: 196px;
+          width: 92px;
+          height: 80px;
+        }
+        #f1_g1_tri path {
+          fill: #FFE500;
+        }
+        #f1_g1_dot {
+          left: 1622px;
+          top: 806px;
+          width: 54px;
+          height: 54px;
+          border-radius: 50%;
+          background: #0B0B0B;
+        }
+
+        /* s5 · mega 읽는다. + speed trail */
+        .f1-g1-megawrap {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 940px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .f1-g1-mega {
+          position: relative;
+          display: inline-block;
+          font-size: 360px;
+          font-weight: 800;
+          line-height: 0.9;
+          letter-spacing: -0.05em;
+          white-space: nowrap;
+          color: #0B0B0B;
+          transform-origin: 50% 50%;
+        }
+        .f1-g1-mdot {
+          position: absolute;
+          left: 100%;
+          top: 0;
+        }
+        #f1_g1_gh1 { opacity: 0.35; }
+        #f1_g1_gh2 { opacity: 0.2; }
+        #f1_g1_gh3 { opacity: 0.1; }
+        #f1_g1_s5_chiprow {
+          position: absolute;
+          left: 0;
+          top: 884px;
+          width: 1920px;
+          display: flex;
+          justify-content: center;
+        }
+
+        /* s6 · 4-row marquee */
+        .f1-g1-row {
+          position: absolute;
+          left: 0;
+          width: 1920px;
+          height: 200px;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f1_g1_r0 { top: 114px; }
+        #f1_g1_r1 { top: 334px; }
+        #f1_g1_r2 { top: 554px; }
+        #f1_g1_r3 { top: 774px; }
+        .f1-g1-trk,
+        .f1-g1-acc {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 200px;
+        }
+        .f1-g1-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+          column-gap: 44px;
+          align-items: center;
+          width: 1920px;
+          height: 200px;
+        }
+        .f1-g1-side {
+          display: flex;
+          align-items: center;
+          gap: 44px;
+          min-width: 0;
+        }
+        .f1-g1-side-l {
+          justify-content: flex-end;
+        }
+        .f1-g1-side-r {
+          justify-content: flex-start;
+        }
+        .f1-g1-mq-ko {
+          display: block;
+          flex-shrink: 0;
+          font-size: 180px;
+          font-weight: 800;
+          line-height: 0.9;
+          letter-spacing: -0.05em;
+          white-space: nowrap;
+        }
+        .f1-g1-mq-en {
+          display: block;
+          flex-shrink: 0;
+          position: relative;
+          top: 2px;
+          font-family: "Archivo Black", sans-serif;
+          font-weight: 400;
+          font-size: 168px;
+          line-height: 0.9;
+          letter-spacing: 0;
+          white-space: nowrap;
+        }
+        .f1-g1-star {
+          display: block;
+          flex-shrink: 0;
+          width: 84px;
+          height: 84px;
+        }
+        .f1-g1-fill .f1-g1-mq-ko,
+        .f1-g1-fill .f1-g1-mq-en {
+          color: #0B0B0B;
+        }
+        .f1-g1-fill .f1-g1-star path {
+          fill: #0B0B0B;
+        }
+        .f1-g1-outline .f1-g1-mq-ko,
+        .f1-g1-outline .f1-g1-mq-en {
+          color: transparent;
+          -webkit-text-stroke: 2px #0B0B0B;
+        }
+        .f1-g1-outline .f1-g1-star path {
+          fill: none;
+          stroke: #0B0B0B;
+          stroke-width: 2px;
+          vector-effect: non-scaling-stroke;
+        }
+
+        /* ---------- f1_g2 · brand reveal (ink register) ---------- */
+        #f1_g2_bg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          background: #0B0B0B;
+        }
+        #f1_g2_ring {
+          position: absolute;
+          left: 810px;
+          top: 241px;
+          width: 300px;
+          height: 300px;
+          border: 5px solid #FFE500;
+          border-radius: 50%;
+          opacity: 0;
+        }
+        #f1_g2_content {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          clip-path: circle(0px at 960px 391px);
+        }
+        #f1_g2_lockup {
+          position: absolute;
+          left: 0;
+          top: 266px;
+          width: 1920px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        #f1_g2_mark {
+          display: block;
+          width: 260px;
+          height: 250px;
+          margin-bottom: 40px;
+          opacity: 0;
+        }
+        #f1_g2_wm {
+          white-space: nowrap;
+          line-height: 1;
+          margin-bottom: 30px;
+          opacity: 0;
+          visibility: hidden;
+        }
+        .f1-g2-wm-a {
+          font-family: "Archivo Black", sans-serif;
+          font-weight: 400;
+          font-size: 96px;
+          letter-spacing: 0.01em;
+          color: #F2F0EA;
+        }
+        .f1-g2-wm-dot {
+          font-family: "Archivo Black", sans-serif;
+          font-weight: 400;
+          font-size: 96px;
+          color: rgba(242, 240, 234, 0.6);
+          margin: 0 0.06em 0 0.04em;
+        }
+        .f1-g2-wm-b {
+          font-family: "Playfair Display", serif;
+          font-style: italic;
+          font-weight: 700;
+          font-size: 112px;
+          color: #FFE500;
+        }
+        #f1_g2_name {
+          display: inline-block;
+          font-size: 56px;
+          font-weight: 800;
+          line-height: 1;
+          letter-spacing: -0.02em;
+          padding: 0.08em 0.18em;
+          background: #FFE500;
+          color: #0B0B0B;
+          margin-bottom: 34px;
+          clip-path: inset(0% 100% 0% 0%);
+        }
+        #f1_g2_tag {
+          font-size: 34px;
+          font-weight: 800;
+          line-height: 1.25;
+          color: rgba(242, 240, 234, 0.6);
+          white-space: nowrap;
+        }
+        .f1-g2-tw {
+          display: inline-block;
+          opacity: 0;
+        }
+        .f1-g2-dia {
+          position: absolute;
+          display: block;
+          opacity: 0;
+          visibility: hidden;
+        }
+        .f1-g2-dia path {
+          fill: #FFE500;
+        }
+        #f1_g2_dia1 {
+          left: 1196px;
+          top: 286px;
+          width: 34px;
+          height: 34px;
+        }
+        #f1_g2_dia2 {
+          left: 690px;
+          top: 452px;
+          width: 24px;
+          height: 24px;
+        }
+      </style>
+
+      <div data-hf-id="hf-q5d8" id="stage" data-composition-id="01-f1" data-width="1920" data-height="1080" data-duration="11">
+        <!-- ===================== f1_g1 · word-per-kick (0 → 8.522) ===================== -->
+        <div data-hf-id="hf-1fxx" id="f1_g1" class="f1-g">
+          <div data-hf-id="hf-alr5" id="f1_g1_bg"></div>
+
+          <!-- s0 · 0 → 1.393 : ink ground, blinking yellow square -->
+          <div data-hf-id="hf-huse" id="f1_g1_s0" class="f1-g1-state">
+            <div data-hf-id="hf-iwso" id="f1_g1_sq"></div>
+          </div>
+
+          <!-- s1 · 1.393 : AI는 / AI  (ink) -->
+          <div data-hf-id="hf-1agm" id="f1_g1_s1" class="f1-g1-state f1-g1-col">
+            <div data-hf-id="hf-a3sw" id="f1_g1_s1_word" class="f1-g1-display f1-g1-line">AI는</div>
+            <div data-hf-id="hf-qe8a" id="f1_g1_s1_chip" class="f1-g1-chip f1-g1-chip-y">AI</div>
+          </div>
+
+          <!-- s2 · 1.858 : 매일 / EVERY DAY  (yellow) -->
+          <div data-hf-id="hf-xccl" id="f1_g1_s2" class="f1-g1-state f1-g1-col">
+            <div data-hf-id="hf-q54b" id="f1_g1_s2_word" class="f1-g1-display f1-g1-line">매일</div>
+            <div data-hf-id="hf-p7dw" id="f1_g1_s2_chip" class="f1-g1-chip f1-g1-chip-k">EVERY DAY</div>
+          </div>
+
+          <!-- s3 · 3.274 : 바뀐다. + yellow label box / CHANGES  (ink) -->
+          <div data-hf-id="hf-wkos" id="f1_g1_s3" class="f1-g1-state f1-g1-col">
+            <div data-hf-id="hf-fm1f" id="f1_g1_s3_line" class="f1-g1-h1 f1-g1-line"><span data-hf-id="hf-hyt9" id="f1_g1_s3_wrap" class="f1-g1-boxwrap"><span data-hf-id="hf-7mn4" class="f1-g1-ch f1-g1-ch5">바</span><span data-hf-id="hf-evu4" class="f1-g1-ch f1-g1-ch5">뀐</span><span data-hf-id="hf-e3xs" class="f1-g1-ch f1-g1-ch5">다</span><span data-hf-id="hf-w5fo" id="f1_g1_s3_hl"><span data-hf-id="hf-lbij" class="f1-g1-ch">바</span><span data-hf-id="hf-avvb" class="f1-g1-ch">뀐</span><span data-hf-id="hf-iye3" class="f1-g1-ch">다</span></span></span><span data-hf-id="hf-1ydl" id="f1_g1_s3_dot" class="f1-g1-ch f1-g1-ch5 f1-g1-dot-y">.</span></div>
+            <div data-hf-id="hf-ppoz" id="f1_g1_s3_chip" class="f1-g1-chip f1-g1-chip-y">CHANGES</div>
+          </div>
+
+          <!-- s4 · 3.762 / 4.226 : 그래서 / 우리는 + confetti  (paper) -->
+          <div data-hf-id="hf-k26b" id="f1_g1_s4" class="f1-g1-state f1-g1-col">
+            <div data-hf-id="hf-ir78" id="f1_g1_s4_a" class="f1-g1-h2 f1-g1-line"><span data-hf-id="hf-vto6" class="f1-g1-ch f1-g1-ch3">그</span><span data-hf-id="hf-nis6" class="f1-g1-ch f1-g1-ch3">래</span><span data-hf-id="hf-pe3m" class="f1-g1-ch f1-g1-ch3">서</span></div>
+            <div data-hf-id="hf-5h5a" id="f1_g1_s4_b" class="f1-g1-h1l f1-g1-line"><span data-hf-id="hf-hl2v" class="f1-g1-ch f1-g1-ch4">우</span><span data-hf-id="hf-ztc3" class="f1-g1-ch f1-g1-ch4">리</span><span data-hf-id="hf-1ybv" class="f1-g1-ch f1-g1-ch4">는</span></div>
+            <svg data-hf-id="hf-ml81" id="f1_g1_tri" class="f1-g1-conf" viewBox="0 0 92 80" data-layout-ignore=""><path data-hf-id="hf-1pja" d="M46 0 L92 80 L0 80 Z" /></svg>
+            <div data-hf-id="hf-caji" id="f1_g1_dot" class="f1-g1-conf" data-layout-ignore=""></div>
+          </div>
+
+          <!-- s5 · 6.107 : MEGA 읽는다. crashing in from the right + WE READ  (yellow) -->
+          <div data-hf-id="hf-3m66" id="f1_g1_s5" class="f1-g1-state" data-layout-allow-overflow="">
+            <div data-hf-id="hf-ubs2" class="f1-g1-megawrap" data-layout-ignore=""><div data-hf-id="hf-kj3v" id="f1_g1_gh3" class="f1-g1-mega">읽는다<span data-hf-id="hf-9af0" class="f1-g1-mdot">.</span></div></div>
+            <div data-hf-id="hf-aubq" class="f1-g1-megawrap" data-layout-ignore=""><div data-hf-id="hf-pk2g" id="f1_g1_gh2" class="f1-g1-mega">읽는다<span data-hf-id="hf-3q7o" class="f1-g1-mdot">.</span></div></div>
+            <div data-hf-id="hf-b8mr" class="f1-g1-megawrap" data-layout-ignore=""><div data-hf-id="hf-1561" id="f1_g1_gh1" class="f1-g1-mega">읽는다<span data-hf-id="hf-2jal" class="f1-g1-mdot">.</span></div></div>
+            <div data-hf-id="hf-erfn" class="f1-g1-megawrap"><div data-hf-id="hf-ms6g" id="f1_g1_mega" data-layout-allow-overlap="" class="f1-g1-mega" data-layout-bleed="true">읽는다<span data-hf-id="hf-izbv" id="f1_g1_mdot" data-layout-allow-overlap="" class="f1-g1-mdot">.</span></div></div>
+            <div data-hf-id="hf-u4hf" id="f1_g1_s5_chiprow"><div data-hf-id="hf-9rfu" id="f1_g1_s5_chip" class="f1-g1-chip f1-g1-chip-k">WE READ</div></div>
+          </div>
+
+          <!-- s6 · 7.059 → 8.522 : 4-row marquee (rows filled by script) -->
+          <div data-hf-id="hf-zo25" id="f1_g1_s6" class="f1-g1-state" data-layout-allow-overflow="">
+            <div data-hf-id="hf-jg7e" id="f1_g1_r0" class="f1-g1-row f1-g1-fill"><div data-hf-id="hf-6qjz" id="f1_g1_r0_trk" class="f1-g1-trk"><div data-hf-id="hf-3je7" id="f1_g1_r0_acc" class="f1-g1-acc"><div data-hf-id="hf-m7kx" class="f1-g1-grid"><div data-hf-id="hf-zrhf" id="f1_g1_r0_l" class="f1-g1-side f1-g1-side-l"></div><span data-hf-id="hf-f7bw" class="f1-g1-mq-ko" data-layout-ignore="">읽는다</span><div data-hf-id="hf-ichf" id="f1_g1_r0_r" class="f1-g1-side f1-g1-side-r"></div></div></div></div></div>
+            <div data-hf-id="hf-lvmi" id="f1_g1_r1" class="f1-g1-row f1-g1-outline"><div data-hf-id="hf-izoy" id="f1_g1_r1_trk" class="f1-g1-trk"><div data-hf-id="hf-ckb2" id="f1_g1_r1_acc" class="f1-g1-acc"><div data-hf-id="hf-ybxx" class="f1-g1-grid"><div data-hf-id="hf-633e" id="f1_g1_r1_l" class="f1-g1-side f1-g1-side-l"></div><span data-hf-id="hf-o0d0" class="f1-g1-mq-ko" data-layout-ignore="">읽는다</span><div data-hf-id="hf-dvu2" id="f1_g1_r1_r" class="f1-g1-side f1-g1-side-r"></div></div></div></div></div>
+            <div data-hf-id="hf-eqfk" id="f1_g1_r2" class="f1-g1-row f1-g1-fill"><div data-hf-id="hf-5uuh" id="f1_g1_r2_trk" class="f1-g1-trk"><div data-hf-id="hf-39id" id="f1_g1_r2_acc" class="f1-g1-acc"><div data-hf-id="hf-ziv0" class="f1-g1-grid"><div data-hf-id="hf-slzp" id="f1_g1_r2_l" class="f1-g1-side f1-g1-side-l"></div><span data-hf-id="hf-mtfx" class="f1-g1-mq-ko" data-layout-ignore="">읽는다</span><div data-hf-id="hf-jckl" id="f1_g1_r2_r" class="f1-g1-side f1-g1-side-r"></div></div></div></div></div>
+            <div data-hf-id="hf-ey8w" id="f1_g1_r3" class="f1-g1-row f1-g1-outline"><div data-hf-id="hf-9m24" id="f1_g1_r3_trk" class="f1-g1-trk"><div data-hf-id="hf-2x8k" id="f1_g1_r3_acc" class="f1-g1-acc"><div data-hf-id="hf-z4jz" class="f1-g1-grid"><div data-hf-id="hf-aypw" id="f1_g1_r3_l" class="f1-g1-side f1-g1-side-l"></div><span data-hf-id="hf-n7qy" class="f1-g1-mq-ko" data-layout-ignore="">읽는다</span><div data-hf-id="hf-h3pg" id="f1_g1_r3_r" class="f1-g1-side f1-g1-side-r"></div></div></div></div></div>
+          </div>
+
+          <div data-hf-id="hf-j3qe" id="f1_g1_flash"></div>
+        </div>
+
+        <!-- ===================== f1_g2 · brand reveal (8.522 → 11.0) ===================== -->
+        <div data-hf-id="hf-5e1y" id="f1_g2" class="f1-g">
+          <div data-hf-id="hf-rh2o" id="f1_g2_bg"></div>
+          <div data-hf-id="hf-tt8e" id="f1_g2_ring" data-layout-ignore=""></div>
+          <div data-hf-id="hf-r8d4" id="f1_g2_content">
+            <div data-hf-id="hf-cvyf" id="f1_g2_lockup">
+              <img data-hf-id="hf-g9jc" id="f1_g2_mark" src="assets/brand/icon.png" alt="골든래빗 로고">
+              <div data-hf-id="hf-xx0d" id="f1_g2_wm"><span data-hf-id="hf-y7xu" class="f1-g2-wm-a">GOLDEN</span><span data-hf-id="hf-ile0" class="f1-g2-wm-dot">·</span><span data-hf-id="hf-ara4" class="f1-g2-wm-b">rabbit</span></div>
+              <div data-hf-id="hf-wavt" id="f1_g2_name">골든래빗</div>
+              <div data-hf-id="hf-0is7" id="f1_g2_tag"><span data-hf-id="hf-xxxn" id="f1_g2_tw0" class="f1-g2-tw">더</span> <span data-hf-id="hf-x53b" id="f1_g2_tw1" class="f1-g2-tw">탁월한</span> <span data-hf-id="hf-57t5" id="f1_g2_tw2" class="f1-g2-tw">가치를</span> <span data-hf-id="hf-57xh" id="f1_g2_tw3" class="f1-g2-tw">제공하는</span> <span data-hf-id="hf-pspn" id="f1_g2_tw4" class="f1-g2-tw">콘텐츠</span></div>
+            </div>
+          </div>
+          <svg data-hf-id="hf-136u" id="f1_g2_dia1" class="f1-g2-dia" viewBox="0 0 34 34" data-layout-ignore=""><path data-hf-id="hf-71f9" d="M17 0 L34 17 L17 34 L0 17 Z" /></svg>
+          <svg data-hf-id="hf-yx0h" id="f1_g2_dia2" class="f1-g2-dia" viewBox="0 0 34 34" data-layout-ignore=""><path data-hf-id="hf-d0rt" d="M17 0 L34 17 L17 34 L0 17 Z" /></svg>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // Frame 1 spans track 0.0 → 11.0, so frame-local time == track time.
+          // Measured anchors (audiomap events[]): kick 0.906 / 1.393 / 1.858 / 3.274 / 3.762 / 4.226 /
+          // 6.107 / 7.059; perc 3.506; snare 7.268, perc 7.477 / 7.709 (marquee rows);
+          // surge downbeat 8.522; kick 8.916; perc 9.404; silence 10.0 → 11.0.
+          var YELLOW = "#FFE500";
+          var INK = "#0B0B0B";
+          var PAPER = "#F2F0EA";
+
+          // ---------- build marquee rows (static content, no randomness) ----------
+          var STAR =
+            '<svg class="f1-g1-star" viewBox="-50 -50 100 100"><path d="M0,-50 C5,-9 9,-5 50,0 C9,5 5,9 0,50 C-5,9 -9,5 -50,0 C-9,-5 -5,-9 0,-50 Z"/></svg>';
+          var KO = '<span class="f1-g1-mq-ko" data-layout-ignore="">읽는다</span>';
+          var EN = '<span class="f1-g1-mq-en" data-layout-ignore="">READ</span>';
+          var LEFT_UNIT = KO + STAR + EN + STAR; // ends just before the centered anchor 읽는다
+          var RIGHT_UNIT = STAR + EN + STAR + KO; // continues after the anchor
+          for (var r = 0; r < 4; r++) {
+            var l = document.getElementById("f1_g1_r" + r + "_l");
+            var rt = document.getElementById("f1_g1_r" + r + "_r");
+            if (l) l.innerHTML = LEFT_UNIT + LEFT_UNIT + LEFT_UNIT;
+            if (rt) rt.innerHTML = RIGHT_UNIT + RIGHT_UNIT + RIGHT_UNIT;
+          }
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ---------- group windows (0ms cut at the surge downbeat) ----------
+          var CUT = 8.522;
+          tl.set("#f1_g1", { autoAlpha: 1 }, 0);
+          tl.set("#f1_g2", { autoAlpha: 0 }, 0);
+          tl.set("#f1_g1", { autoAlpha: 0 }, CUT);
+          tl.set("#f1_g2", { autoAlpha: 1 }, CUT);
+
+          // ---------- g1 register flips (palette-flip, 0ms on the kicks) ----------
+          tl.set("#f1_g1_bg", { backgroundColor: INK }, 0);
+          tl.set("#f1_g1_bg", { backgroundColor: YELLOW }, 1.858);
+          tl.set("#f1_g1_bg", { backgroundColor: INK }, 3.274);
+          tl.set("#f1_g1_bg", { backgroundColor: PAPER }, 3.762);
+          tl.set("#f1_g1_bg", { backgroundColor: YELLOW }, 6.107);
+
+          // ---------- g1 state windows (hard-cut: one state per hit) ----------
+          function win(id, a, b) {
+            tl.set(id, { autoAlpha: 1 }, a);
+            tl.set(id, { autoAlpha: 0 }, b);
+          }
+          tl.set("#f1_g1_s0", { autoAlpha: 1 }, 0);
+          tl.set("#f1_g1_s0", { autoAlpha: 0 }, 1.393);
+          win("#f1_g1_s1", 1.393, 1.858);
+          win("#f1_g1_s2", 1.858, 3.274);
+          win("#f1_g1_s3", 3.274, 3.762);
+          win("#f1_g1_s4", 3.762, 6.107);
+          win("#f1_g1_s5", 6.107, 7.229);
+          win("#f1_g1_s6", 7.229, CUT);
+
+          // label-box / chip pop: scaleX-from-left look via clip-path (text never distorts)
+          function snap(id, t, dur) {
+            tl.fromTo(
+              id,
+              { clipPath: "inset(0% 100% 0% 0%)" },
+              { clipPath: "inset(0% 0% 0% 0%)", duration: dur || 0.12, ease: "power3.out" },
+              t,
+            );
+          }
+
+          // ===== s0 · 0 → 1.393 : tiny yellow square blinks on the riser, locks on at the 0.906 kick =====
+          tl.set("#f1_g1_sq", { opacity: 1 }, 0);
+          tl.set("#f1_g1_sq", { opacity: 0 }, 0.233);
+          tl.set("#f1_g1_sq", { opacity: 1 }, 0.465);
+          tl.set("#f1_g1_sq", { opacity: 0 }, 0.698);
+          tl.set("#f1_g1_sq", { opacity: 1 }, 0.906);
+          tl.fromTo("#f1_g1_sq", { scale: 1 }, { scale: 2.4, duration: 0.07, ease: "power4.out" }, 0.906);
+          tl.fromTo(
+            "#f1_g1_sq",
+            { scale: 2.4 },
+            { scale: 1.5, duration: 0.35, ease: "power2.out", immediateRender: false },
+            0.976,
+          );
+
+          // ===== s1 · 1.393 : 'AI는' slams in (paper on ink), chip 'AI' =====
+          tl.fromTo(
+            "#f1_g1_s1_word",
+            { scale: 1.7, y: -20 },
+            { scale: 1, y: 0, duration: 0.16, ease: "power4.out", force3D: false },
+            1.393,
+          );
+          snap("#f1_g1_s1_chip", 1.463);
+          tl.fromTo("#f1_g1_s1", { scale: 1 }, { scale: 1.025, duration: 0.465, ease: "none", force3D: false }, 1.393);
+
+          // ===== s2 · 1.858 : flash-cut → YELLOW, '매일' (ink), chip 'EVERY DAY' =====
+          tl.set("#f1_g1_flash", { opacity: 1 }, 1.858);
+          tl.set("#f1_g1_flash", { opacity: 0 }, 1.925);
+          tl.fromTo(
+            "#f1_g1_s2_word",
+            { scale: 1.16 },
+            { scale: 1, duration: 0.22, ease: "power4.out", force3D: false },
+            1.858,
+          );
+          snap("#f1_g1_s2_chip", 1.958);
+          tl.fromTo("#f1_g1_s2", { scale: 1 }, { scale: 1.04, duration: 1.416, ease: "none", force3D: false }, 1.858);
+
+          // ===== s3 · 3.274 : → INK, '바뀐다.' lands (h1), yellow box snaps on the 3.506 perc, chip 'CHANGES' =====
+          tl.fromTo(
+            ".f1-g1-ch5",
+            { yPercent: -90, opacity: 0 },
+            { yPercent: 0, opacity: 1, duration: 0.2, ease: "power4.out", stagger: 0.025 },
+            3.274,
+          );
+          snap("#f1_g1_s3_hl", 3.506, 0.12);
+          snap("#f1_g1_s3_chip", 3.566);
+
+          // ===== s4 · 3.762 : → PAPER, '그래서' (h2, ink 60%); 4.226 : '우리는' (h1-light) + confetti =====
+          tl.fromTo(
+            ".f1-g1-ch3",
+            { yPercent: 70, opacity: 0 },
+            { yPercent: 0, opacity: 1, duration: 0.3, ease: "back.out(2)", stagger: 0.04 },
+            3.762,
+          );
+          tl.fromTo(
+            ".f1-g1-ch4",
+            { yPercent: 60, opacity: 0 },
+            { yPercent: 0, opacity: 1, duration: 0.34, ease: "back.out(2)", stagger: 0.045 },
+            4.226,
+          );
+          tl.fromTo(
+            "#f1_g1_tri",
+            { scale: 0, rotation: -40, opacity: 1 },
+            { scale: 1, rotation: 0, opacity: 1, duration: 0.32, ease: "back.out(3)" },
+            4.226,
+          );
+          tl.fromTo(
+            "#f1_g1_dot",
+            { scale: 0, opacity: 1 },
+            { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(3)" },
+            4.276,
+          );
+          // slight drift until the cut (texture on the weak hits)
+          tl.fromTo(
+            "#f1_g1_tri",
+            { x: 0, y: 0, rotation: 0 },
+            { x: 10, y: -18, rotation: 14, duration: 1.55, ease: "none", immediateRender: false },
+            4.546,
+          );
+          tl.fromTo(
+            "#f1_g1_dot",
+            { x: 0, y: 0 },
+            { x: -14, y: -10, duration: 1.53, ease: "none", immediateRender: false },
+            4.576,
+          );
+          tl.fromTo("#f1_g1_s4", { scale: 1 }, { scale: 1.03, duration: 2.345, ease: "none", force3D: false }, 3.762);
+
+          // ===== s5 · 6.107 : → YELLOW, MEGA '읽는다.' crashes in from the right with a speed trail =====
+          var MEGA_S = 2.2; // 360px token × 2.2 so the word crops off both edges
+          var MEGA_X = -110; // rest offset: '읽' crops left, the period crops right
+          var LAND = 6.107;
+          tl.fromTo(
+            "#f1_g1_mega",
+            { x: 2500, y: 0, scale: MEGA_S },
+            { x: MEGA_X - 40, duration: 0.14, ease: "power4.out", force3D: false },
+            LAND,
+          );
+          tl.fromTo(
+            "#f1_g1_mega",
+            { x: MEGA_X - 40 },
+            { x: MEGA_X, duration: 0.2, ease: "power2.out", force3D: false, immediateRender: false },
+            LAND + 0.14,
+          );
+          // ghosts: same path, lagged 1 / 2 / 3 steps, then removed once they've merged
+          ["#f1_g1_gh1", "#f1_g1_gh2", "#f1_g1_gh3"].forEach(function (id, i) {
+            tl.fromTo(
+              id,
+              { x: 2500, y: 0, scale: MEGA_S },
+              { x: MEGA_X - 40, duration: 0.14, ease: "power4.out", force3D: false },
+              LAND + 0.03 * (i + 1),
+            );
+            tl.set(id, { autoAlpha: 0 }, LAND + 0.3);
+          });
+          snap("#f1_g1_s5_chip", LAND + 0.2);
+
+          // ===== 7.059 : mega word shrinks into the top marquee row =====
+          var ROW0_DY = 214 - 470; // row-0 center y − mega center y
+          tl.set("#f1_g1_s5_chiprow", { autoAlpha: 0 }, 7.059);
+          tl.set("#f1_g1_mdot", { autoAlpha: 0 }, 7.059);
+          tl.fromTo(
+            "#f1_g1_mega",
+            { x: MEGA_X, y: 0, scale: MEGA_S },
+            { x: 0, y: ROW0_DY, scale: 0.5, duration: 0.17, ease: "power3.inOut", force3D: false, immediateRender: false },
+            7.059,
+          );
+
+          // ===== s6 · marquee rows accumulate on the hits, sliding opposite ways into the surge =====
+          var ROWS = [
+            { t: 7.229, x0: 0, dir: -1, v: 300 },
+            { t: 7.268, x0: -330, dir: 1, v: 340 },
+            { t: 7.477, x0: -700, dir: -1, v: 300 },
+            { t: 7.709, x0: -160, dir: 1, v: 340 },
+          ];
+          ROWS.forEach(function (row, i) {
+            var id = "#f1_g1_r" + i;
+            tl.set(id, { autoAlpha: 1 }, row.t);
+            tl.fromTo(
+              id + "_trk",
+              { x: row.x0 },
+              { x: row.x0 + row.dir * row.v * (CUT - row.t), duration: CUT - row.t, ease: "none" },
+              row.t,
+            );
+            // extra push from the 8.034 beat: the marquee accelerates into the surge downbeat
+            tl.fromTo(
+              id + "_acc",
+              { x: 0 },
+              { x: row.dir * 240, duration: CUT - 8.034, ease: "power2.in" },
+              8.034,
+            );
+          });
+
+          // ===================== g2 · brand reveal =====================
+          // 8.522 — system-replace to INK; iris opens from the mark's center, yellow ring irises out once
+          tl.fromTo(
+            "#f1_g2_content",
+            { clipPath: "circle(0px at 960px 391px)" },
+            { clipPath: "circle(1400px at 960px 391px)", duration: 0.9, ease: "expo.out" },
+            CUT,
+          );
+          tl.fromTo(
+            "#f1_g2_ring",
+            { scale: 0.3, opacity: 1 },
+            { scale: 5.5, opacity: 0, duration: 0.9, ease: "expo.out" },
+            CUT,
+          );
+          // braam-punch: hit → overshoot → weighted settle (gold mark, the only gold)
+          tl.set("#f1_g2_mark", { opacity: 1 }, CUT);
+          tl.fromTo(
+            "#f1_g2_mark",
+            { scale: 0.55 },
+            { scale: 1.14, duration: 0.18, ease: "power4.out", force3D: false },
+            CUT,
+          );
+          tl.fromTo(
+            "#f1_g2_mark",
+            { scale: 1.14 },
+            { scale: 1, duration: 0.7, ease: "elastic.out(1, 0.5)", force3D: false, immediateRender: false },
+            CUT + 0.18,
+          );
+          // wordmark GOLDEN·rabbit right under it (8.684 hat)
+          tl.set("#f1_g2_wm", { autoAlpha: 1 }, 8.684);
+          tl.fromTo("#f1_g2_wm", { y: 40 }, { y: 0, duration: 0.3, ease: "expo.out" }, 8.684);
+          // '골든래빗' yellow label-box chip snaps on the 8.916 kick
+          snap("#f1_g2_name", 8.916, 0.14);
+          // 9.404 — tagline types in word by word (quarter-beat steps), done before the 10.0 silence
+          for (var w = 0; w < 5; w++) {
+            tl.set("#f1_g2_tw" + w, { opacity: 1 }, 9.404 + w * 0.116);
+          }
+          // 10.0 → 11.0 silence: dead still; two small yellow ◆ blink once at 10.4
+          ["#f1_g2_dia1", "#f1_g2_dia2"].forEach(function (id, i) {
+            tl.set(id, { autoAlpha: 1 }, 10.4 + i * 0.03);
+            tl.fromTo(
+              id,
+              { scale: 0, rotation: -45 },
+              { scale: 1, rotation: 0, duration: 0.12, ease: "back.out(3)" },
+              10.4 + i * 0.03,
+            );
+            tl.set(id, { autoAlpha: 0 }, 10.612);
+          });
+
+          window.__timelines["01-f1"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

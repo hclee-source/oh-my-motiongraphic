@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Frame 2 — f2 · track 6.99–11.01 (4.02s) · beat_cut · CHAT-UI · BARO 01 챗GPT. Head is source metadata only. -->
+  </head>
+  <body>
+    <template id="02-f2-template">
+      <style>
+        @font-face { font-family: "Gmarket Sans"; src: url("assets/fonts/GmarketSansBold.otf") format("opentype"); font-weight: 700; font-display: block; }
+        @font-face { font-family: "Gmarket Sans"; src: url("assets/fonts/GmarketSansMedium.otf") format("opentype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Gmarket Sans"; src: url("assets/fonts/GmarketSansLight.otf") format("opentype"); font-weight: 300; font-display: block; }
+
+        /* ---------- root (plain #stage — the compiler scopes it); scene_color ground from t=0 ---------- */
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #D4E3BA;
+        }
+        #f2_g1 {
+          position: absolute;
+          inset: 0;
+          font-family: "Gmarket Sans", sans-serif;
+          color: #1B1A1F;
+        }
+
+        /* ---------- ORIGINAL generic chat window (center-left) ---------- */
+        #f2_win {
+          position: absolute;
+          left: 110px;
+          top: 190px;
+          width: 1060px;
+          height: 700px;
+          box-sizing: border-box;
+          background: #FBF8F2;
+          border: 1px solid rgba(27, 26, 31, 0.15);
+          border-radius: 28px;
+          box-shadow: 0 30px 80px rgba(27, 26, 31, 0.18);
+          overflow: hidden;
+          transform-origin: 50% 100%;
+          opacity: 0;
+          visibility: hidden;
+        }
+        .f2-bar {
+          position: relative;
+          height: 80px;
+          display: flex;
+          align-items: center;
+          padding: 0 32px;
+          border-bottom: 1px solid rgba(27, 26, 31, 0.08);
+        }
+        .f2-wdot {
+          width: 16px;
+          height: 16px;
+          margin-right: 10px;
+          border-radius: 50%;
+          background: #D9D2C6;
+        }
+        .f2-wlabel {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          height: 80px;
+          line-height: 82px;
+          text-align: center;
+          font-weight: 500;
+          font-size: 26px;
+          letter-spacing: -0.01em;
+          color: #6E6A72;
+        }
+        .f2-body {
+          position: relative;
+          height: 618px;
+          padding: 44px 52px 0;
+          box-sizing: border-box;
+        }
+
+        /* user bubble (right, ink fill, cream text) */
+        .f2-urow {
+          display: flex;
+          justify-content: flex-end;
+        }
+        #f2_ububble {
+          position: relative;
+          white-space: nowrap;
+          background: #1B1A1F;
+          color: #F4EFE6;
+          border-radius: 38px 38px 10px 38px;
+          padding: 26px 38px 24px;
+          font-weight: 500;
+          font-size: 48px;
+          line-height: 1.25;
+          letter-spacing: -0.02em;
+          transform-origin: 100% 100%;
+          opacity: 0;
+          visibility: hidden;
+        }
+        .f2-utext {
+          position: relative;
+          display: inline-block;
+        }
+        .f2-uc {
+          position: relative;
+          display: inline-block;
+          opacity: 0;
+        }
+        .f2-sp {
+          display: inline-block;
+          width: 0.28em;
+        }
+        .f2-car {
+          position: absolute;
+          top: 0.1em;
+          right: -6px;
+          width: 4px;
+          height: 1.02em;
+          border-radius: 2px;
+          background: #F4EFE6;
+          opacity: 0;
+        }
+        #f2_ucar0 {
+          right: auto;
+          left: -4px;
+        }
+
+        /* assistant row: ink avatar (key visual inside) + bubble slot */
+        .f2-arow {
+          display: flex;
+          align-items: flex-end;
+          margin-top: 36px;
+        }
+        #f2_av {
+          position: relative;
+          flex: none;
+          width: 96px;
+          height: 96px;
+          border-radius: 50%;
+          background: #1B1A1F;
+          overflow: hidden;
+          transform-origin: 50% 50%;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f2_av_img {
+          position: absolute;
+          left: -10px;
+          top: -7px;
+          width: 116px;
+          height: 105px;
+          display: block;
+        }
+        .f2-aslot {
+          position: relative;
+          flex: none;
+          width: 600px;
+          height: 112px;
+          margin-left: 22px;
+        }
+        #f2_dots {
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 160px;
+          height: 96px;
+          box-sizing: border-box;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #F4EFE6;
+          border: 1px solid rgba(27, 26, 31, 0.15);
+          border-radius: 38px 38px 38px 10px;
+          transform-origin: 0% 100%;
+          opacity: 0;
+          visibility: hidden;
+        }
+        .f2-dot {
+          display: block;
+          width: 15px;
+          height: 15px;
+          margin: 0 6px;
+          border-radius: 50%;
+          background: rgba(27, 26, 31, 0.45);
+        }
+        #f2_reply {
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          white-space: nowrap;
+          background: #F4EFE6;
+          border: 1px solid rgba(27, 26, 31, 0.15);
+          border-radius: 38px 38px 38px 10px;
+          padding: 26px 38px 24px;
+          font-weight: 500;
+          font-size: 48px;
+          line-height: 1.25;
+          letter-spacing: -0.02em;
+          color: #1B1A1F;
+          box-shadow: 0 10px 24px rgba(27, 26, 31, 0.06);
+          transform-origin: 0% 100%;
+          opacity: 0;
+          visibility: hidden;
+        }
+        .f2-rw {
+          display: inline-block;
+        }
+        #f2_rw1 {
+          font-weight: 700;
+        }
+
+        /* empty input field + send button (pressed on the 7.99 beat) */
+        #f2_input {
+          position: absolute;
+          left: 52px;
+          right: 52px;
+          bottom: 40px;
+          height: 92px;
+          box-sizing: border-box;
+          border-radius: 46px;
+          background: #F4EFE6;
+          border: 1px solid rgba(27, 26, 31, 0.12);
+        }
+        #f2_send {
+          position: absolute;
+          right: 13px;
+          top: 13px;
+          width: 64px;
+          height: 64px;
+          border-radius: 50%;
+          background: #1B1A1F;
+          transform-origin: 50% 50%;
+        }
+        #f2_send svg {
+          display: block;
+          width: 64px;
+          height: 64px;
+        }
+
+        /* ---------- 3D book (recipes/book3d.md, fN → f2, DEEP = #365A16) ---------- */
+        #f2_bookwrap {
+          position: absolute;
+          inset: 0;
+          opacity: 0;
+          visibility: hidden;
+        }
+        .f2-bk-scene { position: absolute; left: 1500px; top: 410px; width: 0; height: 0; perspective: 2200px; }
+        .f2-bk-shadow { position: absolute; left: -260px; top: 250px; width: 520px; height: 70px; border-radius: 50%;
+          background: rgba(40, 25, 15, 0.30); filter: blur(22px); }
+        /* contact shadow re-fit for the book's 0.75 scale (it lives outside the 3D chain, so it is not scaled with it) */
+        #f2_bk_shadow { left: -195px; top: 187px; width: 390px; height: 52px; filter: blur(18px); opacity: 0; }
+        .f2-bk-book { position: absolute; left: -210px; top: -287px; width: 420px; height: 574px; transform-style: preserve-3d; }
+        .f2-bk-book > div, .f2-bk-hinge > div { position: absolute; }
+        .f2-bk-back   { inset: 0; background: #365A16; transform: rotateY(180deg) translateZ(24px); }
+        .f2-bk-spine  { left: 186px; top: 0; width: 48px; height: 574px; background: #365A16; transform: rotateY(-90deg) translateZ(210px);
+          display: flex; align-items: center; justify-content: center; color: #F4EFE6; font: 700 22px "Gmarket Sans"; writing-mode: vertical-rl; }
+        .f2-bk-edge   { left: 186px; top: 0; width: 48px; height: 574px; transform: rotateY(90deg) translateZ(210px);
+          background: repeating-linear-gradient(90deg, #FBF8F2 0 2px, #E4DCCD 2px 3px); }
+        .f2-bk-top    { left: 0; top: 263px; width: 420px; height: 48px; transform: rotateX(90deg) translateZ(287px);
+          background: repeating-linear-gradient(0deg, #FBF8F2 0 2px, #E4DCCD 2px 3px); }
+        .f2-bk-bottom { left: 0; top: 263px; width: 420px; height: 48px; transform: rotateX(-90deg) translateZ(287px); background: #E9E1D2; }
+        .f2-bk-page   { inset: 0; background: #FBF8F2; transform: translateZ(22px); display: flex; align-items: center; justify-content: center;
+          color: #365A16; font: 700 44px/1.25 "Gmarket Sans"; text-align: center; }
+        .f2-bk-hinge  { inset: 0; transform-origin: 0% 50%; transform: translateZ(24px); transform-style: preserve-3d; }
+        .f2-bk-front  { inset: 0; width: 420px; height: 574px; object-fit: cover; backface-visibility: hidden; }
+        .f2-bk-inside { inset: 0; background: #F4EFE6; transform: rotateY(180deg); backface-visibility: hidden; }
+
+        /* ---------- caption + stickers under the book ---------- */
+        #f2_cap {
+          position: absolute;
+          left: 1180px;
+          top: 668px;
+          width: 640px;
+          text-align: center;
+        }
+        .f2-cl {
+          display: block;
+          font-weight: 700;
+          font-size: 44px;
+          line-height: 1.2;
+          letter-spacing: -0.02em;
+          white-space: nowrap;
+          color: #1B1A1F;
+          opacity: 0;
+          visibility: hidden;
+        }
+        .f2-x {
+          font-weight: 300;
+          color: #6E6A72;
+        }
+        #f2_pills {
+          position: absolute;
+          left: 1180px;
+          top: 800px;
+          width: 640px;
+          display: flex;
+          justify-content: center;
+        }
+        .f2-pill {
+          display: block;
+          margin: 0 14px;
+          padding: 15px 30px 12px;
+          border-radius: 999px;
+          font-weight: 700;
+          font-size: 30px;
+          line-height: 1;
+          letter-spacing: -0.01em;
+          white-space: nowrap;
+          color: #F4EFE6;
+          background: #365A16;
+          transform-origin: 50% 50%;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f2_pill2 {
+          background: #5B5BF0;
+        }
+      </style>
+
+      <div id="stage" data-composition-id="02-f2" data-width="1920" data-height="1080" data-duration="4.02">
+        <!-- g1 · free_design · track 6.99–11.01 · chat window → reply → 3D book -->
+        <div id="f2_g1">
+
+          <div id="f2_win">
+            <div class="f2-bar">
+              <span class="f2-wdot"></span><span class="f2-wdot"></span><span class="f2-wdot"></span>
+              <div class="f2-wlabel">AI 채팅</div>
+            </div>
+            <div class="f2-body">
+              <div class="f2-urow">
+                <div id="f2_ububble">
+                  <span class="f2-utext"><i class="f2-car" id="f2_ucar0"></i><span class="f2-uc" id="f2_uc0">A<i class="f2-car" id="f2_ucr0"></i></span><span class="f2-uc" id="f2_uc1">I<i class="f2-car" id="f2_ucr1"></i></span><span class="f2-uc" id="f2_uc2">,<i class="f2-car" id="f2_ucr2"></i></span><span class="f2-sp"></span><span class="f2-uc" id="f2_uc3">바<i class="f2-car" id="f2_ucr3"></i></span><span class="f2-uc" id="f2_uc4">로<i class="f2-car" id="f2_ucr4"></i></span><span class="f2-sp"></span><span class="f2-uc" id="f2_uc5">써<i class="f2-car" id="f2_ucr5"></i></span><span class="f2-uc" id="f2_uc6">먹<i class="f2-car" id="f2_ucr6"></i></span><span class="f2-uc" id="f2_uc7">고<i class="f2-car" id="f2_ucr7"></i></span><span class="f2-sp"></span><span class="f2-uc" id="f2_uc8">싶<i class="f2-car" id="f2_ucr8"></i></span><span class="f2-uc" id="f2_uc9">어<i class="f2-car" id="f2_ucr9"></i></span><span class="f2-uc" id="f2_uc10">요<i class="f2-car" id="f2_ucr10"></i></span></span>
+                </div>
+              </div>
+              <div class="f2-arow">
+                <div id="f2_av"><img id="f2_av_img" src="assets/keyvisual/spr-green.png" alt="" /></div>
+                <div class="f2-aslot">
+                  <div id="f2_dots"><span class="f2-dot" id="f2_dot0"></span><span class="f2-dot" id="f2_dot1"></span><span class="f2-dot" id="f2_dot2"></span></div>
+                  <div id="f2_reply"><span class="f2-rw" id="f2_rw1">이 책부터</span> <span class="f2-rw" id="f2_rw2">펼쳐 보세요</span></div>
+                </div>
+              </div>
+              <div id="f2_input">
+                <div id="f2_send">
+                  <svg viewBox="0 0 64 64"><path d="M32 45 V20 M21 31 L32 20 L43 31" fill="none" stroke="#F4EFE6" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3D book, OUTSIDE the window on the right. Wrapper fades 0→1 in 0ms (outside the 3D chain). -->
+          <div id="f2_bookwrap">
+            <div class="f2-bk-scene" data-layout-ignore="">
+              <div class="f2-bk-shadow" id="f2_bk_shadow"></div>
+              <div class="f2-bk-book" id="f2_book">
+                <div class="f2-bk-back"></div>
+                <div class="f2-bk-spine">바로바로 챗GPT</div>
+                <div class="f2-bk-edge"></div>
+                <div class="f2-bk-top"></div>
+                <div class="f2-bk-bottom"></div>
+                <div class="f2-bk-page" data-layout-ignore="">바로 배워<br />바로 쓰는!</div>
+                <div class="f2-bk-hinge" id="f2_bk_hinge">
+                  <img class="f2-bk-front" src="assets/covers/9791124516294.jpg" alt="" />
+                  <div class="f2-bk-inside"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="f2_cap">
+            <span class="f2-cl" id="f2_cl1">바로바로 챗GPT</span>
+            <span class="f2-cl" id="f2_cl2"><span class="f2-x">X</span> 덕테이프 <span class="f2-x">X</span> 코덱스</span>
+          </div>
+          <div id="f2_pills">
+            <span class="f2-pill" id="f2_pill1">박현규</span>
+            <span class="f2-pill" id="f2_pill2">45개 실습</span>
+          </div>
+
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var D = 4.02;  // frame span length (track 6.99 → 11.01)
+          var T0 = 6.99; // span_sec[0]
+          function L(trackT) { return Math.round((trackT - T0) * 1000) / 1000; }
+
+          // storyboard anchors (track seconds → frame-local)
+          var A_WIN = L(7.34);    // window rises (overlay reveal ends ~7.36)
+          var A_TYPE = L(7.48);   // beat: user bubble + typing
+          var A_SEND = L(7.99);   // beat: typing done, send pressed
+          var A_BOT = L(8.5);     // beat: assistant row + typing dots
+          var A_HALF = L(8.755);  // 8th after 8.5: second dot wave
+          var A_REPLY = L(9.01);  // downbeat: reply pops + book turns in
+          var A_CAP = L(9.5);     // beat: caption + author sticker
+          var A_KICK = L(9.96);   // kick: '45개 실습' sticker
+          var A_TURN = L(10.49);  // beat: quarter-turn to the spine (blinds cover from ~10.72)
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ---- group span (0ms cut in / out) ----
+          tl.set("#f2_g1", { autoAlpha: 1 }, 0);
+
+          // ---- start states ----
+          tl.set("#f2_win", { autoAlpha: 0, y: 150, rotation: -1.5, scale: 0.97 }, 0);
+          tl.set("#f2_ububble", { autoAlpha: 0, scale: 0.6, y: 0 }, 0);
+          tl.set("#f2_send", { scale: 1 }, 0);
+          tl.set("#f2_av", { autoAlpha: 0, scale: 0 }, 0);
+          tl.set("#f2_av_img", { scale: 1.25, rotation: -8, x: 0 }, 0);
+          tl.set("#f2_dots", { autoAlpha: 0, scale: 0.5 }, 0);
+          tl.set("#f2_reply", { autoAlpha: 0, scale: 0.7 }, 0);
+          tl.set(["#f2_rw1", "#f2_rw2"], { opacity: 0, y: 14 }, 0);
+          tl.set(["#f2_cl1", "#f2_cl2"], { autoAlpha: 0, y: 26 }, 0);
+          tl.set(["#f2_pill1", "#f2_pill2"], { autoAlpha: 0, scale: 0, y: 0 }, 0);
+          tl.set("#f2_bookwrap", { autoAlpha: 0 }, 0);
+          tl.set("#f2_book", { x: 900, y: 0, z: -900, rotationY: -120, rotationX: 18, scale: 0.75 }, 0);
+          tl.set("#f2_bk_hinge", { rotationY: 0 }, 0);
+          tl.set("#f2_bk_shadow", { scaleX: 0.3, opacity: 0 }, 0);
+
+          // ---- 7.34: the chat window rises into center-left ----
+          tl.to("#f2_win", { autoAlpha: 1, duration: 0.16, ease: "power1.out" }, A_WIN);
+          tl.to("#f2_win", { y: 0, rotation: 0, scale: 1, duration: 0.6, ease: "expo.out" }, A_WIN);
+
+          // ---- 7.48: user bubble pops, 'AI, 바로 써먹고 싶어요' types (11 glyphs, caret rides the last one) ----
+          tl.to("#f2_ububble", { autoAlpha: 1, duration: 0.06 }, A_TYPE);
+          tl.to("#f2_ububble", { scale: 1, duration: 0.3, ease: "back.out(1.8)" }, A_TYPE);
+          var NG = 11, T_FIRST = A_TYPE + 0.06, T_STEP = 0.042;
+          for (var g = 0; g < NG; g++) {
+            tl.set("#f2_uc" + g, { opacity: 0 }, 0);
+            tl.set("#f2_ucr" + g, { opacity: 0 }, 0);
+          }
+          tl.set("#f2_ucar0", { opacity: 0 }, 0);
+          tl.set("#f2_ucar0", { opacity: 1 }, A_TYPE);
+          for (var k = 0; k < NG; k++) {
+            var tk = Math.round((T_FIRST + k * T_STEP) * 1000) / 1000;
+            tl.set("#f2_uc" + k, { opacity: 1 }, tk);
+            tl.set(k === 0 ? "#f2_ucar0" : "#f2_ucr" + (k - 1), { opacity: 0 }, tk);
+            tl.set("#f2_ucr" + k, { opacity: 1 }, tk);
+          }
+
+          // ---- 7.99: send — button depresses, caret clears, bubble nudges up ----
+          tl.set("#f2_ucr" + (NG - 1), { opacity: 0 }, A_SEND);
+          tl.to("#f2_send", { scale: 0.84, duration: 0.07, ease: "power2.out" }, A_SEND - 0.03);
+          tl.to("#f2_send", { scale: 1, duration: 0.3, ease: "back.out(2.6)" }, A_SEND + 0.04);
+          tl.to("#f2_ububble", { y: -8, duration: 0.1, ease: "power2.out" }, A_SEND);
+          tl.to("#f2_ububble", { y: 0, duration: 0.3, ease: "power2.inOut" }, A_SEND + 0.1);
+
+          // ---- 8.5: assistant row — ink avatar with the green character + typing dots ----
+          tl.set("#f2_av", { autoAlpha: 1 }, A_BOT);
+          tl.to("#f2_av", { scale: 1, duration: 0.34, ease: "back.out(2.2)" }, A_BOT);
+          tl.to("#f2_av_img", { scale: 1, rotation: 0, duration: 0.5, ease: "expo.out" }, A_BOT);
+          tl.to("#f2_av_img", { x: 3, duration: 1.4, ease: "sine.inOut" }, A_BOT + 0.5);
+          tl.set("#f2_dots", { autoAlpha: 1 }, A_BOT + 0.05);
+          tl.to("#f2_dots", { scale: 1, duration: 0.26, ease: "back.out(2)" }, A_BOT + 0.05);
+          var WAVES = [A_BOT + 0.03, A_HALF + 0.03];
+          for (var w = 0; w < WAVES.length; w++) {
+            for (var i = 0; i < 3; i++) {
+              var td = Math.round((WAVES[w] + i * 0.05) * 1000) / 1000;
+              tl.to("#f2_dot" + i, { y: -12, duration: 0.08, ease: "power2.out" }, td);
+              tl.to("#f2_dot" + i, { y: 0, duration: 0.1, ease: "power2.in" }, td + 0.08);
+            }
+          }
+
+          // ---- 9.01 (downbeat): dots → reply bubble; the 3D book turns in on the right ----
+          tl.set("#f2_dots", { autoAlpha: 0 }, A_REPLY);
+          tl.set("#f2_reply", { autoAlpha: 1 }, A_REPLY);
+          tl.to("#f2_reply", { scale: 1, duration: 0.34, ease: "back.out(1.9)" }, A_REPLY);
+          tl.to("#f2_rw1", { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, A_REPLY + 0.04);
+          tl.to("#f2_rw2", { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, A_REPLY + 0.1);
+
+          // book3d ENTER (recipe): turn in from the side, landing on the hit
+          var HIT1 = A_REPLY;
+          tl.set("#f2_bookwrap", { autoAlpha: 1 }, HIT1 - 0.12);
+          tl.to("#f2_book", { x: 0, z: 0, rotationY: -28, rotationX: 8, duration: 0.7, ease: "expo.out" }, HIT1 - 0.12);
+          tl.fromTo("#f2_bk_shadow", { scaleX: 0.3, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.7, ease: "expo.out", immediateRender: false }, HIT1 - 0.12);
+          // FLOAT while held: ±6px over ~2 beats, explicit tweens
+          var A_LAND = Math.round((HIT1 - 0.12 + 0.7) * 1000) / 1000;
+          tl.to("#f2_book", { y: -6, duration: 0.45, ease: "sine.inOut" }, A_LAND);
+          tl.to("#f2_book", { y: 0, duration: 0.43, ease: "sine.inOut" }, A_LAND + 0.45);
+          tl.to("#f2_bk_shadow", { scaleX: 0.94, duration: 0.45, ease: "sine.inOut" }, A_LAND);
+          tl.to("#f2_bk_shadow", { scaleX: 1, duration: 0.43, ease: "sine.inOut" }, A_LAND + 0.45);
+
+          // ---- 9.5: caption lands on the beat + author sticker ----
+          tl.to("#f2_cl1", { autoAlpha: 1, y: 0, duration: 0.36, ease: "power3.out" }, A_CAP - 0.1);
+          tl.to("#f2_cl2", { autoAlpha: 1, y: 0, duration: 0.36, ease: "power3.out" }, A_CAP - 0.04);
+          tl.set("#f2_pill1", { autoAlpha: 1 }, A_CAP + 0.06);
+          tl.to("#f2_pill1", { scale: 1, duration: 0.32, ease: "back.out(2.4)" }, A_CAP + 0.06);
+
+          // ---- 9.96 (kick): '45개 실습' pops with a little bounce ----
+          tl.set("#f2_pill2", { autoAlpha: 1 }, A_KICK);
+          tl.to("#f2_pill2", { scale: 1, duration: 0.36, ease: "back.out(2)" }, A_KICK);
+          tl.to("#f2_pill2", { y: -16, duration: 0.12, ease: "power2.out" }, A_KICK);
+          tl.to("#f2_pill2", { y: 0, duration: 0.3, ease: "bounce.out" }, A_KICK + 0.12);
+
+          // ---- 10.49: slow quarter-turn to the spine (spine-first pose), settling under the blinds ----
+          tl.to("#f2_book", { rotationY: 62, rotationX: 5, duration: 0.52, ease: "power3.out" }, A_TURN);
+          tl.to("#f2_bk_shadow", { scaleX: 0.6, duration: 0.52, ease: "power3.out" }, A_TURN);
+
+          // ---- frame end: 0ms out ----
+          tl.set("#f2_g1", { autoAlpha: 0 }, D);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["02-f2"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

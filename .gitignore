@@ -1,0 +1,24 @@
+# OS / Python
+.DS_Store
+.venv/
+__pycache__/
+*.pyc
+
+# 렌더 결과물·검수 스냅샷 (재생성 가능)
+videos/*/renders/
+videos/*/snapshots/
+
+# HyperFrames 로컬 캐시
+videos/*/.hyperframes/
+videos/*/.waveform-cache/
+videos/*/.thumbnails/
+videos/*/.backup/
+
+# 작업 중간 산출물: 스크립트·JSON·메모는 남기고 대용량 바이너리만 제외
+videos/*/.work/demucs/
+videos/*/.work/**/*.wav
+videos/*/.work/**/*.ttf
+videos/*/.work/**/*.png
+videos/*/.work/**/*.jpg
+*.log
+*.err

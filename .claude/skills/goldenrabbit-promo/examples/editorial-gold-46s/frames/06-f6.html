@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <title>06-f6 — INSIGHT shelf conveyor</title>
+    <!-- Frame 6 (track 36.47–41.0s, 4.53s). Frame-local t = track_t − 36.47.
+         Anchors (local): 0.00 cut-in · 0.36 / 1.29 / 2.24 cover drops · 3.19 ring pulse ·
+         3.65 staggered arc exits · 4.12 title + shelf wipe. Silent; host owns audio + gsap. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        #stage {
+          --ink: #0f0e0c;
+          --gold: #ceae73;
+          --cream: #f4efe6;
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #0f0e0c;
+          color: #f4efe6;
+          font-family: "Paperlogy", sans-serif;
+        }
+
+        /* ---------- f6_g1 — shelf conveyor (whole frame) ---------- */
+        #f6_g1 {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+        }
+
+        /* head: kicker + h2 title, top-left inside the 104/96 safe area */
+        #f6_g1_head {
+          position: absolute;
+          left: 104px;
+          top: 96px;
+          z-index: 2;
+          clip-path: inset(-12% -10% -12% -4%);
+        }
+        .f6_g1_kicker {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 500;
+          font-size: 22px;
+          line-height: 26px;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: var(--gold);
+        }
+        #f6_g1_stub {
+          display: block;
+          width: 48px;
+          height: 4px;
+          background: var(--gold);
+          transform-origin: 0% 50%;
+        }
+        #f6_g1_title {
+          margin-top: 20px;
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 800;
+          font-size: 96px;
+          line-height: 1.05;
+          letter-spacing: -0.03em;
+          color: var(--cream);
+          white-space: nowrap;
+          transform-origin: 0% 60%;
+        }
+
+        /* shelf: 1px gold hairline across the lower third (y = 748), drawn L→R */
+        #f6_g1_shelf {
+          position: absolute;
+          left: 104px;
+          top: 748px;
+          width: 1712px;
+          height: 1px;
+          background: var(--gold);
+          transform-origin: 0% 50%;
+          z-index: 1;
+        }
+        /* leading-edge disc that rides the fill, then rests as the shelf's end cap */
+        #f6_g1_disc {
+          position: absolute;
+          left: 98px;
+          top: 742.5px;
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background: var(--gold);
+          z-index: 2;
+        }
+
+        /* the row of three slots — covers stand on the shelf (bottom edge = 748) */
+        #f6_g1_row {
+          position: absolute;
+          left: 104px;
+          top: 328px;
+          width: 1712px;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          justify-items: center;
+          z-index: 3;
+        }
+        .f6_g1_slot {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 520px;
+        }
+        .f6_g1_cover {
+          position: relative;
+          z-index: 2;
+          height: 420px;
+          border-radius: 6px;
+          box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
+          transform-origin: 50% 100%;
+          opacity: 0;
+          visibility: hidden;
+        }
+        .f6_g1_cover img {
+          display: block;
+          height: 420px;
+          border-radius: 6px;
+          object-fit: cover;
+        }
+        /* landing flash: a gold bar on the shelf line under each cover, fired on its kick */
+        .f6_g1_impact {
+          position: absolute;
+          z-index: 1;
+          left: 50%;
+          top: 419px;
+          height: 3px;
+          background: var(--gold);
+          transform-origin: 50% 50%;
+          opacity: 0;
+          visibility: hidden;
+        }
+        /* ring behind the center cover (3px stroke, echoes the logo circle) */
+        #f6_g1_ring {
+          position: absolute;
+          z-index: 0;
+          left: 50%;
+          top: 210px;
+          width: 480px;
+          height: 480px;
+          margin-left: -240px;
+          margin-top: -240px;
+          box-sizing: border-box;
+          border: 3px solid var(--gold);
+          border-radius: 50%;
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        /* caption block: title (caption, cream) + author (gold) [+ chip] */
+        .f6_g1_cap {
+          margin-top: 32px;
+          max-width: 500px;
+          text-align: center;
+          transform-origin: 50% 0%;
+          opacity: 0;
+          visibility: hidden;
+        }
+        .f6_g1_cap_t {
+          margin: 0;
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 500;
+          font-size: 30px;
+          line-height: 1.35;
+          color: var(--cream);
+          word-break: keep-all;
+          text-wrap: balance;
+        }
+        .f6_g1_cap_m {
+          margin: 10px 0 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 12px;
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 500;
+          font-size: 26px;
+          line-height: 1.2;
+          color: var(--gold);
+        }
+        .f6_g1_chip {
+          display: inline-block;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 500;
+          font-size: 17px;
+          line-height: 1;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: var(--ink);
+          background: var(--gold);
+          padding: 6px 10px 5px;
+          border-radius: 3px;
+        }
+      </style>
+
+      <div data-hf-id="hf-fsuq" id="stage" data-composition-id="06-f6" data-width="1920" data-height="1080" data-duration="4.53">
+        <div data-hf-id="hf-p944" id="f6_g1">
+          <div data-hf-id="hf-tufy" id="f6_g1_shelf" data-layout-ignore=""></div>
+          <div data-hf-id="hf-5v6t" id="f6_g1_disc" data-layout-ignore=""></div>
+
+          <div data-hf-id="hf-s8u5" id="f6_g1_row">
+            <!-- slot 0 — left -->
+            <div data-hf-id="hf-ret2" class="f6_g1_slot" id="f6_g1_slot0">
+              <div data-hf-id="hf-jnkq" class="f6_g1_impact" id="f6_g1_imp0" style="width: 417px; margin-left: -208.5px" data-layout-ignore=""></div>
+              <div data-hf-id="hf-r7b2" class="f6_g1_cover" id="f6_g1_cov0" data-layout-allow-overflow="">
+                <img data-hf-id="hf-nfsw" id="f6_g1_img0" src="assets/covers/ai-gukburon.jpg" alt="AI 국부론" style="width: 297px">
+              </div>
+              <div data-hf-id="hf-sv6u" class="f6_g1_cap" id="f6_g1_cap0">
+                <p data-hf-id="hf-50uj" class="f6_g1_cap_t">AI 국부론</p>
+                <p data-hf-id="hf-7j1r" class="f6_g1_cap_m"><span data-hf-id="hf-vgky">이승현</span></p>
+              </div>
+            </div>
+
+            <!-- slot 1 — center (ring pulse lives here) -->
+            <div data-hf-id="hf-vcx3" class="f6_g1_slot" id="f6_g1_slot1">
+              <div data-hf-id="hf-88og" id="f6_g1_ring" data-layout-ignore=""></div>
+              <div data-hf-id="hf-hc8a" class="f6_g1_impact" id="f6_g1_imp1" style="width: 404px; margin-left: -202px" data-layout-ignore=""></div>
+              <div data-hf-id="hf-xd0v" class="f6_g1_cover" id="f6_g1_cov1" data-layout-allow-overflow="">
+                <img data-hf-id="hf-cv42" id="f6_g1_img1" src="assets/covers/ai-literacy.jpg" alt="AI는 생각하지 않는다, AI 리터러시" style="width: 284px">
+              </div>
+              <div data-hf-id="hf-wtav" class="f6_g1_cap" id="f6_g1_cap1">
+                <p data-hf-id="hf-1uum" class="f6_g1_cap_t">AI는 생각하지 않는다, AI 리터러시</p>
+                <p data-hf-id="hf-dqa7" class="f6_g1_cap_m"><span data-hf-id="hf-ethz">이제현</span><span data-hf-id="hf-4kul" class="f6_g1_chip">COMING SOON</span></p>
+              </div>
+            </div>
+
+            <!-- slot 2 — right -->
+            <div data-hf-id="hf-mp18" class="f6_g1_slot" id="f6_g1_slot2">
+              <div data-hf-id="hf-byqd" class="f6_g1_impact" id="f6_g1_imp2" style="width: 404px; margin-left: -202px" data-layout-ignore=""></div>
+              <div data-hf-id="hf-mhj8" class="f6_g1_cover" id="f6_g1_cov2" data-layout-allow-overflow="">
+                <img data-hf-id="hf-0ead" id="f6_g1_img2" src="assets/covers/f1-glossary.jpg" alt="F1 용어집 1211" style="width: 284px">
+              </div>
+              <div data-hf-id="hf-o5f0" class="f6_g1_cap" id="f6_g1_cap2">
+                <p data-hf-id="hf-96c0" class="f6_g1_cap_t">F1 용어집 1211</p>
+                <p data-hf-id="hf-dbz6" class="f6_g1_cap_m"><span data-hf-id="hf-nk5f">윤재수</span></p>
+              </div>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-wqb9" id="f6_g1_head">
+            <div data-hf-id="hf-l809" class="f6_g1_kicker"><span data-hf-id="hf-l50s" id="f6_g1_stub"></span><span data-hf-id="hf-hqcn">INSIGHT</span></div>
+            <div data-hf-id="hf-3ea9" id="f6_g1_title">생각을 넓히는 책</div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // Frame-local anchors (track_t − 36.47)
+        const T_CUT = 0.0; //   36.47 hard cut in from f5's gold freeze
+        const LAND = [0.36, 1.29, 2.24]; // 36.83 / 37.76 / 38.71 kicks — covers land
+        const T_RING = 3.19; // 39.66 kick — ring pulse behind center cover
+        const T_EXIT = 3.65; // 40.12 snare — staggered parabolic exits
+        const T_WIPE = 4.12; // 40.59 kick (hard stop) — title + shelf wipe
+        const END = 4.53; //    41.0 frame end (drop to silence)
+
+        const SHELF_W = 1712;
+        const DRIFT = -36; // conveyor: the row creeps left along the static shelf
+        const FALL = 110; // drop height onto the shelf
+        const TILT = [-5, 4, -4]; // entry tilt, straightens on landing
+        // exits: x travel (power1.in) + y rise (power3.in) => y ∝ x² parabola, plus rotation
+        const EXIT_X = [-640, 120, 640];
+        const EXIT_Y = [-820, -880, -820];
+        const EXIT_R = [-22, 9, 22];
+        const EXIT_STEP = 0.11; // staggered-exit per-element offset
+        const EXIT_DUR = 0.5;
+
+        // ---- group window: f6_g1 spans the whole frame [0, 4.53) ----
+        tl.set("#f6_g1", { autoAlpha: 1 }, T_CUT);
+
+        // ---- 0.00 cut-in: title lands with a weight settle, stub bar + shelf draw L→R ----
+        tl.fromTo("#f6_g1_title", { scale: 1.05 }, { scale: 1, duration: 0.34, ease: "power3.out" }, T_CUT);
+        tl.fromTo("#f6_g1_stub", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power2.out" }, T_CUT);
+        // directional-fill: hairline sweeps left→right; the disc rides its leading edge
+        tl.fromTo("#f6_g1_shelf", { scaleX: 0 }, { scaleX: 1, duration: 0.55, ease: "power2.out" }, T_CUT);
+        tl.fromTo("#f6_g1_disc", { x: 0 }, { x: SHELF_W, duration: 0.55, ease: "power2.out" }, T_CUT);
+        // conveyor drift through the hold
+        tl.fromTo("#f6_g1_row", { x: 0 }, { x: DRIFT, duration: T_EXIT - T_CUT, ease: "none" }, T_CUT);
+
+        // ---- staggered-reveal: one cover per kick drops onto the shelf, settles, caption pops ----
+        for (let i = 0; i < 3; i++) {
+          const a = LAND[i];
+          const cov = "#f6_g1_cov" + i;
+          const cap = "#f6_g1_cap" + i;
+          const imp = "#f6_g1_imp" + i;
+
+          // fall (lands exactly on the kick)
+          tl.fromTo(cov, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.1, ease: "none" }, a - 0.24);
+          tl.fromTo(
+            cov,
+            { y: -FALL, rotation: TILT[i] },
+            { y: 0, rotation: 0, duration: 0.24, ease: "power2.in" },
+            a - 0.24,
+          );
+          // impact squash + short settle hop
+          tl.to(cov, { scaleY: 0.92, scaleX: 1.04, duration: 0.06, ease: "power2.out" }, a);
+          tl.to(cov, { scaleY: 1, scaleX: 1, duration: 0.34, ease: "back.out(3)" }, a + 0.06);
+          tl.to(cov, { y: -14, duration: 0.11, ease: "power2.out" }, a + 0.06);
+          tl.to(cov, { y: 0, duration: 0.13, ease: "power2.in" }, a + 0.17);
+          // gold landing flash on the shelf line
+          tl.set(imp, { autoAlpha: 1, scaleX: 0.35 }, a);
+          tl.to(imp, { scaleX: 1.2, autoAlpha: 0, duration: 0.42, ease: "power2.out" }, a);
+          // caption overlay-pop under the cover
+          tl.fromTo(
+            cap,
+            { autoAlpha: 0, y: 16, scale: 0.9 },
+            { autoAlpha: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(2.2)" },
+            a + 0.04,
+          );
+        }
+
+        // ---- 3.19 ring pulse behind the center cover + a small cover bump ----
+        tl.set("#f6_g1_ring", { autoAlpha: 1, scale: 0.55 }, T_RING);
+        tl.to("#f6_g1_ring", { scale: 1.2, autoAlpha: 0, duration: 0.6, ease: "power2.out" }, T_RING);
+        tl.to("#f6_g1_cov1", { scale: 1.045, duration: 0.07, ease: "power2.out" }, T_RING);
+        tl.to("#f6_g1_cov1", { scale: 1, duration: 0.28, ease: "power2.out" }, T_RING + 0.07);
+
+        // ---- 3.65 staggered-exit: covers arc up-and-out, captions drop away ----
+        for (let i = 0; i < 3; i++) {
+          const s = T_EXIT + i * EXIT_STEP;
+          const cov = "#f6_g1_cov" + i;
+          tl.to(cov, { x: EXIT_X[i], duration: EXIT_DUR, ease: "power1.in" }, s);
+          tl.to(cov, { y: EXIT_Y[i], duration: EXIT_DUR, ease: "power3.in" }, s);
+          tl.to(cov, { rotation: EXIT_R[i], duration: EXIT_DUR, ease: "power2.in" }, s);
+          tl.to(cov, { autoAlpha: 0, duration: 0.15, ease: "none" }, s + EXIT_DUR - 0.15);
+          tl.to("#f6_g1_cap" + i, { y: 36, autoAlpha: 0, duration: 0.28, ease: "power3.in" }, s);
+        }
+
+        // ---- 4.12 wipe-out: head wipes L→R, shelf retracts toward its end cap, cap pops off ----
+        tl.to(
+          "#f6_g1_head",
+          { clipPath: "inset(-12% -10% -12% 104%)", duration: 0.34, ease: "power1.in" },
+          T_WIPE,
+        );
+        tl.set("#f6_g1_shelf", { transformOrigin: "100% 50%" }, T_WIPE);
+        tl.to("#f6_g1_shelf", { scaleX: 0, duration: 0.3, ease: "power2.in" }, T_WIPE);
+        tl.to("#f6_g1_disc", { scale: 0, duration: 0.12, ease: "power2.in" }, T_WIPE + 0.28);
+
+        // ---- frame end: group hides at its span end ----
+        tl.set("#f6_g1", { autoAlpha: 0 }, END);
+
+        window.__timelines["06-f6"] = tl;
+        tl.seek(0);
+      </script>
+    </template>
+  </body>
+</html>

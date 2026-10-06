@@ -1,0 +1,86 @@
+◆  Checking glass-bottle-constellation-mv
+[hyperframes] browserGpuMode probe → hardware (WebGL renderer vendor="Google Inc. (Apple)" renderer="ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)")
+
+Lint
+  ⚠ overlapping_gsap_tweens: GSAP tweens overlap on "#f1_star" for scale between 1.21s and 1.22s.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv/compositions/frames/01-f1.html #f1_star t=0s
+    Fix: Shorten the earlier tween, move the later tween, or add `overwrite: "auto"`.
+  ⚠ composition_heavy_overlay_count_high: This composition has 27 elements carrying "heavy overlay" CSS (filter:blur, radial-gradient, or clip-path). Field signal: a composition with ~40 such elements — including opacity:0 / visibility:hidden ones — captures solid-black for the first ~half of the render, recovering near the end. Reproduces identically via drawElement, forced screenshot capture, and snapshot, so the capture layer itself is the offender (not encoder/mux). Independent of duration. Presence alone matters; only display:none elements are excluded here.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv/compositions/frames/03-f3.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into per-transition mini-compositions and concat the pieces (FFmpeg or the runtime's slideshow) so each capture only sees a small subset of heavy overlays at once. Even hidden overlays (opacity:0 / visibility:hidden) contribute — either remove truly unused ones from the source or scope them into their own per-transition sub-composition. If an overlay is genuinely inert for the whole clip, use display:none so it never enters the render tree. Field ref ts=1784040753 (#hyperframes-cli-feedback).
+  ⚠ composition_file_too_large: This HTML composition file has 590 lines. Smaller sub-compositions are easier to read, iterate on, and diff.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv/compositions/frames/04-f4.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into smaller .html files, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently.
+  ⚠ overlapping_gsap_tweens: GSAP tweens overlap on "#f6_w19_3" for y between 3.15s and 3.15s.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv/compositions/frames/06-f6.html #f6_w19_3 t=0s
+    Fix: Shorten the earlier tween, move the later tween, or add `overwrite: "auto"`.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#f6_w19_3" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv/compositions/frames/06-f6.html #f6_w19_3 t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 2.93s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#f6_mote" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv/compositions/frames/06-f6.html #f6_mote t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 7.22s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#f6_ring1" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv/compositions/frames/06-f6.html #f6_ring1 t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 7.72s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#f6_l20lit" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv/compositions/frames/06-f6.html #f6_l20lit t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 7.78s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#f6_pool" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv/compositions/frames/06-f6.html #f6_pool t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 7.78s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#f6_ring2" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv/compositions/frames/06-f6.html #f6_ring2 t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 9.08s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ composition_heavy_overlay_count_high: This composition has 36 elements carrying "heavy overlay" CSS (filter:blur, radial-gradient, or clip-path). Field signal: a composition with ~40 such elements — including opacity:0 / visibility:hidden ones — captures solid-black for the first ~half of the render, recovering near the end. Reproduces identically via drawElement, forced screenshot capture, and snapshot, so the capture layer itself is the offender (not encoder/mux). Independent of duration. Presence alone matters; only display:none elements are excluded here.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv/compositions/frames/06-f6.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into per-transition mini-compositions and concat the pieces (FFmpeg or the runtime's slideshow) so each capture only sees a small subset of heavy overlays at once. Even hidden overlays (opacity:0 / visibility:hidden) contribute — either remove truly unused ones from the source or scope them into their own per-transition sub-composition. If an overlay is genuinely inert for the whole clip, use display:none so it never enters the render tree. Field ref ts=1784040753 (#hyperframes-cli-feedback).
+  ⚠ composition_heavy_overlay_count_high: This composition has 39 elements carrying "heavy overlay" CSS (filter:blur, radial-gradient, or clip-path). Field signal: a composition with ~40 such elements — including opacity:0 / visibility:hidden ones — captures solid-black for the first ~half of the render, recovering near the end. Reproduces identically via drawElement, forced screenshot capture, and snapshot, so the capture layer itself is the offender (not encoder/mux). Independent of duration. Presence alone matters; only display:none elements are excluded here.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv/compositions/frames/07-f7.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into per-transition mini-compositions and concat the pieces (FFmpeg or the runtime's slideshow) so each capture only sees a small subset of heavy overlays at once. Even hidden overlays (opacity:0 / visibility:hidden) contribute — either remove truly unused ones from the source or scope them into their own per-transition sub-composition. If an overlay is genuinely inert for the whole clip, use display:none so it never enters the render tree. Field ref ts=1784040753 (#hyperframes-cli-feedback).
+  ⚠ composition_file_too_large: This HTML composition file has 362 lines. Smaller sub-compositions are easier to read, iterate on, and diff.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv/compositions/frames/08-f8.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into smaller .html files, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently.
+  ⚠ composition_file_too_large: This HTML composition file has 360 lines. Smaller sub-compositions are easier to read, iterate on, and diff.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv/compositions/frames/09-f9.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into smaller .html files, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#f10_beam, #f10_beamcore" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv/compositions/frames/10-f10.html #f10_beam, #f10_beamcore t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 9.04s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ gsap_repeated_fromto_without_baseline: 3 tl.fromTo() calls target "#f10_beamhead" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv/compositions/frames/10-f10.html #f10_beamhead t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 9.04s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ composition_file_too_large: This HTML composition file has 346 lines. Smaller sub-compositions are easier to read, iterate on, and diff.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv/compositions/frames/10-f10.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into smaller .html files, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#f12_bride" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv/compositions/frames/12-f12.html #f12_bride t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 0.05s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#f13_bottle" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv/compositions/frames/13-f13.html #f13_bottle t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 0.15s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ composition_file_too_large: This HTML composition file has 537 lines. Smaller sub-compositions are easier to read, iterate on, and diff.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv/compositions/sky.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into smaller .html files, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently.
+  0 error(s), 20 warning(s), 0 info(s)
+
+Runtime
+  ◇ 0 errors, 0 warnings
+
+Layout
+  ℹ t=137.19s container_overflow #f9_l32 inside #f9_lyr overflowed left 10.99px, right 10.99px — Nowrap text is wider than its container.
+        Fix: Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.
+  0 error(s), 0 warning(s), 1 info(s)
+
+Motion
+  ◇ 0 errors, 0 warnings
+
+Contrast
+  ✗ div > div:nth-of-type(5) > div > div > div > div:nth-of-type(10) > span:nth-of-type(3) > span:nth-of-type(3) 2.88:1 (need 3:1, t=52.767s)
+    Try rgb(56,43,27); source compositions/frames/04-f4.html
+  0 error(s), 1 warning(s), 0 info(s)
+
+Snapshots
+  ◇ disabled
+
+◇  Check passed

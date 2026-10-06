@@ -1,0 +1,11 @@
+{
+  "name": "editorial-gold",
+  "summary": "Calm editorial: warm black + cream + brand gold, big Korean type held still, gold rings/hairlines as percussion, covers as props with parabolic exits, finale grid pop. (v1)",
+  "tokens": { "accent": "#CEAE73", "ink": "#0F0E0C", "paper": "#F4EFE6", "muted": "#8C877E", "logo": "#CEAE73" },
+  "palette_keys": ["ink", "paper", "accent", "muted"],
+  "font_line": "Paperlogy 800/500/400 (embedded, Korean) / Montserrat 600 (wordmark) / IBM Plex Mono 500 (Latin chrome)",
+  "hud": { "box": "ink", "text": "paper", "accent": "accent", "default": false },
+  "registers": ["ink", "accent"],
+  "accent_alternatives": ["#CEAE73 brand gold (v1)", "#B9C7D6 silver", "#C98E6B copper"],
+  "reference_build": "examples/editorial-gold-46s"
+}

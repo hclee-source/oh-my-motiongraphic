@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <!-- Frame 4 (f4) — SERIES 03 "요즘 개발". Track span [22.98, 27.70] → local [0, 4.72]. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        #stage {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #0f0e0c;
+          font-family: "Paperlogy", sans-serif;
+          -webkit-font-smoothing: antialiased;
+        }
+        #stage * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        /* ---------- group f4_g1 ---------- */
+        #f4_g1 {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+        }
+        /* ground — t=0 is the GOLD register; flips to ink-black at 1.08 */
+        #f4_g1_bg {
+          position: absolute;
+          inset: 0;
+          background-color: #ceae73;
+        }
+        #f4_g1_shake {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+        }
+
+        /* header: static CSS = the gold-register statement (left-aligned, vertically centered) */
+        #f4_g1_kicker {
+          position: absolute;
+          left: 104px;
+          top: 370px;
+          height: 30px;
+          display: flex;
+          align-items: center;
+          gap: 18px;
+          font-family: "IBM Plex Mono", monospace;
+          font-size: 22px;
+          font-weight: 500;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          line-height: 30px;
+          white-space: nowrap;
+          color: rgba(15, 14, 12, 0.7);
+        }
+        #f4_g1_stub {
+          display: block;
+          width: 48px;
+          height: 4px;
+          background-color: #0f0e0c;
+          transform-origin: 0 50%;
+        }
+        #f4_g1_title {
+          position: absolute;
+          left: 104px;
+          top: 427px;
+          font-size: 220px;
+          font-weight: 800;
+          line-height: 0.95;
+          letter-spacing: -0.04em;
+          white-space: nowrap;
+          color: #0f0e0c;
+          transform-origin: 0 0;
+        }
+        #f4_g1_sub {
+          position: absolute;
+          left: 104px;
+          top: 655px;
+          font-size: 40px;
+          font-weight: 500;
+          line-height: 1.35;
+          white-space: nowrap;
+          color: rgba(15, 14, 12, 0.7);
+        }
+        #f4_g1_sub .w {
+          display: inline-block;
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        /* face-off pair (dark register) */
+        .f4_g1_ring {
+          position: absolute;
+          left: 620px; /* 1000 - 380 */
+          top: 190px; /* 570 - 380 */
+          width: 760px;
+          height: 760px;
+          border-radius: 50%;
+          border: 3px solid #ceae73;
+          opacity: 0;
+          transform-origin: 50% 50%;
+        }
+        #f4_g1_ringB {
+          border-width: 2px;
+        }
+        #f4_g1_vsline {
+          position: absolute;
+          left: 999.5px;
+          top: 345px;
+          width: 1px;
+          height: 450px;
+          background-color: #ceae73;
+          transform-origin: 50% 50%;
+        }
+        #f4_g1_vs {
+          position: absolute;
+          left: 972px; /* 1000 - 28 */
+          top: 542px; /* 570 - 28 */
+          width: 56px;
+          height: 56px;
+          border-radius: 50%;
+          background-color: #ceae73;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: "IBM Plex Mono", monospace;
+          font-size: 18px;
+          font-weight: 500;
+          letter-spacing: 0.08em;
+          text-indent: 0.08em;
+          color: #0f0e0c;
+          opacity: 0;
+          visibility: hidden;
+          transform-origin: 50% 50%;
+        }
+        .f4_g1_cover {
+          position: absolute;
+          top: 330px;
+          height: 480px;
+          opacity: 0;
+          visibility: hidden;
+          transform-origin: 50% 50%;
+        }
+        .f4_g1_cover img {
+          display: block;
+          height: 480px;
+          object-fit: cover;
+          border-radius: 6px;
+          box-shadow:
+            0 30px 60px rgba(0, 0, 0, 0.55),
+            0 0 0 1px rgba(255, 255, 255, 0.06);
+        }
+        /* cover 1: danggeun-ai 1080x1544 -> 336x480, centre x 710 */
+        #f4_g1_c1 {
+          left: 542px;
+          width: 336px;
+        }
+        #f4_g1_c1 img {
+          width: 336px;
+        }
+        /* cover 2: vibe-harness 1080x1477 -> 351x480, centre x 1290 */
+        #f4_g1_c2 {
+          left: 1115px;
+          width: 351px;
+        }
+        #f4_g1_c2 img {
+          width: 351px;
+        }
+        .f4_g1_cap {
+          position: absolute;
+          top: 840px;
+          width: 460px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          opacity: 0;
+          visibility: hidden;
+          transform-origin: 50% 0;
+        }
+        #f4_g1_cap1 {
+          left: 480px; /* 710 - 230 */
+        }
+        #f4_g1_cap2 {
+          left: 1060px; /* 1290 - 230 */
+        }
+        .f4_g1_capTitle {
+          display: block;
+          font-size: 30px;
+          font-weight: 500;
+          line-height: 1.35;
+          color: #f4efe6;
+          white-space: nowrap;
+          word-break: keep-all;
+        }
+        .f4_g1_meta {
+          margin-top: 10px;
+          height: 34px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+        .f4_g1_author {
+          font-size: 26px;
+          font-weight: 500;
+          line-height: 34px;
+          color: #ceae73;
+          white-space: nowrap;
+        }
+        #f4_g1_badge {
+          display: block;
+          height: 32px;
+          padding: 0 12px;
+          border-radius: 999px;
+          background-color: #ceae73;
+          color: #0f0e0c;
+          font-family: "IBM Plex Mono", monospace;
+          font-size: 18px;
+          font-weight: 500;
+          line-height: 32px;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          transform-origin: 50% 50%;
+        }
+      </style>
+
+      <div data-hf-id="hf-uodh" id="stage" data-composition-id="04-f4" data-width="1920" data-height="1080" data-duration="4.72">
+        <div data-hf-id="hf-eeqy" id="f4_g1">
+          <div data-hf-id="hf-8eoc" id="f4_g1_bg"></div>
+          <div data-hf-id="hf-1y6l" id="f4_g1_shake">
+            <!-- decorative ring burst (behind both covers) -->
+            <div data-hf-id="hf-kv4w" id="f4_g1_ringA" class="f4_g1_ring" data-layout-ignore=""></div>
+            <div data-hf-id="hf-tj0r" id="f4_g1_ringB" class="f4_g1_ring" data-layout-ignore=""></div>
+
+            <!-- VS hairline + disc between the pair -->
+            <div data-hf-id="hf-jogi" id="f4_g1_vsline"></div>
+            <div data-hf-id="hf-9mun" id="f4_g1_vs">VS</div>
+
+            <!-- covers (plain img props) -->
+            <div data-hf-id="hf-jghb" id="f4_g1_c1" class="f4_g1_cover">
+              <img data-hf-id="hf-c0yh" src="assets/covers/danggeun-ai.jpg" alt="요즘 당근 AI 개발">
+            </div>
+            <div data-hf-id="hf-8kzo" id="f4_g1_c2" class="f4_g1_cover">
+              <img data-hf-id="hf-2ule" src="assets/covers/vibe-harness.jpg" alt="요즘 바이브 코딩 하네스 with 클로드 코드">
+            </div>
+
+            <!-- captions -->
+            <div data-hf-id="hf-tn37" id="f4_g1_cap1" class="f4_g1_cap">
+              <span data-hf-id="hf-z28e" class="f4_g1_capTitle">요즘 당근 AI 개발</span>
+              <div data-hf-id="hf-lspv" class="f4_g1_meta">
+                <span data-hf-id="hf-hur5" id="f4_g1_badge">BEST</span>
+                <span data-hf-id="hf-kr6x" class="f4_g1_author">당근 팀</span>
+              </div>
+            </div>
+            <div data-hf-id="hf-kz7c" id="f4_g1_cap2" class="f4_g1_cap">
+              <span data-hf-id="hf-cyim" class="f4_g1_capTitle">요즘 바이브 코딩 하네스</span>
+              <span data-hf-id="hf-tk0p" class="f4_g1_capTitle">with 클로드 코드</span>
+              <div data-hf-id="hf-dzmr" class="f4_g1_meta">
+                <span data-hf-id="hf-ds2x" class="f4_g1_author">조성진</span>
+              </div>
+            </div>
+
+            <!-- header: gold statement → top-left h2 header -->
+            <div data-hf-id="hf-e0ri" id="f4_g1_kicker"><span data-hf-id="hf-40su" id="f4_g1_stub"></span><span data-hf-id="hf-vkx9">SERIES 03</span></div>
+            <div data-hf-id="hf-tdl3" id="f4_g1_title">요즘 개발</div>
+            <div data-hf-id="hf-wq5h" id="f4_g1_sub"><span data-hf-id="hf-2m57" id="f4_g1_w1" class="w">현업이</span> <span data-hf-id="hf-lc2l" id="f4_g1_w2" class="w">쓰는</span> <span data-hf-id="hf-3oi8" id="f4_g1_w3" class="w">진짜</span> <span data-hf-id="hf-9d3t" id="f4_g1_w4" class="w">AI</span> <span data-hf-id="hf-hory" id="f4_g1_w5" class="w">개발</span></div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const tl = gsap.timeline({ paused: true });
+
+          // ---- palette (frame.md) ----
+          const INK = "#0f0e0c";
+          const GOLD = "#ceae73";
+          const CREAM = "#f4efe6";
+
+          // ---- frame-local anchors (track_t - 22.98) ----
+          const T_FLIP = 1.08; // 24.06  palette-flip to dark, title snaps top-left
+          const T_C1 = 1.56; //   24.54  cover 1 arcs in
+          const T_C2 = 2.49; //   25.47  cover 2 arcs in + VS
+          const T_HIT = 3.44; //  26.42  screen-shake + ring burst
+          const T_END = 4.72; //  27.70  frame end
+          // short hi-hat roll 23.127-23.704 → sub words accumulate one per hit
+          const ROLL = [0.147, 0.356, 0.472, 0.588, 0.704];
+
+          // ---- group visibility (single group spans the whole frame) ----
+          tl.set("#f4_g1", { autoAlpha: 1 }, 0);
+          tl.set("#f4_g1", { autoAlpha: 0 }, T_END);
+
+          // ===== 0.00 system-replace → GOLD register statement =====
+          tl.fromTo("#f4_g1_title", { scale: 1.07 }, { scale: 1, duration: 0.3, ease: "expo.out" }, 0);
+          tl.fromTo("#f4_g1_stub", { scaleX: 0 }, { scaleX: 1, duration: 0.16, ease: "power3.out" }, 0);
+          ROLL.forEach((t, i) => {
+            tl.fromTo(
+              "#f4_g1_w" + (i + 1),
+              { autoAlpha: 0, y: 14 },
+              { autoAlpha: 1, y: 0, duration: 0.16, ease: "power3.out", immediateRender: false },
+              t,
+            );
+          });
+
+          // ===== 1.08 palette-flip (0ms) + title snaps to top-left as h2 =====
+          tl.set("#f4_g1_bg", { backgroundColor: INK }, T_FLIP);
+          tl.set("#f4_g1_title", { color: CREAM }, T_FLIP);
+          tl.set("#f4_g1_kicker", { color: GOLD }, T_FLIP);
+          tl.set("#f4_g1_stub", { backgroundColor: GOLD }, T_FLIP);
+          tl.set("#f4_g1_sub", { color: GOLD }, T_FLIP);
+          const SNAP = { duration: 0.24, ease: "expo.out", immediateRender: false };
+          // display 220px → h2 96px (scale 96/220); header stack lands at pad-y 96:
+          // kicker 370→96, title 427→136, sub 655→240
+          tl.fromTo("#f4_g1_title", { y: 0, scale: 1 }, { y: -291, scale: 96 / 220, ...SNAP, immediateRender: false }, T_FLIP);
+          tl.fromTo("#f4_g1_kicker", { y: 0 }, { y: -274, ...SNAP }, T_FLIP);
+          tl.fromTo("#f4_g1_sub", { y: 0 }, { y: -415, ...SNAP }, T_FLIP);
+
+          // ===== cover arcs (parabolic: y settles fast with overshoot, x drifts in slower) =====
+          function arcIn(sel, t, dir, restRot) {
+            tl.set(sel, { autoAlpha: 1 }, t);
+            tl.fromTo(sel, { x: 640 * dir }, { x: 0, duration: 0.62, ease: "power2.out", immediateRender: false }, t);
+            tl.fromTo(sel, { y: 760 }, { y: 0, duration: 0.46, ease: "back.out(1.6)", immediateRender: false }, t);
+            tl.fromTo(
+              sel,
+              { rotation: 22 * dir, scale: 0.86 },
+              { rotation: restRot, scale: 1, duration: 0.6, ease: "back.out(1.5)", immediateRender: false },
+              t,
+            );
+          }
+          function capPop(sel, t) {
+            tl.fromTo(
+              sel,
+              { autoAlpha: 0, y: 18, scale: 0.9 },
+              { autoAlpha: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(2)", immediateRender: false },
+              t,
+            );
+          }
+
+          // ===== 1.56 cover 1 from bottom-left =====
+          arcIn("#f4_g1_c1", T_C1, -1, -2.5);
+          capPop("#f4_g1_cap1", T_C1 + 0.2);
+          // first (only) scale tween on the badge → immediateRender keeps it at 0 until its pop
+          tl.fromTo("#f4_g1_badge", { scale: 0 }, { scale: 1, duration: 0.3, ease: "back.out(3)" }, T_C1 + 0.3);
+
+          // ===== 2.49 cover 2 from bottom-right + VS hairline/disc =====
+          arcIn("#f4_g1_c2", T_C2, 1, 2.5);
+          capPop("#f4_g1_cap2", T_C2 + 0.2);
+          // first tweens on these elements → immediateRender holds the from-state until they fire
+          tl.fromTo("#f4_g1_vsline", { scaleY: 0 }, { scaleY: 1, duration: 0.32, ease: "expo.out" }, T_C2 + 0.06);
+          tl.fromTo(
+            "#f4_g1_vs",
+            { autoAlpha: 0, scale: 0 },
+            { autoAlpha: 1, scale: 1, duration: 0.34, ease: "back.out(2.6)" },
+            T_C2 + 0.14,
+          );
+
+          // ===== 3.44 screen-shake (≤8px, 0ms steps) + gold ring burst behind both =====
+          const AMPS = [8, -7, 6, -6, 5, -4, 3, -2];
+          AMPS.forEach((a, i) => {
+            tl.set("#f4_g1_shake", { x: a, y: a * 0.6 * (i % 2 ? 1 : -1) }, T_HIT + i * 0.03);
+          });
+          tl.set("#f4_g1_shake", { x: 0, y: 0 }, T_HIT + AMPS.length * 0.03);
+
+          tl.fromTo("#f4_g1_ringA", { scale: 0.32 }, { scale: 1.45, duration: 0.85, ease: "power2.out", immediateRender: false }, T_HIT);
+          tl.fromTo("#f4_g1_ringA", { opacity: 1 }, { opacity: 0, duration: 0.85, ease: "power1.in", immediateRender: false }, T_HIT);
+          tl.fromTo("#f4_g1_ringB", { scale: 0.28 }, { scale: 1.2, duration: 0.8, ease: "power2.out", immediateRender: false }, T_HIT + 0.09);
+          tl.fromTo("#f4_g1_ringB", { opacity: 0.8 }, { opacity: 0, duration: 0.8, ease: "power1.in", immediateRender: false }, T_HIT + 0.09);
+          tl.fromTo("#f4_g1_vs", { scale: 1.3 }, { scale: 1, duration: 0.3, ease: "back.out(2)", immediateRender: false }, T_HIT);
+
+          // 3.44 → 4.72: hold (the ring fades out by ~4.33)
+
+          window.__timelines["04-f4"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

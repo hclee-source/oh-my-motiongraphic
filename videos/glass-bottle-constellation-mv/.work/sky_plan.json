@@ -1,0 +1,297 @@
+{
+ "duration": 189.96,
+ "rotation_deg": 6,
+ "fade_out": {
+  "start": 189.2,
+  "dur": 0.55
+ },
+ "star_pops": [
+  {
+   "t": 1.22,
+   "layer": "near",
+   "frac_from": 0.0,
+   "frac": 0.4
+  },
+  {
+   "t": 1.24,
+   "layer": "mid",
+   "frac_from": 0.0,
+   "frac": 0.45
+  },
+  {
+   "t": 1.26,
+   "layer": "far",
+   "frac_from": 0.0,
+   "frac": 0.45
+  },
+  {
+   "t": 3.72,
+   "layer": "near",
+   "frac_from": 0.4,
+   "frac": 1.0
+  },
+  {
+   "t": 3.74,
+   "layer": "mid",
+   "frac_from": 0.45,
+   "frac": 1.0
+  },
+  {
+   "t": 3.76,
+   "layer": "far",
+   "frac_from": 0.45,
+   "frac": 1.0
+  }
+ ],
+ "sections": [
+  {
+   "name": "intro0",
+   "start": 0.0,
+   "sky": "black",
+   "stars": {
+    "far": 1,
+    "mid": 1,
+    "near": 1
+   },
+   "camera": {
+    "hill": 340,
+    "field": 70
+   },
+   "milky": 0
+  },
+  {
+   "name": "intro1",
+   "start": 1.25,
+   "sky": "verse",
+   "fade": 2.6,
+   "stars": {
+    "far": 1,
+    "mid": 1,
+    "near": 1
+   },
+   "camera": {
+    "hill": 340,
+    "field": 70
+   },
+   "tilt": 0.01,
+   "align": "start",
+   "milky": 0
+  },
+  {
+   "name": "verse1",
+   "start": 11.1,
+   "sky": "verse",
+   "fade": 2.0,
+   "stars": {
+    "far": 0.85,
+    "mid": 0.8,
+    "near": 0.9
+   },
+   "camera": {
+    "hill": 0,
+    "field": 0
+   },
+   "tilt": 3.0,
+   "milky": 0
+  },
+  {
+   "name": "pre1",
+   "start": 31.7,
+   "sky": "pre",
+   "fade": 3.0,
+   "stars": {
+    "far": 0.9,
+    "mid": 0.85,
+    "near": 1
+   },
+   "camera": {
+    "hill": 0,
+    "field": 0
+   },
+   "milky": 0.25
+  },
+  {
+   "name": "chorus1",
+   "start": 43.5,
+   "sky": "chorus",
+   "fade": 0.6,
+   "stars": {
+    "far": 1,
+    "mid": 1,
+    "near": 1
+   },
+   "camera": {
+    "hill": 340,
+    "field": 90
+   },
+   "tilt": 2.4,
+   "milky": 0.9
+  },
+  {
+   "name": "verse2",
+   "start": 66.7,
+   "sky": "warm",
+   "fade": 2.5,
+   "stars": {
+    "far": 0.8,
+    "mid": 0.75,
+    "near": 0.85
+   },
+   "camera": {
+    "hill": 0,
+    "field": 0
+   },
+   "tilt": 2.4,
+   "milky": 0
+  },
+  {
+   "name": "pre2",
+   "start": 76.9,
+   "sky": "pre",
+   "fade": 3.0,
+   "stars": {
+    "far": 0.9,
+    "mid": 0.85,
+    "near": 1
+   },
+   "camera": {
+    "hill": 0,
+    "field": 0
+   },
+   "milky": 0.25
+  },
+  {
+   "name": "chorus2",
+   "start": 87.8,
+   "sky": "chorus",
+   "fade": 0.6,
+   "stars": {
+    "far": 1,
+    "mid": 1,
+    "near": 1
+   },
+   "camera": {
+    "hill": 340,
+    "field": 90
+   },
+   "tilt": 2.4,
+   "milky": 0.9
+  },
+  {
+   "name": "after",
+   "start": 115.0,
+   "sky": "bridge",
+   "fade": 6.0,
+   "stars": {
+    "far": 0.4,
+    "mid": 0.3,
+    "near": 0.35
+   },
+   "camera": {
+    "hill": 340,
+    "field": 40
+   },
+   "tilt": 6.0,
+   "milky": 0
+  },
+  {
+   "name": "bridge",
+   "start": 119.1,
+   "sky": "bridge",
+   "fade": 1.0,
+   "stars": {
+    "far": 0.35,
+    "mid": 0.25,
+    "near": 0.3
+   },
+   "camera": {
+    "hill": 340,
+    "field": 40
+   },
+   "milky": 0
+  },
+  {
+   "name": "build",
+   "start": 132.0,
+   "sky": "build",
+   "fade": 6.0,
+   "stars": {
+    "far": 0.7,
+    "mid": 0.65,
+    "near": 0.8
+   },
+   "camera": {
+    "hill": 340,
+    "field": 40
+   },
+   "milky": 0.3
+  },
+  {
+   "name": "finalA",
+   "start": 140.6,
+   "sky": "final",
+   "fade": 4.0,
+   "stars": {
+    "far": 1,
+    "mid": 1,
+    "near": 1
+   },
+   "camera": {
+    "hill": 340,
+    "field": 90
+   },
+   "tilt": 3.0,
+   "milky": 0.7
+  },
+  {
+   "name": "finalB",
+   "start": 150.9,
+   "sky": "final",
+   "fade": 0.5,
+   "stars": {
+    "far": 1,
+    "mid": 1,
+    "near": 1
+   },
+   "camera": {
+    "hill": 340,
+    "field": 110
+   },
+   "tilt": 1.6,
+   "milky": 1.0
+  },
+  {
+   "name": "outro",
+   "start": 172.0,
+   "sky": "outro",
+   "fade": 5.0,
+   "stars": {
+    "far": 0.45,
+    "mid": 0.4,
+    "near": 0.55
+   },
+   "camera": {
+    "hill": 0,
+    "field": 0
+   },
+   "tilt": 4.0,
+   "milky": 0
+  },
+  {
+   "name": "ending",
+   "start": 180.75,
+   "sky": "outro",
+   "fade": 0.4,
+   "stars": {
+    "far": 0.8,
+    "mid": 0.75,
+    "near": 0.9
+   },
+   "camera": {
+    "hill": 0,
+    "field": 0
+   },
+   "milky": 0.5
+  }
+ ]
+}

@@ -1,0 +1,38 @@
+{
+  "name": "<kebab-case-unique-name>",
+  "style": "bold-beat",
+  "palette": {},
+  "aspect": "16:9",
+  "fps": 30,
+  "seed": 1,
+  "intensity": "standard",
+  "hud": true,
+  "message": "<the ONE thing this cut must say>",
+  "destination": "youtube",
+  "bgm": {
+    "id": "470",
+    "start": 34.99,
+    "duration": 46.6,
+    "fade": 1.0
+  },
+  "series": [
+    {
+      "label": "SERIES 01",
+      "name": "<시리즈명>",
+      "books": [
+        "<isbn>",
+        "<isbn>"
+      ]
+    }
+  ],
+  "copy": {
+    "hook": [
+      "<optional hook words, one per beat>"
+    ],
+    "finale": {
+      "line": "<optional>",
+      "cta": "goldenrabbit.co.kr"
+    }
+  },
+  "notes": "<what makes this variant different>"
+}

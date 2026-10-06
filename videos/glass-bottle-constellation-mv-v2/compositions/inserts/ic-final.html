@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="ko">
+  <head><meta charset="UTF-8" /><!-- Insert C (final chorus middle, track 144.30–155.00): c04 stone steps → c10 reach to the sky. L35–L38, a light beam from the jar on 비춰, the band-slam burst out of the empty jar, and a push into her brightest star that lands on f11's star at (960,300). --></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Noto Serif KR"; src: url("assets/fonts/NotoSerifKR-VF.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: block; }
+        @font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/CormorantGaramond-Italic-VF.woff2") format("woff2"); font-weight: 300 700; font-style: italic; font-display: block; }
+
+        #stage { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+
+        .ic-hide { opacity: 0; visibility: hidden; }
+        .ic-glow { position: absolute; border-radius: 50%; pointer-events: none; }
+
+        /* under the footage: darkens only what shows THROUGH the 0.3 s entry dissolve where f10's L35 line enters (so no ghost lyric) */
+        #ic_veil { position: absolute; left: 300px; top: 250px; width: 1320px; height: 380px; opacity: 0; visibility: hidden;
+          background: radial-gradient(ellipse closest-side at 50% 50%, rgba(5,7,20,0.94) 0%, rgba(5,7,20,0.88) 55%, rgba(5,7,20,0) 100%); }
+
+        /* ---- footage ---- */
+        #ic_v1 { position: absolute; inset: 0; width: 1920px; height: 1080px; object-fit: cover; opacity: 0; }
+        /* c10 wrapper (NOT timed): slam kick + the push into the star; origin 0 0, driven by W(t) in the script */
+        #ic_w2 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+        #ic_v2 { position: absolute; inset: 0; width: 1920px; height: 1080px; object-fit: cover; }
+        #ic_fx2 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+        /* slam glows at the empty jar (c10 source frame: jar body ≈ x 1070–1185, y 615–780, mouth ≈ (1125,625)) */
+        #ic_charge { left: 965px; top: 540px; width: 320px; height: 320px;
+          background: radial-gradient(circle closest-side, rgba(255,252,240,1) 0%, rgba(255,236,180,0.85) 14%, rgba(255,210,122,0.45) 34%, rgba(255,210,122,0.12) 62%, rgba(255,210,122,0) 100%); }
+        #ic_puff { left: 675px; top: 190px; width: 900px; height: 900px;
+          background: radial-gradient(circle, rgba(255,244,214,0.5) 0%, rgba(255,210,122,0.28) 16%, rgba(255,210,122,0.09) 38%, rgba(255,210,122,0) 64%); }
+        #ic_ring { left: 575px; top: 90px; width: 1100px; height: 1100px;
+          background: radial-gradient(circle, rgba(255,244,214,0) 0%, rgba(255,244,214,0) 55%, rgba(255,244,214,0.38) 60%, rgba(255,210,122,0.14) 63.5%, rgba(255,210,122,0) 68%); }
+        #ic_burst { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+        .ic-sp { opacity: 0; }
+
+        /* ---- lyric scrims (soft, dark, never a box) ---- */
+        .ic-scrim { position: absolute; opacity: 0; visibility: hidden; pointer-events: none;
+          background: radial-gradient(ellipse closest-side at 50% 50%, rgba(5,7,20,0.52) 0%, rgba(5,7,20,0.36) 50%, rgba(5,7,20,0) 100%); }
+        #ic_s35 { left: 330px; top: 735px; width: 1260px; height: 240px; }
+        #ic_s36 { left: 420px; top: 45px; width: 1080px; height: 260px; }
+        #ic_s37 { left: 60px; top: 520px; width: 1020px; height: 240px; }
+        #ic_s38 { left: 250px; top: 560px; width: 1420px; height: 290px; }
+
+        /* ---- 비춰: the beam rises out of the jar (c04), rig follows the jar down the tilt; ref jar glow = (928,715) ---- */
+        #ic_beamrig { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; }
+        #ic_jarglow { left: 738px; top: 525px; width: 380px; height: 380px; opacity: 0; visibility: hidden;
+          background: radial-gradient(circle, rgba(255,248,230,0.7) 0%, rgba(255,226,160,0.34) 26%, rgba(255,210,122,0.1) 50%, rgba(255,210,122,0) 70%); }
+        .ic-beam { position: absolute; top: -170px; height: 900px; transform-origin: 50% 100%; opacity: 0; visibility: hidden;
+          -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 34%, #000 66%, transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0%, #000 34%, #000 66%, transparent 100%); }
+        #ic_beam { left: 768px; width: 320px;
+          background: linear-gradient(to top, rgba(255,244,214,0) 0%, rgba(255,244,214,0.56) 7%, rgba(255,226,166,0.34) 34%, rgba(255,210,122,0.16) 70%, rgba(255,210,122,0) 100%); }
+        #ic_beamcore { left: 906px; width: 44px;
+          background: linear-gradient(to top, rgba(255,248,232,0) 0%, rgba(255,248,232,0.72) 5%, rgba(255,236,190,0.36) 40%, rgba(255,210,122,0.1) 75%, rgba(255,210,122,0) 100%); }
+        #ic_beamhead { position: absolute; left: 758px; top: 595px; width: 340px; height: 190px; opacity: 0; visibility: hidden;
+          background: radial-gradient(ellipse closest-side at 50% 50%, rgba(255,248,230,0.85) 0%, rgba(255,210,122,0.4) 34%, rgba(255,210,122,0) 100%); }
+
+        /* ---- the brightest star (same build as f11's: 1200×1200 box centred on the star; at the end == f11 at 155.00) ---- */
+        #ic_star { position: absolute; left: 0; top: 0; width: 1200px; height: 1200px; transform-origin: 600px 600px; opacity: 0; visibility: hidden; }
+        #ic_halo { left: 280px; top: 280px; width: 640px; height: 640px; opacity: 0.95; transform-origin: 50% 50%; transform: scale(0.3);
+          background: radial-gradient(circle, rgba(255,244,214,0.50) 0%, rgba(255,210,122,0.30) 14%, rgba(255,210,122,0.12) 34%, rgba(255,210,122,0.04) 52%, rgba(255,210,122,0) 70%); }
+        #ic_flarerot, #ic_flarebox { position: absolute; left: 0; top: 0; width: 1200px; height: 1200px; transform-origin: 50% 50%; }
+        #ic_fh { position: absolute; left: 150px; top: 594px; width: 900px; height: 12px; opacity: 0.92; transform-origin: 50% 50%; transform: scaleX(0); }
+        #ic_fv { position: absolute; left: 594px; top: 350px; width: 12px; height: 500px; opacity: 0.92; transform-origin: 50% 50%; transform: scaleY(0); }
+        .ic-fglow { position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+          background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(255,210,122,0.30) 0%, rgba(255,210,122,0.10) 55%, rgba(255,210,122,0) 100%); }
+        #ic_fh .ic-fcore { position: absolute; left: 0; top: 5px; width: 900px; height: 2px;
+          background: linear-gradient(90deg, rgba(255,244,214,0) 0%, rgba(255,244,214,0.22) 20%, rgba(255,244,214,0.85) 46%, #FFFFFF 50%, rgba(255,244,214,0.85) 54%, rgba(255,244,214,0.22) 80%, rgba(255,244,214,0) 100%); }
+        #ic_fv .ic-fcore { position: absolute; left: 5px; top: 0; width: 2px; height: 500px;
+          background: linear-gradient(180deg, rgba(255,244,214,0) 0%, rgba(255,244,214,0.22) 20%, rgba(255,244,214,0.85) 46%, #FFFFFF 50%, rgba(255,244,214,0.85) 54%, rgba(255,244,214,0.22) 80%, rgba(255,244,214,0) 100%); }
+        /* 240px svg, 1 unit = 100px → CSS scale .52 == sparkle scale 52 */
+        #ic_core { position: absolute; left: 480px; top: 480px; width: 240px; height: 240px; transform-origin: 50% 50%; transform: scale(0.1); }
+        #ic_cglow { left: -130px; top: -130px; width: 500px; height: 500px;
+          background: radial-gradient(circle, rgba(255,252,240,0.95) 0%, rgba(255,244,214,0.55) 16%, rgba(255,210,122,0.18) 38%, rgba(255,210,122,0) 62%); }
+        #ic_csvg { position: absolute; left: 0; top: 0; width: 240px; height: 240px; overflow: visible; }
+
+        /* ---- lyrics ---- */
+        #ic_lyrics { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+        .ic-line { position: absolute; display: flex; align-items: center; justify-content: center; white-space: nowrap;
+          font-family: "Noto Serif KR", serif; color: #F4F1EA; -webkit-font-smoothing: antialiased; transform-origin: 50% 50%;
+          opacity: 0; visibility: hidden; }
+        .ic-row { white-space: nowrap; line-height: 1.2; }
+        .ic-wg { display: inline-block; }
+        .ic-w { display: inline-block; transform-origin: 50% 70%;
+          text-shadow: 0px 2px 10px rgba(5,7,20,0.75), 0px 0px 14px rgba(220,235,255,0.25), 0px 0px 0px rgba(255,210,122,0); }
+        .ic-key { color: #FFE2A3;
+          text-shadow: 0px 2px 10px rgba(5,7,20,0.7), 0px 0px 22px rgba(255,210,122,0.6), 0px 0px 56px rgba(255,210,122,0.26); }
+
+        /* L35 — lower centre over the steps / her legs (c04 tilts up: jar and face stay above it) */
+        #ic_l35 { left: 140px; top: 790px; width: 1640px; height: 130px; }
+        #ic_l35row { font-size: 88px; font-weight: 500; letter-spacing: 0.01em; }
+        #ic_l35row .ic-w { margin: 0 0.14em; }
+        /* L36 — in the sky above her head; the jar's beam rises through it */
+        #ic_l36 { left: 140px; top: 80px; width: 1640px; height: 150px; }
+        #ic_l36row { font-size: 92px; font-weight: 600; letter-spacing: 0.0em; }
+        #ic_l36row .ic-w, #ic_l36row .ic-wg { margin: 0 0.12em; }
+        #ic_l36row .ic-wg .ic-w { margin: 0; }
+        #ic_l36k { font-size: 129px; font-weight: 800; }
+        /* L37 — left, under the star she looks at (she stands on the right in c10) */
+        #ic_l37 { left: 140px; top: 575px; width: 860px; height: 130px;
+          text-shadow: 0px 2px 10px rgba(5,7,20,0.75), 0px 0px 14px rgba(220,235,255,0.25), 0px 0px 0px rgba(255,210,122,0); }
+        #ic_l37row { font-size: 84px; font-weight: 600; letter-spacing: -0.005em; }
+        .ic-v { display: inline-block; margin: 0 0.12em; transform-origin: 50% 70%; }
+
+        /* L38 — EXACT copy of f11's L38 (top 600, 104/700, 별 156/800, same camera scale) so the dissolve into f11 is seamless.
+           main = glyph fill only; under = transparent fill carrying dark contrast + glow shadows (fades with the footage). */
+        #ic_cam11 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 960px 480px; }
+        #ic_l38 { left: 140px; top: 600px; width: 1640px; height: 200px; }
+        .ic-l38c { position: absolute; left: 0; top: 0; width: 1640px; height: 200px; display: flex; align-items: center; justify-content: center; }
+        .ic-r38 { white-space: nowrap; line-height: 1.12; font-size: 104px; font-weight: 700; letter-spacing: -0.01em; }
+        .ic-x { display: inline-block; margin: 0 0.13em; transform-origin: 50% 70%; }
+        .ic-x5 { font-size: 156px; font-weight: 800; }
+        #ic_l38m .ic-x { text-shadow: none; }
+        #ic_l38m .ic-x5 { color: #FFE2A3; }
+        #ic_l38u .ic-x { color: transparent;
+          text-shadow: 0px 2px 10px rgba(5,7,20,0.75), 0px 0px 14px rgba(220,235,255,0.25), 0px 0px 0px rgba(255,210,122,0); }
+        #ic_l38u .ic-x5 { text-shadow: 0px 2px 10px rgba(5,7,20,0.75), 0px 0px 18px rgba(255,210,122,0.45), 0px 0px 46px rgba(255,210,122,0.18); }
+      </style>
+
+      <div id="stage" data-composition-id="ic-final" data-width="1920" data-height="1080" data-duration="10.7">
+
+        <div id="ic_veil" data-layout-ignore=""></div>
+
+        <!-- c04: low angle on the star-strewn steps, tilting up to her and the glowing jar -->
+        <video id="ic_v1" class="clip" src="assets/footage/c04-stone-steps.mp4" muted playsinline data-start="0" data-duration="5.25" data-media-start="2" data-track-index="0"></video>
+
+        <!-- c10: she holds the EMPTY jar and reaches for the sky; wrapper carries the slam kick and the push into the star -->
+        <div id="ic_w2" data-layout-ignore="">
+          <video id="ic_v2" class="clip" src="assets/footage/c10-reach-sky.mp4" muted playsinline data-start="5.25" data-duration="5.45" data-media-start="3.5" data-track-index="1"></video>
+          <div id="ic_fx2" data-layout-ignore="">
+            <div id="ic_charge" class="ic-glow ic-hide" data-layout-ignore=""></div>
+            <div id="ic_puff" class="ic-glow ic-hide" data-layout-ignore=""></div>
+            <div id="ic_ring" class="ic-glow ic-hide" data-layout-ignore=""></div>
+            <svg id="ic_burst" viewBox="0 0 1920 1080" width="1920" height="1080" data-layout-ignore="">
+              <defs>
+                <radialGradient id="ic_spglow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="scale(2.4)">
+                  <stop offset="0" stop-color="#FFF4D6" stop-opacity="0.6" />
+                  <stop offset="0.4" stop-color="#FFD27A" stop-opacity="0.2" />
+                  <stop offset="1" stop-color="#FFD27A" stop-opacity="0" />
+                </radialGradient>
+              </defs>
+              <g id="ic_burstg"></g>
+            </svg>
+          </div>
+        </div>
+
+        <!-- scrims -->
+        <div id="ic_s35" class="ic-scrim" data-layout-ignore=""></div>
+        <div id="ic_s36" class="ic-scrim" data-layout-ignore=""></div>
+        <div id="ic_s37" class="ic-scrim" data-layout-ignore=""></div>
+        <div id="ic_s38" class="ic-scrim" data-layout-ignore=""></div>
+
+        <!-- 비춰 beam (c04) -->
+        <div id="ic_beamrig" data-layout-ignore="">
+          <div id="ic_jarglow" class="ic-glow" data-layout-ignore=""></div>
+          <div id="ic_beam" class="ic-beam" data-layout-ignore=""></div>
+          <div id="ic_beamcore" class="ic-beam" data-layout-ignore=""></div>
+          <div id="ic_beamhead" data-layout-ignore=""></div>
+        </div>
+
+        <!-- the brightest star (c10 → f11) -->
+        <div id="ic_star" data-layout-ignore="">
+          <div id="ic_halo" class="ic-glow"></div>
+          <div id="ic_flarerot">
+            <div id="ic_flarebox">
+              <div id="ic_fh"><div id="ic_fhg" class="ic-fglow"></div><div id="ic_fhc" class="ic-fcore"></div></div>
+              <div id="ic_fv"><div id="ic_fvg" class="ic-fglow"></div><div id="ic_fvc" class="ic-fcore"></div></div>
+            </div>
+          </div>
+          <div id="ic_core">
+            <div id="ic_cglow" class="ic-glow"></div>
+            <svg id="ic_csvg" viewBox="-1.2 -1.2 2.4 2.4" width="240" height="240">
+              <path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" />
+              <path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFFFFF" transform="scale(0.5)" />
+            </svg>
+          </div>
+        </div>
+
+        <!-- lyrics -->
+        <div id="ic_lyrics">
+          <!-- L35 144.44 한 번도 꺼내지 못했던 -->
+          <div id="ic_l35" class="ic-line" data-layout-allow-overlap=""><div id="ic_l35row" class="ic-row"><span class="ic-w" id="ic_l35w1">한</span><span class="ic-w" id="ic_l35w2">번도</span><span class="ic-w" id="ic_l35w3">꺼내지</span><span class="ic-w" id="ic_l35w4">못했던</span></div></div>
+          <!-- L36 147.20 그 빛을 비춰 줘 -->
+          <div id="ic_l36" class="ic-line" data-layout-allow-overlap=""><div id="ic_l36row" class="ic-row"><span class="ic-w" id="ic_l36w1">그</span><span class="ic-wg"><span class="ic-w ic-key" id="ic_l36k">빛</span><span class="ic-w" id="ic_l36w2">을</span></span><span class="ic-w" id="ic_l36w3">비춰</span><span class="ic-w" id="ic_l36w4">줘</span></div></div>
+          <!-- L37 149.69 보이니 네 머리 위에서 -->
+          <div id="ic_l37" class="ic-line" data-layout-allow-overlap=""><div id="ic_l37row" class="ic-row"><span class="ic-v" id="ic_l37w1">보이니</span><span class="ic-v" id="ic_l37w2">네</span><span class="ic-v" id="ic_l37w3">머리</span><span class="ic-v" id="ic_l37w4">위에서</span></div></div>
+          <!-- L38 152.29 가장 밝게 빛나는 그 별 -->
+          <div id="ic_cam11">
+            <div id="ic_l38" class="ic-line" data-layout-allow-overlap="">
+              <div id="ic_l38u" class="ic-l38c" aria-hidden="true" data-layout-ignore=""><div class="ic-r38"><span class="ic-x" id="ic_u1">가장</span><span class="ic-x" id="ic_u2">밝게</span><span class="ic-x" id="ic_u3">빛나는</span><span class="ic-x" id="ic_u4">그</span><span class="ic-x ic-x5" id="ic_u5">별</span></div></div>
+              <div id="ic_l38m" class="ic-l38c" data-layout-allow-overlap=""><div class="ic-r38"><span class="ic-x" id="ic_m1">가장</span><span class="ic-x" id="ic_m2">밝게</span><span class="ic-x" id="ic_m3">빛나는</span><span class="ic-x" id="ic_m4">그</span><span class="ic-x ic-x5" id="ic_m5">별</span></div></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <script>
+        (function () {
+          var tl = gsap.timeline({ paused: true });
+          var S0 = 144.30;                       // insert start (track s)
+          var END = 10.7;
+          function T(track) { return Math.round((track - S0) * 1000) / 1000; }
+          // seek-safe chains: explicit fromTo, never immediate-rendered (initial states live in CSS)
+          function ft(target, from, to, pos) { to.immediateRender = false; tl.fromTo(target, from, to, pos); }
+          var $ = function (id) { return document.getElementById(id); };
+
+          // ---- anchors (insert-local) ----
+          var CUT = 5.25;                                                   // c04 → c10 (track 149.55)
+          var SLAM = T(150.90);                                             // 6.60 band slam
+          var L35 = { on: T(144.44), w: [T(144.48), T(144.66), T(145.38), T(146.44)], end: T(147.08) };
+          var L36 = { on: T(147.20), w: [T(147.20), T(147.58), T(148.24), T(149.20)], end: T(149.57) };
+          var L37 = { on: T(149.69), w: [T(149.69), T(150.49), T(150.81), T(151.47)], end: T(152.17) };
+          var L38 = { on: T(152.29), w: [T(152.29), T(152.63), T(153.11), T(153.93), T(154.21)], end: T(155.01) };
+
+          // ---- eases as plain functions (used by the tracking tweens) ----
+          function lin(a, b, p) { return a + (b - a) * p; }
+          function sinIO(p) { return -(Math.cos(Math.PI * p) - 1) / 2; }
+          function sinOut(p) { return Math.sin(p * Math.PI / 2); }
+          function p2IO(p) { return p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; }
+          function expoOut(p) { return p >= 1 ? 1 : 1 - Math.pow(2, -10 * p); }
+          function clamp01(p) { return p < 0 ? 0 : (p > 1 ? 1 : p); }
+          function track(tab, t) {                                          // piecewise-linear [t, x, y]
+            if (t <= tab[0][0]) return { x: tab[0][1], y: tab[0][2] };
+            for (var i = 1; i < tab.length; i++) {
+              if (t <= tab[i][0]) {
+                var a = tab[i - 1], b = tab[i], p = (t - a[0]) / (b[0] - a[0]);
+                return { x: lin(a[1], b[1], p), y: lin(a[2], b[2], p) };
+              }
+            }
+            var z = tab[tab.length - 1];
+            return { x: z[1], y: z[2] };
+          }
+          // tween a prop from 0→1 whose ease returns the ABSOLUTE value at insert time t0 + p*d
+          function trackTween(target, prop, t0, d, fn) {
+            var from = {}, to = { duration: d, immediateRender: false };
+            from[prop] = 0; to[prop] = 1;
+            to.ease = function (p) { return fn(t0 + p * d); };
+            tl.fromTo(target, from, to, t0);
+          }
+
+          // ---- measured footage tracks (composition px, wrapper at identity) ----
+          // c04 jar glow centre (source 5.5–7.25 → local 3.5–5.25; the tilt carries it down)
+          var JAR = [[3.5, 924, 674], [3.625, 925, 693], [3.75, 924, 711], [3.875, 925, 728], [4.0, 926, 744], [4.125, 927, 760],
+                     [4.25, 928, 776], [4.375, 929, 790], [4.5, 930, 803], [4.625, 929, 815], [4.75, 930, 825], [4.875, 930, 834],
+                     [5.0, 930, 842], [5.125, 930, 849], [5.25, 930, 856]];
+          // c10 brightest star (source 3.5–8.95 → local 5.25–10.70; the camera pushes in so it drifts up-left)
+          var STAR = [[5.25, 691, 216], [5.5, 687, 215], [5.75, 682, 215], [6.0, 677, 214], [6.25, 671, 213], [6.5, 665, 212],
+                      [6.75, 658, 210], [7.0, 651, 209], [7.25, 643, 208], [7.5, 635, 206], [7.75, 627, 205], [8.0, 619, 203],
+                      [8.25, 611, 202], [8.5, 602, 200], [8.75, 594, 199], [9.0, 586, 197], [9.25, 579, 195], [9.5, 572, 194],
+                      [9.75, 566, 192], [10.0, 561, 191], [10.25, 556, 188], [10.5, 553, 186], [10.7, 552, 186]];
+
+          // ---- c10 wrapper transform W(t) (origin 0 0): slam kick, then the push that lands the star on f11's (960,299) ----
+          var SE = 1.78;                                  // push scale: ≥1.74 keeps the frame covered when the star reaches x 960
+          var P0 = 9.80, P1 = 10.42;                       // push window (starts just before 별, lands as the dissolve begins)
+          var TX = 960, TY = 299;                          // f11's star at 155.00 (its camera 1.0058 about (960,480))
+          var KEND = 1.0058;                               // f11 camera scale at 155.00
+          function kickS(t) { if (t < SLAM) return 1; return 1 + 0.04 * (1 - expoOut(clamp01((t - SLAM) / 0.7))); }
+          function U(t) { return p2IO(clamp01((t - P0) / (P1 - P0))); }
+          function W(t) {
+            if (t < P0) { var s = kickS(t); return { s: s, x: 960 * (1 - s), y: 540 * (1 - s) }; }
+            var u = U(t), st = track(STAR, t);
+            return { s: 1 + (SE - 1) * u, x: u * (TX - SE * st.x), y: u * (TY - SE * st.y) };
+          }
+          function F(t) { var w = W(t), st = track(STAR, t); return { x: w.x + w.s * st.x, y: w.y + w.s * st.y }; }
+
+          var D2 = END - CUT;
+          trackTween("#ic_w2", "x", CUT, D2, function (t) { return W(t).x; });
+          trackTween("#ic_w2", "y", CUT, D2, function (t) { return W(t).y; });
+          trackTween("#ic_w2", "scale", CUT, D2, function (t) { return W(t).s; });
+
+          // SOFT/LIGHT/... : three-shadow states (dark contrast + two glow layers) so GSAP can interpolate them
+          var D_SOFT  = "0px 2px 10px rgba(5,7,20,0.75), 0px 0px 14px rgba(220,235,255,0.25), 0px 0px 0px rgba(255,210,122,0)";
+          var D_LIGHT = "0px 2px 10px rgba(5,7,20,0.7), 0px 0px 18px rgba(255,210,122,0.45), 0px 0px 46px rgba(255,210,122,0.18)";
+          var D_SURGE = "0px 2px 10px rgba(5,7,20,0.6), 0px 0px 26px rgba(255,210,122,0.8), 0px 0px 70px rgba(255,210,122,0.34)";
+          var D_WARM  = "0px 2px 10px rgba(5,7,20,0.75), 0px 0px 16px rgba(255,210,122,0.3), 0px 0px 40px rgba(255,210,122,0.1)";
+          var D_KEY   = "0px 2px 10px rgba(5,7,20,0.7), 0px 0px 22px rgba(255,210,122,0.6), 0px 0px 56px rgba(255,210,122,0.26)";
+          // L38 under-layer states: f11's glows (SOFT/LIGHT/SURGE/KEYHOLD) + the dark contrast shadow
+          var U_SOFT  = "0px 2px 10px rgba(5,7,20,0.75), 0px 0px 14px rgba(220,235,255,0.25), 0px 0px 0px rgba(255,210,122,0)";
+          var U_LIGHT = "0px 2px 10px rgba(5,7,20,0.75), 0px 0px 18px rgba(255,210,122,0.45), 0px 0px 46px rgba(255,210,122,0.18)";
+          var U_SURGE = "0px 2px 10px rgba(5,7,20,0.75), 0px 0px 26px rgba(255,210,122,0.8), 0px 0px 70px rgba(255,210,122,0.34)";
+          var U_HOLD  = "0px 2px 10px rgba(5,7,20,0.75), 0px 0px 22px rgba(255,210,122,0.6), 0px 0px 56px rgba(255,210,122,0.26)";
+
+          // a word catches light on its sung time t, then relaxes to `rest`
+          function glowPass(el, t, from, peak, rest, back) {
+            ft(el, { textShadow: from }, { textShadow: peak, duration: 0.12, ease: "power2.out" }, t - 0.12);
+            ft(el, { textShadow: peak }, { textShadow: rest, duration: back, ease: "sine.out" }, t + 0.04);
+          }
+
+          /* ======================= entry: dissolve from f10's fountain (0 → 0.3) ======================= */
+          ft("#ic_v1", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power3.out" }, 0);
+          ft("#ic_veil", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.05, ease: "power1.out" }, 0);
+          ft("#ic_veil", { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.05, ease: "none" }, 0.36);   // footage opaque by now
+
+          /* ======================= L35 "한 번도 꺼내지 못했던" (lower centre) ======================= */
+          ft("#ic_s35", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.22, ease: "sine.out" }, 0);
+          ft("#ic_l35", { autoAlpha: 0, y: 14, filter: "blur(6px)" }, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.12, ease: "power2.out" }, 0.0);
+          ft("#ic_l35row", { y: 0, scale: 1 }, { y: -8, scale: 1.015, duration: L35.end - 0.14, ease: "sine.inOut" }, 0.14);
+          glowPass("#ic_l35w1", L35.w[0], D_SOFT, D_LIGHT, D_SOFT, 0.5);
+          glowPass("#ic_l35w2", L35.w[1], D_SOFT, D_LIGHT, D_SOFT, 0.5);
+          glowPass("#ic_l35w3", L35.w[2], D_SOFT, D_LIGHT, D_SOFT, 0.6);
+          glowPass("#ic_l35w4", L35.w[3], D_SOFT, D_LIGHT, D_WARM, 0.5);
+          ft("#ic_l35w3", { y: 0 }, { y: -6, duration: 0.1, ease: "power2.out" }, L35.w[2] - 0.03);
+          ft("#ic_l35w3", { y: -6 }, { y: 0, duration: 0.4, ease: "power2.inOut" }, L35.w[2] + 0.07);
+          ft("#ic_l35", { autoAlpha: 1, y: 0, filter: "blur(0px)" }, { autoAlpha: 0, y: -10, filter: "blur(6px)", duration: 0.08, ease: "power1.in" }, L35.end - 0.1);
+          ft("#ic_s35", { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.2, ease: "sine.in" }, L35.end - 0.1);
+
+          /* ======================= L36 "그 빛을 비춰 줘" (sky above her head) + the beam ======================= */
+          var L36IN = L36.on - 0.13;                                          // 2.77
+          ft("#ic_s36", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.22, ease: "sine.out" }, L36IN - 0.06);
+          ft("#ic_l36", { autoAlpha: 0, y: 16, filter: "blur(8px)" }, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.12, ease: "power2.out" }, L36IN);
+          ft("#ic_l36row", { y: 0, scale: 1 }, { y: -6, scale: 1.02, duration: CUT - L36.on, ease: "sine.inOut" }, L36.on);
+          // 그
+          glowPass("#ic_l36w1", L36.w[0] + 0.02, D_SOFT, D_LIGHT, D_SOFT, 0.5);
+          // 빛 (gold keyword): surge + swell
+          ft("#ic_l36k", { textShadow: D_KEY }, { textShadow: D_SURGE, duration: 0.12, ease: "power2.out" }, L36.w[1] - 0.12);
+          ft("#ic_l36k", { textShadow: D_SURGE }, { textShadow: D_KEY, duration: 0.7, ease: "sine.out" }, L36.w[1] + 0.04);
+          ft("#ic_l36k", { scale: 1 }, { scale: 1.1, duration: 0.18, ease: "power2.out" }, L36.w[1] - 0.1);
+          ft("#ic_l36k", { scale: 1.1 }, { scale: 1.04, duration: 0.7, ease: "sine.out" }, L36.w[1] + 0.08);
+          glowPass("#ic_l36w2", L36.w[1] + 0.05, D_SOFT, D_LIGHT, D_SOFT, 0.45);
+          // 비춰 lights and stays lit (the beam is on)
+          ft("#ic_l36w3", { textShadow: D_SOFT, color: "#F4F1EA" }, { textShadow: D_LIGHT, color: "#FFF4D6", duration: 0.14, ease: "power2.out" }, L36.w[2] - 0.12);
+          ft("#ic_l36w3", { y: 0 }, { y: -6, duration: 0.1, ease: "power2.out" }, L36.w[2] - 0.03);
+          ft("#ic_l36w3", { y: -6 }, { y: 0, duration: 0.4, ease: "power2.inOut" }, L36.w[2] + 0.07);
+
+          // the beam rig follows the jar down the tilt (ref glow centre 928,715)
+          trackTween("#ic_beamrig", "x", 3.5, CUT - 3.5, function (t) { return track(JAR, t).x - 928; });
+          trackTween("#ic_beamrig", "y", 3.5, CUT - 3.5, function (t) { return track(JAR, t).y - 715; });
+          var BEAM = L36.w[2] - 0.1;                                          // 3.84, rises out of the jar on 비춰
+          ft("#ic_jarglow", { autoAlpha: 0, scale: 0.8 }, { autoAlpha: 0.85, scale: 1.25, duration: 0.2, ease: "power2.out" }, BEAM - 0.04);
+          ft("#ic_jarglow", { autoAlpha: 0.85, scale: 1.25 }, { autoAlpha: 0.55, scale: 1, duration: 0.7, ease: "sine.out" }, BEAM + 0.16);
+          ft(["#ic_beam", "#ic_beamcore"], { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.14, ease: "power1.out" }, BEAM);
+          ft(["#ic_beam", "#ic_beamcore"], { scaleY: 0 }, { scaleY: 1, duration: 0.6, ease: "power2.out" }, BEAM);
+          ft("#ic_beamhead", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.1, ease: "power1.out" }, BEAM);
+          ft("#ic_beamhead", { y: 0, scaleX: 1 }, { y: -620, scaleX: 0.7, duration: 0.6, ease: "power2.out" }, BEAM);
+          ft("#ic_beamhead", { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.3, ease: "sine.in" }, BEAM + 0.42);
+          // the head passes through the line (~4.25): every word surges, then holds lit
+          var PASS = 4.24;
+          ["#ic_l36w1", "#ic_l36w2", "#ic_l36w3", "#ic_l36w4"].forEach(function (id, j) {
+            var from = (id === "#ic_l36w3") ? D_LIGHT : D_SOFT;
+            var settle = (id === "#ic_l36w4") ? 0.42 : 0.5;
+            ft(id, { textShadow: from }, { textShadow: D_SURGE, duration: 0.08, ease: "power2.out" }, PASS - 0.04 + j * 0.01);
+            ft(id, { textShadow: D_SURGE }, { textShadow: D_LIGHT, duration: settle, ease: "sine.out" }, PASS + 0.05 + j * 0.01);
+          });
+          ft("#ic_l36k", { textShadow: D_KEY }, { textShadow: D_SURGE, duration: 0.08, ease: "power2.out" }, PASS - 0.03);
+          ft("#ic_l36k", { textShadow: D_SURGE }, { textShadow: D_KEY, duration: 0.6, ease: "sine.out" }, PASS + 0.06);
+          // 줘: last swell of the beam, then the light folds back into the jar before the cut
+          ft("#ic_l36w4", { textShadow: D_LIGHT }, { textShadow: D_SURGE, duration: 0.12, ease: "power2.out" }, L36.w[3] - 0.12);
+          ft("#ic_l36w4", { textShadow: D_SURGE }, { textShadow: D_LIGHT, duration: 0.2, ease: "sine.out" }, L36.w[3] + 0.04);
+          ft(["#ic_beam", "#ic_beamcore"], { autoAlpha: 1 }, { autoAlpha: 0.7, duration: 0.3, ease: "sine.inOut" }, BEAM + 0.62);
+          ft(["#ic_beam", "#ic_beamcore"], { autoAlpha: 0.7 }, { autoAlpha: 1, duration: 0.14, ease: "power2.out" }, L36.w[3] - 0.12);
+          ft(["#ic_beam", "#ic_beamcore"], { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.2, ease: "sine.in" }, CUT - 0.25);
+          ft("#ic_jarglow", { autoAlpha: 0.55 }, { autoAlpha: 0, duration: 0.2, ease: "sine.in" }, CUT - 0.25);
+          // out on the cut (vocal tail 149.57 is covered by the cut 149.55)
+          ft("#ic_l36", { autoAlpha: 1, y: 0, filter: "blur(0px)" }, { autoAlpha: 0, y: -8, filter: "blur(6px)", duration: 0.07, ease: "power1.in" }, CUT - 0.08);
+          ft("#ic_s36", { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.12, ease: "sine.in" }, CUT - 0.13);
+
+          /* ======================= hard cut 5.25 → c10 ======================= */
+
+          /* ======================= L37 "보이니 네 머리 위에서" (left, under her star) ======================= */
+          ft("#ic_s37", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.1, ease: "power1.out" }, CUT);
+          ft("#ic_l37", { autoAlpha: 0, scale: 1.04, filter: "blur(6px)" }, { autoAlpha: 1, scale: 1, filter: "blur(0px)", duration: 0.11, ease: "power3.out" }, CUT);
+          [["#ic_l37w2", L37.w[1]], ["#ic_l37w3", L37.w[2]], ["#ic_l37w4", L37.w[3]]].forEach(function (p) {
+            ft(p[0], { y: 0 }, { y: -7, duration: 0.09, ease: "power2.out" }, p[1] - 0.02);
+            ft(p[0], { y: -7 }, { y: 0, duration: 0.36, ease: "power2.inOut" }, p[1] + 0.07);
+          });
+          // slam punch: scale + gold surge, elastic settle
+          ft("#ic_l37", { scale: 1 }, { scale: 1.07, duration: 0.1, ease: "power4.out" }, SLAM);
+          ft("#ic_l37", { scale: 1.07 }, { scale: 1, duration: 0.75, ease: "elastic.out(1, 0.55)" }, SLAM + 0.1);
+          ft("#ic_l37", { textShadow: D_SOFT }, { textShadow: D_SURGE, duration: 0.1, ease: "power4.out" }, SLAM);
+          ft("#ic_l37", { textShadow: D_SURGE }, { textShadow: D_WARM, duration: 0.9, ease: "power2.out" }, SLAM + 0.1);
+          ft("#ic_l37", { autoAlpha: 1, y: 0, filter: "blur(0px)" }, { autoAlpha: 0, y: -10, filter: "blur(6px)", duration: 0.08, ease: "power1.in" }, L37.end - 0.07);
+          ft("#ic_s37", { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.2, ease: "sine.in" }, L37.end - 0.1);
+
+          /* ======================= the slam: charge in the empty jar → puff + ring + burst ======================= */
+          ft("#ic_charge", { autoAlpha: 0, scale: 0.15 }, { autoAlpha: 1, scale: 1, duration: SLAM - 6.02, ease: "power1.in" }, 6.02);
+          ft("#ic_charge", { autoAlpha: 1, scale: 1 }, { autoAlpha: 0, scale: 2.4, duration: 0.5, ease: "power2.out" }, SLAM);
+          ft("#ic_puff", { autoAlpha: 0.85, scale: 0.25 }, { autoAlpha: 0, scale: 1.25, duration: 1.1, ease: "power2.out" }, SLAM);
+          ft("#ic_ring", { scale: 0.08 }, { scale: 1, duration: 0.95, ease: "power3.out" }, SLAM);
+          ft("#ic_ring", { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.95, ease: "power1.in" }, SLAM);
+
+          // 72 sparkles fly out of the jar mouth into the sky (fixed-seed LCG), twinkle, then thin out before the push
+          var seed = 0x1CF1A1 >>> 0;
+          function rnd() { seed = (Math.imul(1664525, seed) + 1013904223) >>> 0; return seed / 4294967296; }
+          var OX = 1125, OY = 625;
+          function blockedB(x, y) {
+            if (x < 40 || x > 1880 || y < 30 || y > 560) return true;
+            if (x > 980 && x < 1560 && y > 110) return true;               // her head, hair and raised hand
+            var dx = x - 650, dy = y - 210;
+            if (dx * dx + dy * dy < 125 * 125) return true;                // the star she looks at stays clean
+            return false;
+          }
+          var NS = "http://www.w3.org/2000/svg";
+          var SPARK = "M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z";
+          var layer = $("ic_burstg");
+          var N = 72;
+          for (var i = 0; i < N; i++) {
+            var leftFan = (i % 3 !== 2);
+            var tx, ty, k = 0, th, r;
+            do {
+              th = (leftFan ? (-150 + 42 * rnd()) : (-58 + 50 * rnd())) * Math.PI / 180;
+              r = 260 + 760 * Math.pow(rnd(), 0.8);
+              tx = OX + r * Math.cos(th); ty = OY + r * Math.sin(th); k++;
+            } while (blockedB(tx, ty) && k < 40);
+            if (blockedB(tx, ty)) { tx = 120 + (i * 97) % 820; ty = 60 + 40 * (i % 4); }
+            var r1 = rnd(), r2 = rnd(), r3 = rnd(), r4 = rnd(), r5 = rnd(), r6 = rnd();
+            var sc = (i % 10 === 0) ? 8 + 2 * r1 : 2.4 + 4.6 * r1 * r1;   // 5–20 px across
+            var fill = (i % 5 === 0) ? "#FFE2A3" : (i % 7 === 0 ? "#DCEBFF" : "#FFF4D6");
+
+            var g = document.createElementNS(NS, "g");
+            g.setAttribute("id", "ic_sp" + i);
+            g.setAttribute("class", "ic-sp");
+            if (i % 3 === 0) {
+              var c = document.createElementNS(NS, "circle");
+              c.setAttribute("r", "2.4");
+              c.setAttribute("fill", "url(#ic_spglow)");
+              g.appendChild(c);
+            }
+            var p = document.createElementNS(NS, "path");
+            p.setAttribute("id", "ic_spp" + i);
+            p.setAttribute("d", SPARK);
+            p.setAttribute("fill", fill);
+            g.appendChild(p);
+            layer.appendChild(g);
+            gsap.set(g, { x: OX, y: OY, scale: 0.4, opacity: 0, transformOrigin: "50% 50%" });
+
+            var L = SLAM + (i % 9) * 0.011;
+            var d = 1.0 + 0.8 * r2;
+            ft(g, { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, L);
+            ft(g, { x: OX }, { x: tx, duration: d, ease: "expo.out" }, L);
+            ft(g, { y: OY }, { y: ty, duration: d, ease: "power3.out" }, L);
+            ft(g, { scale: 0.4 }, { scale: sc * 1.8, duration: 0.22, ease: "power2.out" }, L);
+            ft(g, { scale: sc * 1.8 }, { scale: sc, duration: d - 0.1, ease: "sine.out" }, L + 0.22);
+            // thin out: the right-hand ones go first (her hair fills that sky as the camera pushes in)
+            var FO = (tx > 980) ? 7.75 + 0.45 * r6 : 8.3 + 1.0 * r6;
+            ft(g, { opacity: 1 }, { opacity: 0, duration: 0.5, ease: "sine.in" }, FO);
+            var ts = L + d + 0.1 + 0.6 * r3;
+            var hp = 0.6 + 1.0 * r4;
+            var lo = 0.25 + 0.3 * r5;
+            var n = Math.max(0, Math.floor((FO + 0.5 - ts) / hp) - 1);
+            if (ts < FO) ft(p, { opacity: 1 }, { opacity: lo, duration: hp, ease: "sine.inOut", yoyo: true, repeat: n }, ts);
+          }
+
+          /* ======================= the brightest star: grows on the footage star, rides the push into f11's ======================= */
+          // position: centre of the 1200 box on F(t) (footage star through the wrapper transform)
+          trackTween("#ic_star", "x", CUT, D2, function (t) { return F(t).x - 600; });
+          trackTween("#ic_star", "y", CUT, D2, function (t) { return F(t).y - 600; });
+          // overall zoom k: attached to the footage (k0) until the push, then grows with it to f11's camera scale
+          var K0 = KEND / SE;
+          tl.fromTo("#ic_star", { scale: K0 }, { scale: KEND, duration: P1 - P0, ease: "power2.inOut", immediateRender: false }, P0);
+          gsap.set("#ic_star", { scale: K0 });
+          var RISE = L37.end - 0.3;                                         // 7.57: ignites as L37 ends
+          var W3 = L38.w[2], W5 = L38.w[4];                                 // 빛나는 8.81 · 별 9.91
+          ft("#ic_star", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, ease: "power2.out" }, RISE);
+          // core sparkle (inner scale; on screen ×k): 10 → 34 → 52 (빛나는) → 78 (별) → 52 = f11's as the push lands
+          ft("#ic_core", { scale: 0.1 }, { scale: 0.34, duration: 0.8, ease: "power2.out" }, RISE);
+          ft("#ic_core", { scale: 0.34 }, { scale: 0.52, duration: 0.45, ease: "power3.out" }, W3);
+          ft("#ic_core", { scale: 0.52 }, { scale: 0.78, duration: 0.14, ease: "power3.out" }, W5 - 0.02);
+          ft("#ic_core", { scale: 0.78 }, { scale: 0.52, duration: 0.62, ease: "sine.out" }, W5 + 0.12);
+          ft("#ic_halo", { scale: 0.3 }, { scale: 0.6, duration: 0.8, ease: "power2.out" }, RISE);
+          ft("#ic_halo", { scale: 0.6 }, { scale: 1.0, duration: 0.6, ease: "power3.out" }, W3);
+          ft("#ic_halo", { scale: 1.0 }, { scale: 1.4, duration: 0.16, ease: "power3.out" }, W5 - 0.02);
+          ft("#ic_halo", { scale: 1.4 }, { scale: 1.0, duration: 0.6, ease: "sine.out" }, W5 + 0.14);
+          // thin cross flares: 900 × 500 at f11's size
+          ft("#ic_fh", { scaleX: 0 }, { scaleX: 0.3, duration: 0.8, ease: "power2.out" }, RISE);
+          ft("#ic_fh", { scaleX: 0.3 }, { scaleX: 1.05, duration: 0.95, ease: "expo.out" }, W3);
+          ft("#ic_fh", { scaleX: 1.05 }, { scaleX: 1.3, duration: 0.14, ease: "power3.out" }, W5 - 0.02);
+          ft("#ic_fh", { scaleX: 1.3 }, { scaleX: 1, duration: 0.6, ease: "sine.out" }, W5 + 0.12);
+          ft("#ic_fv", { scaleY: 0 }, { scaleY: 0.28, duration: 0.8, ease: "power2.out" }, RISE);
+          ft("#ic_fv", { scaleY: 0.28 }, { scaleY: 1.05, duration: 0.9, ease: "expo.out" }, W3 + 0.05);
+          ft("#ic_fv", { scaleY: 1.05 }, { scaleY: 1.3, duration: 0.14, ease: "power3.out" }, W5 - 0.02);
+          ft("#ic_fv", { scaleY: 1.3 }, { scaleY: 1, duration: 0.6, ease: "sine.out" }, W5 + 0.12);
+          ft("#ic_flarebox", { scale: 1 }, { scale: 1.1, duration: 0.14, ease: "power3.out" }, W5 - 0.02);
+          ft("#ic_flarebox", { scale: 1.1 }, { scale: 1, duration: 0.55, ease: "sine.out" }, W5 + 0.12);
+          ft("#ic_flarerot", { rotation: 0 }, { rotation: 0.1, duration: END - W3, ease: "sine.inOut" }, W3);
+
+          // the wrapper softens as it rushes in (upscaled footage at 1.78×)
+          ft("#ic_w2", { filter: "blur(0px)" }, { filter: "blur(3px)", duration: P1 - (P0 + 0.12), ease: "power2.in" }, P0 + 0.12);
+
+          /* ======================= L38 "가장 밝게 빛나는 그 별" — f11's own line, under f11's camera scale ======================= */
+          // f11 camera from 151.60: 1 → 1.012 over 6.92 s sine.inOut (only its first 3.40 s fall inside this insert)
+          tl.fromTo("#ic_cam11", { scale: 1 }, { scale: 1.012, duration: END - 7.3, immediateRender: false,
+            ease: function (p) { return sinIO(p * (END - 7.3) / 6.92); } }, 7.3);
+          ft("#ic_s38", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2, ease: "sine.out" }, L38.on - 0.14);
+          ft("#ic_l38", { autoAlpha: 0, scale: 1.06, filter: "blur(6px)" }, { autoAlpha: 1, scale: 1, filter: "blur(0px)", duration: 0.06, ease: "power3.out" }, L38.on - 0.06);
+          ft(["#ic_m2", "#ic_u2"], { y: 0 }, { y: -6, duration: 0.09, ease: "power2.out" }, L38.w[1] - 0.02);
+          ft(["#ic_m2", "#ic_u2"], { y: -6 }, { y: 0, duration: 0.34, ease: "power2.inOut" }, L38.w[1] + 0.07);
+          ft("#ic_m3", { color: "#F4F1EA" }, { color: "#FFF4D6", duration: 0.35, ease: "power2.out" }, W3 - 0.03);
+          ft("#ic_u3", { textShadow: U_SOFT }, { textShadow: U_LIGHT, duration: 0.35, ease: "power2.out" }, W3 - 0.03);
+          ft(["#ic_m3", "#ic_u3"], { y: 0 }, { y: -5, duration: 0.1, ease: "power2.out" }, W3 - 0.03);
+          ft(["#ic_m3", "#ic_u3"], { y: -5 }, { y: 0, duration: 0.4, ease: "power2.inOut" }, W3 + 0.07);
+          ft(["#ic_m5", "#ic_u5"], { scale: 1 }, { scale: 1.12, duration: 0.12, ease: "power3.out" }, W5 - 0.02);
+          ft(["#ic_m5", "#ic_u5"], { scale: 1.12 }, { scale: 1, duration: 0.6, ease: "power2.out" }, W5 + 0.1);
+          ft("#ic_u5", { textShadow: U_LIGHT }, { textShadow: U_SURGE, duration: 0.12, ease: "power3.out" }, W5 - 0.02);
+          // f11 runs this settle for 0.8 s; only the part inside the insert, on f11's own curve
+          var HOLD_D = END - (W5 + 0.1);
+          ft("#ic_u5", { textShadow: U_SURGE }, { textShadow: U_HOLD, duration: HOLD_D,
+            ease: function (p) { return sinOut(p * HOLD_D / 0.8); } }, W5 + 0.1);
+
+          /* ======================= exit: match cut into f11 (10.42 → 10.70) ======================= */
+          // footage, scrim, the dark/glow under-layer and the star's translucent parts dissolve; the glyphs and the sparkle core stay —
+          // f11 shows the identical line and star underneath, so its copies take over without a seam.
+          var FADE0 = P1, FD = END - P1;
+          ft("#ic_v2", { opacity: 1 }, { opacity: 0, duration: FD, ease: "sine.inOut" }, FADE0);
+          ft("#ic_s38", { autoAlpha: 1 }, { autoAlpha: 0, duration: FD, ease: "sine.inOut" }, FADE0);
+          ft("#ic_l38u", { opacity: 1 }, { opacity: 0, duration: FD, ease: "sine.inOut" }, FADE0);
+          ft("#ic_halo", { opacity: 0.95 }, { opacity: 0, duration: FD, ease: "sine.inOut" }, FADE0);
+          ft(["#ic_cglow", "#ic_fhg", "#ic_fvg", "#ic_fhc", "#ic_fvc"], { opacity: 1 }, { opacity: 0, duration: FD, ease: "sine.inOut" }, FADE0);
+
+          tl.set({}, {}, END);
+          window.__timelines = window.__timelines || {};
+          window.__timelines["ic-final"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

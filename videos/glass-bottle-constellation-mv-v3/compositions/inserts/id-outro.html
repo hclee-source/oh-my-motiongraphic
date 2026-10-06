@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ko">
+  <head><meta charset="UTF-8" /><!-- Insert D (outro, track 170.05–180.75): c08 empty-jar walk footage + vertical callback lyrics L41/L42 + motes rising from the empty jar on 가벼워. --></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Noto Serif KR"; src: url("assets/fonts/NotoSerifKR-VF.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: block; }
+        @font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/CormorantGaramond-Italic-VF.woff2") format("woff2"); font-weight: 300 700; font-style: italic; font-display: block; }
+
+        #stage { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+
+        /* ---- footage + footage-locked accents (slow push 1 → 1.06 on this NON-timed wrapper) ---- */
+        #id_push { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 800px 520px; }
+        #id_v1 { position: absolute; inset: 0; width: 1920px; height: 1080px; object-fit: cover; }
+        #id_fx { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+        /* faint breath of light inside the empty jar when the motes leave (jar body ≈ x 865–955, y 658–790) */
+        #id_jarglow { position: absolute; left: 782px; top: 575px; width: 260px; height: 300px; opacity: 0; mix-blend-mode: screen;
+                      background: radial-gradient(closest-side, rgba(255, 244, 214, 0.55) 0%, rgba(255, 210, 122, 0.28) 40%, rgba(255, 210, 122, 0) 100%); }
+
+        /* tiny light motes (origins inside the jar glass, source-frame coordinates) */
+        .id-mote { position: absolute; opacity: 0; }
+        .id-mote-in { position: absolute; left: 0; top: 0; width: 100%; height: 100%; border-radius: 50%; mix-blend-mode: screen;
+                      background: radial-gradient(circle, #FFF4D6 0%, rgba(255, 244, 214, 0.95) 13%, rgba(255, 226, 160, 0.62) 27%, rgba(255, 210, 122, 0.22) 48%, rgba(255, 210, 122, 0) 72%); }
+
+        /* ---- lyric layer (screen-fixed, right side over the dark sky / city) ---- */
+        #id_lyrics { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+        #id_scrimwide { position: absolute; left: 1290px; top: 0; width: 630px; height: 1080px; opacity: 0;
+                        background: radial-gradient(ellipse 58% 50% at 58% 44%, rgba(5, 7, 20, 0.34) 0%, rgba(5, 7, 20, 0.2) 55%, rgba(5, 7, 20, 0) 100%); }
+        .id-shade { position: absolute; top: 70px; width: 250px; height: 820px; opacity: 0;
+                    background: radial-gradient(closest-side, rgba(5, 7, 20, 0.5) 0%, rgba(5, 7, 20, 0.34) 55%, rgba(5, 7, 20, 0) 100%); }
+        #id_shade41 { left: 1555px; } /* centre x 1680 */
+        #id_shade42 { left: 1420px; } /* centre x 1545 */
+        .id-colwrap { position: absolute; top: 165px; width: 120px; display: flex; justify-content: center; align-items: flex-start; }
+        #id_c41 { left: 1620px; } /* column centre x 1680 */
+        #id_c42 { left: 1485px; } /* column centre x 1545 */
+        .id-col { writing-mode: vertical-rl; text-orientation: upright; font-family: "Noto Serif KR", serif; font-weight: 300;
+                  font-size: 52px; line-height: 1; letter-spacing: 0.2em; color: #A9B3D6; white-space: nowrap; }
+        .id-ch { display: inline-block; opacity: 0; color: #A9B3D6;
+                 text-shadow: rgba(5, 7, 20, 0.75) 0px 0px 4px, rgba(220, 235, 255, 0) 0px 0px 0px, rgba(255, 210, 122, 0) 0px 0px 0px, rgba(5, 7, 20, 0.55) 0px 0px 16px; }
+        .id-we { margin-bottom: 24px; }  /* word gap */
+        #id_b4 { margin-bottom: 36px; }  /* 금|가벼워: +12px so the gap survives 가벼워 floating up 12px */
+        .id-key { font-size: 72.8px; font-weight: 400; } /* 별: 1.4x, one weight step heavier */
+      </style>
+
+      <div id="stage" data-composition-id="id-outro" data-width="1920" data-height="1080" data-duration="10.7">
+        <div id="id_push">
+          <video id="id_v1" class="clip" src="assets/footage/c08-empty-jar-walk.mp4" muted playsinline data-start="0" data-duration="10.7" data-media-start="0.6" data-track-index="0"></video>
+
+          <div id="id_fx" data-layout-ignore="">
+            <div id="id_jarglow" data-layout-ignore=""></div>
+            <div id="id_m0" class="id-mote" data-layout-ignore="" style="left: 885px; top: 725px; width: 34px; height: 34px;"><div id="id_mi0" class="id-mote-in"></div></div>
+            <div id="id_m1" class="id-mote" data-layout-ignore="" style="left: 917px; top: 703px; width: 26px; height: 26px;"><div id="id_mi1" class="id-mote-in"></div></div>
+            <div id="id_m2" class="id-mote" data-layout-ignore="" style="left: 874px; top: 745px; width: 30px; height: 30px;"><div id="id_mi2" class="id-mote-in"></div></div>
+            <div id="id_m3" class="id-mote" data-layout-ignore="" style="left: 906px; top: 688px; width: 24px; height: 24px;"><div id="id_mi3" class="id-mote-in"></div></div>
+            <div id="id_m4" class="id-mote" data-layout-ignore="" style="left: 919px; top: 731px; width: 38px; height: 38px;"><div id="id_mi4" class="id-mote-in"></div></div>
+            <div id="id_m5" class="id-mote" data-layout-ignore="" style="left: 885px; top: 709px; width: 26px; height: 26px;"><div id="id_mi5" class="id-mote-in"></div></div>
+            <div id="id_m6" class="id-mote" data-layout-ignore="" style="left: 911px; top: 756px; width: 28px; height: 28px;"><div id="id_mi6" class="id-mote-in"></div></div>
+            <div id="id_m7" class="id-mote" data-layout-ignore="" style="left: 898px; top: 723px; width: 24px; height: 24px;"><div id="id_mi7" class="id-mote-in"></div></div>
+          </div>
+        </div>
+
+        <div id="id_lyrics">
+          <div id="id_scrimwide" data-layout-ignore=""></div>
+          <div id="id_shade41" class="id-shade" data-layout-ignore=""></div>
+          <div id="id_shade42" class="id-shade" data-layout-ignore=""></div>
+
+          <!-- L41 "떨어진 별을 줍는 밤" -->
+          <div id="id_c41" class="id-colwrap">
+            <div class="id-col"><span id="id_a0" class="id-ch">떨</span><span id="id_a1" class="id-ch">어</span><span id="id_a2" class="id-ch id-we">진</span><span id="id_a3" class="id-ch id-key">별</span><span id="id_a4" class="id-ch id-we">을</span><span id="id_a5" class="id-ch">줍</span><span id="id_a6" class="id-ch id-we">는</span><span id="id_a7" class="id-ch">밤</span></div>
+          </div>
+
+          <!-- L42 "오늘은 조금 가벼워" -->
+          <div id="id_c42" class="id-colwrap">
+            <div class="id-col"><span id="id_b0" class="id-ch">오</span><span id="id_b1" class="id-ch">늘</span><span id="id_b2" class="id-ch id-we">은</span><span id="id_b3" class="id-ch">조</span><span id="id_b4" class="id-ch id-we">금</span><span id="id_b5" class="id-ch">가</span><span id="id_b6" class="id-ch">벼</span><span id="id_b7" class="id-ch">워</span></div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var tl = gsap.timeline({ paused: true });
+          // insert-local seconds: local = track - 170.05
+          var END = 10.7;
+
+          // text-shadow states — always four shadows in computed-style order so tweens interpolate cleanly:
+          // [tight dark contrast halo, light glow A, light glow B, wide dark contrast halo]
+          var D1 = "rgba(5, 7, 20, 0.75) 0px 0px 4px", D2 = "rgba(5, 7, 20, 0.55) 0px 0px 16px";
+          function sh(a, b) { return D1 + ", " + a + ", " + b + ", " + D2; }
+          var SH_NONE   = sh("rgba(220, 235, 255, 0) 0px 0px 0px",    "rgba(255, 210, 122, 0) 0px 0px 0px");
+          var SH_FLARE  = sh("rgba(255, 244, 214, 0.6) 0px 0px 16px", "rgba(255, 210, 122, 0.22) 0px 0px 34px");
+          var SH_SOFT   = sh("rgba(220, 235, 255, 0.25) 0px 0px 14px","rgba(255, 210, 122, 0) 0px 0px 0px");      // frame.md text-soft
+          var SH_BREATH = sh("rgba(220, 235, 255, 0.4) 0px 0px 20px", "rgba(255, 210, 122, 0.08) 0px 0px 30px");
+          var SH_DIM    = sh("rgba(220, 235, 255, 0.1) 0px 0px 10px", "rgba(255, 210, 122, 0) 0px 0px 0px");
+          var SH_KFLARE = sh("rgba(255, 210, 122, 0.8) 0px 0px 22px", "rgba(255, 210, 122, 0.36) 0px 0px 60px");
+          var SH_KEY    = sh("rgba(255, 210, 122, 0.45) 0px 0px 18px","rgba(255, 210, 122, 0.18) 0px 0px 46px");  // frame.md text-light
+          var SH_KDIM   = sh("rgba(255, 210, 122, 0.16) 0px 0px 14px","rgba(255, 210, 122, 0.05) 0px 0px 30px");
+
+          var C_DIM = "#A9B3D6", C_TEXT = "#F4F1EA", C_GOLD = "#FFD27A";
+          var GHOST = 0.92; // pre-lit state is already fully readable over the scrim; words then light at their sung onsets
+
+          function ids(p, a, b) { var r = []; for (var i = a; i <= b; i++) r.push("#id_" + p + i); return r; }
+          var L41 = ids("a", 0, 7), L42 = ids("b", 0, 7);
+
+          // ── footage: slow push 1 → 1.06 across the whole insert (wrapper only, never the video box)
+          tl.fromTo("#id_push", { scale: 1, transformOrigin: "800px 520px" }, { scale: 1.06, transformOrigin: "800px 520px", duration: END, ease: "none" }, 0);
+
+          // ── lyric layer drifts up a little the whole time
+          tl.fromTo("#id_lyrics", { y: 0 }, { y: -10, duration: END, ease: "sine.inOut" }, 0);
+
+          // ── "written by light": a column resolves as a readable ghost (blur-resolve, top→bottom),
+          //    then each word lights at its sung onset, characters 0.05s apart
+          function ghostIn(list, t0, dur, each) {
+            tl.fromTo(list, { opacity: 0, y: -10, filter: "blur(8px)" },
+              { opacity: GHOST, y: 0, filter: "blur(0px)", duration: dur, ease: "power2.out", stagger: each }, t0);
+          }
+          function lightWord(list, t, key) {
+            for (var k = 0; k < list.length; k++) {
+              var el = list[k], tk = t + k * 0.05;
+              tl.fromTo(el, { opacity: GHOST, color: C_DIM }, { opacity: 1, color: key ? C_GOLD : C_TEXT, duration: 0.35, ease: "power2.out", immediateRender: false }, tk);
+              tl.fromTo(el, { textShadow: SH_NONE }, { textShadow: key ? SH_KFLARE : SH_FLARE, duration: 0.16, ease: "power2.out", immediateRender: false }, tk);
+              tl.fromTo(el, { textShadow: key ? SH_KFLARE : SH_FLARE }, { textShadow: key ? SH_KEY : SH_SOFT, duration: 0.7, ease: "sine.out", immediateRender: false }, tk + 0.16);
+              tl.fromTo(el, { scale: 1 }, { scale: key ? 1.12 : 1.07, duration: 0.16, ease: "power2.out", immediateRender: false }, tk);
+              tl.fromTo(el, { scale: key ? 1.12 : 1.07 }, { scale: 1, duration: 0.5, ease: "sine.out", immediateRender: false }, tk + 0.16);
+            }
+          }
+
+          // ── L41 "떨어진 별을 줍는 밤" — onset 170.22 (local 0.17): resolves from the cut, readable by local 0.15
+          tl.fromTo("#id_scrimwide", { opacity: 0 }, { opacity: 1, duration: 0.15, ease: "sine.out" }, 0.0);
+          tl.fromTo("#id_shade41", { opacity: 0 }, { opacity: 1, duration: 0.15, ease: "sine.out" }, 0.0);
+          ghostIn(L41, 0.0, 0.12, 0.004);
+          lightWord(ids("a", 0, 2), 0.21, false);  // 떨어진 170.26
+          lightWord(ids("a", 3, 3), 1.69, true);   // 별     171.74 (keyword: 1.4x, gold)
+          lightWord(ids("a", 4, 4), 1.74, false);  // 을
+          lightWord(ids("a", 5, 6), 2.47, false);  // 줍는   172.52
+          lightWord(ids("a", 7, 7), 3.17, false);  // 밤     173.22 (held to 175.22)
+
+          // L41 readable through vocal_end 175.22 (local 5.17), then dims as L42 arrives
+          tl.fromTo("#id_c41", { opacity: 1 }, { opacity: 0.55, duration: 0.6, ease: "sine.inOut", immediateRender: false }, 5.2);
+          tl.fromTo("#id_shade41", { opacity: 1 }, { opacity: 0.6, duration: 0.6, ease: "sine.inOut", immediateRender: false }, 5.2);
+          for (var i = 0; i < L41.length; i++) {
+            var isKey = (i === 3);
+            tl.fromTo(L41[i], { color: isKey ? C_GOLD : C_TEXT, textShadow: isKey ? SH_KEY : SH_SOFT },
+              { color: C_DIM, textShadow: isKey ? SH_KDIM : SH_DIM, duration: 0.6, ease: "sine.inOut", immediateRender: false }, 5.2);
+          }
+
+          // ── L42 "오늘은 조금 가벼워" — onset 175.34 (local 5.29): ghost from 175.09, readable by 175.31
+          tl.fromTo("#id_shade42", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "sine.out" }, 5.04);
+          ghostIn(L42, 5.04, 0.16, 0.008);
+          lightWord(ids("b", 0, 2), 5.33, false);  // 오늘은 175.38
+          lightWord(ids("b", 3, 4), 6.54, false);  // 조금   176.59
+          lightWord(ids("b", 5, 7), 7.24, false);  // 가벼워 177.29
+
+          // 가벼워: the three characters float up 12px — lighter
+          var KA = ids("b", 5, 7);
+          for (var j = 0; j < KA.length; j++) {
+            tl.fromTo(KA[j], { y: 0 }, { y: -12, duration: 2.2, ease: "sine.out", immediateRender: false }, 7.24 + j * 0.12);
+          }
+
+          // 178.85 → (piano alone, still): only a slow glow breath on L42 (finite yoyo)
+          for (var m = 0; m < L42.length; m++) {
+            tl.fromTo(L42[m], { textShadow: SH_SOFT }, { textShadow: SH_BREATH, duration: 0.6, ease: "sine.inOut", yoyo: true, repeat: 1, immediateRender: false }, 8.85);
+          }
+
+          // 180.15 → 180.55 (local 10.1 → 10.5): both columns blur out; footage holds to the hard cut at 10.7
+          tl.fromTo("#id_c41", { opacity: 0.55, filter: "blur(0px)" }, { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "sine.in", immediateRender: false }, 10.1);
+          tl.fromTo("#id_c42", { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "sine.in", immediateRender: false }, 10.1);
+          tl.fromTo("#id_shade41", { opacity: 0.6 }, { opacity: 0, duration: 0.45, ease: "sine.in", immediateRender: false }, 10.1);
+          tl.fromTo("#id_shade42", { opacity: 1 }, { opacity: 0, duration: 0.45, ease: "sine.in", immediateRender: false }, 10.1);
+          tl.fromTo("#id_scrimwide", { opacity: 1 }, { opacity: 0, duration: 0.45, ease: "sine.in", immediateRender: false }, 10.1);
+
+          // ── 가벼워 (177.29 → local 7.24): a faint breath of light in the empty jar, then a few tiny motes rise out of it
+          tl.fromTo("#id_jarglow", { opacity: 0 }, { opacity: 0.55, duration: 0.3, ease: "sine.out" }, 7.24);
+          tl.fromTo("#id_jarglow", { opacity: 0.55 }, { opacity: 0, duration: 1.4, ease: "sine.inOut", immediateRender: false }, 7.54);
+
+          // per mote: [start, duration, dx, dy, sway]  (hand-set, deterministic; rise up-right, away from her body, into the sky; all gone by 10.4)
+          var MOTES = [
+            [7.30, 2.90,  90, -420,  10],
+            [7.42, 2.70, 200, -360,  -8],
+            [7.55, 2.80,  60, -500,  12],
+            [7.70, 2.60, 250, -330, -10],
+            [7.86, 2.50, 140, -460,   9],
+            [8.05, 2.30, 220, -400, -12],
+            [8.25, 2.10, 110, -340,   8],
+            [8.45, 1.90, 170, -300,  -9]
+          ];
+          for (var n = 0; n < MOTES.length; n++) {
+            var p = MOTES[n], t0 = p[0], d = p[1], outer = "#id_m" + n, inner = "#id_mi" + n;
+            // rise (x and y on separate eases so the path curves)
+            tl.fromTo(outer, { y: 0 }, { y: p[3], duration: d, ease: "power1.out" }, t0);
+            tl.fromTo(outer, { x: 0 }, { x: p[2], duration: d, ease: "sine.in" }, t0);
+            // birth / fade
+            tl.fromTo(outer, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "sine.out" }, t0);
+            tl.fromTo(outer, { opacity: 1 }, { opacity: 0, duration: 0.9, ease: "sine.in", immediateRender: false }, t0 + d - 0.9);
+            tl.fromTo(inner, { scale: 0.2 }, { scale: 1, duration: 0.35, ease: "power2.out" }, t0);
+            // gentle sway + twinkle (finite repeats)
+            var swayN = Math.max(0, Math.floor((d - 0.1) / 0.7) - 1);
+            tl.fromTo(inner, { x: 0 }, { x: p[4], duration: 0.7, ease: "sine.inOut", yoyo: true, repeat: swayN }, t0 + 0.1);
+            var twN = Math.max(0, Math.floor((d - 0.45) / 0.45) - 1);
+            tl.fromTo(inner, { scale: 1 }, { scale: 0.62, duration: 0.45, ease: "sine.inOut", yoyo: true, repeat: twN, immediateRender: false }, t0 + 0.35);
+          }
+
+          tl.set({}, {}, END);
+          tl.seek(0);
+          window.__timelines = window.__timelines || {};
+          window.__timelines["id-outro"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

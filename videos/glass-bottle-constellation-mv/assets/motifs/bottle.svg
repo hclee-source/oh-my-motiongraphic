@@ -1,0 +1,59 @@
+<!-- The one glass bottle of this MV. Inline this markup (do not <img> it) so its parts can animate.
+     Rename every id with your frame prefix (fN_…) when you inline it. viewBox is fixed: 0 0 400 540.
+     Parts: XX_cork (cork group, pivot = its bottom center 200,72) · XX_glass (body outline) · XX_fill (light level,
+     clipped to the body; animate scaleY from transform-origin bottom) · XX_glow (inner radial glow; animate opacity/scale)
+     · XX_stars (empty group INSIDE the body clip — put sparkle <use>/<path> nodes here) · XX_shine (highlights). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 540" width="400" height="540" overflow="visible">
+  <defs>
+    <clipPath id="XX_bodyclip">
+      <path d="M178 74 L178 150 C178 168 160 176 140 186 A170 170 0 1 0 260 186 C240 176 222 168 222 150 L222 74 Z"/>
+    </clipPath>
+    <linearGradient id="XX_glassgrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#CFE4FF" stop-opacity="0.16"/>
+      <stop offset="0.55" stop-color="#CFE4FF" stop-opacity="0.04"/>
+      <stop offset="1" stop-color="#CFE4FF" stop-opacity="0.10"/>
+    </linearGradient>
+    <linearGradient id="XX_fillgrad" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#FFD27A" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#FFF4D6" stop-opacity="0.18"/>
+    </linearGradient>
+    <radialGradient id="XX_glowgrad" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#FFF4D6" stop-opacity="0.95"/>
+      <stop offset="0.35" stop-color="#FFD27A" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#FFD27A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- outer halo (outside the glass) -->
+  <circle id="XX_halo" cx="200" cy="350" r="250" fill="url(#XX_glowgrad)" opacity="0"/>
+
+  <!-- glass body -->
+  <path id="XX_glass" d="M178 74 L178 150 C178 168 160 176 140 186 A170 170 0 1 0 260 186 C240 176 222 168 222 150 L222 74 Z"
+        fill="url(#XX_glassgrad)" stroke="#DCEBFF" stroke-opacity="0.85" stroke-width="3" stroke-linejoin="round"/>
+
+  <g clip-path="url(#XX_bodyclip)">
+    <!-- light level: full body height 186→515; animate scaleY 0→1 with transform-origin 200px 515px -->
+    <rect id="XX_fill" x="20" y="186" width="360" height="330" fill="url(#XX_fillgrad)" transform-origin="200 515" transform="scale(1 0)"/>
+    <circle id="XX_glow" cx="200" cy="360" r="160" fill="url(#XX_glowgrad)" opacity="0"/>
+    <g id="XX_stars"></g>
+  </g>
+
+  <!-- neck rim + base ellipse -->
+  <ellipse cx="200" cy="74" rx="24" ry="5" fill="none" stroke="#DCEBFF" stroke-opacity="0.9" stroke-width="2.5"/>
+  <ellipse cx="200" cy="505" rx="92" ry="9" fill="none" stroke="#DCEBFF" stroke-opacity="0.25" stroke-width="2"/>
+
+  <!-- highlights -->
+  <g id="XX_shine" fill="none" stroke="#FFFFFF" stroke-linecap="round">
+    <path d="M86 318 A122 122 0 0 1 146 222" stroke-opacity="0.55" stroke-width="7"/>
+    <path d="M80 360 A124 124 0 0 0 84 386" stroke-opacity="0.35" stroke-width="6"/>
+    <path d="M300 440 A120 120 0 0 0 318 404" stroke-opacity="0.22" stroke-width="5"/>
+    <path d="M186 92 L186 140" stroke-opacity="0.4" stroke-width="4"/>
+  </g>
+
+  <!-- cork: rotate/translate this group to pop it open -->
+  <g id="XX_cork">
+    <path d="M172 26 Q172 18 180 18 L220 18 Q228 18 228 26 L226 72 Q226 78 220 78 L180 78 Q174 78 174 72 Z" fill="#B98C62"/>
+    <path d="M180 30 L220 30 M181 44 L219 44 M182 58 L218 58" stroke="#8E6644" stroke-width="2" stroke-opacity="0.6"/>
+    <path d="M178 22 L178 74" stroke="#E2BE93" stroke-width="3" stroke-opacity="0.5" stroke-linecap="round"/>
+  </g>
+</svg>

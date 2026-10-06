@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>05-f5 · BARO 04 바이브 코딩 — code editor → run → book launch</title>
+    <!-- Source metadata only. The runtime clones the <template> contents; everything renderable lives there. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Gmarket Sans"; src: url("assets/fonts/GmarketSansBold.otf") format("opentype"); font-weight: 700; font-display: block; }
+        @font-face { font-family: "Gmarket Sans"; src: url("assets/fonts/GmarketSansMedium.otf") format("opentype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Gmarket Sans"; src: url("assets/fonts/GmarketSansLight.otf") format("opentype"); font-weight: 300; font-display: block; }
+
+        /* Root: plain #stage (the compiler scopes this file's CSS and moves data-composition-id to the host). */
+        #stage {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #b9d7e0; /* scene_color, from t=0 */
+          font-family: "Gmarket Sans", sans-serif;
+          color: #1b1a1f;
+        }
+        .f5-layer { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+        /* ===================== original code editor (dark ui-window) ===================== */
+        .f5-ed {
+          position: absolute;
+          left: 120px;
+          top: 220px;
+          width: 1000px;
+          height: 640px;
+          border-radius: 24px;
+          background: #1b1a1f;
+          box-shadow: 0 30px 80px rgba(27, 26, 31, 0.22);
+        }
+        .f5-ed-bar {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1000px;
+          height: 88px;
+          border-bottom: 1px solid rgba(244, 239, 230, 0.07);
+        }
+        .f5-dots { position: absolute; left: 32px; top: 37px; display: flex; gap: 10px; }
+        .f5-dot { display: block; width: 14px; height: 14px; border-radius: 50%; background: rgba(244, 239, 230, 0.2); }
+        .f5-tab {
+          position: absolute;
+          left: 116px;
+          top: 20px;
+          height: 48px;
+          padding: 0 22px;
+          border-radius: 12px;
+          background: rgba(244, 239, 230, 0.07);
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          font: 400 24px/48px "Space Mono", monospace;
+          color: rgba(244, 239, 230, 0.9);
+          white-space: nowrap;
+        }
+        .f5-tabdot { display: block; width: 9px; height: 9px; border-radius: 50%; background: #5b5bf0; opacity: 0; visibility: hidden; }
+        .f5-run {
+          position: absolute;
+          right: 84px;
+          top: 20px;
+          height: 48px;
+          padding: 3px 26px 0;
+          border-radius: 999px;
+          background: #5b5bf0;
+          color: #f4efe6;
+          font: 700 24px/45px "Gmarket Sans", sans-serif;
+          white-space: nowrap;
+        }
+        .f5-run-label { display: block; }
+        .f5-ring {
+          position: absolute;
+          left: -8px;
+          top: -8px;
+          right: -8px;
+          bottom: -8px;
+          border: 3px solid #5b5bf0;
+          border-radius: 999px;
+          opacity: 0;
+          visibility: hidden;
+        }
+        /* avatar: dark 72px circle, the key-visual sprite only lives inside it */
+        .f5-av {
+          position: absolute;
+          right: -22px;
+          top: -22px;
+          width: 72px;
+          height: 72px;
+          border-radius: 50%;
+          background: #1b1a1f;
+          overflow: hidden;
+          box-shadow: 0 0 0 4px #f4efe6, 0 14px 30px rgba(27, 26, 31, 0.22);
+        }
+        .f5-av-img { position: absolute; left: -12px; top: -22px; width: 156px; height: auto; max-width: none; }
+
+        /* code area */
+        .f5-code { position: absolute; left: 0; top: 88px; width: 1000px; height: 402px; }
+        .f5-hl {
+          position: absolute;
+          left: 0;
+          top: 36px;
+          width: 1000px;
+          height: 64px;
+          background: rgba(244, 239, 230, 0.055);
+          opacity: 0;
+          visibility: hidden;
+        }
+        .f5-gutter { position: absolute; left: 0; top: 36px; width: 82px; }
+        .f5-ln {
+          height: 64px;
+          text-align: right;
+          font: 400 24px/64px "Space Mono", monospace;
+          color: rgba(244, 239, 230, 0.5);
+        }
+        .f5-line {
+          position: absolute;
+          left: 116px;
+          height: 64px;
+          white-space: pre;
+          font: 400 36px/64px "Space Mono", "Gmarket Sans", monospace;
+          color: #f4efe6;
+        }
+        #f5_l1 { top: 36px; }
+        #f5_l2 { top: 100px; }
+        #f5_l3 { top: 164px; }
+        .f5-c0 { display: inline-block; position: relative; width: 0; height: 64px; vertical-align: top; }
+        .f5-ch { display: inline-block; position: relative; opacity: 0; }
+        .f5-cr {
+          position: absolute;
+          left: 100%;
+          top: 12px;
+          width: 4px;
+          height: 40px;
+          margin-left: 1px;
+          border-radius: 2px;
+          background: #5b5bf0;
+          opacity: 0;
+          visibility: hidden;
+        }
+        /* syntax: cream / #B9D7E0 / accent / #E70080 only */
+        .f5-t-kw { color: #5b5bf0; font-weight: 700; }
+        .f5-t-id { color: #f4efe6; }
+        .f5-t-op { color: #b9d7e0; }
+        .f5-t-fn { color: #b9d7e0; }
+        .f5-t-str { color: #e70080; }
+        .f5-t-cm { color: rgba(244, 239, 230, 0.42); }
+        .f5-t-ok { color: #b9d7e0; }
+        .f5-t-dim { color: rgba(244, 239, 230, 0.55); }
+        /* minimap (generic, abstract) */
+        .f5-mm { position: absolute; right: 32px; top: 46px; width: 76px; }
+        .f5-mmb { display: block; height: 6px; border-radius: 3px; background: rgba(244, 239, 230, 0.2); margin-bottom: 9px; }
+        #f5_mm1 { width: 72px; }
+        #f5_mm2 { width: 60px; }
+        #f5_mm3 { width: 46px; }
+
+        /* terminal strip */
+        .f5-term {
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 1000px;
+          height: 150px;
+          background: #121116;
+          border-top: 1px solid rgba(244, 239, 230, 0.07);
+          border-radius: 0 0 24px 24px;
+        }
+        .f5-prog { position: absolute; left: 0; top: -2px; width: 1000px; height: 3px; background: #5b5bf0; display: block; }
+        .f5-term-row {
+          position: absolute;
+          left: 44px;
+          top: 52px;
+          height: 46px;
+          white-space: pre;
+          font: 400 30px/46px "Space Mono", "Gmarket Sans", monospace;
+          color: #f4efe6;
+        }
+        .f5-prompt { color: #5b5bf0; font-weight: 700; margin-right: 22px; }
+        .f5-tch { opacity: 0; }
+
+        /* ===================== 3D book (recipes/book3d.md, fN → f5, DEEP = #0E4862) ===================== */
+        .f5-bkwrap { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+        .f5-bk-scene { position: absolute; left: 1430px; top: 430px; width: 0; height: 0; perspective: 2200px; }
+        .f5-bk-shadow, .f5-bk-ghost { position: absolute; left: -260px; top: 250px; width: 520px; height: 70px; border-radius: 50%;
+          background: rgba(40, 25, 15, 0.30); filter: blur(22px); }
+        .f5-bk-book { position: absolute; left: -210px; top: -287px; width: 420px; height: 574px; transform-style: preserve-3d; }
+        .f5-bk-book > div, .f5-bk-hinge > div { position: absolute; }
+        .f5-bk-back   { inset: 0; background: #0e4862; transform: rotateY(180deg) translateZ(24px); }
+        .f5-bk-spine  { left: 186px; top: 0; width: 48px; height: 574px; background: #0e4862; transform: rotateY(-90deg) translateZ(210px);
+          display: flex; align-items: center; justify-content: center; color: #f4efe6; font: 700 22px "Gmarket Sans"; writing-mode: vertical-rl; }
+        .f5-bk-edge   { left: 186px; top: 0; width: 48px; height: 574px; transform: rotateY(90deg) translateZ(210px);
+          background: repeating-linear-gradient(90deg, #fbf8f2 0 2px, #e4dccd 2px 3px); }
+        .f5-bk-top    { left: 0; top: 263px; width: 420px; height: 48px; transform: rotateX(90deg) translateZ(287px);
+          background: repeating-linear-gradient(0deg, #fbf8f2 0 2px, #e4dccd 2px 3px); }
+        .f5-bk-bottom { left: 0; top: 263px; width: 420px; height: 48px; transform: rotateX(-90deg) translateZ(287px); background: #e9e1d2; }
+        .f5-bk-page   { inset: 0; background: #fbf8f2; transform: translateZ(22px); display: flex; align-items: center; justify-content: center;
+          color: #0e4862; font: 700 44px/1.25 "Gmarket Sans"; text-align: center; }
+        .f5-bk-hinge  { inset: 0; transform-origin: 0% 50%; transform: translateZ(24px); transform-style: preserve-3d; }
+        .f5-bk-front  { inset: 0; width: 420px; height: 574px; object-fit: cover; backface-visibility: hidden; }
+        .f5-bk-inside { inset: 0; background: #f4efe6; transform: rotateY(180deg); backface-visibility: hidden; }
+
+        /* ===================== caption + sticker under the book ===================== */
+        .f5-cap { position: absolute; left: 1100px; top: 708px; width: 660px; text-align: center; color: #1b1a1f; }
+        .f5-cap-a { display: block; font: 700 56px/1.12 "Gmarket Sans", sans-serif; letter-spacing: -0.02em; white-space: nowrap; }
+        .f5-cap-b { display: block; font: 300 56px/1.12 "Gmarket Sans", sans-serif; letter-spacing: -0.02em; white-space: nowrap; }
+        .f5-pill {
+          display: block;
+          width: fit-content;
+          margin: 22px auto 0;
+          height: 56px;
+          padding: 4px 30px 0;
+          border-radius: 999px;
+          background: #0e4862;
+          color: #f4efe6;
+          font: 500 28px/52px "Gmarket Sans", sans-serif;
+          white-space: nowrap;
+        }
+      </style>
+
+      <div id="stage" data-composition-id="05-f5" data-width="1920" data-height="1080" data-duration="4">
+        <!-- ============ g1: type → run → reveal (local 0 – 4.00) ============ -->
+        <div id="f5_g1" class="f5-layer">
+          <!-- original, generic code editor -->
+          <div id="f5_ed" class="f5-ed">
+            <div class="f5-ed-bar">
+              <div class="f5-dots"><i class="f5-dot"></i><i class="f5-dot"></i><i class="f5-dot"></i></div>
+              <div id="f5_tab" class="f5-tab"><span class="f5-tab-name">baro.js</span><i id="f5_tabdot" class="f5-tabdot"></i></div>
+              <div id="f5_run" class="f5-run"><i id="f5_ring" class="f5-ring"></i><span class="f5-run-label">▶ 실행</span></div>
+            </div>
+            <div id="f5_code" class="f5-code">
+              <div id="f5_hl" class="f5-hl"></div>
+              <div class="f5-gutter">
+                <div class="f5-ln">1</div><div class="f5-ln">2</div><div class="f5-ln">3</div><div class="f5-ln">4</div><div class="f5-ln">5</div>
+              </div>
+              <div class="f5-line" id="f5_l1"><span class="f5-c0"><i class="f5-cr" id="f5_l1r_"></i></span><span class="f5-ch f5-t-kw" id="f5_l1c0">c<i class="f5-cr" id="f5_l1r0"></i></span><span class="f5-ch f5-t-kw" id="f5_l1c1">o<i class="f5-cr" id="f5_l1r1"></i></span><span class="f5-ch f5-t-kw" id="f5_l1c2">n<i class="f5-cr" id="f5_l1r2"></i></span><span class="f5-ch f5-t-kw" id="f5_l1c3">s<i class="f5-cr" id="f5_l1r3"></i></span><span class="f5-ch f5-t-kw" id="f5_l1c4">t<i class="f5-cr" id="f5_l1r4"></i></span><span class="f5-ch f5-t-sp" id="f5_l1c5">&nbsp;<i class="f5-cr" id="f5_l1r5"></i></span><span class="f5-ch f5-t-id" id="f5_l1c6">나<i class="f5-cr" id="f5_l1r6"></i></span><span class="f5-ch f5-t-sp" id="f5_l1c7">&nbsp;<i class="f5-cr" id="f5_l1r7"></i></span><span class="f5-ch f5-t-op" id="f5_l1c8">=<i class="f5-cr" id="f5_l1r8"></i></span><span class="f5-ch f5-t-sp" id="f5_l1c9">&nbsp;<i class="f5-cr" id="f5_l1r9"></i></span><span class="f5-ch f5-t-str" id="f5_l1c10">"<i class="f5-cr" id="f5_l1r10"></i></span><span class="f5-ch f5-t-str" id="f5_l1c11">A<i class="f5-cr" id="f5_l1r11"></i></span><span class="f5-ch f5-t-str" id="f5_l1c12">I<i class="f5-cr" id="f5_l1r12"></i></span><span class="f5-ch f5-t-sp" id="f5_l1c13">&nbsp;<i class="f5-cr" id="f5_l1r13"></i></span><span class="f5-ch f5-t-str" id="f5_l1c14">처<i class="f5-cr" id="f5_l1r14"></i></span><span class="f5-ch f5-t-str" id="f5_l1c15">음<i class="f5-cr" id="f5_l1r15"></i></span><span class="f5-ch f5-t-str" id="f5_l1c16">"<i class="f5-cr" id="f5_l1r16"></i></span><span class="f5-ch f5-t-op" id="f5_l1c17">;<i class="f5-cr" id="f5_l1r17"></i></span></div>
+              <div class="f5-line" id="f5_l2"><span class="f5-c0"><i class="f5-cr" id="f5_l2r_"></i></span><span class="f5-ch f5-t-id" id="f5_l2c0">바<i class="f5-cr" id="f5_l2r0"></i></span><span class="f5-ch f5-t-id" id="f5_l2c1">로<i class="f5-cr" id="f5_l2r1"></i></span><span class="f5-ch f5-t-id" id="f5_l2c2">바<i class="f5-cr" id="f5_l2r2"></i></span><span class="f5-ch f5-t-id" id="f5_l2c3">로<i class="f5-cr" id="f5_l2r3"></i></span><span class="f5-ch f5-t-op" id="f5_l2c4">.<i class="f5-cr" id="f5_l2r4"></i></span><span class="f5-ch f5-t-fn" id="f5_l2c5">배<i class="f5-cr" id="f5_l2r5"></i></span><span class="f5-ch f5-t-fn" id="f5_l2c6">운<i class="f5-cr" id="f5_l2r6"></i></span><span class="f5-ch f5-t-fn" id="f5_l2c7">다<i class="f5-cr" id="f5_l2r7"></i></span><span class="f5-ch f5-t-op" id="f5_l2c8">(<i class="f5-cr" id="f5_l2r8"></i></span><span class="f5-ch f5-t-id" id="f5_l2c9">나<i class="f5-cr" id="f5_l2r9"></i></span><span class="f5-ch f5-t-op" id="f5_l2c10">)<i class="f5-cr" id="f5_l2r10"></i></span><span class="f5-ch f5-t-op" id="f5_l2c11">;<i class="f5-cr" id="f5_l2r11"></i></span></div>
+              <div class="f5-line" id="f5_l3"><span class="f5-c0"><i class="f5-cr" id="f5_l3r_"></i></span><span class="f5-ch f5-t-cm" id="f5_l3c0">/<i class="f5-cr" id="f5_l3r0"></i></span><span class="f5-ch f5-t-cm" id="f5_l3c1">/<i class="f5-cr" id="f5_l3r1"></i></span><span class="f5-ch f5-t-sp" id="f5_l3c2">&nbsp;<i class="f5-cr" id="f5_l3r2"></i></span><span class="f5-ch f5-t-ok" id="f5_l3c3">✓<i class="f5-cr" id="f5_l3r3"></i></span><span class="f5-ch f5-t-sp" id="f5_l3c4">&nbsp;<i class="f5-cr" id="f5_l3r4"></i></span><span class="f5-ch f5-t-ok" id="f5_l3c5">바<i class="f5-cr" id="f5_l3r5"></i></span><span class="f5-ch f5-t-ok" id="f5_l3c6">로<i class="f5-cr" id="f5_l3r6"></i></span><span class="f5-ch f5-t-sp" id="f5_l3c7">&nbsp;<i class="f5-cr" id="f5_l3r7"></i></span><span class="f5-ch f5-t-ok" id="f5_l3c8">쓴<i class="f5-cr" id="f5_l3r8"></i></span><span class="f5-ch f5-t-ok" id="f5_l3c9">다<i class="f5-cr" id="f5_l3r9"></i></span></div>
+              <div id="f5_mm" class="f5-mm"><i id="f5_mm1" class="f5-mmb"></i><i id="f5_mm2" class="f5-mmb"></i><i id="f5_mm3" class="f5-mmb"></i></div>
+            </div>
+            <div id="f5_term" class="f5-term">
+              <i id="f5_prog" class="f5-prog"></i>
+              <div class="f5-term-row"><span class="f5-prompt">›</span><span class="f5-tch f5-t-ok" id="f5_tc0">✓</span><span class="f5-tch f5-t-sp" id="f5_tc1">&nbsp;</span><span class="f5-tch f5-t-ok" id="f5_tc2">빌</span><span class="f5-tch f5-t-ok" id="f5_tc3">드</span><span class="f5-tch f5-t-sp" id="f5_tc4">&nbsp;</span><span class="f5-tch f5-t-ok" id="f5_tc5">성</span><span class="f5-tch f5-t-ok" id="f5_tc6">공</span><span class="f5-tch f5-t-sp" id="f5_tc7">&nbsp;</span><span class="f5-tch f5-t-dim" id="f5_tc8">·</span><span class="f5-tch f5-t-sp" id="f5_tc9">&nbsp;</span><span class="f5-tch f5-t-dim" id="f5_tc10">0</span><span class="f5-tch f5-t-dim" id="f5_tc11">.</span><span class="f5-tch f5-t-dim" id="f5_tc12">5</span><span class="f5-tch f5-t-dim" id="f5_tc13">1</span><span class="f5-tch f5-t-dim" id="f5_tc14">s</span></div>
+            </div>
+            <div id="f5_av" class="f5-av" data-layout-allow-overflow="">
+              <img id="f5_av_img" class="f5-av-img" src="assets/keyvisual/spr-orange.png" alt="" />
+            </div>
+          </div>
+
+          <!-- 3D book: launches out of the editor toward camera -->
+          <div id="f5_bkwrap" class="f5-bkwrap" data-layout-ignore="">
+            <div class="f5-bk-scene" data-layout-ignore="">
+              <div class="f5-bk-ghost" id="f5_bk_gh2"></div>
+              <div class="f5-bk-ghost" id="f5_bk_gh1"></div>
+              <div class="f5-bk-shadow" id="f5_bk_shadow"></div>
+              <div class="f5-bk-book" id="f5_book">
+                <div class="f5-bk-back"></div>
+                <div class="f5-bk-spine">바로바로 바이브 코딩</div>
+                <div class="f5-bk-edge"></div>
+                <div class="f5-bk-top"></div>
+                <div class="f5-bk-bottom"></div>
+                <div class="f5-bk-page"></div>
+                <div class="f5-bk-hinge" id="f5_bk_hinge">
+                  <img class="f5-bk-front" src="assets/covers/9791194383871.jpg" alt="" />
+                  <div class="f5-bk-inside"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- caption + author sticker -->
+          <div id="f5_cap" class="f5-cap">
+            <span id="f5_cap_a" class="f5-cap-a">바로바로 바이브 코딩</span>
+            <span id="f5_cap_b" class="f5-cap-b">with 커서 AI</span>
+            <span id="f5_pill" class="f5-pill">박현규</span>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var FID = "05-f5";
+          var tl = gsap.timeline({ paused: true });
+
+          // ---- frame-local anchors (track − 21.01) ----
+          var T_ED = 0.26;                    // 21.36 editor rises
+          var LSTART = [0.49, 0.98, 1.49];    // 21.50 / 21.99 / 22.50 one line per beat
+          var LDUR = [0.40, 0.36, 0.34];      // each line finishes before the next beat
+          var COUNTS = [18, 12, 10];            // chars per line
+          var RUN = 1.95;                     // 22.96 kick: ▶ 실행
+          var LAUNCH = 2.04;                  // 23.05 book launches
+          var CAP = 2.30;                     // title rises as the book lands (holds ≥ 3 beats before the iris)
+          var PILL = 2.49;                    // 23.50 pop: author sticker
+          var NOD = 2.98;                     // 23.99 kick: book turns toward camera, avatar hops
+          var BUMP = 3.66;                    // swell peaking ~3.82, before the iris (24.72→) hides the book
+          var END = 4.0;
+
+          // ---- group window ----
+          tl.set("#f5_g1", { autoAlpha: 1 }, 0);
+          tl.set("#f5_g1", { autoAlpha: 0 }, END);
+
+          // ---- start states ----
+          tl.set("#f5_ed", { y: 150, rotation: -1.5, autoAlpha: 0 }, 0);
+          tl.set("#f5_av", { scale: 0 }, 0);
+          tl.set(["#f5_mm1", "#f5_mm2", "#f5_mm3"], { scaleX: 0, transformOrigin: "0% 50%" }, 0);
+          tl.set("#f5_prog", { scaleX: 0, transformOrigin: "0% 50%", autoAlpha: 1 }, 0);
+          tl.set(["#f5_cap_a", "#f5_cap_b"], { y: 28, opacity: 0 }, 0);
+          tl.set("#f5_pill", { scale: 0.3, opacity: 0 }, 0);
+          tl.set("#f5_bkwrap", { autoAlpha: 0 }, 0);
+          tl.set("#f5_book", { x: -830, y: 170, z: -600, scale: 0.12, rotationY: -200, rotationX: 26, rotationZ: -14 }, 0);
+          tl.set("#f5_bk_hinge", { rotationY: 0 }, 0);
+          tl.set(["#f5_bk_shadow", "#f5_bk_gh1", "#f5_bk_gh2"], { x: -830, y: -57, scaleX: 0.25, scaleY: 0.5, opacity: 0 }, 0);
+
+          // ---- editor slides up into the left 60% ----
+          tl.to("#f5_ed", { y: 0, rotation: 0, autoAlpha: 1, duration: 0.6, ease: "expo.out" }, T_ED);
+          tl.to("#f5_av", { scale: 1, duration: 0.45, ease: "back.out(2.2)" }, 0.42);
+          tl.set("#f5_hl", { autoAlpha: 1, y: 0 }, 0.3);
+          tl.set("#f5_l1r_", { autoAlpha: 1 }, 0.3);
+          tl.set("#f5_l1r_", { autoAlpha: 0 }, LSTART[0]);
+
+          // ---- typewriter: one line per beat, caret rides the last typed char ----
+          for (var L = 0; L < 3; L++) {
+            var n = COUNTS[L];
+            var step = LDUR[L] / n;
+            var ln = L + 1;
+            for (var i = 0; i < n; i++) {
+              var t = LSTART[L] + i * step;
+              tl.set("#f5_l" + ln + "c" + i, { opacity: 1 }, t);
+              tl.set("#f5_l" + ln + "r" + i, { autoAlpha: 1 }, t);
+              if (i < n - 1) tl.set("#f5_l" + ln + "r" + i, { autoAlpha: 0 }, t + step);
+              else if (L < 2) tl.set("#f5_l" + ln + "r" + i, { autoAlpha: 0 }, LSTART[L + 1]);
+            }
+            tl.to("#f5_mm" + ln, { scaleX: 1, duration: LDUR[L], ease: "none" }, LSTART[L]);
+            if (L > 0) tl.to("#f5_hl", { y: 64 * L, duration: 0.12, ease: "power2.out" }, LSTART[L]);
+          }
+          tl.set("#f5_tabdot", { autoAlpha: 1 }, LSTART[0]);
+          // final caret blinks on the beat grid (on at a beat, off half a beat later)
+          var lastCaret = "#f5_l3r" + (COUNTS[2] - 1);
+          [[2.24, 0], [2.49, 1], [2.73, 0], [2.98, 1], [3.22, 0], [3.49, 1], [3.73, 0]].forEach(function (b) {
+            tl.set(lastCaret, { autoAlpha: b[1] }, b[0]);
+          });
+
+          // ---- 22.96 kick: ▶ 실행 depresses, terminal prints ----
+          tl.to("#f5_run", { scale: 0.9, y: 2, duration: 0.06, ease: "power2.out" }, RUN);
+          tl.to("#f5_run", { scale: 1, y: 0, duration: 0.35, ease: "back.out(3)" }, RUN + 0.06);
+          tl.set("#f5_ring", { autoAlpha: 0.9, scale: 1 }, RUN);
+          tl.to("#f5_ring", { autoAlpha: 0, scale: 1.3, duration: 0.45, ease: "power2.out" }, RUN);
+          tl.set("#f5_tabdot", { autoAlpha: 0 }, RUN);
+          tl.to("#f5_prog", { scaleX: 1, duration: 0.12, ease: "power2.in" }, RUN);
+          tl.to("#f5_prog", { autoAlpha: 0, duration: 0.25, ease: "power1.out" }, RUN + 0.17);
+          for (var k = 0; k < 15; k++) {
+            tl.set("#f5_tc" + k, { opacity: 1 }, 2.02 + k * 0.012);
+          }
+
+          // ---- 23.05: book launches out of the editor toward camera (crash-zoom-in, soft landing) ----
+          tl.set("#f5_bkwrap", { autoAlpha: 1 }, LAUNCH);
+          tl.to("#f5_ed", { x: -14, duration: 0.07, ease: "power2.out" }, LAUNCH);
+          tl.to("#f5_ed", { x: 0, duration: 0.4, ease: "back.out(2.5)" }, LAUNCH + 0.07);
+          tl.to("#f5_book", { x: 0, z: 0, duration: 0.46, ease: "power3.out" }, LAUNCH);
+          tl.to("#f5_book", { scale: 0.8, duration: 0.46, ease: "back.out(1.5)" }, LAUNCH);
+          tl.to("#f5_book", { rotationY: -28, rotationX: 8, rotationZ: 0, duration: 0.52, ease: "power3.out" }, LAUNCH);
+          tl.to("#f5_book", { y: -50, duration: 0.22, ease: "power2.out" }, LAUNCH);
+          tl.to("#f5_book", { y: 0, duration: 0.32, ease: "back.out(2)" }, LAUNCH + 0.22);
+          // flat contact shadow travels on the floor; two trailing ghost copies (flat only) = motion-blur feel
+          tl.to("#f5_bk_shadow", { x: 0, duration: 0.46, ease: "power3.out" }, LAUNCH);
+          tl.to("#f5_bk_shadow", { scaleX: 0.8, scaleY: 0.8, duration: 0.46, ease: "power2.out" }, LAUNCH);
+          tl.to("#f5_bk_shadow", { opacity: 1, duration: 0.3, ease: "power1.out" }, LAUNCH);
+          [["#f5_bk_gh1", 0.05, 0.5], ["#f5_bk_gh2", 0.1, 0.28]].forEach(function (g) {
+            tl.to(g[0], { x: 0, duration: 0.46, ease: "power3.out" }, LAUNCH + g[1]);
+            tl.to(g[0], { scaleX: 0.8, scaleY: 0.8, duration: 0.46, ease: "power2.out" }, LAUNCH + g[1]);
+            tl.to(g[0], { opacity: g[2], duration: 0.14, ease: "power1.out" }, LAUNCH + g[1]);
+            tl.to(g[0], { opacity: 0, duration: 0.22, ease: "power1.in" }, LAUNCH + g[1] + 0.18);
+          });
+
+          // ---- caption as the book lands, 23.50 sticker pop, 23.99 nod + avatar hop ----
+          tl.to("#f5_cap_a", { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, CAP);
+          tl.to("#f5_cap_b", { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, CAP + 0.07);
+          tl.to("#f5_pill", { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2.4)" }, PILL);
+          tl.to("#f5_av", { y: -10, duration: 0.12, ease: "power2.out" }, NOD);
+          tl.to("#f5_av", { y: 0, duration: 0.35, ease: "bounce.out" }, NOD + 0.12);
+          tl.to("#f5_book", { rotationY: -18, duration: 0.22, ease: "power2.out" }, NOD);
+          tl.to("#f5_book", { rotationY: -28, duration: 0.45, ease: "sine.inOut" }, NOD + 0.22);
+
+          // ---- idle float, then the bump into the 24.96 snare ----
+          tl.to("#f5_book", { y: -6, duration: 0.5, ease: "sine.inOut" }, NOD);
+          tl.to("#f5_book", { y: 0, duration: 0.5, ease: "sine.inOut" }, NOD + 0.5);
+          tl.to("#f5_book", { scale: 0.87, duration: 0.16, ease: "power2.out" }, BUMP);
+          tl.to("#f5_book", { scale: 0.8, duration: 0.16, ease: "power2.inOut" }, BUMP + 0.16);
+          tl.to("#f5_bk_shadow", { scaleX: 0.87, scaleY: 0.87, duration: 0.16, ease: "power2.out" }, BUMP);
+          tl.to("#f5_bk_shadow", { scaleX: 0.8, scaleY: 0.8, duration: 0.16, ease: "power2.inOut" }, BUMP + 0.16);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["05-f5"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,119 @@
+{
+  "name": "baro-series-169-softstudio-1",
+  "style": "soft-studio",
+  "palette": {},
+  "aspect": "16:9",
+  "fps": 30,
+  "seed": 11,
+  "intensity": "standard",
+  "hud": false,
+  "message": "AI 입문, 바로바로 네 권이면 충분하다",
+  "destination": "youtube",
+  "bgm": {
+    "id": "1142",
+    "start": 0.37,
+    "duration": 30.75,
+    "fade": 1.0,
+    "license": "Mixkit Stock Music Free License",
+    "title": "Gummies — Michael Ramir C."
+  },
+  "series": [
+    {
+      "label": "BARO 01",
+      "name": "챗GPT",
+      "books": [
+        "9791124516294"
+      ]
+    },
+    {
+      "label": "BARO 02",
+      "name": "클로드",
+      "books": [
+        "9791124516133"
+      ]
+    },
+    {
+      "label": "BARO 03",
+      "name": "제미나이·구글 AI",
+      "books": [
+        "9791124516157"
+      ]
+    },
+    {
+      "label": "BARO 04",
+      "name": "바이브 코딩",
+      "books": [
+        "9791194383871"
+      ]
+    }
+  ],
+  "extra_assets": [
+    {
+      "src": "shared/keyvisuals/baro-kv-01.png",
+      "dest": "assets/keyvisual/baro-kv-01.png",
+      "role": "user-supplied key visual (clay characters) — MUST be used"
+    }
+  ],
+  "copy": {
+    "hook": [
+      "AI 공부,",
+      "어디서부터?"
+    ],
+    "finale": {
+      "line": "시작은, 바로바로.",
+      "cta": "goldenrabbit.co.kr"
+    }
+  },
+  "notes": "Anti-sameness remake of baro-series-169-boldbeat-1: different music (synthpop 117.5 BPM), style (soft-studio), font (Gmarket Sans), camera (CSS-3D books), transitions (shape overlay), hero devices per book (chat UI, open book, object-in-sentence, code editor), SFX layer, no HUD/label boxes/confetti/marquee.",
+  "resolved": {
+    "duration": 30.75,
+    "bounds": [
+      0.0,
+      6.99,
+      11.01,
+      16,
+      21.01,
+      25.01,
+      30.75
+    ],
+    "patterns": [
+      "TYPE-WINDOW",
+      "BOOK3D-OPEN",
+      "DEPTH-TYPE",
+      "SHELF-PULL + SLOGAN-WEIGHT (on the strongest surge)",
+      "CODE-UI",
+      "SPINE-STACK"
+    ],
+    "registers": [
+      "ink",
+      "scene-tint",
+      "cream"
+    ],
+    "project": "videos/baro-series-169-softstudio-1",
+    "treatment": {
+      "style": "soft-studio",
+      "music": "1142",
+      "palette": "preset",
+      "transition": "shape",
+      "camera": "3d",
+      "hero": "book3d",
+      "hud": "false"
+    },
+    "scene_colors": [
+      "#F4EFE6",
+      "#D4E3BA",
+      "#F1CBB3",
+      "#CDD6DA",
+      "#B9D7E0",
+      "#F4EFE6"
+    ],
+    "transitions": [
+      "wipe",
+      "blinds",
+      "stripes",
+      "iris",
+      "stripes",
+      "none"
+    ]
+  }
+}

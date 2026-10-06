@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>01-f1 · opening statement → brand reveal</title>
+  </head>
+  <body>
+    <template id="01-f1-template">
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        #stage {
+          --ink: #0f0e0c;
+          --cream: #f4efe6;
+          --cream-muted: #8c877e;
+          --gold: #ceae73;
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: var(--ink);
+          color: var(--cream);
+          font-family: "Paperlogy", sans-serif;
+          -webkit-font-smoothing: antialiased;
+        }
+
+        /* ---------- group containers ---------- */
+        #f1_g1,
+        #f1_g2 {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+        }
+        #f1_g2 {
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        /* ---------- f1_g1 · statement stack (lower-left) ---------- */
+        #f1_g1_stack {
+          position: absolute;
+          left: 104px;
+          right: 104px;
+          top: 612px;
+          display: flex;
+          flex-direction: column;
+        }
+        .f1_g1_mask {
+          overflow: hidden;
+          padding: 12px 0 16px;
+        }
+        .f1_g1_line {
+          display: block;
+          font-size: 96px;
+          font-weight: 800;
+          line-height: 1.05;
+          letter-spacing: -0.03em;
+          white-space: nowrap;
+          word-break: keep-all;
+          color: var(--cream);
+        }
+        #f1_g1_line2 {
+          color: var(--cream-muted);
+        }
+        .f1_g1_ch {
+          display: inline-block;
+        }
+        #f1_g1_rule {
+          position: relative;
+          width: 100%;
+          height: 1px;
+          margin: 14px 0;
+        }
+        #f1_g1_hair {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 1px;
+          background: var(--cream);
+          transform: scaleX(0);
+          transform-origin: 0% 50%;
+        }
+        #f1_g1_stub {
+          position: absolute;
+          left: 0;
+          top: -2px;
+          width: 48px;
+          height: 4px;
+          background: var(--gold);
+          transform: scaleX(0);
+          transform-origin: 0% 50%;
+        }
+
+        /* ---------- f1_g1 · the question (centered h1) ---------- */
+        #f1_g1_q {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        #f1_g1_qwrap {
+          position: relative;
+          display: flex;
+          align-items: baseline;
+          white-space: nowrap;
+        }
+        #f1_g1_qtextbox {
+          position: relative;
+          z-index: 1;
+          display: inline-block;
+        }
+        #f1_g1_qtext {
+          display: inline-block;
+          padding: 0.12em 0;
+          font-size: 150px;
+          font-weight: 800;
+          line-height: 1;
+          letter-spacing: -0.035em;
+          color: var(--cream);
+          word-break: keep-all;
+          clip-path: inset(0% 100% 0% 0%);
+        }
+        #f1_g1_sweep {
+          position: absolute;
+          top: 14%;
+          bottom: 14%;
+          left: 0;
+          width: 100%;
+          opacity: 0;
+          pointer-events: none;
+        }
+        #f1_g1_sweep::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: -3px;
+          width: 6px;
+          background: var(--gold);
+        }
+        #f1_g1_qmark_wrap {
+          position: relative;
+          display: inline-block;
+          margin-left: 0.02em;
+          font-size: 150px;
+          font-weight: 800;
+          line-height: 1;
+        }
+        #f1_g1_qmark {
+          position: relative;
+          z-index: 1;
+          display: inline-block;
+          color: var(--gold);
+          opacity: 0;
+        }
+        .f1_g1_ringshape {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: 220px;
+          height: 220px;
+          margin: -110px 0 0 -110px;
+          border: 3px solid var(--gold);
+          border-radius: 50%;
+          opacity: 0;
+        }
+        .f1_g1_spark {
+          position: absolute;
+          display: block;
+          fill: var(--gold);
+          opacity: 0;
+        }
+
+        /* ---------- f1_g2 · brand reveal ---------- */
+        #f1_g2_iris {
+          position: absolute;
+          left: 840px;
+          top: 262px;
+          width: 240px;
+          height: 240px;
+          border: 3px solid var(--gold);
+          border-radius: 50%;
+          opacity: 0;
+        }
+        #f1_g2_content {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          clip-path: circle(0px at 960px 382px);
+        }
+        #f1_g2_lockup {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+        }
+        #f1_g2_markbox {
+          position: relative;
+          width: 302px;
+          height: 290px;
+          margin-bottom: 52px;
+        }
+        #f1_g2_ring {
+          position: absolute;
+          left: 50%;
+          top: calc(50% - 3.5px);
+          width: 370px;
+          height: 370px;
+          margin: -185px 0 0 -185px;
+          border: 2px solid var(--gold);
+          border-radius: 50%;
+          opacity: 0;
+        }
+        #f1_g2_mark {
+          position: relative;
+          display: block;
+          width: 302px;
+          height: 290px;
+          opacity: 0;
+        }
+        #f1_g2_name {
+          font-size: 96px;
+          font-weight: 800;
+          line-height: 1.05;
+          letter-spacing: -0.03em;
+          color: var(--cream);
+          margin-bottom: 16px;
+          opacity: 0;
+        }
+        #f1_g2_word {
+          font-family: "Montserrat", sans-serif;
+          font-size: 44px;
+          font-weight: 600;
+          line-height: 1.2;
+          letter-spacing: 0.32em;
+          padding-left: 0.32em;
+          text-transform: uppercase;
+          color: var(--gold);
+          margin-bottom: 40px;
+          opacity: 0;
+        }
+        #f1_g2_tag {
+          font-size: 40px;
+          font-weight: 500;
+          line-height: 1.35;
+          color: var(--cream-muted);
+          opacity: 0;
+        }
+      </style>
+
+      <div data-hf-id="hf-q5d8" id="stage" data-composition-id="01-f1" data-width="1920" data-height="1080" data-duration="11">
+        <!-- ===== f1_g1 · held kinetic statement (0 → 8.52) ===== -->
+        <div data-hf-id="hf-4nzp" id="f1_g1">
+          <div data-hf-id="hf-k7go" id="f1_g1_stack">
+            <div data-hf-id="hf-qqrg" class="f1_g1_mask" id="f1_g1_m1">
+              <div data-hf-id="hf-adrb" class="f1_g1_line" id="f1_g1_line1"><span data-hf-id="hf-16yz" class="f1_g1_ch">세</span><span data-hf-id="hf-4m7k" class="f1_g1_ch">상</span><span data-hf-id="hf-ykcj" class="f1_g1_ch">은</span> <span data-hf-id="hf-b1yn" class="f1_g1_ch">매</span><span data-hf-id="hf-nfrr" class="f1_g1_ch">일</span> <span data-hf-id="hf-949r" class="f1_g1_ch">바</span><span data-hf-id="hf-8fc7" class="f1_g1_ch">뀌</span><span data-hf-id="hf-jwbn" class="f1_g1_ch">고</span><span data-hf-id="hf-ojyf" class="f1_g1_ch">,</span></div>
+            </div>
+            <div data-hf-id="hf-rz22" id="f1_g1_rule">
+              <div data-hf-id="hf-2zq4" id="f1_g1_hair"></div>
+              <div data-hf-id="hf-mq70" id="f1_g1_stub"></div>
+            </div>
+            <div data-hf-id="hf-1m93" class="f1_g1_mask" id="f1_g1_m2">
+              <div data-hf-id="hf-1pvg" class="f1_g1_line" id="f1_g1_line2"><span data-hf-id="hf-xzoz" class="f1_g1_ch">배</span><span data-hf-id="hf-xdsb" class="f1_g1_ch">울</span> <span data-hf-id="hf-3j7j" class="f1_g1_ch">건</span> <span data-hf-id="hf-loys" class="f1_g1_ch">끝</span><span data-hf-id="hf-cw39" class="f1_g1_ch">없</span><span data-hf-id="hf-qm7z" class="f1_g1_ch">이</span> <span data-hf-id="hf-c1my" class="f1_g1_ch">쏟</span><span data-hf-id="hf-sjwv" class="f1_g1_ch">아</span><span data-hf-id="hf-n5fz" class="f1_g1_ch">진</span><span data-hf-id="hf-uyen" class="f1_g1_ch">다</span><span data-hf-id="hf-nrcd" class="f1_g1_ch">.</span></div>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-japd" id="f1_g1_q">
+            <div data-hf-id="hf-073t" id="f1_g1_qwrap">
+              <span data-hf-id="hf-pp7s" id="f1_g1_qtextbox"><span data-hf-id="hf-cw97" id="f1_g1_qtext">무엇부터 읽을까</span><span data-hf-id="hf-nf0l" id="f1_g1_sweep"></span></span><span data-hf-id="hf-1l0q" id="f1_g1_qmark_wrap"><span data-hf-id="hf-y3lo" id="f1_g1_ring" class="f1_g1_ringshape"></span><span data-hf-id="hf-lyt0" id="f1_g1_ring_ghost" class="f1_g1_ringshape"></span><span data-hf-id="hf-2rjo" id="f1_g1_qmark">?</span></span>
+              <svg data-hf-id="hf-plc2" id="f1_g1_s1" class="f1_g1_spark" viewBox="-1 -1 2 2" style="left: -3%; top: 6%; width: 30px; height: 30px; margin: -15px 0 0 -15px"><path data-hf-id="hf-wt2n" d="M0,-1 Q0.14,-0.14 1,0 Q0.14,0.14 0,1 Q-0.14,0.14 -1,0 Q-0.14,-0.14 0,-1 Z" /></svg>
+              <svg data-hf-id="hf-3xa7" id="f1_g1_s2" class="f1_g1_spark" viewBox="-1 -1 2 2" style="left: 24%; top: -12%; width: 18px; height: 18px; margin: -9px 0 0 -9px"><path data-hf-id="hf-4gnj" d="M0,-1 Q0.14,-0.14 1,0 Q0.14,0.14 0,1 Q-0.14,0.14 -1,0 Q-0.14,-0.14 0,-1 Z" /></svg>
+              <svg data-hf-id="hf-oe7i" id="f1_g1_s3" class="f1_g1_spark" viewBox="-1 -1 2 2" style="left: 101%; top: -18%; width: 34px; height: 34px; margin: -17px 0 0 -17px"><path data-hf-id="hf-42ci" d="M0,-1 Q0.14,-0.14 1,0 Q0.14,0.14 0,1 Q-0.14,0.14 -1,0 Q-0.14,-0.14 0,-1 Z" /></svg>
+              <svg data-hf-id="hf-71em" id="f1_g1_s4" class="f1_g1_spark" viewBox="-1 -1 2 2" style="left: 108%; top: 80%; width: 20px; height: 20px; margin: -10px 0 0 -10px"><path data-hf-id="hf-3o1h" d="M0,-1 Q0.14,-0.14 1,0 Q0.14,0.14 0,1 Q-0.14,0.14 -1,0 Q-0.14,-0.14 0,-1 Z" /></svg>
+              <svg data-hf-id="hf-btgd" id="f1_g1_s5" class="f1_g1_spark" viewBox="-1 -1 2 2" style="left: 40%; top: 108%; width: 16px; height: 16px; margin: -8px 0 0 -8px"><path data-hf-id="hf-6g6o" d="M0,-1 Q0.14,-0.14 1,0 Q0.14,0.14 0,1 Q-0.14,0.14 -1,0 Q-0.14,-0.14 0,-1 Z" /></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== f1_g2 · brand reveal (8.52 → 11.0) ===== -->
+        <div data-hf-id="hf-8m3q" id="f1_g2">
+          <div data-hf-id="hf-u82t" id="f1_g2_iris" data-layout-ignore=""></div>
+          <div data-hf-id="hf-r8d4" id="f1_g2_content">
+            <div data-hf-id="hf-cvyf" id="f1_g2_lockup">
+              <div data-hf-id="hf-jgvx" id="f1_g2_markbox">
+                <div data-hf-id="hf-3ke3" id="f1_g2_ring"></div>
+                <img data-hf-id="hf-g9jc" id="f1_g2_mark" src="assets/brand/icon.png" alt="골든래빗 로고">
+              </div>
+              <div data-hf-id="hf-wavt" id="f1_g2_name">골든래빗</div>
+              <div data-hf-id="hf-jako" id="f1_g2_word">GOLDEN RABBIT</div>
+              <div data-hf-id="hf-efn9" id="f1_g2_tag">더 탁월한 가치를 제공하는 콘텐츠</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // Frame 1 spans track 0.0 → 11.0, so frame-local time == track time.
+          // Anchors (audiomap): kicks 0.906 / 1.393 / 1.858 / 3.274 / 3.762 / 4.226 / 6.107 / 7.059,
+          // phrase 0 ends + surge downbeat 8.522, perc 9.404, onset desert 10.0 → 11.0.
+          var tl = gsap.timeline({ paused: true });
+          var CREAM = "#F4EFE6";
+          var MUTED = "#8C877E";
+
+          // ---------- group windows (0ms cut at 8.52) ----------
+          tl.set("#f1_g1", { autoAlpha: 1 }, 0);
+          tl.set("#f1_g2", { autoAlpha: 0 }, 0);
+          tl.set("#f1_g1", { autoAlpha: 0 }, 8.52);
+          tl.set("#f1_g2", { autoAlpha: 1 }, 8.52);
+
+          // ================= f1_g1 · held kinetic statement =================
+          // 0.906 — bar-0 downbeat: gold stub bar wipes on (quiet pre-roll)
+          tl.fromTo("#f1_g1_stub", { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: "power3.out" }, 0.906);
+
+          // 1.39 — first real kick: hairline draws across the lower third, line 1 letters in
+          tl.fromTo("#f1_g1_hair", { scaleX: 0 }, { scaleX: 1, duration: 1.3, ease: "expo.out" }, 1.39);
+          tl.fromTo(
+            "#f1_g1_line1 .f1_g1_ch",
+            { yPercent: 110, opacity: 0 },
+            { yPercent: 0, opacity: 1, duration: 0.65, ease: "back.out(1.7)", stagger: 0.045 },
+            1.39,
+          );
+
+          // 1.86 / 4.23 — the paired kicks tap the stub bar
+          [1.858, 4.226].forEach(function (t) {
+            tl.fromTo("#f1_g1_stub", { scaleX: 1 }, { scaleX: 1.8, duration: 0.1, ease: "power2.out", immediateRender: false }, t);
+            tl.fromTo("#f1_g1_stub", { scaleX: 1.8 }, { scaleX: 1, duration: 0.45, ease: "power2.inOut", immediateRender: false }, t + 0.1);
+          });
+
+          // 3.27 — line 2 letters in under the rule (cream-muted) …
+          tl.fromTo(
+            "#f1_g1_line2 .f1_g1_ch",
+            { yPercent: 110, opacity: 0 },
+            { yPercent: 0, opacity: 1, duration: 0.65, ease: "back.out(1.7)", stagger: 0.045 },
+            3.274,
+          );
+          // … 3.76 — and brightens to cream on the next kick
+          tl.fromTo("#f1_g1_line2", { color: MUTED }, { color: CREAM, duration: 0.6, ease: "power2.out", immediateRender: false }, 3.762);
+
+          // ~6.11 — both lines clear upward through their masks; the rule pulls off right
+          tl.fromTo("#f1_g1_line1", { yPercent: 0 }, { yPercent: -130, duration: 0.28, ease: "power2.in" }, 5.8);
+          tl.fromTo("#f1_g1_line2", { yPercent: 0 }, { yPercent: -130, duration: 0.28, ease: "power2.in", immediateRender: false }, 5.85);
+          tl.set("#f1_g1_hair", { transformOrigin: "100% 50%" }, 5.84);
+          tl.fromTo("#f1_g1_hair", { scaleX: 1 }, { scaleX: 0, duration: 0.3, ease: "power3.in", immediateRender: false }, 5.84);
+          tl.fromTo("#f1_g1_stub", { scaleX: 1 }, { scaleX: 0, duration: 0.22, ease: "power2.in", immediateRender: false }, 5.86);
+
+          // 6.11 — the question lands centered: mask wipe + gold sweep (mask-reveal)
+          tl.fromTo(
+            "#f1_g1_qtext",
+            { clipPath: "inset(0% 100% 0% 0%)" },
+            { clipPath: "inset(0% 0% 0% 0%)", duration: 0.8, ease: "expo.out" },
+            6.107,
+          );
+          tl.set("#f1_g1_sweep", { opacity: 1 }, 6.107);
+          tl.fromTo("#f1_g1_sweep", { xPercent: 0 }, { xPercent: 100, duration: 0.8, ease: "expo.out" }, 6.107);
+          tl.to("#f1_g1_sweep", { opacity: 0, duration: 0.3, ease: "power2.in" }, 6.5);
+
+          // gold '?' + ring scaling out behind it
+          tl.fromTo("#f1_g1_ring", { scale: 0.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.72, ease: "expo.out" }, 6.32);
+          tl.fromTo(
+            "#f1_g1_qmark",
+            { scale: 0.2, opacity: 0, rotation: -14 },
+            { scale: 1, opacity: 1, rotation: 0, duration: 0.6, ease: "back.out(2.2)" },
+            6.34,
+          );
+
+          // 7.06 — ring pulses once (with a ripple), sparkles blink on
+          tl.fromTo("#f1_g1_ring", { scale: 1 }, { scale: 1.12, duration: 0.12, ease: "power2.out", immediateRender: false }, 7.059);
+          tl.fromTo("#f1_g1_ring", { scale: 1.12 }, { scale: 1, duration: 0.6, ease: "power2.inOut", immediateRender: false }, 7.179);
+          tl.fromTo(
+            "#f1_g1_ring_ghost",
+            { scale: 1, opacity: 0.7 },
+            { scale: 1.9, opacity: 0, duration: 0.9, ease: "expo.out", immediateRender: false },
+            7.059,
+          );
+          tl.fromTo(
+            ".f1_g1_spark",
+            { scale: 0, rotation: -45, opacity: 0 },
+            { scale: 1, rotation: 0, opacity: 1, duration: 0.45, ease: "back.out(3)", stagger: 0.06 },
+            7.059,
+          );
+
+          // negative-space hold, then a slow push that leans into the 8.0 synth surge
+          tl.fromTo("#f1_g1_qwrap", { scale: 1 }, { scale: 1.025, duration: 0.7, ease: "sine.inOut" }, 7.3);
+          tl.fromTo("#f1_g1_qwrap", { scale: 1.025 }, { scale: 1.06, duration: 0.52, ease: "power2.in", immediateRender: false }, 8.0);
+
+          // ================= f1_g2 · brand reveal =================
+          // 8.52 — surge downbeat: iris ring opens from the mark's center, content irises in
+          tl.fromTo("#f1_g2_iris", { scale: 0.05 }, { scale: 9, duration: 1.1, ease: "expo.out" }, 8.52);
+          tl.fromTo("#f1_g2_iris", { opacity: 1 }, { opacity: 0, duration: 1.1, ease: "power2.in", immediateRender: false }, 8.52);
+          tl.fromTo(
+            "#f1_g2_content",
+            { clipPath: "circle(0px at 960px 382px)" },
+            { clipPath: "circle(1300px at 960px 382px)", duration: 1.0, ease: "expo.out" },
+            8.52,
+          );
+
+          // mark punches in (braam-punch: hit → overshoot → weighted settle)
+          tl.fromTo("#f1_g2_mark", { scale: 0.55, opacity: 0 }, { scale: 1.12, opacity: 1, duration: 0.2, ease: "power4.out" }, 8.52);
+          tl.fromTo("#f1_g2_mark", { scale: 1.12 }, { scale: 1, duration: 0.7, ease: "elastic.out(1, 0.5)", immediateRender: false }, 8.72);
+          tl.fromTo("#f1_g2_ring", { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.0, ease: "expo.out" }, 8.54);
+
+          // name + wordmark rise in under the mark
+          tl.fromTo("#f1_g2_name", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, 8.8);
+          tl.fromTo("#f1_g2_word", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, 8.916);
+
+          // 9.40 — tagline fades up (settled by 10.0)
+          tl.fromTo("#f1_g2_tag", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" }, 9.404);
+
+          // 10.0 → 11.0 onset desert: dead-still hold, only a very slow ring breathe
+          tl.fromTo("#f1_g2_ring", { scale: 1 }, { scale: 1.035, duration: 1.3, ease: "sine.inOut", immediateRender: false }, 9.7);
+
+          window.__timelines["01-f1"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

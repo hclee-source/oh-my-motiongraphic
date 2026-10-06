@@ -1,0 +1,340 @@
+◆  Checking glass-bottle-constellation-mv-v3
+[hyperframes] browserGpuMode probe → hardware (WebGL renderer vendor="Google Inc. (Apple)" renderer="ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)")
+
+Lint
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs01b"> has data-start="1.25" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs01b t=0s
+    Fix: Keep data-start="1.25" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs01c"> has data-start="3.75" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs01c t=0s
+    Fix: Keep data-start="3.75" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs01d"> has data-start="6.56" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs01d t=0s
+    Fix: Keep data-start="6.56" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs03a"> has data-start="31.3" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs03a t=0s
+    Fix: Keep data-start="31.3" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs03b"> has data-start="35.3" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs03b t=0s
+    Fix: Keep data-start="35.3" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs03c"> has data-start="37.43" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs03c t=0s
+    Fix: Keep data-start="37.43" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs03d"> has data-start="40.1" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs03d t=0s
+    Fix: Keep data-start="40.1" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs04a"> has data-start="42.4" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs04a t=0s
+    Fix: Keep data-start="42.4" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs04b"> has data-start="43.5" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs04b t=0s
+    Fix: Keep data-start="43.5" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs04c"> has data-start="45.38" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs04c t=0s
+    Fix: Keep data-start="45.38" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs04d"> has data-start="48.17" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs04d t=0s
+    Fix: Keep data-start="48.17" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs04e"> has data-start="50.95" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs04e t=0s
+    Fix: Keep data-start="50.95" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs04f"> has data-start="53.23" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs04f t=0s
+    Fix: Keep data-start="53.23" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs04g"> has data-start="55.9" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs04g t=0s
+    Fix: Keep data-start="55.9" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs04h"> has data-start="58.64" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs04h t=0s
+    Fix: Keep data-start="58.64" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs04i"> has data-start="62.17" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs04i t=0s
+    Fix: Keep data-start="62.17" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs04j"> has data-start="64.4" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs04j t=0s
+    Fix: Keep data-start="64.4" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs06a"> has data-start="86.55" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs06a t=0s
+    Fix: Keep data-start="86.55" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs06b"> has data-start="87.8" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs06b t=0s
+    Fix: Keep data-start="87.8" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs06c"> has data-start="89.64" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs06c t=0s
+    Fix: Keep data-start="89.64" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs06d"> has data-start="92.47" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs06d t=0s
+    Fix: Keep data-start="92.47" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs06e"> has data-start="95.19" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs06e t=0s
+    Fix: Keep data-start="95.19" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs06f"> has data-start="97.48" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs06f t=0s
+    Fix: Keep data-start="97.48" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs06g"> has data-start="100.16" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs06g t=0s
+    Fix: Keep data-start="100.16" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs06h"> has data-start="102.86" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs06h t=0s
+    Fix: Keep data-start="102.86" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs06i"> has data-start="105.45" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs06i t=0s
+    Fix: Keep data-start="105.45" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs06j"> has data-start="110.65" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs06j t=0s
+    Fix: Keep data-start="110.65" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs06k"> has data-start="114.05" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs06k t=0s
+    Fix: Keep data-start="114.05" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs07a"> has data-start="118.6" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs07a t=0s
+    Fix: Keep data-start="118.6" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs07b"> has data-start="122.4" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs07b t=0s
+    Fix: Keep data-start="122.4" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs08a"> has data-start="128.7" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs08a t=0s
+    Fix: Keep data-start="128.7" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs08b"> has data-start="131.3" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs08b t=0s
+    Fix: Keep data-start="131.3" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs08c"> has data-start="133.73" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs08c t=0s
+    Fix: Keep data-start="133.73" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs08d"> has data-start="136.53" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs08d t=0s
+    Fix: Keep data-start="136.53" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs08e"> has data-start="137.18" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs08e t=0s
+    Fix: Keep data-start="137.18" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs08f"> has data-start="137.67" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs08f t=0s
+    Fix: Keep data-start="137.67" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs08g"> has data-start="138.16" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs08g t=0s
+    Fix: Keep data-start="138.16" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs08h"> has data-start="138.48" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs08h t=0s
+    Fix: Keep data-start="138.48" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs09a"> has data-start="139.0" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs09a t=0s
+    Fix: Keep data-start="139.0" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs11a"> has data-start="154.72" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs11a t=0s
+    Fix: Keep data-start="154.72" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs11b"> has data-start="158.62" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs11b t=0s
+    Fix: Keep data-start="158.62" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs11c"> has data-start="164.17" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs11c t=0s
+    Fix: Keep data-start="164.17" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs13a"> has data-start="180.75" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs13a t=0s
+    Fix: Keep data-start="180.75" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs13b"> has data-start="182.65" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs13b t=0s
+    Fix: Keep data-start="182.65" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs13c"> has data-start="185.25" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs13c t=0s
+    Fix: Keep data-start="185.25" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs13d"> has data-start="186.75" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs13d t=0s
+    Fix: Keep data-start="186.75" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ft_vs13e"> has data-start="188.5" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_vs13e t=0s
+    Fix: Keep data-start="188.5" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ overlapping_gsap_tweens: GSAP tweens overlap on "#ft_dim" for opacity between 118.60s and 118.60s.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/footage.html #ft_dim t=0s
+    Fix: Shorten the earlier tween, move the later tween, or add `overwrite: "auto"`.
+  ⚠ overlapping_gsap_tweens: GSAP tweens overlap on "#f1_star" for scale between 1.21s and 1.22s.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/frames/01-f1.html #f1_star t=0s
+    Fix: Shorten the earlier tween, move the later tween, or add `overwrite: "auto"`.
+  ⚠ composition_heavy_overlay_count_high: This composition has 27 elements carrying "heavy overlay" CSS (filter:blur, radial-gradient, or clip-path). Field signal: a composition with ~40 such elements — including opacity:0 / visibility:hidden ones — captures solid-black for the first ~half of the render, recovering near the end. Reproduces identically via drawElement, forced screenshot capture, and snapshot, so the capture layer itself is the offender (not encoder/mux). Independent of duration. Presence alone matters; only display:none elements are excluded here.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/frames/03-f3.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into per-transition mini-compositions and concat the pieces (FFmpeg or the runtime's slideshow) so each capture only sees a small subset of heavy overlays at once. Even hidden overlays (opacity:0 / visibility:hidden) contribute — either remove truly unused ones from the source or scope them into their own per-transition sub-composition. If an overlay is genuinely inert for the whole clip, use display:none so it never enters the render tree. Field ref ts=1784040753 (#hyperframes-cli-feedback).
+  ⚠ composition_file_too_large: This HTML composition file has 590 lines. Smaller sub-compositions are easier to read, iterate on, and diff.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/frames/04-f4.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into smaller .html files, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently.
+  ⚠ overlapping_gsap_tweens: GSAP tweens overlap on "#f6_w19_3" for y between 3.15s and 3.15s.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/frames/06-f6.html #f6_w19_3 t=0s
+    Fix: Shorten the earlier tween, move the later tween, or add `overwrite: "auto"`.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#f6_w19_3" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/frames/06-f6.html #f6_w19_3 t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 2.93s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#f6_mote" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/frames/06-f6.html #f6_mote t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 7.22s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#f6_ring1" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/frames/06-f6.html #f6_ring1 t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 7.72s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#f6_l20lit" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/frames/06-f6.html #f6_l20lit t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 7.78s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#f6_pool" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/frames/06-f6.html #f6_pool t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 7.78s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#f6_ring2" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/frames/06-f6.html #f6_ring2 t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 9.08s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ composition_heavy_overlay_count_high: This composition has 36 elements carrying "heavy overlay" CSS (filter:blur, radial-gradient, or clip-path). Field signal: a composition with ~40 such elements — including opacity:0 / visibility:hidden ones — captures solid-black for the first ~half of the render, recovering near the end. Reproduces identically via drawElement, forced screenshot capture, and snapshot, so the capture layer itself is the offender (not encoder/mux). Independent of duration. Presence alone matters; only display:none elements are excluded here.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/frames/06-f6.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into per-transition mini-compositions and concat the pieces (FFmpeg or the runtime's slideshow) so each capture only sees a small subset of heavy overlays at once. Even hidden overlays (opacity:0 / visibility:hidden) contribute — either remove truly unused ones from the source or scope them into their own per-transition sub-composition. If an overlay is genuinely inert for the whole clip, use display:none so it never enters the render tree. Field ref ts=1784040753 (#hyperframes-cli-feedback).
+  ⚠ composition_heavy_overlay_count_high: This composition has 39 elements carrying "heavy overlay" CSS (filter:blur, radial-gradient, or clip-path). Field signal: a composition with ~40 such elements — including opacity:0 / visibility:hidden ones — captures solid-black for the first ~half of the render, recovering near the end. Reproduces identically via drawElement, forced screenshot capture, and snapshot, so the capture layer itself is the offender (not encoder/mux). Independent of duration. Presence alone matters; only display:none elements are excluded here.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/frames/07-f7.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into per-transition mini-compositions and concat the pieces (FFmpeg or the runtime's slideshow) so each capture only sees a small subset of heavy overlays at once. Even hidden overlays (opacity:0 / visibility:hidden) contribute — either remove truly unused ones from the source or scope them into their own per-transition sub-composition. If an overlay is genuinely inert for the whole clip, use display:none so it never enters the render tree. Field ref ts=1784040753 (#hyperframes-cli-feedback).
+  ⚠ composition_file_too_large: This HTML composition file has 362 lines. Smaller sub-compositions are easier to read, iterate on, and diff.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/frames/08-f8.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into smaller .html files, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently.
+  ⚠ composition_file_too_large: This HTML composition file has 360 lines. Smaller sub-compositions are easier to read, iterate on, and diff.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/frames/09-f9.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into smaller .html files, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#f10_beam, #f10_beamcore" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/frames/10-f10.html #f10_beam, #f10_beamcore t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 9.04s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ gsap_repeated_fromto_without_baseline: 3 tl.fromTo() calls target "#f10_beamhead" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/frames/10-f10.html #f10_beamhead t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 9.04s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ composition_file_too_large: This HTML composition file has 346 lines. Smaller sub-compositions are easier to read, iterate on, and diff.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/frames/10-f10.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into smaller .html files, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#f12_bride" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/frames/12-f12.html #f12_bride t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 0.05s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#f13_bottle" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/frames/13-f13.html #f13_bottle t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 0.15s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ia_v2"> has data-start="5.15" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/inserts/ia-verse1.html #ia_v2 t=0s
+    Fix: Keep data-start="5.15" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ia_v3"> has data-start="14.65" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/inserts/ia-verse1.html #ia_v3 t=0s
+    Fix: Keep data-start="14.65" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#ia_w1" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/inserts/ia-verse1.html #ia_w1 t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 0s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ib_v2"> has data-start="2.9" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/inserts/ib-verse2.html #ib_v2 t=0s
+    Fix: Keep data-start="2.9" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ib_v3"> has data-start="5.45" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/inserts/ib-verse2.html #ib_v3 t=0s
+    Fix: Keep data-start="5.45" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ib_v4"> has data-start="10.2" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/inserts/ib-verse2.html #ib_v4 t=0s
+    Fix: Keep data-start="10.2" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ nested_media_start_basis_ambiguous: <video id="ib_v5"> has data-start="14.6" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/inserts/ib-verse2.html #ib_v5 t=0s
+    Fix: Keep data-start="14.6" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ composition_heavy_overlay_count_high: This composition has 28 elements carrying "heavy overlay" CSS (filter:blur, radial-gradient, or clip-path). Field signal: a composition with ~40 such elements — including opacity:0 / visibility:hidden ones — captures solid-black for the first ~half of the render, recovering near the end. Reproduces identically via drawElement, forced screenshot capture, and snapshot, so the capture layer itself is the offender (not encoder/mux). Independent of duration. Presence alone matters; only display:none elements are excluded here.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/inserts/ib-verse2.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into per-transition mini-compositions and concat the pieces (FFmpeg or the runtime's slideshow) so each capture only sees a small subset of heavy overlays at once. Even hidden overlays (opacity:0 / visibility:hidden) contribute — either remove truly unused ones from the source or scope them into their own per-transition sub-composition. If an overlay is genuinely inert for the whole clip, use display:none so it never enters the render tree. Field ref ts=1784040753 (#hyperframes-cli-feedback).
+  ⚠ nested_media_start_basis_ambiguous: <video id="ic_v2"> has data-start="5.25" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/inserts/ic-final.html #ic_v2 t=0s
+    Fix: Keep data-start="5.25" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.
+  ⚠ composition_file_too_large: This HTML composition file has 407 lines. Smaller sub-compositions are easier to read, iterate on, and diff.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/inserts/ic-final.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into smaller .html files, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently.
+  ⚠ composition_heavy_overlay_count_high: This composition has 29 elements carrying "heavy overlay" CSS (filter:blur, radial-gradient, or clip-path). Field signal: a composition with ~40 such elements — including opacity:0 / visibility:hidden ones — captures solid-black for the first ~half of the render, recovering near the end. Reproduces identically via drawElement, forced screenshot capture, and snapshot, so the capture layer itself is the offender (not encoder/mux). Independent of duration. Presence alone matters; only display:none elements are excluded here.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/lyrics/s03-pre1.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into per-transition mini-compositions and concat the pieces (FFmpeg or the runtime's slideshow) so each capture only sees a small subset of heavy overlays at once. Even hidden overlays (opacity:0 / visibility:hidden) contribute — either remove truly unused ones from the source or scope them into their own per-transition sub-composition. If an overlay is genuinely inert for the whole clip, use display:none so it never enters the render tree. Field ref ts=1784040753 (#hyperframes-cli-feedback).
+  ⚠ composition_file_too_large: This HTML composition file has 368 lines. Smaller sub-compositions are easier to read, iterate on, and diff.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/lyrics/s04-chorus1.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into smaller .html files, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently.
+  ⚠ composition_heavy_overlay_count_high: This composition has 49 elements carrying "heavy overlay" CSS (filter:blur, radial-gradient, or clip-path). Field signal: a composition with ~40 such elements — including opacity:0 / visibility:hidden ones — captures solid-black for the first ~half of the render, recovering near the end. Reproduces identically via drawElement, forced screenshot capture, and snapshot, so the capture layer itself is the offender (not encoder/mux). Independent of duration. Presence alone matters; only display:none elements are excluded here.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/lyrics/s04-chorus1.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into per-transition mini-compositions and concat the pieces (FFmpeg or the runtime's slideshow) so each capture only sees a small subset of heavy overlays at once. Even hidden overlays (opacity:0 / visibility:hidden) contribute — either remove truly unused ones from the source or scope them into their own per-transition sub-composition. If an overlay is genuinely inert for the whole clip, use display:none so it never enters the render tree. Field ref ts=1784040753 (#hyperframes-cli-feedback).
+  ⚠ composition_heavy_overlay_count_high: This composition has 25 elements carrying "heavy overlay" CSS (filter:blur, radial-gradient, or clip-path). Field signal: a composition with ~40 such elements — including opacity:0 / visibility:hidden ones — captures solid-black for the first ~half of the render, recovering near the end. Reproduces identically via drawElement, forced screenshot capture, and snapshot, so the capture layer itself is the offender (not encoder/mux). Independent of duration. Presence alone matters; only display:none elements are excluded here.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/lyrics/s06-chorus2.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into per-transition mini-compositions and concat the pieces (FFmpeg or the runtime's slideshow) so each capture only sees a small subset of heavy overlays at once. Even hidden overlays (opacity:0 / visibility:hidden) contribute — either remove truly unused ones from the source or scope them into their own per-transition sub-composition. If an overlay is genuinely inert for the whole clip, use display:none so it never enters the render tree. Field ref ts=1784040753 (#hyperframes-cli-feedback).
+  ⚠ overlapping_gsap_tweens: GSAP tweens overlap on "#l08_ja" for x, y between 1.70s and 1.70s.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/lyrics/s08-build.html #l08_ja t=0s
+    Fix: Shorten the earlier tween, move the later tween, or add `overwrite: "auto"`.
+  ⚠ overlapping_gsap_tweens: GSAP tweens overlap on "#l08_leak" for scale between 5.22s and 5.22s.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/lyrics/s08-build.html #l08_leak t=0s
+    Fix: Shorten the earlier tween, move the later tween, or add `overwrite: "auto"`.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#l09_starbloom" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/lyrics/s09-finalA.html #l09_starbloom t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 0s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#l13_halo" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/lyrics/s13-ending.html #l13_halo t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 4.5s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ gsap_repeated_fromto_without_baseline: 2 tl.fromTo() calls target "#l13_bloom" with no stable baseline. The last-authored fromTo "from" values become the element's resting state for any seek before the first tween actually runs, because GSAP applies fromTo from-values at authoring time (immediateRender), not at tween position.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/lyrics/s13-ending.html #l13_bloom t=0s
+    Fix: Add `immediateRender: false` to every fromTo except the earliest-positioned one (at 7.75s), so pre-first-tween seeks keep its "from" values. A hiding `tl.set(..., 0)` baseline trips gsap_timeline_set_initial_hide, and a `gsap.set` authored before the fromTo calls is overwritten by them.
+  ⚠ negative_z_index: `z-index: -1` paints the element behind its nearest stacking context's own content. With no stacking-context ancestor that context is the composition root itself, so an opaque background there hides it entirely: in the DOM, laid out, and absent from the picture. A transparent root leaves it visible. Siblings at `z-index: 0` or above are unaffected.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/lyrics/s13-ending.html .l13-gl t=0s
+    Fix: Give the element's parent a stacking context - `isolation: isolate` is the cheapest, and `transform`, `filter`, `opacity` below 1, `contain: paint` and `will-change` all work too. The negative-z child then paints above that parent's background and renders normally. Or express paint order through DOM order - an earlier sibling paints behind a later one - and raise the elements that should sit in front rather than lowering this one.
+  ⚠ composition_file_too_large: This HTML composition file has 537 lines. Smaller sub-compositions are easier to read, iterate on, and diff.
+    /Users/canine89/Documents/dev/oh-my-motiongraphic/videos/glass-bottle-constellation-mv-v3/compositions/sky.html [data-composition-id] t=0s
+    Fix: Split this sub-composition further into smaller .html files, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently.
+  0 error(s), 88 warning(s), 0 info(s)
+
+Runtime
+  ◇ 0 errors, 0 warnings
+
+Layout
+  ✗ t=43.76-45.03s (5 samples) content_overlap #l04_m1 inside #l04_L7s_kw > span:nth-of-type(2) "나" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ✗ t=48.2-50.74s (9 samples) content_overlap #l04_L9 > div:nth-of-type(1) > span:nth-of-type(5) > span:nth-of-type(2) inside #l04_L9_kw > span:nth-of-type(2) "린" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ✗ t=51.06-53.28s (8 samples) content_overlap #l04_L10 > div:nth-of-type(1) > span:nth-of-type(3) > span:nth-of-type(1) inside #l04_L10_w3 > span:nth-of-type(1) "뜨" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ✗ t=51.06-53.28s (9 samples) content_overlap #l04_L10 > div:nth-of-type(1) > span:nth-of-type(3) > span:nth-of-type(2) inside #l04_L10_w3 > span:nth-of-type(2) "겁" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ✗ t=51.06-53.28s (9 samples) content_overlap #l04_L10 > div:nth-of-type(1) > span:nth-of-type(3) > span:nth-of-type(3) inside #l04_L10_w3 > span:nth-of-type(3) "게" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ✗ t=55.81-58.35s (9 samples) content_overlap #l04_L12_r1 > span:nth-of-type(1) > span:nth-of-type(1) inside #l04_L12_kw > span:nth-of-type(1) "오" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ✗ t=55.81-57.4s (6 samples) content_overlap #l04_L12_kw > span:nth-of-type(1) inside #l04_d0 "병" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ✗ t=87.84-89.43s (6 samples) content_overlap span.l06-mstrokei inside #l06_l21sub "빛나라" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ✗ t=87.84-89.43s (6 samples) content_overlap span.l06-mstrokei inside #l06_kw21 > span:nth-of-type(1) "빛나라" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ⚠ t=50.42-50.74s (2 samples) content_overlap #l04_L9 > div:nth-of-type(1) > span:nth-of-type(5) > span:nth-of-type(1) inside #l04_L9_kw > span:nth-of-type(1) "걸" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ⚠ t=87.84-88.16s (2 samples) content_overlap span.l06-mstrokei inside #l06_mlit "빛나라" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ⚠ t=87.84-88.16s (2 samples) content_overlap #l06_mlit inside #l06_l21sub "빛나라" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ⚠ t=87.84-88.16s (2 samples) content_overlap #l06_mlit inside #l06_kw21 > span:nth-of-type(1) "빛나라" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ⚠ t=88.48-88.8s (2 samples) content_overlap span.l06-mstrokei inside #l06_kw21l "빛나라" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ⚠ t=88.48-88.8s (2 samples) content_overlap #l06_kw21 > span:nth-of-type(1) inside #l06_kw21l "하늘" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ⚠ t=90.7-91.02s (2 samples) content_overlap #l06_kw22 > span:nth-of-type(1) inside #l06_kw22l "별" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ⚠ t=94.5-94.98s (3 samples) content_overlap #l06_kw23 > span:nth-of-type(1) inside #l06_kw23l "빛" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ⚠ t=95.46-97.36s (3 samples) content_overlap #l06_kw24 > span:nth-of-type(1) inside #l06_kw24l "별자리가" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ⚠ t=100.53-100.85s (2 samples) content_overlap #l06_kw26 > span:nth-of-type(1) inside #l06_kw26l "밤" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=10.55s container_overflow #l01_drift inside #el-s01-intro > div:nth-of-type(1) overflowed top 15.96px — Element extends outside a clipping layout container.
+        Fix: Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.
+  ℹ t=31.66s container_overflow #ia_w1 inside #el-ia-verse1 > div:nth-of-type(1) overflowed left 53.1px, right 42.9px, top 44.5px, bottom 9.5px — Element extends outside a clipping layout container.
+        Fix: Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.
+  ℹ t=31.66s container_overflow #ia_w2 inside #el-ia-verse1 > div:nth-of-type(1) overflowed left 70px, right 26px, top 39.5px, bottom 14.5px — Element extends outside a clipping layout container.
+        Fix: Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.
+  ℹ t=31.66s container_overflow #ia_w3 inside #el-ia-verse1 > div:nth-of-type(1) overflowed left 46.75px, right 49.25px, top 40.2px, bottom 13.8px — Element extends outside a clipping layout container.
+        Fix: Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.
+  ℹ t=44.08s content_overlap #l04_m0 inside #l04_L7s_kw > span:nth-of-type(1) "빛" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=57.72s content_overlap #l04_L12_kw > span:nth-of-type(1) inside #l04_d1 "병" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=179.41s container_overflow #id_push inside #el-id-outro > div:nth-of-type(1) overflowed left 41.92px, right 58.69px, top 27.25px, bottom 29.34px — Element extends outside a clipping layout container.
+        Fix: Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.
+  ℹ t=179.41s container_overflow #id_lyrics inside #el-id-outro > div:nth-of-type(1) overflowed top 9.61px — Element extends outside a clipping layout container.
+        Fix: Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.
+  9 error(s), 10 warning(s), 8 info(s)
+
+Motion
+  ◇ 0 errors, 0 warnings
+
+Contrast
+  ◇ 35/35 text checks pass WCAG AA
+
+Snapshots
+  ◇ disabled
+
+◇  Check failed

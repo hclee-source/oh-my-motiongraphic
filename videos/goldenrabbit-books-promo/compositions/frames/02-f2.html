@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <!-- Frame 2 — f2 · track 11.0–16.6s · beat_cut. Head is source metadata only. -->
+  </head>
+  <body>
+    <template id="02-f2-template">
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        /* root — scoped to this frame so sibling frames' #stage rules can't collide */
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #0f0e0c;
+        }
+        #f2_bg {
+          position: absolute;
+          inset: 0;
+          background: #0f0e0c;
+        }
+
+        /* ---------- g1: split stage ---------- */
+        #f2_g1 {
+          position: absolute;
+          inset: 0;
+          font-family: "Paperlogy", sans-serif;
+          color: #f4efe6;
+        }
+        #f2_g1_cam {
+          position: absolute;
+          inset: 0;
+          transform-origin: 50% 50%;
+        }
+
+        /* left — series title (stays put) */
+        #f2_g1_left {
+          position: absolute;
+          left: 104px;
+          top: 96px;
+          bottom: 96px;
+          width: 720px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+        }
+        #f2_g1_kicker {
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 500;
+          font-size: 22px;
+          line-height: 1.2;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: #ceae73;
+        }
+        #f2_g1_tbox {
+          position: relative;
+          margin-top: 28px;
+        }
+        #f2_g1_title {
+          position: relative;
+          z-index: 1;
+          font-weight: 800;
+          font-size: 220px;
+          line-height: 0.95;
+          letter-spacing: -0.04em;
+          color: #f4efe6;
+          white-space: nowrap;
+          transform-origin: 0% 50%;
+        }
+        .f2-tl {
+          display: block;
+        }
+        #f2_g1_q {
+          display: inline-block;
+          color: #ceae73;
+          transform-origin: 50% 85%;
+        }
+        #f2_g1_bar {
+          width: 48px;
+          height: 4px;
+          margin-top: 40px;
+          background: #ceae73;
+          transform-origin: 0% 50%;
+        }
+        #f2_g1_sub {
+          margin-top: 22px;
+          font-weight: 500;
+          font-size: 40px;
+          line-height: 1.35;
+          color: #8c877e;
+        }
+
+        /* gold rings (logo circle) — percussion shapes */
+        .f2-ring {
+          position: absolute;
+          border: 3px solid #ceae73;
+          border-radius: 50%;
+          box-sizing: border-box;
+          pointer-events: none;
+        }
+        #f2_g1_tring {
+          z-index: 0;
+          left: 50%;
+          top: 50%;
+          width: 560px;
+          height: 560px;
+          margin: -280px 0 0 -280px;
+        }
+
+        /* right — one hero cover at a time (cover 380×520, slot centre 1050,540) */
+        #f2_g1_slot {
+          position: absolute;
+          left: 860px;
+          top: 280px;
+          width: 380px;
+          height: 520px;
+        }
+        #f2_g1_cring {
+          left: -140px;
+          top: -70px;
+          width: 660px;
+          height: 660px;
+        }
+        .f2-cover {
+          position: absolute;
+          left: 0;
+          top: 0;
+          display: block;
+          width: 380px;
+          height: 520px;
+          object-fit: cover;
+          border-radius: 6px;
+          box-shadow:
+            0 30px 60px rgba(0, 0, 0, 0.55),
+            0 0 0 1px rgba(255, 255, 255, 0.06);
+        }
+
+        /* caption block beside the cover — 0ms content-swap */
+        #f2_g1_caps {
+          position: absolute;
+          left: 1296px;
+          top: 280px;
+          width: 520px;
+          height: 520px;
+        }
+        .f2-cap {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          align-items: flex-start;
+          padding-bottom: 8px;
+        }
+        .f2-chip {
+          display: inline-block;
+          margin-bottom: 22px;
+          padding: 9px 13px 8px 16px;
+          border-radius: 999px;
+          background: #ceae73;
+          color: #0f0e0c;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 500;
+          font-size: 22px;
+          line-height: 1;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          transform-origin: 0% 50%;
+        }
+        .f2-cap-title {
+          max-width: 520px;
+          font-weight: 800;
+          font-size: 40px;
+          line-height: 1.25;
+          letter-spacing: -0.02em;
+          color: #f4efe6;
+          word-break: keep-all;
+          text-wrap: balance;
+        }
+        .f2-cap-author {
+          margin-top: 14px;
+          font-weight: 500;
+          font-size: 30px;
+          line-height: 1.35;
+          color: #ceae73;
+        }
+
+        /* braam flash */
+        #f2_g1_flash {
+          position: absolute;
+          inset: 0;
+          background: #f4efe6;
+          opacity: 0;
+          pointer-events: none;
+        }
+      </style>
+
+      <div data-hf-id="hf-ibll" id="stage" data-composition-id="02-f2" data-width="1920" data-height="1080" data-duration="5.6">
+        <div data-hf-id="hf-ix4l" id="f2_bg"></div>
+
+        <div data-hf-id="hf-7ok8" id="f2_g1">
+          <div data-hf-id="hf-clz0" id="f2_g1_cam">
+            <div data-hf-id="hf-f9eo" id="f2_g1_left">
+              <div data-hf-id="hf-dav4" id="f2_g1_kicker">SERIES 01</div>
+              <div data-hf-id="hf-71dg" id="f2_g1_tbox">
+                <div data-hf-id="hf-cvfw" id="f2_g1_tring" class="f2-ring" data-layout-ignore=""></div>
+                <div data-hf-id="hf-7rhv" id="f2_g1_title"><span data-hf-id="hf-luwe" class="f2-tl">이게</span><span data-hf-id="hf-txi2" class="f2-tl">되네<span data-hf-id="hf-qsby" id="f2_g1_q">?</span></span></div>
+              </div>
+              <div data-hf-id="hf-mmdi" id="f2_g1_bar"></div>
+              <div data-hf-id="hf-xvi1" id="f2_g1_sub">AI 미친 활용법</div>
+            </div>
+
+            <div data-hf-id="hf-5x32" id="f2_g1_slot" data-layout-allow-overflow="">
+              <div data-hf-id="hf-lk0r" id="f2_g1_cring" class="f2-ring" data-layout-ignore=""></div>
+              <!-- later in DOM = on top: the outgoing cover arcs away over the incoming one -->
+              <img data-hf-id="hf-kkte" id="f2_g1_c3" class="f2-cover" src="assets/covers/ai-product-image.jpg" alt="AI 상품 이미지 만들기 표지">
+              <img data-hf-id="hf-gysl" id="f2_g1_c2" class="f2-cover" src="assets/covers/openclaw50.jpg" alt="오픈클로 미친 활용법 50제 표지">
+              <img data-hf-id="hf-ap7q" id="f2_g1_c1" class="f2-cover" src="assets/covers/gemini81.jpg" alt="제미나이 완전 미친 활용법 81제 표지">
+            </div>
+
+            <div data-hf-id="hf-ikug" id="f2_g1_caps">
+              <div data-hf-id="hf-157a" id="f2_g1_cap1" class="f2-cap">
+                <span data-hf-id="hf-8m01" id="f2_g1_chip1" class="f2-chip">BEST</span>
+                <div data-hf-id="hf-segn" id="f2_g1_ct1" class="f2-cap-title">제미나이 완전 미친 활용법 81제</div>
+                <div data-hf-id="hf-khby" id="f2_g1_ca1" class="f2-cap-author">오힘찬</div>
+              </div>
+              <div data-hf-id="hf-x739" id="f2_g1_cap2" class="f2-cap">
+                <span data-hf-id="hf-puqq" id="f2_g1_chip2" class="f2-chip">BEST</span>
+                <div data-hf-id="hf-ow0w" id="f2_g1_ct2" class="f2-cap-title">오픈클로 미친 활용법 50제</div>
+                <div data-hf-id="hf-fjr7" id="f2_g1_ca2" class="f2-cap-author">한준구</div>
+              </div>
+              <div data-hf-id="hf-wffg" id="f2_g1_cap3" class="f2-cap">
+                <span data-hf-id="hf-scdl" id="f2_g1_chip3" class="f2-chip">NEW</span>
+                <div data-hf-id="hf-d4xh" id="f2_g1_ct3" class="f2-cap-title">AI 상품 이미지 만들기</div>
+                <div data-hf-id="hf-h7b2" id="f2_g1_ca3" class="f2-cap-author">박상균</div>
+              </div>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-c6n8" id="f2_g1_flash" data-layout-ignore=""></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // Frame-local time: local_t = track_t − 11.0
+          // anchors 11.31 / 12.24 / 13.68 / 15.07 / 16.02 → 0.31 / 1.24 / 2.68 / 4.07 / 5.02
+          var A = [0.31, 1.24, 2.68, 4.07, 5.02];
+          var END = 5.6;
+
+          var root = document.querySelector('#stage[data-composition-id="02-f2"]');
+          function $(id) {
+            return (root && root.querySelector("#" + id)) || document.getElementById(id);
+          }
+
+          var tl = gsap.timeline({ paused: true });
+
+          // Seek-safe fromTo: a 0ms set of the from-state at the same position, so a
+          // backward seek past `at` reverts to the held state instead of the from-state.
+          function ft(el, from, to, at) {
+            tl.set(el, Object.assign({}, from), at); // clone: set() mutates its vars
+            to.immediateRender = false;
+            tl.fromTo(el, Object.assign({}, from), to, at);
+          }
+
+          var g1 = $("f2_g1");
+          var cam = $("f2_g1_cam");
+          var kicker = $("f2_g1_kicker");
+          var title = $("f2_g1_title");
+          var q = $("f2_g1_q");
+          var bar = $("f2_g1_bar");
+          var sub = $("f2_g1_sub");
+          var tring = $("f2_g1_tring");
+          var cring = $("f2_g1_cring");
+          var flash = $("f2_g1_flash");
+          var covers = [$("f2_g1_c1"), $("f2_g1_c2"), $("f2_g1_c3")];
+          var caps = [$("f2_g1_cap1"), $("f2_g1_cap2"), $("f2_g1_cap3")];
+          var chips = [$("f2_g1_chip1"), $("f2_g1_chip2"), $("f2_g1_chip3")];
+          var ct1 = $("f2_g1_ct1");
+          var ca1 = $("f2_g1_ca1");
+
+          // rest / entry tilt alternate by index (deterministic)
+          var REST = [-2, 2, -2];
+          var FROMROT = [-8, 8, -8];
+
+          // ---------- group gate (g1 spans the whole frame) ----------
+          tl.set(g1, { autoAlpha: 1 }, 0);
+
+          // ---------- t=0 state ----------
+          // applied immediately (gsap.set) AND recorded at 0 on the timeline, so frame 0
+          // is correct even when the first seek(0) is a no-op on a fresh timeline.
+          function init(el, vars) {
+            gsap.set(el, Object.assign({}, vars));
+            tl.set(el, Object.assign({}, vars), 0);
+          }
+          init(cam, { scale: 1, transformOrigin: "50% 50%" });
+          init(kicker, { autoAlpha: 1 }); // hard cut in on the kicker alone
+          init(title, { autoAlpha: 0, scale: 1.45, transformOrigin: "0% 50%" });
+          init(q, { y: 0, rotation: 0, transformOrigin: "50% 85%" });
+          init(bar, { scaleX: 0, transformOrigin: "0% 50%" });
+          init(sub, { autoAlpha: 0, y: 24 });
+          init(tring, { autoAlpha: 0, scale: 0.45 });
+          init(cring, { autoAlpha: 0, scale: 0.55 });
+          init(flash, { opacity: 0 });
+          for (var i = 0; i < 3; i++) {
+            init(covers[i], { autoAlpha: 0, x: 0, y: 160, scale: 0.7, rotation: FROMROT[i] });
+            init(caps[i], { autoAlpha: 0 });
+            init(chips[i], { scale: 1, transformOrigin: "0% 50%" });
+          }
+          init([ct1, ca1], { autoAlpha: 0, y: 28 });
+
+          // ---------- 0.31 (11.31): braam-punch title slam ----------
+          var T0 = A[0];
+          ft(title, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.05, ease: "none" }, T0 - 0.1);
+          ft(title, { scale: 1.45 }, { scale: 1, duration: 0.1, ease: "power3.in" }, T0 - 0.1);
+          ft(title, { scale: 1 }, { scale: 1.1, duration: 0.08, ease: "power4.out" }, T0);
+          ft(title, { scale: 1.1 }, { scale: 1, duration: 0.7, ease: "elastic.out(1, 0.5)" }, T0 + 0.08);
+          // flash (brand cream, brief)
+          ft(flash, { opacity: 0 }, { opacity: 0.28, duration: 0.04, ease: "none" }, T0);
+          ft(flash, { opacity: 0.28 }, { opacity: 0, duration: 0.28, ease: "power2.out" }, T0 + 0.04);
+          // gold ring kicks out behind the title (replaces braam's glow)
+          ft(tring, { scale: 0.45 }, { scale: 1.2, duration: 0.8, ease: "power3.out" }, T0);
+          ft(tring, { autoAlpha: 0.9 }, { autoAlpha: 0, duration: 0.8, ease: "power2.out" }, T0);
+          // stub bar wipes on the 11.40 hat, sub rises under it
+          ft(bar, { scaleX: 0 }, { scaleX: 1, duration: 0.26, ease: "power3.out" }, 0.4);
+          ft(sub, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: "power3.out" }, 0.46);
+
+          // ---------- cover moves ----------
+          function ringKick(t, dur) {
+            ft(cring, { scale: 0.55 }, { scale: 1.2, duration: dur, ease: "power3.out" }, t);
+            ft(cring, { autoAlpha: 1 }, { autoAlpha: 0, duration: dur, ease: "power2.out" }, t);
+          }
+          function popCover(n, t, holdEnd) {
+            var c = covers[n];
+            tl.set(c, { autoAlpha: 1 }, t);
+            ft(
+              c,
+              { y: 160, scale: 0.7, rotation: FROMROT[n] },
+              { y: 0, scale: 1, rotation: REST[n], duration: 0.55, ease: "back.out(1.8)" },
+              t,
+            );
+            // slow float while it holds
+            ft(c, { y: 0 }, { y: -12, duration: holdEnd - (t + 0.55), ease: "sine.inOut" }, t + 0.55);
+          }
+          // parabolic exit: x accelerates, y decelerates (quad arc), rotation winds up
+          function exitCover(n, t) {
+            var c = covers[n];
+            var d = 0.6;
+            ft(c, { x: 0 }, { x: 1200, duration: d, ease: "power1.in" }, t);
+            ft(c, { y: -12 }, { y: -480, duration: d, ease: "power1.out" }, t);
+            ft(c, { rotation: REST[n] }, { rotation: REST[n] + 32, duration: d, ease: "power1.in" }, t);
+            ft(c, { scale: 1 }, { scale: 0.88, duration: d, ease: "none" }, t);
+            tl.set(c, { autoAlpha: 0 }, t + d);
+          }
+          function swapCaption(n, t) {
+            if (n > 0) tl.set(caps[n - 1], { autoAlpha: 0 }, t); // 0ms content-swap
+            tl.set(caps[n], { autoAlpha: 1 }, t);
+            ft(chips[n], { scale: 0.4 }, { scale: 1, duration: 0.3, ease: "back.out(2.4)" }, t);
+          }
+
+          // 1.24 (12.24): cover 1 pops, ring kicks, caption overlay-pops
+          popCover(0, A[1], A[2]);
+          ringKick(A[1], 0.75);
+          swapCaption(0, A[1]);
+          ft(ct1, { autoAlpha: 0, y: 28 }, { autoAlpha: 1, y: 0, duration: 0.32, ease: "power3.out" }, A[1] + 0.03);
+          ft(ca1, { autoAlpha: 0, y: 28 }, { autoAlpha: 1, y: 0, duration: 0.3, ease: "power3.out" }, A[1] + 0.09);
+
+          // 2.68 (13.68): cover 1 arcs out, cover 2 pops in, caption swaps
+          exitCover(0, A[2]);
+          popCover(1, A[2], A[3]);
+          ringKick(A[2], 0.75);
+          swapCaption(1, A[2]);
+
+          // 4.07 (15.07): same move for cover 3
+          exitCover(1, A[3]);
+          popCover(2, A[3], END);
+          ringKick(A[3], 0.75);
+          swapCaption(2, A[3]);
+
+          // playful '?' hops on the in-between kicks (13.19, 14.14 downbeat)
+          [2.189, 3.141].forEach(function (t) {
+            ft(q, { y: 0, rotation: 0 }, { y: -22, rotation: 10, duration: 0.12, ease: "power2.out" }, t);
+            ft(q, { y: -22, rotation: 10 }, { y: 0, rotation: 0, duration: 0.3, ease: "bounce.out" }, t + 0.12);
+          });
+
+          // ---------- 5.02 (16.02): ring pulse + push-in into the 17s surge ----------
+          ringKick(A[4], 0.55);
+          ft(cam, { scale: 1 }, { scale: 1.04, duration: END - A[4], ease: "power2.in" }, A[4]);
+
+          tl.set(g1, { autoAlpha: 0 }, END);
+
+          window.__timelines["02-f2"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

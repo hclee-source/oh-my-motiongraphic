@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <!-- Frame 8 — f8 · track 118.6–128.7s (10.1s) · phrase_flow · bridge (piano only).
+         Negative space: the full bottle alone in the dark, two whispered vertical columns framing it.
+         Head is source metadata only; the runtime clones only the template contents. -->
+  </head>
+  <body>
+    <template id="08-f8-template">
+      <style>
+        @font-face { font-family: "Noto Serif KR"; src: url("assets/fonts/NotoSerifKR-VF.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: block; }
+        @font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/CormorantGaramond-Italic-VF.woff2") format("woff2"); font-weight: 300 700; font-style: italic; font-display: block; }
+
+        /* ---------- root (plain #stage — the compiler scopes it). Transparent: sky.html paints under us ---------- */
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: transparent;
+          font-family: "Noto Serif KR", serif;
+        }
+        #f8_g1 {
+          position: absolute;
+          inset: 0;
+        }
+
+        /* ---------- camera wrapper: pushes 1 → 1.06 about (960,540) ---------- */
+        #f8_cam {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          transform-origin: 960px 540px;
+        }
+
+        /* ---------- the bottle: SVG 459×620 at left 730.5 / top 250 (center 960,560) ---------- */
+        #f8_bottle {
+          position: absolute;
+          left: 730.5px;
+          top: 250px;
+          width: 459px;
+          height: 620px;
+          opacity: 0;
+        }
+        #f8_shake {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 459px;
+          height: 620px;
+          transform-origin: 50% 93.5%; /* rocks on its base (base ellipse y=505 of 540) */
+        }
+        #f8_svg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          display: block;
+          overflow: visible;
+        }
+        #f8_stars {
+          opacity: 0;
+        }
+
+        /* ---------- whispered vertical columns (縦書き), read right → left ---------- */
+        .f8-col {
+          position: absolute;
+          top: 260px;
+          width: 80px;
+          writing-mode: vertical-rl;
+          text-orientation: upright;
+          display: flex;
+          flex-direction: row; /* main axis = inline axis = top → bottom */
+          align-items: center;
+          gap: 16px; /* word gap (replaces the space glyph, whose vertical advance is 1em) */
+          font-family: "Noto Serif KR", serif;
+          font-weight: 250;
+          font-size: 40px;
+          line-height: 1;
+          letter-spacing: 0.45em;
+          white-space: nowrap;
+          color: #A9B3D6;
+          text-shadow: 0 0 14px rgba(220, 235, 255, 0.25);
+        }
+        #f8_l29 { left: 1300px; } /* column axis x = 1340, right of the bottle */
+        #f8_l30 { left: 520px; }  /* column axis x = 560, left of the bottle */
+        .f8-w {
+          display: block;
+          opacity: 0;
+        }
+        .f8-c {
+          display: inline-block;
+        }
+        /* keyword (유리병): 1.4×, one weight step heavier, gold glow */
+        .f8-kw {
+          font-size: 56px;
+          font-weight: 350;
+          color: #FFF4D6;
+          text-shadow: 0 0 18px rgba(255, 210, 122, 0.45), 0 0 46px rgba(255, 210, 122, 0.18);
+        }
+      </style>
+
+      <div id="stage" data-composition-id="08-f8" data-width="1920" data-height="1080" data-duration="10.1">
+        <div id="f8_g1">
+          <div id="f8_cam" data-layout-allow-overflow>
+
+            <!-- ===== the full bottle (assets/motifs/bottle.svg inlined, XX_ → f8_) ===== -->
+            <div id="f8_bottle" data-layout-ignore>
+              <div id="f8_shake">
+                <svg id="f8_svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 540" width="459" height="620" overflow="visible">
+                  <defs>
+                    <clipPath id="f8_bodyclip">
+                      <path d="M178 74 L178 150 C178 168 160 176 140 186 A170 170 0 1 0 260 186 C240 176 222 168 222 150 L222 74 Z"/>
+                    </clipPath>
+                    <linearGradient id="f8_glassgrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stop-color="#CFE4FF" stop-opacity="0.16"/>
+                      <stop offset="0.55" stop-color="#CFE4FF" stop-opacity="0.04"/>
+                      <stop offset="1" stop-color="#CFE4FF" stop-opacity="0.10"/>
+                    </linearGradient>
+                    <linearGradient id="f8_fillgrad" x1="0" y1="1" x2="0" y2="0">
+                      <stop offset="0" stop-color="#FFD27A" stop-opacity="0.55"/>
+                      <stop offset="1" stop-color="#FFF4D6" stop-opacity="0.18"/>
+                    </linearGradient>
+                    <radialGradient id="f8_glowgrad" cx="0.5" cy="0.5" r="0.5">
+                      <stop offset="0" stop-color="#FFF4D6" stop-opacity="0.95"/>
+                      <stop offset="0.35" stop-color="#FFD27A" stop-opacity="0.45"/>
+                      <stop offset="1" stop-color="#FFD27A" stop-opacity="0"/>
+                    </radialGradient>
+                    <!-- f8 additions: sparkle halo, glass light sweep, the sparkle glyph -->
+                    <radialGradient id="f8_sphalo" cx="0.5" cy="0.5" r="0.5">
+                      <stop offset="0" stop-color="#FFF4D6" stop-opacity="0.85"/>
+                      <stop offset="0.4" stop-color="#FFD27A" stop-opacity="0.3"/>
+                      <stop offset="1" stop-color="#FFD27A" stop-opacity="0"/>
+                    </radialGradient>
+                    <linearGradient id="f8_sweepgrad" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/>
+                      <stop offset="0.5" stop-color="#FFF4D6" stop-opacity="0.34"/>
+                      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+                    </linearGradient>
+                    <g id="f8_spk">
+                      <circle r="2.3" fill="url(#f8_sphalo)" opacity="0.55"/>
+                      <path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6"/>
+                    </g>
+                  </defs>
+
+                  <!-- outer halo (outside the glass) -->
+                  <circle id="f8_halo" cx="200" cy="350" r="250" fill="url(#f8_glowgrad)" opacity="0"/>
+
+                  <!-- glass body -->
+                  <path id="f8_glass" d="M178 74 L178 150 C178 168 160 176 140 186 A170 170 0 1 0 260 186 C240 176 222 168 222 150 L222 74 Z"
+                        fill="url(#f8_glassgrad)" stroke="#DCEBFF" stroke-opacity="0.85" stroke-width="3" stroke-linejoin="round"/>
+
+                  <g clip-path="url(#f8_bodyclip)">
+                    <!-- light level: already FULL in the bridge (scaleY .92 about 200,515) -->
+                    <rect id="f8_fill" x="20" y="186" width="360" height="330" fill="url(#f8_fillgrad)" transform-origin="200 515" transform="scale(1 0.92)"/>
+                    <circle id="f8_glow" cx="200" cy="360" r="160" fill="url(#f8_glowgrad)" opacity="0"/>
+                    <g id="f8_stars">
+                      <use id="f8_sp0" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp1" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp2" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp3" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp4" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp5" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp6" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp7" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp8" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp9" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp10" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp11" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp12" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp13" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp14" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp15" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp16" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp17" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp18" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp19" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp20" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp21" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp22" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp23" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp24" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp25" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp26" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp27" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp28" href="#f8_spk" opacity="0"/>
+                      <use id="f8_sp29" href="#f8_spk" opacity="0"/>
+                    </g>
+                    <!-- one slow light sweep across the glass (wide band + thin glint), clipped to the body -->
+                    <g id="f8_sweep" transform="translate(-170 0)">
+                      <g transform="rotate(14 0 300)">
+                        <rect x="-50" y="-40" width="100" height="640" fill="url(#f8_sweepgrad)"/>
+                        <rect x="62" y="-40" width="16" height="640" fill="url(#f8_sweepgrad)" opacity="0.8"/>
+                      </g>
+                    </g>
+                  </g>
+
+                  <!-- neck rim + base ellipse -->
+                  <ellipse cx="200" cy="74" rx="24" ry="5" fill="none" stroke="#DCEBFF" stroke-opacity="0.9" stroke-width="2.5"/>
+                  <ellipse cx="200" cy="505" rx="92" ry="9" fill="none" stroke="#DCEBFF" stroke-opacity="0.25" stroke-width="2"/>
+
+                  <!-- highlights -->
+                  <g id="f8_shine" fill="none" stroke="#FFFFFF" stroke-linecap="round">
+                    <path d="M86 318 A122 122 0 0 1 146 222" stroke-opacity="0.55" stroke-width="7"/>
+                    <path d="M80 360 A124 124 0 0 0 84 386" stroke-opacity="0.35" stroke-width="6"/>
+                    <path d="M300 440 A120 120 0 0 0 318 404" stroke-opacity="0.22" stroke-width="5"/>
+                    <path d="M186 92 L186 140" stroke-opacity="0.4" stroke-width="4"/>
+                  </g>
+
+                  <!-- cork (stays put in the bridge; f9 pops it) -->
+                  <g id="f8_cork">
+                    <path d="M172 26 Q172 18 180 18 L220 18 Q228 18 228 26 L226 72 Q226 78 220 78 L180 78 Q174 78 174 72 Z" fill="#B98C62"/>
+                    <path d="M180 30 L220 30 M181 44 L219 44 M182 58 L218 58" stroke="#8E6644" stroke-width="2" stroke-opacity="0.6"/>
+                    <path d="M178 22 L178 74" stroke="#E2BE93" stroke-width="3" stroke-opacity="0.5" stroke-linecap="round"/>
+                  </g>
+
+                  <!-- a tiny glint where cork meets glass, on '열면' (if I open it) -->
+                  <use id="f8_rim" href="#f8_spk" transform="translate(226 72) rotate(0) scale(0)"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- ===== L29 (right of the bottle): 가득 찬 유리병을 열면 ===== -->
+            <div id="f8_l29" class="f8-col">
+              <span class="f8-w" id="f8_w29a">가득</span>
+              <span class="f8-w" id="f8_w29b">찬</span>
+              <span class="f8-w" id="f8_w29c"><span class="f8-kw" id="f8_kw29">유리병</span>을</span>
+              <span class="f8-w" id="f8_w29d">열면</span>
+            </div>
+
+            <!-- ===== L30 (left of the bottle): 전부 쏟아질까 무서웠어 ===== -->
+            <div id="f8_l30" class="f8-col">
+              <span class="f8-w" id="f8_w30a"><span class="f8-c">전</span><span class="f8-c">부</span></span>
+              <span class="f8-w" id="f8_w30b"><span class="f8-c">쏟</span><span class="f8-c">아</span><span class="f8-c">질</span><span class="f8-c">까</span></span>
+              <span class="f8-w" id="f8_w30c">무서웠어</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var D = 10.1;     // frame span length (track 118.6 → 128.7)
+          var T0 = 118.6;   // span_sec[0]
+          function L(trackT) { return Math.round((trackT - T0) * 1000) / 1000; }
+
+          // ---- lyric anchors (lyrics.json, track s) → frame-local s ----
+          var L29_ON = L(118.77);   // 0.17  line onset (가득 118.80)
+          var W_CHAN = L(120.05);   // 1.45  찬
+          var W_YURI = L(120.77);   // 2.17  유리병을
+          var W_YEOL = L(122.05);   // 3.45  열면
+          var L29_END = L(123.15);  // 4.55  vocal_end
+          var L30_ON = L(123.27);   // 4.67  line onset (전부 123.31)
+          var W_SSOD = L(123.87);   // 5.27  쏟아질까 → tremble + agitation
+          var W_MUSE = L(126.58);   // 7.98  무서웠어 → glow dims (held breath)
+          var L30_END = L(128.25);  // 9.65  vocal_end
+
+          var STAR = "#FFF4D6", DIM = "#A9B3D6", GLASS = "#DCEBFF";
+
+          function ft(tl, target, from, to, at) {
+            to.immediateRender = false;
+            tl.fromTo(target, from, to, at);
+          }
+          // piecewise keyed property: keys = [[t, v], [t, v, ease], ...]
+          function chain(tl, target, prop, keys) {
+            for (var i = 1; i < keys.length; i++) {
+              var a = keys[i - 1], b = keys[i];
+              var from = {}, to = {};
+              from[prop] = a[1];
+              to[prop] = b[1];
+              to.duration = b[0] - a[0];
+              to.ease = b[2] || "sine.inOut";
+              ft(tl, target, from, to, a[0]);
+            }
+          }
+          function clamp01(x) { return x < 0 ? 0 : (x > 1 ? 1 : x); }
+          function ss(a, b, t) { var x = clamp01((t - a) / (b - a)); return x * x * (3 - 2 * x); }
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ---- g1 spans the whole frame ----
+          tl.set("#f8_g1", { autoAlpha: 1 }, 0);
+
+          // ---- camera: slow push 1 → 1.06 about (960,540); lands (at rest) before the cut ----
+          ft(tl, "#f8_cam", { scale: 1 }, { scale: 1.06, duration: 10.0, ease: "sine.inOut" }, 0);
+
+          // ---- the bottle fades up from darkness, already full ----
+          ft(tl, "#f8_bottle", { opacity: 0 }, { opacity: 1, duration: 1.0, ease: "sine.inOut" }, 0);
+          ft(tl, "#f8_bottle", { y: 14 }, { y: 0, duration: 1.6, ease: "power2.out" }, 0);
+
+          // inner glow: ignite .7 → breathe → stir on 쏟아질까 → held breath on 무서웠어 (.35) → recover to .5
+          chain(tl, "#f8_glow", "opacity", [
+            [0.15, 0], [1.3, 0.7, "sine.out"], [3.3, 0.62], [5.2, 0.7],
+            [5.6, 0.82, "power2.out"], [6.9, 0.7], [W_MUSE, 0.72],
+            [W_MUSE + 0.92, 0.35, "power2.out"], [9.95, 0.5]
+          ]);
+          // outer halo: .35, dips with the breath, back to .35 for the exit
+          chain(tl, "#f8_halo", "opacity", [
+            [0.3, 0], [1.6, 0.35, "sine.out"], [3.4, 0.31], [5.2, 0.35],
+            [5.6, 0.42, "power2.out"], [6.9, 0.35], [W_MUSE, 0.35],
+            [W_MUSE + 0.92, 0.22, "power2.out"], [9.95, 0.35]
+          ]);
+          // the sparkles as a whole: light up, dim with the breath, mostly recover
+          chain(tl, "#f8_stars", "opacity", [
+            [0.35, 0], [1.5, 1, "sine.out"], [W_MUSE, 1],
+            [W_MUSE + 0.92, 0.6, "power2.out"], [9.95, 0.9]
+          ]);
+
+          // ---- one slow light sweep across the glass (~121–123) ----
+          ft(tl, "#f8_sweep",
+            { attr: { transform: "translate(-170 0)" } },
+            { attr: { transform: "translate(560 0)" }, duration: 1.9, ease: "sine.inOut" },
+            2.4);
+
+          // ---- '열면' — a tiny glint where the cork meets the glass ----
+          ft(tl, "#f8_rim",
+            { attr: { transform: "translate(226 72) rotate(0) scale(0)" } },
+            { attr: { transform: "translate(226 72) rotate(12) scale(9)" }, duration: 0.32, ease: "power2.out" },
+            W_YEOL - 0.12);
+          ft(tl, "#f8_rim",
+            { attr: { transform: "translate(226 72) rotate(12) scale(9)" } },
+            { attr: { transform: "translate(226 72) rotate(24) scale(0)" }, duration: 0.7, ease: "power2.in" },
+            W_YEOL + 0.2);
+
+          // ---- 쏟아질까: the bottle trembles on its base (x ±2px, rot ±0.6°, ~1.2s, deterministic) ----
+          var TX = [0, 1.8, -2.0, 1.6, -1.7, 1.3, -1.3, 0.9, -0.8, 0.5, -0.3, 0];
+          var TR = [0, 0.5, -0.6, 0.48, -0.52, 0.4, -0.38, 0.28, -0.22, 0.14, -0.08, 0];
+          var tt = W_SSOD - 0.05;
+          for (var q = 1; q < TX.length; q++) {
+            var dq = (q === 1) ? 0.06 : 0.114;
+            ft(tl, "#f8_shake",
+              { x: TX[q - 1], rotation: TR[q - 1] },
+              { x: TX[q], rotation: TR[q], duration: dq, ease: "sine.inOut" },
+              tt);
+            tt += dq;
+          }
+
+          // ---- lyric words: blur-resolve, each readable by its own onset ----
+          // opacity reaches ~.95 at the onset; blur keeps settling ~0.5s after (the slow whisper fade)
+          function wordIn(id, d, blur0, glint) {
+            var lead = Math.min(0.35, d);
+            var s = d - lead;
+            ft(tl, id, { opacity: 0 }, { opacity: 1, duration: lead / 0.75, ease: "power1.out" }, s);
+            ft(tl, id, { filter: "blur(" + blur0 + "px)" }, { filter: "blur(0px)", duration: Math.max(0.55, 2.4 * lead), ease: "power3.out" }, s);
+            ft(tl, id, { y: -10 }, { y: 0, duration: Math.max(0.8, 2.8 * lead), ease: "power2.out" }, s);
+            if (glint) {
+              ft(tl, id, { color: glint }, { color: DIM, duration: lead + 1.6, ease: "power2.in" }, s);
+            }
+          }
+          // L29 — right column
+          wordIn("#f8_w29a", L29_ON, 4, STAR);
+          wordIn("#f8_w29b", W_CHAN, 6, STAR);
+          wordIn("#f8_w29c", W_YURI, 6, STAR);
+          wordIn("#f8_w29d", W_YEOL, 6, STAR);
+          // keyword 유리병 lights a touch hotter, then settles to text-light.
+          // Starts with the word's (invisible) entrance so fresh and backward seeks render identically.
+          ft(tl, "#f8_kw29",
+            { textShadow: "0 0 26px rgba(255,210,122,0.85), 0 0 64px rgba(255,210,122,0.40)" },
+            { textShadow: "0 0 18px rgba(255,210,122,0.45), 0 0 46px rgba(255,210,122,0.18)", duration: 2.15, ease: "power2.in" },
+            W_YURI - 0.35);
+          // L29 steps back to an echo once L30 begins
+          ft(tl, "#f8_l29", { opacity: 1 }, { opacity: 0.62, duration: 0.8, ease: "sine.inOut" }, L29_END + 0.05);
+
+          // L30 — left column
+          wordIn("#f8_w30a", L30_ON, 6, STAR);
+          wordIn("#f8_w30b", W_SSOD, 6, STAR);
+          wordIn("#f8_w30c", W_MUSE, 8, GLASS); // 무서웠어: a cold glint
+
+          // ---- both columns fade after the last vocal (128.25 → 128.65) ----
+          ft(tl, "#f8_l29", { opacity: 0.62, filter: "blur(0px)" }, { opacity: 0, filter: "blur(3px)", duration: 0.38, ease: "power1.in" }, L30_END + 0.01);
+          ft(tl, "#f8_l30", { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(3px)", duration: 0.38, ease: "power1.in" }, L30_END + 0.01);
+
+          // ---- deterministic driver: sparkle orbits / twinkle / agitation + L30 text wave ----
+          var seed = 0x0808F8 >>> 0;
+          function rnd() { seed = (1664525 * seed + 1013904223) >>> 0; return seed / 4294967296; }
+          var TAU = Math.PI * 2;
+          var CX = 200, CY = 352; // belly center (viewBox units)
+          var SP = [];
+          for (var i = 0; i < 30; i++) {
+            var hero = (i % 6 === 0);
+            var p = {
+              el: document.getElementById("f8_sp" + i),
+              r: hero ? 14 + 92 * Math.sqrt(rnd()) : 16 + 120 * Math.sqrt(rnd()),
+              th: rnd() * TAU,
+              w: (0.04 + 0.08 * rnd()) * (rnd() < 0.8 ? 1 : -1),
+              k: hero ? 8 + 3 * rnd() : 3 + 3.6 * rnd(),
+              P: 1.6 + 1.8 * rnd(),
+              ps: rnd() * TAU,
+              base: hero ? 1 : 0.5 + 0.45 * rnd(),
+              bA: 2 + 4 * rnd(),
+              bP: 3 + 3 * rnd(),
+              bph: rnd() * TAU,
+              J: 4 + 5 * rnd(),
+              fj: 5 + 3 * rnd(),
+              jph: rnd() * TAU,
+              rotA: 6 + 10 * rnd(),
+              rotP: 4 + 4 * rnd()
+            };
+            SP.push(p);
+          }
+          var WAVE = document.querySelectorAll("#f8_l30 .f8-c"); // 전 부 쏟 아 질 까
+
+          function render(t) {
+            // agitation on 쏟아질까: jitter + flicker + a swirl surge
+            var A = ss(W_SSOD - 0.12, W_SSOD + 0.13, t) * (1 - ss(6.05, 7.0, t));
+            var surge = ss(W_SSOD - 0.12, 7.0, t);
+            for (var i = 0; i < SP.length; i++) {
+              var s = SP[i];
+              if (!s.el) continue;
+              var th = s.th + s.w * t + 0.35 * (s.w > 0 ? 1 : -1) * surge;
+              var x = CX + s.r * Math.cos(th) + s.bA * Math.cos(TAU * t / s.bP + s.bph) + A * s.J * Math.sin(TAU * s.fj * t + s.jph);
+              var y = CY + 0.95 * s.r * Math.sin(th) + s.bA * Math.sin(TAU * t / s.bP + s.bph) + A * s.J * Math.cos(TAU * s.fj * 0.87 * t + s.jph * 1.3);
+              var tw = Math.sin(TAU * t / s.P + s.ps);
+              var o = s.base * (0.62 + 0.38 * tw);
+              o = o * (1 + 0.45 * A * Math.sin(TAU * 8.5 * t + s.ps)) + 0.15 * A;
+              o = clamp01(o);
+              var sc = s.k * (1 + 0.12 * Math.sin(TAU * t / s.P + s.ps + 1.1)) * (1 + 0.3 * A);
+              var rot = s.rotA * Math.sin(TAU * t / s.rotP + s.ps);
+              s.el.setAttribute("transform", "translate(" + x.toFixed(2) + " " + y.toFixed(2) + ") rotate(" + rot.toFixed(2) + ") scale(" + sc.toFixed(3) + ")");
+              s.el.setAttribute("opacity", o.toFixed(3));
+            }
+            // text-wave-distort on L30: the column ripples sideways like the light inside
+            var Wv = ss(W_SSOD - 0.05, W_SSOD + 0.23, t) * (1 - ss(W_SSOD + 0.33, 6.9, t));
+            for (var j = 0; j < WAVE.length; j++) {
+              var xo = 2.8 * Wv * Math.sin(TAU * 2.4 * (t - (W_SSOD - 0.05)) + j * 0.7);
+              WAVE[j].style.transform = "translateX(" + xo.toFixed(2) + "px)";
+            }
+          }
+
+          var drv = { t: 0 };
+          tl.fromTo(drv, { t: 0 }, {
+            t: D,
+            duration: D,
+            ease: "none",
+            immediateRender: false,
+            lazy: false,
+            onUpdate: function () { render(drv.t); }
+          }, 0);
+          render(0);
+
+          // ---- frame end (host hard-cuts to f9 here) ----
+          tl.set("#f8_g1", { autoAlpha: 0 }, D);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["08-f8"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

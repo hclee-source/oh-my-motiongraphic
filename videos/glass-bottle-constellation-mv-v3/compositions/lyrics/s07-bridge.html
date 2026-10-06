@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <!-- s07-bridge — transparent lyric/light layer · track 118.60 → 128.70 (10.1 s) · bridge (piano).
+         Over real footage: s07a jar extreme close-up (118.60 → 123.20), s07b she hugs the jar on the hill
+         (dissolves in 122.40 → 123.20). Tiny vertical whispers framing the jar: L29 right of the jar (s07a),
+         L30 left of the girl + jar (s07b). 쏟아질까 trembles; on 무서웠어 the text glow dims while the jar keeps glowing.
+         Light accents sit only on real light: the star cluster in the jar (s07a), one specular glint on the glass
+         shoulder (열면), the jar glow at her chest (s07b, tracked). No drawn objects.
+         Head is source metadata only; the runtime clones only the template contents. -->
+  </head>
+  <body>
+    <template id="l07_template">
+      <style>
+        @font-face { font-family: "Noto Serif KR"; src: url("assets/fonts/NotoSerifKR-VF.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: block; }
+        @font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/CormorantGaramond-Italic-VF.woff2") format("woff2"); font-weight: 300 700; font-style: italic; font-display: block; }
+
+        /* ---------- root: plain #stage, transparent (footage paints under us) ---------- */
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: transparent;
+          font-family: "Noto Serif KR", serif;
+        }
+
+        /* ---------- light accents (real light only) ---------- */
+        .l07-fx {
+          position: absolute;
+          pointer-events: none;
+          opacity: 0;
+        }
+        /* s07a: warm bloom over the star cluster inside the jar (cluster centre ≈ (975,745) → (945,880)) */
+        #l07_bloomA {
+          left: 585px;
+          top: 405px;
+          width: 780px;
+          height: 680px;
+          background: radial-gradient(closest-side, rgba(255, 236, 182, 0.55) 0%, rgba(255, 210, 122, 0.30) 38%, rgba(255, 190, 100, 0.10) 68%, rgba(255, 180, 92, 0) 100%);
+        }
+        /* s07a: one specular glint on the glass shoulder on 열면 (highlight ≈ (1305,444) → (1280,494)) */
+        #l07_glint {
+          left: 1215px;
+          top: 354px;
+          width: 180px;
+          height: 180px;
+        }
+        .l07-glint-core {
+          position: absolute;
+          left: 60px;
+          top: 60px;
+          width: 60px;
+          height: 60px;
+          background: radial-gradient(closest-side, rgba(255, 252, 240, 1) 0%, rgba(255, 244, 214, 0.75) 22%, rgba(255, 210, 122, 0.25) 55%, rgba(255, 210, 122, 0) 100%);
+        }
+        .l07-glint-h {
+          position: absolute;
+          left: 0;
+          top: 89px;
+          width: 180px;
+          height: 2px;
+          background: linear-gradient(90deg, rgba(255, 244, 214, 0) 0%, rgba(255, 244, 214, 0.85) 50%, rgba(255, 244, 214, 0) 100%);
+        }
+        .l07-glint-v {
+          position: absolute;
+          left: 89px;
+          top: 30px;
+          width: 2px;
+          height: 120px;
+          background: linear-gradient(180deg, rgba(255, 244, 214, 0) 0%, rgba(255, 244, 214, 0.8) 50%, rgba(255, 244, 214, 0) 100%);
+        }
+        /* s07b: soft bloom on the jar at her chest (tracked: (1098,478) → (913,435)) */
+        #l07_bloomB {
+          left: 888px;
+          top: 268px;
+          width: 420px;
+          height: 420px;
+          background: radial-gradient(closest-side, rgba(255, 240, 196, 0.62) 0%, rgba(255, 210, 122, 0.34) 32%, rgba(255, 190, 100, 0.10) 64%, rgba(255, 180, 92, 0) 100%);
+        }
+
+        /* ---------- column groups (scrim + column, drift together) ---------- */
+        .l07-group {
+          position: absolute;
+          width: 340px;
+          height: 880px;
+        }
+        #l07_g29 { left: 1470px; top: 50px; }   /* column axis x = 1640 (right of the jar in s07a) */
+        #l07_g30 { left: 480px; top: 60px; }    /* column axis x = 650 (left of the girl + jar in s07b) */
+        .l07-scrim {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 340px;
+          height: 880px;
+          opacity: 0;
+          background: radial-gradient(closest-side, rgba(5, 7, 20, 0.68) 0%, rgba(5, 7, 20, 0.54) 42%, rgba(5, 7, 20, 0.2) 76%, rgba(5, 7, 20, 0) 100%);
+        }
+        .l07-colwrap {
+          position: absolute;
+          left: 130px;
+          width: 80px;
+          height: 680px;
+        }
+        #l07_c29 { top: 120px; }  /* column top y = 170 */
+        #l07_c30 { top: 130px; }  /* column top y = 190 */
+
+        /* ---------- whispered vertical columns (縦書き) ---------- */
+        .l07-col {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 80px;
+          writing-mode: vertical-rl;
+          text-orientation: upright;
+          display: flex;
+          flex-direction: row;      /* main axis = inline axis = top → bottom */
+          align-items: center;
+          gap: 18px;                /* word gap (replaces the space glyph) */
+          font-family: "Noto Serif KR", serif;
+          font-weight: 300;
+          font-size: 40px;
+          line-height: 1;
+          letter-spacing: 0.42em;
+          white-space: nowrap;
+        }
+        /* base copy: frame.md whisper colour + dark halo for legibility over footage */
+        .l07-base {
+          color: #A9B3D6;
+          text-shadow: 0 0 2px rgba(5, 7, 20, 0.9), 0 0 8px rgba(5, 7, 20, 0.75), 0 0 22px rgba(5, 7, 20, 0.55);
+        }
+        /* glow copy: starlight glyphs + frame.md text-light glow, stacked exactly on the base copy */
+        .l07-glow {
+          color: #FFF4D6;
+          text-shadow: 0 0 18px rgba(255, 210, 122, 0.45), 0 0 46px rgba(255, 210, 122, 0.18);
+        }
+        .l07-w {
+          display: block;
+          opacity: 0;
+        }
+        .l07-gi {
+          display: block;
+        }
+        .l07-c {
+          display: inline-block;
+        }
+        /* keyword 유리병: 1.4×, one weight step heavier */
+        .l07-kw {
+          font-size: 56px;
+          font-weight: 400;
+        }
+        .l07-base .l07-kw {
+          color: #FFF4D6;
+        }
+        .l07-glow .l07-kw {
+          text-shadow: 0 0 22px rgba(255, 210, 122, 0.62), 0 0 54px rgba(255, 210, 122, 0.26);
+        }
+      </style>
+
+      <div id="stage" data-composition-id="s07-bridge" data-width="1920" data-height="1080" data-duration="10.1">
+
+        <!-- ===== light accents (on the footage's real light) ===== -->
+        <div id="l07_bloomA" class="l07-fx" data-layout-ignore></div>
+        <div id="l07_glint" class="l07-fx" data-layout-ignore>
+          <div class="l07-glint-core"></div>
+          <div class="l07-glint-h"></div>
+          <div class="l07-glint-v"></div>
+        </div>
+        <div id="l07_bloomB" class="l07-fx" data-layout-ignore></div>
+
+        <!-- ===== L29 (right of the jar, s07a): 가득 찬 유리병을 열면 ===== -->
+        <div id="l07_g29" class="l07-group" data-layout-allow-overlap>
+          <div id="l07_scrim29" class="l07-scrim" data-layout-ignore></div>
+          <div id="l07_c29" class="l07-colwrap" data-layout-allow-overlap>
+            <div id="l07_l29" class="l07-col l07-base">
+              <span class="l07-w l07-w29a">가득</span>
+              <span class="l07-w l07-w29b">찬</span>
+              <span class="l07-w l07-w29c"><span class="l07-kw">유리병</span>을</span>
+              <span class="l07-w l07-w29d">열면</span>
+            </div>
+            <div id="l07_l29g" class="l07-col l07-glow" aria-hidden="true" data-layout-ignore>
+              <span class="l07-w l07-w29a"><span class="l07-gi l07-gi29a">가득</span></span>
+              <span class="l07-w l07-w29b"><span class="l07-gi l07-gi29b">찬</span></span>
+              <span class="l07-w l07-w29c"><span class="l07-gi l07-gi29c"><span class="l07-kw">유리병</span>을</span></span>
+              <span class="l07-w l07-w29d"><span class="l07-gi l07-gi29d">열면</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== L30 (left of the girl + jar, s07b): 전부 쏟아질까 무서웠어 ===== -->
+        <div id="l07_g30" class="l07-group" data-layout-allow-overlap>
+          <div id="l07_scrim30" class="l07-scrim" data-layout-ignore></div>
+          <div id="l07_c30" class="l07-colwrap" data-layout-allow-overlap>
+            <div id="l07_l30" class="l07-col l07-base">
+              <span class="l07-w l07-w30a"><span class="l07-c l07-t0">전</span><span class="l07-c l07-t1">부</span></span>
+              <span class="l07-w l07-w30b"><span class="l07-c l07-t2">쏟</span><span class="l07-c l07-t3">아</span><span class="l07-c l07-t4">질</span><span class="l07-c l07-t5">까</span></span>
+              <span class="l07-w l07-w30c">무서웠어</span>
+            </div>
+            <div id="l07_l30g" class="l07-col l07-glow" aria-hidden="true" data-layout-ignore>
+              <span class="l07-w l07-w30a"><span class="l07-gi l07-gi30a"><span class="l07-c l07-t0">전</span><span class="l07-c l07-t1">부</span></span></span>
+              <span class="l07-w l07-w30b"><span class="l07-gi l07-gi30b"><span class="l07-c l07-t2">쏟</span><span class="l07-c l07-t3">아</span><span class="l07-c l07-t4">질</span><span class="l07-c l07-t5">까</span></span></span>
+              <span class="l07-w l07-w30c"><span class="l07-gi l07-gi30c">무서웠어</span></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <script>
+        (function () {
+          var D = 10.1;     // layer length (track 118.60 → 128.70)
+          var T0 = 118.6;   // track start
+          function L(trackT) { return Math.round((trackT - T0) * 1000) / 1000; }
+
+          // ---- lyric anchors (lyrics.json, track s) → local s ----
+          var W_GADEUK = L(118.80);  // 0.20  가득 (L29 onset 118.77)
+          var W_CHAN   = L(120.05);  // 1.45  찬
+          var W_YURI   = L(120.77);  // 2.17  유리병을
+          var W_YEOL   = L(122.05);  // 3.45  열면
+          var L29_END  = L(123.15);  // 4.55  vocal_end
+          var W_JEONBU = L(123.31);  // 4.71  전부 (L30 onset 123.27)
+          var W_SSOD   = L(123.87);  // 5.27  쏟아질까 → tremble
+          var W_MUSE   = L(126.58);  // 7.98  무서웠어 → text glow dims
+          var L30_END  = L(128.25);  // 9.65  vocal_end
+
+          var tl = gsap.timeline({ paused: true });
+
+          function ft(target, from, to, at) {
+            to.immediateRender = false;
+            tl.fromTo(target, from, to, at);
+          }
+          // piecewise keyed property: keys = [[t, v], [t, v, ease], ...]
+          function chain(target, prop, keys) {
+            for (var i = 1; i < keys.length; i++) {
+              var a = keys[i - 1], b = keys[i];
+              var from = {}, to = {};
+              from[prop] = a[1];
+              to[prop] = b[1];
+              to.duration = b[0] - a[0];
+              to.ease = b[2] || "sine.inOut";
+              ft(target, from, to, a[0]);
+            }
+          }
+          // piecewise linear x/y path: keys = [[t, x, y], ...]
+          function path(target, keys) {
+            for (var i = 1; i < keys.length; i++) {
+              var a = keys[i - 1], b = keys[i];
+              ft(target, { x: a[1], y: a[2] }, { x: b[1], y: b[2], duration: b[0] - a[0], ease: "none" }, a[0]);
+            }
+          }
+
+          // fixed-seed LCG (tremble + flicker) — deterministic
+          var seed = 0x51207 >>> 0;
+          function rnd() { seed = (1664525 * seed + 1013904223) >>> 0; return seed / 4294967296; }
+
+          // ---- word entrance: fully opaque before its onset, blur settles just after, glow glints then settles ----
+          function wordIn(cls, onset, blur0, glowSettle, glowDur) {
+            var lead = Math.min(0.38, onset);
+            var s = Math.max(0, onset - lead);
+            var sel = ".l07-w" + cls;
+            ft(sel, { opacity: 0 }, { opacity: 1, duration: Math.max(0.12, lead * 0.92), ease: "power1.out" }, s);
+            ft(sel, { filter: "blur(" + blur0 + "px)" }, { filter: "blur(0px)", duration: Math.max(0.5, lead * 1.6), ease: "power3.out" }, s);
+            ft(sel, { y: -12 }, { y: 0, duration: Math.max(0.9, lead * 2.6), ease: "power2.out" }, s);
+            ft(".l07-gi" + cls, { opacity: 1 }, { opacity: glowSettle, duration: glowDur, ease: "sine.inOut" }, onset);
+          }
+
+          // =====================================================================
+          // L29 — right column over the jar close-up (s07a)
+          // =====================================================================
+          ft("#l07_scrim29", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "sine.out" }, 0);
+          wordIn("29a", W_GADEUK, 3, 0.58, 1.6);
+          wordIn("29b", W_CHAN, 6, 0.58, 1.6);
+          wordIn("29c", W_YURI, 6, 0.72, 2.0);   // keyword line stays a touch hotter
+          wordIn("29d", W_YEOL, 6, 0.58, 1.4);
+          // slow float (always drift)
+          ft("#l07_g29", { y: 0 }, { y: -8, duration: 5.0, ease: "sine.inOut" }, 0);
+          // gone right after its vocal_end (L30 enters on the opposite side of the jar)
+          ft("#l07_g29", { opacity: 1 }, { opacity: 0, duration: 0.44, ease: "sine.out" }, L29_END + 0.01);
+          ft("#l07_c29", { filter: "blur(0px)" }, { filter: "blur(3px)", duration: 0.44, ease: "power1.in" }, L29_END + 0.01);
+
+          // ---- s07a accent: warm bloom on the star cluster, breathing with the words ----
+          path("#l07_bloomA", [[0, 0, 0], [4.6, -30, 135]]);
+          chain("#l07_bloomA", "opacity", [
+            [0, 0], [1.0, 0.26, "sine.out"], [W_CHAN, 0.24], [W_CHAN + 0.5, 0.3],
+            [W_YURI - 0.2, 0.28], [W_YURI + 0.35, 0.44, "power2.out"], [W_YEOL - 0.1, 0.32],
+            [W_YEOL + 0.3, 0.38, "power2.out"], [4.55, 0, "sine.in"]
+          ]);
+
+          // ---- 열면: one specular glint on the glass shoulder (real highlight), rides the jar's drift ----
+          path("#l07_glint", [[W_YEOL - 0.15, 0, 0], [W_YEOL + 0.7, -26, 52]]);
+          ft("#l07_glint", { scale: 0.2 }, { scale: 1, duration: 0.3, ease: "power2.out" }, W_YEOL - 0.15);
+          ft("#l07_glint", { scale: 1 }, { scale: 0.35, duration: 0.55, ease: "power2.in" }, W_YEOL + 0.15);
+          chain("#l07_glint", "opacity", [
+            [W_YEOL - 0.15, 0], [W_YEOL + 0.12, 0.9, "power2.out"], [W_YEOL + 0.7, 0, "power2.in"]
+          ]);
+
+          // =====================================================================
+          // L30 — left column over the girl hugging the jar (s07b)
+          // =====================================================================
+          ft("#l07_scrim30", { opacity: 0 }, { opacity: 1, duration: 0.55, ease: "sine.inOut" }, 4.2);
+          wordIn("30a", W_JEONBU, 6, 0.62, 1.4);
+          wordIn("30b", W_SSOD, 6, 0.62, 1.6);
+          wordIn("30c", W_MUSE, 8, 0.0, 0.8);    // 무서웠어: a cold glint that dies at once
+          // drift with her (she walks left ~165 px over the shot; the column follows a little)
+          ft("#l07_g30", { x: 0, y: 0 }, { x: -40, y: -6, duration: D - 4.2, ease: "sine.inOut" }, 4.2);
+
+          // ---- 쏟아질까: the column trembles (decaying, deterministic; 전부 sympathetic at 45%) ----
+          var DT = 0.07, N = 20, TR0 = W_SSOD + 0.06;
+          for (var c = 0; c < 6; c++) {
+            var amp = c < 2 ? 0.45 : 1.0;
+            var sel = ".l07-t" + c;
+            var px = 0, py = 0, tt = TR0;
+            for (var k = 1; k <= N; k++) {
+              var env = Math.sin(Math.PI * 0.5 * Math.min(1, k / 3)) * Math.pow(1 - k / N, 1.3);
+              var sgn = ((k + c) % 2) ? 1 : -1;
+              var nx = (k === N) ? 0 : sgn * amp * 4.2 * env * (0.55 + 0.45 * rnd());
+              var ny = (k === N) ? 0 : amp * 1.8 * env * (rnd() * 2 - 1);
+              ft(sel, { x: px, y: py }, { x: nx, y: ny, duration: DT, ease: "sine.inOut" }, tt);
+              px = nx; py = ny; tt += DT;
+            }
+          }
+
+          // ---- 무서웠어: the text glow dims (held breath) while the jar keeps glowing ----
+          ft("#l07_l30g", { opacity: 1 }, { opacity: 0.08, duration: 1.05, ease: "power2.out" }, W_MUSE - 0.06);
+          ft("#l07_l30", { opacity: 1 }, { opacity: 0.9, duration: 1.05, ease: "power2.out" }, W_MUSE - 0.06);
+
+          // ---- out after the last vocal (128.25 → 128.65), clean before the build ----
+          ft("#l07_g30", { opacity: 1 }, { opacity: 0, duration: 0.4, ease: "power1.in" }, L30_END + 0.01);
+          ft("#l07_c30", { filter: "blur(0px)" }, { filter: "blur(3px)", duration: 0.4, ease: "power1.in" }, L30_END + 0.01);
+
+          // ---- s07b accent: soft bloom on the jar at her chest (tracked centroid of the real glow) ----
+          var JX = 1098, JY = 478; // bloom's authored centre
+          var JP = [
+            [4.0, 1098, 478], [4.7, 1094, 484], [5.3, 1087, 505], [5.9, 1057, 518], [6.5, 1033, 512],
+            [7.1, 1015, 494], [7.7, 994, 488], [8.3, 977, 485], [8.9, 950, 465], [9.5, 935, 450], [10.1, 913, 435]
+          ];
+          var JK = [];
+          for (var j = 0; j < JP.length; j++) { JK.push([JP[j][0], JP[j][1] - JX, JP[j][2] - JY]); }
+          path("#l07_bloomB", JK);
+          // in with the dissolve, flicker with the tremble, swell as the text dims, out with the last word
+          var BK = [[4.0, 0], [4.9, 0.3, "sine.out"], [W_SSOD, 0.3]];
+          var ft0 = W_SSOD, FN = 15, FDT = 0.09;
+          for (var f = 1; f <= FN; f++) {
+            var fenv = Math.pow(1 - f / FN, 1.1);
+            BK.push([ft0 + f * FDT, (f === FN) ? 0.3 : 0.3 + 0.13 * fenv * (rnd() * 2 - 1), "sine.inOut"]);
+          }
+          BK.push([W_MUSE - 0.06, 0.3]);
+          BK.push([W_MUSE + 0.95, 0.44, "sine.out"]);
+          BK.push([L30_END, 0.42]);
+          BK.push([10.05, 0, "sine.in"]);
+          chain("#l07_bloomB", "opacity", BK);
+
+          // hold the layer's full length (host clip owns visibility)
+          tl.set({}, {}, D);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s07-bridge"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

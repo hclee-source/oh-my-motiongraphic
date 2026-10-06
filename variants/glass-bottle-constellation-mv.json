@@ -1,0 +1,25 @@
+{
+  "name": "glass-bottle-constellation-mv",
+  "kind": "lyric-music-video",
+  "style": "night-sky lyric MV (J-pop kinetic typography, Noto Serif KR)",
+  "aspect": "16:9",
+  "fps": 30,
+  "hud": false,
+  "message": "유리병에 모아 둔 말 못 한 마음(별)이, 마지막에 별자리가 되어 날아간다",
+  "destination": "youtube",
+  "bgm": {
+    "file": "유리병 별자리.mp3",
+    "start": 0,
+    "duration": 189.96,
+    "source": "user (Suno)"
+  },
+  "notes": "Full-song lyric MV. 13 frames over an orchestrator-owned sky layer (compositions/sky.html) + grain/vignette overlay. Lyrics force-aligned (Demucs vocals + MMS_FA) into lyrics.json. No meta info on screen per user request.",
+  "outputs": [
+    {
+      "file": "videos/glass-bottle-constellation-mv/renders/glass-bottle-constellation-mv.mp4",
+      "duration": 189.966667,
+      "quality": "delivery",
+      "rendered": "2026-10-03T12:13:14"
+    }
+  ]
+}

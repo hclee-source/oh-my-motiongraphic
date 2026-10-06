@@ -1,0 +1,86 @@
+{
+  "name": "goldenrabbit-books-promo",
+  "style": "editorial-gold",
+  "seed": 1,
+  "intensity": "calm",
+  "hud": false,
+  "copy": {
+    "hook": [
+      "세상은 매일 바뀌고,",
+      "배울 건 끝없이 쏟아진다.",
+      "무엇부터 읽을까?"
+    ],
+    "finale": {
+      "line": "당신의 다음 한 권",
+      "cta": "goldenrabbit.co.kr"
+    }
+  },
+  "notes": "v1 — built 2026-10-02 before this skill existed (hand-planned storyboard)",
+  "aspect": "16:9",
+  "fps": 30,
+  "bgm": {
+    "id": "470",
+    "start": 34.99,
+    "duration": 46.6,
+    "fade": 1.0,
+    "license": "Mixkit Stock Music Free License",
+    "title": "Golden Storm — Diego Nava"
+  },
+  "series": [
+    {
+      "label": "SERIES 01",
+      "name": "이게 되네?",
+      "books": [
+        "9791194383796",
+        "9791124516034",
+        "9791124516799"
+      ]
+    },
+    {
+      "label": "SERIES 02",
+      "name": "바로바로",
+      "books": [
+        "9791124516133",
+        "9791124516294",
+        "9791124516218",
+        "pre_aiyle0zs"
+      ]
+    },
+    {
+      "label": "SERIES 03",
+      "name": "요즘 개발",
+      "books": [
+        "9791194383475",
+        "9791124516195"
+      ]
+    },
+    {
+      "label": "SERIES 04",
+      "name": "빠따",
+      "books": [
+        "9791124516614",
+        "9791124516638",
+        "9791124516317",
+        "9791124516539"
+      ]
+    },
+    {
+      "label": "SERIES 05",
+      "name": "INSIGHT",
+      "books": [
+        "9791194383895",
+        "9791124516652",
+        "9791194383932"
+      ]
+    }
+  ],
+  "message": "골든래빗 — 시리즈별 대표 도서",
+  "destination": "youtube",
+  "outputs": [
+    {
+      "file": "videos/goldenrabbit-books-promo/renders/goldenrabbit-books-promo.mp4",
+      "duration": 46.6,
+      "quality": "delivery"
+    }
+  ]
+}

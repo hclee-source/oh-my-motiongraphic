@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "preferences": {
+    "aspect": {
+      "value": "1920x1080",
+      "confirmed_in": [
+        "goldenrabbit-books-promo"
+      ],
+      "updated_at": "2026-10-01T22:55:08.974Z"
+    },
+    "destination": {
+      "value": "youtube",
+      "confirmed_in": [
+        "goldenrabbit-books-promo"
+      ],
+      "updated_at": "2026-10-01T22:55:09.004Z"
+    },
+    "language": {
+      "value": "ko",
+      "confirmed_in": [
+        "goldenrabbit-books-promo"
+      ],
+      "updated_at": "2026-10-01T22:55:09.032Z"
+    },
+    "flow": {
+      "value": "automation",
+      "confirmed_in": [
+        "goldenrabbit-books-promo"
+      ],
+      "updated_at": "2026-10-01T22:55:09.059Z"
+    },
+    "storyboard": {
+      "value": "no",
+      "confirmed_in": [
+        "goldenrabbit-books-promo"
+      ],
+      "updated_at": "2026-10-01T22:55:09.087Z"
+    }
+  },
+  "sightings": {}
+}

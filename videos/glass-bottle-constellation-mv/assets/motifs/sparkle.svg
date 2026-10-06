@@ -1,0 +1,7 @@
+<!-- The star glyph of this MV: a 4-point sparkle, unit size (spans -1..1). Use it inline as
+     <path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z"/>
+     and scale it with transform (e.g. scale(14)). Fill #FFF4D6, optional halo = a circle r≈2.2 with the glow gradient behind it.
+     Small background stars are plain round dots, NOT sparkles; the sparkle is reserved for "collected"/hero stars. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1.2 -1.2 2.4 2.4" width="96" height="96">
+  <path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6"/>
+</svg>

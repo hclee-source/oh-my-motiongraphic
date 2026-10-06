@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <!-- Frame 3 — f3 · track 11.01–16.00s (4.99s) · beat_cut · BOOK3D-OPEN + DEPTH-TYPE + STAT-RING · BARO 02 클로드.
+         Head is source metadata only; the runtime clones only the template contents. -->
+  </head>
+  <body>
+    <template id="03-f3-template">
+      <style>
+        @font-face { font-family: "Gmarket Sans"; src: url("assets/fonts/GmarketSansBold.otf") format("opentype"); font-weight: 700; font-display: block; }
+        @font-face { font-family: "Gmarket Sans"; src: url("assets/fonts/GmarketSansMedium.otf") format("opentype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Gmarket Sans"; src: url("assets/fonts/GmarketSansLight.otf") format("opentype"); font-weight: 300; font-display: block; }
+
+        /* ---------- root (plain #stage — the compiler scopes it) ---------- */
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #F1CBB3;
+          font-family: "Gmarket Sans", sans-serif;
+          color: #1B1A1F;
+        }
+        #f3_g1 {
+          position: absolute;
+          inset: 0;
+        }
+
+        /* ---------- DEPTH-TYPE: the Latin word sits behind the book (outside the 3D scene) ---------- */
+        #f3_behind {
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        #f3_behind_w {
+          display: block;
+          font-family: "Outfit", sans-serif;
+          font-weight: 700;
+          font-size: 430px;
+          line-height: 1;
+          letter-spacing: -0.02em;
+          white-space: nowrap;
+          color: rgba(98, 42, 14, 0.14);
+        }
+
+        /* ---------- left column: kicker / display title / sub ---------- */
+        #f3_col {
+          position: absolute;
+          left: 140px;
+          top: 96px;
+          bottom: 96px;
+          z-index: 2;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+        }
+        #f3_kick {
+          font-weight: 700;
+          font-size: 76px;
+          line-height: 1.12;
+          letter-spacing: -0.02em;
+          white-space: nowrap;
+          color: #622A0E;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f3_title {
+          margin-top: 6px;
+          font-weight: 700;
+          font-size: 200px;
+          line-height: 1;
+          letter-spacing: -0.04em;
+          white-space: nowrap;
+          color: #1B1A1F;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f3_sub {
+          margin-top: 34px;
+          font-weight: 500;
+          font-size: 34px;
+          line-height: 1.4;
+          letter-spacing: -0.01em;
+          white-space: nowrap;
+          color: #1B1A1F;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f3-sep {
+          color: #622A0E;
+        }
+
+        /* ---------- CSS-3D book (recipes/book3d.md, fN → f3, DEEP = #622A0E) ---------- */
+        .f3-bk-scene { position: absolute; left: 1180px; top: 560px; width: 0; height: 0; perspective: 2200px; z-index: 3; }
+        .f3-bk-shadow { position: absolute; left: -260px; top: 250px; width: 520px; height: 70px; border-radius: 50%;
+          background: rgba(40, 25, 15, 0.30); filter: blur(22px); }
+        .f3-bk-book { position: absolute; left: -210px; top: -287px; width: 420px; height: 574px; transform-style: preserve-3d; }
+        .f3-bk-book > div, .f3-bk-hinge > div { position: absolute; }
+        .f3-bk-back   { inset: 0; background: #622A0E; transform: rotateY(180deg) translateZ(24px); }
+        .f3-bk-spine  { left: 186px; top: 0; width: 48px; height: 574px; background: #622A0E; transform: rotateY(-90deg) translateZ(210px);
+          display: flex; align-items: center; justify-content: center; color: #F4EFE6; font: 700 22px "Gmarket Sans"; writing-mode: vertical-rl; }
+        .f3-bk-edge   { left: 186px; top: 0; width: 48px; height: 574px; transform: rotateY(90deg) translateZ(210px);
+          background: repeating-linear-gradient(90deg, #FBF8F2 0 2px, #E4DCCD 2px 3px); }
+        .f3-bk-top    { left: 0; top: 263px; width: 420px; height: 48px; transform: rotateX(90deg) translateZ(287px);
+          background: repeating-linear-gradient(0deg, #FBF8F2 0 2px, #E4DCCD 2px 3px); }
+        .f3-bk-bottom { left: 0; top: 263px; width: 420px; height: 48px; transform: rotateX(-90deg) translateZ(287px); background: #E9E1D2; }
+        .f3-bk-page   { inset: 0; background: #FBF8F2; transform: translateZ(22px); display: flex; align-items: center; justify-content: center;
+          color: #622A0E; font: 700 44px/1.25 "Gmarket Sans"; text-align: center; }
+        .f3-bk-hinge  { inset: 0; transform-origin: 0% 50%; transform: translateZ(24px); transform-style: preserve-3d; }
+        .f3-bk-front  { inset: 0; width: 420px; height: 574px; object-fit: cover; backface-visibility: hidden; }
+        .f3-bk-inside { inset: 0; background: #F4EFE6; transform: rotateY(180deg); backface-visibility: hidden; }
+
+        /* ---------- page 1 content: dotted stat ring + count-up (flat 2D, children of the page face) ---------- */
+        .f3-pg {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .f3-ring {
+          position: relative;
+          width: 314px;
+          height: 314px;
+        }
+        .f3-dw {
+          position: absolute;
+          left: 150px;
+          top: 150px;
+          display: block;
+          width: 14px;
+          height: 14px;
+        }
+        .f3-dot,
+        .f3-dotf {
+          position: absolute;
+          inset: 0;
+          display: block;
+          border-radius: 50%;
+        }
+        .f3-dot {
+          background: rgba(98, 42, 14, 0.16);
+        }
+        .f3-dotf {
+          background: #622A0E;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f3_num {
+          position: absolute;
+          inset: 0;
+          display: block;
+        }
+        .f3-nv {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: "Space Mono", monospace;
+          font-weight: 700;
+          font-size: 132px;
+          line-height: 1;
+          letter-spacing: -0.04em;
+          font-variant-numeric: tabular-nums;
+          color: #1B1A1F;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f3_n0 {
+          visibility: inherit;
+          opacity: 1;
+        }
+        #f3_plabel {
+          margin-top: 30px;
+          font-family: "Gmarket Sans", sans-serif;
+          font-weight: 700;
+          font-size: 38px;
+          line-height: 1.2;
+          letter-spacing: -0.02em;
+          color: #622A0E;
+          visibility: hidden;
+          opacity: 0;
+        }
+
+        /* ---------- stickers (rounded pills, soft shadow only) ---------- */
+        .f3-stk {
+          position: absolute;
+          z-index: 4;
+          display: block;
+          padding: 16px 32px 13px;
+          border-radius: 999px;
+          font-size: 38px;
+          line-height: 1;
+          white-space: nowrap;
+          color: #F4EFE6;
+          box-shadow: 0 14px 34px rgba(27, 26, 31, 0.18);
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f3_best {
+          left: 1560px;
+          top: 146px;
+          background: #5B5BF0;
+          font-family: "Outfit", sans-serif;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+        }
+        #f3_author {
+          left: 1496px;
+          top: 892px;
+          background: #622A0E;
+          font-family: "Gmarket Sans", sans-serif;
+          font-weight: 700;
+          letter-spacing: -0.01em;
+        }
+      </style>
+
+      <div id="stage" data-composition-id="03-f3" data-width="1920" data-height="1080" data-duration="4.99">
+
+        <!-- g1 · free_design · track 11.01–16.00 (local 0–4.99) -->
+        <div id="f3_g1">
+
+          <!-- DEPTH-TYPE: behind the book in z-order, outside the 3D scene -->
+          <div id="f3_behind" data-layout-allow-overlap="">
+            <span id="f3_behind_w" aria-hidden="true" data-layout-allow-overlap="" data-layout-ignore="">CLAUDE</span>
+          </div>
+
+          <!-- left column -->
+          <div id="f3_col">
+            <div id="f3_kick">바로바로</div>
+            <div id="f3_title">클로드</div>
+            <div id="f3_sub">with 코워크 <span class="f3-sep">·</span> 스킬 <span class="f3-sep">·</span> 클로드 코드 <span class="f3-sep">·</span> 디자인</div>
+          </div>
+
+          <!-- hero 3D book -->
+          <div class="f3-bk-scene" id="f3_bk_scene" data-layout-ignore="">
+            <div class="f3-bk-shadow" id="f3_bk_shadow"></div>
+            <div class="f3-bk-book" id="f3_book">
+              <div class="f3-bk-back"></div>
+              <div class="f3-bk-spine">바로바로 클로드</div>
+              <div class="f3-bk-edge"></div>
+              <div class="f3-bk-top"></div>
+              <div class="f3-bk-bottom"></div>
+              <div class="f3-bk-page">
+                <!-- page 1: dotted stat ring (40 dots) + Space Mono count-up -->
+                <div class="f3-pg" id="f3_pg">
+                  <div class="f3-ring" id="f3_ring">
+                    <span class="f3-dw" style="transform: rotate(0deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d0"></span></span>
+                    <span class="f3-dw" style="transform: rotate(9deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d1"></span></span>
+                    <span class="f3-dw" style="transform: rotate(18deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d2"></span></span>
+                    <span class="f3-dw" style="transform: rotate(27deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d3"></span></span>
+                    <span class="f3-dw" style="transform: rotate(36deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d4"></span></span>
+                    <span class="f3-dw" style="transform: rotate(45deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d5"></span></span>
+                    <span class="f3-dw" style="transform: rotate(54deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d6"></span></span>
+                    <span class="f3-dw" style="transform: rotate(63deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d7"></span></span>
+                    <span class="f3-dw" style="transform: rotate(72deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d8"></span></span>
+                    <span class="f3-dw" style="transform: rotate(81deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d9"></span></span>
+                    <span class="f3-dw" style="transform: rotate(90deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d10"></span></span>
+                    <span class="f3-dw" style="transform: rotate(99deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d11"></span></span>
+                    <span class="f3-dw" style="transform: rotate(108deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d12"></span></span>
+                    <span class="f3-dw" style="transform: rotate(117deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d13"></span></span>
+                    <span class="f3-dw" style="transform: rotate(126deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d14"></span></span>
+                    <span class="f3-dw" style="transform: rotate(135deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d15"></span></span>
+                    <span class="f3-dw" style="transform: rotate(144deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d16"></span></span>
+                    <span class="f3-dw" style="transform: rotate(153deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d17"></span></span>
+                    <span class="f3-dw" style="transform: rotate(162deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d18"></span></span>
+                    <span class="f3-dw" style="transform: rotate(171deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d19"></span></span>
+                    <span class="f3-dw" style="transform: rotate(180deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d20"></span></span>
+                    <span class="f3-dw" style="transform: rotate(189deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d21"></span></span>
+                    <span class="f3-dw" style="transform: rotate(198deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d22"></span></span>
+                    <span class="f3-dw" style="transform: rotate(207deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d23"></span></span>
+                    <span class="f3-dw" style="transform: rotate(216deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d24"></span></span>
+                    <span class="f3-dw" style="transform: rotate(225deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d25"></span></span>
+                    <span class="f3-dw" style="transform: rotate(234deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d26"></span></span>
+                    <span class="f3-dw" style="transform: rotate(243deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d27"></span></span>
+                    <span class="f3-dw" style="transform: rotate(252deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d28"></span></span>
+                    <span class="f3-dw" style="transform: rotate(261deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d29"></span></span>
+                    <span class="f3-dw" style="transform: rotate(270deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d30"></span></span>
+                    <span class="f3-dw" style="transform: rotate(279deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d31"></span></span>
+                    <span class="f3-dw" style="transform: rotate(288deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d32"></span></span>
+                    <span class="f3-dw" style="transform: rotate(297deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d33"></span></span>
+                    <span class="f3-dw" style="transform: rotate(306deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d34"></span></span>
+                    <span class="f3-dw" style="transform: rotate(315deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d35"></span></span>
+                    <span class="f3-dw" style="transform: rotate(324deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d36"></span></span>
+                    <span class="f3-dw" style="transform: rotate(333deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d37"></span></span>
+                    <span class="f3-dw" style="transform: rotate(342deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d38"></span></span>
+                    <span class="f3-dw" style="transform: rotate(351deg) translateY(-150px)"><span class="f3-dot"></span><span class="f3-dotf" id="f3_d39"></span></span>
+                    <div id="f3_num">
+                      <span class="f3-nv" id="f3_n0">0</span>
+                      <span class="f3-nv" id="f3_n1">12</span>
+                      <span class="f3-nv" id="f3_n2">23</span>
+                      <span class="f3-nv" id="f3_n3">33</span>
+                      <span class="f3-nv" id="f3_n4">42</span>
+                      <span class="f3-nv" id="f3_n5">50</span>
+                      <span class="f3-nv" id="f3_n6">58</span>
+                      <span class="f3-nv" id="f3_n7">64</span>
+                      <span class="f3-nv" id="f3_n8">69</span>
+                      <span class="f3-nv" id="f3_n9">74</span>
+                      <span class="f3-nv" id="f3_n10">77</span>
+                      <span class="f3-nv" id="f3_n11">80</span>
+                      <span class="f3-nv" id="f3_n12">81</span>
+                      <span class="f3-nv" id="f3_n13">82</span>
+                    </div>
+                  </div>
+                  <div id="f3_plabel">가지 실습</div>
+                </div>
+              </div>
+              <div class="f3-bk-hinge" id="f3_bk_hinge">
+                <img class="f3-bk-front" src="assets/covers/9791124516133.jpg" alt="바로바로 클로드 with 코워크, 스킬, 클로드 코드, 디자인" />
+                <div class="f3-bk-inside"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- stickers (pop on the 15.21 kick) -->
+          <div class="f3-stk" id="f3_best">BEST</div>
+          <div class="f3-stk" id="f3_author">차진우</div>
+
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var D = 4.99;    // frame span length (track 11.01 → 16.00)
+          var T0 = 11.01;  // span_sec[0]
+          function L(trackT) { return Math.round((trackT - T0) * 1000) / 1000; }
+
+          // audiomap anchors → frame-local seconds
+          var A_KICK = L(11.45);  // 0.44  book turns in, column slides in
+          var A_SPIN = L(11.96);  // 0.95  full 360° spin
+          var A_LAND = L(13.0);   // 1.99  spin lands on the downbeat
+          var A_OPEN = L(13.49);  // 2.48  cover opens on the hinge
+          var A_LOCK = L(14.0);   // 2.99  count locks on 82 → HOLD starts
+          var A_POP = L(15.21);   // 4.20  stickers pop (hold ends)
+
+          var SCALE = 1.05;       // book scale (GSAP scale on #f3_book; face math untouched)
+          var OPEN_X = 280;       // once open, the spread re-centres right of the title column (spine ≈ x 1235)
+          var COUNT_START = A_OPEN + 0.08;
+          var N_STEPS = 13;       // count steps (≈1 per frame), values baked into #f3_n0…#f3_n13
+          var N_DOTS = 40;
+
+          function ft(tl, target, from, to, at) {
+            to.immediateRender = false;
+            tl.fromTo(target, from, to, at);
+          }
+
+          // start pose, applied immediately so t=0 renders the right state even before any seek
+          gsap.set("#f3_book", { x: 1350, y: 0, z: -900, rotationY: -120, rotationX: 18, scale: SCALE });
+          gsap.set("#f3_bk_hinge", { rotationY: 0 });
+          gsap.set("#f3_bk_shadow", { x: 0, scaleX: 0.3, opacity: 0 });
+          gsap.set("#f3_behind_w", { x: 80 });
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ---- g1 shown across the whole frame span ----
+          tl.set("#f3_g1", { autoAlpha: 1 }, 0);
+
+          // ---- DEPTH-TYPE drift (parallax against the book), comes to rest before the hold ----
+          ft(tl, "#f3_behind_w", { x: 80 }, { x: 0, duration: A_LOCK - 0.05, ease: "power2.out" }, 0);
+
+          // ---- left column slides in on the 11.45 kick ----
+          var COL = ["#f3_kick", "#f3_title", "#f3_sub"];
+          for (var c = 0; c < COL.length; c++) {
+            ft(tl, COL[c], { x: -70, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.6, ease: "expo.out" }, A_KICK + c * 0.07);
+          }
+
+          // ---- ENTER: book turns in from the right (fully off-frame before), settles at rest ----
+          ft(tl, "#f3_book",
+            { x: 1350, z: -900, rotationY: -120, rotationX: 18 },
+            { x: 0, z: 0, rotationY: -28, rotationX: 8, duration: A_SPIN - (A_KICK - 0.08), ease: "expo.out" },
+            A_KICK - 0.08);
+          ft(tl, "#f3_bk_shadow",
+            { scaleX: 0.3, opacity: 0 },
+            { scaleX: 1, opacity: 1, duration: A_SPIN - (A_KICK - 0.08), ease: "expo.out" },
+            A_KICK - 0.08);
+
+          // ---- SPIN: full 360° (spine → back → pages → front), small hop, lands on the 13.0 downbeat ----
+          var SPIN_D = A_LAND - A_SPIN;          // 1.04
+          var HALF = SPIN_D / 2;
+          ft(tl, "#f3_book", { rotationY: -28 }, { rotationY: 332, duration: SPIN_D, ease: "power3.inOut" }, A_SPIN);
+          ft(tl, "#f3_book", { y: 0 }, { y: -26, duration: HALF, ease: "power2.out" }, A_SPIN);
+          ft(tl, "#f3_book", { y: -26 }, { y: 0, duration: HALF, ease: "power2.in" }, A_SPIN + HALF);
+          ft(tl, "#f3_bk_shadow", { scaleX: 1, opacity: 1 }, { scaleX: 0.8, opacity: 0.7, duration: HALF, ease: "power2.out" }, A_SPIN);
+          ft(tl, "#f3_bk_shadow", { scaleX: 0.8, opacity: 0.7 }, { scaleX: 1, opacity: 1, duration: HALF, ease: "power2.in" }, A_SPIN + HALF);
+
+          // ---- OPEN: cover swings on the hinge; book eases to the open rest pose and re-centres ----
+          var OPEN_D = A_LOCK - 0.01 - A_OPEN;   // 0.50 — fully settled before the hold
+          ft(tl, "#f3_bk_hinge", { rotationY: 0 }, { rotationY: -155, duration: OPEN_D, ease: "power3.out" }, A_OPEN);
+          ft(tl, "#f3_book",
+            { rotationY: 332, rotationX: 8, x: 0 },
+            { rotationY: 348, rotationX: 4, x: OPEN_X, duration: OPEN_D, ease: "power3.out" },
+            A_OPEN);
+          ft(tl, "#f3_bk_shadow",
+            { x: 0, scaleX: 1 },
+            { x: OPEN_X - 215, scaleX: 1.75, duration: OPEN_D, ease: "power3.out" },
+            A_OPEN);
+
+          // ---- STAT RING + COUNT-UP on page 1 (counting-punch), locks on 82 at the 14.0 downbeat ----
+          var COUNT_D = A_LOCK - COUNT_START;    // 0.43
+          for (var i = 1; i <= N_STEPS; i++) {
+            var ts = (i === N_STEPS) ? A_LOCK : COUNT_START + COUNT_D * (i / N_STEPS);
+            tl.set("#f3_n" + (i - 1), { autoAlpha: 0 }, ts);
+            tl.set("#f3_n" + i, { autoAlpha: 1 }, ts);
+          }
+          // dot k fills when the eased count progress (quad-out) reaches (k+1)/40
+          for (var k = 0; k < N_DOTS; k++) {
+            var p = (k + 1) / N_DOTS;
+            var x = 1 - Math.sqrt(1 - p);        // inverse of 1-(1-x)^2
+            var td = (k === N_DOTS - 1) ? A_LOCK - 0.06 : COUNT_START + COUNT_D * x;
+            tl.set("#f3_d" + k, { autoAlpha: 1 }, td);
+            ft(tl, "#f3_d" + k, { scale: 1.8 }, { scale: 1, duration: 0.06, ease: "power2.out" }, td);
+          }
+          // lock punch + label (settled within ~0.15s; then the frame is still)
+          ft(tl, "#f3_num", { scale: 1.1 }, { scale: 1, duration: 0.16, ease: "power3.out" }, A_LOCK);
+          ft(tl, "#f3_plabel", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.18, ease: "power2.out" }, A_LOCK - 0.04);
+
+          // ---- HOLD 14.0 → 15.21: only a gentle ±4px float on the open book ----
+          var F1 = A_LOCK + 0.01, F2 = 3.6, F3 = A_POP;
+          ft(tl, "#f3_book", { y: 0 }, { y: -4, duration: F2 - F1, ease: "sine.inOut" }, F1);
+          ft(tl, "#f3_book", { y: -4 }, { y: 4, duration: F3 - F2, ease: "sine.inOut" }, F2);
+          ft(tl, "#f3_book", { y: 4 }, { y: -3, duration: D - 0.02 - F3, ease: "sine.inOut" }, F3);
+          ft(tl, "#f3_bk_shadow", { scaleX: 1.75, opacity: 1 }, { scaleX: 1.72, opacity: 0.92, duration: F2 - F1, ease: "sine.inOut" }, F1);
+          ft(tl, "#f3_bk_shadow", { scaleX: 1.72, opacity: 0.92 }, { scaleX: 1.78, opacity: 1, duration: F3 - F2, ease: "sine.inOut" }, F2);
+          ft(tl, "#f3_bk_shadow", { scaleX: 1.78, opacity: 1 }, { scaleX: 1.73, opacity: 0.94, duration: D - 0.02 - F3, ease: "sine.inOut" }, F3);
+
+          // ---- 15.21 kick: two pill stickers pop near the book ----
+          ft(tl, "#f3_best", { autoAlpha: 0, scale: 0.2, rotation: -18 }, { autoAlpha: 1, scale: 1, rotation: -6, duration: 0.4, ease: "back.out(2.2)" }, A_POP);
+          ft(tl, "#f3_author", { autoAlpha: 0, scale: 0.2, rotation: 14 }, { autoAlpha: 1, scale: 1, rotation: 4, duration: 0.4, ease: "back.out(2.2)" }, A_POP + 0.07);
+
+          // ---- frame end (host hard-cuts here; iris overlay covers from ~4.70) ----
+          tl.set("#f3_g1", { autoAlpha: 0 }, D);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["03-f3"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

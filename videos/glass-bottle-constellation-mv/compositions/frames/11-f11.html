@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="ko">
+  <head><meta charset="UTF-8" /><!-- Frame 11 (final chorus B, track 149.55–170.05): slam burst → the brightest star and its EMPTY name → the long held "네가 불러 줘". --></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Noto Serif KR"; src: url("assets/fonts/NotoSerifKR-VF.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: block; }
+        @font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/CormorantGaramond-Italic-VF.woff2") format("woff2"); font-weight: 300 700; font-style: italic; font-display: block; }
+
+        #stage { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+        #f11_g1 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+        /* camera: slam kick + slow push-in, origin between the star and the lyric */
+        #f11_cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 960px 480px; }
+
+        .f11-hide { opacity: 0; visibility: hidden; }
+        .f11-glow { position: absolute; border-radius: 50%; pointer-events: none; }
+
+        /* ---- burst sparkles (they settle as the new stars) ---- */
+        #f11_burst { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+        .f11-sp { opacity: 0; }
+
+        /* ---- slam radial glows (no full-frame flash) ---- */
+        #f11_charge { left: 880px; top: 440px; width: 160px; height: 160px;
+          background: radial-gradient(circle, rgba(255,250,235,0.95) 0%, rgba(255,244,214,0.6) 20%, rgba(255,210,122,0.22) 45%, rgba(255,210,122,0) 70%); }
+        #f11_puff { left: 410px; top: -30px; width: 1100px; height: 1100px;
+          background: radial-gradient(circle, rgba(255,244,214,0.55) 0%, rgba(255,210,122,0.30) 16%, rgba(255,210,122,0.10) 38%, rgba(255,210,122,0) 64%); }
+        #f11_ring { left: 310px; top: -130px; width: 1300px; height: 1300px;
+          background: radial-gradient(circle, rgba(255,244,214,0) 0%, rgba(255,244,214,0) 55%, rgba(255,244,214,0.42) 60%, rgba(255,210,122,0.16) 63.5%, rgba(255,210,122,0) 68%); }
+
+        /* ---- the brightest star, anchored at (960,300); wrappers are 1200×1200 centred on it ---- */
+        #f11_star { position: absolute; left: 360px; top: -300px; width: 1200px; height: 1200px; transform-origin: 50% 50%; }
+        #f11_halo { left: 280px; top: 280px; width: 640px; height: 640px; opacity: 0.95; transform-origin: 50% 50%;
+          background: radial-gradient(circle, rgba(255,244,214,0.50) 0%, rgba(255,210,122,0.30) 14%, rgba(255,210,122,0.12) 34%, rgba(255,210,122,0.04) 52%, rgba(255,210,122,0) 70%); }
+        #f11_flarerot, #f11_flarebox { position: absolute; left: 0; top: 0; width: 1200px; height: 1200px; transform-origin: 50% 50%; }
+        #f11_fh { position: absolute; left: 150px; top: 594px; width: 900px; height: 12px; opacity: 0.92; transform-origin: 50% 50%; transform: scaleX(0); }
+        #f11_fv { position: absolute; left: 594px; top: 350px; width: 12px; height: 500px; opacity: 0.92; transform-origin: 50% 50%; transform: scaleY(0); }
+        .f11-fglow { position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+          background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(255,210,122,0.30) 0%, rgba(255,210,122,0.10) 55%, rgba(255,210,122,0) 100%); }
+        #f11_fh .f11-fcore { position: absolute; left: 0; top: 5px; width: 900px; height: 2px;
+          background: linear-gradient(90deg, rgba(255,244,214,0) 0%, rgba(255,244,214,0.22) 20%, rgba(255,244,214,0.85) 46%, #FFFFFF 50%, rgba(255,244,214,0.85) 54%, rgba(255,244,214,0.22) 80%, rgba(255,244,214,0) 100%); }
+        #f11_fv .f11-fcore { position: absolute; left: 5px; top: 0; width: 2px; height: 500px;
+          background: linear-gradient(180deg, rgba(255,244,214,0) 0%, rgba(255,244,214,0.22) 20%, rgba(255,244,214,0.85) 46%, #FFFFFF 50%, rgba(255,244,214,0.85) 54%, rgba(255,244,214,0.22) 80%, rgba(255,244,214,0) 100%); }
+        /* sparkle core: 240px svg, 1 unit = 100px, so CSS scale .52 == sparkle scale 52 */
+        #f11_core { position: absolute; left: 480px; top: 480px; width: 240px; height: 240px; transform-origin: 50% 50%; transform: scale(0.1); }
+        #f11_cglow { left: -130px; top: -130px; width: 500px; height: 500px;
+          background: radial-gradient(circle, rgba(255,252,240,0.95) 0%, rgba(255,244,214,0.55) 16%, rgba(255,210,122,0.18) 38%, rgba(255,210,122,0) 62%); }
+        #f11_csvg { position: absolute; left: 0; top: 0; width: 240px; height: 240px; overflow: visible; }
+
+        /* ---- leader line + EMPTY name brackets ---- */
+        #f11_slotglow { left: 1314px; top: 60px; width: 420px; height: 282px; border-radius: 50%;
+          background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(220,235,255,0.20) 0%, rgba(255,210,122,0.09) 42%, rgba(220,235,255,0) 100%); }
+        #f11_chart { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+        .f11-draw { stroke-dasharray: 1000; stroke-dashoffset: 1000; fill: none; }
+
+        /* ---- last-hit bloom from the star ---- */
+        #f11_bloom { left: 210px; top: -450px; width: 1500px; height: 1500px; transform-origin: 50% 50%;
+          background: radial-gradient(circle, rgba(255,244,214,0.62) 0%, rgba(255,210,122,0.34) 15%, rgba(255,210,122,0.13) 36%, rgba(242,163,160,0.05) 54%, rgba(242,163,160,0) 70%); }
+
+        /* ---- lyrics ---- */
+        #f11_lyrics { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+        .f11-line { position: absolute; left: 140px; width: 1640px; display: flex; align-items: center; justify-content: center;
+          font-family: "Noto Serif KR", serif; color: #F4F1EA; -webkit-font-smoothing: antialiased; transform-origin: 50% 50%;
+          text-shadow: 0 0 14px rgba(220,235,255,0.25), 0 0 0px rgba(255,210,122,0); }
+        .f11-row { white-space: nowrap; line-height: 1.12; }
+        .f11-w { display: inline-block; margin: 0 0.13em; transform-origin: 50% 70%; }
+        .f11-key { color: #FFE2A3; text-shadow: 0 0 18px rgba(255,210,122,0.45), 0 0 46px rgba(255,210,122,0.18); }
+
+        #f11_l37 { top: 560px; height: 160px; opacity: 0.3; filter: blur(6px); transform: translateY(14px); }
+        #f11_l37 .f11-row { font-size: 88px; font-weight: 600; letter-spacing: 0.01em; }
+        #f11_l38 { top: 600px; height: 200px; }
+        #f11_l38 .f11-row { font-size: 104px; font-weight: 700; letter-spacing: -0.01em; }
+        #f11_l38w5 { font-size: 156px; font-weight: 800; }
+        #f11_l39 { top: 600px; height: 200px; }
+        #f11_l39 .f11-row { font-size: 104px; font-weight: 600; letter-spacing: -0.005em; }
+        #f11_l39k { font-size: 140px; font-weight: 700; }
+        #f11_l40 { top: 620px; height: 200px; }
+        #f11_l40 .f11-row { font-size: 132px; font-weight: 700; letter-spacing: -0.01em; }
+      </style>
+
+      <div id="stage" data-composition-id="11-f11" data-width="1920" data-height="1080" data-duration="20.5">
+        <div id="f11_g1">
+          <div id="f11_cam">
+
+            <!-- burst sparkles: built at script time (fixed-seed LCG) -->
+            <svg id="f11_burst" viewBox="0 0 1920 1080" width="1920" height="1080" data-layout-ignore="">
+              <defs>
+                <radialGradient id="f11_spglow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="scale(2.4)">
+                  <stop offset="0" stop-color="#FFF4D6" stop-opacity="0.6" />
+                  <stop offset="0.4" stop-color="#FFD27A" stop-opacity="0.2" />
+                  <stop offset="1" stop-color="#FFD27A" stop-opacity="0" />
+                </radialGradient>
+              </defs>
+              <g id="f11_burstg"></g>
+            </svg>
+
+            <!-- slam glows -->
+            <div id="f11_charge" class="f11-glow f11-hide" data-layout-ignore=""></div>
+            <div id="f11_puff" class="f11-glow f11-hide" data-layout-ignore=""></div>
+            <div id="f11_ring" class="f11-glow f11-hide" data-layout-ignore=""></div>
+
+            <!-- the brightest star -->
+            <div id="f11_star" class="f11-hide" data-layout-ignore="">
+              <div id="f11_halo" class="f11-glow"></div>
+              <div id="f11_flarerot">
+                <div id="f11_flarebox">
+                  <div id="f11_fh"><div class="f11-fglow"></div><div class="f11-fcore"></div></div>
+                  <div id="f11_fv"><div class="f11-fglow"></div><div class="f11-fcore"></div></div>
+                </div>
+              </div>
+              <div id="f11_core">
+                <div id="f11_cglow" class="f11-glow"></div>
+                <svg id="f11_csvg" viewBox="-1.2 -1.2 2.4 2.4" width="240" height="240">
+                  <path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" />
+                  <path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFFFFF" transform="scale(0.5)" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- leader line + the EMPTY name brackets 「 」 (nothing is ever written inside) -->
+            <div id="f11_slotglow" class="f11-glow f11-hide" data-layout-ignore=""></div>
+            <svg id="f11_chart" class="f11-hide" viewBox="0 0 1920 1080" width="1920" height="1080" data-layout-ignore="">
+              <path id="f11_leadg" class="f11-draw" pathLength="1000" d="M998,286 L1180,201 L1390,201" stroke="#DCEBFF" stroke-opacity="0.14" stroke-width="6" stroke-linecap="butt" stroke-linejoin="round" />
+              <path id="f11_lead" class="f11-draw" pathLength="1000" d="M998,286 L1180,201 L1390,201" stroke="#DCEBFF" stroke-opacity="0.85" stroke-width="1.5" stroke-linecap="butt" stroke-linejoin="round" />
+              <circle id="f11_knee" cx="1180" cy="201" r="0" fill="#FFF4D6" />
+              <path id="f11_brLg" class="f11-draw" pathLength="1000" d="M1404,190 L1404,140 L1452,140" stroke="#DCEBFF" stroke-opacity="0.16" stroke-width="7" stroke-linecap="butt" />
+              <path id="f11_brL" class="f11-draw" pathLength="1000" d="M1404,190 L1404,140 L1452,140" stroke="#DCEBFF" stroke-width="2" stroke-linecap="butt" />
+              <path id="f11_brRg" class="f11-draw" pathLength="1000" d="M1644,212 L1644,262 L1596,262" stroke="#DCEBFF" stroke-opacity="0.16" stroke-width="7" stroke-linecap="butt" />
+              <path id="f11_brR" class="f11-draw" pathLength="1000" d="M1644,212 L1644,262 L1596,262" stroke="#DCEBFF" stroke-width="2" stroke-linecap="butt" />
+            </svg>
+
+            <div id="f11_bloom" class="f11-glow f11-hide" data-layout-ignore=""></div>
+
+            <!-- lyrics -->
+            <div id="f11_lyrics">
+              <div id="f11_l37" class="f11-line" data-layout-allow-overlap=""><div class="f11-row"><span class="f11-w" id="f11_l37w1">보이니</span><span class="f11-w" id="f11_l37w2">네</span><span class="f11-w" id="f11_l37w3">머리</span><span class="f11-w" id="f11_l37w4">위에서</span></div></div>
+              <div id="f11_l38" class="f11-line f11-hide" data-layout-allow-overlap=""><div class="f11-row"><span class="f11-w" id="f11_l38w1">가장</span><span class="f11-w" id="f11_l38w2">밝게</span><span class="f11-w" id="f11_l38w3">빛나는</span><span class="f11-w" id="f11_l38w4">그</span><span class="f11-w f11-key" id="f11_l38w5">별</span></div></div>
+              <div id="f11_l39" class="f11-line f11-hide" data-layout-allow-overlap=""><div class="f11-row"><span class="f11-w" id="f11_l39w1"><span class="f11-key" id="f11_l39k">이름</span>은</span><span class="f11-w" id="f11_l39w2">붙이지</span><span class="f11-w" id="f11_l39w3">않을게</span></div></div>
+              <div id="f11_l40" class="f11-line f11-hide" data-layout-allow-overlap=""><div class="f11-row"><span class="f11-w" id="f11_l40w1">네가</span><span class="f11-w" id="f11_l40w2">불러</span><span class="f11-w" id="f11_l40w3">줘</span></div></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var tl = gsap.timeline({ paused: true });
+          var S = 149.55;                       // frame start (track s)
+          var END = 20.5;                       // frame span length
+          function T(track) { return Math.round((track - S) * 1000) / 1000; }
+          // every tween after the first on a prop is explicit fromTo, never immediate-rendered (seek-safe chains)
+          function ft(target, from, to, pos) { to.immediateRender = false; tl.fromTo(target, from, to, pos); }
+
+          // ---- anchors (frame-local) ----
+          var SLAM = T(150.90);                                              // 1.35 band slam
+          var L37 = { on: T(149.69), w2: T(150.49), w3: T(150.81), w4: T(151.47), end: T(152.17) };
+          var L38 = { on: T(152.29), w2: T(152.63), w3: T(153.11), w4: T(153.93), w5: T(154.21), end: T(155.01) };
+          var L39 = { on: T(155.13), w2: T(156.04), w3: T(157.14), end: T(158.50) };
+          var L40 = { on: T(158.62), w2: T(159.24), w3: T(165.11), end: T(169.60) };
+          var DOWN = [T(158.99), T(161.56), T(164.17), T(166.77), T(169.37)];
+          var LAST = T(169.97);                                              // 20.42 last hit
+
+          // two-shadow text glows (same structure so GSAP can interpolate)
+          var SOFT  = "0 0 14px rgba(220,235,255,0.25), 0 0 0px rgba(255,210,122,0)";
+          var LIGHT = "0 0 18px rgba(255,210,122,0.45), 0 0 46px rgba(255,210,122,0.18)";
+          var SURGE = "0 0 26px rgba(255,210,122,0.8), 0 0 70px rgba(255,210,122,0.34)";
+          var WARM  = "0 0 16px rgba(255,210,122,0.3), 0 0 40px rgba(255,210,122,0.1)";
+          var KEYHOLD = "0 0 22px rgba(255,210,122,0.6), 0 0 56px rgba(255,210,122,0.26)";
+          var GOLD  = "0 0 22px rgba(255,210,122,0.62), 0 0 58px rgba(255,210,122,0.28)";
+          var COOL  = "0 0 16px rgba(220,235,255,0.4), 0 0 40px rgba(220,235,255,0.12)";
+
+          // ---- group window ----
+          tl.set("#f11_g1", { autoAlpha: 1 }, 0);
+          tl.set("#f11_g1", { autoAlpha: 0 }, END);
+
+          // ---- camera: inhale → slam kick → slow drift → long push-in (1 → 1.08) ----
+          ft("#f11_cam", { scale: 1 }, { scale: 0.985, duration: SLAM, ease: "power1.in" }, 0);
+          ft("#f11_cam", { scale: 1.05 }, { scale: 1, duration: 0.7, ease: "expo.out" }, SLAM);
+          ft("#f11_cam", { scale: 1 }, { scale: 1.012, duration: (L40.on - 0.1) - (SLAM + 0.7), ease: "sine.inOut" }, SLAM + 0.7);
+          ft("#f11_cam", { scale: 1.012 }, { scale: 1.08, duration: LAST - (L40.on - 0.1), ease: "sine.inOut" }, L40.on - 0.1);
+
+          // ================= L37 "보이니 네 머리 위에서" (88px, y≈640) =================
+          // on screen from the cut, fully legible by its onset (0.14)
+          tl.fromTo("#f11_l37", { autoAlpha: 0.3, y: 14, filter: "blur(6px)" },
+                                { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.13, ease: "power2.out" }, 0);
+          [["#f11_l37w2", L37.w2], ["#f11_l37w3", L37.w3], ["#f11_l37w4", L37.w4]].forEach(function (p) {
+            ft(p[0], { y: 0 }, { y: -7, duration: 0.09, ease: "power2.out" }, p[1] - 0.02);
+            ft(p[0], { y: -7 }, { y: 0, duration: 0.36, ease: "power2.inOut" }, p[1] + 0.07);
+          });
+          // braam punch on the slam: scale + gold surge, elastic settle (the text holds)
+          ft("#f11_l37", { scale: 1 }, { scale: 1.07, duration: 0.1, ease: "power4.out" }, SLAM);
+          ft("#f11_l37", { scale: 1.07 }, { scale: 1, duration: 0.75, ease: "elastic.out(1, 0.55)" }, SLAM + 0.1);
+          ft("#f11_l37", { textShadow: SOFT }, { textShadow: SURGE, duration: 0.1, ease: "power4.out" }, SLAM);
+          ft("#f11_l37", { textShadow: SURGE }, { textShadow: WARM, duration: 0.9, ease: "power2.out" }, SLAM + 0.1);
+          // cut out right after vocal_end (2.62) — clear before L38 enters
+          ft("#f11_l37", { autoAlpha: 1, y: 0, filter: "blur(0px)" },
+                         { autoAlpha: 0, y: -10, filter: "blur(6px)", duration: 0.08, ease: "power1.in" }, L37.end - 0.02);
+
+          // ================= the slam: charge → puff + ring + 140-sparkle burst =================
+          ft("#f11_charge", { autoAlpha: 0, scale: 0.15 }, { autoAlpha: 1, scale: 1, duration: SLAM - 0.28, ease: "power2.in" }, 0.25);
+          ft("#f11_charge", { autoAlpha: 1, scale: 1 }, { autoAlpha: 0, scale: 3.2, duration: 0.5, ease: "power2.out" }, SLAM);
+          ft("#f11_puff", { autoAlpha: 0.9, scale: 0.25 }, { autoAlpha: 0, scale: 1.25, duration: 1.1, ease: "power2.out" }, SLAM);
+          ft("#f11_ring", { scale: 0.08 }, { scale: 1, duration: 0.95, ease: "power3.out" }, SLAM);
+          ft("#f11_ring", { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.95, ease: "power1.in" }, SLAM);
+
+          var seed = 0x2F11A7 >>> 0;
+          function rnd() { seed = (Math.imul(1664525, seed) + 1013904223) >>> 0; return seed / 4294967296; }
+          function blocked(x, y) {
+            if (x > 340 && x < 1580 && y > 585 && y < 840) return true;    // lyric band stays clean
+            if (x > 1370 && x < 1680 && y > 110 && y < 290) return true;   // the name slot stays EMPTY
+            var dx = x - 960, dy = y - 300;
+            if (dx * dx + dy * dy < 120 * 120) return true;                // brightest-star core
+            return false;
+          }
+          var NS = "http://www.w3.org/2000/svg";
+          var SPARK = "M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z";
+          var layer = document.getElementById("f11_burstg");
+          var N = 140, OX = 960, OY = 520, TW_END = 20.45;
+          for (var i = 0; i < N; i++) {
+            var tx, ty, k = 0;
+            do { tx = 40 + 1840 * rnd(); ty = 36 + 1010 * Math.pow(rnd(), 1.2); k++; } while (blocked(tx, ty) && k < 40);
+            if (blocked(tx, ty)) { ty = 60 + 40 * (i % 3); tx = 120 + (i * 97) % 1100; }
+            var r1 = rnd(), r2 = rnd(), r3 = rnd(), r4 = rnd(), r5 = rnd();
+            var sc = (i % 10 === 0) ? 9 + 2 * r1 : 2.6 + 5.4 * r1 * r1;   // 5–22px across
+            var fill = (i % 5 === 0) ? "#FFE2A3" : (i % 7 === 0 ? "#DCEBFF" : "#FFF4D6");
+
+            var g = document.createElementNS(NS, "g");
+            g.setAttribute("id", "f11_sp" + i);
+            g.setAttribute("class", "f11-sp");
+            if (i % 3 === 0) {
+              var c = document.createElementNS(NS, "circle");
+              c.setAttribute("r", "2.4");
+              c.setAttribute("fill", "url(#f11_spglow)");
+              g.appendChild(c);
+            }
+            var p = document.createElementNS(NS, "path");
+            p.setAttribute("d", SPARK);
+            p.setAttribute("fill", fill);
+            g.appendChild(p);
+            layer.appendChild(g);
+            gsap.set(g, { x: OX, y: OY, scale: 0.4, opacity: 0, transformOrigin: "50% 50%" });
+
+            var L = SLAM + (i % 9) * 0.011;
+            var d = 1.05 + 0.85 * r2;
+            ft(g, { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, L);
+            ft(g, { x: OX }, { x: tx, duration: d, ease: "expo.out" }, L);
+            ft(g, { y: OY }, { y: ty, duration: d, ease: "power3.out" }, L);
+            ft(g, { scale: 0.4 }, { scale: sc * 1.8, duration: 0.22, ease: "power2.out" }, L);
+            ft(g, { scale: sc * 1.8 }, { scale: sc, duration: d - 0.1, ease: "sine.out" }, L + 0.22);
+
+            // settled → keeps twinkling (finite yoyo)
+            var ts = L + d + 0.15 + 0.9 * r3;
+            var hp = 0.75 + 1.25 * r4;
+            var lo = 0.2 + 0.3 * r5;
+            var n = Math.max(0, Math.floor((TW_END - ts) / hp) - 1);
+            ft(p, { opacity: 1 }, { opacity: lo, duration: hp, ease: "sine.inOut", yoyo: true, repeat: n }, ts);
+          }
+          // focus: the new sky steps back a little once the brightest star arrives
+          ft("#f11_burst", { opacity: 1 }, { opacity: 0.72, duration: 1.6, ease: "sine.inOut" }, L38.on + 0.2);
+
+          // ================= the brightest star rises into (960,300) =================
+          var RISE = L37.end;                                                 // 2.62
+          ft("#f11_star", { autoAlpha: 0, y: 220 }, { autoAlpha: 1, y: 0, duration: 0.8, ease: "power3.out" }, RISE);
+          // core sparkle: scale 10 → 26 → 40 (빛나는) → 52 (별)
+          ft("#f11_core", { scale: 0.1 }, { scale: 0.26, duration: 0.8, ease: "power2.out" }, RISE);
+          ft("#f11_core", { scale: 0.26 }, { scale: 0.40, duration: 0.45, ease: "power3.out" }, L38.w3);
+          ft("#f11_core", { scale: 0.40 }, { scale: 0.57, duration: 0.14, ease: "power3.out" }, L38.w5 - 0.02);
+          ft("#f11_core", { scale: 0.57 }, { scale: 0.52, duration: 0.6, ease: "sine.out" }, L38.w5 + 0.12);
+          ft("#f11_halo", { scale: 0.3 }, { scale: 0.55, duration: 0.8, ease: "power2.out" }, RISE);
+          ft("#f11_halo", { scale: 0.55 }, { scale: 0.8, duration: 0.6, ease: "power3.out" }, L38.w3);
+          ft("#f11_halo", { scale: 0.8 }, { scale: 1.1, duration: 0.16, ease: "power3.out" }, L38.w5 - 0.02);
+          ft("#f11_halo", { scale: 1.1 }, { scale: 1.0, duration: 0.8, ease: "sine.out" }, L38.w5 + 0.14);
+          ft("#f11_halo", { opacity: 0.95 }, { opacity: 0.78, duration: 1.0, ease: "sine.inOut", yoyo: true, repeat: 1 }, 6.2);
+          // cross flares (900 × 500, thin, fading tips) open on 빛나는
+          ft("#f11_fh", { scaleX: 0 }, { scaleX: 0.22, duration: 0.8, ease: "power2.out" }, RISE);
+          ft("#f11_fh", { scaleX: 0.22 }, { scaleX: 1, duration: 1.0, ease: "expo.out" }, L38.w3);
+          ft("#f11_fv", { scaleY: 0 }, { scaleY: 0.2, duration: 0.8, ease: "power2.out" }, RISE);
+          ft("#f11_fv", { scaleY: 0.2 }, { scaleY: 1, duration: 0.95, ease: "expo.out" }, L38.w3 + 0.05);
+          ft("#f11_flarebox", { scale: 1 }, { scale: 1.1, duration: 0.14, ease: "power3.out" }, L38.w5 - 0.02);
+          ft("#f11_flarebox", { scale: 1.1 }, { scale: 1, duration: 0.7, ease: "sine.out" }, L38.w5 + 0.12);
+          ft("#f11_flarerot", { rotation: 0 }, { rotation: 3.5, duration: TW_END - L38.w3, ease: "sine.inOut" }, L38.w3);
+
+          // ================= L38 "가장 밝게 빛나는 그 별" (104px, 별 156px gold, y≈700) =================
+          ft("#f11_l38", { autoAlpha: 0, scale: 1.06, filter: "blur(6px)" },
+                         { autoAlpha: 1, scale: 1, filter: "blur(0px)", duration: 0.06, ease: "power3.out" }, L38.on - 0.06);
+          ft("#f11_l38w2", { y: 0 }, { y: -6, duration: 0.09, ease: "power2.out" }, L38.w2 - 0.02);
+          ft("#f11_l38w2", { y: -6 }, { y: 0, duration: 0.34, ease: "power2.inOut" }, L38.w2 + 0.07);
+          ft("#f11_l38w3", { color: "#F4F1EA", textShadow: SOFT }, { color: "#FFF4D6", textShadow: LIGHT, duration: 0.35, ease: "power2.out" }, L38.w3 - 0.03);
+          ft("#f11_l38w3", { y: 0 }, { y: -5, duration: 0.1, ease: "power2.out" }, L38.w3 - 0.03);
+          ft("#f11_l38w3", { y: -5 }, { y: 0, duration: 0.4, ease: "power2.inOut" }, L38.w3 + 0.07);
+          ft("#f11_l38w5", { scale: 1 }, { scale: 1.12, duration: 0.12, ease: "power3.out" }, L38.w5 - 0.02);
+          ft("#f11_l38w5", { scale: 1.12 }, { scale: 1, duration: 0.6, ease: "power2.out" }, L38.w5 + 0.1);
+          ft("#f11_l38w5", { textShadow: LIGHT }, { textShadow: SURGE, duration: 0.12, ease: "power3.out" }, L38.w5 - 0.02);
+          ft("#f11_l38w5", { textShadow: SURGE }, { textShadow: KEYHOLD, duration: 0.8, ease: "sine.out" }, L38.w5 + 0.1);
+          ft("#f11_l38", { autoAlpha: 1, y: 0, filter: "blur(0px)" },
+                         { autoAlpha: 0, y: -10, filter: "blur(6px)", duration: 0.07, ease: "power1.in" }, L38.end - 0.02);
+
+          // ================= L39 "이름은 붙이지 않을게" + leader line → EMPTY brackets =================
+          ft("#f11_l39", { autoAlpha: 0, y: 10, filter: "blur(6px)" },
+                         { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.07, ease: "power2.out" }, L39.on - 0.07);
+          // leader draws from the star to the right, knee dot, then the two corner brackets open around nothing
+          ft("#f11_chart", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, ease: "none" }, L39.on);
+          ft("#f11_leadg", { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.8, ease: "power2.inOut" }, L39.on + 0.04);
+          ft("#f11_lead", { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.8, ease: "power2.inOut" }, L39.on + 0.04);
+          ft("#f11_knee", { attr: { r: 0 } }, { attr: { r: 3.2 }, duration: 0.3, ease: "back.out(3)" }, L39.on + 0.4);
+          ft("#f11_brLg", { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.42, ease: "power2.out" }, L39.w2 - 0.21);
+          ft("#f11_brL", { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.42, ease: "power2.out" }, L39.w2 - 0.21);
+          ft("#f11_brRg", { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.42, ease: "power2.out" }, L39.w2 - 0.09);
+          ft("#f11_brR", { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.42, ease: "power2.out" }, L39.w2 - 0.09);
+          ft("#f11_slotglow", { autoAlpha: 0 }, { autoAlpha: 0.5, duration: 0.9, ease: "sine.out" }, L39.w2);
+          ft("#f11_slotglow", { autoAlpha: 0.5 }, { autoAlpha: 0.8, duration: 0.4, ease: "sine.out" }, L39.w3);
+          ft("#f11_slotglow", { autoAlpha: 0.8 }, { autoAlpha: 0.5, duration: 1.0, ease: "sine.inOut" }, L39.w3 + 0.4);
+          // 않을게 — the name's gold cools to glass: it stays unnamed
+          ft("#f11_l39k", { color: "#FFE2A3", textShadow: LIGHT }, { color: "#E4EDFF", textShadow: COOL, duration: 1.0, ease: "sine.inOut" }, L39.w3);
+          ft("#f11_l39", { autoAlpha: 1, y: 0, filter: "blur(0px)" },
+                         { autoAlpha: 0, y: -10, filter: "blur(6px)", duration: 0.08, ease: "power1.in" }, L39.end - 0.05);
+
+          // ================= L40 "네가 불러 줘" (132px / 700, y≈720) — the long hold =================
+          ft("#f11_l40", { autoAlpha: 0, scale: 1.05, filter: "blur(8px)" },
+                         { autoAlpha: 1, scale: 1, filter: "blur(0px)", duration: 0.09, ease: "power3.out" }, L40.on - 0.09);
+          // 불러 brightens
+          ft("#f11_l40w2", { color: "#F4F1EA", textShadow: SOFT, scale: 1 },
+                           { color: "#FFF4D6", textShadow: LIGHT, scale: 1.04, duration: 0.4, ease: "power2.out" }, L40.w2 - 0.03);
+          // 줘 — the whole line turns gold-glow
+          var GOLDT = L40.w3 - 0.06;
+          ft("#f11_l40w1", { color: "#F4F1EA", textShadow: SOFT }, { color: "#FFE8B6", textShadow: GOLD, duration: 1.3, ease: "sine.inOut" }, GOLDT);
+          ft("#f11_l40w2", { color: "#FFF4D6", textShadow: LIGHT }, { color: "#FFE8B6", textShadow: GOLD, duration: 1.3, ease: "sine.inOut" }, GOLDT);
+          ft("#f11_l40w3", { color: "#F4F1EA", textShadow: SOFT }, { color: "#FFE8B6", textShadow: GOLD, duration: 1.3, ease: "sine.inOut" }, GOLDT);
+          ft("#f11_l40w3", { scale: 1 }, { scale: 1.05, duration: 2.4, ease: "sine.out" }, GOLDT);
+
+          // the star pulses on each downbeat of the hold; the empty brackets glow with it (no new elements)
+          for (var b = 0; b < DOWN.length; b++) {
+            var t0 = DOWN[b];
+            var back = Math.min(0.85, (b + 1 < DOWN.length ? DOWN[b + 1] : LAST - 0.02) - (t0 + 0.12));
+            ft("#f11_core", { scale: 0.52 }, { scale: 0.58, duration: 0.12, ease: "power2.out" }, t0);
+            ft("#f11_core", { scale: 0.58 }, { scale: 0.52, duration: back, ease: "sine.inOut" }, t0 + 0.12);
+            ft("#f11_halo", { scale: 1.0 }, { scale: 1.09, duration: 0.14, ease: "power2.out" }, t0);
+            ft("#f11_halo", { scale: 1.09 }, { scale: 1.0, duration: back - 0.02, ease: "sine.inOut" }, t0 + 0.14);
+            ft("#f11_flarebox", { scale: 1 }, { scale: 1.06, duration: 0.12, ease: "power2.out" }, t0);
+            ft("#f11_flarebox", { scale: 1.06 }, { scale: 1, duration: back, ease: "sine.inOut" }, t0 + 0.12);
+            ft("#f11_slotglow", { autoAlpha: 0.5 }, { autoAlpha: 0.85, duration: 0.18, ease: "sine.out" }, t0);
+            ft("#f11_slotglow", { autoAlpha: 0.85 }, { autoAlpha: 0.5, duration: back, ease: "sine.inOut" }, t0 + 0.18);
+          }
+
+          // ================= last hit (169.97): a soft bloom from the star, hold for the cut =================
+          ft("#f11_bloom", { autoAlpha: 0, scale: 0.3 }, { autoAlpha: 0.8, scale: 1, duration: 0.07, ease: "expo.out" }, LAST - 0.02);
+          ft("#f11_core", { scale: 0.52 }, { scale: 0.66, duration: 0.07, ease: "power3.out" }, LAST - 0.02);
+          ft("#f11_halo", { scale: 1.0 }, { scale: 1.35, duration: 0.08, ease: "power3.out" }, LAST - 0.02);
+          ft("#f11_flarebox", { scale: 1 }, { scale: 1.12, duration: 0.08, ease: "power3.out" }, LAST - 0.02);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["11-f11"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

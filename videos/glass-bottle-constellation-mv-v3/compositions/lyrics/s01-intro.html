@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- s01-intro lyric/light layer (track 0.00–11.10, local = track). Transparent; sits over compositions/footage.html.
+         Title "유리병 별자리" (vertical, v1 f1 treatment) + "Glass-Bottle Constellation" set sideways beside it, in the dark
+         left strip (look-room of the girl in s01d). Light accents only on measured real light:
+           s01a window star (924,96) breath + band-hit bloom at 1.25 · s01b five sky stars twinkle on after the hit ·
+           s01c in-focus step star glint at the 3.75 lock-in · s01d jar warm bloom on the 6.56 cut.
+         Title lights per character from 3.75, dissolves into rising light motes 8.36–10.41; clean by 10.9. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Noto Serif KR"; src: url("assets/fonts/NotoSerifKR-VF.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: block; }
+        @font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/CormorantGaramond-Italic-VF.woff2") format("woff2"); font-weight: 300 700; font-style: italic; font-display: block; }
+
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: transparent;
+          pointer-events: none;
+        }
+
+        /* zero-size anchors placed on a measured light source; children centre on them */
+        .l01-anchor { position: absolute; width: 0; height: 0; transform: translate(0px, 0px); }
+        .l01-c { position: absolute; left: 0; top: 0; display: block; opacity: 0; visibility: hidden; transform: translate(0px, 0px); }
+
+        /* ── s01a · the window star ── */
+        .l01-halo {
+          width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%;
+          background: radial-gradient(circle, rgba(255,244,214,0.8) 0%, rgba(255,210,122,0.34) 28%, rgba(255,210,122,0.08) 50%, rgba(255,210,122,0) 70%);
+        }
+        .l01-bloom {
+          width: 340px; height: 340px; margin: -170px 0 0 -170px; border-radius: 50%;
+          background: radial-gradient(circle, rgba(255,250,236,0.9) 0%, rgba(255,226,160,0.5) 14%, rgba(255,210,122,0.16) 36%, rgba(255,210,122,0.04) 52%, rgba(255,210,122,0) 66%);
+        }
+        .l01-rayh {
+          width: 640px; height: 2px; margin: -1px 0 0 -320px;
+          background: linear-gradient(90deg, rgba(255,244,214,0) 0%, rgba(255,226,160,0.45) 36%, rgba(255,250,236,0.95) 50%, rgba(255,226,160,0.45) 64%, rgba(255,244,214,0) 100%);
+        }
+        .l01-rayv {
+          width: 2px; height: 220px; margin: -110px 0 0 -1px;
+          background: linear-gradient(180deg, rgba(255,244,214,0) 0%, rgba(255,226,160,0.4) 36%, rgba(255,250,236,0.85) 50%, rgba(255,226,160,0.4) 64%, rgba(255,244,214,0) 100%);
+        }
+
+        /* ── s01b · twinkle on the five real sky stars (core + thin cross, one element each) ── */
+        .l01-tw {
+          width: 46px; height: 46px; margin: -23px 0 0 -23px;
+          background:
+            radial-gradient(circle, rgba(255,250,236,0.95) 0%, rgba(255,226,160,0.5) 14%, rgba(255,210,122,0.12) 34%, rgba(255,210,122,0) 52%),
+            linear-gradient(90deg, rgba(255,244,214,0) 0%, rgba(255,244,214,0.75) 50%, rgba(255,244,214,0) 100%) center / 100% 1.5px no-repeat,
+            linear-gradient(180deg, rgba(255,244,214,0) 0%, rgba(255,244,214,0.75) 50%, rgba(255,244,214,0) 100%) center / 1.5px 100% no-repeat;
+        }
+
+        /* ── s01c · glint on the in-focus step star at the lock-in ── */
+        .l01-sglow {
+          width: 220px; height: 220px; margin: -110px 0 0 -110px; border-radius: 50%;
+          background: radial-gradient(circle, rgba(255,244,214,0.7) 0%, rgba(255,210,122,0.32) 20%, rgba(255,210,122,0.08) 42%, rgba(255,210,122,0) 62%);
+        }
+        .l01-sray {
+          width: 380px; height: 2px; margin: -1px 0 0 -190px;
+          background: linear-gradient(90deg, rgba(255,244,214,0) 0%, rgba(255,226,160,0.4) 38%, rgba(255,250,236,0.85) 50%, rgba(255,226,160,0.4) 62%, rgba(255,244,214,0) 100%);
+        }
+
+        /* ── s01d · the jar answers the cut ── */
+        .l01-jglow {
+          width: 260px; height: 260px; margin: -130px 0 0 -130px; border-radius: 50%;
+          background: radial-gradient(circle, rgba(255,244,214,0.62) 0%, rgba(255,210,122,0.3) 18%, rgba(255,210,122,0.07) 38%, rgba(255,210,122,0) 56%);
+        }
+
+        /* ── legibility scrim behind the title lockup (same recipe as the inserts) ── */
+        .l01-scrim {
+          position: absolute; left: 38px; top: 52px; width: 480px; height: 840px; opacity: 0;
+          background: radial-gradient(closest-side, rgba(5,7,20,0.58) 0%, rgba(5,7,20,0.44) 45%, rgba(5,7,20,0.18) 75%, rgba(5,7,20,0) 100%);
+        }
+
+        /* ── title lockup: slow upward drift wrapper ── */
+        .l01-drift { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform: translate(0px, 0px); }
+
+        /* vertical Korean title — column x 268–332, ink y ≈174–711 (v1 f1 geometry: 64px cells, .42em tracking) */
+        .l01-title {
+          position: absolute; left: 268px; top: 170px; width: 64px;
+          writing-mode: vertical-rl; text-orientation: upright;
+          display: flex; flex-direction: row;
+          font-family: "Noto Serif KR"; font-weight: 400; font-size: 64px; line-height: 64px;
+          color: #F4F1EA;
+        }
+        .l01-cw { position: relative; flex: none; width: 64px; height: 64px; margin-bottom: 27px; }
+        .l01-cw.l01-last { margin-bottom: 0; }
+        .l01-gap { flex: none; width: 64px; height: 26px; }
+        /* glyph group: base glyph + its lit twin; entry/exit move the group (opacity/transform/filter only) */
+        .l01-g {
+          position: relative; display: block; width: 64px; height: 64px;
+          opacity: 0; visibility: hidden;
+          transform: translate(0px, -10px) scale(1.12); filter: blur(10px);
+        }
+        .l01-ch, .l01-hl { display: block; width: 64px; height: 64px; line-height: 64px; text-align: center; }
+        /* base glyph: frame.md text-soft glow + dark edge for legibility over footage */
+        .l01-ch {
+          color: #F4F1EA;
+          text-shadow: 0px 0px 14px rgba(220,235,255,0.25), 0px 1px 2px rgba(5,7,20,0.85), 0px 0px 12px rgba(5,7,20,0.6);
+        }
+        /* lit twin: starlight colour + gold glow (frame.md text-light, pushed), flashed by opacity only */
+        .l01-hl {
+          position: absolute; left: 0; top: 0; opacity: 0; color: #FFF4D6;
+          text-shadow: 0px 0px 20px rgba(255,210,122,0.95), 0px 0px 54px rgba(255,210,122,0.55), 0px 0px 90px rgba(255,210,122,0.2);
+        }
+        .l01-dot {
+          position: absolute; left: 50%; top: 50%; display: block;
+          width: 28px; height: 28px; margin: -14px 0 0 -14px; border-radius: 50%; opacity: 0; visibility: hidden;
+          transform: translate(0px, 0px) scale(0.4);
+          background: radial-gradient(circle, #FFFFFF 0%, #FFF4D6 18%, rgba(255,226,160,0.7) 38%, rgba(255,210,122,0) 72%);
+        }
+
+        /* English title, set sideways (vertical-rl, Latin rotated) just left of the Korean column */
+        .l01-en {
+          position: absolute; left: 198px; top: 262px; width: 46px;
+          writing-mode: vertical-rl;
+          font-family: "Cormorant Garamond"; font-style: italic; font-weight: 500; font-size: 40px; line-height: 46px;
+          letter-spacing: 0.06em; white-space: nowrap; color: #DCEBFF;
+          text-shadow: 0px 0px 14px rgba(220,235,255,0.25), 0px 1px 2px rgba(5,7,20,0.8), 0px 0px 10px rgba(5,7,20,0.55);
+          opacity: 0; visibility: hidden; transform: translate(0px, 14px); filter: blur(4px);
+        }
+      </style>
+
+      <div id="stage" data-composition-id="s01-intro" data-width="1920" data-height="1080" data-duration="11.1">
+
+        <!-- s01a window star (measured centroid 924.4, 96) -->
+        <div id="l01_wstar" class="l01-anchor" data-layout-ignore style="left: 924px; top: 96px">
+          <i id="l01_wbloom" class="l01-c l01-bloom"></i>
+          <i id="l01_wrayh" class="l01-c l01-rayh"></i>
+          <i id="l01_wrayv" class="l01-c l01-rayv"></i>
+          <i id="l01_whalo" class="l01-c l01-halo"></i>
+        </div>
+
+        <!-- s01b five real stars (positions at 1.25; tweened along their measured drift) -->
+        <div id="l01_tws" class="l01-anchor" data-layout-ignore style="left: 0px; top: 0px">
+          <div id="l01_ta0" class="l01-anchor" style="left: 1194px; top: 182px"><i id="l01_tw0" class="l01-c l01-tw"></i></div>
+          <div id="l01_ta1" class="l01-anchor" style="left: 1229px; top: 146px"><i id="l01_tw1" class="l01-c l01-tw"></i></div>
+          <div id="l01_ta2" class="l01-anchor" style="left: 1286px; top: 127px"><i id="l01_tw2" class="l01-c l01-tw"></i></div>
+          <div id="l01_ta3" class="l01-anchor" style="left: 1360px; top: 150px"><i id="l01_tw3" class="l01-c l01-tw"></i></div>
+          <div id="l01_ta4" class="l01-anchor" style="left: 1388px; top: 179px"><i id="l01_tw4" class="l01-c l01-tw"></i></div>
+        </div>
+
+        <!-- s01c in-focus step star (1199, 665 at 3.76, sliding down with the camera) -->
+        <div id="l01_step" class="l01-anchor" data-layout-ignore style="left: 1199px; top: 665px">
+          <i id="l01_sglow" class="l01-c l01-sglow"></i>
+          <i id="l01_sray" class="l01-c l01-sray"></i>
+        </div>
+
+        <!-- s01d jar glow (882, 467 at 6.57) -->
+        <div id="l01_jar" class="l01-anchor" data-layout-ignore style="left: 882px; top: 467px">
+          <i id="l01_jglow" class="l01-c l01-jglow"></i>
+        </div>
+
+        <div id="l01_scrim" class="l01-scrim" data-layout-ignore></div>
+
+        <div id="l01_drift" class="l01-drift" data-layout-allow-overlap>
+          <div id="l01_title" class="l01-title" lang="ko">
+            <div id="l01_w0" class="l01-cw"><div id="l01_g0" class="l01-g"><span id="l01_c0" class="l01-ch">유</span><span id="l01_h0" class="l01-hl" data-layout-ignore>유</span></div><i id="l01_d0" class="l01-dot" data-layout-ignore></i></div>
+            <div id="l01_w1" class="l01-cw"><div id="l01_g1" class="l01-g"><span id="l01_c1" class="l01-ch">리</span><span id="l01_h1" class="l01-hl" data-layout-ignore>리</span></div><i id="l01_d1" class="l01-dot" data-layout-ignore></i></div>
+            <div id="l01_w2" class="l01-cw"><div id="l01_g2" class="l01-g"><span id="l01_c2" class="l01-ch">병</span><span id="l01_h2" class="l01-hl" data-layout-ignore>병</span></div><i id="l01_d2" class="l01-dot" data-layout-ignore></i></div>
+            <div class="l01-gap"></div>
+            <div id="l01_w3" class="l01-cw"><div id="l01_g3" class="l01-g"><span id="l01_c3" class="l01-ch">별</span><span id="l01_h3" class="l01-hl" data-layout-ignore>별</span></div><i id="l01_d3" class="l01-dot" data-layout-ignore></i></div>
+            <div id="l01_w4" class="l01-cw"><div id="l01_g4" class="l01-g"><span id="l01_c4" class="l01-ch">자</span><span id="l01_h4" class="l01-hl" data-layout-ignore>자</span></div><i id="l01_d4" class="l01-dot" data-layout-ignore></i></div>
+            <div id="l01_w5" class="l01-cw l01-last"><div id="l01_g5" class="l01-g"><span id="l01_c5" class="l01-ch">리</span><span id="l01_h5" class="l01-hl" data-layout-ignore>리</span></div><i id="l01_d5" class="l01-dot" data-layout-ignore></i></div>
+          </div>
+          <div id="l01_en" class="l01-en" lang="en">Glass-Bottle Constellation</div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var tl = gsap.timeline({ paused: true });
+          var F = function (t, a, b, at) { b.immediateRender = false; tl.fromTo(t, a, b, at); };
+
+          // per character: glyph group (base + lit twin), the lit twin alone, and the light dot at its heart
+          var groups = [], lits = [], dots = [];
+          for (var k = 0; k < 6; k++) {
+            groups.push(document.getElementById("l01_g" + k));
+            lits.push(document.getElementById("l01_h" + k));
+            dots.push(document.getElementById("l01_d" + k));
+          }
+
+          // fixed-seed LCG (mote drift jitter)
+          var seed = 20261003;
+          function rnd() { seed = (1664525 * seed + 1013904223) >>> 0; return seed / 4294967296; }
+
+          // ───────── s01a 0.00–1.25 · the window star ─────────
+          // 0.30 first piano note: a soft halo grows on the real star as the footage fades in (0.25–0.85)
+          F("#l01_whalo", { autoAlpha: 0, scale: 0.6 }, { autoAlpha: 0.42, scale: 1, duration: 0.44, ease: "sine.out" }, 0.30);
+          F("#l01_whalo", { autoAlpha: 0.42, scale: 1 }, { autoAlpha: 0.66, scale: 1.12, duration: 0.11, ease: "sine.out" }, 0.743);
+          F("#l01_whalo", { autoAlpha: 0.66, scale: 1.12 }, { autoAlpha: 0.45, scale: 1, duration: 0.22, ease: "sine.inOut" }, 0.853);
+          // pre-hit swell into the band hit
+          F("#l01_whalo", { autoAlpha: 0.45, scale: 1 }, { autoAlpha: 0.95, scale: 1.7, duration: 0.14, ease: "power2.in" }, 1.08);
+          // 1.25 band hit = the cut: bloom + thin anamorphic rays peak on the star just before the cut and collapse
+          // within ~2 frames after it, so no light is left floating in s01b's empty sky
+          F("#l01_wbloom", { autoAlpha: 0, scale: 0.25 }, { autoAlpha: 0.88, scale: 1, duration: 0.07, ease: "power3.out" }, 1.15);
+          F("#l01_wbloom", { autoAlpha: 0.88, scale: 1 }, { autoAlpha: 0, scale: 1.2, duration: 0.11, ease: "power2.out" }, 1.22);
+          F("#l01_wrayh", { autoAlpha: 0, scaleX: 0.05 }, { autoAlpha: 0.85, scaleX: 1, duration: 0.06, ease: "power3.out" }, 1.16);
+          F("#l01_wrayh", { autoAlpha: 0.85, scaleX: 1 }, { autoAlpha: 0, scaleX: 0.6, duration: 0.08, ease: "power2.out" }, 1.22);
+          F("#l01_wrayv", { autoAlpha: 0, scaleY: 0.05 }, { autoAlpha: 0.7, scaleY: 1, duration: 0.06, ease: "power3.out" }, 1.16);
+          F("#l01_wrayv", { autoAlpha: 0.7, scaleY: 1 }, { autoAlpha: 0, scaleY: 0.5, duration: 0.08, ease: "power2.out" }, 1.22);
+          F("#l01_whalo", { autoAlpha: 0.95, scale: 1.7 }, { autoAlpha: 0, scale: 2.0, duration: 0.1, ease: "power2.out" }, 1.22);
+
+          // ───────── s01b 1.25–3.75 · the five real stars switch on after the hit ─────────
+          // measured drift 1.25 → 3.75 (screen px): each anchor follows its star linearly
+          var TW = [[17.0, -24.8], [18.8, -27.1], [23.7, -28.1], [27.5, -26.0], [29.7, -23.7]];
+          for (var s = 0; s < 5; s++) {
+            var ta = "#l01_ta" + s, tw = "#l01_tw" + s, on = 1.30 + 0.06 * s;
+            F(ta, { x: 0, y: 0 }, { x: TW[s][0], y: TW[s][1], duration: 2.5, ease: "none" }, 1.25);
+            F(tw, { autoAlpha: 0, scale: 0.3 }, { autoAlpha: 0.9, scale: 1.15, duration: 0.1, ease: "power2.out" }, on);
+            F(tw, { autoAlpha: 0.9, scale: 1.15 }, { autoAlpha: 0.38, scale: 0.75, duration: 0.35, ease: "sine.inOut" }, on + 0.1);
+            // one gentle breath on a beat, then out before the next cut
+            var b1 = s < 2 ? 1.881 : 2.485;
+            F(tw, { autoAlpha: 0.38, scale: 0.75 }, { autoAlpha: 0.62, scale: 0.92, duration: 0.12, ease: "sine.out" }, b1);
+            F(tw, { autoAlpha: 0.62, scale: 0.92 }, { autoAlpha: 0.34, scale: 0.72, duration: 0.4, ease: "sine.inOut" }, b1 + 0.12);
+            F(tw, { autoAlpha: 0.34, scale: 0.72 }, { autoAlpha: 0, scale: 0.5, duration: 0.5, ease: "power1.in" }, 3.05 + 0.03 * s);
+          }
+
+          // ───────── s01c 3.75 · band locks in: glint on the in-focus step star ─────────
+          F("#l01_step", { x: 0, y: 0 }, { x: -0.8, y: 33, duration: 0.41, ease: "none" }, 3.75);
+          F("#l01_step", { x: -0.8, y: 33 }, { x: -2, y: 110, duration: 0.6, ease: "none" }, 4.16);
+          F("#l01_sglow", { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 0.6, scale: 1, duration: 0.08, ease: "power3.out" }, 3.74);
+          F("#l01_sglow", { autoAlpha: 0.6, scale: 1 }, { autoAlpha: 0, scale: 1.2, duration: 0.7, ease: "power2.out" }, 3.82);
+          F("#l01_sray", { autoAlpha: 0, scaleX: 0.08 }, { autoAlpha: 0.7, scaleX: 1, duration: 0.08, ease: "power3.out" }, 3.74);
+          F("#l01_sray", { autoAlpha: 0.7, scaleX: 1 }, { autoAlpha: 0, scaleX: 0.5, duration: 0.5, ease: "power2.out" }, 3.82);
+
+          // ───────── title lockup ─────────
+          F("#l01_scrim", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power1.out" }, 3.55);
+          F("#l01_drift", { y: 0 }, { y: -16, duration: 6.8, ease: "none" }, 3.75);
+
+          // 3.76 → 4.48 per-character light-up (0.13 s apart, a breath at the word gap)
+          var ON = [3.76, 3.89, 4.02, 4.22, 4.35, 4.48];
+          for (var c = 0; c < 6; c++) {
+            var t = ON[c];
+            F(groups[c], { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2, ease: "power1.out" }, t);
+            F(groups[c], { y: -10, scale: 1.12, filter: "blur(10px)" }, { y: 0, scale: 1, filter: "blur(0px)", duration: 0.45, ease: "power2.out" }, t);
+            // switched on: the lit twin flashes full, then settles to the soft base glyph
+            F(lits[c], { opacity: 0 }, { opacity: 1, duration: 0.18, ease: "sine.out" }, t);
+            F(lits[c], { opacity: 1 }, { opacity: 0, duration: 0.55, ease: "sine.inOut" }, t + 0.2);
+            // the switch-on spark at the glyph's heart
+            F(dots[c], { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 0.85, scale: 1.3, duration: 0.12, ease: "power2.out" }, t);
+            F(dots[c], { autoAlpha: 0.85, scale: 1.3 }, { autoAlpha: 0, scale: 0.6, duration: 0.3, ease: "power1.in" }, t + 0.12);
+          }
+
+          // 4.70 English line: fade + 14 px settle along its axis, then a slow drift
+          F("#l01_en", { autoAlpha: 0, y: 14, filter: "blur(4px)" }, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.75, ease: "power2.out" }, 4.70);
+          F("#l01_en", { x: 0 }, { x: -6, duration: 3.85, ease: "none" }, 4.70);
+
+          // downbeat breaths while the band drives (5.921 kick, 7.129)
+          [5.921, 7.129].forEach(function (b) {
+            F(lits, { opacity: 0 }, { opacity: 0.5, duration: 0.18, ease: "sine.out" }, b);
+            F(lits, { opacity: 0.5 }, { opacity: 0, duration: 0.9, ease: "sine.inOut" }, b + 0.18);
+          });
+
+          // ───────── s01d 6.56 · cut: the jar answers with a warm bloom (tracks the lifted jar) ─────────
+          F("#l01_jar", { x: 0, y: 0 }, { x: -5, y: 10, duration: 0.44, ease: "none" }, 6.56);
+          F("#l01_jar", { x: -5, y: 10 }, { x: -34, y: 18, duration: 0.4, ease: "none" }, 7.0);
+          F("#l01_jglow", { autoAlpha: 0, scale: 0.5 }, { autoAlpha: 0.55, scale: 1, duration: 0.1, ease: "power2.out" }, 6.56);
+          F("#l01_jglow", { autoAlpha: 0.55, scale: 1 }, { autoAlpha: 0, scale: 1.15, duration: 0.75, ease: "power1.out" }, 6.66);
+
+          // ───────── 8.36 → 10.41 the title dissolves into light motes rising into the dusk sky ─────────
+          for (var d = 0; d < 6; d++) {
+            var t0 = 8.36 + 0.17 * d;
+            var dx = 26 + rnd() * 54 + d * 6;
+            var dy = -(130 + rnd() * 70);
+            F(lits[d], { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "sine.out" }, t0);
+            F(groups[d], { scale: 1, filter: "blur(0px)" }, { scale: 0.15, filter: "blur(3px)", duration: 0.5, ease: "power3.in" }, t0 + 0.1);
+            F(groups[d], { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.2, ease: "power1.in" }, t0 + 0.42);
+            F(dots[d], { autoAlpha: 0, scale: 0.3 }, { autoAlpha: 1, scale: 1, duration: 0.12, ease: "power2.out" }, t0 + 0.33);
+            F(dots[d], { x: 0, y: 0 }, { x: dx, y: dy, duration: 0.8, ease: "sine.in" }, t0 + 0.45);
+            F(dots[d], { autoAlpha: 1, scale: 1 }, { autoAlpha: 0, scale: 0.35, duration: 0.8, ease: "power1.in" }, t0 + 0.45);
+          }
+          F("#l01_en", { autoAlpha: 1, y: 0, filter: "blur(0px)" }, { autoAlpha: 0, y: -10, filter: "blur(10px)", duration: 0.9, ease: "power1.in" }, 8.55);
+          F("#l01_scrim", { opacity: 1 }, { opacity: 0, duration: 1.2, ease: "power1.inOut" }, 9.25);
+
+          // 10.41 → 11.10 clean frame
+          tl.set({}, {}, 11.1);
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s01-intro"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

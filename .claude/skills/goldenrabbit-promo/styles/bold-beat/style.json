@@ -1,0 +1,11 @@
+{
+  "name": "bold-beat",
+  "summary": "Loud kinetic poster: 3 flat registers (accent/ink/paper) flipping on hits, label boxes, Latin/Korean pair chips, mixed-face words, marquees, confetti, HUD chrome. Gold only on the logo. (v2)",
+  "tokens": { "accent": "#FFE500", "ink": "#0B0B0B", "paper": "#F2F0EA", "logo": "#CEAE73" },
+  "palette_keys": ["accent", "ink", "paper", "logo"],
+  "font_line": "Paperlogy 800/400 (embedded, Korean) / Archivo Black (Latin caps) / Playfair Display italic 700 (mixed-word lowercase) / IBM Plex Mono (numerals)",
+  "hud": { "box": "ink", "text": "paper", "accent": "accent", "default": true },
+  "registers": ["accent", "ink", "paper"],
+  "accent_alternatives": ["#FFE500 electric yellow (v2)", "#3DF5B0 mint", "#FF5A36 signal orange", "#7C5CFF violet", "#2F6BFF electric blue"],
+  "reference_build": "examples/bold-beat-45s"
+}

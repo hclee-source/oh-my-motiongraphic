@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- s03-pre1 · v3 lyric layer (transparent, over footage) · pre-chorus 1 · track 31.70–42.40 · local = track − 31.70.
+         Text treatment from v1 f3 (twinkle-on 반짝이는, hush on 묻지 마, empty 「 」 slot → 이름 in gold); every drawn object removed.
+         Shots under it: s03a c03 wall-sit (0–3.60, palm star) · s03b c05 wave-walk (3.60–5.73, ground star) ·
+         s03c c09 room-window (5.73–8.40, the bright window star ≈ (921,85)) · s03d c06 window-pass (8.40–10.70, 5-star cluster upper right).
+         L5 sits top-left over the dark hill / coat; L6 sits under the window star, left of the s03d star cluster, above her head.
+         Light accents are measured on the rendered footage and track it (x/y tweens); each dies on its shot's cut. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Noto Serif KR"; src: url("assets/fonts/NotoSerifKR-VF.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: block; }
+        @font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/CormorantGaramond-Italic-VF.woff2") format("woff2"); font-weight: 300 700; font-style: italic; font-display: block; }
+
+        #stage { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+        #l03_fx, #l03_lines { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+        /* ── light accents on the footage's real light (zero-size anchors; children centred on the anchor) ── */
+        .l03-trk { position: absolute; width: 0; height: 0; transform: translate(0px, 0px); }
+        .l03-grp { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+        .l03-bloom { position: absolute; border-radius: 50%; opacity: 0;
+          background: radial-gradient(circle, rgba(255,244,214,0.5) 0%, rgba(255,214,140,0.27) 22%, rgba(255,210,122,0.09) 46%, rgba(255,210,122,0) 70%); }
+        .l03-rays { position: absolute; left: 0; top: 0; width: 0; height: 0; opacity: 0; transform: scale(0.6); }
+        .l03-rayh { position: absolute; height: 2px;
+          background: linear-gradient(to right, rgba(255,244,214,0) 0%, rgba(255,240,205,0.85) 50%, rgba(255,244,214,0) 100%); }
+        .l03-rayv { position: absolute; width: 2px;
+          background: linear-gradient(to bottom, rgba(255,244,214,0) 0%, rgba(255,240,205,0.85) 50%, rgba(255,244,214,0) 100%); }
+        .l03-sp { position: absolute; left: 0; top: 0; width: 0; height: 0; opacity: 0; transform: scale(0); }
+        .l03-halo { position: absolute; border-radius: 50%; transform: scale(1);
+          background: radial-gradient(circle, rgba(255,244,214,0.62) 0%, rgba(255,210,122,0.28) 30%, rgba(255,210,122,0) 70%); }
+        .l03-star { position: absolute; display: block; overflow: visible; opacity: 1; }
+
+        /* ── lyrics (horizontal, Noto Serif KR 400 76px) ── */
+        .l03-blk { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform: translate(0px, 0px); }
+        .l03-scrim { position: absolute; opacity: 0;
+          background: radial-gradient(closest-side, rgba(5,7,20,0.56) 0%, rgba(5,7,20,0.42) 45%, rgba(5,7,20,0.16) 76%, rgba(5,7,20,0) 100%); }
+        .l03-line { position: absolute; white-space: pre; font-family: "Noto Serif KR", serif; font-weight: 400; font-size: 76px;
+          line-height: 1.3; letter-spacing: 0.01em; color: #F4F1EA; filter: blur(0px); transform: translate(0px, 0px); }
+        #l03_l5 { left: 150px; top: 106px; }
+        #l03_l6 { left: 310px; top: 186px; }
+        /* glyph = soft text (dark shadow for the footage) · .l03-lt = its lit twin · .l03-hl = its flare twin.
+           All glow changes are opacity flashes of the twins (no color / text-shadow tweens). */
+        .l03-ch, .l03-w { display: inline-block; position: relative;
+          text-shadow: 0px 0px 14px rgba(220,235,255,0.25), 0px 1px 3px rgba(5,7,20,0.85), 0px 0px 12px rgba(5,7,20,0.55); }
+        .l03-lt { position: absolute; left: 0; top: 0; opacity: 0; color: #F4F1EA;
+          text-shadow: 0px 0px 16px rgba(255,244,214,0.55), 0px 0px 40px rgba(255,210,122,0.22), 0px 1px 3px rgba(5,7,20,0.85), 0px 0px 12px rgba(5,7,20,0.55); }
+        .l03-hl { position: absolute; left: 0; top: 0; opacity: 0; color: #FFF4D6;
+          text-shadow: 0px 0px 18px rgba(255,226,160,0.9), 0px 0px 44px rgba(255,210,122,0.45); }
+        #l03_w6a, #l03_w6b, #l03_w6c, #l03_w6d { transform: translate(0px, 0px); filter: blur(0px); }
+        .l03-tw { opacity: 0; }
+        .l03-gw { opacity: 0; color: #A9B3D6; }
+        .l03-rv { opacity: 0; transform: translateY(12px); filter: blur(6px); }
+        #l03_c5m1 { transform: translateX(22px); }   /* "묻지 마" starts at .30em tracking, hushes to normal */
+        #l03_c5m2 { transform: translateX(66px); }
+
+        /* the empty name slot 「　」 + keyword 이름 (1.4×, one weight heavier, gold) */
+        #l03_slot { display: inline-block; position: relative; padding: 0 22px; font-size: 106px; line-height: 1;
+          filter: blur(0px); transform: translate(0px, 0px); }
+        #l03_name { display: inline-block; position: relative; font-weight: 500; letter-spacing: -0.01em; color: #FFD27A; opacity: 0;
+          transform: scale(1.14); filter: blur(10px);
+          text-shadow: 0px 0px 18px rgba(255,210,122,0.45), 0px 0px 46px rgba(255,210,122,0.18), 0px 1px 3px rgba(5,7,20,0.85), 0px 0px 12px rgba(5,7,20,0.55); }
+        #l03_nameh { position: absolute; left: 0; top: 0; opacity: 0; color: #FFE7B5;
+          text-shadow: 0px 0px 24px rgba(255,210,122,0.9), 0px 0px 60px rgba(255,210,122,0.42); }
+        .l03-bk { position: absolute; display: block; width: 60px; height: 64px; opacity: 0; }
+        .l03-bk svg { display: block; overflow: visible; filter: drop-shadow(0px 0px 3px rgba(5,7,20,0.9)); }
+        #l03_bkL { left: -2px; top: -11px; transform: translateX(70px); }
+        #l03_bkR { right: -2px; bottom: -21px; transform: translateX(-70px); }
+        .l03-bkp { fill: none; stroke: #DCEBFF; stroke-opacity: 0.92; stroke-width: 2.5; stroke-linecap: square; stroke-linejoin: miter;
+          stroke-dasharray: 1000; stroke-dashoffset: 1000; }
+      </style>
+
+      <div id="stage" data-composition-id="s03-pre1" data-width="1920" data-height="1080" data-duration="10.7">
+
+        <!-- ═════ light accents ═════ -->
+        <div id="l03_fx" data-layout-ignore="">
+          <!-- s03a: the star in her palm (tracked) -->
+          <div id="l03_palmT" class="l03-trk" style="left:1033px;top:443px"><div id="l03_palm" class="l03-grp">
+            <div id="l03_palmB" class="l03-bloom" style="left:-130px;top:-130px;width:260px;height:260px"></div>
+            <div id="l03_palmR" class="l03-rays"><div class="l03-rayh" style="left:-110px;top:-1px;width:220px"></div><div class="l03-rayv" style="left:-1px;top:-75px;height:150px"></div></div>
+          </div></div>
+          <!-- s03b: the star on the wet pavement -->
+          <div id="l03_gndT" class="l03-trk" style="left:824px;top:834px"><div id="l03_gnd" class="l03-grp">
+            <div id="l03_gndB" class="l03-bloom" style="left:-80px;top:-80px;width:160px;height:160px"></div>
+            <div id="l03_gndR" class="l03-rays"><div class="l03-rayh" style="left:-75px;top:-1px;width:150px"></div><div class="l03-rayv" style="left:-1px;top:-50px;height:100px"></div></div>
+          </div></div>
+          <!-- s03c: the bright window star (answers 이름) -->
+          <div id="l03_mainT" class="l03-trk" style="left:921px;top:85px"><div id="l03_main" class="l03-grp">
+            <div id="l03_mainB" class="l03-bloom" style="left:-150px;top:-150px;width:300px;height:300px"></div>
+            <div id="l03_mainR" class="l03-rays"><div class="l03-rayh" style="left:-150px;top:-1px;width:300px"></div><div class="l03-rayv" style="left:-1px;top:-100px;height:200px"></div></div>
+          </div></div>
+
+          <!-- s03c: small sparkle points multiplying on the real sky stars (die on the 40.10 cut) -->
+          <div id="l03_c1" class="l03-trk" style="left:1178px;top:145px"><div id="l03_c1p" class="l03-sp"><div id="l03_c1h" class="l03-halo" style="left:-16px;top:-16px;width:32px;height:32px"></div><svg id="l03_c1s" class="l03-star" width="14" height="14" viewBox="-7 -7 14 14" style="left:-7px;top:-7px"><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(7)"/></svg></div></div>
+          <div id="l03_c2" class="l03-trk" style="left:641px;top:61px"><div id="l03_c2p" class="l03-sp"><div id="l03_c2h" class="l03-halo" style="left:-17px;top:-17px;width:34px;height:34px"></div><svg id="l03_c2s" class="l03-star" width="15" height="15" viewBox="-7.5 -7.5 15 15" style="left:-7.5px;top:-7.5px"><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(7.5)"/></svg></div></div>
+          <div id="l03_c3" class="l03-trk" style="left:1441px;top:84px"><div id="l03_c3p" class="l03-sp"><div id="l03_c3h" class="l03-halo" style="left:-18px;top:-18px;width:36px;height:36px"></div><svg id="l03_c3s" class="l03-star" width="16" height="16" viewBox="-8 -8 16 16" style="left:-8px;top:-8px"><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(8)"/></svg></div></div>
+          <div id="l03_c4" class="l03-trk" style="left:515px;top:109px"><div id="l03_c4p" class="l03-sp"><div id="l03_c4h" class="l03-halo" style="left:-16px;top:-16px;width:32px;height:32px"></div><svg id="l03_c4s" class="l03-star" width="14" height="14" viewBox="-7 -7 14 14" style="left:-7px;top:-7px"><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(7)"/></svg></div></div>
+          <div id="l03_c5" class="l03-trk" style="left:1305px;top:138px"><div id="l03_c5p" class="l03-sp"><div id="l03_c5h" class="l03-halo" style="left:-20px;top:-20px;width:40px;height:40px"></div><svg id="l03_c5s" class="l03-star" width="18" height="18" viewBox="-9 -9 18 18" style="left:-9px;top:-9px"><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(9)"/></svg></div></div>
+          <div id="l03_c6" class="l03-trk" style="left:1029px;top:47px"><div id="l03_c6p" class="l03-sp"><div id="l03_c6h" class="l03-halo" style="left:-18px;top:-18px;width:36px;height:36px"></div><svg id="l03_c6s" class="l03-star" width="16" height="16" viewBox="-8 -8 16 16" style="left:-8px;top:-8px"><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(8)"/></svg></div></div>
+          <div id="l03_c7" class="l03-trk" style="left:1096px;top:79px"><div id="l03_c7p" class="l03-sp"><div id="l03_c7h" class="l03-halo" style="left:-19px;top:-19px;width:38px;height:38px"></div><svg id="l03_c7s" class="l03-star" width="17" height="17" viewBox="-8.5 -8.5 17 17" style="left:-8.5px;top:-8.5px"><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(8.5)"/></svg></div></div>
+
+          <!-- s03d: the 5-star cluster, the wall lamp and her jar — more and brighter into the snare fill -->
+          <div id="l03_d1" class="l03-trk" style="left:1200px;top:173px"><div id="l03_d1p" class="l03-sp"><div id="l03_d1h" class="l03-halo" style="left:-20px;top:-20px;width:40px;height:40px"></div><svg id="l03_d1s" class="l03-star" width="18" height="18" viewBox="-9 -9 18 18" style="left:-9px;top:-9px"><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(9)"/></svg></div></div>
+          <div id="l03_d2" class="l03-trk" style="left:1294px;top:117px"><div id="l03_d2p" class="l03-sp"><div id="l03_d2h" class="l03-halo" style="left:-22px;top:-22px;width:44px;height:44px"></div><svg id="l03_d2s" class="l03-star" width="20" height="20" viewBox="-10 -10 20 20" style="left:-10px;top:-10px"><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(10)"/></svg></div></div>
+          <div id="l03_d3" class="l03-trk" style="left:1647px;top:506px"><div id="l03_d3p" class="l03-sp"><div id="l03_d3h" class="l03-halo" style="left:-34px;top:-34px;width:68px;height:68px"></div><svg id="l03_d3s" class="l03-star" width="20" height="20" viewBox="-10 -10 20 20" style="left:-10px;top:-10px"><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(10)"/></svg></div></div>
+          <div id="l03_d4" class="l03-trk" style="left:1398px;top:171px"><div id="l03_d4p" class="l03-sp"><div id="l03_d4h" class="l03-halo" style="left:-21px;top:-21px;width:42px;height:42px"></div><svg id="l03_d4s" class="l03-star" width="19" height="19" viewBox="-9.5 -9.5 19 19" style="left:-9.5px;top:-9.5px"><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(9.5)"/></svg></div></div>
+          <div id="l03_d5" class="l03-trk" style="left:1235px;top:136px"><div id="l03_d5p" class="l03-sp"><div id="l03_d5h" class="l03-halo" style="left:-23px;top:-23px;width:46px;height:46px"></div><svg id="l03_d5s" class="l03-star" width="22" height="22" viewBox="-11 -11 22 22" style="left:-11px;top:-11px"><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(11)"/></svg></div></div>
+          <div id="l03_d6" class="l03-trk" style="left:756px;top:815px"><div id="l03_d6p" class="l03-sp"><div id="l03_d6h" class="l03-halo" style="left:-44px;top:-44px;width:88px;height:88px"></div><svg id="l03_d6s" class="l03-star" width="16" height="16" viewBox="-8 -8 16 16" style="left:-8px;top:-8px"><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(8)"/></svg></div></div>
+          <div id="l03_d7" class="l03-trk" style="left:1369px;top:140px"><div id="l03_d7p" class="l03-sp"><div id="l03_d7h" class="l03-halo" style="left:-24px;top:-24px;width:48px;height:48px"></div><svg id="l03_d7s" class="l03-star" width="24" height="24" viewBox="-12 -12 24 24" style="left:-12px;top:-12px"><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(12)"/></svg></div></div>
+        </div>
+
+        <!-- ═════ lyrics ═════ -->
+        <div id="l03_lines">
+          <!-- L5 「반짝이는 이유는 묻지 마」 — top-left, over the dark hill (s03a) and the dark coat / wall (s03b) -->
+          <div id="l03_b5" class="l03-blk">
+            <div id="l03_sc5" class="l03-scrim" data-layout-ignore="" style="left:30px;top:30px;width:1110px;height:280px"></div>
+            <div id="l03_l5" class="l03-line"><span id="l03_c50" class="l03-ch l03-tw">반<span id="l03_c50h" class="l03-hl" data-layout-ignore="">반</span></span><span id="l03_c51" class="l03-ch l03-tw">짝<span id="l03_c51h" class="l03-hl" data-layout-ignore="">짝</span></span><span id="l03_c52" class="l03-ch l03-tw">이<span id="l03_c52h" class="l03-hl" data-layout-ignore="">이</span></span><span id="l03_c53" class="l03-ch l03-tw">는<span id="l03_c53h" class="l03-hl" data-layout-ignore="">는</span></span> <span id="l03_w5b" class="l03-w l03-gw">이유는<span id="l03_w5bt" class="l03-lt" data-layout-ignore="">이유는</span><span id="l03_w5bh" class="l03-hl" data-layout-ignore="">이유는</span></span> <span id="l03_c5m0" class="l03-ch l03-gw">묻<span id="l03_c5m0t" class="l03-lt" data-layout-ignore="">묻</span><span id="l03_c5m0h" class="l03-hl" data-layout-ignore="">묻</span></span><span id="l03_c5m1" class="l03-ch l03-gw">지<span id="l03_c5m1t" class="l03-lt" data-layout-ignore="">지</span><span id="l03_c5m1h" class="l03-hl" data-layout-ignore="">지</span></span> <span id="l03_c5m2" class="l03-ch l03-gw">마<span id="l03_c5m2t" class="l03-lt" data-layout-ignore="">마</span><span id="l03_c5m2h" class="l03-hl" data-layout-ignore="">마</span></span></div>
+          </div>
+          <!-- L6 「나도 아직 「이름」을 몰라」 — under the window star (s03c), left of the star cluster and above her head (s03d) -->
+          <div id="l03_b6" class="l03-blk">
+            <div id="l03_sc6" class="l03-scrim" data-layout-ignore="" style="left:180px;top:110px;width:1100px;height:290px"></div>
+            <div id="l03_l6" class="l03-line"><span id="l03_w6a" class="l03-w"><span id="l03_c60" class="l03-ch l03-rv">나</span><span id="l03_c61" class="l03-ch l03-rv">도</span></span> <span id="l03_w6b" class="l03-w l03-gw">아직<span id="l03_w6bt" class="l03-lt" data-layout-ignore="">아직</span><span id="l03_w6bh" class="l03-hl" data-layout-ignore="">아직</span></span> <span id="l03_slot"><span id="l03_bkL" class="l03-bk" data-layout-ignore=""><svg width="60" height="64" viewBox="0 0 60 64"><path id="l03_bkLp" class="l03-bkp" d="M55 5 L5 5 L5 59" pathLength="1000"/></svg></span><span id="l03_bkR" class="l03-bk" data-layout-ignore=""><svg width="60" height="64" viewBox="0 0 60 64"><path id="l03_bkRp" class="l03-bkp" d="M5 59 L55 59 L55 5" pathLength="1000"/></svg></span><span id="l03_name">이름<span id="l03_nameh" data-layout-ignore="">이름</span></span></span><span id="l03_w6c" class="l03-w l03-gw">을<span id="l03_w6ct" class="l03-lt" data-layout-ignore="">을</span><span id="l03_w6ch" class="l03-hl" data-layout-ignore="">을</span></span> <span id="l03_w6d" class="l03-w l03-gw">몰라<span id="l03_w6dt" class="l03-lt" data-layout-ignore="">몰라</span><span id="l03_w6dh" class="l03-hl" data-layout-ignore="">몰라</span></span></div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // Local seconds (track − 31.70).
+          // L5 onset 0.50 (반짝이는 0.54 · 이유는 2.63 · 묻지 3.49 · 마 4.31 · end 5.61)
+          // L6 onset 5.73 (나도 5.77 · 아직 6.67 · 이름을 7.84 · 몰라 8.54 · end 9.35)
+          // Downbeats 2.08 · 4.69 · 7.29 · 9.89. Cuts 3.60 · 5.73 · 8.40. Snare fill into the chorus 10.17–10.70.
+          var tl = gsap.timeline({ paused: true });
+          var GHOST = 0.55;   // a not-yet-sung word: dim (text-dim colour) but legible from the onset
+
+          // fromTo that never pre-renders at build time: CSS already holds every element's t=0 state.
+          function ft(target, from, to, pos) { to.immediateRender = false; tl.fromTo(target, from, to, pos); }
+          // finite, odd yoyo repeat count so a twinkle ends on its rest value before `avail` runs out
+          function yoyoRepeat(avail, half) { var r = Math.floor(avail / half) - 1; if (r % 2 === 0) r -= 1; return r; }
+          // flare twin: a short starlight flash over the glyph (opacity only)
+          function flare(id, t, peak, up, down) {
+            ft(id + "h", { opacity: 0 }, { opacity: peak, duration: up, ease: "power2.out" }, t);
+            ft(id + "h", { opacity: peak }, { opacity: 0, duration: down, ease: "sine.out" }, t + up + 0.02);
+          }
+          // a ghosted word lights up on its sung time: glyph to full, lit twin on (stays), flare twin flashes and settles
+          function lightUp(id, t, dur) {
+            var d = dur || 0.24;
+            ft(id, { opacity: GHOST }, { opacity: 1, duration: d, ease: "power2.out" }, t);
+            ft(id + "t", { opacity: 0 }, { opacity: 1, duration: d, ease: "power2.out" }, t);
+            flare(id, t, 0.75, d, 0.7);
+          }
+
+          // ══════════ L5 「반짝이는 이유는 묻지 마」 ══════════
+          ft("#l03_sc5", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "sine.out" }, 0.02);
+          ft("#l03_b5", { y: 0 }, { y: -8, duration: 5.6, ease: "none" }, 0.2);
+          // 반짝이는: each character twinkles on like a star (deterministic flicker per index), all lit by the onset 0.50
+          var PAT_A = [[0, 1], [0.05, 0.35], [0.09, 1], [0.14, 0.6], [0.18, 1]];
+          var PAT_B = [[0, 1], [0.04, 0.4], [0.08, 1], [0.13, 0.55], [0.18, 1]];
+          for (var i = 0; i < 4; i++) {
+            (function (i) {
+              var c = "#l03_c5" + i, b = 0.16 + 0.05 * i, s = 0.54 + 0.06 * i;
+              (i % 2 === 0 ? PAT_A : PAT_B).forEach(function (p) { tl.set(c, { opacity: p[1] }, b + p[0]); });
+              flare(c, b, 0.6, 0.12, 0.22);                       // ignite (ends before the sung flare)
+              // on the sung word the glyph flares like a star, then settles
+              tl.set(c, { opacity: 0.6 }, s);
+              tl.set(c, { opacity: 1 }, s + 0.05);
+              flare(c, s, 1, 0.1, 0.8);
+              // a running twinkle on the downbeats while the line holds
+              [2.08, 4.69].forEach(function (db) {
+                var t = db + 0.07 * i;
+                tl.set(c, { opacity: 0.45 }, t);
+                tl.set(c, { opacity: 1 }, t + 0.06);
+                flare(c, t, 1, 0.1, 0.6);
+              });
+            })(i);
+          }
+          // the rest of the line is a dim, legible ghost by the onset, then lights on its word times
+          ["#l03_w5b", "#l03_c5m0", "#l03_c5m1", "#l03_c5m2"].forEach(function (sel, j) {
+            ft(sel, { opacity: 0 }, { opacity: GHOST, duration: 0.2, ease: "sine.out" }, 0.2 + j * 0.03);
+          });
+          lightUp("#l03_w5b", 2.48);             // 이유는 34.33
+          lightUp("#l03_c5m0", 3.34);            // 묻지 35.19
+          lightUp("#l03_c5m1", 3.40);
+          lightUp("#l03_c5m2", 4.17, 0.2);       // 마 36.01
+          // the hush: "묻지 마" tracking .30em → normal over 35.19–36.01
+          ft("#l03_c5m1", { x: 22 }, { x: 0, duration: 0.82, ease: "sine.inOut" }, 3.49);
+          ft("#l03_c5m2", { x: 66 }, { x: 0, duration: 0.82, ease: "sine.inOut" }, 3.49);
+          // L5 leaves with the vocal — gone exactly on the 37.43 cut so none of it lands on the curtain / window star of s03c
+          ft("#l03_l5", { opacity: 1, y: 0, filter: "blur(0px)" }, { opacity: 0, y: -14, filter: "blur(8px)", duration: 0.16, ease: "power2.in" }, 5.57);
+          ft("#l03_sc5", { opacity: 1 }, { opacity: 0, duration: 0.18, ease: "sine.in" }, 5.55);
+
+          // ══════════ L6 「나도 아직 「이름」을 몰라」 ══════════
+          ft("#l03_sc6", { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "sine.out" }, 5.3);
+          ft("#l03_b6", { y: 0 }, { y: -34, duration: 4.8, ease: "none" }, 5.4);   // slow lift (rising tension), clears her head in s03d
+          ["#l03_c60", "#l03_c61"].forEach(function (sel, j) {                          // 나도 37.47
+            ft(sel, { opacity: 0, y: 12, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.25, ease: "power2.out" }, 5.43 + 0.04 * j);
+          });
+          ["#l03_w6b", "#l03_w6c", "#l03_w6d"].forEach(function (sel, j) {
+            ft(sel, { opacity: 0 }, { opacity: GHOST, duration: 0.26, ease: "sine.out" }, 5.42 + j * 0.03);
+          });
+          lightUp("#l03_w6b", 6.52);             // 아직 38.37
+          // 이름을 39.54: the thin corner brackets open around the EMPTY slot …
+          ft("#l03_bkL", { opacity: 0, x: 70 }, { opacity: 1, x: 0, duration: 0.34, ease: "power3.out" }, 7.56);
+          ft("#l03_bkR", { opacity: 0, x: -70 }, { opacity: 1, x: 0, duration: 0.34, ease: "power3.out" }, 7.56);
+          ft("#l03_bkLp", { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.32, ease: "power2.out" }, 7.58);
+          ft("#l03_bkRp", { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.32, ease: "power2.out" }, 7.58);
+          // … then 이름 fades into it — the unnamed thing, gold (gold flare twin peaks, then settles to the resting gold glow)
+          ft("#l03_name", { opacity: 0, scale: 1.14, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.42, ease: "power2.out" }, 7.8);
+          ft("#l03_nameh", { opacity: 0 }, { opacity: 1, duration: 0.42, ease: "power2.out" }, 7.8);
+          ft("#l03_nameh", { opacity: 1 }, { opacity: 0, duration: 0.8, ease: "sine.out" }, 8.24);
+          lightUp("#l03_w6c", 7.95);             // 을
+          lightUp("#l03_w6d", 8.40);             // 몰라 40.24
+          // staggered exit on the snare fill 41.88–42.35: stage empty before 42.40
+          ["#l03_w6a", "#l03_w6b", "#l03_slot", "#l03_w6c", "#l03_w6d"].forEach(function (sel, j) {
+            ft(sel, { opacity: 1, y: 0, filter: "blur(0px)" }, { opacity: 0, y: -30, filter: "blur(12px)", duration: 0.28, ease: "power2.in" }, 10.2 + j * 0.03);
+          });
+          ft("#l03_sc6", { opacity: 1 }, { opacity: 0, duration: 0.36, ease: "sine.in" }, 10.22);
+
+          // ══════════ light on the footage ══════════
+          // s03a — the star in her palm, tracked (measured 31.70 → 35.30)
+          var PALM = [[0, 0, 0], [0.9, -33, 17], [1.8, -68, 22], [2.7, -133, 27], [3.6, -203, 49]];
+          for (var k = 0; k < PALM.length - 1; k++) {
+            ft("#l03_palmT", { x: PALM[k][1], y: PALM[k][2] }, { x: PALM[k + 1][1], y: PALM[k + 1][2], duration: PALM[k + 1][0] - PALM[k][0], ease: "none" }, PALM[k][0]);
+          }
+          ft("#l03_palmB", { opacity: 0 }, { opacity: 0.32, duration: 0.36, ease: "sine.out" }, 0.14);
+          ft("#l03_palmB", { opacity: 0.32 }, { opacity: 0.8, duration: 0.14, ease: "power2.out" }, 0.54);     // 반짝이는
+          ft("#l03_palmB", { opacity: 0.8 }, { opacity: 0.4, duration: 0.8, ease: "sine.inOut" }, 0.7);
+          ft("#l03_palmB", { opacity: 0.4 }, { opacity: 0.7, duration: 0.12, ease: "power2.out" }, 2.06);      // downbeat
+          ft("#l03_palmB", { opacity: 0.7 }, { opacity: 0.4, duration: 0.7, ease: "sine.inOut" }, 2.2);
+          ft("#l03_palmB", { opacity: 0.4 }, { opacity: 0.2, duration: 0.5, ease: "sine.inOut" }, 3.0);        // the hush quiets it
+          ft("#l03_palmR", { opacity: 0, scale: 0.6 }, { opacity: 0.85, scale: 1, duration: 0.12, ease: "power2.out" }, 0.54);
+          ft("#l03_palmR", { opacity: 0.85, scale: 1 }, { opacity: 0, scale: 0.8, duration: 0.7, ease: "power2.in" }, 0.68);
+          ft("#l03_palmR", { opacity: 0, scale: 0.6 }, { opacity: 0.6, scale: 0.9, duration: 0.1, ease: "power2.out" }, 2.08);
+          ft("#l03_palmR", { opacity: 0.6, scale: 0.9 }, { opacity: 0, scale: 0.7, duration: 0.5, ease: "power2.in" }, 2.2);
+          tl.set("#l03_palm", { opacity: 0 }, 3.6);                                                           // cut
+
+          // s03b — the star on the wet pavement answers the second downbeat twinkle
+          ft("#l03_gndB", { opacity: 0 }, { opacity: 0.6, duration: 0.12, ease: "power2.out" }, 4.66);
+          ft("#l03_gndB", { opacity: 0.6 }, { opacity: 0, duration: 0.8, ease: "sine.inOut" }, 4.8);
+          ft("#l03_gndR", { opacity: 0, scale: 0.6 }, { opacity: 0.75, scale: 1, duration: 0.1, ease: "power2.out" }, 4.69);
+          ft("#l03_gndR", { opacity: 0.75, scale: 1 }, { opacity: 0, scale: 0.75, duration: 0.5, ease: "power2.in" }, 4.81);
+
+          // s03c — the bright window star breathes on the downbeat and blooms as 이름 lands in its slot
+          ft("#l03_mainB", { opacity: 0 }, { opacity: 0.28, duration: 0.3, ease: "sine.out" }, 7.27);
+          ft("#l03_mainB", { opacity: 0.28 }, { opacity: 0.8, duration: 0.16, ease: "power2.out" }, 7.82);
+          ft("#l03_mainB", { opacity: 0.8 }, { opacity: 0.45, duration: 0.36, ease: "sine.inOut" }, 8.0);
+          ft("#l03_mainR", { opacity: 0, scale: 0.5 }, { opacity: 0.9, scale: 1, duration: 0.18, ease: "power2.out" }, 7.84);
+          ft("#l03_mainR", { opacity: 0.9, scale: 1 }, { opacity: 0.3, scale: 0.92, duration: 0.36, ease: "sine.inOut" }, 8.02);
+          tl.set("#l03_main", { opacity: 0 }, 8.4);                                                           // cut
+
+          // sparkle points: pop on a real star, twinkle, follow the footage drift
+          // [id, pop time, brightness, half-period, dx, dy over the shot, shot start, shot end, exit]
+          var SP = [
+            ["c1", 6.80, 0.60, 0.40, 10, -6], ["c2", 7.10, 0.64, 0.34, -11, -9], ["c3", 7.36, 0.68, 0.43, 20, -8],
+            ["c4", 7.58, 0.72, 0.31, -15, -8], ["c5", 7.98, 0.80, 0.34, 16, -7], ["c6", 8.12, 0.84, 0.30, 5, -10],
+            ["c7", 8.24, 0.88, 0.33, 7, -8],
+            ["d1", 8.55, 0.70, 0.40, -8, -5], ["d2", 8.82, 0.76, 0.36, 26, -21], ["d3", 9.08, 0.80, 0.42, 130, 97],
+            ["d4", 9.30, 0.84, 0.33, 56, -4], ["d5", 9.50, 0.90, 0.37, 4, -16], ["d6", 9.68, 0.75, 0.39, -168, 235],
+            ["d7", 9.84, 1.00, 0.30, 46, -13]
+          ];
+          SP.forEach(function (d, n) {
+            var id = d[0], t = d[1], c = id.charAt(0) === "c";
+            var a = c ? 5.73 : 8.40, e = c ? 8.40 : 10.70, restEnd = c ? 8.38 : 10.16;
+            ft("#l03_" + id, { x: 0, y: 0 }, { x: d[4], y: d[5], duration: e - a, ease: "none" }, a);
+            ft("#l03_" + id + "p", { opacity: 0, scale: 0 }, { opacity: d[2], scale: 1, duration: 0.28, ease: "back.out(2.2)" }, t);
+            var s0 = t + 0.32, r = yoyoRepeat(restEnd - s0, d[3]);
+            if (r >= 1) ft("#l03_" + id + "s", { opacity: 1 }, { opacity: 0.4, duration: d[3], ease: "sine.inOut", yoyo: true, repeat: r }, s0);
+            if (c) {
+              tl.set("#l03_" + id, { opacity: 0 }, 8.4);                                                       // cut
+            } else {
+              // the last downbeat before the chorus: every point swells once
+              ft("#l03_" + id + "h", { scale: 1 }, { scale: 1.45, duration: 0.1, ease: "power2.out" }, 9.89);
+              ft("#l03_" + id + "h", { scale: 1.45 }, { scale: 1, duration: 0.45, ease: "sine.inOut" }, 9.99);
+              ft("#l03_" + id + "p", { opacity: d[2], y: 0 }, { opacity: 0, y: -10, duration: 0.3, ease: "power2.in" }, 10.2 + (n - 7) * 0.02);
+            }
+          });
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s03-pre1"] = tl;
+          tl.set({}, {}, 10.7);
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

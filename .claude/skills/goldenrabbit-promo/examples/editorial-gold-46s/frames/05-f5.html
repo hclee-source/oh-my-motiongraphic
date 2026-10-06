@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>05-f5 · 빠따 count-in stack → 합격까지, 빠르게.</title>
+    <!-- Source metadata only. The runtime clones the template contents; everything renderable lives there. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        /* Root — styled by id, scoped to this frame (sibling frames share the host document). */
+        #stage {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #0f0e0c;
+          color: #f4efe6;
+          font-family: "Paperlogy", sans-serif;
+        }
+        .f5-layer {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+
+        /* ---------- g2 gold register field (outside the shake wrapper so its edges never show) ---------- */
+        #f5-g2field {
+          background: #ceae73;
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        /* zero-size transform anchors: children keep stage coordinates, and scaling / shaking the
+           anchor never inflates a full-canvas box past the frame edge */
+        .f5-anchor {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 0;
+          height: 0;
+        }
+        /* camera: dolly push-in pivots on the cover row */
+        #f5-cam {
+          transform-origin: 960px 690px;
+        }
+
+        /* ---------- g1: count-in stack ---------- */
+        #f5-head {
+          position: absolute;
+          left: 104px;
+          top: 96px;
+        }
+        #f5-kicker {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          height: 30px;
+        }
+        #f5-stub {
+          display: block;
+          width: 48px;
+          height: 4px;
+          background: #ceae73;
+          transform-origin: 0% 50%;
+        }
+        #f5-kickertext {
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 500;
+          font-size: 22px;
+          line-height: 30px;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: #ceae73;
+          white-space: nowrap;
+          opacity: 0;
+        }
+        #f5-title {
+          margin-top: 34px;
+          font-weight: 800;
+          font-size: 220px;
+          line-height: 0.95;
+          letter-spacing: -0.04em;
+          color: #f4efe6;
+          white-space: nowrap;
+          transform-origin: 0% 100%;
+          opacity: 0;
+        }
+        #f5-sub {
+          margin-top: 14px;
+          font-weight: 800;
+          font-size: 56px;
+          line-height: 1.15;
+          letter-spacing: -0.02em;
+          color: #ceae73;
+          white-space: nowrap;
+          opacity: 0;
+        }
+
+        #f5-counter {
+          position: absolute;
+          right: 104px;
+          top: 90px;
+          width: 240px;
+          height: 64px;
+          transform-origin: 100% 50%;
+          opacity: 0;
+        }
+        .f5-cnt {
+          position: absolute;
+          right: 0;
+          top: 0;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 500;
+          font-size: 52px;
+          line-height: 64px;
+          letter-spacing: 0.1em;
+          white-space: nowrap;
+          opacity: 0;
+        }
+        .f5-cnt .f5-n {
+          color: #ceae73;
+        }
+        .f5-cnt .f5-of {
+          color: #8c877e;
+        }
+        #f5-cnt0 {
+          opacity: 1;
+        }
+
+        /* kick rings behind each popping cover */
+        .f5-pring {
+          position: absolute;
+          width: 280px;
+          height: 280px;
+          margin: -140px 0 0 -140px;
+          border: 2px solid #ceae73;
+          border-radius: 50%;
+          box-sizing: border-box;
+          opacity: 0;
+        }
+
+        /* one-line caption under the row — content-swapped at 0ms */
+        #f5-caps {
+          position: absolute;
+          left: 104px;
+          top: 922px;
+          width: 1712px;
+          height: 48px;
+        }
+        .f5-cap {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1712px;
+          height: 48px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 18px;
+          white-space: nowrap;
+          opacity: 0;
+        }
+        .f5-badge {
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 500;
+          font-size: 22px;
+          line-height: 1;
+          letter-spacing: 0.14em;
+          color: #ceae73;
+          border: 1px solid #ceae73;
+          border-radius: 3px;
+          padding: 6px 8px 5px 11px;
+        }
+        .f5-ctitle {
+          font-weight: 500;
+          font-size: 30px;
+          line-height: 1.35;
+          color: #f4efe6;
+        }
+        .f5-cdiv {
+          width: 2px;
+          height: 24px;
+          background: #ceae73;
+        }
+        .f5-cauth {
+          font-weight: 500;
+          font-size: 30px;
+          line-height: 1.35;
+          color: #8c877e;
+        }
+
+        /* ---------- shared cover layer (g1 → g2 continuity) ---------- */
+        .f5-cover {
+          position: absolute;
+          display: block;
+          border-radius: 6px;
+          box-shadow:
+            0 30px 60px rgba(0, 0, 0, 0.55),
+            0 0 0 1px rgba(255, 255, 255, 0.06);
+          transform-origin: 50% 50%;
+          opacity: 0;
+        }
+
+        /* ---------- g2: climax slam ---------- */
+        #f5-g2dolly,
+        #f5-g2fx,
+        #f5-g2text {
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f5-g2dolly {
+          transform-origin: 960px 690px;
+        }
+        .f5-dring {
+          position: absolute;
+          border: 1.5px solid #ceae73;
+          border-radius: 50%;
+          box-sizing: border-box;
+        }
+        #f5-bursts {
+          position: absolute;
+          left: 960px;
+          top: 357px;
+          width: 0;
+          height: 0;
+        }
+        .f5-arm {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 0;
+          height: 0;
+        }
+        .f5-line {
+          position: absolute;
+          left: -3px;
+          width: 6px;
+          background: #0f0e0c;
+        }
+        .f5-gring {
+          position: absolute;
+          left: 960px;
+          top: 357px;
+          width: 420px;
+          height: 420px;
+          margin: -210px 0 0 -210px;
+          border: 4px solid #a8874a;
+          border-radius: 50%;
+          box-sizing: border-box;
+          opacity: 0;
+        }
+        #f5-g2text {
+          position: absolute;
+          left: 104px;
+          top: 262px;
+          width: 1712px;
+          height: 190px;
+          display: flex;
+          justify-content: center;
+        }
+        #f5-g2drift {
+          display: block;
+          transform-origin: 50% 50%;
+        }
+        #f5-g2line {
+          display: block;
+          font-weight: 800;
+          font-size: 200px;
+          line-height: 0.95;
+          letter-spacing: -0.04em;
+          color: #0f0e0c;
+          white-space: nowrap;
+          transform-origin: 50% 50%;
+          opacity: 0;
+        }
+      </style>
+
+      <div data-hf-id="hf-celm" id="stage" data-composition-id="05-f5" data-width="1920" data-height="1080" data-duration="8.77">
+        <!-- g2: gold register (0ms flip on the 33.97 surge) -->
+        <div data-hf-id="hf-d158" id="f5-g2field" class="f5-layer"></div>
+
+        <div data-hf-id="hf-oi0v" id="f5-shake" class="f5-anchor">
+          <!-- g2: ink burst lines + gold-deep ring burst (behind covers and the statement) -->
+          <div data-hf-id="hf-52o5" id="f5-g2fx" class="f5-layer" data-layout-allow-overflow="">
+            <div data-hf-id="hf-zvgy" id="f5-bursts"></div>
+            <div data-hf-id="hf-yjar" id="f5-gringA" class="f5-gring"></div>
+            <div data-hf-id="hf-nnt4" id="f5-gringB" class="f5-gring"></div>
+          </div>
+
+          <div data-hf-id="hf-6rlg" id="f5-cam" class="f5-anchor">
+            <!-- g1: SERIES 04 · 빠따 count-in -->
+            <div data-hf-id="hf-0303" id="f5-g1" class="f5-layer">
+              <div data-hf-id="hf-4aw1" id="f5-head">
+                <div data-hf-id="hf-4lis" id="f5-kicker">
+                  <div data-hf-id="hf-avwf" id="f5-stub"></div>
+                  <div data-hf-id="hf-rfvc" id="f5-kickertext">SERIES 04</div>
+                </div>
+                <div data-hf-id="hf-5jk3" id="f5-title">빠따</div>
+                <div data-hf-id="hf-h4t5" id="f5-sub">빠르게 따는 자격증</div>
+              </div>
+
+              <div data-hf-id="hf-jn7l" id="f5-counter">
+                <div data-hf-id="hf-39jy" id="f5-cnt0" class="f5-cnt"><span data-hf-id="hf-ela3" class="f5-n">00</span><span data-hf-id="hf-vsnl" class="f5-of">/04</span></div>
+                <div data-hf-id="hf-77nz" id="f5-cnt1" class="f5-cnt"><span data-hf-id="hf-ezl4" class="f5-n">01</span><span data-hf-id="hf-qxqd" class="f5-of">/04</span></div>
+                <div data-hf-id="hf-yjs4" id="f5-cnt2" class="f5-cnt"><span data-hf-id="hf-dso1" class="f5-n">02</span><span data-hf-id="hf-s4ng" class="f5-of">/04</span></div>
+                <div data-hf-id="hf-zbfx" id="f5-cnt3" class="f5-cnt"><span data-hf-id="hf-e6z2" class="f5-n">03</span><span data-hf-id="hf-rqcf" class="f5-of">/04</span></div>
+                <div data-hf-id="hf-i35m" id="f5-cnt4" class="f5-cnt"><span data-hf-id="hf-8y2v" class="f5-n">04</span><span data-hf-id="hf-sx9i" class="f5-of">/04</span></div>
+              </div>
+
+              <div data-hf-id="hf-ucfv" id="f5-pring1" class="f5-pring" style="left: 600px; top: 694px"></div>
+              <div data-hf-id="hf-xd9b" id="f5-pring2" class="f5-pring" style="left: 840px; top: 682px"></div>
+              <div data-hf-id="hf-42jo" id="f5-pring3" class="f5-pring" style="left: 1080px; top: 698px"></div>
+              <div data-hf-id="hf-iptx" id="f5-pring4" class="f5-pring" style="left: 1320px; top: 686px"></div>
+
+              <div data-hf-id="hf-70o0" id="f5-caps">
+                <div data-hf-id="hf-o6yr" id="f5-cap1" class="f5-cap">
+                  <span data-hf-id="hf-3v2e" class="f5-badge">NEW</span>
+                  <span data-hf-id="hf-e4as" class="f5-ctitle">컴퓨터활용능력 1급 필기+실기</span>
+                  <span data-hf-id="hf-q553" class="f5-cdiv"></span>
+                  <span data-hf-id="hf-c1s8" class="f5-cauth">이강용(컴활킹)</span>
+                </div>
+                <div data-hf-id="hf-fj2w" id="f5-cap2" class="f5-cap">
+                  <span data-hf-id="hf-o0ei" class="f5-badge">NEW</span>
+                  <span data-hf-id="hf-z35f" class="f5-ctitle">컴퓨터활용능력 2급 필기+실기</span>
+                  <span data-hf-id="hf-uvfr" class="f5-cdiv"></span>
+                  <span data-hf-id="hf-xzeo" class="f5-cauth">이강용(컴활킹)</span>
+                </div>
+                <div data-hf-id="hf-gaqp" id="f5-cap3" class="f5-cap">
+                  <span data-hf-id="hf-6tl2" class="f5-ctitle">빅데이터분석기사 필기</span>
+                  <span data-hf-id="hf-uh4q" class="f5-cdiv"></span>
+                  <span data-hf-id="hf-bva0" class="f5-cauth">이유성, 조영훈</span>
+                </div>
+                <div data-hf-id="hf-7muu" id="f5-cap4" class="f5-cap">
+                  <span data-hf-id="hf-oepj" class="f5-badge">NEW</span>
+                  <span data-hf-id="hf-hp7q" class="f5-ctitle">빅데이터분석기사 실기</span>
+                  <span data-hf-id="hf-u2tp" class="f5-cdiv"></span>
+                  <span data-hf-id="hf-lau0" class="f5-cauth">조영훈, 이유성</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- g2: dolly-zoom rings (expand faster than the push-in = parallax vertigo) -->
+            <div data-hf-id="hf-gy1d" id="f5-g2dolly" class="f5-layer" data-layout-allow-overflow="">
+              <div data-hf-id="hf-2os4" class="f5-dring" style="left: 640px; top: 370px; width: 640px; height: 640px"></div>
+              <div data-hf-id="hf-6ud3" class="f5-dring" style="left: 470px; top: 200px; width: 980px; height: 980px"></div>
+              <div data-hf-id="hf-0ff5" class="f5-dring" style="left: 280px; top: 10px; width: 1360px; height: 1360px"></div>
+            </div>
+
+            <!-- shared cover layer: the same four props run g1 → g2 -->
+            <div data-hf-id="hf-bj9n" id="f5-covers" class="f5-anchor">
+              <img data-hf-id="hf-pwds" id="f5-c1" class="f5-cover" src="assets/covers/ppatta-computer1.jpg" alt="컴퓨터활용능력 1급 필기+실기" width="300" height="400" style="left: 450px; top: 494px; width: 300px; height: 400px">
+              <img data-hf-id="hf-ru94" id="f5-c2" class="f5-cover" src="assets/covers/ppatta-computer2.jpg" alt="컴퓨터활용능력 2급 필기+실기" width="300" height="400" style="left: 690px; top: 482px; width: 300px; height: 400px">
+              <img data-hf-id="hf-8hz9" id="f5-c3" class="f5-cover" src="assets/covers/ppatta-bigdata-written.jpg" alt="빅데이터분석기사 필기" width="293" height="400" style="left: 933.5px; top: 498px; width: 293px; height: 400px">
+              <img data-hf-id="hf-hhg2" id="f5-c4" class="f5-cover" src="assets/covers/ppatta-bigdata-practical.jpg" alt="빅데이터분석기사 실기" width="293" height="400" style="left: 1173.5px; top: 486px; width: 293px; height: 400px">
+            </div>
+          </div>
+
+          <!-- g2: the statement -->
+          <div data-hf-id="hf-71rd" id="f5-g2text">
+            <div data-hf-id="hf-dbtp" id="f5-g2drift"><div data-hf-id="hf-bkzu" id="f5-g2line">합격까지, 빠르게.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var FID = "05-f5";
+          // Sibling frames share the host document: resolve this frame's root and scope every query to it.
+          var roots = document.querySelectorAll('[data-composition-id="' + FID + '"]');
+          var root = roots.length ? roots[roots.length - 1] : document;
+          function q(s) {
+            return root.querySelector(s);
+          }
+
+          // Frame-local anchors (track seconds − 27.70)
+          var T = {
+            stubSnare: 0.141, // 27.841 snare
+            land: 0.6, // 28.30 kick — title block + counter land
+            pops: [1.56, 2.49, 3.44, 4.39], // 29.26 / 30.19 / 31.14 / 32.09 kicks
+            g2: 4.98, // 32.68 group cut
+            build: 5.11, // 32.81 sustained fill begins
+            slam: 6.27, // 33.97 SURGE onset
+            hit2: 7.27, // 34.97 second hit
+            freeze: 8.18, // 35.88 freeze-hold (hard stop 36) → frame end 8.77
+          };
+
+          var g1 = q("#f5-g1");
+          var g2field = q("#f5-g2field");
+          var g2dolly = q("#f5-g2dolly");
+          var g2fx = q("#f5-g2fx");
+          var g2text = q("#f5-g2text");
+          var g2line = q("#f5-g2line");
+          var g2drift = q("#f5-g2drift");
+          var shake = q("#f5-shake");
+          var cam = q("#f5-cam");
+          var stub = q("#f5-stub");
+          var kickText = q("#f5-kickertext");
+          var title = q("#f5-title");
+          var sub = q("#f5-sub");
+          var counter = q("#f5-counter");
+          var gringA = q("#f5-gringA");
+          var gringB = q("#f5-gringB");
+          var covers = [q("#f5-c1"), q("#f5-c2"), q("#f5-c3"), q("#f5-c4")];
+          var prings = [q("#f5-pring1"), q("#f5-pring2"), q("#f5-pring3"), q("#f5-pring4")];
+          var cnts = [q("#f5-cnt0"), q("#f5-cnt1"), q("#f5-cnt2"), q("#f5-cnt3"), q("#f5-cnt4")];
+          var caps = [q("#f5-cap1"), q("#f5-cap2"), q("#f5-cap3"), q("#f5-cap4")];
+
+          // Fan rotations (alternating −4°..+4°). Offsets below are relative to each cover's fan slot.
+          var ROT = [-4, 3, -3, 4];
+          // Tight stack during the roll (centres 915/945/975/1005, y 716 — low enough that the pushed-in
+          // stack clears the statement's punch on the first gold frame)
+          var STACK = [
+            { x: 315, y: 22, r: -7 },
+            { x: 105, y: 34, r: -2.5 },
+            { x: -105, y: 18, r: 2.5 },
+            { x: -315, y: 30, r: 7 },
+          ];
+          // Shrunk stack under the statement (centres 921/947/973/999, y 742, scale 0.62)
+          var SMALL = [
+            { x: 321, y: 48, r: -8 },
+            { x: 107, y: 60, r: -3 },
+            { x: -107, y: 44, r: 3 },
+            { x: -321, y: 56, r: 8 },
+          ];
+
+          // ---- radial burst lines (ink), on an ellipse that clears the statement ----
+          var bursts = q("#f5-bursts");
+          var lines = [];
+          var N = 24;
+          for (var i = 0; i < N; i++) {
+            var ang = i * (360 / N) + 7.5;
+            var rad = (ang * Math.PI) / 180;
+            var rx = 1000;
+            var ry = 172 + (i % 3) * 14;
+            var r = 1 / Math.sqrt(Math.pow(Math.sin(rad) / rx, 2) + Math.pow(Math.cos(rad) / ry, 2));
+            var len = 120 + (i % 4) * 34 + (i % 3) * 12;
+            var arm = document.createElement("div");
+            arm.className = "f5-arm";
+            arm.style.transform = "rotate(" + ang + "deg)";
+            var ln = document.createElement("div");
+            ln.className = "f5-line";
+            ln.style.height = len + "px";
+            ln.style.top = -(r + len) + "px";
+            arm.appendChild(ln);
+            bursts.appendChild(arm);
+            lines.push(ln);
+          }
+
+          // static initial states
+          gsap.set(lines, { scaleY: 0, y: 0, transformOrigin: "50% 100%" });
+          gsap.set(g2dolly, { scale: 0.8, transformOrigin: "960px 690px" });
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ================= group windows (0ms cuts) =================
+          tl.set(g1, { autoAlpha: 1 }, 0);
+          tl.set(g1, { autoAlpha: 0 }, T.g2);
+          tl.set([g2dolly, g2fx, g2text], { autoAlpha: 1 }, T.g2);
+
+          // ================= g1 — count-in stack [0, 4.98] =================
+          // stub bar is on screen at t=0; it kicks on the 27.841 snare
+          tl.to(stub, { scaleX: 2.2, duration: 0.07, ease: "power3.out" }, T.stubSnare);
+          tl.to(stub, { scaleX: 1, duration: 0.26, ease: "power2.out" }, T.stubSnare + 0.07);
+
+          // 28.30 — staggered reveal of the title block, counter pops top-right
+          tl.fromTo(kickText, { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, T.land);
+          tl.fromTo(title, { opacity: 0, y: 70, scale: 1.06 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "expo.out" }, T.land + 0.04);
+          tl.fromTo(sub, { opacity: 0, x: -36 }, { opacity: 1, x: 0, duration: 0.36, ease: "power3.out" }, T.land + 0.14);
+          tl.fromTo(counter, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.32, ease: "back.out(2.2)" }, T.land);
+
+          // 29.26 / 30.19 / 31.14 / 32.09 — one cover per kick (overlay-pop), counter + caption content-swap at 0ms
+          T.pops.forEach(function (t, i) {
+            var c = covers[i];
+            tl.fromTo(c, { opacity: 0 }, { opacity: 1, duration: 0.06, ease: "none" }, t);
+            tl.fromTo(
+              c,
+              { y: 80, scale: 0.55, rotation: ROT[i] * 3 },
+              { y: 0, scale: 1, rotation: ROT[i], duration: 0.44, ease: "back.out(2.2)" },
+              t,
+            );
+
+            tl.set(prings[i], { opacity: 1, scale: 0.45 }, t);
+            tl.to(prings[i], { opacity: 0, scale: 1.75, duration: 0.6, ease: "power2.out" }, t);
+
+            tl.set(cnts[i], { opacity: 0 }, t);
+            tl.set(cnts[i + 1], { opacity: 1 }, t);
+            tl.to(counter, { scale: 1.14, duration: 0.05, ease: "power3.out" }, t);
+            tl.to(counter, { scale: 1, duration: 0.22, ease: "power2.out" }, t + 0.05);
+
+            if (i > 0) tl.set(caps[i - 1], { opacity: 0 }, t);
+            tl.set(caps[i], { opacity: 1 }, t);
+          });
+
+          // ================= g2 — climax slam [4.98, 8.77] =================
+          // 32.81 → 33.97 sustained fill: fan slides into a tight stack, camera pushes in, rings outrun it (dolly-zoom)
+          tl.to(cam, { scale: 1.12, duration: 1.16, ease: "power2.inOut" }, T.build);
+          tl.to(g2dolly, { scale: 1.6, duration: 1.16, ease: "power2.inOut" }, T.build);
+          var BD = [0, 0.06, 0.06, 0];
+          var BDUR = [1.1, 1.0, 1.0, 1.1];
+          covers.forEach(function (c, i) {
+            tl.to(c, { x: STACK[i].x, y: STACK[i].y, rotation: STACK[i].r, duration: BDUR[i], ease: "power3.inOut" }, T.build + BD[i]);
+          });
+
+          // 33.97 SURGE — 0ms flip to the gold register, statement slams (braam punch), ink burst lines, stack shrinks under the line
+          tl.set(g2field, { autoAlpha: 1 }, T.slam);
+          tl.set(g2dolly, { autoAlpha: 0 }, T.slam);
+          tl.to(cam, { scale: 1, duration: 0.34, ease: "expo.out" }, T.slam);
+          covers.forEach(function (c, i) {
+            tl.to(
+              c,
+              { x: SMALL[i].x, y: SMALL[i].y, rotation: SMALL[i].r, scale: 0.62, duration: 0.38, ease: "expo.out" },
+              T.slam + 0.02 * i,
+            );
+          });
+          tl.set(g2line, { opacity: 1 }, T.slam);
+          tl.fromTo(g2line, { scale: 0.88 }, { scale: 1.14, duration: 0.1, ease: "power4.out", immediateRender: false }, T.slam);
+          tl.to(g2line, { scale: 1, duration: 0.62, ease: "elastic.out(1, 0.5)" }, T.slam + 0.1);
+
+          lines.forEach(function (ln, i) {
+            var t0 = T.slam + 0.015 + (i % 5) * 0.016;
+            tl.to(ln, { scaleY: 1, duration: 0.13, ease: "power4.out" }, t0);
+            tl.set(ln, { transformOrigin: "50% 0%" }, t0 + 0.13);
+            tl.to(ln, { scaleY: 0, y: -60, duration: 0.34, ease: "power2.in" }, t0 + 0.13);
+          });
+
+          // 34.97 — second hit: screen-shake (≤10px, one offset per video frame), gold-deep ring burst, micro punch
+          var SH = [10, -9, 7, -6, 4, -3, 2, -1];
+          SH.forEach(function (a, k) {
+            tl.set(shake, { x: a, y: (k % 2 ? -1 : 1) * Math.round(Math.abs(a) * 0.6) }, T.hit2 + k * 0.034);
+          });
+          tl.set(shake, { x: 0, y: 0 }, T.hit2 + SH.length * 0.034);
+
+          tl.set(gringA, { opacity: 1, scale: 0.3 }, T.hit2);
+          tl.to(gringA, { opacity: 0, scale: 2.7, duration: 0.72, ease: "expo.out" }, T.hit2);
+          tl.set(gringB, { opacity: 1, scale: 0.3 }, T.hit2 + 0.09);
+          tl.to(gringB, { opacity: 0, scale: 2.0, duration: 0.62, ease: "expo.out" }, T.hit2 + 0.09);
+
+          tl.to(g2line, { scale: 1.05, duration: 0.06, ease: "power3.out" }, T.hit2);
+          tl.to(g2line, { scale: 1, duration: 0.32, ease: "power2.out" }, T.hit2 + 0.06);
+          tl.to(covers, { scale: 0.665, duration: 0.06, ease: "power3.out" }, T.hit2);
+          tl.to(covers, { scale: 0.62, duration: 0.3, ease: "power2.out" }, T.hit2 + 0.06);
+
+          // slow creep that dies dead on 35.88 — the freeze-hold reads as a stop, then holds to the frame end
+          tl.to(cam, { scale: 1.03, duration: T.freeze - (T.slam + 0.34), ease: "none" }, T.slam + 0.34);
+          tl.to(g2drift, { scale: 1.04, duration: T.freeze - 6.99, ease: "none" }, 6.99);
+
+          window.__timelines[FID] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

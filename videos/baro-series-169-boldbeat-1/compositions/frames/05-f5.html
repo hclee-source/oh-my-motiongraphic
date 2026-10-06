@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>05-f5 · 바이브 코딩 → 바로 배워, 바로 쓴다.</title>
+    <!-- Source metadata only. The runtime clones the <template> contents; everything renderable lives there. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        /* Root: plain #stage (the compiler scopes this file's CSS and moves data-composition-id to the host). */
+        #stage {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #040404;
+          font-family: "Paperlogy", sans-serif;
+        }
+
+        /* Register tokens live on #f5_frame; 0ms tl.set flips swap them on the hits. Start = INK. */
+        #f5_frame {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          --f5-bg: #040404;
+          --f5-fg: #f2f0ea;
+          --f5-dim: rgba(242, 240, 234, 0.6);
+          --f5-mono: #ffe500;
+          --f5-boxbg: #ffe500;
+          --f5-boxfg: #040404;
+          --f5-conf: #f2f0ea;
+        }
+        #f5_bg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          background: var(--f5-bg);
+        }
+        .f5-layer {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        /* zero-size transform anchors: children keep stage coordinates; shaking / scaling an
+           anchor never inflates a full-canvas box past the frame edge */
+        .f5-anchor {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 0;
+          height: 0;
+        }
+
+        /* ===================== g1 — type → toss (21.95–25.45) ===================== */
+
+        /* outline marquee rows (paper phase, behind everything) */
+        .f5-mrow {
+          position: absolute;
+          left: 0;
+          width: max-content;
+          height: 120px;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f5-mstrip {
+          display: flex;
+          align-items: center;
+          width: max-content;
+          height: 120px;
+          white-space: nowrap;
+        }
+        .f5-mu {
+          display: flex;
+          align-items: center;
+          flex: none;
+        }
+        .f5-mko {
+          font-weight: 800;
+          font-size: 120px;
+          line-height: 1;
+          letter-spacing: -0.04em;
+          margin: 0 0.2em;
+          color: transparent;
+          -webkit-text-stroke: 2px #040404;
+        }
+        .f5-mstar {
+          display: block;
+          flex: none;
+          width: 64px;
+          height: 64px;
+        }
+        .f5-mstar path {
+          fill: none;
+          stroke: #040404;
+          stroke-width: 2px;
+          vector-effect: non-scaling-stroke;
+        }
+
+        /* orange monitor sprite (feathered — INK register only) */
+        #f5_spr {
+          position: absolute;
+          left: 1108px;
+          top: 330px;
+          width: 585px;
+          height: 429px;
+          display: block;
+          transform-origin: 50% 60%;
+          visibility: hidden;
+          opacity: 0;
+        }
+
+        /* cover (paper phase) — anchor at its centre */
+        #f5_cvpos {
+          left: 1330px;
+          top: 440px;
+        }
+        #f5_cover {
+          position: absolute;
+          left: -200px;
+          top: -274px;
+          width: 400px;
+          height: auto;
+          display: block;
+          box-shadow: 14px 14px 0 #040404;
+          transform-origin: 50% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f5_cap {
+          position: absolute;
+          left: 1330px;
+          top: 762px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+          transform: translateX(-50%);
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f5_capt {
+          display: block;
+          padding: 0.08em 0.18em;
+          font-weight: 800;
+          font-size: 34px;
+          line-height: 1.25;
+          white-space: nowrap;
+          background: var(--f5-boxbg);
+          color: var(--f5-boxfg);
+          transform-origin: 0% 50%;
+        }
+        #f5_capa {
+          display: block;
+          font-weight: 500;
+          font-size: 26px;
+          line-height: 1.3;
+          color: var(--f5-dim);
+          white-space: nowrap;
+        }
+
+        /* left typing block */
+        #f5_head {
+          position: absolute;
+          left: 96px;
+          top: 262px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        #f5_kicker {
+          font-weight: 800;
+          font-size: 34px;
+          line-height: 1.25;
+          color: var(--f5-dim);
+          white-space: nowrap;
+          margin-bottom: 18px;
+        }
+        .f5-tline {
+          display: block;
+          font-weight: 800;
+          font-size: 240px;
+          line-height: 0.92;
+          letter-spacing: -0.045em;
+          color: var(--f5-fg);
+          white-space: nowrap;
+        }
+        .f5-syl {
+          position: relative;
+          display: inline-block;
+        }
+        .f5-gl {
+          display: inline-block;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f5-caret {
+          position: absolute;
+          top: 0.04em;
+          right: -0.14em;
+          width: 0.07em;
+          height: 0.86em;
+          background: #ffe500;
+          visibility: hidden;
+          opacity: 0;
+        }
+        /* the ready caret before the first syllable is on at t=0 */
+        #f5_cpre {
+          right: auto;
+          left: 0;
+          visibility: inherit;
+          opacity: 1;
+        }
+        #f5_row {
+          display: flex;
+          align-items: center;
+          gap: 24px;
+          margin-top: 26px;
+        }
+        #f5_mono {
+          font-family: "IBM Plex Mono", "Paperlogy", monospace;
+          font-weight: 700;
+          font-size: 48px;
+          line-height: 1;
+          color: var(--f5-mono);
+          white-space: pre;
+        }
+        .f5-mc {
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f5_chip {
+          display: block;
+          padding: 10px 16px;
+          font-family: "Archivo Black", sans-serif;
+          font-size: 30px;
+          line-height: 1;
+          letter-spacing: 0.02em;
+          text-transform: uppercase;
+          white-space: nowrap;
+          background: var(--f5-boxbg);
+          color: var(--f5-boxfg);
+          transform-origin: 0% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+
+        /* ===================== g2 — climax slam (25.45–27.61) ===================== */
+        #f5_g2 {
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f5_burst {
+          left: 960px;
+          top: 540px;
+        }
+        .f5-arm {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 0;
+          height: 0;
+        }
+        .f5-ray {
+          position: absolute;
+          left: -4px;
+          width: 8px;
+          background: #040404;
+          transform-origin: 50% 100%;
+          transform: scaleY(0);
+        }
+
+        /* statement: anchor at (960, 0); lines centred on x=960 by their position wrappers */
+        #f5_stmt {
+          left: 960px;
+          top: 0;
+          transform-origin: 0px 540px;
+        }
+        .f5-cpos {
+          position: absolute;
+          left: 0;
+          transform: translateX(-50%);
+          white-space: nowrap;
+        }
+        #f5_l1pos {
+          top: 325px;
+        }
+        #f5_l2pos {
+          top: 495px;
+        }
+        #f5_l1 {
+          display: block;
+          font-weight: 400;
+          font-size: 150px;
+          line-height: 1;
+          letter-spacing: -0.03em;
+          color: var(--f5-fg);
+          white-space: nowrap;
+          transform-origin: 50% 50%;
+        }
+        #f5_l2 {
+          position: relative;
+          display: block;
+          padding: 0.08em 0.18em;
+          font-weight: 800;
+          font-size: 240px;
+          line-height: 0.92;
+          letter-spacing: -0.045em;
+          color: #040404;
+          white-space: nowrap;
+          transform-origin: 50% 50%;
+        }
+        #f5_l2box {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          display: block;
+          background: #ffe500;
+          transform-origin: 0% 50%;
+          transform: scaleX(0);
+        }
+        #f5_l2txt {
+          position: relative;
+        }
+
+        .f5-cf {
+          position: absolute;
+          color: var(--f5-conf);
+          transform: scale(0);
+        }
+        .f5-cf svg {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
+        .f5-cf svg * {
+          fill: currentColor;
+        }
+      </style>
+
+      <div id="stage" data-composition-id="05-f5" data-width="1920" data-height="1080" data-duration="5.66">
+        <div id="f5_frame">
+          <div id="f5_bg"></div>
+
+          <!-- ============ g1: type → toss (local 0 – 3.50) ============ -->
+          <div id="f5_g1" class="f5-layer">
+            <!-- outline marquee '바로 배워 ✦ 바로 쓰는 ✦' (texture, behind) -->
+            <div id="f5_mq" class="f5-anchor" data-layout-ignore="">
+              <div id="f5_mrow1" class="f5-mrow" style="top: 110px">
+                <div id="f5_mstrip1" class="f5-mstrip">
+                  <div class="f5-mu"><span class="f5-mko">바로 배워</span><svg class="f5-mstar" viewBox="0 0 100 100"><path d="M50 2 C54 38 62 46 98 50 C62 54 54 62 50 98 C46 62 38 54 2 50 C38 46 46 38 50 2Z" /></svg><span class="f5-mko">바로 쓰는</span><svg class="f5-mstar" viewBox="0 0 100 100"><path d="M50 2 C54 38 62 46 98 50 C62 54 54 62 50 98 C46 62 38 54 2 50 C38 46 46 38 50 2Z" /></svg></div>
+                  <div class="f5-mu"><span class="f5-mko">바로 배워</span><svg class="f5-mstar" viewBox="0 0 100 100"><path d="M50 2 C54 38 62 46 98 50 C62 54 54 62 50 98 C46 62 38 54 2 50 C38 46 46 38 50 2Z" /></svg><span class="f5-mko">바로 쓰는</span><svg class="f5-mstar" viewBox="0 0 100 100"><path d="M50 2 C54 38 62 46 98 50 C62 54 54 62 50 98 C46 62 38 54 2 50 C38 46 46 38 50 2Z" /></svg></div>
+                  <div class="f5-mu"><span class="f5-mko">바로 배워</span><svg class="f5-mstar" viewBox="0 0 100 100"><path d="M50 2 C54 38 62 46 98 50 C62 54 54 62 50 98 C46 62 38 54 2 50 C38 46 46 38 50 2Z" /></svg><span class="f5-mko">바로 쓰는</span><svg class="f5-mstar" viewBox="0 0 100 100"><path d="M50 2 C54 38 62 46 98 50 C62 54 54 62 50 98 C46 62 38 54 2 50 C38 46 46 38 50 2Z" /></svg></div>
+                  <div class="f5-mu"><span class="f5-mko">바로 배워</span><svg class="f5-mstar" viewBox="0 0 100 100"><path d="M50 2 C54 38 62 46 98 50 C62 54 54 62 50 98 C46 62 38 54 2 50 C38 46 46 38 50 2Z" /></svg><span class="f5-mko">바로 쓰는</span><svg class="f5-mstar" viewBox="0 0 100 100"><path d="M50 2 C54 38 62 46 98 50 C62 54 54 62 50 98 C46 62 38 54 2 50 C38 46 46 38 50 2Z" /></svg></div>
+                  <div class="f5-mu"><span class="f5-mko">바로 배워</span><svg class="f5-mstar" viewBox="0 0 100 100"><path d="M50 2 C54 38 62 46 98 50 C62 54 54 62 50 98 C46 62 38 54 2 50 C38 46 46 38 50 2Z" /></svg><span class="f5-mko">바로 쓰는</span><svg class="f5-mstar" viewBox="0 0 100 100"><path d="M50 2 C54 38 62 46 98 50 C62 54 54 62 50 98 C46 62 38 54 2 50 C38 46 46 38 50 2Z" /></svg></div>
+                </div>
+              </div>
+              <div id="f5_mrow2" class="f5-mrow" style="top: 862px">
+                <div id="f5_mstrip2" class="f5-mstrip">
+                  <div class="f5-mu"><span class="f5-mko">바로 배워</span><svg class="f5-mstar" viewBox="0 0 100 100"><path d="M50 2 C54 38 62 46 98 50 C62 54 54 62 50 98 C46 62 38 54 2 50 C38 46 46 38 50 2Z" /></svg><span class="f5-mko">바로 쓰는</span><svg class="f5-mstar" viewBox="0 0 100 100"><path d="M50 2 C54 38 62 46 98 50 C62 54 54 62 50 98 C46 62 38 54 2 50 C38 46 46 38 50 2Z" /></svg></div>
+                  <div class="f5-mu"><span class="f5-mko">바로 배워</span><svg class="f5-mstar" viewBox="0 0 100 100"><path d="M50 2 C54 38 62 46 98 50 C62 54 54 62 50 98 C46 62 38 54 2 50 C38 46 46 38 50 2Z" /></svg><span class="f5-mko">바로 쓰는</span><svg class="f5-mstar" viewBox="0 0 100 100"><path d="M50 2 C54 38 62 46 98 50 C62 54 54 62 50 98 C46 62 38 54 2 50 C38 46 46 38 50 2Z" /></svg></div>
+                  <div class="f5-mu"><span class="f5-mko">바로 배워</span><svg class="f5-mstar" viewBox="0 0 100 100"><path d="M50 2 C54 38 62 46 98 50 C62 54 54 62 50 98 C46 62 38 54 2 50 C38 46 46 38 50 2Z" /></svg><span class="f5-mko">바로 쓰는</span><svg class="f5-mstar" viewBox="0 0 100 100"><path d="M50 2 C54 38 62 46 98 50 C62 54 54 62 50 98 C46 62 38 54 2 50 C38 46 46 38 50 2Z" /></svg></div>
+                  <div class="f5-mu"><span class="f5-mko">바로 배워</span><svg class="f5-mstar" viewBox="0 0 100 100"><path d="M50 2 C54 38 62 46 98 50 C62 54 54 62 50 98 C46 62 38 54 2 50 C38 46 46 38 50 2Z" /></svg><span class="f5-mko">바로 쓰는</span><svg class="f5-mstar" viewBox="0 0 100 100"><path d="M50 2 C54 38 62 46 98 50 C62 54 54 62 50 98 C46 62 38 54 2 50 C38 46 46 38 50 2Z" /></svg></div>
+                  <div class="f5-mu"><span class="f5-mko">바로 배워</span><svg class="f5-mstar" viewBox="0 0 100 100"><path d="M50 2 C54 38 62 46 98 50 C62 54 54 62 50 98 C46 62 38 54 2 50 C38 46 46 38 50 2Z" /></svg><span class="f5-mko">바로 쓰는</span><svg class="f5-mstar" viewBox="0 0 100 100"><path d="M50 2 C54 38 62 46 98 50 C62 54 54 62 50 98 C46 62 38 54 2 50 C38 46 46 38 50 2Z" /></svg></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- key-visual sprite: orange monitor bubble (ink register only, cut at the paper flip) -->
+            <img id="f5_spr" src="assets/keyvisual/spr-orange.png" alt="">
+
+            <!-- the cover (tossed in on the paper flip) + its caption label box -->
+            <div id="f5_cvpos" class="f5-anchor">
+              <img id="f5_cover" src="assets/covers/9791194383871.jpg" alt="바로바로 바이브 코딩 with 커서 AI">
+            </div>
+            <div id="f5_cap">
+              <div id="f5_capt">바로바로 바이브 코딩 with 커서 AI</div>
+              <div id="f5_capa">박현규</div>
+            </div>
+
+            <!-- typing block -->
+            <div id="f5_head">
+              <div id="f5_kicker">바로바로</div>
+              <div id="f5_tl1" class="f5-tline"><span class="f5-syl"><i id="f5_cpre" class="f5-caret"></i><span id="f5_s0" class="f5-gl">바</span><i id="f5_c0" class="f5-caret"></i></span><span class="f5-syl"><span id="f5_s1" class="f5-gl">이</span><i id="f5_c1" class="f5-caret"></i></span><span class="f5-syl"><span id="f5_s2" class="f5-gl">브</span><i id="f5_c2" class="f5-caret"></i></span></div>
+              <div id="f5_tl2" class="f5-tline"><span class="f5-syl"><span id="f5_s3" class="f5-gl">코</span><i id="f5_c3" class="f5-caret"></i></span><span class="f5-syl"><span id="f5_s4" class="f5-gl">딩</span><i id="f5_c4" class="f5-caret"></i></span></div>
+              <div id="f5_row">
+                <div id="f5_mono"><span id="f5_m0" class="f5-mc">&gt;</span><span id="f5_m1" class="f5-mc"> </span><span id="f5_m2" class="f5-mc">w</span><span id="f5_m3" class="f5-mc">i</span><span id="f5_m4" class="f5-mc">t</span><span id="f5_m5" class="f5-mc">h</span><span id="f5_m6" class="f5-mc"> </span><span id="f5_m7" class="f5-mc">커</span><span id="f5_m8" class="f5-mc">서</span><span id="f5_m9" class="f5-mc"> </span><span id="f5_m10" class="f5-mc">A</span><span id="f5_m11" class="f5-mc">I</span><span id="f5_m12" class="f5-mc">_</span></div>
+                <div id="f5_chip">VIBE CODING</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ============ g2: climax slam (local 3.50 – 5.66) ============ -->
+          <div id="f5_g2" class="f5-layer">
+            <div id="f5_shake" class="f5-anchor">
+              <div id="f5_burst" class="f5-anchor" data-layout-ignore=""></div>
+              <div id="f5_stmt" class="f5-anchor">
+                <div id="f5_l1pos" class="f5-cpos"><div id="f5_l1">바로 배워,</div></div>
+                <div id="f5_l2pos" class="f5-cpos">
+                  <div id="f5_l2"><span id="f5_l2box"></span><span id="f5_l2txt">바로 쓴다.</span></div>
+                </div>
+              </div>
+              <div id="f5_conf" class="f5-anchor" data-layout-ignore="">
+                <div id="f5_cf0" class="f5-cf" style="left: 168px; top: 198px; width: 64px; height: 64px"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" /></svg></div>
+                <div id="f5_cf1" class="f5-cf" style="left: 368px; top: 338px; width: 44px; height: 44px"><svg viewBox="0 0 100 100"><rect x="6" y="6" width="88" height="88" /></svg></div>
+                <div id="f5_cf2" class="f5-cf" style="left: 127px; top: 497px; width: 86px; height: 86px"><svg viewBox="0 0 100 100"><polygon points="50,4 98,92 2,92" /></svg></div>
+                <div id="f5_cf3" class="f5-cf" style="left: 343px; top: 673px; width: 54px; height: 54px"><svg viewBox="0 0 100 100"><polygon points="50,0 100,50 50,100 0,50" /></svg></div>
+                <div id="f5_cf4" class="f5-cf" style="left: 210px; top: 840px; width: 60px; height: 60px"><svg viewBox="0 0 100 100"><path d="M16 0 L50 34 L84 0 L100 16 L66 50 L100 84 L84 100 L50 66 L16 100 L0 84 L34 50 L0 16Z" /></svg></div>
+                <div id="f5_cf5" class="f5-cf" style="left: 623px; top: 863px; width: 34px; height: 34px"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" /></svg></div>
+                <div id="f5_cf6" class="f5-cf" style="left: 1653px; top: 183px; width: 74px; height: 74px"><svg viewBox="0 0 100 100"><polygon points="50,4 98,92 2,92" /></svg></div>
+                <div id="f5_cf7" class="f5-cf" style="left: 1525px; top: 335px; width: 50px; height: 50px"><svg viewBox="0 0 100 100"><path d="M16 0 L50 34 L84 0 L100 16 L66 50 L100 84 L84 100 L50 66 L16 100 L0 84 L34 50 L0 16Z" /></svg></div>
+                <div id="f5_cf8" class="f5-cf" style="left: 1716px; top: 506px; width: 88px; height: 88px"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" /></svg></div>
+                <div id="f5_cf9" class="f5-cf" style="left: 1540px; top: 700px; width: 40px; height: 40px"><svg viewBox="0 0 100 100"><rect x="6" y="6" width="88" height="88" /></svg></div>
+                <div id="f5_cf10" class="f5-cf" style="left: 1667px; top: 847px; width: 66px; height: 66px"><svg viewBox="0 0 100 100"><polygon points="50,0 100,50 50,100 0,50" /></svg></div>
+                <div id="f5_cf11" class="f5-cf" style="left: 1285px; top: 855px; width: 30px; height: 30px"><svg viewBox="0 0 100 100"><rect x="6" y="6" width="88" height="88" /></svg></div>
+                <div id="f5_cf12" class="f5-cf" style="left: 546px; top: 156px; width: 28px; height: 28px"><svg viewBox="0 0 100 100"><polygon points="50,0 100,50 50,100 0,50" /></svg></div>
+                <div id="f5_cf13" class="f5-cf" style="left: 1382px; top: 157px; width: 36px; height: 36px"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" /></svg></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var FID = "05-f5";
+          var F0 = 21.95; // frame start (track seconds)
+          function $(id) {
+            return document.getElementById(id);
+          }
+          // track seconds → frame-local seconds
+          function L(t) {
+            return Math.round((t - F0) * 1000) / 1000;
+          }
+
+          var T = {
+            type1: [L(22.15), L(22.384), L(22.5)], // snare + two hihats — '바' '이' '브'
+            type2: [L(22.62), L(22.732)], //          kick + hihat — '코' '딩'
+            mono: L(23.08), //   snare — '> with 커서 AI_' types
+            chip: L(23.429), //  riser perc — 'VIBE CODING' chip pops
+            flip: L(23.57), //   kick — 0ms flip to PAPER, sprite cut, cover toss
+            mq1: L(24.03), //    kick — top outline marquee row
+            mq2: L(24.5), //     kick — bottom outline marquee row
+            surge: L(25.45), //  SURGE — g1 → g2 cut, YELLOW, statement slam
+            snA: L(25.913), //   snare — statement thump
+            hit: L(26.4), //     kick — INK, label box, shake
+            snB: L(26.865), //   snare — statement thump
+            bump: L(27.35), //   kick — confetti bump, then freeze to 5.66
+          };
+          var HALF = 0.2326; // half-beat at 129 BPM
+          var SIXT = 0.116; //  16th at 129 BPM
+
+          var REG = {
+            ink: {
+              "--f5-bg": "#040404",
+              "--f5-fg": "#F2F0EA",
+              "--f5-dim": "rgba(242,240,234,0.6)",
+              "--f5-mono": "#FFE500",
+              "--f5-boxbg": "#FFE500",
+              "--f5-boxfg": "#040404",
+              "--f5-conf": "#F2F0EA",
+            },
+            paper: {
+              "--f5-bg": "#F2F0EA",
+              "--f5-fg": "#040404",
+              "--f5-dim": "rgba(4,4,4,0.6)",
+              "--f5-mono": "#040404",
+              "--f5-boxbg": "#040404",
+              "--f5-boxfg": "#F2F0EA",
+              "--f5-conf": "#040404",
+            },
+            yellow: {
+              "--f5-bg": "#FFE500",
+              "--f5-fg": "#040404",
+              "--f5-dim": "rgba(4,4,4,0.6)",
+              "--f5-mono": "#040404",
+              "--f5-boxbg": "#040404",
+              "--f5-boxfg": "#FFE500",
+              "--f5-conf": "#040404",
+            },
+          };
+
+          var tl = gsap.timeline({ paused: true });
+          var frame = $("f5_frame");
+
+          // palette-flip: swap every register token at once, 0ms
+          function reg(name, t) {
+            var v = {};
+            for (var key in REG[name]) v[key] = REG[name][key];
+            tl.set(frame, v, t);
+          }
+
+          // ============================ g1 — type → toss ============================
+          // t=0: INK, kicker + ready caret already on (CSS); g1 visible from 0.
+
+          // typewriter: one syllable per hit; the caret rides just past the newest syllable
+          var syl = [$("f5_s0"), $("f5_s1"), $("f5_s2"), $("f5_s3"), $("f5_s4")];
+          var car = [$("f5_c0"), $("f5_c1"), $("f5_c2"), $("f5_c3"), $("f5_c4")];
+          var typeT = T.type1.concat(T.type2);
+          var prevCaret = $("f5_cpre");
+          for (var i = 0; i < syl.length; i++) {
+            var ts = typeT[i];
+            tl.set(syl[i], { autoAlpha: 1 }, ts);
+            tl.set(prevCaret, { autoAlpha: 0 }, ts);
+            tl.set(car[i], { autoAlpha: 1 }, ts);
+            prevCaret = car[i];
+          }
+          // caret blinks on the 16ths after '딩', then hands over to the mono line
+          var tc = typeT[4];
+          tl.set(car[4], { autoAlpha: 0 }, tc + SIXT);
+          tl.set(car[4], { autoAlpha: 1 }, tc + 2 * SIXT);
+          tl.set(car[4], { autoAlpha: 0 }, T.mono);
+
+          // mono line types char by char
+          var NM = 13;
+          for (var m = 0; m < NM; m++) {
+            tl.set($("f5_m" + m), { autoAlpha: 1 }, T.mono + m * 0.024);
+          }
+          // the trailing '_' blinks on half-beats until the surge (finite tl.set toggles)
+          var under = $("f5_m12");
+          for (var k = 1; T.chip + k * HALF < T.surge - 0.05; k++) {
+            tl.set(under, { autoAlpha: k % 2 ? 0 : 1 }, T.chip + k * HALF);
+          }
+
+          // pair chip pops on the riser (label-box scaleX from the left)
+          tl.set("#f5_chip", { autoAlpha: 1 }, T.chip);
+          tl.fromTo("#f5_chip", { scaleX: 0 }, { scaleX: 1, duration: 0.12, ease: "expo.out", immediateRender: false }, T.chip);
+
+          // sprite pops in on the right with the first syllable, bumps on the next hits
+          tl.set("#f5_spr", { autoAlpha: 1 }, T.type1[0]);
+          tl.fromTo("#f5_spr", { scale: 0.4, rotation: -10 }, { scale: 1, rotation: 0, duration: 0.4, ease: "back.out(1.7)", immediateRender: false }, T.type1[0]);
+          // bumps = 0ms set + settle (a backward seek reverts the set, so the gap stays at rest)
+          [T.type2[0], T.mono].forEach(function (tb) {
+            tl.set("#f5_spr", { scale: 1.07 }, tb);
+            tl.to("#f5_spr", { scale: 1, duration: 0.22, ease: "power2.out" }, tb);
+          });
+          tl.set("#f5_spr", { y: -22, rotation: 4 }, T.chip);
+          tl.to("#f5_spr", { y: 0, rotation: 0, duration: 0.13, ease: "power2.out" }, T.chip);
+
+          // ---- 23.57 kick: 0ms flip to PAPER; the feathered sprite cuts out; text re-inks ----
+          reg("paper", T.flip);
+          tl.set("#f5_spr", { autoAlpha: 0 }, T.flip);
+
+          // cover tossed in centre-right: x and y on different eases so the path curves
+          tl.set("#f5_cover", { autoAlpha: 1 }, T.flip);
+          tl.fromTo("#f5_cover", { x: 1100, rotation: 30 }, { x: 0, rotation: -4, duration: 0.34, ease: "power3.out", immediateRender: false }, T.flip);
+          tl.fromTo("#f5_cover", { y: 520 }, { y: 0, duration: 0.34, ease: "power2.out", immediateRender: false }, T.flip);
+
+          // caption label box snaps open under it (holds 4 beats to the surge)
+          tl.set("#f5_cap", { autoAlpha: 1 }, T.flip + 0.06);
+          tl.fromTo("#f5_capt", { scaleX: 0 }, { scaleX: 1, duration: 0.12, ease: "expo.out", immediateRender: false }, T.flip + 0.06);
+          tl.fromTo("#f5_capa", { y: 14 }, { y: 0, duration: 0.22, ease: "power3.out", immediateRender: false }, T.flip + 0.06);
+
+          // the cover thumps on the two marquee kicks
+          [T.mq1, T.mq2].forEach(function (tk) {
+            tl.set("#f5_cvpos", { scale: 1.05 }, tk);
+            tl.to("#f5_cvpos", { scale: 1, duration: 0.22, ease: "power3.out" }, tk);
+          });
+
+          // ---- outline marquee rows slide in behind, opposite directions, accelerating into the surge ----
+          var MQ = [
+            { row: "#f5_mrow1", strip: "#f5_mstrip1", t: T.mq1, from: 1920, s0: 0, s1: -1200 }, //     ← left
+            { row: "#f5_mrow2", strip: "#f5_mstrip2", t: T.mq2, from: -5600, s0: -2400, s1: -1500 }, // → right
+          ];
+          MQ.forEach(function (q) {
+            tl.set(q.row, { autoAlpha: 1 }, q.t);
+            tl.fromTo(q.row, { x: q.from }, { x: 0, duration: 0.32, ease: "expo.out", immediateRender: false }, q.t);
+            tl.fromTo(q.strip, { x: q.s0 }, { x: q.s1, duration: T.surge - q.t, ease: "power2.in", immediateRender: false }, q.t);
+          });
+
+          // ============================ g1 → g2 (0ms cut on the SURGE) ============================
+          tl.set("#f5_g1", { autoAlpha: 0 }, T.surge);
+          tl.set("#f5_g2", { autoAlpha: 1 }, T.surge);
+          reg("yellow", T.surge);
+
+          // ============================ g2 — climax ============================
+          // braam-punch: the two halves slam together (400 over 800 weight contrast)
+          tl.fromTo("#f5_l1", { y: -70, scale: 1.3 }, { y: 0, scale: 1, duration: 0.16, ease: "power4.out", immediateRender: false }, T.surge);
+          tl.fromTo("#f5_l2", { y: 70, scale: 1.3 }, { y: 0, scale: 1, duration: 0.16, ease: "power4.out", immediateRender: false }, T.surge);
+          // snare thumps keep the HIGH phase alive
+          [T.snA, T.snB].forEach(function (tn) {
+            tl.set("#f5_l2", { scale: 1.04 }, tn);
+            tl.to("#f5_l2", { scale: 1, duration: 0.2, ease: "power2.out" }, tn);
+          });
+
+          // radial burst lines (ink) on an ellipse that clears the statement
+          var burst = $("f5_burst");
+          burst.innerHTML = ""; // idempotent if the frame script is ever evaluated twice
+          var rays = [];
+          var NR = 22;
+          var RX = 720;
+          var RY = 310;
+          var DRIFT = 36;
+          for (var r = 0; r < NR; r++) {
+            var ang = r * (360 / NR) + 8;
+            var rad = (ang * Math.PI) / 180;
+            var sn = Math.sin(rad);
+            var cs = Math.cos(rad);
+            var rr = 1 / Math.sqrt(Math.pow(sn / RX, 2) + Math.pow(cs / RY, 2));
+            var len = 90 + (r % 4) * 30 + (r % 3) * 14;
+            // keep the peak ray inside y 110–975 / x 40–1880 (HUD band + edges)
+            var lim = 1e9;
+            if (cs > 0.01) lim = Math.min(lim, (540 - 110) / cs);
+            if (cs < -0.01) lim = Math.min(lim, (975 - 540) / -cs);
+            if (Math.abs(sn) > 0.01) lim = Math.min(lim, (960 - 40) / Math.abs(sn));
+            len = Math.max(40, Math.min(len, lim - rr - DRIFT));
+            var arm = document.createElement("div");
+            arm.className = "f5-arm";
+            arm.style.transform = "rotate(" + ang + "deg)";
+            var ray = document.createElement("div");
+            ray.className = "f5-ray";
+            ray.style.height = len + "px";
+            ray.style.top = -(rr + len) + "px";
+            arm.appendChild(ray);
+            burst.appendChild(arm);
+            rays.push(ray);
+          }
+          rays.forEach(function (ry0, j) {
+            var t0 = T.surge + (j % 5) * 0.014;
+            tl.fromTo(ry0, { scaleY: 0, y: 0, opacity: 1 }, { scaleY: 1, y: -DRIFT, duration: 0.2, ease: "power4.out", immediateRender: false }, t0);
+            tl.to(ry0, { y: -110, opacity: 0, duration: 0.34, ease: "power2.in" }, t0 + 0.26);
+          });
+          tl.set("#f5_burst", { autoAlpha: 0 }, T.surge + 0.8);
+
+          // particle-burst: geometric confetti ● ■ ▲ ◆ ✕ pops outward with overshoot, then drifts
+          var CONF = [
+            [200, 230], [390, 360], [170, 540], [370, 700], [240, 870], [640, 880], [1690, 220],
+            [1550, 360], [1760, 550], [1560, 720], [1700, 880], [1300, 870], [560, 170], [1400, 175],
+          ];
+          CONF.forEach(function (p, j) {
+            var el = $("f5_cf" + j);
+            var dx = p[0] - 960;
+            var dy = p[1] - 540;
+            var d = Math.sqrt(dx * dx + dy * dy) || 1;
+            var t0 = T.surge + 0.02 + (j % 6) * 0.012;
+            var spin = (j % 2 ? -1 : 1) * (30 + (j % 3) * 15);
+            tl.fromTo(
+              el,
+              { x: (-dx / d) * 110, y: (-dy / d) * 110, scale: 0, rotation: spin },
+              { x: 0, y: 0, scale: 1, rotation: 0, duration: 0.42, ease: "back.out(2.2)", immediateRender: false },
+              t0
+            );
+            tl.fromTo(
+              el,
+              { y: 0, rotation: 0 },
+              { y: 16 + (j % 3) * 9, rotation: (j % 2 ? 1 : -1) * (18 + (j % 4) * 9), duration: T.bump - (t0 + 0.42), ease: "none", immediateRender: false },
+              t0 + 0.42
+            );
+            // 27.35 kick: one bump, then everything holds still
+            var tb2 = T.bump + (j % 4) * 0.008;
+            tl.set(el, { scale: 1.3 }, tb2);
+            tl.to(el, { scale: 1, duration: 0.18, ease: "power3.out" }, tb2);
+          });
+
+          // ---- 26.4 kick: 0ms flip to INK, text turns paper, '바로 쓴다.' snaps into a yellow label box ----
+          reg("ink", T.hit);
+          tl.fromTo("#f5_l2box", { scaleX: 0 }, { scaleX: 1, duration: 0.1, ease: "expo.out", immediateRender: false }, T.hit);
+          // screen-shake ≤10px on the g2 layers only (anchor, so no canvas edge is exposed)
+          var AMP = [10, -8, 8, -6, 6, -4, 4, -2];
+          AMP.forEach(function (a, j) {
+            tl.to("#f5_shake", { x: a, y: a * 0.6 * (j % 2 ? 1 : -1), duration: 0.03, ease: "steps(1)" }, T.hit + j * 0.03);
+          });
+          tl.to("#f5_shake", { x: 0, y: 0, duration: 0.08, ease: "power2.out" }, T.hit + AMP.length * 0.03);
+
+          // slow push on the statement, cut dead on the last kick → freeze-hold to the frame end
+          tl.fromTo("#f5_stmt", { scale: 1 }, { scale: 1.035, duration: T.bump - T.hit, ease: "none", immediateRender: false }, T.hit);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines[FID] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

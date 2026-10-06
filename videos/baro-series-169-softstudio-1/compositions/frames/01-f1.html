@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>01-f1 · TYPE-WINDOW → KV window card</title>
+  </head>
+  <body>
+    <template id="01-f1-template">
+      <style>
+        @font-face { font-family: "Gmarket Sans"; src: url("assets/fonts/GmarketSansBold.otf") format("opentype"); font-weight: 700; font-display: block; }
+        @font-face { font-family: "Gmarket Sans"; src: url("assets/fonts/GmarketSansMedium.otf") format("opentype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Gmarket Sans"; src: url("assets/fonts/GmarketSansLight.otf") format("opentype"); font-weight: 300; font-display: block; }
+
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #f4efe6; /* scene_color — cream from t=0 */
+          color: #1b1a1f;
+          font-family: "Gmarket Sans", sans-serif;
+          -webkit-font-smoothing: antialiased;
+        }
+        #stage * {
+          box-sizing: border-box;
+        }
+
+        /* ---------- group container (whole frame span) ---------- */
+        #f1_g1 {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+        }
+
+        /* ---------- question block (left-center) ---------- */
+        #f1_q {
+          position: absolute;
+          left: 260px;
+          top: 379px;
+          width: 840px;
+          height: 322px;
+        }
+        .f1-line {
+          position: absolute;
+          left: 0;
+          display: flex;
+          align-items: flex-start;
+          white-space: nowrap;
+          font-size: 130px;
+          line-height: 1.05;
+          z-index: 1;
+        }
+        #f1_l1 {
+          top: 0;
+          font-weight: 700;
+          letter-spacing: -0.035em;
+        }
+        #f1_l2 {
+          top: 186px;
+          font-weight: 300;
+          letter-spacing: -0.03em;
+          opacity: 0;
+          transform-origin: 50% 100%;
+        }
+        .f1-ch {
+          position: relative;
+          display: block;
+          opacity: 0;
+          transform-origin: 50% 100%;
+        }
+        .f1-seg {
+          position: relative;
+          display: block;
+        }
+        #f1_qm {
+          position: relative;
+          display: block;
+          transform-origin: 50% 100%;
+        }
+        .f1-anchor {
+          position: relative;
+          display: block;
+          width: 0;
+          height: 136px;
+        }
+        .f1-caret {
+          position: absolute;
+          left: calc(100% + 4px);
+          top: 16px;
+          width: 10px;
+          height: 104px;
+          border-radius: 5px;
+          background: #5b5bf0;
+          opacity: 0;
+        }
+        .f1-anchor .f1-caret {
+          left: 2px;
+        }
+        #f1_ks {
+          left: -4px;
+          opacity: 1; /* the only thing on screen 0 → 1.0 */
+        }
+
+        /* hand-drawn accent scribble, behind the words */
+        #f1_scrib {
+          position: absolute;
+          left: -127px;
+          top: 92px;
+          width: 960px;
+          height: 300px;
+          overflow: visible;
+          z-index: 0;
+        }
+        .f1-ink {
+          fill: none;
+          stroke: #5b5bf0;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+          stroke-dasharray: 1 2;
+          stroke-dashoffset: 1.02;
+          opacity: 0;
+        }
+        #f1_loop {
+          stroke-width: 8;
+        }
+        .f1-tick {
+          stroke-width: 7;
+        }
+
+        /* ---------- KV window card (dark container) ---------- */
+        #f1_rig {
+          position: absolute;
+          inset: 0;
+          perspective: 1800px;
+          perspective-origin: 50% 46%;
+          z-index: 2;
+        }
+        #f1_card {
+          position: absolute;
+          left: 360px;
+          top: 100px;
+          width: 1200px;
+          height: 800px;
+          border-radius: 36px;
+          overflow: hidden;
+          background: #1b1a1f;
+          opacity: 0;
+          box-shadow:
+            0 30px 80px rgba(27, 26, 31, 0.18),
+            0 6px 18px rgba(27, 26, 31, 0.1);
+        }
+        #f1_cimg {
+          position: absolute;
+          left: -6%;
+          top: -6%;
+          width: 112%;
+          height: 112%;
+          object-fit: cover;
+          display: block;
+        }
+
+        /* ---------- TYPE-WINDOW word ---------- */
+        #f1_wstage {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 3;
+          pointer-events: none;
+        }
+        #f1_wwrap {
+          position: relative;
+          display: block;
+          opacity: 0;
+          transform-origin: 50% 52%;
+          filter: drop-shadow(0 22px 34px rgba(27, 26, 31, 0.2));
+        }
+        #f1_wbump {
+          display: block;
+          transform-origin: 50% 55%;
+        }
+        #f1_word {
+          display: block;
+          padding: 0 36px 0 50px;
+          font-weight: 700;
+          font-size: 360px;
+          line-height: 1;
+          letter-spacing: -0.04em;
+          white-space: nowrap;
+          background-color: #1b1a1f; /* dark fallback if the image is missing */
+          background-image: url("assets/keyvisual/baro-kv-01.png");
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-position: 50% 40%;
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          -webkit-text-fill-color: transparent;
+          /* thin ink window-frame edge keeps the letterforms readable where the KV is cream */
+          -webkit-text-stroke: 3px #1b1a1f;
+          paint-order: stroke fill;
+        }
+
+        /* ---------- caption ---------- */
+        #f1_cap {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 922px;
+          text-align: center;
+          font-weight: 500;
+          font-size: 34px;
+          line-height: 1.4;
+          color: #1b1a1f;
+          opacity: 0;
+          z-index: 2;
+        }
+      </style>
+
+      <div id="stage" data-composition-id="01-f1" data-width="1920" data-height="1080" data-duration="6.99">
+        <!-- ===== f1_g1 · type → window → reveal (0 → 6.99) ===== -->
+        <div id="f1_g1">
+          <!-- question: 'AI 공부,' / '어디서부터?' -->
+          <div id="f1_q">
+            <svg id="f1_scrib" viewBox="0 0 960 300" width="960" height="300" data-layout-ignore="">
+              <path
+                id="f1_loop"
+                class="f1-ink"
+                pathLength="1"
+                d="M57.4 132.7 C59.8 130.1 65.1 122.0 72.0 117.2 C78.9 112.4 88.5 108.1 98.6 103.9 C108.8 99.8 121.0 96.2 133.0 92.5 C145.1 88.8 157.5 85.3 171.1 81.8 C184.6 78.2 198.1 74.6 214.3 71.4 C230.5 68.2 247.9 65.0 268.4 62.5 C288.8 60.1 311.0 58.1 337.3 56.8 C363.5 55.4 391.1 54.9 426.0 54.4 C460.9 53.8 513.9 53.5 546.4 53.5 C579.0 53.6 598.1 54.2 621.1 54.7 C644.2 55.3 664.9 55.8 684.7 56.9 C704.5 58.0 723.3 59.3 739.9 61.2 C756.5 63.2 771.2 65.8 784.3 68.7 C797.4 71.6 807.8 75.1 818.3 78.6 C828.8 82.1 837.6 85.9 847.2 89.7 C856.8 93.6 866.7 97.3 875.8 101.7 C884.9 106.1 894.9 110.5 901.9 116.2 C909.0 121.9 915.2 127.5 918.0 135.9 C920.8 144.2 920.8 157.9 918.7 166.2 C916.7 174.5 911.2 179.7 905.7 185.6 C900.2 191.5 893.0 196.6 885.7 201.7 C878.4 206.8 871.1 211.5 862.0 216.1 C852.9 220.6 843.3 225.1 831.1 229.0 C818.9 232.9 804.7 236.5 788.6 239.6 C772.6 242.6 753.9 245.0 734.9 247.2 C715.9 249.4 695.5 250.9 674.5 252.7 C653.5 254.4 633.1 255.9 609.2 257.7 C585.2 259.4 564.2 261.3 530.7 263.1 C497.1 264.9 442.1 267.4 407.9 268.5 C373.6 269.6 350.2 270.0 325.3 269.8 C300.3 269.6 279.0 268.6 258.4 267.4 C237.8 266.2 219.7 264.4 201.7 262.6 C183.7 260.8 166.8 258.8 150.5 256.5 C134.2 254.2 117.8 251.9 103.8 248.9 C89.7 245.9 76.2 242.5 66.1 238.4 C56.0 234.3 48.5 229.6 43.3 224.4 C38.0 219.2 36.4 213.6 34.8 207.4 C33.3 201.3 34.0 195.8 33.9 187.6 C33.7 179.3 33.5 166.2 34.0 157.9 C34.4 149.6 34.2 143.9 36.4 137.7 C38.7 131.5 41.8 126.0 47.6 120.7 C53.4 115.4 61.7 110.6 71.2 106.1 C80.8 101.5 92.9 97.5 104.9 93.5 C117.0 89.6 129.9 85.9 143.5 82.2 C157.1 78.5 170.6 74.7 186.4 71.3 C202.2 67.8 229.7 63.0 238.4 61.3"
+              />
+              <path id="f1_t0" class="f1-ink f1-tick" pathLength="1" d="M843.3 50.9 L851.6 11.8" />
+              <path id="f1_t1" class="f1-ink f1-tick" pathLength="1" d="M857.2 53.4 L886.7 18.1" />
+              <path id="f1_t2" class="f1-ink f1-tick" pathLength="1" d="M862.0 66.6 L897.2 52.4" />
+            </svg>
+
+            <div id="f1_l1" class="f1-line">
+              <span class="f1-anchor"><i id="f1_ks" class="f1-caret"></i></span>
+              <span id="f1_ch0" class="f1-ch">A<i id="f1_k0" class="f1-caret"></i></span>
+              <span id="f1_ch1" class="f1-ch">I<i id="f1_k1" class="f1-caret"></i></span>
+              <span id="f1_ch2" class="f1-ch">&nbsp;<i id="f1_k2" class="f1-caret"></i></span>
+              <span id="f1_ch3" class="f1-ch">공<i id="f1_k3" class="f1-caret"></i></span>
+              <span id="f1_ch4" class="f1-ch">부<i id="f1_k4" class="f1-caret"></i></span>
+              <span id="f1_ch5" class="f1-ch">,<i id="f1_k5" class="f1-caret"></i></span>
+            </div>
+
+            <div id="f1_l2" class="f1-line">
+              <span id="f1_l2a" class="f1-seg">어디서부터</span>
+              <span id="f1_qm">?</span>
+              <span class="f1-anchor"><i id="f1_ke" class="f1-caret"></i></span>
+            </div>
+          </div>
+
+          <!-- rounded window card: the full key visual inside a dark container -->
+          <div id="f1_rig">
+            <div id="f1_card" data-layout-allow-overflow="">
+              <img id="f1_cimg" src="assets/keyvisual/card-full.jpg" alt="" />
+            </div>
+          </div>
+
+          <!-- giant word as a window onto the key visual -->
+          <div id="f1_wstage">
+            <div id="f1_wwrap" data-layout-allow-overlap="" data-layout-allow-overflow="">
+              <div id="f1_wbump"><div id="f1_word">바로바로</div></div>
+            </div>
+          </div>
+
+          <div id="f1_cap">바로 배워 바로 쓰는, 바로바로 시리즈</div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // Frame 1 spans track 0.0 → 6.99, so frame-local time == track time.
+          // Anchors: 1.0 type · 2.0 land · 2.51 '?' hop · 3.0 scribble · 3.99 window word ·
+          // 4.99 window opens · 5.99 caption. Strong hits 4.46 / 6.46 get small bumps.
+          var tl = gsap.timeline({ paused: true });
+          var TICK = 1 / 12; // 'on twos' — stepped 12fps keys for the typed copy
+
+          function keys(sel, t0, frames) {
+            for (var i = 0; i < frames.length; i++) tl.set(sel, frames[i], t0 + i * TICK);
+          }
+          function blink(sel, pairs) {
+            for (var i = 0; i < pairs.length; i++) {
+              tl.set(sel, { opacity: 1 }, pairs[i][0]);
+              tl.set(sel, { opacity: 0 }, pairs[i][1]);
+            }
+          }
+
+          // group span [0, 6.99)
+          tl.set("#f1_g1", { autoAlpha: 1 }, 0);
+
+          // 0 → 1.0 song intro: only the accent caret blinks (visible from t=0 via CSS)
+          tl.set("#f1_ks", { opacity: 0 }, 0.244);
+          tl.set("#f1_ks", { opacity: 1 }, 0.488);
+          tl.set("#f1_ks", { opacity: 0 }, 0.743);
+
+          // 1.0 downbeat: 'AI 공부,' types in, each glyph a stepped 12fps bounce
+          var TYPE = [
+            ["#f1_ch0", "#f1_k0", 1.0],
+            ["#f1_ch1", "#f1_k1", 1.083],
+            ["#f1_ch2", "#f1_k2", 1.25],
+            ["#f1_ch3", "#f1_k3", 1.333],
+            ["#f1_ch4", "#f1_k4", 1.417],
+            ["#f1_ch5", "#f1_k5", 1.583],
+          ];
+          for (var i = 0; i < TYPE.length; i++) {
+            var t = TYPE[i][2];
+            keys(TYPE[i][0], t, [
+              { opacity: 1, y: -20, scale: 1.14 },
+              { y: 6, scale: 0.96 },
+              { y: -2, scale: 1.02 },
+              { y: 0, scale: 1 },
+            ]);
+            tl.set(TYPE[i][1], { opacity: 1 }, t);
+            tl.set(TYPE[i][1], { opacity: 0 }, i < TYPE.length - 1 ? TYPE[i + 1][2] : 1.79);
+          }
+
+          // 2.0: '어디서부터?' lands under it (stepped drop + squash)
+          keys("#f1_l2", 1.917, [
+            { opacity: 1, y: -52, scaleY: 1.06 },
+            { y: 5, scaleY: 0.92 },
+            { y: -4, scaleY: 1.03 },
+            { y: 0, scaleY: 1 },
+          ]);
+          // caret now waits at the end of line 2, blinking on the beat
+          blink("#f1_ke", [
+            [2.0, 2.25],
+            [2.508, 2.76],
+            [2.995, 3.25],
+            [3.483, 3.74],
+          ]);
+
+          // 2.51: tiny bounce on the '?'
+          keys("#f1_qm", 2.5, [
+            { y: -24, rotation: -9, scaleY: 1.04 },
+            { y: -34, rotation: -5, scaleY: 1.02 },
+            { y: -12, rotation: 3, scaleY: 1 },
+            { y: 3, rotation: 0, scaleY: 0.9 },
+            { y: 0, scaleY: 1 },
+          ]);
+
+          // 3.0: accent scribble loops around '어디서부터?', three ticks spark off it
+          tl.set("#f1_loop", { opacity: 1 }, 2.97);
+          tl.fromTo("#f1_loop", { strokeDashoffset: 1.02 }, { strokeDashoffset: 0, duration: 0.36, ease: "power2.inOut" }, 2.97);
+          var TICKS = ["#f1_t0", "#f1_t1", "#f1_t2"];
+          for (var k = 0; k < TICKS.length; k++) {
+            var tt = 3.05 + k * 0.045;
+            tl.set(TICKS[k], { opacity: 1 }, tt);
+            tl.fromTo(TICKS[k], { strokeDashoffset: 1.02 }, { strokeDashoffset: 0, duration: 0.14, ease: "power2.out" }, tt);
+          }
+
+          // 3.99 downbeat: the question slides up and fades …
+          tl.to("#f1_q", { y: -150, duration: 0.28, ease: "power3.in" }, 3.84);
+          tl.to("#f1_q", { opacity: 0, duration: 0.18, ease: "power1.in" }, 3.84);
+
+          // … and '바로바로' slams in as a TYPE-WINDOW onto the key visual
+          tl.fromTo(
+            "#f1_wwrap",
+            { opacity: 0, scale: 1.45, y: 24 },
+            { opacity: 1, scale: 1, y: 0, duration: 0.42, ease: "expo.out" },
+            3.99,
+          );
+          // the KV pans slowly behind the letters
+          tl.fromTo(
+            "#f1_word",
+            { backgroundPosition: "50% 40%" },
+            { backgroundPosition: "50% 72%", duration: 1.36, ease: "sine.inOut" },
+            3.99,
+          );
+          // strong hit 4.46: small punch
+          tl.to("#f1_wbump", { scale: 1.045, duration: 0.06, ease: "power2.out" }, 4.455);
+          tl.to("#f1_wbump", { scale: 1, duration: 0.26, ease: "power2.out" }, 4.515);
+
+          // 4.99 snare: the window OPENS — the word flies past the camera …
+          tl.to("#f1_wwrap", { scale: 6.5, duration: 0.42, ease: "power3.in" }, 4.95);
+          tl.to("#f1_wwrap", { opacity: 0, duration: 0.2, ease: "power1.in" }, 5.14);
+
+          // … while the rounded window card scales 0.6 → 1 into center (2.5D tilt settles)
+          tl.fromTo(
+            "#f1_card",
+            { opacity: 0, scale: 0.6, y: 56, rotationX: 14, rotationY: -12 },
+            { opacity: 1, scale: 1, y: 0, rotationX: 0, rotationY: 0, duration: 0.9, ease: "expo.out" },
+            4.99,
+          );
+          // parallax: the image inside travels less and settles later than the card
+          tl.fromTo(
+            "#f1_cimg",
+            { scale: 1.24, x: -36, y: -26 },
+            { scale: 1.04, x: 0, y: 0, duration: 1.3, ease: "power3.out" },
+            4.99,
+          );
+
+          // 5.99 kick: caption fades up under the card
+          tl.fromTo("#f1_cap", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 5.94);
+
+          // hold: slow 2.5D drift, card and image at different rates
+          tl.to("#f1_card", { y: -8, rotationY: 2, rotationX: -1, duration: 1.1, ease: "sine.inOut" }, 5.89);
+          tl.to("#f1_cimg", { x: 24, y: -10, scale: 1.07, duration: 0.7, ease: "sine.inOut" }, 6.29);
+          // strong hit 6.46: the card breathes once
+          tl.to("#f1_card", { scale: 1.014, duration: 0.07, ease: "power2.out" }, 6.455);
+          tl.to("#f1_card", { scale: 1, duration: 0.3, ease: "power2.out" }, 6.525);
+
+          // end of group span (== frame end; the wipe covers from ~6.70)
+          tl.set("#f1_g1", { autoAlpha: 0 }, 6.99);
+
+          window.__timelines["01-f1"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

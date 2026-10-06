@@ -1,0 +1,11 @@
+{
+  "name": "soft-studio",
+  "summary": "Tactile studio look: cream base, a cover-derived pastel per scene, soft-black type in Gmarket Sans, real CSS-3D books with soft contact shadows, paper grain, UI mockups and hand-drawn marks. Continuous transitions (iris/blinds/blob) instead of hard cuts. No HUD, no label boxes.",
+  "tokens": { "cream": "#F4EFE6", "ink": "#1B1A1F", "mid": "#6E6A72", "accent": "#5B5BF0", "logo": "#CEAE73" },
+  "palette_keys": ["cream", "ink", "accent", "mid"],
+  "font_line": "Gmarket Sans 700/500/300 (embedded OTF, Korean) / Outfit 700 (Latin) / Space Mono 400/700 (UI mockups, numerals)",
+  "hud": { "box": "ink", "text": "cream", "accent": "accent", "default": false },
+  "registers": ["cream", "scene-tint", "ink"],
+  "accent_alternatives": ["#5B5BF0 indigo", "#FF6B4A coral", "#16A37F teal"],
+  "reference_build": "videos/baro-series-169-softstudio-1"
+}

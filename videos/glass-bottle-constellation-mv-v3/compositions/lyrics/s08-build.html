@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- s08-build lyric/light layer (track 128.70–139.00, local = track − 128.70). Transparent; sits over compositions/footage.html.
+         L31 "그래도 오늘 밤만큼은" lower-centre (오늘·밤 gold). L32 "뚜껑을 | 열어 볼게" on the same baseline, split so the REAL jar of
+         s08c sits in the gap (the line opens around the lid). Light only on measured real light:
+           s08a wall-jar halo rising with the risers · s08c lid leak: glow + thin rays 2→4→6→9 on the hits, tracked to the measured lid
+           (top-centre (965,598) → (983,678)) · s08d jar glow on 볼게 · s08h jar glow → radial bloom peaking 138.86, gone by 139.00.
+         Snare-run montage 137.18–138.81: text holds still, only its glow pulses. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Noto Serif KR"; src: url("assets/fonts/NotoSerifKR-VF.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: block; }
+        @font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/CormorantGaramond-Italic-VF.woff2") format("woff2"); font-weight: 300 700; font-style: italic; font-display: block; }
+
+        #stage { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; pointer-events: none; }
+
+        /* zero-size anchors on measured light sources; children centre on them */
+        .l08-anchor { position: absolute; width: 0; height: 0; }
+        .l08-glow { position: absolute; border-radius: 50%; opacity: 0; visibility: hidden; pointer-events: none; }
+
+        /* s08a — the jar on the wall (stars ≈ (1590,668) → (1630,732)) */
+        #l08_ja { left: 1590px; top: 668px; }
+        #l08_jaglow { left: -130px; top: -130px; width: 260px; height: 260px;
+          background: radial-gradient(circle, rgba(255,244,214,0.62) 0%, rgba(255,210,122,0.3) 20%, rgba(255,210,122,0.08) 42%, rgba(255,210,122,0) 62%); }
+
+        /* s08c — the lid. Anchor = lid top-surface centre (965,620) at 133.73; tracked in the script. */
+        #l08_lid { left: 965px; top: 620px; opacity: 0; visibility: hidden; }
+        #l08_leak { position: absolute; left: -310px; top: -95px; width: 620px; height: 280px; border-radius: 50%; opacity: 0; visibility: hidden;
+          background: radial-gradient(ellipse closest-side, rgba(255,240,205,0.42) 0%, rgba(255,222,150,0.3) 40%, rgba(255,210,122,0.11) 70%, rgba(255,210,122,0) 100%); }
+        /* hot rim: light escaping right at the lid's top edge */
+        #l08_rim { position: absolute; left: -200px; top: -43px; width: 400px; height: 90px; border-radius: 50%; opacity: 0; visibility: hidden;
+          background: radial-gradient(ellipse closest-side, rgba(255,246,220,0.55) 0%, rgba(255,226,160,0.3) 45%, rgba(255,210,122,0) 100%); }
+        .l08-fan { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-origin: 0 0; }
+        .l08-arm { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-origin: 0 0; }
+        /* one ray = a soft tapered light shaft (wedge, blurred) + a short bright core near the rim */
+        .l08-rw { position: absolute; transform-origin: 0 50%; transform: scaleX(0); opacity: 0; }
+        .l08-rh { position: absolute; left: 0; top: 0; width: 100%; height: 100%; filter: blur(3px); }
+        .l08-rb { position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+          clip-path: polygon(0 44%, 100% 0, 100% 100%, 0 56%);
+          background: linear-gradient(90deg, rgba(255,240,200,0.6) 0%, rgba(255,220,150,0.3) 30%, rgba(255,210,122,0.1) 65%, rgba(255,210,122,0) 100%); }
+        .l08-rc { position: absolute; left: 0; top: 50%; width: 42%; height: 1.6px; margin-top: -0.8px; border-radius: 1px;
+          background: linear-gradient(90deg, rgba(255,250,236,0.75) 0%, rgba(255,226,160,0.3) 50%, rgba(255,210,122,0) 100%); }
+        .l08-glint { position: absolute; width: 80px; height: 80px; overflow: visible; transform-origin: 50% 50%; opacity: 0; visibility: hidden; }
+        #l08_gl1 { left: -160px; top: -46px; }   /* lid top-left rim (−120,−6) */
+        #l08_gl2 { left: 98px; top: -42px; }     /* lid top-right rim (+138,−2) */
+
+        /* s08d — jar at her chest ≈ (870,515) */
+        #l08_jd { left: 870px; top: 515px; }
+        #l08_jdglow { left: -160px; top: -160px; width: 320px; height: 320px;
+          background: radial-gradient(circle, rgba(255,244,214,0.6) 0%, rgba(255,210,122,0.3) 20%, rgba(255,210,122,0.08) 42%, rgba(255,210,122,0) 62%); }
+
+        /* s08h — the star cluster inside the jar ≈ (975,760) */
+        #l08_jh { left: 975px; top: 760px; }
+        #l08_jhglow { left: -360px; top: -360px; width: 720px; height: 720px;
+          background: radial-gradient(circle, rgba(255,246,222,0.6) 0%, rgba(255,222,150,0.34) 22%, rgba(255,210,122,0.1) 46%, rgba(255,210,122,0) 66%); }
+
+        /* legibility scrims (soft, dark, never a box) */
+        .l08-scrim { position: absolute; opacity: 0; visibility: hidden; pointer-events: none;
+          background: radial-gradient(ellipse closest-side, rgba(5,7,20,0.5) 0%, rgba(5,7,20,0.36) 50%, rgba(5,7,20,0) 100%); }
+        #l08_s31 { left: 380px; top: 760px; width: 1160px; height: 250px; }
+        #l08_s32a { left: 360px; top: 770px; width: 480px; height: 230px; }
+        #l08_s32b { left: 1100px; top: 770px; width: 500px; height: 230px; }
+
+        /* lyrics — one baseline band, glyph centre ≈ y 885 */
+        .l08-line, .l08-half { position: absolute; top: 830px; height: 110px; white-space: nowrap;
+          font-family: "Noto Serif KR", serif; font-weight: 500; font-size: 68px; line-height: 110px; letter-spacing: 0.02em;
+          color: #F4F1EA; opacity: 0; visibility: hidden; isolation: isolate; }
+        #l08_l31 { left: 140px; width: 1640px; text-align: center; transform-origin: 50% 50%; }
+        #l08_l32a { left: 140px; width: 600px; text-align: right; transform-origin: 100% 50%; }   /* ends x 740 — left of the jar */
+        #l08_l32b { left: 1196px; width: 584px; text-align: left; transform-origin: 0% 50%; }     /* starts x 1196 — right of the jar */
+        .l08-w { display: inline-block; transform-origin: 50% 62%; }
+        .l08-c { position: relative; display: inline-block;
+          text-shadow: 0 2px 8px rgba(3,4,14,0.85), 0 0 24px rgba(3,4,14,0.5), 0 0 14px rgba(220,235,255,0.22); }
+        .l08-k { font-size: 96px; font-weight: 600; color: #FFD27A; }
+        .l08-k .l08-c { text-shadow: 0 2px 8px rgba(3,4,14,0.85), 0 0 24px rgba(3,4,14,0.45), 0 0 18px rgba(255,210,122,0.45), 0 0 46px rgba(255,210,122,0.18); }
+        /* glow copy of each glyph (transparent fill, light only) — pulsed with opacity */
+        .l08-g { position: absolute; left: 0; top: 0; z-index: 1; color: transparent; pointer-events: none; opacity: 0;
+          text-shadow: 0 0 10px rgba(255,238,196,0.95), 0 0 34px rgba(255,210,122,0.6); }
+
+        /* the pop: radial warm bloom from the jar of s08h — never a flat frame */
+        /* centred on the star cluster of s08h (975,760); r 1400 → warm-white core, gold body, edges keep the footage */
+        #l08_bloom { position: absolute; left: -425px; top: -640px; width: 2800px; height: 2800px; border-radius: 50%;
+          opacity: 0; visibility: hidden; transform-origin: 50% 50%; pointer-events: none;
+          background: radial-gradient(circle closest-side, rgba(255,252,242,0.97) 0%, rgba(255,244,214,0.92) 9%, rgba(255,224,160,0.78) 22%, rgba(255,200,118,0.52) 40%, rgba(255,196,112,0.24) 60%, rgba(255,210,122,0.06) 80%, rgba(255,210,122,0) 92%); }
+      </style>
+
+      <div id="stage" data-composition-id="s08-build" data-width="1920" data-height="1080" data-duration="10.3">
+        <!-- light accents (under the text) -->
+        <div id="l08_ja" class="l08-anchor" data-layout-ignore><div id="l08_jaglow" class="l08-glow" data-layout-ignore></div></div>
+
+        <div id="l08_lid" class="l08-anchor" data-layout-ignore>
+          <div id="l08_leak" data-layout-ignore></div>
+          <div id="l08_rim" data-layout-ignore></div>
+          <div id="l08_fanA" class="l08-fan" data-layout-ignore></div>
+          <div id="l08_fanB" class="l08-fan" data-layout-ignore></div>
+          <svg id="l08_gl1" class="l08-glint" xmlns="http://www.w3.org/2000/svg" viewBox="-40 -40 80 80" width="80" height="80" data-layout-ignore>
+            <defs>
+              <radialGradient id="l08_ggrad" cx="0.5" cy="0.5" r="0.5">
+                <stop offset="0" stop-color="#FFF4D6" stop-opacity="0.9"/>
+                <stop offset="0.35" stop-color="#FFD27A" stop-opacity="0.4"/>
+                <stop offset="1" stop-color="#FFD27A" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle cx="0" cy="0" r="30" fill="url(#l08_ggrad)"/>
+            <path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" transform="scale(17)" fill="#FFF4D6"/>
+          </svg>
+          <svg id="l08_gl2" class="l08-glint" xmlns="http://www.w3.org/2000/svg" viewBox="-40 -40 80 80" width="80" height="80" data-layout-ignore>
+            <circle cx="0" cy="0" r="28" fill="url(#l08_ggrad)"/>
+            <path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" transform="scale(14)" fill="#FFF4D6"/>
+          </svg>
+        </div>
+
+        <div id="l08_jd" class="l08-anchor" data-layout-ignore><div id="l08_jdglow" class="l08-glow" data-layout-ignore></div></div>
+        <div id="l08_jh" class="l08-anchor" data-layout-ignore><div id="l08_jhglow" class="l08-glow" data-layout-ignore></div></div>
+
+        <!-- scrims -->
+        <div id="l08_s31" class="l08-scrim" data-layout-ignore></div>
+        <div id="l08_s32a" class="l08-scrim" data-layout-ignore></div>
+        <div id="l08_s32b" class="l08-scrim" data-layout-ignore></div>
+
+        <!-- L31 — 그래도 오늘 밤만큼은 (onset 128.84 · vocal_end 133.61) -->
+        <div id="l08_l31" class="l08-line" data-layout-allow-overlap><span id="l08_w31_0" class="l08-w"><span class="l08-c">그<span class="l08-g" aria-hidden="true" data-layout-ignore>그</span></span><span class="l08-c">래<span class="l08-g" aria-hidden="true" data-layout-ignore>래</span></span><span class="l08-c">도<span class="l08-g" aria-hidden="true" data-layout-ignore>도</span></span></span> <span id="l08_w31_1" class="l08-w l08-k"><span class="l08-c">오<span class="l08-g" aria-hidden="true" data-layout-ignore>오</span></span><span class="l08-c">늘<span class="l08-g" aria-hidden="true" data-layout-ignore>늘</span></span></span> <span id="l08_w31_2" class="l08-w l08-k"><span class="l08-c">밤<span class="l08-g" aria-hidden="true" data-layout-ignore>밤</span></span></span><span id="l08_w31_3" class="l08-w"><span class="l08-c">만<span class="l08-g" aria-hidden="true" data-layout-ignore>만</span></span><span class="l08-c">큼<span class="l08-g" aria-hidden="true" data-layout-ignore>큼</span></span><span class="l08-c">은<span class="l08-g" aria-hidden="true" data-layout-ignore>은</span></span></span></div>
+
+        <!-- L32 — 뚜껑을 | 열어 볼게 (onset 133.73 · vocal_end 138.65), the jar of s08c in the gap -->
+        <div id="l08_l32a" class="l08-half" data-layout-allow-overlap><span id="l08_w32_0" class="l08-w l08-k"><span class="l08-c">뚜<span class="l08-g" aria-hidden="true" data-layout-ignore>뚜</span></span><span class="l08-c">껑<span class="l08-g" aria-hidden="true" data-layout-ignore>껑</span></span></span><span id="l08_w32_1" class="l08-w"><span class="l08-c">을<span class="l08-g" aria-hidden="true" data-layout-ignore>을</span></span></span></div>
+        <div id="l08_l32b" class="l08-half" data-layout-allow-overlap><span id="l08_w32_2" class="l08-w"><span class="l08-c">열<span class="l08-g" aria-hidden="true" data-layout-ignore>열</span></span><span class="l08-c">어<span class="l08-g" aria-hidden="true" data-layout-ignore>어</span></span></span> <span id="l08_w32_3" class="l08-w"><span class="l08-c">볼<span class="l08-g" aria-hidden="true" data-layout-ignore>볼</span></span><span class="l08-c">게<span class="l08-g" aria-hidden="true" data-layout-ignore>게</span></span></span></div>
+
+        <div id="l08_bloom" data-layout-ignore></div>
+      </div>
+
+      <script>
+        (function () {
+          var D = 10.3; // track 128.70 → 139.00
+          var tl = gsap.timeline({ paused: true });
+
+          function $(id) { return document.getElementById(id); }
+          function q(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+          // finite yoyo count that ends at or before `until`
+          function reps(half, from, until) { return Math.max(0, Math.floor((until - from) / half) - 1); }
+          // non-overlapping pulses on one property: ev = [[t, peak, base, up, down], ...]; each fall is clipped before the next rise
+          function pulses(target, prop, ev, until) {
+            ev.sort(function (a, b) { return a[0] - b[0]; });
+            ev.forEach(function (e, i) {
+              var t = e[0], next = i + 1 < ev.length ? ev[i + 1][0] : until;
+              var up = {}; up[prop] = e[1]; up.duration = e[3]; up.ease = "power2.out";
+              tl.to(target, up, t);
+              var dn = Math.min(e[4], next - t - e[3] - 0.005);
+              if (dn > 0.015) { var v = {}; v[prop] = e[2]; v.duration = dn; v.ease = "power2.inOut"; tl.to(target, v, t + e[3]); }
+            });
+          }
+          function flare(sel, t, s) {
+            tl.to(sel, { scale: s, duration: 0.1, ease: "power2.out" }, t);
+            tl.to(sel, { scale: 1, duration: 0.5, ease: "power2.inOut" }, t + 0.1);
+          }
+
+          // ---- anchors (local seconds = track − 128.70)
+          var T_ONEUL = 2.60;   // 131.30 오늘 · cut s08a → s08b
+          var T_BAM = 3.12;     // 131.82 밤만큼은
+          var T_END31 = 4.91;   // 133.61 L31 vocal_end
+          var T_IN32 = 4.97;    // L32 enters (fully legible by the 133.73 onset / cut to s08c)
+          var T_CUTC = 5.03;    // 133.73 cut to s08c (the lid)
+          var T_TTU = 5.07;     // 133.77 뚜껑을
+          var T_YEOL = 5.79;    // 134.49 열어
+          var T_BOLGE = 7.83;   // 136.53 볼게 · cut to s08d
+          var T_END32 = 9.95;   // 138.65 L32 vocal_end
+          var SN_M = [8.483, 8.971, 9.459, 9.784, 10.109]; // snare run 137.18 … 138.81 (= montage cuts)
+          var T_POP = 10.16;    // 138.86 bloom peak
+          // hits under the lid shot (audio events): kick 133.933, ~134.57, snare 135.07, kick 135.233, snares 135.558/135.883, kick 136.208, snare 136.348
+          var HC = [5.233, 5.87, 6.37, 6.533, 6.858, 7.183, 7.508, 7.648];
+
+          // ================= s08a: the wall jar breathes up with the risers (0.565, 1.285) =================
+          tl.to("#l08_ja", { x: 15, y: 17, duration: 0.9, ease: "none" }, 0);
+          tl.to("#l08_ja", { x: 32, y: 42, duration: 0.8, ease: "none" }, 0.9);
+          tl.to("#l08_ja", { x: 40, y: 64, duration: 0.9, ease: "none" }, 1.7);
+          tl.fromTo("#l08_jaglow", { autoAlpha: 0, scale: 0.8 }, { autoAlpha: 0.3, scale: 1, duration: 0.45, ease: "sine.out" }, 0.05);
+          tl.to("#l08_jaglow", { opacity: 0.48, scale: 1.08, duration: 0.45, ease: "power2.out" }, 0.565);
+          tl.to("#l08_jaglow", { opacity: 0.64, scale: 1.16, duration: 0.55, ease: "power2.out" }, 1.285);
+          tl.to("#l08_jaglow", { opacity: 0.5, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: reps(0.3, 1.9, 2.58) }, 1.9);
+          tl.set("#l08_jaglow", { autoAlpha: 0 }, T_ONEUL); // hard cut with the footage
+
+          // ================= L31 — 그래도 오늘 밤만큼은 =================
+          tl.fromTo("#l08_s31", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.12, ease: "power1.out" }, 0);
+          tl.to("#l08_s31", { autoAlpha: 0, duration: 0.06, ease: "power1.in" }, T_END31);
+          tl.fromTo("#l08_l31", { autoAlpha: 0, y: 14, scale: 1, filter: "blur(6px)" },
+                                { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.12, ease: "power2.out" }, 0); // legible by 0.12 (onset 0.14)
+          tl.to("#l08_l31", { scale: 1.03, duration: T_END31 - 0.12, ease: "none" }, 0.12);
+          tl.to("#l08_l31", { autoAlpha: 0, filter: "blur(5px)", duration: 0.05, ease: "power1.in" }, T_END31); // gone 4.96
+          flare("#l08_w31_1", T_ONEUL, 1.1);
+          flare("#l08_w31_2", T_BAM, 1.1);
+
+          var g31 = q("#l08_l31 .l08-g"); // 그 래 도 | 오 늘 | 밤 | 만 큼 은
+          g31.forEach(function (g, j) {
+            var key = j >= 3 && j <= 5, ev = [];
+            ev.push([0.16 + j * 0.05, key ? 0.8 : 0.5, 0, 0.1, 0.4]);       // light runs across on the first syllable
+            ev.push([1.355 + j * 0.03, 0.3, 0, 0.1, 0.35]);                  // downbeat 130.055
+            if (j === 3 || j === 4) ev.push([T_ONEUL + (j - 3) * 0.05, 1, 0, 0.1, 0.55]);
+            if (j === 5) ev.push([T_BAM, 1, 0, 0.1, 0.55]);
+            if (j >= 6) ev.push([T_BAM + 0.05 + (j - 6) * 0.05, 0.5, 0, 0.1, 0.45]);
+            ev.push([3.979 + j * 0.03, 0.42, 0, 0.1, 0.35]);                 // downbeat 132.679
+            ev.push([4.606, 0.36, 0, 0.08, 0.25]);                           // beat 133.306
+            pulses(g, "opacity", ev, T_END31);
+          });
+
+          // ================= L32 — 뚜껑을 | 열어 볼게 (opens around the real jar) =================
+          tl.fromTo(["#l08_s32a", "#l08_s32b"], { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.06, ease: "power1.out" }, T_IN32);
+          tl.to(["#l08_s32a", "#l08_s32b"], { autoAlpha: 0, duration: 0.17, ease: "power1.in" }, 9.97);
+          tl.fromTo("#l08_l32a", { autoAlpha: 0, x: 28, scale: 1, filter: "blur(6px)" },
+                                 { autoAlpha: 1, x: 0, filter: "blur(0px)", duration: 0.06, ease: "power2.out" }, T_IN32);
+          tl.fromTo("#l08_l32b", { autoAlpha: 0, x: -28, scale: 1, filter: "blur(6px)" },
+                                 { autoAlpha: 1, x: 0, filter: "blur(0px)", duration: 0.06, ease: "power2.out" }, T_IN32);
+          // 열어: the line opens a little wider around the lid, then holds steady
+          tl.to("#l08_l32a", { x: -14, duration: 0.35, ease: "power3.out" }, T_YEOL);
+          tl.to("#l08_l32b", { x: 14, duration: 0.35, ease: "power3.out" }, T_YEOL);
+          tl.to(["#l08_l32a", "#l08_l32b"], { scale: 1.025, duration: T_END32 - T_CUTC, ease: "none" }, T_CUTC);
+          flare("#l08_w32_0", T_TTU, 1.1);
+          flare("#l08_w32_2", T_YEOL, 1.06);
+          flare("#l08_w32_3", T_BOLGE, 1.1);
+          // dissolve into light just before the bloom (readable to 9.95)
+          tl.to(["#l08_l32a", "#l08_l32b"], { autoAlpha: 0, filter: "blur(10px)", scale: 1.065, duration: 0.16, ease: "power1.in" }, 9.98);
+
+          var g32 = q("#l08_l32a .l08-g, #l08_l32b .l08-g"); // 뚜 껑 을 | 열 어 볼 게
+          g32.forEach(function (g, j) {
+            var ev = [];
+            if (j <= 1) ev.push([T_TTU + j * 0.05, 1, 0, 0.1, 0.5]);
+            if (j === 2) ev.push([T_TTU + 0.1, 0.5, 0, 0.1, 0.4]);
+            if (j === 3 || j === 4) ev.push([T_YEOL + (j - 3) * 0.05, 0.75, 0, 0.1, 0.45]);
+            // light sweeps left → right across the gap and lands on 볼 at 136.53
+            ev.push([T_BOLGE - 5 * 0.045 + j * 0.045, j >= 5 ? 1 : 0.85, 0, 0.1, 0.45]);
+            // montage: the text holds still, only its light climbs with the snares
+            ev.push([SN_M[0], 0.4, 0, 0.05, 0.28]);
+            ev.push([SN_M[1], 0.5, 0, 0.05, 0.28]);
+            ev.push([SN_M[2], 0.62, 0.1, 0.05, 0.27]);
+            ev.push([SN_M[3], 0.78, 0.45, 0.05, 0.13]);
+            ev.push([9.97, 1, 1, 0.1, 0]);                                    // becomes light
+            pulses(g, "opacity", ev, 10.3);
+          });
+
+          // ================= s08c: light leaks from the real lid =================
+          // anchor follows the measured lid top-centre: (965,598)@5.03 … (983,678)@7.83 (anchor sits 22px lower = top surface)
+          tl.fromTo("#l08_lid", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.02, ease: "none" }, T_CUTC);
+          var LID = [[5.363, 2, 24], [5.697, 4, 41], [6.03, 6, 50], [6.363, 9, 58], [6.697, 11, 60], [6.863, 12, 59],
+                     [7.197, 14, 66], [7.53, 16, 77], [7.83, 18, 80]];
+          var lt = T_CUTC;
+          LID.forEach(function (k) { tl.to("#l08_lid", { x: k[1], y: k[2], duration: k[0] - lt, ease: "none" }, lt); lt = k[0]; });
+          tl.set("#l08_lid", { autoAlpha: 0 }, T_BOLGE); // the lid leaves with the cut
+
+          // leak glow: appears on 뚜껑, steps up on every hit
+          tl.fromTo("#l08_leak", { autoAlpha: 0, scale: 0.75 }, { autoAlpha: 0.3, scale: 1, duration: 0.15, ease: "power2.out" }, T_TTU);
+          tl.to("#l08_leak", { scale: 1.25, duration: T_BOLGE - 5.22, ease: "none" }, 5.22);
+          var LV = [0.38, 0.46, 0.5, 0.58, 0.62, 0.7, 0.72, 0.76];
+          pulses("#l08_leak", "opacity", HC.map(function (t, i) { return [t, LV[i] + 0.16, LV[i], 0.04, 0.3]; }), T_BOLGE);
+          // hot rim on the lid's top edge, same hits, a touch brighter on the flashes
+          tl.fromTo("#l08_rim", { autoAlpha: 0, scaleX: 0.8 }, { autoAlpha: 0.35, scaleX: 1, duration: 0.15, ease: "power2.out" }, T_TTU);
+          pulses("#l08_rim", "opacity", HC.map(function (t, i) { return [t, Math.min(1, LV[i] + 0.34), LV[i] + 0.06, 0.04, 0.26]; }), T_BOLGE);
+
+          // light shafts escaping the rim, multiplying on the hits: 2 → 4 → 6 → 9.
+          // Irregular, asymmetric angles (no mirrored pairs); start radius r0 = point on the lid's top-surface ellipse (a 165, b 28).
+          var RAYS = [
+            { a: -64,  L: 280, W: 34, t: HC[0] },
+            { a: -139, L: 300, W: 30, t: HC[0] },
+            { a: -21,  L: 380, W: 32, t: HC[1] },
+            { a: -103, L: 230, W: 26, t: HC[1] },
+            { a: -161, L: 400, W: 36, t: HC[3] },
+            { a: -44,  L: 300, W: 28, t: HC[3] },
+            { a: -8,   L: 430, W: 30, t: HC[5] },
+            { a: -84,  L: 210, W: 30, t: HC[5], dim: 0.7 },
+            { a: -122, L: 250, W: 24, t: HC[5] }
+          ];
+          var fanA = $("l08_fanA"), fanB = $("l08_fanB");
+          tl.fromTo("#l08_fanA", { rotation: 0 }, { rotation: 3, duration: T_BOLGE - T_CUTC, ease: "none" }, T_CUTC);
+          tl.fromTo("#l08_fanB", { rotation: 0 }, { rotation: -3, duration: T_BOLGE - T_CUTC, ease: "none" }, T_CUTC);
+          RAYS.forEach(function (R, i) {
+            var rad = R.a * Math.PI / 180, ca = Math.cos(rad) / 165, sa = Math.sin(rad) / 28;
+            var r0 = Math.round(1 / Math.sqrt(ca * ca + sa * sa)) - 4;
+            var arm = document.createElement("div");
+            arm.className = "l08-arm"; arm.id = "l08_arm" + i; arm.setAttribute("data-layout-ignore", "");
+            arm.style.transform = "rotate(" + R.a + "deg)";
+            var rw = document.createElement("div");
+            rw.className = "l08-rw"; rw.id = "l08_rw" + i; rw.setAttribute("data-layout-ignore", "");
+            rw.style.left = r0 + "px"; rw.style.top = (-R.W / 2) + "px";
+            rw.style.width = R.L + "px"; rw.style.height = R.W + "px";
+            var rh = document.createElement("div"); rh.className = "l08-rh";
+            var rb = document.createElement("div"); rb.className = "l08-rb";
+            var rc = document.createElement("div"); rc.className = "l08-rc";
+            rh.appendChild(rb); rw.appendChild(rh); rw.appendChild(rc); arm.appendChild(rw);
+            (i % 2 ? fanB : fanA).appendChild(arm);
+
+            var t0 = R.t + (i % 2) * 0.03, top = R.dim || 1;
+            tl.fromTo(rw, { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: top, duration: 0.3, ease: "power3.out" }, t0);
+            var on = t0 + 0.32;
+            var ev = [];
+            HC.forEach(function (h, k) { if (h > on && h < 7.8) ev.push([h, 1.12 + 0.02 * k, 1, 0.05, 0.22]); });
+            pulses(rw, "scaleX", ev, T_BOLGE);
+            var hp = 0.19 + 0.04 * (i % 4), st = on + 0.02;
+            tl.to(arm, { opacity: 0.62, duration: hp, ease: "sine.inOut", yoyo: true, repeat: reps(hp, st, 7.8) }, st);
+          });
+
+          // two glints on the real rim highlights
+          tl.fromTo("#l08_gl1", { autoAlpha: 0, scale: 0.2 }, { autoAlpha: 1, scale: 1, duration: 0.08, ease: "power2.out" }, T_YEOL);
+          tl.to("#l08_gl1", { autoAlpha: 0, scale: 0.45, duration: 0.45, ease: "power2.in" }, T_YEOL + 0.08);
+          tl.fromTo("#l08_gl2", { autoAlpha: 0, scale: 0.2 }, { autoAlpha: 1, scale: 1, duration: 0.07, ease: "power2.out" }, HC[5]);
+          tl.to("#l08_gl2", { autoAlpha: 0, scale: 0.45, duration: 0.4, ease: "power2.in" }, HC[5] + 0.07);
+
+          // ================= s08d: the jar answers 볼게 =================
+          tl.fromTo("#l08_jdglow", { autoAlpha: 0, scale: 0.85 }, { autoAlpha: 0.5, scale: 1, duration: 0.05, ease: "power2.out" }, T_BOLGE);
+          pulses("#l08_jdglow", "opacity", [[7.88, 0.64, 0.5, 0.05, 0.3]], SN_M[0]);
+          tl.set("#l08_jdglow", { autoAlpha: 0 }, SN_M[0]);
+
+          // ================= s08h: the jar charges, then the bloom =================
+          tl.fromTo("#l08_jhglow", { autoAlpha: 0, scale: 0.9 }, { autoAlpha: 0.3, scale: 1, duration: 0.05, ease: "power2.out" }, SN_M[3]);
+          tl.to("#l08_jhglow", { opacity: 0.62, scale: 1.18, duration: SN_M[4] - SN_M[3] - 0.05, ease: "power1.in" }, SN_M[3] + 0.05);
+          tl.to("#l08_jhglow", { opacity: 0, duration: 0.11, ease: "power1.in" }, T_POP);
+
+          tl.fromTo("#l08_bloom", { autoAlpha: 0, scale: 0.25 }, { autoAlpha: 1, scale: 1, duration: T_POP - SN_M[4], ease: "power2.out" }, SN_M[4]);
+          tl.to("#l08_bloom", { autoAlpha: 0, scale: 1.18, duration: 0.12, ease: "power1.in" }, T_POP); // gone at 10.28 (138.98)
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s08-build"] = tl;
+          tl.set({}, {}, D);
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

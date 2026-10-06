@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>01-f1 · HOOK-SLAM — AI, / 처음이어도 → KV resolve → 바로!</title>
+  </head>
+  <body>
+    <template id="f1_template">
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #040404;
+          color: #F2F0EA;
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 800;
+          -webkit-font-smoothing: antialiased;
+        }
+
+        /* ---------- shared layers ---------- */
+        #f1_bg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          background: #040404;
+        }
+        /* key visual: 1536×1024 native → 1500×1000 (0.977×), centered; peak 1.12× = 1.09× native */
+        #f1_kv {
+          position: absolute;
+          left: 210px;
+          top: 40px;
+          width: 1500px;
+          height: 1000px;
+          transform-origin: 50% 50%;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f1_kv_push {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1500px;
+          height: 1000px;
+          transform-origin: 50% 50%;
+        }
+        #f1_kv_img {
+          display: block;
+          width: 1500px;
+          height: 1000px;
+        }
+
+        /* ---------- groups ---------- */
+        .f1-g {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        #f1_g2 {
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        /* g1 states — one per hit; only s0 is on at t=0 */
+        .f1-state {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f1_g1_s0 {
+          opacity: 1;
+          visibility: inherit;
+        }
+        .f1-col {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 30px;
+          transform-origin: 50% 50%;
+        }
+        .f1-line {
+          white-space: nowrap;
+          word-break: keep-all;
+        }
+        .f1-ch {
+          display: inline-block;
+        }
+
+        /* type tokens (frame.md) */
+        .f1-display {
+          font-size: 240px;
+          font-weight: 800;
+          line-height: 0.92;
+          letter-spacing: -0.045em;
+        }
+        .f1-h1 {
+          font-size: 150px;
+          font-weight: 800;
+          line-height: 1;
+          letter-spacing: -0.04em;
+        }
+
+        /* pair chip (Archivo Black, 30px, upper) — pops from the left via clip-path */
+        .f1-chip {
+          display: inline-block;
+          font-family: "Archivo Black", sans-serif;
+          font-weight: 400;
+          font-size: 30px;
+          line-height: 1;
+          letter-spacing: 0.02em;
+          text-transform: uppercase;
+          padding: 9px 16px 8px;
+          white-space: nowrap;
+          clip-path: inset(0% 100% 0% 0%);
+        }
+        .f1-chip-y {
+          background: #FFE500;
+          color: #040404;
+        }
+        .f1-chip-k {
+          background: #040404;
+          color: #FFE500;
+        }
+
+        /* s0 · blinking accent square at center */
+        #f1_g1_sq {
+          position: absolute;
+          left: 949px;
+          top: 529px;
+          width: 22px;
+          height: 22px;
+          background: #FFE500;
+          transform-origin: 50% 50%;
+        }
+
+        /* s1 · AI, (display, paper on ink) */
+        #f1_g1_s1_word {
+          display: inline-block;
+          color: #F2F0EA;
+          transform-origin: 50% 50%;
+        }
+
+        /* s2 · 처음이어도 (h1, ink on yellow) + ink label box on 처음 */
+        #f1_g1_s2_line {
+          color: #040404;
+        }
+        .f1-boxwrap {
+          position: relative;
+          display: inline-block;
+          padding: 0.08em 0.18em;
+          margin-right: 0.02em;
+        }
+        #f1_g1_s2_hl {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          padding: 0.08em 0.18em;
+          box-sizing: border-box;
+          background: #040404;
+          color: #FFE500;
+          white-space: nowrap;
+          clip-path: inset(0% 100% 0% 0%);
+        }
+
+        /* ---------- g2 · 바로! accent label box in the KV's dark top-left ---------- */
+        #f1_g2_box {
+          position: absolute;
+          left: 112px;
+          top: 128px;
+          display: inline-block;
+          padding: 0.08em 0.22em 0.08em 0.18em;
+          background: #FFE500;
+          color: #040404;
+          font-size: 150px;
+          font-weight: 800;
+          line-height: 1;
+          letter-spacing: -0.04em;
+          white-space: nowrap;
+          transform-origin: 50% 50%;
+        }
+      </style>
+
+      <div id="stage" data-composition-id="01-f1" data-width="1920" data-height="1080" data-duration="5">
+        <!-- register ground (shared) -->
+        <div id="f1_bg"></div>
+
+        <!-- key visual (shared by g1 → g2; INK register only) -->
+        <div id="f1_kv" data-layout-allow-overflow data-layout-allow-overlap>
+          <div id="f1_kv_push">
+            <img id="f1_kv_img" src="assets/keyvisual/kv-full.png" alt="바로바로 시리즈 키 비주얼">
+          </div>
+        </div>
+
+        <!-- ===================== f1_g1 · hook slams → KV born from black (0 → 4.71) ===================== -->
+        <div id="f1_g1" class="f1-g">
+          <!-- s0 · 0 → 0.42 : ink, blinking accent square -->
+          <div id="f1_g1_s0" class="f1-state">
+            <div id="f1_g1_sq"></div>
+          </div>
+
+          <!-- s1 · 0.42 → 1.37 : AI, / chip AI (ink) -->
+          <div id="f1_g1_s1" class="f1-state f1-col">
+            <div id="f1_g1_s1_word" class="f1-display f1-line">AI,</div>
+            <div id="f1_g1_s1_chip" class="f1-chip f1-chip-y">AI</div>
+          </div>
+
+          <!-- s2 · 1.37 → 2.83 : 처음이어도 (처음 boxed) / chip FIRST TIME? (yellow) -->
+          <div id="f1_g1_s2" class="f1-state f1-col">
+            <div id="f1_g1_s2_line" class="f1-h1 f1-line"><span id="f1_g1_s2_wrap" class="f1-boxwrap"><span class="f1-ch f1-s2ch">처</span><span class="f1-ch f1-s2ch">음</span><span id="f1_g1_s2_hl"><span class="f1-ch">처</span><span class="f1-ch">음</span></span></span><span class="f1-ch f1-s2ch">이</span><span class="f1-ch f1-s2ch">어</span><span class="f1-ch f1-s2ch">도</span></div>
+            <div id="f1_g1_s2_chip" class="f1-chip f1-chip-k">FIRST TIME?</div>
+          </div>
+        </div>
+
+        <!-- ===================== f1_g2 · 바로! sting over the KV (4.71 → 5.0) ===================== -->
+        <div id="f1_g2" class="f1-g">
+          <div id="f1_g2_box" data-layout-allow-overlap>바로!</div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // Frame 1 spans track 0.0 → 5.0, so frame-local time == track time.
+          // Anchors (storyboard / audiomap): kick 0.42 · kick+surge 1.37 · silence 2.0–2.83 ·
+          // downbeat 2.83 · 4.0 push · downbeat 4.71. Sub-hits used for micro-timing:
+          // snare 0.186 · snare 1.579 · perc 1.788.
+          var YELLOW = "#FFE500";
+          var INK = "#040404";
+
+          var T_AI = 0.42;
+          var T_FIRST = 1.37;
+          var T_HOLD = 2.0;
+          var T_KV = 2.83;
+          var T_PUSH = 4.0;
+          var T_BARO = 4.71;
+          var T_END = 5.0;
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ---------- group windows (0ms cut g1 → g2 at 4.71) ----------
+          tl.set("#f1_g1", { autoAlpha: 1 }, 0);
+          tl.set("#f1_g2", { autoAlpha: 0 }, 0);
+          tl.set("#f1_g1", { autoAlpha: 0 }, T_BARO);
+          tl.set("#f1_g2", { autoAlpha: 1 }, T_BARO);
+
+          // ---------- palette-flip: register ground, 0ms on the hits ----------
+          tl.set("#f1_bg", { backgroundColor: INK }, 0);
+          tl.set("#f1_bg", { backgroundColor: YELLOW }, T_FIRST);
+          tl.set("#f1_bg", { backgroundColor: INK }, T_KV);
+
+          // ---------- hard-cut: one g1 state per hit ----------
+          function win(id, a, b) {
+            tl.set(id, { autoAlpha: 1 }, a);
+            tl.set(id, { autoAlpha: 0 }, b);
+          }
+          tl.set("#f1_g1_s0", { autoAlpha: 1 }, 0);
+          tl.set("#f1_g1_s0", { autoAlpha: 0 }, T_AI);
+          win("#f1_g1_s1", T_AI, T_FIRST);
+          win("#f1_g1_s2", T_FIRST, T_KV); // text clears at the 2.83 downbeat
+
+          // label-box / chip pop: scaleX-from-left look via clip-path (text never distorts)
+          function snap(id, t, dur) {
+            tl.fromTo(
+              id,
+              { clipPath: "inset(0% 100% 0% 0%)" },
+              { clipPath: "inset(0% 0% 0% 0%)", duration: dur || 0.12, ease: "power3.out" },
+              t,
+            );
+          }
+
+          // ===== s0 · 0 → 0.42 : accent square blinks on the void, pops on the 0.186 snare =====
+          tl.set("#f1_g1_sq", { opacity: 1 }, 0);
+          tl.set("#f1_g1_sq", { opacity: 0 }, 0.116);
+          tl.set("#f1_g1_sq", { opacity: 1 }, 0.186);
+          tl.fromTo("#f1_g1_sq", { scale: 1.8 }, { scale: 1, duration: 0.11, ease: "power3.out" }, 0.186);
+          tl.set("#f1_g1_sq", { opacity: 0 }, 0.302);
+          tl.set("#f1_g1_sq", { opacity: 1 }, 0.36);
+
+          // ===== s1 · 0.42 kick : 'AI,' slams center (display, paper on ink), chip 'AI' =====
+          tl.fromTo(
+            "#f1_g1_s1_word",
+            { scale: 1.7, y: -20 },
+            { scale: 1, y: 0, duration: 0.16, ease: "power4.out", force3D: false },
+            T_AI,
+          );
+          snap("#f1_g1_s1_chip", T_AI + 0.07);
+          tl.fromTo(
+            "#f1_g1_s1",
+            { scale: 1 },
+            { scale: 1.025, duration: T_FIRST - T_AI, ease: "none", force3D: false },
+            T_AI,
+          );
+
+          // ===== s2 · 1.37 kick/surge : 0ms → YELLOW, '처음이어도' letter-in (h1, ink) =====
+          tl.fromTo(
+            ".f1-s2ch",
+            { yPercent: 70, opacity: 0 },
+            { yPercent: 0, opacity: 1, duration: 0.28, ease: "back.out(2.2)", stagger: 0.03 },
+            T_FIRST,
+          );
+          snap("#f1_g1_s2_chip", 1.579); // snare
+          snap("#f1_g1_s2_hl", 1.788, 0.12); // ink label box snaps onto 처음 on the perc
+          // gentle push that settles into stillness for the 2.0–2.83 silence
+          tl.fromTo(
+            "#f1_g1_s2",
+            { scale: 1 },
+            { scale: 1.03, duration: T_HOLD - T_FIRST, ease: "power2.out", force3D: false },
+            T_FIRST,
+          );
+
+          // ===== 2.83 downbeat : 0ms → INK, KV blur-resolves out of the black =====
+          tl.set("#f1_kv", { autoAlpha: 1 }, T_KV);
+          tl.fromTo(
+            "#f1_kv_img",
+            { opacity: 0 },
+            { opacity: 1, duration: 0.5, ease: "power1.out" },
+            T_KV,
+          );
+          tl.fromTo(
+            "#f1_kv_img",
+            { filter: "blur(18px)" },
+            { filter: "blur(0px)", duration: T_PUSH - T_KV, ease: "power2.out" },
+            T_KV,
+          );
+          tl.fromTo(
+            "#f1_kv_push",
+            { scale: 1.12 },
+            { scale: 1, duration: T_PUSH - T_KV, ease: "power2.out", force3D: false },
+            T_KV,
+          );
+          // 4.0 : slow push continues through g2 to the frame end (shared layer)
+          tl.fromTo(
+            "#f1_kv_push",
+            { scale: 1 },
+            { scale: 1.04, duration: T_END - T_PUSH, ease: "none", force3D: false, immediateRender: false },
+            T_PUSH,
+          );
+
+          // ===================== g2 · 4.71 downbeat : '바로!' braam-punch =====================
+          // hit (big → slightly under) → weighted settle, all resolved before 5.0
+          tl.fromTo(
+            "#f1_g2_box",
+            { scale: 1.3, rotation: -4 },
+            { scale: 0.97, rotation: 0, duration: 0.09, ease: "power4.out", force3D: false },
+            T_BARO,
+          );
+          tl.fromTo(
+            "#f1_g2_box",
+            { scale: 0.97 },
+            { scale: 1, duration: 0.16, ease: "back.out(3)", force3D: false, immediateRender: false },
+            T_BARO + 0.09,
+          );
+          // the KV takes the weight of the hit (outer wrapper, so it never fights the push tween)
+          tl.fromTo(
+            "#f1_kv",
+            { scale: 1 },
+            { scale: 1.015, duration: 0.06, ease: "power3.out", force3D: false },
+            T_BARO,
+          );
+          tl.fromTo(
+            "#f1_kv",
+            { scale: 1.015 },
+            { scale: 1, duration: 0.18, ease: "power2.out", force3D: false, immediateRender: false },
+            T_BARO + 0.06,
+          );
+
+          window.__timelines["01-f1"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

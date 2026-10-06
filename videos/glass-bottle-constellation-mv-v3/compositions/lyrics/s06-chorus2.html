@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="ko">
+  <head><meta charset="UTF-8" /><!-- s06-chorus2 — chorus-2 lyric + light layer over footage (track 86.55–118.60). Typography + light only. --></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Noto Serif KR"; src: url("assets/fonts/NotoSerifKR-VF.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: block; }
+        @font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/CormorantGaramond-Italic-VF.woff2") format("woff2"); font-weight: 300 700; font-style: italic; font-display: block; }
+        #stage { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+
+        /* ---------- light accents (only on real light measured in the footage) ---------- */
+        .l06-acc { position: absolute; left: 0; top: 0; width: 0; height: 0; opacity: 0; visibility: hidden; pointer-events: none; }
+        .l06-gcore { position: absolute; left: -70px; top: -70px; width: 140px; height: 140px; border-radius: 50%;
+          background: radial-gradient(closest-side, rgba(255,250,235,.95) 0%, rgba(255,236,190,.55) 14%, rgba(255,210,122,.18) 42%, rgba(255,210,122,0) 100%); }
+        .l06-gh { position: absolute; left: -150px; top: -1px; width: 300px; height: 2px;
+          background: linear-gradient(90deg, rgba(255,244,214,0) 0%, rgba(255,244,214,.7) 50%, rgba(255,244,214,0) 100%); }
+        .l06-gv { position: absolute; left: -1px; top: -86px; width: 2px; height: 172px;
+          background: linear-gradient(180deg, rgba(255,244,214,0) 0%, rgba(255,244,214,.6) 50%, rgba(255,244,214,0) 100%); }
+        .l06-bloom { position: absolute; border-radius: 50%;
+          background: radial-gradient(closest-side, rgba(255,226,160,.5) 0%, rgba(255,210,122,.26) 34%, rgba(255,190,100,.08) 68%, rgba(255,190,100,0) 100%); }
+        .l06-mote { position: absolute; left: -20px; top: -20px; width: 40px; height: 40px; border-radius: 50%;
+          background: radial-gradient(closest-side, rgba(255,252,240,1) 0%, rgba(255,240,200,.85) 14%, rgba(255,214,140,.32) 40%, rgba(255,210,122,.08) 70%, rgba(255,210,122,0) 100%); }
+
+        /* real constellation of s06e: a very faint line linking the stars that are already there */
+        #l06_cst { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; opacity: 0; visibility: hidden; transform-origin: 0 0; pointer-events: none; }
+        .l06-csvg { position: absolute; left: 0; top: 0; overflow: visible; }
+        .l06-eglow { fill: none; stroke: #DCEBFF; stroke-width: 5; stroke-opacity: 0.09; stroke-linecap: round; }
+        .l06-ecore { fill: none; stroke: #DCEBFF; stroke-width: 1.3; stroke-opacity: 0.5; stroke-linecap: round; }
+        .l06-halo { position: absolute; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; opacity: 0;
+          background: radial-gradient(closest-side, rgba(255,244,214,.55) 0%, rgba(255,226,160,.25) 38%, rgba(255,210,122,0) 100%); }
+
+        /* ---------- lyric type ---------- */
+        .l06-blk { position: absolute; opacity: 0; visibility: hidden; white-space: nowrap; font-family: "Noto Serif KR", serif; color: #F4F1EA; }
+        .l06-hid { opacity: 0; visibility: hidden; }
+        .l06-dr { position: relative; }
+        .l06-scrim { position: absolute; pointer-events: none;
+          background: radial-gradient(closest-side, rgba(5,7,20,.56) 0%, rgba(5,7,20,.44) 42%, rgba(5,7,20,.17) 74%, rgba(5,7,20,0) 100%); }
+        .l06-row { position: relative; display: block; font-size: 76px; font-weight: 500; line-height: 106px; letter-spacing: 0.01em;
+          text-shadow: 0 0 14px rgba(220,235,255,.25), 0 2px 12px rgba(5,7,20,.82), 0 0 3px rgba(5,7,20,.55); }
+        .l06-kw { position: relative; display: inline-block; font-size: 1.4em; font-weight: 600; line-height: 1; color: #FFD27A;
+          text-shadow: 0 0 18px rgba(255,210,122,.45), 0 0 46px rgba(255,210,122,.18), 0 2px 12px rgba(5,7,20,.75); }
+        .l06-hero { position: relative; display: inline-block; font-size: 118px; font-weight: 700; line-height: 1; letter-spacing: -0.01em; color: #FFD27A;
+          text-shadow: 0 0 18px rgba(255,210,122,.45), 0 0 46px rgba(255,210,122,.18), 0 2px 14px rgba(5,7,20,.75); }
+        .l06-kwb { position: relative; display: inline-block; }
+        .l06-lit { position: absolute; left: 0; top: 0; display: inline-block; opacity: 0; color: #FFE6AE;
+          text-shadow: 0 0 26px rgba(255,232,170,.95), 0 0 72px rgba(255,210,122,.55), 0 2px 10px rgba(5,7,20,.45); }
+        .l06-ch { position: relative; display: inline-block; }
+
+        .l06-mega { position: relative; display: block; width: 660px; height: 220px; font-size: 220px; font-weight: 800; line-height: 220px;
+          letter-spacing: -0.02em; text-align: center; }
+        .l06-mstroke { position: absolute; left: 0; top: 0; width: 660px; opacity: 0; }
+        .l06-mstrokei { display: block; width: 660px; color: #FFF4D6; filter: url(#l06_olf); }
+        .l06-defs { position: absolute; left: 0; top: 0; width: 0; height: 0; overflow: hidden; }
+        .l06-mmask { position: absolute; left: -100px; top: -70px; width: 860px; height: 360px; overflow: hidden; opacity: 0; visibility: hidden; }
+        .l06-mmaskin { position: absolute; left: 100px; top: 70px; width: 660px; height: 220px; }
+        .l06-mfill { position: absolute; left: 0; top: 0; width: 660px; color: #FFF4D6;
+          text-shadow: 0 0 18px rgba(255,210,122,.45), 0 0 46px rgba(255,210,122,.18), 0 2px 14px rgba(5,7,20,.6); }
+        .l06-mlit { position: absolute; left: 0; top: 0; width: 660px; color: #FFF8E6; opacity: 0;
+          text-shadow: 0 0 34px rgba(255,236,180,1), 0 0 110px rgba(255,210,122,.8); }
+
+        .l06-wh { font-size: 50px; font-weight: 300; line-height: 74px; letter-spacing: 0.12em; color: #A9B3D6;
+          text-shadow: 0 0 14px rgba(220,235,255,.22), 0 2px 10px rgba(5,7,20,.88), 0 0 3px rgba(5,7,20,.6); }
+        .l06-w { position: relative; display: inline-block; opacity: 0.78; }
+        .l06-held { font-size: 96px; font-weight: 500; line-height: 124px; letter-spacing: 0.02em; text-align: center; }
+        .l06-warm { position: absolute; left: 0; top: 0; display: inline-block; opacity: 0; color: #FFF4D6;
+          text-shadow: 0 0 18px rgba(255,210,122,.42), 0 0 46px rgba(255,210,122,.16), 0 2px 12px rgba(5,7,20,.7); }
+      </style>
+      <div id="stage" data-composition-id="s06-chorus2" data-width="1920" data-height="1080" data-duration="32.05">
+
+        <!-- outline of the merged glyph silhouette (clean ring, no variable-font contour overlaps) + its soft halo -->
+        <svg class="l06-defs" width="0" height="0" aria-hidden="true" data-layout-ignore>
+          <filter id="l06_olf" x="-10%" y="-20%" width="120%" height="140%" color-interpolation-filters="sRGB">
+            <feMorphology in="SourceAlpha" operator="dilate" radius="2" result="l06d"/>
+            <feComposite in="l06d" in2="SourceAlpha" operator="out" result="l06o"/>
+            <feGaussianBlur in="l06o" stdDeviation="7" result="l06b"/>
+            <feFlood flood-color="#FFF4D6" result="l06c"/>
+            <feComposite in="l06c" in2="l06o" operator="in" result="l06r"/>
+            <feComponentTransfer in="l06b" result="l06g"><feFuncA type="linear" slope="0.45"/></feComponentTransfer>
+            <feFlood flood-color="#FFE3A0" result="l06c2"/>
+            <feComposite in="l06c2" in2="l06g" operator="in" result="l06h"/>
+            <feMerge><feMergeNode in="l06h"/><feMergeNode in="l06r"/></feMerge>
+          </filter>
+        </svg>
+
+        <!-- light accents -->
+        <div class="l06-acc" id="l06_g21" style="left:1307px;top:112px" data-layout-ignore><div class="l06-gcore"></div><div class="l06-gh"></div><div class="l06-gv"></div></div>
+        <div class="l06-acc" id="l06_bjar" style="left:942px;top:930px" data-layout-ignore><div class="l06-bloom" style="left:-230px;top:-230px;width:460px;height:460px"></div></div>
+        <div id="l06_cst" data-layout-ignore>
+          <svg class="l06-csvg" viewBox="0 0 1920 1080" width="1920" height="1080">
+            <g id="l06_e65"><path class="l06-eglow" d="M204.4 411.1 L330.9 439.0" pathLength="1000" stroke-dasharray="1000" stroke-dashoffset="1000"/><path class="l06-ecore" d="M204.4 411.1 L330.9 439.0" pathLength="1000" stroke-dasharray="1000" stroke-dashoffset="1000"/></g><g id="l06_e54"><path class="l06-eglow" d="M354.6 430.3 L451.6 304.2" pathLength="1000" stroke-dasharray="1000" stroke-dashoffset="1000"/><path class="l06-ecore" d="M354.6 430.3 L451.6 304.2" pathLength="1000" stroke-dasharray="1000" stroke-dashoffset="1000"/></g><g id="l06_e43"><path class="l06-eglow" d="M469.6 280.2 L547.7 173.2" pathLength="1000" stroke-dasharray="1000" stroke-dashoffset="1000"/><path class="l06-ecore" d="M469.6 280.2 L547.7 173.2" pathLength="1000" stroke-dasharray="1000" stroke-dashoffset="1000"/></g><g id="l06_e42"><path class="l06-eglow" d="M455.5 278.2 L419.5 180.5" pathLength="1000" stroke-dasharray="1000" stroke-dashoffset="1000"/><path class="l06-ecore" d="M455.5 278.2 L419.5 180.5" pathLength="1000" stroke-dasharray="1000" stroke-dashoffset="1000"/></g><g id="l06_e21"><path class="l06-eglow" d="M400.7 160.2 L275.2 102.9" pathLength="1000" stroke-dasharray="1000" stroke-dashoffset="1000"/><path class="l06-ecore" d="M400.7 160.2 L275.2 102.9" pathLength="1000" stroke-dasharray="1000" stroke-dashoffset="1000"/></g>
+          </svg>
+          <div class="l06-halo" id="l06_hS6" style="left:189.8px;top:407.9px"></div><div class="l06-halo" id="l06_hS5" style="left:345.5px;top:442.2px"></div><div class="l06-halo" id="l06_hS4" style="left:460.7px;top:292.3px"></div><div class="l06-halo" id="l06_hS3" style="left:556.6px;top:161.1px"></div><div class="l06-halo" id="l06_hS2" style="left:414.3px;top:166.4px"></div><div class="l06-halo" id="l06_hS1" style="left:261.6px;top:96.7px"></div>
+        </div>
+        <div class="l06-acc" id="l06_bpalm" data-layout-ignore><div class="l06-bloom" style="left:-95px;top:-95px;width:190px;height:190px"></div></div>
+        <div class="l06-acc" id="l06_bgrd" data-layout-ignore><div class="l06-bloom" style="left:-150px;top:-150px;width:300px;height:300px"></div></div>
+        <div class="l06-acc" id="l06_g27" style="left:921px;top:120px" data-layout-ignore><div class="l06-gcore"></div><div class="l06-gh"></div><div class="l06-gv"></div></div>
+        <div class="l06-acc" id="l06_m1" data-layout-ignore><div class="l06-mote"></div></div>
+        <div class="l06-acc" id="l06_m2" data-layout-ignore><div class="l06-mote"></div></div>
+        <div class="l06-acc" id="l06_m3" data-layout-ignore><div class="l06-mote"></div></div>
+        <div class="l06-acc" id="l06_m4" data-layout-ignore><div class="l06-mote"></div></div>
+        <div class="l06-acc" id="l06_m5" data-layout-ignore><div class="l06-mote"></div></div>
+        <div class="l06-acc" id="l06_m6" data-layout-ignore><div class="l06-mote"></div></div>
+
+        <!-- L21 빛나라 저 하늘 너머로 — outline in the sky of s06a, fills with light on the 87.80 slam (s06b) -->
+        <div class="l06-blk" id="l06_l21" style="left:450px;top:96px;width:660px" data-layout-allow-overlap>
+          <div class="l06-scrim" style="left:-300px;top:-110px;width:1260px;height:560px" data-layout-ignore></div>
+          <div class="l06-dr" id="l06_l21dr">
+            <div class="l06-mega" id="l06_mpunch">
+              <span class="l06-mstroke" id="l06_mstroke"><span class="l06-mstrokei" data-layout-allow-overlap>빛나라</span></span>
+              <div class="l06-mmask" id="l06_mmask" data-layout-ignore><div class="l06-mmaskin" id="l06_mmaskin"><span class="l06-mfill">빛나라</span></div></div>
+              <span class="l06-mlit" id="l06_mlit" aria-hidden="true">빛나라</span>
+            </div>
+            <div class="l06-row l06-hid" id="l06_l21sub" style="width:660px;text-align:center;margin-top:8px">저 <span class="l06-kw" id="l06_kw21"><span class="l06-kwb">하늘</span><span class="l06-lit" id="l06_kw21l" aria-hidden="true">하늘</span></span> 너머로</div>
+          </div>
+        </div>
+
+        <!-- L22 숨겨 둔 별들이 흘러가 — on the wet road beside her footsteps (s06c) -->
+        <div class="l06-blk" id="l06_l22" style="left:170px;top:700px" data-layout-allow-overlap>
+          <div class="l06-scrim" style="left:-190px;top:-80px;width:900px;height:400px" data-layout-ignore></div>
+          <div class="l06-dr" id="l06_l22dr">
+            <div class="l06-row">숨겨 둔 <span class="l06-kw" id="l06_kw22"><span class="l06-kwb">별</span><span class="l06-lit" id="l06_kw22l" aria-hidden="true">별</span></span>들이</div>
+            <div class="l06-row" style="margin-left:170px"><span class="l06-ch" id="l06_f0">흘</span><span class="l06-ch" id="l06_f1">러</span><span class="l06-ch" id="l06_f2">가</span></div>
+          </div>
+        </div>
+
+        <!-- L23 입술 끝에 머문 빛들이 — on her dark hoodie, right of the jar, below the chin (s06d) -->
+        <div class="l06-blk" id="l06_l23" style="left:1230px;top:640px" data-layout-allow-overlap>
+          <div class="l06-scrim" style="left:-170px;top:-80px;width:800px;height:400px" data-layout-ignore></div>
+          <div class="l06-dr" id="l06_l23dr">
+            <div class="l06-row">입술 끝에</div>
+            <div class="l06-row" style="margin-left:40px">머문 <span class="l06-kw" id="l06_kw23"><span class="l06-kwb">빛</span><span class="l06-lit" id="l06_kw23l" aria-hidden="true">빛</span></span>들이</div>
+          </div>
+        </div>
+
+        <!-- L24 별자리가 되어 가 — under the real constellation of s06e -->
+        <div class="l06-blk" id="l06_l24" style="left:175px;top:628px" data-layout-allow-overlap>
+          <div class="l06-scrim" style="left:-175px;top:-90px;width:820px;height:430px" data-layout-ignore></div>
+          <div class="l06-dr" id="l06_l24dr">
+            <div class="l06-row" style="line-height:136px"><span class="l06-hero" id="l06_kw24"><span class="l06-kwb">별자리가</span><span class="l06-lit" id="l06_kw24l" aria-hidden="true">별자리가</span></span></div>
+            <div class="l06-row" style="margin-left:14px">되어 가</div>
+          </div>
+        </div>
+
+        <!-- L25 괜찮아 너는 몰라도 돼 — whisper in the dusk sky of s06f -->
+        <div class="l06-blk" id="l06_l25" style="left:240px;top:118px" data-layout-allow-overlap>
+          <div class="l06-scrim" style="left:-170px;top:-70px;width:780px;height:300px" data-layout-ignore></div>
+          <div class="l06-dr" id="l06_l25dr">
+            <div class="l06-row l06-wh"><span class="l06-w" id="l06_w0">괜찮아</span></div>
+            <div class="l06-row l06-wh" style="margin-left:70px"><span class="l06-w" id="l06_w1">너는</span> <span class="l06-w" id="l06_w2">몰라도</span> <span class="l06-w" id="l06_w3">돼</span></div>
+          </div>
+        </div>
+
+        <!-- L26 이 밤이 대신 기억할 테니 — in the open sky of s06g, left of her -->
+        <div class="l06-blk" id="l06_l26" style="left:260px;top:150px" data-layout-allow-overlap>
+          <div class="l06-scrim" style="left:-170px;top:-80px;width:840px;height:420px" data-layout-ignore></div>
+          <div class="l06-dr" id="l06_l26dr">
+            <div class="l06-row">이 <span class="l06-kw" id="l06_kw26"><span class="l06-kwb">밤</span><span class="l06-lit" id="l06_kw26l" aria-hidden="true">밤</span></span>이 대신</div>
+            <div class="l06-row" style="margin-left:70px">기억할 테니</div>
+          </div>
+        </div>
+
+        <!-- L27 언젠가 고개 들어 본다면 — among the rooftops of s06h, lifting toward the window star -->
+        <div class="l06-blk" id="l06_l27" style="left:830px;top:610px" data-layout-allow-overlap>
+          <div class="l06-scrim" style="left:-170px;top:-80px;width:780px;height:400px" data-layout-ignore></div>
+          <div class="l06-dr" id="l06_l27dr">
+            <div class="l06-row">언젠가 고개</div>
+            <div class="l06-row" style="margin-left:40px">들어 본다면</div>
+          </div>
+        </div>
+
+        <!-- L28 그거면 충분해 — a calm still beside her face (s06i) -->
+        <div class="l06-blk" id="l06_l28" style="left:1180px;top:190px;width:520px" data-layout-allow-overlap>
+          <div class="l06-scrim" style="left:-160px;top:-80px;width:840px;height:420px" data-layout-ignore></div>
+          <div class="l06-row l06-held">그거면</div>
+          <div class="l06-row l06-held"><span class="l06-kwb" id="l06_w28">충분해<span class="l06-warm" id="l06_w28l" aria-hidden="true">충분해</span></span></div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          var tl = gsap.timeline({ paused: true });
+          function $(id) { return document.getElementById(id); }
+          function enter(el, t, d, fromY, blur) {
+            tl.fromTo(el, { autoAlpha: 0, y: fromY, filter: "blur(" + blur + "px)" },
+              { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: d, ease: "power2.out" }, t);
+          }
+          function exitTo(el, t, d, toY, blur) {
+            tl.to(el, { autoAlpha: 0, y: toY, filter: "blur(" + blur + "px)", duration: d, ease: "power2.in" }, t);
+          }
+          function kwPop(id, t, peak) {
+            var w = $(id), lit = $(id + "l");
+            tl.fromTo(w, { scale: 1 }, { scale: 1.1, duration: 0.12, ease: "power2.out", transformOrigin: "50% 60%" }, t);
+            tl.to(w, { scale: 1, duration: 0.65, ease: "power2.inOut" }, t + 0.12);
+            tl.fromTo(lit, { opacity: 0 }, { opacity: peak, duration: 0.12, ease: "power2.out" }, t);
+            tl.to(lit, { opacity: 0, duration: 0.7, ease: "power2.inOut" }, t + 0.12);
+          }
+          function track(el, keys) {   // keys: [[t, x, y], ...] linear between samples
+            tl.fromTo(el, { x: keys[0][1], y: keys[0][2] }, { x: keys[1][1], y: keys[1][2], duration: keys[1][0] - keys[0][0], ease: "none" }, keys[0][0]);
+            for (var i = 1; i < keys.length - 1; i++) {
+              tl.to(el, { x: keys[i + 1][1], y: keys[i + 1][2], duration: keys[i + 1][0] - keys[i][0], ease: "none" }, keys[i][0]);
+            }
+          }
+
+          // ================= L21 「빛나라 저 하늘 너머로」 onset 0.37 · 저 1.35 · 하늘 1.69 · 너머로 2.35 · end 2.97 =================
+          var l21 = $("l06_l21"), mStroke = $("l06_mstroke"), mPunch = $("l06_mpunch"), mMask = $("l06_mmask"),
+              mMaskIn = $("l06_mmaskin"), mLit = $("l06_mlit"), sub = $("l06_l21sub");
+          tl.fromTo(l21, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2, ease: "power1.out" }, 0.12);
+          tl.fromTo(mStroke, { opacity: 0, scale: 1.06, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.24, ease: "power2.out" }, 0.12);
+          tl.fromTo(mPunch, { scale: 1 }, { scale: 1.025, duration: 0.85, ease: "sine.inOut", transformOrigin: "50% 50%" }, 0.36);
+          // the slam: light fills the outline from the bottom up (transform-only wipe)
+          tl.fromTo(mMask, { autoAlpha: 0, y: 360 }, { autoAlpha: 1, y: 0, duration: 0.24, ease: "expo.out" }, 1.21);
+          tl.fromTo(mMaskIn, { y: -360 }, { y: 0, duration: 0.24, ease: "expo.out" }, 1.21);
+          tl.fromTo(mLit, { opacity: 0 }, { opacity: 1, duration: 0.06, ease: "power2.out" }, 1.23);
+          tl.to(mLit, { opacity: 0, duration: 0.9, ease: "power2.out" }, 1.45);
+          tl.to(mPunch, { scale: 1.08, duration: 0.06, ease: "power3.out" }, 1.25);
+          tl.to(mPunch, { scale: 1, duration: 0.55, ease: "power3.out" }, 1.31);
+          tl.to(mPunch, { scale: 1.02, duration: 1.0, ease: "sine.inOut" }, 1.9);
+          tl.to(mStroke, { opacity: 0.25, duration: 0.5, ease: "power1.out" }, 1.4);
+          enter(sub, 1.21, 0.12, 12, 6);
+          kwPop("l06_kw21", 1.69, 1);
+          tl.fromTo($("l06_l21dr"), { y: 0 }, { y: -14, duration: 0.7, ease: "sine.inOut" }, 2.35);   // 너머로 — lifts beyond
+          exitTo(l21, 2.90, 0.09, -10, 6);
+
+          // real star of s06b glints on the slam, answers again on 하늘
+          var g21 = $("l06_g21");
+          track(g21, [[1.25, 0, 0], [3.05, 13, -13]]);
+          tl.fromTo(g21, { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 0.8, scale: 1, duration: 0.16, ease: "expo.out" }, 1.25);
+          tl.to(g21, { autoAlpha: 0.3, scale: 0.75, duration: 0.4, ease: "power2.out" }, 1.42);
+          tl.to(g21, { autoAlpha: 0.6, scale: 0.92, duration: 0.1, ease: "power2.out" }, 1.69);
+          tl.to(g21, { autoAlpha: 0, scale: 0.6, duration: 1.0, ease: "power1.inOut" }, 1.82);
+
+          // ================= L22 「숨겨 둔 별들이 흘러가」 onset 3.09 · 별들이 3.98 · 흘러가 4.80 · end 5.80 =================
+          var l22 = $("l06_l22");
+          enter(l22, 2.94, 0.14, 14, 6);
+          tl.fromTo($("l06_l22dr"), { x: 0 }, { x: 12, duration: 2.9, ease: "none" }, 2.93);
+          kwPop("l06_kw22", 3.98, 1);
+          [["l06_f0", 6], ["l06_f1", 16], ["l06_f2", 28]].forEach(function (f, i) {   // 흘러가 — the word flows on
+            tl.fromTo($(f[0]), { x: 0 }, { x: f[1], duration: 1.0, ease: "sine.out" }, 4.80 + i * 0.06);
+          });
+          exitTo(l22, 5.76, 0.09, -10, 6);
+
+          // ================= L23 「입술 끝에 머문 빛들이」 onset 5.92 · 빛들이 7.88 · end 8.52 =================
+          var l23 = $("l06_l23");
+          enter(l23, 5.77, 0.14, 14, 6);
+          tl.fromTo($("l06_l23dr"), { y: 0 }, { y: -8, duration: 2.75, ease: "none" }, 5.76);
+          kwPop("l06_kw23", 7.88, 1);
+          var bjar = $("l06_bjar");   // the jar's own light swells on 빛들이
+          tl.fromTo(bjar, { autoAlpha: 0, scale: 0.8 }, { autoAlpha: 0.5, scale: 1, duration: 0.28, ease: "power2.out" }, 7.82);
+          tl.to(bjar, { autoAlpha: 0, duration: 0.45, ease: "power1.in" }, 8.12);
+          exitTo(l23, 8.46, 0.09, -10, 6);
+
+          // ================= L24 「별자리가 되어 가」 onset 8.64 · 별자리가 8.68 · 되어 9.96 · 가 10.48 · end 10.81 =================
+          var l24 = $("l06_l24");
+          enter(l24, 8.49, 0.14, 14, 6);
+          tl.fromTo($("l06_l24dr"), { scale: 1 }, { scale: 1.015, duration: 2.4, ease: "none", transformOrigin: "0% 100%" }, 8.47);
+          kwPop("l06_kw24", 8.68, 1);
+          tl.to($("l06_kw24l"), { opacity: 0.6, duration: 0.12, ease: "power2.out" }, 10.48);
+          tl.to($("l06_kw24l"), { opacity: 0, duration: 0.3, ease: "power2.in" }, 10.60);
+          exitTo(l24, 10.76, 0.09, -10, 6);
+
+          // the faint line linking the REAL stars, riding the shot's camera tilt (tracked per frame)
+          var cst = $("l06_cst");
+          var K = [[8.6, 4.4, -240.3, 0.9655, 0.9852], [8.7, 3.9, -219.6, 0.9685, 0.9887], [8.8, 3.5, -199.0, 0.9715, 0.9914], [8.9, 3.1, -178.7, 0.9744, 0.9935], [9.0, 2.7, -158.6, 0.9773, 0.9951], [9.1, 2.4, -138.8, 0.9801, 0.9962], [9.2, 2.0, -119.4, 0.9828, 0.9971], [9.3, 1.7, -100.4, 0.9856, 0.9976], [9.4, 1.4, -81.8, 0.9883, 0.998], [9.5, 1.0, -63.7, 0.9909, 0.9983], [9.6, 0.7, -46.1, 0.9936, 0.9985], [9.7, 0.3, -29.0, 0.9962, 0.9987], [9.8, -0.1, -12.5, 0.9988, 0.999], [9.9, -0.5, 3.3, 1.0014, 0.9992], [10.0, -0.9, 18.5, 1.004, 0.9995], [10.1, -1.3, 33.0, 1.0067, 0.9998], [10.2, -1.8, 46.7, 1.0094, 1.0002], [10.3, -2.2, 59.7, 1.0121, 1.0006], [10.4, -2.6, 71.8, 1.0148, 1.001], [10.5, -2.9, 83.0, 1.0177, 1.0013], [10.6, -3.2, 93.3, 1.0206, 1.0016], [10.7, -3.5, 102.6, 1.0236, 1.0017], [10.8, -3.6, 110.9, 1.0267, 1.0015], [10.9, -3.7, 118.2, 1.0299, 1.0011]];
+          tl.fromTo(cst, { x: K[0][1], y: K[0][2], scaleX: K[0][3], scaleY: K[0][4], transformOrigin: "0px 0px" },
+            { x: K[1][1], y: K[1][2], scaleX: K[1][3], scaleY: K[1][4], duration: K[1][0] - K[0][0], ease: "none" }, K[0][0]);
+          for (var i = 1; i < K.length - 1; i++) {
+            tl.to(cst, { x: K[i + 1][1], y: K[i + 1][2], scaleX: K[i + 1][3], scaleY: K[i + 1][4], duration: K[i + 1][0] - K[i][0], ease: "none" }, K[i][0]);
+          }
+          tl.fromTo(cst, { autoAlpha: 0 }, { autoAlpha: 0.8, duration: 0.12, ease: "power1.out" }, 8.70);
+          [["e65", 8.72, 0.48], ["e54", 9.1, 0.46], ["e43", 9.48, 0.42], ["e42", 9.96, 0.4], ["e21", 10.3, 0.36]].forEach(function (e) {
+            var paths = $("l06_" + e[0]).querySelectorAll("path");
+            tl.fromTo(paths, { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: e[2], ease: "power1.inOut" }, e[1]);
+          });
+          [["S6", 8.72], ["S5", 9.16], ["S4", 9.52], ["S3", 9.88], ["S2", 10.32], ["S1", 10.62]].forEach(function (h) {
+            var el = $("l06_h" + h[0]);
+            tl.fromTo(el, { opacity: 0, scale: 0.5 }, { opacity: 0.6, scale: 1.15, duration: 0.18, ease: "power2.out" }, h[1]);
+            tl.to(el, { opacity: 0.35, scale: 1, duration: 0.5, ease: "power2.inOut" }, h[1] + 0.18);
+          });
+          tl.to(cst, { autoAlpha: 1, duration: 0.1, ease: "power2.out" }, 10.48);       // 가 — it holds together
+          tl.to(cst, { autoAlpha: 0, duration: 0.18, ease: "power1.in" }, 10.72);       // gone before the cut (10.93)
+
+          // ================= L25 whisper 「괜찮아 너는 몰라도 돼」 onset 10.93 · 너는 11.77 · 몰라도 12.43 · 돼 13.25 · end 13.49 =================
+          var l25 = $("l06_l25");
+          enter(l25, 10.77, 0.15, 0, 8);
+          tl.fromTo($("l06_l25dr"), { x: 0 }, { x: 8, duration: 2.75, ease: "none" }, 10.73);
+          [["l06_w0", 10.97], ["l06_w1", 11.77], ["l06_w2", 12.43], ["l06_w3", 13.25]].forEach(function (w) {
+            tl.fromTo($(w[0]), { opacity: 0.78 }, { opacity: 1, duration: 0.3, ease: "sine.out" }, w[1] - 0.04);
+          });
+          exitTo(l25, 13.40, 0.09, -6, 6);
+          // the star in her palm breathes softly while she whispers (tracked)
+          var bpalm = $("l06_bpalm");
+          track(bpalm, [[10.95, 942, 479], [11.45, 913, 484], [11.95, 885, 505], [12.45, 861, 533], [12.95, 839, 546], [13.45, 811, 561], [13.6, 803, 565]]);
+          tl.fromTo(bpalm, { autoAlpha: 0, scale: 0.8 }, { autoAlpha: 0.42, scale: 1, duration: 0.5, ease: "sine.out" }, 10.97);
+          tl.to(bpalm, { autoAlpha: 0.26, scale: 0.92, duration: 1.1, ease: "sine.inOut" }, 11.5);
+          tl.to(bpalm, { autoAlpha: 0.4, scale: 1, duration: 0.6, ease: "sine.inOut" }, 12.6);
+          tl.to(bpalm, { autoAlpha: 0, duration: 0.35, ease: "power1.in" }, 13.2);
+
+          // ================= L26 「이 밤이 대신 기억할 테니」 onset 13.61 · 밤이 13.73 · 기억할 14.73 · end 16.19 =================
+          var l26 = $("l06_l26");
+          enter(l26, 13.49, 0.12, 12, 6);
+          tl.fromTo($("l06_l26dr"), { y: 0 }, { y: -6, duration: 2.7, ease: "none" }, 13.49);
+          kwPop("l06_kw26", 13.73, 1);
+          exitTo(l26, 16.13, 0.09, -10, 6);
+          // the fallen star on the grass keeps glowing — the night remembers (tracked)
+          var bgrd = $("l06_bgrd");
+          track(bgrd, [[14.6, 983, 919], [16.3, 935, 937]]);
+          tl.fromTo(bgrd, { autoAlpha: 0, scale: 0.7 }, { autoAlpha: 0.5, scale: 1, duration: 0.35, ease: "power2.out" }, 14.66);
+          tl.to(bgrd, { autoAlpha: 0.3, scale: 0.94, duration: 0.9, ease: "sine.inOut" }, 15.05);
+          tl.to(bgrd, { autoAlpha: 0, duration: 0.3, ease: "power1.in" }, 15.95);
+
+          // ================= L27 「언젠가 고개 들어 본다면」 onset 16.31 · 고개 17.31 · 들어 17.65 · 본다면 17.97 · end 18.78 =================
+          var l27 = $("l06_l27"), l27dr = $("l06_l27dr");
+          enter(l27, 16.17, 0.13, 0, 6);
+          tl.fromTo(l27dr, { y: 16 }, { y: 6, duration: 1.0, ease: "none" }, 16.16);
+          tl.to(l27dr, { y: -12, duration: 0.7, ease: "power2.inOut" }, 17.31);        // 고개 들어 — the line looks up
+          tl.to(l27dr, { y: -16, duration: 0.8, ease: "none" }, 18.01);
+          exitTo(l27, 18.70, 0.09, -10, 6);
+          var g27 = $("l06_g27");   // ...and the star in the window answers
+          tl.fromTo(g27, { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 0.75, scale: 1, duration: 0.22, ease: "expo.out" }, 17.93);
+          tl.to(g27, { autoAlpha: 0, scale: 0.7, duration: 0.7, ease: "power1.inOut" }, 18.15);
+
+          // ================= L28 「그거면 충분해」 onset 18.90 · 충분해 21.16 · held to 24.70 — a calm still =================
+          var l28 = $("l06_l28");
+          enter(l28, 18.74, 0.16, 0, 8);
+          tl.fromTo($("l06_w28l"), { opacity: 0 }, { opacity: 1, duration: 1.6, ease: "sine.inOut" }, 21.16);
+          tl.to(l28, { autoAlpha: 0, filter: "blur(5px)", duration: 0.55, ease: "sine.in" }, 24.66);
+
+          // ================= afterglow 24.70 → 32.05: a few slow light motes, then nothing =================
+          var MOTES = [
+            ["l06_m1", 25.0, 27.6, 1330, 452, 1290, 260, 0.7],    // up off the lit window, over the dark roof (s06j)
+            ["l06_m2", 25.4, 27.6, 1470, 446, 1500, 270, 0.6],
+            ["l06_m3", 25.8, 27.6, 1640, 468, 1612, 300, 0.55],   // from the wall lamp
+            ["l06_m4", 28.3, 31.2, 790, 790, 520, 690, 0.62],     // off the jar's glass into the bokeh (s06k)
+            ["l06_m5", 28.8, 31.4, 330, 820, 300, 600, 0.5],      // rising out of the city bokeh
+            ["l06_m6", 29.3, 31.7, 180, 640, 160, 430, 0.45]
+          ];
+          MOTES.forEach(function (m) {
+            var el = $(m[0]), d = m[2] - m[1];
+            tl.fromTo(el, { x: m[3], y: m[4] }, { x: m[5], y: m[6], duration: d, ease: "sine.out" }, m[1]);
+            tl.fromTo(el, { autoAlpha: 0, scale: 0.6 }, { autoAlpha: m[7], scale: 1, duration: d * 0.3, ease: "sine.out" }, m[1]);
+            tl.to(el, { autoAlpha: 0, scale: 0.7, duration: d * 0.35, ease: "sine.in" }, m[2] - d * 0.35);
+          });
+
+          window.__timelines["s06-chorus2"] = tl;
+          tl.set({}, {}, 32.05);
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

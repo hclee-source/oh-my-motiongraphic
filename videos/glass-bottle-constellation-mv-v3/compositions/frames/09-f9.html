@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- f9 — build (track 128.7–139.0): light leaks around the cork, rays multiply on the beat, the cork pops. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Noto Serif KR"; src: url("assets/fonts/NotoSerifKR-VF.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: block; }
+        @font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/CormorantGaramond-Italic-VF.woff2") format("woff2"); font-weight: 300 700; font-style: italic; font-display: block; }
+
+        #stage { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+        #f9_g1 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+        /* camera (entry: scale 1.06 about 960,540 — f8 exit) */
+        #f9_cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 960px 540px; }
+        #f9_bottle { position: absolute; left: 730.5px; top: 250px; width: 459px; height: 620px; }
+        #f9_svg { position: absolute; left: 0; top: 0; width: 459px; height: 620px; overflow: visible; }
+
+        /* light leaking around the cork: pivot = cork bottom centre (200,72) → (229.5px, 82.7px) in the bottle box */
+        #f9_leak { position: absolute; left: 79.5px; top: -67.3px; width: 300px; height: 300px; border-radius: 50%; opacity: 0;
+          background: radial-gradient(circle closest-side, rgba(255,244,214,0.85) 0%, rgba(255,210,122,0.45) 30%, rgba(255,210,122,0) 100%); }
+        #f9_pulse { position: absolute; left: -70.5px; top: -217.3px; width: 600px; height: 600px; border-radius: 50%; opacity: 0;
+          background: radial-gradient(circle closest-side, rgba(255,250,236,0.9) 0%, rgba(255,226,160,0.5) 30%, rgba(255,210,122,0.16) 62%, rgba(255,210,122,0) 100%); }
+        .f9-rays { position: absolute; left: 229.5px; top: 82.7px; width: 0; height: 0; transform-origin: 0 0; }
+        .f9-arm { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-origin: 0 0; }
+        .f9-rw { position: absolute; left: 16px; top: -7px; height: 14px; transform-origin: 0 50%; opacity: 0; }
+        .f9-rhalo { position: absolute; left: 0; top: 0; width: 100%; height: 100%; border-radius: 50%;
+          background: linear-gradient(90deg, rgba(255,210,122,0.34) 0%, rgba(255,210,122,0.12) 50%, rgba(255,210,122,0) 88%); }
+        .f9-rcore { position: absolute; left: 0; top: 50%; width: 100%; border-radius: 2px;
+          background: linear-gradient(90deg, rgba(255,244,214,0.95) 0%, rgba(255,226,160,0.6) 38%, rgba(255,210,122,0) 100%); }
+
+        /* lyrics — horizontal, centred under the bottle; glyphs stay inside y 110–960 */
+        #f9_lyr { position: absolute; left: 140px; top: 846px; width: 1640px; height: 114px; }
+        .f9-line { position: absolute; left: 0; top: 0; width: 1640px; height: 114px; text-align: center; white-space: nowrap;
+          font-family: "Noto Serif KR", serif; font-weight: 500; font-size: 64px; line-height: 114px; letter-spacing: 0.02em;
+          color: #F4F1EA; opacity: 0; visibility: hidden; transform-origin: 50% 50%; }
+        .f9-w { display: inline-block; transform-origin: 50% 62%; }
+        .f9-c { text-shadow: rgba(220,235,255,0.25) 0px 0px 14px, rgba(255,210,122,0) 0px 0px 46px; }
+        .f9-k { font-size: 83px; font-weight: 600; color: #FFD27A; }
+        .f9-k .f9-c { text-shadow: rgba(255,210,122,0.45) 0px 0px 18px, rgba(255,210,122,0.18) 0px 0px 46px; }
+
+        /* the pop: radial bloom from the bottle mouth (page ≈ 960,278) — never a flat white frame */
+        #f9_bloom { position: absolute; left: -140px; top: -822px; width: 2200px; height: 2200px; border-radius: 50%; opacity: 0; visibility: hidden;
+          transform-origin: 50% 50%;
+          background: radial-gradient(circle closest-side, rgba(255,252,242,0.98) 0%, rgba(255,244,214,0.92) 12%, rgba(255,214,140,0.7) 28%, rgba(255,190,110,0.38) 46%, rgba(255,210,122,0.12) 64%, rgba(255,210,122,0) 80%); }
+        #f9_burst { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+      </style>
+
+      <div id="stage" data-composition-id="09-f9" data-width="1920" data-height="1080" data-duration="10.3">
+        <div id="f9_g1">
+          <div id="f9_cam" data-layout-allow-overflow>
+            <div id="f9_bottle">
+              <div id="f9_leak" data-layout-ignore></div>
+              <div id="f9_raysA" class="f9-rays" data-layout-ignore></div>
+              <div id="f9_raysB" class="f9-rays" data-layout-ignore></div>
+              <svg id="f9_svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 540" width="459" height="620" overflow="visible" data-layout-ignore>
+                <defs>
+                  <clipPath id="f9_bodyclip">
+                    <path d="M178 74 L178 150 C178 168 160 176 140 186 A170 170 0 1 0 260 186 C240 176 222 168 222 150 L222 74 Z"/>
+                  </clipPath>
+                  <linearGradient id="f9_glassgrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#CFE4FF" stop-opacity="0.16"/>
+                    <stop offset="0.55" stop-color="#CFE4FF" stop-opacity="0.04"/>
+                    <stop offset="1" stop-color="#CFE4FF" stop-opacity="0.10"/>
+                  </linearGradient>
+                  <linearGradient id="f9_fillgrad" x1="0" y1="1" x2="0" y2="0">
+                    <stop offset="0" stop-color="#FFD27A" stop-opacity="0.55"/>
+                    <stop offset="1" stop-color="#FFF4D6" stop-opacity="0.18"/>
+                  </linearGradient>
+                  <radialGradient id="f9_glowgrad" cx="0.5" cy="0.5" r="0.5">
+                    <stop offset="0" stop-color="#FFF4D6" stop-opacity="0.95"/>
+                    <stop offset="0.35" stop-color="#FFD27A" stop-opacity="0.45"/>
+                    <stop offset="1" stop-color="#FFD27A" stop-opacity="0"/>
+                  </radialGradient>
+                </defs>
+
+                <!-- outer halo (outside the glass) -->
+                <circle id="f9_halo" cx="200" cy="350" r="250" fill="url(#f9_glowgrad)" opacity="0"/>
+
+                <!-- glass body -->
+                <path id="f9_glass" d="M178 74 L178 150 C178 168 160 176 140 186 A170 170 0 1 0 260 186 C240 176 222 168 222 150 L222 74 Z"
+                      fill="url(#f9_glassgrad)" stroke="#DCEBFF" stroke-opacity="0.85" stroke-width="3" stroke-linejoin="round"/>
+
+                <g clip-path="url(#f9_bodyclip)">
+                  <!-- light level: full body height 186→515; scaleY about 200 515 -->
+                  <rect id="f9_fill" x="20" y="186" width="360" height="330" fill="url(#f9_fillgrad)" transform-origin="200 515" transform="scale(1 0)"/>
+                  <circle id="f9_glow" cx="200" cy="360" r="160" fill="url(#f9_glowgrad)" opacity="0"/>
+                  <g id="f9_stars"></g>
+                </g>
+
+                <!-- neck rim + base ellipse -->
+                <ellipse cx="200" cy="74" rx="24" ry="5" fill="none" stroke="#DCEBFF" stroke-opacity="0.9" stroke-width="2.5"/>
+                <ellipse cx="200" cy="505" rx="92" ry="9" fill="none" stroke="#DCEBFF" stroke-opacity="0.25" stroke-width="2"/>
+
+                <!-- highlights -->
+                <g id="f9_shine" fill="none" stroke="#FFFFFF" stroke-linecap="round">
+                  <path d="M86 318 A122 122 0 0 1 146 222" stroke-opacity="0.55" stroke-width="7"/>
+                  <path d="M80 360 A124 124 0 0 0 84 386" stroke-opacity="0.35" stroke-width="6"/>
+                  <path d="M300 440 A120 120 0 0 0 318 404" stroke-opacity="0.22" stroke-width="5"/>
+                  <path d="M186 92 L186 140" stroke-opacity="0.4" stroke-width="4"/>
+                </g>
+
+                <!-- cork: rotate/translate this group to pop it open -->
+                <g id="f9_cork">
+                  <path d="M172 26 Q172 18 180 18 L220 18 Q228 18 228 26 L226 72 Q226 78 220 78 L180 78 Q174 78 174 72 Z" fill="#B98C62"/>
+                  <path d="M180 30 L220 30 M181 44 L219 44 M182 58 L218 58" stroke="#8E6644" stroke-width="2" stroke-opacity="0.6"/>
+                  <path d="M178 22 L178 74" stroke="#E2BE93" stroke-width="3" stroke-opacity="0.5" stroke-linecap="round"/>
+                </g>
+              </svg>
+              <div id="f9_pulse" data-layout-ignore></div>
+            </div>
+          </div>
+
+          <div id="f9_lyr">
+            <div id="f9_l31" class="f9-line"><span id="f9_l31_w0" class="f9-w"><span class="f9-c">그</span><span class="f9-c">래</span><span class="f9-c">도</span></span> <span id="f9_l31_w1" class="f9-w f9-k"><span class="f9-c">오</span><span class="f9-c">늘</span></span> <span id="f9_l31_w2" class="f9-w f9-k"><span class="f9-c">밤</span></span><span id="f9_l31_w3" class="f9-w"><span class="f9-c">만</span><span class="f9-c">큼</span><span class="f9-c">은</span></span></div>
+            <div id="f9_l32" class="f9-line"><span id="f9_l32_w0" class="f9-w f9-k"><span class="f9-c">뚜</span><span class="f9-c">껑</span></span><span id="f9_l32_w1" class="f9-w"><span class="f9-c">을</span></span> <span id="f9_l32_w2" class="f9-w"><span class="f9-c">열</span><span class="f9-c">어</span></span> <span id="f9_l32_w3" class="f9-w"><span class="f9-c">볼</span><span class="f9-c">게</span></span></div>
+          </div>
+
+          <div id="f9_bloom" data-layout-ignore></div>
+          <svg id="f9_burst" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" overflow="visible" data-layout-ignore></svg>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var D = 10.3; // frame span (track 128.7 → 139.0); local_t = track_t − 128.7
+          var tl = gsap.timeline({ paused: true });
+          var NS = "http://www.w3.org/2000/svg";
+          var SP = "M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z";
+
+          // fixed-seed LCG (deterministic pseudo-random)
+          var seed = 90913;
+          function rnd() { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; }
+          // finite yoyo repeat count so the loop ends at or before `until`
+          function reps(half, from, until) { return Math.max(0, Math.floor((until - from) / half) - 1); }
+          // initial (entry) state: render now, so t=0 is correct before any seek
+          function init(target, vars) { vars.immediateRender = true; tl.set(target, vars, 0); }
+          function el(tag, attrs, parent) {
+            var n = document.createElementNS(NS, tag);
+            for (var k in attrs) n.setAttribute(k, attrs[k]);
+            if (parent) parent.appendChild(n);
+            return n;
+          }
+
+          // ---- anchors (frame-local seconds)
+          var T_BAND = 0.60;   // 129.30 band re-enters
+          var T_ONEUL = 2.60;  // 131.30 오늘
+          var T_BAM = 3.12;    // 131.82 밤만큼은
+          var T_CUT = 4.95;    // 133.65 L31 hold_until → L32 (onset 133.73 = 5.03)
+          var T_TTU = 5.07;    // 133.77 뚜껑을
+          var T_YEOL = 5.79;   // 134.49 열어
+          var T_BOLGE = 7.83;  // 136.53 볼게
+          var SN = [8.48, 8.97, 9.46, 9.78, 10.11]; // snare run 137.18 … 138.81
+          var T_POP = 10.16;   // 138.86 cork pops
+          var BEATS = [1.355, 2.005, 2.655, 3.305, 3.979, 4.606, 5.279, 5.906, 6.579, 7.23, 7.88];
+
+          // ---- group g1 spans the whole frame
+          init("#f9_g1", { autoAlpha: 1 });
+
+          // ---- camera eases back from f8's push-in, then creeps in again under the build
+          init("#f9_cam", { scale: 1.06, x: 0, y: 0, transformOrigin: "960px 540px" });
+          tl.to("#f9_cam", { scale: 1, duration: 1.3, ease: "power2.inOut" }, 0);
+          tl.to("#f9_cam", { scale: 1.03, duration: 8.8, ease: "power1.in" }, 1.3);
+          init("#f9_bottle", { x: 0, y: 0 });
+          tl.to("#f9_bottle", { y: -50, duration: 1.3, ease: "power2.inOut" }, 0); // top 250 → 200
+
+          // ---- bottle light: entry fill .92 / glow .5 / halo .35, rising steadily
+          init("#f9_fill", { attr: { transform: "scale(1 0.92)" } });
+          tl.to("#f9_fill", { attr: { transform: "scale(1 1)" }, duration: 9, ease: "sine.inOut" }, 0);
+          init("#f9_glow", { opacity: 0.5 });
+          tl.to("#f9_glow", { opacity: 1, duration: 10.1, ease: "power1.in" }, 0);
+          init("#f9_halo", { opacity: 0.35, attr: { r: 250 } });
+          tl.to("#f9_halo", { opacity: 0.85, duration: 10.1, ease: "power1.in" }, 0);
+          tl.to("#f9_halo", { attr: { r: 300 }, duration: 10.1, ease: "sine.in" }, 0);
+
+          // ---- ~30 sparkles inside the bottle: deterministic drift + twinkle, agitated on the hits
+          var starsG = document.getElementById("f9_stars");
+          var JOLTS = [[T_CUT, 3], [T_BOLGE, 4], [SN[0], 5], [SN[1], 6], [SN[2], 8], [SN[3], 10], [SN[4], 12]];
+          for (var i = 0; i < 30; i++) {
+            var r = 132 * Math.sqrt(rnd()), th = rnd() * Math.PI * 2;
+            var bx = 200 + r * Math.cos(th), by = 352 + r * Math.sin(th) * 0.95;
+            var s = 3.2 + rnd() * 4.6;
+            var outer = el("g", { transform: "translate(" + bx.toFixed(1) + " " + by.toFixed(1) + ")" }, starsG);
+            var sd = el("g", { id: "f9_sd" + i }, outer);
+            var sj = el("g", { id: "f9_sj" + i }, sd);
+            el("circle", { cx: 0, cy: 0, r: (s * 2.1).toFixed(2), fill: "url(#f9_glowgrad)", opacity: 0.5 }, sj);
+            var p = el("path", { id: "f9_sp" + i, d: SP, transform: "scale(" + s.toFixed(2) + ")", fill: "#FFF4D6" }, sj);
+
+            var ax = (5 + rnd() * 9) * (i % 2 ? -1 : 1), ay = (4 + rnd() * 8) * (i % 3 ? 1 : -1);
+            var hx = 1.3 + rnd() * 1.5, hy = 1.1 + rnd() * 1.3;
+            init(sd, { x: 0, y: 0 });
+            tl.to(sd, { x: ax, duration: hx, ease: "sine.inOut", yoyo: true, repeat: reps(hx, 0, D) }, 0);
+            tl.to(sd, { y: ay, duration: hy, ease: "sine.inOut", yoyo: true, repeat: reps(hy, 0, D) }, 0);
+
+            var o0 = 0.6 + rnd() * 0.4, ht = 0.45 + rnd() * 0.6, dl = rnd() * 0.6;
+            init(p, { opacity: o0 });
+            tl.to(p, { opacity: o0 * 0.35, duration: ht, ease: "sine.inOut", yoyo: true, repeat: reps(ht, dl, D) }, dl);
+
+            init(sj, { x: 0, y: 0 });
+            for (var k = 0; k < JOLTS.length; k++) {
+              var jt = JOLTS[k][0], amp = JOLTS[k][1];
+              tl.to(sj, { x: Math.sin(i * 1.7 + k * 2.1) * amp, y: Math.cos(i * 2.3 + k * 1.3) * amp, duration: 0.05, ease: "power2.out" }, jt);
+              tl.to(sj, { x: 0, y: 0, duration: k === JOLTS.length - 1 ? 0.14 : 0.22, ease: "power2.out" }, jt + 0.05);
+            }
+          }
+
+          // ---- light rays escaping around the cork (2 → 4 → 6 → 9), two counter-rotating fans
+          var RAYS = [
+            { a: -64, L: 230, w: 2.5, t: T_BAND },
+            { a: -122, L: 190, w: 2.2, t: T_BAND },
+            { a: -93, L: 320, w: 3.0, t: T_ONEUL },
+            { a: -24, L: 170, w: 2.0, t: T_ONEUL },
+            { a: -156, L: 250, w: 2.4, t: 5.0 },
+            { a: -42, L: 340, w: 2.8, t: 5.0 },
+            { a: -108, L: 420, w: 3.0, t: T_BOLGE },
+            { a: 10, L: 280, w: 2.2, t: T_BOLGE },
+            { a: -176, L: 380, w: 2.6, t: T_BOLGE }
+          ];
+          var fanA = document.getElementById("f9_raysA"), fanB = document.getElementById("f9_raysB");
+          init("#f9_raysA", { rotation: 0 });
+          tl.to("#f9_raysA", { rotation: 14, duration: D, ease: "power1.in" }, 0);
+          init("#f9_raysB", { rotation: 0 });
+          tl.to("#f9_raysB", { rotation: -11, duration: D, ease: "power1.in" }, 0);
+
+          RAYS.forEach(function (R, i) {
+            var arm = document.createElement("div");
+            arm.className = "f9-arm";
+            arm.id = "f9_arm" + i;
+            arm.style.transform = "rotate(" + R.a + "deg)";
+            var rw = document.createElement("div");
+            rw.className = "f9-rw";
+            rw.id = "f9_rw" + i;
+            rw.style.width = R.L + "px";
+            var halo = document.createElement("div");
+            halo.className = "f9-rhalo";
+            var core = document.createElement("div");
+            core.className = "f9-rcore";
+            core.style.height = R.w + "px";
+            core.style.marginTop = (-R.w / 2) + "px";
+            rw.appendChild(halo);
+            rw.appendChild(core);
+            arm.appendChild(rw);
+            (i % 2 ? fanB : fanA).appendChild(arm);
+
+            var t0 = R.t + (i % 2) * 0.05;
+            R.on = t0 + 0.42; // ray free for pulses after its entrance
+            init(rw, { scaleX: 0, opacity: 0 });
+            tl.to(rw, { scaleX: 1, opacity: 1, duration: 0.38, ease: "power3.out" }, t0);
+
+            var hp = 0.17 + 0.045 * (i % 4), st = t0 + 0.4;
+            init(arm, { opacity: 1 });
+            tl.to(arm, { opacity: 0.6, duration: hp, ease: "sine.inOut", yoyo: true, repeat: reps(hp, st, 10.12) }, st);
+            tl.set(arm, { opacity: 1 }, T_POP);
+
+            BEATS.forEach(function (b) {
+              if (b < R.on) return;
+              tl.to(rw, { scaleX: 1.13, duration: 0.06, ease: "power2.out" }, b);
+              tl.to(rw, { scaleX: 1, duration: 0.3, ease: "power2.inOut" }, b + 0.06);
+            });
+            SN.forEach(function (sn, k) {
+              if (sn < R.on) return;
+              tl.to(rw, { scaleX: 1.2 + 0.06 * k, duration: 0.05, ease: "power2.out" }, sn);
+              if (k < SN.length - 1) tl.to(rw, { scaleX: 1, duration: 0.2, ease: "power2.inOut" }, sn + 0.05);
+            });
+          });
+          tl.to(".f9-rw", { scaleX: 2.1, duration: 0.14, ease: "power2.out" }, T_POP);
+
+          // ---- leak glow behind the cork + flash-cut pulses at the cork (no full-frame white)
+          init("#f9_leak", { opacity: 0, scale: 0.8 });
+          tl.to("#f9_leak", { opacity: 0.42, scale: 1, duration: 0.5, ease: "power2.out" }, T_BAND);
+          tl.to("#f9_leak", { opacity: 0.52, scale: 1.08, duration: 0.4, ease: "power2.out" }, T_ONEUL);
+          tl.set("#f9_leak", { opacity: 0.95 }, T_CUT);
+          tl.to("#f9_leak", { opacity: 0.6, scale: 1.15, duration: 0.45, ease: "power2.out" }, T_CUT);
+          tl.to("#f9_leak", { opacity: 0.78, scale: 1.25, duration: 0.4, ease: "power2.out" }, T_BOLGE);
+          SN.forEach(function (sn, k) {
+            tl.set("#f9_leak", { opacity: 0.95 }, sn);
+            tl.to("#f9_leak", { opacity: 0.8, duration: k < SN.length - 1 ? 0.2 : 0.05, ease: "power2.out" }, sn);
+          });
+          tl.to("#f9_leak", { opacity: 1, scale: 2.2, duration: 0.14, ease: "power2.out" }, T_POP);
+
+          init("#f9_pulse", { opacity: 0, scale: 0.6 });
+          var HITS = [[T_CUT, 0.8, 0.4], [SN[0], 0.4, 0.3], [SN[1], 0.48, 0.3], [SN[2], 0.56, 0.28], [SN[3], 0.66, 0.28]];
+          HITS.forEach(function (h) {
+            tl.set("#f9_pulse", { opacity: h[1], scale: 0.7 }, h[0]);
+            tl.to("#f9_pulse", { opacity: 0, scale: 1.1, duration: h[2], ease: "power2.out" }, h[0]);
+          });
+          tl.set("#f9_pulse", { opacity: 0.76, scale: 0.75 }, SN[4]);
+          tl.to("#f9_pulse", { opacity: 0.55, scale: 0.95, duration: 0.05, ease: "power2.out" }, SN[4]);
+          tl.to("#f9_pulse", { opacity: 1, scale: 1.7, duration: 0.1, ease: "power2.out" }, T_POP);
+
+          // ---- cork: tremble after 볼게, jiggles harder on every snare, then POPS up-right with a spin
+          init("#f9_cork", { svgOrigin: "200 72", rotation: 0, x: 0, y: 0 });
+          [0.8, -1.0, 1.2, -1.1, 1.4, -1.2, 0.9, 0].forEach(function (a, j) {
+            tl.to("#f9_cork", { rotation: a, duration: 0.075, ease: "sine.inOut" }, T_BOLGE + j * 0.075);
+          });
+          var CA = [3.5, 5.5, 8, 11, 14], LIFT = [-2, -3.5, -5, -7, -9];
+          SN.forEach(function (sn, k) {
+            var sg = k % 2 ? -1 : 1;
+            tl.to("#f9_cork", { rotation: CA[k] * sg, y: LIFT[k], duration: 0.05, ease: "power2.out" }, sn);
+            if (k < SN.length - 1) {
+              tl.to("#f9_cork", { rotation: -CA[k] * 0.5 * sg, duration: 0.07, ease: "sine.inOut" }, sn + 0.05);
+              tl.to("#f9_cork", { rotation: 0, y: LIFT[k] * 0.4, duration: 0.14, ease: "power2.out" }, sn + 0.12);
+            }
+          });
+          tl.to("#f9_cork", { x: 662, y: -270, rotation: 414, duration: 0.14, ease: "power1.out" }, T_POP);
+
+          // bottle jolts with the snares
+          SN.forEach(function (sn, k) {
+            tl.to("#f9_bottle", { x: (1.2 + k * 0.7) * (k % 2 ? -1 : 1), duration: 0.04, ease: "power2.out" }, sn);
+            tl.to("#f9_bottle", { x: 0, duration: k < SN.length - 1 ? 0.18 : 0.14, ease: "power2.out" }, sn + 0.04);
+          });
+
+          // ---- tiny screen-shake on the last two snares (camera + lyric box move together)
+          init("#f9_lyr", { x: 0, y: 0 });
+          function shake(t0, amps) {
+            amps.forEach(function (a, j) {
+              var y = a * 0.6 * (j % 2 ? 1 : -1);
+              tl.to("#f9_cam", { x: a, y: y, duration: 0.03, ease: "none" }, t0 + j * 0.03);
+              tl.to("#f9_lyr", { x: a, y: y, duration: 0.03, ease: "none" }, t0 + j * 0.03);
+            });
+          }
+          shake(SN[3], [5, -4, 3.5, -2.5, 1.5, -0.8, 0]);
+          shake(SN[4], [8, -7, 6, -5, 4, -3]);
+
+          // ---- lyrics
+          var N_BASE = "rgba(220,235,255,0.25) 0px 0px 14px, rgba(255,210,122,0) 0px 0px 46px";
+          var K_BASE = "rgba(255,210,122,0.45) 0px 0px 18px, rgba(255,210,122,0.18) 0px 0px 46px";
+          var PEAK = "rgba(255,226,160,0.9) 0px 0px 20px, rgba(255,210,122,0.45) 0px 0px 52px";
+          var SOFT = "rgba(255,226,160,0.6) 0px 0px 18px, rgba(255,210,122,0.25) 0px 0px 48px";
+          function isKey(c) { return c.parentNode.className.indexOf("f9-k") >= 0; }
+          function glow(c, peak, t, up, down) {
+            tl.to(c, { textShadow: peak, duration: up, ease: "power2.out" }, t);
+            tl.to(c, { textShadow: isKey(c) ? K_BASE : N_BASE, duration: down, ease: "power2.inOut" }, t + up);
+          }
+          function flare(sel, t, s) {
+            tl.to(sel, { scale: s, duration: 0.1, ease: "power2.out" }, t);
+            tl.to(sel, { scale: 1, duration: 0.5, ease: "power2.inOut" }, t + 0.1);
+          }
+          function chars(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel + " .f9-c")); }
+
+          // L31 "그래도 오늘 밤만큼은" — onset 128.84 (0.14): fully legible by 0.13, held to 4.95
+          tl.fromTo("#f9_l31", { autoAlpha: 0, y: 10, scale: 1, filter: "blur(6px)" },
+                               { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.13, ease: "power2.out" }, 0);
+          tl.to("#f9_l31", { scale: 1.025, duration: T_CUT - 0.13, ease: "none" }, 0.13);
+          chars("#f9_l31").forEach(function (c, j) { glow(c, isKey(c) ? PEAK : SOFT, 0.16 + j * 0.055, 0.12, 0.4); });
+          flare("#f9_l31_w1", T_ONEUL, 1.1);
+          chars("#f9_l31_w1").forEach(function (c, j) { glow(c, PEAK, T_ONEUL + j * 0.05, 0.1, 0.55); });
+          flare("#f9_l31_w2", T_BAM, 1.1);
+          chars("#f9_l31_w2").forEach(function (c) { glow(c, PEAK, T_BAM, 0.1, 0.55); });
+          chars("#f9_l31_w3").forEach(function (c, j) { glow(c, SOFT, T_BAM + 0.05 + j * 0.05, 0.1, 0.5); });
+          tl.set("#f9_l31", { autoAlpha: 0 }, T_CUT); // 0ms flash-cut swap
+
+          // L32 "뚜껑을 열어 볼게" — onset 133.73 (5.03): snaps in at 4.95, held to 138.65 (9.95)
+          init("#f9_l32", { autoAlpha: 0, scale: 1.06, filter: "blur(5px)" });
+          tl.set("#f9_l32", { autoAlpha: 1, filter: "blur(4px)" }, T_CUT); // 0ms swap with L31
+          tl.to("#f9_l32", { filter: "blur(0px)", duration: 0.07, ease: "power2.out" }, T_CUT);
+          tl.to("#f9_l32", { scale: 1, duration: 0.32, ease: "power3.out" }, T_CUT);
+          tl.to("#f9_l32", { scale: 1.03, duration: 4.78, ease: "power1.in" }, T_CUT + 0.32);
+          flare("#f9_l32_w0", T_TTU, 1.1);
+          chars("#f9_l32_w0").forEach(function (c, j) { glow(c, PEAK, T_TTU + j * 0.05, 0.1, 0.5); });
+          flare("#f9_l32_w2", T_YEOL, 1.06);
+          chars("#f9_l32_w2").forEach(function (c, j) { glow(c, SOFT, T_YEOL + j * 0.05, 0.1, 0.5); });
+          // light sweeps left→right across the line and lands on 볼게 exactly at 136.53
+          chars("#f9_l32").forEach(function (c, j) { glow(c, PEAK, T_BOLGE - 5 * 0.045 + j * 0.045, 0.12, 0.5); });
+          flare("#f9_l32_w3", T_BOLGE, 1.1);
+          tl.to("#f9_l32", { autoAlpha: 0, filter: "blur(8px)", scale: 1.08, duration: 0.12, ease: "power1.in" }, 10.14);
+
+          // ---- the pop: radial bloom from the mouth + a burst of sparkles out of the bottle
+          init("#f9_bloom", { autoAlpha: 0, scale: 0.12 });
+          tl.to("#f9_bloom", { autoAlpha: 1, duration: 0.05, ease: "none" }, T_POP);
+          tl.to("#f9_bloom", { scale: 1, duration: 0.14, ease: "expo.out" }, T_POP);
+
+          var burst = document.getElementById("f9_burst");
+          for (var b = 0; b < 16; b++) {
+            var ang = (-172 + b * (164 / 15) + (rnd() - 0.5) * 8) * Math.PI / 180;
+            var dist = 260 + rnd() * 460, bs = 6 + rnd() * 8;
+            var bo = el("g", { transform: "translate(960 278)" }, burst);
+            var bi = el("g", { id: "f9_bp" + b }, bo);
+            var bh = el("circle", { cx: 0, cy: 0, r: (bs * 0.6).toFixed(2), fill: "url(#f9_glowgrad)" }, bi);
+            var bp = el("path", { d: SP, transform: "scale(" + (bs * 0.3).toFixed(2) + ")", fill: "#FFF4D6" }, bi);
+            init(bi, { x: 0, y: 0, autoAlpha: 0 });
+            tl.set(bi, { autoAlpha: 1 }, T_POP);
+            tl.to(bi, { x: Math.cos(ang) * dist, y: Math.sin(ang) * dist, duration: 0.14, ease: "power3.out" }, T_POP);
+            tl.to(bp, { attr: { transform: "scale(" + (bs * 1.1).toFixed(2) + ")" }, duration: 0.14, ease: "power2.out" }, T_POP);
+            tl.to(bh, { attr: { r: (bs * 2.4).toFixed(2) }, duration: 0.14, ease: "power2.out" }, T_POP);
+          }
+
+          // group out at the frame end (hard cut to f10 at 139.0)
+          tl.set("#f9_g1", { autoAlpha: 0 }, D);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["09-f9"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

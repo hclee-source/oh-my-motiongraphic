@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <title>06-f6 — INSIGHT paper collage</title>
+    <!-- Frame 6 (track 36.47–41.0s, 4.53s). Frame-local t = track_t − 36.47.
+         Anchors (local): 0.00 hard cut to PAPER · 0.36 / 1.29 / 2.24 kicks: verb + tossed cover ·
+         3.19 flip YELLOW + confetti · 3.65 covers exit on parabolic arcs · 4.12 flip INK + wipe-off ·
+         4.53 end (drop to silence). Silent; the host owns audio and gsap. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #f2f0ea;
+          color: #0b0b0b;
+          font-family: "Paperlogy", sans-serif;
+        }
+
+        /* ---------- f6_g1 — paper collage (whole frame) ---------- */
+        #f6_g1 {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+        }
+        /* register ground: paper → yellow (3.19) → ink (4.12), 0ms flips */
+        #f6_bg {
+          position: absolute;
+          inset: 0;
+          background: #f2f0ea;
+        }
+
+        /* vertical INSIGHT up the left edge, cropped top + bottom on purpose */
+        #f6_vert_wrap {
+          position: absolute;
+          left: 18px;
+          top: -8px;
+          width: 250px;
+          height: 1080px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        #f6_vert {
+          flex: none;
+          font-family: "Archivo Black", sans-serif;
+          font-weight: 400;
+          font-size: 256px;
+          line-height: 0.8;
+          letter-spacing: -0.01em;
+          white-space: nowrap;
+          color: #0b0b0b;
+          transform: rotate(-90deg);
+        }
+
+        /* SERIES 05 mono label, vertical, beside the word */
+        #f6_series_wrap {
+          position: absolute;
+          left: 300px;
+          top: 752px;
+          width: 28px;
+          height: 208px;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f6_series_rule {
+          position: absolute;
+          left: 11px;
+          top: 0;
+          width: 4px;
+          height: 56px;
+          background: #0b0b0b;
+          transform-origin: 50% 100%;
+        }
+        #f6_series {
+          position: absolute;
+          left: 0;
+          top: 208px;
+          transform-origin: 0 0;
+          transform: rotate(-90deg);
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 20px;
+          line-height: 26px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          white-space: nowrap;
+          color: #0b0b0b;
+        }
+
+        /* verbs, top-right: one per kick, each replacing the last */
+        #f6_verbs {
+          position: absolute;
+          right: 88px;
+          top: 104px;
+          width: 760px;
+          height: 196px;
+        }
+        .f6-verb-mask {
+          position: absolute;
+          right: 0;
+          top: 0;
+          padding: 10px 8px;
+          overflow: hidden;
+          opacity: 0;
+          visibility: hidden;
+        }
+        .f6-verb {
+          display: block;
+          font-size: 150px;
+          line-height: 1;
+          white-space: nowrap;
+          color: #0b0b0b;
+        }
+        .f6-verb-light {
+          font-weight: 400;
+          letter-spacing: -0.03em;
+          padding-top: 12px;
+        }
+        #f6_verb3 {
+          position: relative;
+          font-weight: 800;
+          letter-spacing: -0.04em;
+          padding: 0.08em 0.18em;
+        }
+        #f6_verb3_box {
+          position: absolute;
+          inset: 0;
+          background: #0b0b0b;
+          transform-origin: 0 50%;
+        }
+        #f6_verb3_txt {
+          position: relative;
+          display: block;
+          color: #f2f0ea;
+        }
+
+        /* tossed cover cards (wrapper = cover box; caption hangs below it) */
+        .f6-card,
+        .f6-ghost {
+          position: absolute;
+          height: 480px;
+          opacity: 0;
+          visibility: hidden;
+        }
+        .f6-cover {
+          display: block;
+          height: 480px;
+          box-shadow: 14px 14px 0 #0b0b0b;
+        }
+        .f6-ghost {
+          display: block;
+        }
+        #f6_card1, #f6_gh1_0, #f6_gh1_1, #f6_gh1_2 { left: 440px; top: 300px; width: 339px; }
+        #f6_card2, #f6_gh2_0, #f6_gh2_1, #f6_gh2_2 { left: 882px; top: 325px; width: 325px; }
+        #f6_card3, #f6_gh3_0, #f6_gh3_1, #f6_gh3_2 { left: 1298px; top: 355px; width: 324px; }
+        #f6_cover1 { width: 339px; }
+        #f6_cover2 { width: 325px; }
+        #f6_cover3 { width: 324px; }
+
+        .f6-cap {
+          position: absolute;
+          left: 0;
+          top: 508px;
+          width: 440px;
+        }
+        .f6-cap-title {
+          display: inline-block;
+          background: #0b0b0b;
+          color: #f2f0ea;
+          font-weight: 800;
+          font-size: 26px;
+          line-height: 1.25;
+          letter-spacing: -0.01em;
+          padding: 0.08em 0.18em;
+          white-space: nowrap;
+          transform-origin: 0 50%;
+        }
+        .f6-cap-line {
+          display: block;
+        }
+        .f6-cap-line + .f6-cap-line {
+          margin-top: 8px;
+        }
+        .f6-cap-author {
+          margin-top: 8px;
+          font-weight: 500;
+          font-size: 22px;
+          line-height: 1.2;
+          color: #0b0b0b;
+        }
+        #f6_badge2 {
+          position: absolute;
+          right: -30px;
+          top: -62px;
+          font-family: "Archivo Black", sans-serif;
+          font-weight: 400;
+          font-size: 30px;
+          line-height: 1.15;
+          letter-spacing: 0.02em;
+          text-transform: uppercase;
+          white-space: nowrap;
+          background: #ffe500;
+          color: #0b0b0b;
+          padding: 0.12em 0.3em;
+          box-shadow: 6px 6px 0 #0b0b0b;
+        }
+
+        /* confetti ◆ ● (pop on the 3.19 yellow flip; kept clear of covers and words) */
+        .f6-conf {
+          position: absolute;
+          display: block;
+          background: #0b0b0b;
+          opacity: 0;
+          visibility: hidden;
+        }
+        .f6-dot {
+          border-radius: 50%;
+        }
+        #f6_cf1 { left: 524px; top: 158px; width: 64px; height: 64px; }
+        #f6_cf2 { left: 704px; top: 134px; width: 34px; height: 34px; }
+        #f6_cf3 { left: 818px; top: 168px; width: 84px; height: 84px; }
+        #f6_cf4 { left: 1130px; top: 140px; width: 40px; height: 40px; }
+        #f6_cf5 { left: 1712px; top: 404px; width: 48px; height: 48px; }
+        #f6_cf6 { left: 1692px; top: 640px; width: 80px; height: 80px; }
+        #f6_cf7 { left: 1776px; top: 888px; width: 28px; height: 28px; }
+        #f6_cf8 { left: 370px; top: 186px; width: 32px; height: 32px; }
+      </style>
+
+      <div data-hf-id="hf-fsuq" id="stage" data-composition-id="06-f6" data-width="1920" data-height="1080" data-duration="4.53">
+        <div data-hf-id="hf-6lg7" id="f6_g1" class="f6-group">
+          <div data-hf-id="hf-3xi9" id="f6_bg"></div>
+
+          <div data-hf-id="hf-guzt" id="f6_vert_wrap" data-layout-allow-overflow="">
+            <div data-hf-id="hf-lttz" id="f6_vert" data-layout-allow-overlap="" data-layout-allow-occlusion="">INSIGHT</div>
+          </div>
+
+          <div data-hf-id="hf-kqoe" id="f6_series_wrap">
+            <div data-hf-id="hf-r5yg" id="f6_series_rule"></div>
+            <div data-hf-id="hf-v0vt" id="f6_series">SERIES 05</div>
+          </div>
+
+          <div data-hf-id="hf-rxse" id="f6_verbs">
+            <div data-hf-id="hf-rd5g" id="f6_verb1_m" class="f6-verb-mask"><div data-hf-id="hf-a95p" id="f6_verb1" class="f6-verb f6-verb-light">넓게,</div></div>
+            <div data-hf-id="hf-2fyb" id="f6_verb2_m" class="f6-verb-mask"><div data-hf-id="hf-3luf" id="f6_verb2" class="f6-verb f6-verb-light">깊게,</div></div>
+            <div data-hf-id="hf-89dm" id="f6_verb3_m" class="f6-verb-mask">
+              <div data-hf-id="hf-hfb7" id="f6_verb3" class="f6-verb"><div data-hf-id="hf-fjps" id="f6_verb3_box"></div><span data-hf-id="hf-jf1b" id="f6_verb3_txt">읽는다.</span></div>
+            </div>
+          </div>
+
+          <!-- speed-trail ghosts (seek-safe duplicates), under the cards -->
+          <div data-hf-id="hf-fl8s" id="f6_ghosts">
+            <img data-hf-id="hf-bk55" id="f6_gh1_0" class="f6-ghost" src="assets/covers/ai-gukburon.jpg" alt="">
+            <img data-hf-id="hf-tiwo" id="f6_gh1_1" class="f6-ghost" src="assets/covers/ai-gukburon.jpg" alt="">
+            <img data-hf-id="hf-vp5b" id="f6_gh1_2" class="f6-ghost" src="assets/covers/ai-gukburon.jpg" alt="">
+            <img data-hf-id="hf-0g24" id="f6_gh2_0" class="f6-ghost" src="assets/covers/ai-literacy.jpg" alt="">
+            <img data-hf-id="hf-z0el" id="f6_gh2_1" class="f6-ghost" src="assets/covers/ai-literacy.jpg" alt="">
+            <img data-hf-id="hf-o3zi" id="f6_gh2_2" class="f6-ghost" src="assets/covers/ai-literacy.jpg" alt="">
+            <img data-hf-id="hf-apet" id="f6_gh3_0" class="f6-ghost" src="assets/covers/f1-glossary.jpg" alt="">
+            <img data-hf-id="hf-0okc" id="f6_gh3_1" class="f6-ghost" src="assets/covers/f1-glossary.jpg" alt="">
+            <img data-hf-id="hf-5xfb" id="f6_gh3_2" class="f6-ghost" src="assets/covers/f1-glossary.jpg" alt="">
+          </div>
+
+          <div data-hf-id="hf-9jr1" id="f6_cards">
+            <div data-hf-id="hf-4syj" id="f6_card1" class="f6-card">
+              <img data-hf-id="hf-ucat" id="f6_cover1" class="f6-cover" src="assets/covers/ai-gukburon.jpg" alt="AI 국부론">
+              <div data-hf-id="hf-k8p5" id="f6_cap1" class="f6-cap">
+                <div data-hf-id="hf-7zbw" id="f6_cap1_title" class="f6-cap-title">AI 국부론</div>
+                <div data-hf-id="hf-j5i0" id="f6_cap1_author" class="f6-cap-author">이승현</div>
+              </div>
+            </div>
+            <div data-hf-id="hf-txgw" id="f6_card2" class="f6-card">
+              <img data-hf-id="hf-e4sh" id="f6_cover2" class="f6-cover" src="assets/covers/ai-literacy.jpg" alt="AI는 생각하지 않는다, AI 리터러시">
+              <div data-hf-id="hf-mfml" id="f6_badge2">COMING SOON</div>
+              <div data-hf-id="hf-o6t6" id="f6_cap2" class="f6-cap">
+                <div data-hf-id="hf-e3v2" id="f6_cap2_title" class="f6-cap-title"><span data-hf-id="hf-e0v8" id="f6_cap2_l1" class="f6-cap-line">AI는 생각하지 않는다,</span><span data-hf-id="hf-uh7p" id="f6_cap2_l2" class="f6-cap-line">AI 리터러시</span></div>
+                <div data-hf-id="hf-9hou" id="f6_cap2_author" class="f6-cap-author">이제현</div>
+              </div>
+            </div>
+            <div data-hf-id="hf-up4p" id="f6_card3" class="f6-card">
+              <img data-hf-id="hf-pnt6" id="f6_cover3" class="f6-cover" src="assets/covers/f1-glossary.jpg" alt="F1 용어집 1211">
+              <div data-hf-id="hf-s4x7" id="f6_cap3" class="f6-cap">
+                <div data-hf-id="hf-lojv" id="f6_cap3_title" class="f6-cap-title">F1 용어집 1211</div>
+                <div data-hf-id="hf-n1cb" id="f6_cap3_author" class="f6-cap-author">윤재수</div>
+              </div>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-l70g" id="f6_confetti">
+            <div data-hf-id="hf-8p93" id="f6_cf1" class="f6-conf f6-dia"></div>
+            <div data-hf-id="hf-f6m3" id="f6_cf2" class="f6-conf f6-dot"></div>
+            <div data-hf-id="hf-b8i2" id="f6_cf3" class="f6-conf f6-dot"></div>
+            <div data-hf-id="hf-firm" id="f6_cf4" class="f6-conf f6-dia"></div>
+            <div data-hf-id="hf-rp4k" id="f6_cf5" class="f6-conf f6-dot"></div>
+            <div data-hf-id="hf-cnd4" id="f6_cf6" class="f6-conf f6-dia"></div>
+            <div data-hf-id="hf-wewe" id="f6_cf7" class="f6-conf f6-dot"></div>
+            <div data-hf-id="hf-dbji" id="f6_cf8" class="f6-conf f6-dia"></div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({ paused: true });
+
+          const PAPER = "#F2F0EA";
+          const INK = "#0B0B0B";
+          const YEL = "#FFE500";
+
+          // Frame-local anchors (track_t − 36.47)
+          const T_CUT = 0.0; //   36.47 hard cut to PAPER
+          const KICK = [0.36, 1.29, 2.24]; // 36.83 / 37.76 / 38.71 kicks: verb lands + cover tossed in
+          const T_YEL = 3.19; //  39.66 kick: flip to YELLOW + confetti pop
+          const T_EXIT = 3.65; // 40.12 snare: covers leave on staggered parabolic arcs
+          const T_INK = 4.12; //  40.59 kick (hard stop): flip to INK, the rest wipes off
+          const END = 4.53; //    41.0 frame end, drop to silence
+
+          // ---- group window: f6_g1 spans the whole frame [0, 4.53) ----
+          tl.set("#f6_g1", { autoAlpha: 1 }, T_CUT);
+          tl.set("#f6_bg", { backgroundColor: PAPER }, T_CUT);
+
+          // ---- 0.00 hard cut: INSIGHT rises into place (reading direction), label + rule pop ----
+          tl.fromTo("#f6_vert_wrap", { y: 220 }, { y: 0, duration: KICK[0], ease: "expo.out" }, T_CUT);
+          tl.fromTo("#f6_vert_wrap", { y: 0 }, { y: -40, duration: 4.18 - KICK[0], ease: "none", immediateRender: false }, KICK[0]);
+          tl.fromTo("#f6_series_wrap", { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 0.22, ease: "power3.out" }, 0.1);
+          tl.fromTo("#f6_series_rule", { scaleY: 0 }, { scaleY: 1, duration: 0.2, ease: "power3.out" }, 0.16);
+
+          // ---- verbs: one per kick, each replacing the last (0ms swap + mask slide-up) ----
+          const VERB = ["#f6_verb1", "#f6_verb2", "#f6_verb3"];
+          for (let i = 0; i < 3; i++) {
+            const k = KICK[i];
+            if (i > 0) tl.set(VERB[i - 1] + "_m", { autoAlpha: 0 }, k);
+            tl.set(VERB[i] + "_m", { autoAlpha: 1 }, k);
+            tl.fromTo(VERB[i], { y: 200 }, { y: 0, duration: 0.22, ease: "expo.out" }, k);
+          }
+          // '읽는다.' gets its ink label-box, popping scaleX 0→1 from the left edge
+          tl.fromTo("#f6_verb3_box", { scaleX: 0 }, { scaleX: 1, duration: 0.14, ease: "power3.out" }, KICK[2]);
+
+          // ---- staggered-reveal: one cover tossed in per kick, caption label-box pops after landing ----
+          const IN_DUR = 0.34;
+          const LAG = [0.022, 0.044, 0.066]; // speed-trail ghost lags
+          const GOP = [0.35, 0.2, 0.1]; //      speed-trail ghost opacities
+          const EX_STEP = 0.06; //              staggered-exit per-card offset
+          const EX_DUR = 0.36;
+          const DRIFT_Y = -12;
+          const CARDS = [
+            { n: 1, rot: -6, dr: -0.8, from: { x: -760, y: 640, rotation: -40, scale: 1.12 }, out: { x: -920, y: -1260, rotation: -42 } },
+            { n: 2, rot: 3, dr: 0.8, from: { x: 140, y: 860, rotation: 34, scale: 1.12 }, out: { x: 170, y: -1320, rotation: 30 } },
+            { n: 3, rot: -2, dr: 0.8, from: { x: 860, y: 480, rotation: 44, scale: 1.12 }, out: { x: 900, y: -1260, rotation: 36 } },
+          ];
+
+          // one flight = entrance or exit; applied to the card and (lagged) to its ghosts
+          function enter(target, c, t) {
+            tl.fromTo(
+              target,
+              { x: c.from.x, y: c.from.y, rotation: c.from.rotation, scale: c.from.scale },
+              { x: 0, y: 0, rotation: c.rot, scale: 1, duration: IN_DUR, ease: "expo.out" },
+              t,
+            );
+          }
+          function leave(target, c, t) {
+            // y quad-in + x cubic-in: rises first, then bends outward on an accelerating arc
+            tl.fromTo(target, { x: 0 }, { x: c.out.x, duration: EX_DUR, ease: "power2.in", immediateRender: false }, t);
+            tl.fromTo(target, { y: DRIFT_Y }, { y: c.out.y, duration: EX_DUR, ease: "power1.in", immediateRender: false }, t);
+            tl.fromTo(
+              target,
+              { rotation: c.rot + c.dr },
+              { rotation: c.out.rotation, duration: EX_DUR, ease: "power1.in", immediateRender: false },
+              t,
+            );
+          }
+
+          for (let i = 0; i < CARDS.length; i++) {
+            const c = CARDS[i];
+            const a = KICK[i];
+            const card = "#f6_card" + c.n;
+            const ex = T_EXIT + i * EX_STEP;
+            const holdStart = a + IN_DUR;
+
+            // card: toss in on the kick, slow drift through the hold, parabolic exit
+            tl.set(card, { autoAlpha: 1 }, a);
+            enter(card, c, a);
+            tl.fromTo(
+              card,
+              { y: 0, rotation: c.rot },
+              { y: DRIFT_Y, rotation: c.rot + c.dr, duration: ex - holdStart, ease: "none", immediateRender: false },
+              holdStart,
+            );
+            leave(card, c, ex);
+            tl.set(card, { autoAlpha: 0 }, Math.min(ex + EX_DUR, T_INK));
+
+            // speed trails: 3 ghost copies follow the same flight, lagged, only while moving
+            for (let j = 0; j < 3; j++) {
+              const g = "#f6_gh" + c.n + "_" + j;
+              tl.set(g, { autoAlpha: GOP[j] }, a + LAG[j]);
+              enter(g, c, a + LAG[j]);
+              tl.set(g, { autoAlpha: 0 }, a + LAG[j] + 0.2);
+              tl.set(g, { autoAlpha: GOP[j] }, ex + LAG[j]);
+              leave(g, c, ex + LAG[j]);
+              tl.set(g, { autoAlpha: 0 }, Math.min(ex + LAG[j] + EX_DUR, T_INK));
+            }
+
+            // caption label-box: scaleX 0→1 from the left edge, author follows
+            tl.fromTo("#f6_cap" + c.n + "_title", { scaleX: 0 }, { scaleX: 1, duration: 0.12, ease: "power3.out" }, a + 0.16);
+            tl.fromTo("#f6_cap" + c.n + "_author", { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.14, ease: "power2.out" }, a + 0.22);
+          }
+          // COMING SOON sticker on the second cover
+          tl.fromTo("#f6_badge2", { scale: 0, rotation: -14 }, { scale: 1, rotation: 5, duration: 0.22, ease: "back.out(3)" }, KICK[1] + 0.26);
+
+          // ---- 3.19 kick: 0ms flip to YELLOW; label boxes go ink + yellow; covers bump; confetti pops ----
+          tl.set("#f6_bg", { backgroundColor: YEL }, T_YEL);
+          tl.set(["#f6_cap1_title", "#f6_cap2_title", "#f6_cap3_title", "#f6_verb3_txt"], { color: YEL }, T_YEL);
+          tl.set("#f6_badge2", { backgroundColor: INK, color: YEL }, T_YEL);
+          tl.fromTo(["#f6_card1", "#f6_card2", "#f6_card3"], { scale: 1.05 }, { scale: 1, duration: 0.2, ease: "power2.out", immediateRender: false }, T_YEL);
+
+          const CONF = ["#f6_cf1", "#f6_cf2", "#f6_cf3", "#f6_cf4", "#f6_cf5", "#f6_cf6", "#f6_cf7", "#f6_cf8"];
+          const IS_DIA = [true, false, false, true, false, true, false, true];
+          for (let i = 0; i < CONF.length; i++) {
+            const r0 = IS_DIA[i] ? 45 : 0;
+            const t0 = T_YEL + i * 0.025;
+            const popEnd = t0 + 0.26;
+            tl.set(CONF[i], { autoAlpha: 1 }, t0);
+            tl.fromTo(CONF[i], { scale: 0, rotation: r0 - 90 }, { scale: 1, rotation: r0, duration: 0.26, ease: "back.out(2.6)" }, t0);
+            // slight drift, variation derived from the index
+            tl.fromTo(
+              CONF[i],
+              { y: 0, rotation: r0 },
+              { y: -10 - (i % 3) * 6, rotation: r0 + (i % 2 ? -12 : 12), duration: 4.15 - popEnd, ease: "none", immediateRender: false },
+              popEnd,
+            );
+          }
+
+          // ---- 4.12 kick: 0ms flip to INK; survivors re-skin to the ink register, then wipe off ----
+          tl.set("#f6_bg", { backgroundColor: INK }, T_INK);
+          tl.set("#f6_vert", { color: PAPER }, T_INK);
+          tl.set("#f6_series", { color: PAPER }, T_INK);
+          tl.set("#f6_series_rule", { backgroundColor: PAPER }, T_INK);
+          tl.set("#f6_verb3_box", { backgroundColor: YEL }, T_INK);
+          tl.set("#f6_verb3_txt", { color: INK }, T_INK);
+          for (let i = 0; i < CONF.length; i++) {
+            tl.set(CONF[i], { backgroundColor: IS_DIA[i] ? YEL : PAPER }, T_INK);
+          }
+
+          // staggered-exit: verb → confetti → label → INSIGHT, all clear by ~4.45
+          tl.fromTo("#f6_verb3_m", { x: 0 }, { x: 1000, duration: 0.26, ease: "power3.in", immediateRender: false }, T_INK);
+          for (let i = 0; i < CONF.length; i++) {
+            tl.fromTo(CONF[i], { scale: 1 }, { scale: 0, duration: 0.16, ease: "power2.in", immediateRender: false }, 4.15 + i * 0.02);
+          }
+          tl.fromTo("#f6_series_wrap", { y: 0 }, { y: 360, duration: 0.22, ease: "power3.in", immediateRender: false }, 4.16);
+          tl.fromTo("#f6_vert_wrap", { y: -40 }, { y: 1340, duration: 0.26, ease: "power3.in", immediateRender: false }, 4.18);
+
+          // ---- frame end: group hides at its span end (frame is empty ink from ~4.45) ----
+          tl.set("#f6_g1", { autoAlpha: 0 }, END);
+
+          window.__timelines["06-f6"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

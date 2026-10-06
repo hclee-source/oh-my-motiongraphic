@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>07-f7 — finale pop (frame 7, 41.0–46.6s)</title>
+  </head>
+  <body>
+    <template>
+      <div data-hf-id="hf-9ixf" id="stage" data-composition-id="07-f7" data-width="1920" data-height="1080" data-duration="5.6">
+        <style>
+          @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+          @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+          @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+          #stage {
+            position: absolute;
+            inset: 0;
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            background: #0B0B0B;
+            color: #F2F0EA;
+            font-family: "Paperlogy", sans-serif;
+          }
+          .f7-g1 *,
+          .f7-g1 *::before,
+          .f7-g1 *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+
+          /* ---- group g1: the whole frame ---- */
+          #f7_g1 {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1920px;
+            height: 1080px;
+          }
+          .f7-layer {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1920px;
+            height: 1080px;
+          }
+
+          /* register ground (flips at 0ms) */
+          #f7_bg {
+            background: #0B0B0B;
+          }
+
+          /* ---- confetti (ink on yellow, then yellow/paper on ink) ---- */
+          .f7-cf {
+            position: absolute;
+            display: block;
+            color: #0B0B0B;
+            opacity: 0;
+            visibility: hidden;
+            will-change: transform, opacity;
+          }
+          .f7-cf svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+          }
+
+          /* ---- 8×2 cover grid: slot 156 × 200, gap 32 → 1472 wide, x 224–1696 ---- */
+          .f7-row {
+            position: absolute;
+            left: 0;
+            width: 1920px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 32px;
+            will-change: transform, opacity;
+          }
+          #f7_row0 {
+            top: 318px;
+          }
+          #f7_row1 {
+            top: 562px;
+          }
+          .f7-cell {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 156px;
+            height: 200px;
+            flex: 0 0 156px;
+          }
+          .f7-fly {
+            display: block;
+            height: 200px;
+            opacity: 0;
+            visibility: hidden;
+            will-change: transform, opacity;
+          }
+          .f7-bump {
+            display: block;
+            height: 200px;
+            will-change: transform;
+          }
+          .f7-cover {
+            display: block;
+            height: 200px;
+            width: auto;
+            max-width: 156px;
+            border-radius: 0;
+            box-shadow: 14px 14px 0 #0B0B0B;
+          }
+
+          /* ---- final-kick particles (generated) ---- */
+          #f7_parts {
+            position: absolute;
+            left: 960px;
+            top: 540px;
+            width: 0;
+            height: 0;
+          }
+          .f7-pt {
+            position: absolute;
+            display: block;
+            opacity: 0;
+            visibility: hidden;
+            will-change: transform, opacity;
+          }
+
+          /* ---- eight line icons around the lockup (60px, 2px yellow strokes) ---- */
+          .f7-ic {
+            position: absolute;
+            display: block;
+            width: 60px;
+            height: 60px;
+            opacity: 0;
+            visibility: hidden;
+            will-change: transform, opacity;
+          }
+          .f7-ic svg {
+            display: block;
+            width: 60px;
+            height: 60px;
+            overflow: visible;
+          }
+          #f7_ic0 { left: 390px;  top: 362px; }
+          #f7_ic1 { left: 232px;  top: 456px; }
+          #f7_ic2 { left: 232px;  top: 580px; }
+          #f7_ic3 { left: 390px;  top: 674px; }
+          #f7_ic4 { left: 1470px; top: 362px; }
+          #f7_ic5 { left: 1628px; top: 456px; }
+          #f7_ic6 { left: 1628px; top: 580px; }
+          #f7_ic7 { left: 1470px; top: 674px; }
+
+          /* ---- logo lockup (centered in the band the parted rows open: y 312–768) ---- */
+          #f7_lockup {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+          }
+          #f7_markbump {
+            display: block;
+            width: 183px;
+            height: 176px;
+            will-change: transform;
+          }
+          #f7_markres {
+            display: block;
+            width: 183px;
+            height: 176px;
+            opacity: 0;
+            visibility: hidden;
+            will-change: transform, opacity, filter;
+          }
+          #f7_word {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            margin-top: 4px;
+            line-height: 1;
+            white-space: nowrap;
+          }
+          .f7-wpart {
+            display: inline-block;
+            opacity: 0;
+            visibility: hidden;
+            will-change: transform, opacity, filter;
+          }
+          #f7_wgolden {
+            font-family: "Archivo Black", sans-serif;
+            font-weight: 400;
+            font-size: 108px;
+            letter-spacing: 0.01em;
+            color: #F2F0EA;
+          }
+          #f7_wdot {
+            font-family: "Archivo Black", sans-serif;
+            font-weight: 400;
+            font-size: 108px;
+            color: #FFE500;
+            margin: 0 0.04em;
+          }
+          #f7_wrabbit {
+            font-family: "Playfair Display", serif;
+            font-style: italic;
+            font-weight: 700;
+            font-size: 124px;
+            color: #FFE500;
+          }
+          #f7_tagrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 22px;
+          }
+          .f7-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 54px;
+            will-change: transform;
+          }
+          .f7-boxbg {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: #FFE500;
+            transform-origin: 0% 50%;
+            opacity: 0;
+            visibility: hidden;
+            will-change: transform;
+          }
+          .f7-boxtx {
+            position: relative;
+            display: block;
+            color: #0B0B0B;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+          }
+          #f7_chip {
+            padding: 0 18px;
+          }
+          #f7_chiptx {
+            font-family: "Paperlogy", sans-serif;
+            font-weight: 800;
+            font-size: 30px;
+            line-height: 1;
+          }
+          #f7_url {
+            width: 470px;
+          }
+          #f7_urltx {
+            font-family: "IBM Plex Mono", monospace;
+            font-weight: 700;
+            font-size: 38px;
+            line-height: 1;
+            letter-spacing: 0.02em;
+          }
+
+          /* ---- the question in the silence (h1, paper; '?' in a yellow label-box) ---- */
+          #f7_q {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          #f7_qline {
+            display: block;
+            font-family: "Paperlogy", sans-serif;
+            font-weight: 800;
+            font-size: 150px;
+            line-height: 1;
+            letter-spacing: -0.04em;
+            color: #F2F0EA;
+            white-space: nowrap;
+          }
+          .f7-syl {
+            position: relative;
+            display: inline-block;
+          }
+          .f7-gl {
+            display: inline-block;
+            opacity: 0;
+            visibility: hidden;
+          }
+          .f7-caret {
+            position: absolute;
+            top: 0.1em;
+            right: -0.1em;
+            width: 0.07em;
+            height: 0.8em;
+            background: #FFE500;
+            opacity: 0;
+            visibility: hidden;
+          }
+          #f7_cpre {
+            right: auto;
+            left: 0;
+            opacity: 1;
+            visibility: inherit;
+          }
+          #f7_qbox {
+            position: relative;
+            display: inline-block;
+            margin-left: 0.08em;
+            padding: 0.08em 0.18em;
+            letter-spacing: 0;
+            transform-origin: 50% 80%;
+            will-change: transform;
+          }
+          #f7_qbg {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: #FFE500;
+            transform-origin: 0% 50%;
+            opacity: 0;
+            visibility: hidden;
+          }
+          #f7_qtx {
+            position: relative;
+            display: inline-block;
+            color: #0B0B0B;
+            opacity: 0;
+            visibility: hidden;
+          }
+
+          /* ---- flash-cut overlay (2 frames on K2 / K4) ---- */
+          #f7_flash {
+            background: #F2F0EA;
+            opacity: 0;
+            visibility: hidden;
+          }
+        </style>
+
+        <div data-hf-id="hf-j0wk" id="f7_g1" class="f7-g1">
+          <div data-hf-id="hf-6khg" id="f7_bg" class="f7-layer"></div>
+
+          <!-- confetti: ● ■ ▲ ◆ ✕ -->
+          <div data-hf-id="hf-dko1" id="f7_confetti" class="f7-layer">
+            <div data-hf-id="hf-3le4" class="f7-cf" id="f7_cf0" style="left:202px;top:158px;width:56px;height:56px"><svg data-hf-id="hf-fohl" viewBox="0 0 100 100"><circle data-hf-id="hf-hg3f" cx="50" cy="50" r="50" fill="currentColor" /></svg></div>
+            <div data-hf-id="hf-i51s" class="f7-cf" id="f7_cf1" style="left:395px;top:215px;width:70px;height:70px"><svg data-hf-id="hf-c1ot" viewBox="0 0 100 100"><polygon data-hf-id="hf-k9wm" points="50,4 100,96 0,96" fill="currentColor" /></svg></div>
+            <div data-hf-id="hf-x0qc" class="f7-cf" id="f7_cf2" style="left:668px;top:138px;width:44px;height:44px"><svg data-hf-id="hf-d8lw" viewBox="0 0 100 100"><rect data-hf-id="hf-6hvv" width="100" height="100" fill="currentColor" /></svg></div>
+            <div data-hf-id="hf-u7tj" class="f7-cf" id="f7_cf3" style="left:974px;top:200px;width:52px;height:52px"><svg data-hf-id="hf-cuav" viewBox="0 0 100 100"><path data-hf-id="hf-zn1x" d="M14 14 L86 86 M86 14 L14 86" stroke="currentColor" stroke-width="22" fill="none" /></svg></div>
+            <div data-hf-id="hf-9lje" class="f7-cf" id="f7_cf4" style="left:1238px;top:118px;width:64px;height:64px"><svg data-hf-id="hf-e17y" viewBox="0 0 100 100"><polygon data-hf-id="hf-9pci" points="50,0 100,50 50,100 0,50" fill="currentColor" /></svg></div>
+            <div data-hf-id="hf-q4ka" class="f7-cf" id="f7_cf5" style="left:1502px;top:230px;width:36px;height:36px"><svg data-hf-id="hf-dmwx" viewBox="0 0 100 100"><circle data-hf-id="hf-uz5n" cx="50" cy="50" r="50" fill="currentColor" /></svg></div>
+            <div data-hf-id="hf-2i0u" class="f7-cf" id="f7_cf6" style="left:1676px;top:154px;width:72px;height:72px"><svg data-hf-id="hf-etu0" viewBox="0 0 100 100"><rect data-hf-id="hf-ypnv" width="100" height="100" fill="currentColor" /></svg></div>
+            <div data-hf-id="hf-lj5m" class="f7-cf" id="f7_cf7" style="left:156px;top:852px;width:48px;height:48px"><svg data-hf-id="hf-efiz" viewBox="0 0 100 100"><polygon data-hf-id="hf-7x06" points="50,0 100,50 50,100 0,50" fill="currentColor" /></svg></div>
+            <div data-hf-id="hf-0qza" class="f7-cf" id="f7_cf8" style="left:390px;top:800px;width:60px;height:60px"><svg data-hf-id="hf-fmg2" viewBox="0 0 100 100"><path data-hf-id="hf-8ejt" d="M14 14 L86 86 M86 14 L14 86" stroke="currentColor" stroke-width="22" fill="none" /></svg></div>
+            <div data-hf-id="hf-9jjj" class="f7-cf" id="f7_cf9" style="left:680px;top:910px;width:40px;height:40px"><svg data-hf-id="hf-f851" viewBox="0 0 100 100"><circle data-hf-id="hf-ukum" cx="50" cy="50" r="50" fill="currentColor" /></svg></div>
+            <div data-hf-id="hf-4cpy" class="f7-cf" id="f7_cf10" style="left:914px;top:818px;width:72px;height:72px"><svg data-hf-id="hf-vjpj" viewBox="0 0 100 100"><polygon data-hf-id="hf-4qzu" points="50,4 100,96 0,96" fill="currentColor" /></svg></div>
+            <div data-hf-id="hf-vrs6" class="f7-cf" id="f7_cf11" style="left:1175px;top:895px;width:50px;height:50px"><svg data-hf-id="hf-vy0k" viewBox="0 0 100 100"><rect data-hf-id="hf-u9dq" width="100" height="100" fill="currentColor" /></svg></div>
+            <div data-hf-id="hf-p61h" class="f7-cf" id="f7_cf12" style="left:1437px;top:807px;width:66px;height:66px"><svg data-hf-id="hf-ur3h" viewBox="0 0 100 100"><polygon data-hf-id="hf-8bb7" points="50,0 100,50 50,100 0,50" fill="currentColor" /></svg></div>
+            <div data-hf-id="hf-e20p" class="f7-cf" id="f7_cf13" style="left:1721px;top:871px;width:38px;height:38px"><svg data-hf-id="hf-v5ei" viewBox="0 0 100 100"><polygon data-hf-id="hf-55av" points="50,4 100,96 0,96" fill="currentColor" /></svg></div>
+            <div data-hf-id="hf-dxse" class="f7-cf" id="f7_cf14" style="left:142px;top:518px;width:44px;height:44px"><svg data-hf-id="hf-x4xn" viewBox="0 0 100 100"><path data-hf-id="hf-9lgw" d="M14 14 L86 86 M86 14 L14 86" stroke="currentColor" stroke-width="22" fill="none" /></svg></div>
+            <div data-hf-id="hf-agmv" class="f7-cf" id="f7_cf15" style="left:1733px;top:513px;width:54px;height:54px"><svg data-hf-id="hf-xj8o" viewBox="0 0 100 100"><circle data-hf-id="hf-u6jl" cx="50" cy="50" r="50" fill="currentColor" /></svg></div>
+          </div>
+
+          <!-- 16 covers, 8×2 -->
+          <div data-hf-id="hf-dtvh" id="f7_grid" class="f7-layer">
+            <div data-hf-id="hf-jhdk" class="f7-row" id="f7_row0">
+              <div data-hf-id="hf-uem2" class="f7-cell"><div data-hf-id="hf-qstw" class="f7-fly" id="f7_fly0"><div data-hf-id="hf-fw4q" class="f7-bump"><img data-hf-id="hf-3vl4" class="f7-cover" src="assets/covers/gemini81.jpg" alt=""></div></div></div>
+              <div data-hf-id="hf-z6se" class="f7-cell"><div data-hf-id="hf-rkhp" class="f7-fly" id="f7_fly1"><div data-hf-id="hf-auy6" class="f7-bump"><img data-hf-id="hf-23a2" class="f7-cover" src="assets/covers/openclaw50.jpg" alt=""></div></div></div>
+              <div data-hf-id="hf-zl3f" class="f7-cell"><div data-hf-id="hf-vilq" class="f7-fly" id="f7_fly2"><div data-hf-id="hf-b997" class="f7-bump"><img data-hf-id="hf-m5ic" class="f7-cover" src="assets/covers/ai-product-image.jpg" alt=""></div></div></div>
+              <div data-hf-id="hf-zzeg" class="f7-cell"><div data-hf-id="hf-zgpr" class="f7-fly" id="f7_fly3"><div data-hf-id="hf-bnk8" class="f7-bump"><img data-hf-id="hf-p4u3" class="f7-cover" src="assets/covers/baro-claude.jpg" alt=""></div></div></div>
+              <div data-hf-id="hf-x799" class="f7-cell"><div data-hf-id="hf-5mfk" class="f7-fly" id="f7_fly4"><div data-hf-id="hf-8vf1" class="f7-bump"><img data-hf-id="hf-8puy" class="f7-cover" src="assets/covers/baro-chatgpt-codex.jpg" alt=""></div></div></div>
+              <div data-hf-id="hf-xlka" class="f7-cell"><div data-hf-id="hf-6e3d" class="f7-fly" id="f7_fly5"><div data-hf-id="hf-99q2" class="f7-bump"><img data-hf-id="hf-wgfz" class="f7-cover" src="assets/covers/youtube-ai-secretary.jpg" alt=""></div></div></div>
+              <div data-hf-id="hf-xzvb" class="f7-cell"><div data-hf-id="hf-ac7e" class="f7-fly" id="f7_fly6"><div data-hf-id="hf-9o13" class="f7-bump"><img data-hf-id="hf-vo6z" class="f7-cover" src="assets/covers/naver-blog.jpg" alt=""></div></div></div>
+              <div data-hf-id="hf-ye6c" class="f7-cell"><div data-hf-id="hf-eabf" class="f7-fly" id="f7_fly7"><div data-hf-id="hf-a2c4" class="f7-bump"><img data-hf-id="hf-pfaa" class="f7-cover" src="assets/covers/danggeun-ai.jpg" alt=""></div></div></div>
+            </div>
+            <div data-hf-id="hf-k91d" class="f7-row" id="f7_row1">
+              <div data-hf-id="hf-1yxl" class="f7-cell"><div data-hf-id="hf-i8fg" class="f7-fly" id="f7_fly8"><div data-hf-id="hf-dn3d" class="f7-bump"><img data-hf-id="hf-40jr" class="f7-cover" src="assets/covers/vibe-harness.jpg" alt=""></div></div></div>
+              <div data-hf-id="hf-2d8m" class="f7-cell"><div data-hf-id="hf-j039" class="f7-fly" id="f7_fly9"><div data-hf-id="hf-e1ee" class="f7-bump"><img data-hf-id="hf-71vx" class="f7-cover" src="assets/covers/ppatta-computer1.jpg" alt=""></div></div></div>
+              <div data-hf-id="hf-819m" class="f7-cell"><div data-hf-id="hf-lk5b" class="f7-fly" id="f7_fly10"><div data-hf-id="hf-oa4a" class="f7-bump"><img data-hf-id="hf-8dea" class="f7-cover" src="assets/covers/ppatta-computer2.jpg" alt=""></div></div></div>
+              <div data-hf-id="hf-7myl" class="f7-cell"><div data-hf-id="hf-hm1a" class="f7-fly" id="f7_fly11"><div data-hf-id="hf-nvt9" class="f7-bump"><img data-hf-id="hf-2i6p" class="f7-cover" src="assets/covers/ppatta-bigdata-written.jpg" alt=""></div></div></div>
+              <div data-hf-id="hf-8tvo" class="f7-cell"><div data-hf-id="hf-dnx9" class="f7-fly" id="f7_fly12"><div data-hf-id="hf-p2qc" class="f7-bump"><img data-hf-id="hf-y57t" class="f7-cover" src="assets/covers/ppatta-bigdata-practical.jpg" alt=""></div></div></div>
+              <div data-hf-id="hf-8fkn" class="f7-cell"><div data-hf-id="hf-cw9g" class="f7-fly" id="f7_fly13"><div data-hf-id="hf-oofb" class="f7-bump"><img data-hf-id="hf-6ag8" class="f7-cover" src="assets/covers/ai-gukburon.jpg" alt=""></div></div></div>
+              <div data-hf-id="hf-9mhq" class="f7-cell"><div data-hf-id="hf-0dqz" class="f7-fly" id="f7_fly14"><div data-hf-id="hf-pvce" class="f7-bump"><img data-hf-id="hf-vuqq" class="f7-cover" src="assets/covers/ai-literacy.jpg" alt=""></div></div></div>
+              <div data-hf-id="hf-986p" class="f7-cell"><div data-hf-id="hf-wfmy" class="f7-fly" id="f7_fly15"><div data-hf-id="hf-ph1d" class="f7-bump"><img data-hf-id="hf-ngnu" class="f7-cover" src="assets/covers/f1-glossary.jpg" alt=""></div></div></div>
+            </div>
+          </div>
+
+          <!-- final-kick particle burst (filled by script) -->
+          <div data-hf-id="hf-vn15" id="f7_partlayer" class="f7-layer"><div data-hf-id="hf-gnvf" id="f7_parts"></div></div>
+
+          <!-- eight original line icons -->
+          <div data-hf-id="hf-okg1" id="f7_icons" class="f7-layer">
+            <!-- book -->
+            <div data-hf-id="hf-5ryk" class="f7-ic" id="f7_ic0"><svg data-hf-id="hf-rk91" viewBox="0 0 60 60" fill="none" stroke="#FFE500" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-gefj" d="M30 17 C24 13 16 13 9 15 V46 C16 44 24 44 30 48 C36 44 44 44 51 46 V15 C44 13 36 13 30 17 Z" /><path data-hf-id="hf-zb9k" d="M30 17 V48" /></svg></div>
+            <!-- pencil -->
+            <div data-hf-id="hf-8r85" class="f7-ic" id="f7_ic1"><svg data-hf-id="hf-uxeh" viewBox="0 0 60 60" fill="none" stroke="#FFE500" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-j4q4" d="M12 48 L16 36 L39 13 L47 21 L24 44 Z" /><path data-hf-id="hf-8qh1" d="M34 18 L42 26" /><path data-hf-id="hf-4poh" d="M16 36 L24 44" /></svg></div>
+            <!-- lightning bolt -->
+            <div data-hf-id="hf-cpc6" class="f7-ic" id="f7_ic2"><svg data-hf-id="hf-w4bk" viewBox="0 0 60 60" fill="none" stroke="#FFE500" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-077y" d="M34 8 L16 33 H29 L25 52 L44 26 H31 Z" /></svg></div>
+            <!-- sparkle -->
+            <div data-hf-id="hf-gng7" class="f7-ic" id="f7_ic3"><svg data-hf-id="hf-vq0j" viewBox="0 0 60 60" fill="none" stroke="#FFE500" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-opdi" d="M30 8 C31.5 22 38 28.5 52 30 C38 31.5 31.5 38 30 52 C28.5 38 22 31.5 8 30 C22 28.5 28.5 22 30 8 Z" /><path data-hf-id="hf-dkn9" d="M47 9 V17 M43 13 H51" /></svg></div>
+            <!-- bar chart -->
+            <div data-hf-id="hf-klk8" class="f7-ic" id="f7_ic4"><svg data-hf-id="hf-tqhe" viewBox="0 0 60 60" fill="none" stroke="#FFE500" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-cgc0" d="M9 9 V51 H52" /><rect data-hf-id="hf-i7u1" x="17" y="33" width="7" height="13" /><rect data-hf-id="hf-lmdu" x="29" y="23" width="7" height="23" /><rect data-hf-id="hf-llnw" x="41" y="14" width="7" height="32" /></svg></div>
+            <!-- speech bubble -->
+            <div data-hf-id="hf-ld81" class="f7-ic" id="f7_ic5"><svg data-hf-id="hf-tc6d" viewBox="0 0 60 60" fill="none" stroke="#FFE500" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-4jhb" d="M9 13 H51 V40 H28 L18 49 V40 H9 Z" /><path data-hf-id="hf-5m1r" d="M18 23 H42 M18 30 H34" /></svg></div>
+            <!-- bookmark -->
+            <div data-hf-id="hf-pbc2" class="f7-ic" id="f7_ic6"><svg data-hf-id="hf-uj3g" viewBox="0 0 60 60" fill="none" stroke="#FFE500" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-5j9c" d="M18 8 H42 V52 L30 42 L18 52 Z" /></svg></div>
+            <!-- star -->
+            <div data-hf-id="hf-t9g3" class="f7-ic" id="f7_ic7"><svg data-hf-id="hf-u4sf" viewBox="0 0 60 60" fill="none" stroke="#FFE500" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-p0dy" d="M30 9 L35.29 23.72 L50.92 24.2 L38.56 33.78 L42.93 48.8 L30 40 L17.07 48.8 L21.44 33.78 L9.08 24.2 L24.71 23.72 Z" /></svg></div>
+          </div>
+
+          <!-- logo lockup: gold mark + GOLDEN·rabbit + [골든래빗] [goldenrabbit.co.kr] -->
+          <div data-hf-id="hf-ig1n" id="f7_lockup" class="f7-layer">
+            <div data-hf-id="hf-dp7c" id="f7_markbump"><img data-hf-id="hf-454f" id="f7_markres" src="assets/brand/icon.png" alt=""></div>
+            <div data-hf-id="hf-aeoj" id="f7_word"><span data-hf-id="hf-ohb4" class="f7-wpart" id="f7_wgolden">GOLDEN</span><span data-hf-id="hf-x1os" class="f7-wpart" id="f7_wdot">·</span><span data-hf-id="hf-hlry" class="f7-wpart" id="f7_wrabbit">rabbit</span></div>
+            <div data-hf-id="hf-zynz" id="f7_tagrow">
+              <div data-hf-id="hf-alkr" class="f7-box" id="f7_chip"><span data-hf-id="hf-zyp6" class="f7-boxbg" id="f7_chipbg"></span><span data-hf-id="hf-2udl" class="f7-boxtx" id="f7_chiptx">골든래빗</span></div>
+              <div data-hf-id="hf-e75o" class="f7-box" id="f7_url"><span data-hf-id="hf-1uuh" class="f7-boxbg" id="f7_urlbg"></span><span data-hf-id="hf-di7n" class="f7-boxtx" id="f7_urltx">goldenrabbit.co.kr</span></div>
+            </div>
+          </div>
+
+          <!-- the question: 다음 한 권은? -->
+          <div data-hf-id="hf-5ev6" id="f7_q" class="f7-layer">
+            <div data-hf-id="hf-0wna" id="f7_qline"><span data-hf-id="hf-digv" class="f7-syl"><i data-hf-id="hf-0l5l" class="f7-caret" id="f7_cpre"></i><span data-hf-id="hf-zulp" class="f7-gl" id="f7_s0">다</span><i data-hf-id="hf-t02y" class="f7-caret" id="f7_c0"></i></span><span data-hf-id="hf-yn5r" class="f7-syl"><span data-hf-id="hf-sq4y" class="f7-gl" id="f7_s1">음</span><i data-hf-id="hf-wy6z" class="f7-caret" id="f7_c1"></i></span> <span data-hf-id="hf-y8uq" class="f7-syl"><span data-hf-id="hf-t7b3" class="f7-gl" id="f7_s2">한</span><i data-hf-id="hf-m2pc" class="f7-caret" id="f7_c2"></i></span> <span data-hf-id="hf-xujp" class="f7-syl"><span data-hf-id="hf-4b78" class="f7-gl" id="f7_s3">권</span><i data-hf-id="hf-mud5" class="f7-caret" id="f7_c3"></i></span><span data-hf-id="hf-0mow" class="f7-syl"><span data-hf-id="hf-bgz1" class="f7-gl" id="f7_s4">은</span><i data-hf-id="hf-e6ha" class="f7-caret" id="f7_c4"></i></span><span data-hf-id="hf-1l56" id="f7_qbox"><span data-hf-id="hf-97e6" id="f7_qbg"></span><span data-hf-id="hf-ayw8" id="f7_qtx">?</span></span></div>
+          </div>
+
+          <div data-hf-id="hf-cah5" id="f7_flash" class="f7-layer"></div>
+        </div>
+
+        <script>
+          (function () {
+            var $ = function (id) {
+              return document.getElementById(id);
+            };
+            var tl = gsap.timeline({ paused: true });
+
+            // ---- frame-local anchors (track_t − 41.0), measured from audiomap.events ----
+            var K1 = 1.493; // 42.493 kick — 0ms flip to YELLOW, covers + confetti burst
+            var K2 = 1.957; // 42.957 kick — flip to INK, cover bump, confetti reverses
+            var K3 = 2.421; // 43.421 kick — grid parts + dims, logo resolves (swell 43–44)
+            var K4 = 4.325; // 45.325 final kick — URL pops, icons + particles burst
+            var END = 5.6; // frame span length
+            var F2 = 0.067; // two frames at 30fps (flash-cut)
+
+            var YELLOW = "#FFE500",
+              INK = "#0B0B0B",
+              PAPER = "#F2F0EA";
+            var CX = 960,
+              CY = 540;
+
+            // group g1 spans the whole frame
+            tl.set($("f7_g1"), { autoAlpha: 1 }, 0);
+
+            // ================= 0 → K1 · negative-space-hold: the question types in =================
+            // syllables land on the measured micro-onsets of the silence; '?' box on the 41.982 snare
+            var SYL = [0.053, 0.23, 0.42, 0.6, 0.773];
+            var QBOX = 0.982;
+            var WOBBLE = 1.237; // 42.237 snare
+            tl.set($("f7_cpre"), { autoAlpha: 0 }, SYL[0]);
+            for (var s = 0; s < SYL.length; s++) {
+              tl.set($("f7_s" + s), { autoAlpha: 1 }, SYL[s]);
+              tl.set($("f7_c" + s), { autoAlpha: 1 }, SYL[s]);
+              tl.set($("f7_c" + s), { autoAlpha: 0 }, s + 1 < SYL.length ? SYL[s + 1] : QBOX);
+            }
+            // label-box snaps open from the left, then the '?' appears in it
+            tl.fromTo(
+              $("f7_qbg"),
+              { autoAlpha: 1, scaleX: 0 },
+              { autoAlpha: 1, scaleX: 1, duration: 0.12, ease: "power3.out", immediateRender: false },
+              QBOX,
+            );
+            tl.set($("f7_qtx"), { autoAlpha: 1 }, QBOX + 0.05);
+            // '?' wobbles once on the snare
+            var qbox = $("f7_qbox");
+            tl.fromTo(qbox, { rotation: 0 }, { rotation: -9, duration: 0.06, ease: "power2.out", immediateRender: false }, WOBBLE);
+            tl.fromTo(qbox, { rotation: -9 }, { rotation: 6, duration: 0.08, ease: "power2.inOut", immediateRender: false }, WOBBLE + 0.06);
+            tl.fromTo(qbox, { rotation: 6 }, { rotation: 0, duration: 0.14, ease: "power2.out", immediateRender: false }, WOBBLE + 0.14);
+            // hard cut out on the kick
+            tl.set($("f7_q"), { autoAlpha: 0 }, K1);
+
+            // ================= register flips (0ms on the hits) =================
+            var bg = $("f7_bg");
+            tl.set(bg, { backgroundColor: YELLOW }, K1);
+            tl.set(bg, { backgroundColor: INK }, K2);
+
+            // ================= K1 · mosaic-pack: 16 covers burst out of the center =================
+            var SLOT = 156,
+              GAP = 32,
+              ROW_CY = [418, 662];
+            var ROT = [-3, 2.5, -1.5, 4, -4, 1, -2.5, 3, 2, -3.5, 3.5, -1, 1.5, -2, 4, -3];
+            var flies = [];
+            var bumps = [];
+            for (var i = 0; i < 16; i++) {
+              var r = i < 8 ? 0 : 1;
+              var c = i % 8;
+              var cx = CX + (c - 3.5) * (SLOT + GAP);
+              var cy = ROW_CY[r];
+              var ring = Math.floor(Math.abs(c - 3.5)); // 0 = center columns, 3 = outer
+              var delay = ring * 0.032 + r * 0.012;
+              var fly = $("f7_fly" + i);
+              flies.push(fly);
+              bumps.push(fly.firstElementChild);
+              tl.fromTo(
+                fly,
+                { autoAlpha: 1, x: CX - cx, y: CY - cy, scale: 0.25, rotation: ROT[i] + (c < 4 ? -28 : 28) },
+                {
+                  autoAlpha: 1,
+                  x: 0,
+                  y: 0,
+                  scale: 1,
+                  rotation: ROT[i],
+                  duration: 0.34,
+                  ease: "back.out(1.5)",
+                  immediateRender: false,
+                },
+                K1 + delay,
+              );
+            }
+
+            // ================= K1 · particle-burst: ink confetti =================
+            var CF = [
+              // [centerX, centerY, finalRotation]
+              [230, 186, -20], [430, 250, 15], [690, 160, 30], [1000, 226, -10],
+              [1270, 150, 45], [1520, 248, 0], [1712, 190, -25], [180, 876, 20],
+              [420, 830, 10], [700, 930, 0], [950, 854, -15], [1200, 920, 35],
+              [1470, 840, 0], [1740, 890, 25], [164, 540, -30], [1760, 540, 0],
+            ];
+            for (var k = 0; k < CF.length; k++) {
+              var cf = $("f7_cf" + k);
+              var tx = CX - CF[k][0]; // offset back to the frame center
+              var ty = CY - CF[k][1];
+              var rot = CF[k][2];
+              var d = (k % 4) * 0.012;
+              // burst out from center (ink on yellow)
+              tl.fromTo(
+                cf,
+                { autoAlpha: 1, x: tx, y: ty, scale: 0, rotation: rot - 90 },
+                { autoAlpha: 1, x: 0, y: 0, scale: 1, rotation: rot, duration: 0.4, ease: "back.out(1.3)", immediateRender: false },
+                K1 + d,
+              );
+              // K2: colors reverse to yellow / paper, pop, and drift back a touch toward center
+              tl.set(cf, { color: k % 2 === 0 ? YELLOW : PAPER }, K2);
+              tl.fromTo(cf, { scale: 1 }, { scale: 1.25, duration: 0.07, ease: "power2.out", immediateRender: false }, K2);
+              tl.fromTo(cf, { scale: 1.25 }, { scale: 1, duration: 0.2, ease: "power2.out", immediateRender: false }, K2 + 0.07);
+              tl.fromTo(
+                cf,
+                { x: 0, y: 0, rotation: rot },
+                { x: tx * 0.08, y: ty * 0.08, rotation: rot - 25, duration: K3 - K2, ease: "power1.out", immediateRender: false },
+                K2,
+              );
+              // shrink out so the field is clear ON K3 — the parting rows sweep through these bands
+              // and dim to 40%, so nothing may sit behind them
+              tl.fromTo(cf, { scale: 1 }, { scale: 0, duration: 0.15, ease: "power2.in", immediateRender: false }, K3 - 0.15);
+              tl.set(cf, { autoAlpha: 0 }, K3);
+            }
+
+            // ================= K2 · flash-cut + every cover bumps +6% =================
+            var flash = $("f7_flash");
+            tl.set(flash, { autoAlpha: 1, backgroundColor: PAPER }, K2);
+            tl.set(flash, { autoAlpha: 0 }, K2 + F2);
+            tl.fromTo(bumps, { scale: 1 }, { scale: 1.06, duration: 0.08, ease: "power2.out", immediateRender: false }, K2);
+            tl.fromTo(bumps, { scale: 1.06 }, { scale: 1, duration: 0.32, ease: "power2.out", immediateRender: false }, K2 + 0.08);
+
+            // ================= K3 · grid parts to top / bottom and dims to 40% =================
+            // row0 top 318 → 112 (bbox ≥ 106), row1 top 562 → 768 (bottom 968, bbox ≤ 974)
+            var row0 = $("f7_row0"),
+              row1 = $("f7_row1");
+            tl.fromTo(row0, { y: 0 }, { y: -206, duration: 0.5, ease: "expo.out", immediateRender: false }, K3);
+            tl.fromTo(row1, { y: 0 }, { y: 206, duration: 0.5, ease: "expo.out", immediateRender: false }, K3);
+            tl.fromTo([row0, row1], { opacity: 1 }, { opacity: 0.4, duration: 0.35, ease: "power2.out", immediateRender: false }, K3);
+            // rows drift apart sideways through the swell, then freeze on the final kick
+            tl.fromTo(row0, { x: 0 }, { x: -24, duration: K4 - K3, ease: "none", immediateRender: false }, K3);
+            tl.fromTo(row1, { x: 0 }, { x: 24, duration: K4 - K3, ease: "none", immediateRender: false }, K3);
+
+            // ================= K3 · blur-resolve: the gold mark + wordmark =================
+            tl.fromTo(
+              $("f7_markres"),
+              { autoAlpha: 0, scale: 1.12, filter: "blur(16px)" },
+              { autoAlpha: 1, scale: 1, filter: "blur(0px)", duration: 0.45, ease: "power3.out", immediateRender: false },
+              K3 + 0.04,
+            );
+            tl.fromTo(
+              $("f7_wgolden"),
+              { autoAlpha: 0.2, x: -60, filter: "blur(18px)" },
+              { autoAlpha: 1, x: 0, filter: "blur(0px)", duration: 0.45, ease: "power3.out", immediateRender: false },
+              K3 + 0.08,
+            );
+            tl.fromTo(
+              $("f7_wrabbit"),
+              { autoAlpha: 0.2, x: 60, filter: "blur(18px)" },
+              { autoAlpha: 1, x: 0, filter: "blur(0px)", duration: 0.45, ease: "power3.out", immediateRender: false },
+              2.63, // 43.63 hi-hat
+            );
+            tl.fromTo(
+              $("f7_wdot"),
+              { autoAlpha: 1, scale: 0 },
+              { autoAlpha: 1, scale: 1, duration: 0.3, ease: "back.out(2.5)", immediateRender: false },
+              2.75,
+            );
+
+            // chip '골든래빗' snaps open on the 43.886 snare, centered alone (URL slot still empty)
+            var CHIP_T = 2.886;
+            var URL_W = 470,
+              ROW_GAP = 20;
+            var chip = $("f7_chip");
+            tl.set(chip, { x: (URL_W + ROW_GAP) / 2 }, CHIP_T);
+            tl.fromTo(
+              $("f7_chipbg"),
+              { autoAlpha: 1, scaleX: 0 },
+              { autoAlpha: 1, scaleX: 1, duration: 0.12, ease: "power3.out", immediateRender: false },
+              CHIP_T,
+            );
+            tl.set($("f7_chiptx"), { autoAlpha: 1 }, CHIP_T + 0.06);
+
+            // ================= K4 · final kick: flash, URL pops, icons + particles burst =================
+            tl.set(flash, { autoAlpha: 1, backgroundColor: YELLOW }, K4);
+            tl.set(flash, { autoAlpha: 0 }, K4 + F2);
+
+            // chip slides left to make room; URL label-box snaps open beside it
+            tl.fromTo(chip, { x: (URL_W + ROW_GAP) / 2 }, { x: 0, duration: 0.28, ease: "power3.out", immediateRender: false }, K4);
+            var urlBox = $("f7_url");
+            tl.fromTo(urlBox, { y: 14 }, { y: 0, duration: 0.32, ease: "back.out(2)", immediateRender: false }, K4);
+            tl.fromTo(
+              $("f7_urlbg"),
+              { autoAlpha: 1, scaleX: 0 },
+              { autoAlpha: 1, scaleX: 1, duration: 0.12, ease: "power3.out", immediateRender: false },
+              K4,
+            );
+            tl.set($("f7_urltx"), { autoAlpha: 1 }, K4 + 0.06);
+
+            // mark punches on the hit
+            var markBump = $("f7_markbump");
+            tl.fromTo(markBump, { scale: 1.08 }, { scale: 1, duration: 0.4, ease: "power3.out", immediateRender: false }, K4);
+
+            // eight icons burst outward from the lockup center and settle
+            var IC = [
+              [420, 392, -1], [262, 486, -1], [262, 610, -1], [420, 704, -1],
+              [1500, 392, 1], [1658, 486, 1], [1658, 610, 1], [1500, 704, 1],
+            ];
+            for (var n = 0; n < IC.length; n++) {
+              tl.fromTo(
+                $("f7_ic" + n),
+                { autoAlpha: 1, x: CX - IC[n][0], y: CY - IC[n][1], scale: 0.2, rotation: IC[n][2] * 120 },
+                {
+                  autoAlpha: 1,
+                  x: 0,
+                  y: 0,
+                  scale: 1,
+                  rotation: 0,
+                  duration: 0.62,
+                  ease: "back.out(1.7)",
+                  immediateRender: false,
+                },
+                K4 + (n % 4) * 0.02,
+              );
+            }
+
+            // small flat particles burst out and vanish (gone by ~5.2 → still hold to END)
+            var parts = $("f7_parts");
+            var NP = 18;
+            for (var p = 0; p < NP; p++) {
+              var el = document.createElement("i");
+              el.className = "f7-pt";
+              var sz = 8 + (p % 3) * 4;
+              el.style.width = sz + "px";
+              el.style.height = sz + "px";
+              el.style.marginLeft = -sz / 2 + "px";
+              el.style.marginTop = -sz / 2 + "px";
+              el.style.background = p % 3 === 1 ? PAPER : YELLOW;
+              el.style.borderRadius = p % 2 === 0 ? "0" : "50%";
+              parts.appendChild(el);
+              var ang = (p / NP) * Math.PI * 2 + 0.3;
+              var rx = 400 + (p % 4) * 70;
+              var ry = 150 + (p % 3) * 25;
+              tl.fromTo(
+                el,
+                { autoAlpha: 1, x: 0, y: 0, scale: 1 },
+                {
+                  autoAlpha: 1,
+                  x: Math.cos(ang) * rx,
+                  y: Math.sin(ang) * ry,
+                  scale: 0,
+                  duration: 0.72 + (p % 4) * 0.04,
+                  ease: "expo.out",
+                  immediateRender: false,
+                },
+                K4 + (p % 5) * 0.01,
+              );
+            }
+
+            // hold perfectly still to the end (the audio fades 45.6–46.6)
+            tl.set($("f7_g1"), { autoAlpha: 0 }, END);
+
+            window.__timelines["07-f7"] = tl;
+            tl.seek(0);
+          })();
+        </script>
+      </div>
+    </template>
+  </body>
+</html>

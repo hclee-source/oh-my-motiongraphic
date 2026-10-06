@@ -1,0 +1,114 @@
+{
+  "source": "videos/baro-series-169-boldbeat-1/assets/keyvisual/baro-kv-01.png",
+  "size": [
+    1536,
+    1024
+  ],
+  "layers": {
+    "kv-full": {
+      "box": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "file": "kv-full.png",
+      "kind": "feathered-full"
+    },
+    "spr-green": {
+      "box": [
+        1000,
+        80,
+        420,
+        380
+      ],
+      "file": "spr-green.png",
+      "kind": "feathered-sprite",
+      "center": [
+        1210.0,
+        270.0
+      ]
+    },
+    "spr-orange": {
+      "box": [
+        1060,
+        380,
+        450,
+        330
+      ],
+      "file": "spr-orange.png",
+      "kind": "feathered-sprite",
+      "center": [
+        1285.0,
+        545.0
+      ]
+    },
+    "spr-robot": {
+      "box": [
+        60,
+        500,
+        400,
+        410
+      ],
+      "file": "spr-robot.png",
+      "kind": "feathered-sprite",
+      "center": [
+        260.0,
+        705.0
+      ]
+    },
+    "spr-yellow": {
+      "box": [
+        220,
+        150,
+        460,
+        480
+      ],
+      "file": "spr-yellow.png",
+      "kind": "feathered-sprite",
+      "center": [
+        450.0,
+        390.0
+      ]
+    },
+    "spr-person": {
+      "box": [
+        400,
+        250,
+        760,
+        650
+      ],
+      "file": "spr-person.png",
+      "kind": "feathered-sprite",
+      "center": [
+        780.0,
+        575.0
+      ]
+    },
+    "spr-laptop": {
+      "box": [
+        400,
+        640,
+        560,
+        280
+      ],
+      "file": "spr-laptop.png",
+      "kind": "feathered-sprite",
+      "center": [
+        680.0,
+        780.0
+      ]
+    },
+    "card-full": {
+      "box": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "file": "card-full.jpg",
+      "kind": "card"
+    }
+  },
+  "suggested_ink": "#020304"
+}

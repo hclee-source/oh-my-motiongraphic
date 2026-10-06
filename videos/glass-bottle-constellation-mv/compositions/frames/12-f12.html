@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ko">
+  <head><meta charset="UTF-8" /><!-- Frame 12 (outro, track 170.05–180.6): vertical callback lyrics + the empty bottle lifting off the hill. --></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Noto Serif KR"; src: url("assets/fonts/NotoSerifKR-VF.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: block; }
+        @font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/CormorantGaramond-Italic-VF.woff2") format("woff2"); font-weight: 300 700; font-style: italic; font-display: block; }
+
+        #stage { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+        #f12_g1 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+        /* ---- the empty bottle on the hill crest (rides the sky layer's hill tilt, then lifts) ---- */
+        #f12_bride { position: absolute; left: 409px; top: 690px; width: 222px; height: 300px; opacity: 0; }
+        #f12_blift, #f12_bbob { position: absolute; left: 0; top: 0; width: 222px; height: 300px; }
+        #f12_bsvg { position: absolute; left: 0; top: 0; width: 222px; height: 300px; overflow: visible; }
+
+        /* ---- lyric columns (縦書き callback to f2) ---- */
+        #f12_lyrics { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+        .f12-shade { position: absolute; top: 120px; width: 220px; height: 760px; opacity: 0;
+                     background: radial-gradient(closest-side, rgba(8, 12, 34, 0.24) 0%, rgba(8, 12, 34, 0.1) 60%, rgba(8, 12, 34, 0) 100%); }
+        #f12_shade41 { left: 1390px; }
+        #f12_shade42 { left: 1250px; }
+        .f12-colwrap { position: absolute; top: 200px; width: 120px; display: flex; justify-content: center; align-items: flex-start; }
+        #f12_c41 { left: 1440px; } /* column centre x 1500 */
+        #f12_c42 { left: 1300px; } /* column centre x 1360 */
+        .f12-col { writing-mode: vertical-rl; text-orientation: upright; font-family: "Noto Serif KR", serif; font-weight: 300;
+                   font-size: 52px; line-height: 1; letter-spacing: 0.2em; color: #A9B3D6; white-space: nowrap; }
+        .f12-ch { display: inline-block; opacity: 0; color: #A9B3D6;
+                  text-shadow: rgba(220, 235, 255, 0) 0px 0px 0px, rgba(255, 210, 122, 0) 0px 0px 0px; }
+        .f12-we { margin-bottom: 24px; } /* word gap */
+        #f12_b4 { margin-bottom: 36px; } /* 금|가벼워: +12px so the gap stays a gap after 가벼워 floats up 12px */
+        .f12-key { font-size: 72.8px; font-weight: 400; } /* 1.4x, one weight step heavier */
+      </style>
+
+      <div id="stage" data-composition-id="12-f12" data-width="1920" data-height="1080" data-duration="10.55">
+        <div id="f12_g1">
+          <div id="f12_bride" data-layout-ignore="">
+            <div id="f12_blift">
+              <div id="f12_bbob">
+                <svg id="f12_bsvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 540" width="222" height="300" overflow="visible" data-layout-ignore="">
+                  <defs>
+                    <clipPath id="f12_bodyclip">
+                      <path d="M178 74 L178 150 C178 168 160 176 140 186 A170 170 0 1 0 260 186 C240 176 222 168 222 150 L222 74 Z"/>
+                    </clipPath>
+                    <linearGradient id="f12_glassgrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stop-color="#CFE4FF" stop-opacity="0.16"/>
+                      <stop offset="0.55" stop-color="#CFE4FF" stop-opacity="0.04"/>
+                      <stop offset="1" stop-color="#CFE4FF" stop-opacity="0.10"/>
+                    </linearGradient>
+                    <linearGradient id="f12_fillgrad" x1="0" y1="1" x2="0" y2="0">
+                      <stop offset="0" stop-color="#FFD27A" stop-opacity="0.55"/>
+                      <stop offset="1" stop-color="#FFF4D6" stop-opacity="0.18"/>
+                    </linearGradient>
+                    <radialGradient id="f12_glowgrad" cx="0.5" cy="0.5" r="0.5">
+                      <stop offset="0" stop-color="#FFF4D6" stop-opacity="0.95"/>
+                      <stop offset="0.35" stop-color="#FFD27A" stop-opacity="0.45"/>
+                      <stop offset="1" stop-color="#FFD27A" stop-opacity="0"/>
+                    </radialGradient>
+                  </defs>
+
+                  <!-- outer halo (outside the glass) — glow 0 in this frame -->
+                  <circle id="f12_halo" cx="200" cy="350" r="250" fill="url(#f12_glowgrad)" opacity="0"/>
+
+                  <!-- glass body -->
+                  <path id="f12_glass" d="M178 74 L178 150 C178 168 160 176 140 186 A170 170 0 1 0 260 186 C240 176 222 168 222 150 L222 74 Z"
+                        fill="url(#f12_glassgrad)" stroke="#DCEBFF" stroke-opacity="0.85" stroke-width="3" stroke-linejoin="round"/>
+
+                  <g clip-path="url(#f12_bodyclip)">
+                    <!-- light level: EMPTY (scaleY 0) -->
+                    <rect id="f12_fill" x="20" y="186" width="360" height="330" fill="url(#f12_fillgrad)" transform-origin="200 515" transform="scale(1 0)"/>
+                    <circle id="f12_glow" cx="200" cy="360" r="160" fill="url(#f12_glowgrad)" opacity="0"/>
+                    <g id="f12_stars">
+                      <!-- the ONE tiny sparkle left inside -->
+                      <g id="f12_spk">
+                        <circle id="f12_spk_halo" cx="212" cy="468" r="26" fill="url(#f12_glowgrad)" opacity="0.5"/>
+                        <g id="f12_spk_tw">
+                          <path transform="translate(212 468) scale(11)" d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6"/>
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+
+                  <!-- neck rim + base ellipse -->
+                  <ellipse cx="200" cy="74" rx="24" ry="5" fill="none" stroke="#DCEBFF" stroke-opacity="0.9" stroke-width="2.5"/>
+                  <ellipse cx="200" cy="505" rx="92" ry="9" fill="none" stroke="#DCEBFF" stroke-opacity="0.25" stroke-width="2"/>
+
+                  <!-- highlights -->
+                  <g id="f12_shine" fill="none" stroke="#FFFFFF" stroke-linecap="round">
+                    <path d="M86 318 A122 122 0 0 1 146 222" stroke-opacity="0.55" stroke-width="7"/>
+                    <path d="M80 360 A124 124 0 0 0 84 386" stroke-opacity="0.35" stroke-width="6"/>
+                    <path d="M300 440 A120 120 0 0 0 318 404" stroke-opacity="0.22" stroke-width="5"/>
+                    <path d="M186 92 L186 140" stroke-opacity="0.4" stroke-width="4"/>
+                  </g>
+
+                  <!-- cork: hidden — the bottle is open and empty -->
+                  <g id="f12_cork" display="none">
+                    <path d="M172 26 Q172 18 180 18 L220 18 Q228 18 228 26 L226 72 Q226 78 220 78 L180 78 Q174 78 174 72 Z" fill="#B98C62"/>
+                    <path d="M180 30 L220 30 M181 44 L219 44 M182 58 L218 58" stroke="#8E6644" stroke-width="2" stroke-opacity="0.6"/>
+                    <path d="M178 22 L178 74" stroke="#E2BE93" stroke-width="3" stroke-opacity="0.5" stroke-linecap="round"/>
+                  </g>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div id="f12_lyrics">
+            <div id="f12_shade41" class="f12-shade" data-layout-ignore=""></div>
+            <div id="f12_shade42" class="f12-shade" data-layout-ignore=""></div>
+
+            <!-- L41 "떨어진 별을 줍는 밤" -->
+            <div id="f12_c41" class="f12-colwrap">
+              <div class="f12-col"><span id="f12_a0" class="f12-ch">떨</span><span id="f12_a1" class="f12-ch">어</span><span id="f12_a2" class="f12-ch f12-we">진</span><span id="f12_a3" class="f12-ch f12-key">별</span><span id="f12_a4" class="f12-ch f12-we">을</span><span id="f12_a5" class="f12-ch">줍</span><span id="f12_a6" class="f12-ch f12-we">는</span><span id="f12_a7" class="f12-ch">밤</span></div>
+            </div>
+
+            <!-- L42 "오늘은 조금 가벼워" -->
+            <div id="f12_c42" class="f12-colwrap">
+              <div class="f12-col"><span id="f12_b0" class="f12-ch">오</span><span id="f12_b1" class="f12-ch">늘</span><span id="f12_b2" class="f12-ch f12-we">은</span><span id="f12_b3" class="f12-ch">조</span><span id="f12_b4" class="f12-ch f12-we">금</span><span id="f12_b5" class="f12-ch">가</span><span id="f12_b6" class="f12-ch">벼</span><span id="f12_b7" class="f12-ch">워</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var tl = gsap.timeline({ paused: true });
+          // frame-local seconds: local = track - 170.05
+          var END = 10.55;
+
+          // text-shadow states — always two shadows, written in computed-style order so tweens interpolate cleanly
+          var SH_NONE   = "rgba(220, 235, 255, 0) 0px 0px 0px, rgba(255, 210, 122, 0) 0px 0px 0px";
+          var SH_FLARE  = "rgba(255, 244, 214, 0.6) 0px 0px 16px, rgba(255, 210, 122, 0.22) 0px 0px 34px";
+          var SH_SOFT   = "rgba(220, 235, 255, 0.25) 0px 0px 14px, rgba(255, 210, 122, 0) 0px 0px 0px";          // frame.md text-soft
+          var SH_BREATH = "rgba(220, 235, 255, 0.38) 0px 0px 20px, rgba(255, 210, 122, 0.06) 0px 0px 30px";
+          var SH_DIM    = "rgba(220, 235, 255, 0.1) 0px 0px 10px, rgba(255, 210, 122, 0) 0px 0px 0px";
+          var SH_KFLARE = "rgba(255, 210, 122, 0.8) 0px 0px 22px, rgba(255, 210, 122, 0.36) 0px 0px 60px";
+          var SH_KEY    = "rgba(255, 210, 122, 0.45) 0px 0px 18px, rgba(255, 210, 122, 0.18) 0px 0px 46px";   // frame.md text-light
+          var SH_KDIM   = "rgba(255, 210, 122, 0.16) 0px 0px 14px, rgba(255, 210, 122, 0.05) 0px 0px 30px";
+
+          var C_DIM = "#A9B3D6", C_TEXT = "#F4F1EA", C_STAR = "#FFF4D6";
+          var GHOST = 0.72; // pre-lit opacity: the whole line is already readable before its words light
+
+          function ids(p, a, b) { var r = []; for (var i = a; i <= b; i++) r.push("#f12_" + p + i); return r; }
+          var L41 = ids("a", 0, 7), L42 = ids("b", 0, 7);
+
+          // group shown across the whole frame span
+          tl.set("#f12_g1", { autoAlpha: 1 }, 0);
+
+          // ── whole lyric layer: always drifting a little upward
+          tl.fromTo("#f12_lyrics", { y: 0 }, { y: -10, duration: END, ease: "sine.inOut" }, 0);
+
+          // ── "written by light": a column first resolves as a readable ghost (blur-resolve, top→bottom),
+          //    then each word lights at its sung onset, characters 0.05s apart (kinetic-letter-in, calm)
+          function ghostIn(list, t0, dur, each) {
+            tl.fromTo(list, { opacity: 0, y: -10, filter: "blur(8px)" },
+              { opacity: GHOST, y: 0, filter: "blur(0px)", duration: dur, ease: "power2.out", stagger: each }, t0);
+          }
+          function lightWord(list, t, key) {
+            for (var k = 0; k < list.length; k++) {
+              var el = list[k], tk = t + k * 0.05;
+              tl.fromTo(el, { opacity: GHOST, color: C_DIM }, { opacity: 1, color: key ? C_STAR : C_TEXT, duration: 0.35, ease: "power2.out", immediateRender: false }, tk);
+              tl.fromTo(el, { textShadow: SH_NONE }, { textShadow: key ? SH_KFLARE : SH_FLARE, duration: 0.16, ease: "power2.out", immediateRender: false }, tk);
+              tl.fromTo(el, { textShadow: key ? SH_KFLARE : SH_FLARE }, { textShadow: key ? SH_KEY : SH_SOFT, duration: 0.7, ease: "sine.out", immediateRender: false }, tk + 0.16);
+              tl.fromTo(el, { scale: 1 }, { scale: key ? 1.12 : 1.07, duration: 0.16, ease: "power2.out", immediateRender: false }, tk);
+              tl.fromTo(el, { scale: key ? 1.12 : 1.07 }, { scale: 1, duration: 0.5, ease: "sine.out", immediateRender: false }, tk + 0.16);
+            }
+          }
+
+          // ── L41 "떨어진 별을 줍는 밤" — onset 170.22 (local 0.17): ghost from local 0, readable by 0.17
+          ghostIn(L41, 0.0, 0.12, 0.007);
+          tl.fromTo("#f12_shade41", { opacity: 0 }, { opacity: 1, duration: 0.17, ease: "sine.out" }, 0.0);
+          lightWord(ids("a", 0, 2), 0.21, false);  // 떨어진 170.26
+          lightWord(ids("a", 3, 3), 1.69, true);   // 별     171.74 (keyword: 1.4x, gold)
+          lightWord(ids("a", 4, 4), 1.74, false);  // 을
+          lightWord(ids("a", 5, 6), 2.47, false);  // 줍는   172.52
+          lightWord(ids("a", 7, 7), 3.17, false);  // 밤     173.22 (held to 175.22)
+
+          // L41 readable through vocal_end 175.22 (local 5.17), then dims to .45 / text-dim as L42 arrives
+          tl.fromTo("#f12_c41", { opacity: 1 }, { opacity: 0.45, duration: 0.6, ease: "sine.inOut", immediateRender: false }, 5.2);
+          tl.fromTo("#f12_shade41", { opacity: 1 }, { opacity: 0.5, duration: 0.6, ease: "sine.inOut", immediateRender: false }, 5.2);
+          for (var i = 0; i < L41.length; i++) {
+            var isKey = (i === 3);
+            tl.fromTo(L41[i], { color: isKey ? C_STAR : C_TEXT, textShadow: isKey ? SH_KEY : SH_SOFT },
+              { color: C_DIM, textShadow: isKey ? SH_KDIM : SH_DIM, duration: 0.6, ease: "sine.inOut", immediateRender: false }, 5.2);
+          }
+
+          // ── L42 "오늘은 조금 가벼워" — onset 175.34 (local 5.29): ghost 175.09 → readable by 175.33
+          ghostIn(L42, 5.04, 0.16, 0.012);
+          tl.fromTo("#f12_shade42", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "sine.out" }, 5.04);
+          lightWord(ids("b", 0, 2), 5.33, false);  // 오늘은 175.38
+          lightWord(ids("b", 3, 4), 6.54, false);  // 조금   176.59
+          lightWord(ids("b", 5, 7), 7.24, false);  // 가벼워 177.29
+
+          // 가벼워: the three characters float up 12px — lighter
+          var KA = ids("b", 5, 7);
+          for (var j = 0; j < KA.length; j++) {
+            tl.fromTo(KA[j], { y: 0 }, { y: -12, duration: 2.2, ease: "sine.out", immediateRender: false }, 7.24 + j * 0.12);
+          }
+
+          // 178.85–180.2 still (piano alone): only a slow glow breath on L42
+          for (var m = 0; m < L42.length; m++) {
+            tl.fromTo(L42[m], { textShadow: SH_SOFT }, { textShadow: SH_BREATH, duration: 0.65, ease: "sine.inOut", yoyo: true, repeat: 1, immediateRender: false }, 8.85);
+          }
+
+          // 180.2–180.6 (local 10.15–10.55): both columns blur out; the bottle stays to the cut
+          tl.fromTo("#f12_c41", { opacity: 0.45, filter: "blur(0px)" }, { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "sine.in", immediateRender: false }, 10.15);
+          tl.fromTo("#f12_c42", { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "sine.in", immediateRender: false }, 10.15);
+          tl.fromTo("#f12_shade41", { opacity: 0.5 }, { opacity: 0, duration: 0.4, ease: "sine.in", immediateRender: false }, 10.15);
+          tl.fromTo("#f12_shade42", { opacity: 1 }, { opacity: 0, duration: 0.4, ease: "sine.in", immediateRender: false }, 10.15);
+
+          // ── the empty bottle: fades in 170.1–171.0 and rides the sky layer's hill tilt
+          //    (sky.html: #sky_hillwrap y 340→0, 170.6 + 4.0s power2.inOut) so it stays seated on the crest
+          tl.fromTo("#f12_bride", { opacity: 0 }, { opacity: 1, duration: 0.9, ease: "sine.out" }, 0.05);
+          tl.fromTo("#f12_bride", { y: 340 }, { y: 0, duration: 4.0, ease: "power2.inOut" }, 0.55);
+
+          // tiny sparkle inside breathes (finite yoyo, seek-safe)
+          tl.fromTo("#f12_spk_tw", { scale: 0.8, transformOrigin: "50% 50%" }, { scale: 1.25, transformOrigin: "50% 50%", duration: 0.9, ease: "sine.inOut", yoyo: true, repeat: 10 }, 0.6);
+          tl.fromTo("#f12_spk_halo", { opacity: 0.35 }, { opacity: 0.75, duration: 0.9, ease: "sine.inOut", yoyo: true, repeat: 10 }, 0.6);
+
+          // 가벼워 (177.29 → local 7.24): the bottle lifts off the hill 70px over 2.2s and tilts 4°
+          tl.fromTo("#f12_blift", { y: 0, rotation: 0, transformOrigin: "50% 50%" }, { y: -70, rotation: 4, transformOrigin: "50% 50%", duration: 2.2, ease: "sine.out" }, 7.24);
+          // the last sparkle drifts up inside the bottle with it
+          tl.fromTo("#f12_spk", { y: 0 }, { y: -30, duration: 2.6, ease: "sine.inOut" }, 7.4);
+          // floating breath, back to exactly 0 at the cut (exit: top 620, 4°)
+          tl.fromTo("#f12_bbob", { y: 0 }, { y: -5, duration: 0.62, ease: "sine.inOut" }, 9.3);
+          tl.fromTo("#f12_bbob", { y: -5 }, { y: 0, duration: 0.63, ease: "sine.inOut", immediateRender: false }, 9.92);
+
+          tl.set("#f12_g1", { autoAlpha: 0 }, END);
+
+          tl.seek(0);
+          window.__timelines = window.__timelines || {};
+          window.__timelines["12-f12"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- s04-chorus1 · chorus 1 lyric/light layer over footage (track 42.40–66.70, local = track − 42.40). Transparent stage.
+         Typography adapted from v1 04-f4 (mega 빛나라 in the stop, ≤0.25 s line swaps, heat on 타올라, whisper 괜찮아, 담을게 falls,
+         넘쳐 wobbles, 날려 lifts). No drawn objects: every light accent sits on a real light measured in the footage —
+         the landing star of s04b, the stars on the steps (s04c), the jar at her chest (s04d/e), the jar on the wall (s04g),
+         the packed jar (s04h), the shooting star (s04i) and the window stars (s04j). Each line re-places on its shot cut. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Noto Serif KR"; src: url("assets/fonts/NotoSerifKR-VF.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: block; }
+        @font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/CormorantGaramond-Italic-VF.woff2") format("woff2"); font-weight: 300 700; font-style: italic; font-display: block; }
+
+        #stage { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+
+        /* hidden until GSAP reveals it (autoAlpha) */
+        .l04-hide { opacity: 0; visibility: hidden; }
+
+        /* ── light accents: only on real lights of the footage (screen px measured on the rendered shots) ── */
+        #l04_fx { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; }
+        .l04-anchor { position: absolute; width: 0; height: 0; }
+        .l04-glow { position: absolute; border-radius: 50%; mix-blend-mode: screen; }
+        /* s04b · the shooting star lands on the grass at ≈ (830, 893) right after the slam */
+        #l04_land { left: 830px; top: 893px; }
+        #l04_lhalo { left: -150px; top: -150px; width: 300px; height: 300px;
+          background: radial-gradient(circle, rgba(255,250,235,0.85) 0%, rgba(255,226,160,0.45) 14%, rgba(255,210,122,0.14) 36%, rgba(255,210,122,0) 64%); }
+        .l04-pt { position: absolute; mix-blend-mode: screen; }
+        .l04-pt svg { display: block; filter: drop-shadow(0px 0px 5px rgba(255,210,122,0.9)); }
+        .l04-dot { border-radius: 50%; background: rgba(255,248,226,0.95);
+          box-shadow: 0 0 4px 1px rgba(255,236,190,0.85), 0 0 12px 4px rgba(255,210,122,0.35); }
+        /* glints (thin 4-point flare) — tracked on the steps' stars (s04c) and popped on the window stars (s04j) */
+        .l04-gl { position: absolute; left: -42px; top: -42px; width: 84px; height: 84px; mix-blend-mode: screen; }
+        .l04-gl svg { display: block; filter: drop-shadow(0px 0px 6px rgba(255,226,160,0.95)); }
+        /* the real jars' glow, answered softly */
+        #l04_jg9 { left: -130px; top: -130px; width: 260px; height: 260px;
+          background: radial-gradient(circle, rgba(255,244,214,0.6) 0%, rgba(255,210,122,0.32) 24%, rgba(255,210,122,0.08) 50%, rgba(255,210,122,0) 70%); }
+        #l04_jg10 { left: -190px; top: -190px; width: 380px; height: 380px;
+          background: radial-gradient(circle, rgba(255,214,150,0.6) 0%, rgba(255,180,92,0.34) 24%, rgba(255,150,70,0.1) 50%, rgba(255,150,70,0) 70%); }
+        #l04_jg12 { left: 1150px; top: 670px; width: 360px; height: 420px; border-radius: 50%;
+          background: radial-gradient(closest-side, rgba(255,244,214,0.55) 0%, rgba(255,210,122,0.3) 40%, rgba(255,210,122,0) 100%); }
+        #l04_jg13 { left: -280px; top: -320px; width: 560px; height: 640px;
+          background: radial-gradient(closest-side, rgba(255,244,214,0.4) 0%, rgba(255,210,122,0.22) 45%, rgba(255,210,122,0) 100%); }
+        #l04_head { left: -60px; top: -60px; width: 120px; height: 120px;
+          background: radial-gradient(circle, rgba(255,250,235,0.9) 0%, rgba(255,226,160,0.45) 20%, rgba(255,210,122,0.12) 45%, rgba(255,210,122,0) 70%); }
+        /* v3 heavy-overlay budget: motes are solid cores with a box-shadow glow (box-shadow is not a heavy overlay) */
+        .l04-mote { position: absolute; border-radius: 50%; mix-blend-mode: screen; transform-origin: 50% 50%;
+          background: rgba(255,248,226,0.95);
+          box-shadow: 0 0 4px 1px rgba(255,236,190,0.85), 0 0 12px 4px rgba(255,210,122,0.35); }
+        .l04-pop { position: absolute; border-radius: 50%; mix-blend-mode: screen;
+          background: radial-gradient(circle, rgba(255,250,235,0.95) 0%, rgba(255,232,180,0.55) 16%, rgba(255,210,122,0.16) 40%, rgba(255,210,122,0) 68%); }
+
+        /* ── legibility scrims (soft, dark, one per line) ── */
+        .l04-scrim { position: absolute;
+          background: radial-gradient(closest-side, rgba(5,7,20,0.58) 0%, rgba(5,7,20,0.44) 45%, rgba(5,7,20,0.18) 75%, rgba(5,7,20,0) 100%); }
+        #l04_s7 { left: 210px; top: -20px; width: 1500px; height: 620px; }
+        #l04_s8 { left: 180px; top: 350px; width: 1560px; height: 340px; }
+        #l04_s9 { left: 13px; top: 222px; width: 780px; height: 440px; }
+        #l04_s10 { left: 6px; top: 190px; width: 780px; height: 460px; }
+        #l04_s11 { left: 666px; top: 823px; width: 740px; height: 180px; }
+        #l04_s12 { left: 1266px; top: 40px; width: 620px; height: 560px; }
+        #l04_s13 { left: 1242px; top: 319px; width: 640px; height: 400px; }
+        #l04_s14 { left: 841px; top: 77px; width: 1100px; height: 320px; }
+
+        /* ── lyric lines: fixed-width glyph cells (1em Hangul advance) so every glyph position is known ── */
+        .l04-blk { position: absolute; font-family: "Noto Serif KR", serif; font-weight: 600; font-size: 96px; line-height: 1.12;
+          color: #F4F1EA; white-space: nowrap;
+          text-shadow: rgba(220,235,255,0.25) 0px 0px 14px, rgba(220,235,255,0) 0px 0px 40px, rgba(5,7,20,0.75) 0px 1px 2px, rgba(5,7,20,0.5) 0px 0px 10px; }
+        .l04-row { display: flex; justify-content: flex-start; align-items: baseline; white-space: nowrap; }
+        .l04-w { display: flex; align-items: baseline; flex: 0 0 auto; }
+        .l04-c { display: block; flex: 0 0 auto; width: 1em; text-align: center; }
+        .l04-sp { display: block; flex: 0 0 auto; width: 0.32em; }
+        .l04-kw { font-size: 1.3em; font-weight: 700; color: #FFF4D6; transform-origin: 50% 80%;
+          text-shadow: rgba(255,210,122,0.45) 0px 0px 18px, rgba(255,210,122,0.18) 0px 0px 46px, rgba(5,7,20,0.75) 0px 1px 2px, rgba(5,7,20,0.5) 0px 0px 10px; }
+
+        /* L7 빛나라 (mega) over her hair in s04a → the sky of s04b; 저 하늘 너머로 just above the horizon */
+        #l04_L7m { left: 0px; top: 110px; width: 1920px; font-size: 220px; font-weight: 800; line-height: 1; color: #FFF4D6; transform-origin: 960px 110px;
+          text-shadow: rgba(255,210,122,0.45) 0px 0px 18px, rgba(255,210,122,0.18) 0px 0px 46px, rgba(5,7,20,0.7) 0px 2px 4px, rgba(5,7,20,0.5) 0px 0px 22px; }
+        #l04_L7m .l04-c { width: 0.98em; }
+        #l04_L7m .l04-row, #l04_L7s .l04-row, #l04_L8 .l04-row { justify-content: center; }
+        #l04_L7s { left: 0px; top: 352px; width: 1920px; font-size: 76px; }
+        /* L8 rides over the glowing steps (s04c) */
+        #l04_L8 { left: 0px; top: 448px; width: 1920px; font-size: 96px; transform: translate(20px, 0px); }
+        /* L9 / L10 left of the jar she hugs (s04d, s04e), right-aligned toward its glow */
+        #l04_L9 { left: 140px; top: 330px; width: 500px; font-size: 84px; }
+        #l04_L10 { left: 140px; top: 300px; width: 490px; font-size: 88px; }
+        #l04_L9 .l04-row, #l04_L10 .l04-row, #l04_L14 .l04-row { justify-content: flex-end; }
+        #l04_L10_w3 { transform-origin: 100% 80%; }
+        /* L11 whisper on the path beside the small jar (s04f) */
+        #l04_L11 { left: 800px; top: 880px; font-size: 44px; font-weight: 300; line-height: 1.5; color: #A9B3D6;
+          text-shadow: rgba(220,235,255,0.18) 0px 0px 12px, rgba(220,235,255,0) 0px 0px 30px, rgba(5,7,20,0.85) 0px 1px 2px, rgba(5,7,20,0.6) 0px 0px 10px; }
+        #l04_L11 .l04-c { width: 1.12em; }
+        /* L12 stacked in the bokeh right of her hand; 담을게 is tossed into the jar on the wall (s04g) */
+        #l04_L12 { left: 1410px; top: 150px; width: 370px; font-size: 92px; }
+        /* L13 on the dark sweater right of the packed jar (s04h) */
+        #l04_L13 { left: 1360px; top: 420px; width: 420px; font-size: 76px; line-height: 1.3; }
+        #l04_L13_nw { transform-origin: 50% 100%; }
+        /* L14 in the clean sky above the shooting star's path (s04i) */
+        #l04_L14 { left: 990px; top: 170px; width: 780px; font-size: 92px; }
+      </style>
+
+      <div id="stage" data-composition-id="s04-chorus1" data-width="1920" data-height="1080" data-duration="24.3">
+        <div id="l04_fx" data-layout-ignore>
+          <div id="l04_land" class="l04-anchor">
+            <div id="l04_lhalo" class="l04-glow l04-hide"></div>
+          <div id="l04_p0" class="l04-pt l04-dot l04-hide" style="left:-5px; top:-5px; width:10px; height:10px"></div>
+          <div id="l04_p1" class="l04-pt l04-hide" style="left:-10.5px; top:-10.5px; width:21px; height:21px"><svg viewBox="-1.2 -1.2 2.4 2.4" width="21" height="21"><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6"/></svg></div>
+          <div id="l04_p2" class="l04-pt l04-dot l04-hide" style="left:-7px; top:-7px; width:14px; height:14px"></div>
+          <div id="l04_p3" class="l04-pt l04-dot l04-hide" style="left:-8px; top:-8px; width:16px; height:16px"></div>
+          <div id="l04_p4" class="l04-pt l04-hide" style="left:-9px; top:-9px; width:18px; height:18px"><svg viewBox="-1.2 -1.2 2.4 2.4" width="18" height="18"><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6"/></svg></div>
+          <div id="l04_p5" class="l04-pt l04-dot l04-hide" style="left:-6px; top:-6px; width:12px; height:12px"></div>
+          <div id="l04_p6" class="l04-pt l04-dot l04-hide" style="left:-7px; top:-7px; width:14px; height:14px"></div>
+          <div id="l04_p7" class="l04-pt l04-hide" style="left:-13.5px; top:-13.5px; width:27px; height:27px"><svg viewBox="-1.2 -1.2 2.4 2.4" width="27" height="27"><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6"/></svg></div>
+          <div id="l04_p8" class="l04-pt l04-dot l04-hide" style="left:-5px; top:-5px; width:10px; height:10px"></div>
+          <div id="l04_p9" class="l04-pt l04-dot l04-hide" style="left:-6px; top:-6px; width:12px; height:12px"></div>
+          <div id="l04_p10" class="l04-pt l04-hide" style="left:-12px; top:-12px; width:24px; height:24px"><svg viewBox="-1.2 -1.2 2.4 2.4" width="24" height="24"><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6"/></svg></div>
+          <div id="l04_p11" class="l04-pt l04-dot l04-hide" style="left:-8px; top:-8px; width:16px; height:16px"></div>
+          <div id="l04_p12" class="l04-pt l04-dot l04-hide" style="left:-5px; top:-5px; width:10px; height:10px"></div>
+          <div id="l04_p13" class="l04-pt l04-hide" style="left:-10.5px; top:-10.5px; width:21px; height:21px"><svg viewBox="-1.2 -1.2 2.4 2.4" width="21" height="21"><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6"/></svg></div>
+          </div>
+          <div id="l04_gl0" class="l04-gl l04-hide"><svg viewBox="-1.2 -1.2 2.4 2.4" width="84" height="84"><path d="M0,-1.15 L0.035,0 L0,1.15 L-0.035,0 Z M-1.15,0 L0,0.035 L1.15,0 L0,-0.035 Z" fill="#FFF4D6" fill-opacity="0.85"/><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(0.42)"/></svg></div>
+          <div id="l04_gl1" class="l04-gl l04-hide"><svg viewBox="-1.2 -1.2 2.4 2.4" width="84" height="84"><path d="M0,-1.15 L0.035,0 L0,1.15 L-0.035,0 Z M-1.15,0 L0,0.035 L1.15,0 L0,-0.035 Z" fill="#FFF4D6" fill-opacity="0.85"/><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(0.42)"/></svg></div>
+          <div id="l04_gl2" class="l04-gl l04-hide"><svg viewBox="-1.2 -1.2 2.4 2.4" width="84" height="84"><path d="M0,-1.15 L0.035,0 L0,1.15 L-0.035,0 Z M-1.15,0 L0,0.035 L1.15,0 L0,-0.035 Z" fill="#FFF4D6" fill-opacity="0.85"/><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(0.42)"/></svg></div>
+          <div id="l04_jg9" class="l04-glow l04-hide"></div>
+          <div id="l04_jg10" class="l04-glow l04-hide"></div>
+          <div id="l04_jg12" class="l04-glow l04-hide"></div>
+          <div id="l04_jg13" class="l04-glow l04-hide"></div>
+          <div id="l04_ov0" class="l04-mote l04-hide" style="left:-6px; top:-6px; width:12px; height:12px"></div>
+          <div id="l04_ov1" class="l04-mote l04-hide" style="left:-7.5px; top:-7.5px; width:15px; height:15px"></div>
+          <div id="l04_ov2" class="l04-mote l04-hide" style="left:-9px; top:-9px; width:18px; height:18px"></div>
+          <div id="l04_ov3" class="l04-mote l04-hide" style="left:-6px; top:-6px; width:12px; height:12px"></div>
+          <div id="l04_ov4" class="l04-mote l04-hide" style="left:-7.5px; top:-7.5px; width:15px; height:15px"></div>
+          <div id="l04_ov5" class="l04-mote l04-hide" style="left:-9px; top:-9px; width:18px; height:18px"></div>
+          <div id="l04_head" class="l04-glow l04-hide"></div>
+          <div id="l04_fm0" class="l04-mote l04-hide" style="left:-7px; top:-7px; width:14px; height:14px"></div>
+          <div id="l04_fm1" class="l04-mote l04-hide" style="left:-8.5px; top:-8.5px; width:17px; height:17px"></div>
+          <div id="l04_fm2" class="l04-mote l04-hide" style="left:-10px; top:-10px; width:20px; height:20px"></div>
+          <div id="l04_fm3" class="l04-mote l04-hide" style="left:-7px; top:-7px; width:14px; height:14px"></div>
+          <div id="l04_fm4" class="l04-mote l04-hide" style="left:-8.5px; top:-8.5px; width:17px; height:17px"></div>
+          <div id="l04_fm5" class="l04-mote l04-hide" style="left:-10px; top:-10px; width:20px; height:20px"></div>
+          <div id="l04_pg0" class="l04-pop l04-hide" style="left:691px; top:106px; width:108px; height:108px"></div>
+          <div id="l04_pk0" class="l04-gl l04-hide" style="left:711px; top:126px; width:68px; height:68px"><svg viewBox="-1.2 -1.2 2.4 2.4" width="68" height="68"><path d="M0,-1.15 L0.035,0 L0,1.15 L-0.035,0 Z M-1.15,0 L0,0.035 L1.15,0 L0,-0.035 Z" fill="#FFF4D6" fill-opacity="0.85"/><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(0.42)"/></svg></div>
+          <div id="l04_pg1" class="l04-pop l04-hide" style="left:1037px; top:195px; width:114px; height:114px"></div>
+          <div id="l04_pk1" class="l04-gl l04-hide" style="left:1058px; top:216px; width:72px; height:72px"><svg viewBox="-1.2 -1.2 2.4 2.4" width="72" height="72"><path d="M0,-1.15 L0.035,0 L0,1.15 L-0.035,0 Z M-1.15,0 L0,0.035 L1.15,0 L0,-0.035 Z" fill="#FFF4D6" fill-opacity="0.85"/><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(0.42)"/></svg></div>
+          <div id="l04_pg2" class="l04-pop l04-hide" style="left:1301px; top:114px; width:108px; height:108px"></div>
+          <div id="l04_pk2" class="l04-gl l04-hide" style="left:1321px; top:134px; width:68px; height:68px"><svg viewBox="-1.2 -1.2 2.4 2.4" width="68" height="68"><path d="M0,-1.15 L0.035,0 L0,1.15 L-0.035,0 Z M-1.15,0 L0,0.035 L1.15,0 L0,-0.035 Z" fill="#FFF4D6" fill-opacity="0.85"/><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(0.42)"/></svg></div>
+          <div id="l04_pg3" class="l04-pop l04-hide" style="left:1455px; top:54px; width:108px; height:108px"></div>
+          <div id="l04_pk3" class="l04-gl l04-hide" style="left:1475px; top:74px; width:68px; height:68px"><svg viewBox="-1.2 -1.2 2.4 2.4" width="68" height="68"><path d="M0,-1.15 L0.035,0 L0,1.15 L-0.035,0 Z M-1.15,0 L0,0.035 L1.15,0 L0,-0.035 Z" fill="#FFF4D6" fill-opacity="0.85"/><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(0.42)"/></svg></div>
+          <div id="l04_pg4" class="l04-pop l04-hide" style="left:851px; top:33px; width:156px; height:156px"></div>
+          <div id="l04_pk4" class="l04-gl l04-hide" style="left:880px; top:62px; width:99px; height:99px"><svg viewBox="-1.2 -1.2 2.4 2.4" width="99" height="99"><path d="M0,-1.15 L0.035,0 L0,1.15 L-0.035,0 Z M-1.15,0 L0,0.035 L1.15,0 L0,-0.035 Z" fill="#FFF4D6" fill-opacity="0.85"/><path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" fill="#FFF4D6" transform="scale(0.42)"/></svg></div>
+        </div>
+
+        <div id="l04_s7" class="l04-scrim l04-hide" data-layout-ignore></div>
+        <div id="l04_s8" class="l04-scrim l04-hide" data-layout-ignore></div>
+        <div id="l04_s9" class="l04-scrim l04-hide" data-layout-ignore></div>
+        <div id="l04_s10" class="l04-scrim l04-hide" data-layout-ignore></div>
+        <div id="l04_s11" class="l04-scrim l04-hide" data-layout-ignore></div>
+        <div id="l04_s12" class="l04-scrim l04-hide" data-layout-ignore></div>
+        <div id="l04_s13" class="l04-scrim l04-hide" data-layout-ignore></div>
+        <div id="l04_s14" class="l04-scrim l04-hide" data-layout-ignore></div>
+
+        <!-- L7 빛나라 저 하늘 너머로 -->
+        <div id="l04_L7m" class="l04-blk ">
+          <div class="l04-row" data-layout-allow-overlap><span class="l04-w" data-layout-allow-overlap><span id="l04_m0" class="l04-c" data-layout-allow-overlap>빛</span><span id="l04_m1" class="l04-c" data-layout-allow-overlap>나</span><span id="l04_m2" class="l04-c" data-layout-allow-overlap>라</span></span></div>
+        </div>
+        <div id="l04_L7s" class="l04-blk l04-hide">
+          <div class="l04-row" data-layout-allow-overlap><span class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>저</span></span><span class="l04-sp"></span><span id="l04_L7s_kw" class="l04-w l04-kw" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>하</span><span class="l04-c" data-layout-allow-overlap>늘</span></span><span class="l04-sp"></span><span class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>너</span><span class="l04-c" data-layout-allow-overlap>머</span><span class="l04-c" data-layout-allow-overlap>로</span></span></div>
+        </div>
+        <!-- L8 삼켜 둔 별들이 흘러가 -->
+        <div id="l04_L8" class="l04-blk l04-hide">
+          <div class="l04-row" data-layout-allow-overlap><span class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>삼</span><span class="l04-c" data-layout-allow-overlap>켜</span></span><span class="l04-sp"></span><span class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>둔</span></span><span class="l04-sp"></span><span id="l04_L8_kw" class="l04-w l04-kw" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>별</span><span class="l04-c" data-layout-allow-overlap>들</span><span class="l04-c" data-layout-allow-overlap>이</span></span><span class="l04-sp"></span><span class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>흘</span><span class="l04-c" data-layout-allow-overlap>러</span><span class="l04-c" data-layout-allow-overlap>가</span></span></div>
+        </div>
+        <!-- L9 목 끝에 걸린 작은 빛이 -->
+        <div id="l04_L9" class="l04-blk l04-hide">
+          <div class="l04-row" data-layout-allow-overlap><span class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>목</span></span><span class="l04-sp"></span><span class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>끝</span><span class="l04-c" data-layout-allow-overlap>에</span></span><span class="l04-sp"></span><span class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>걸</span><span class="l04-c" data-layout-allow-overlap>린</span></span></div>
+          <div class="l04-row" data-layout-allow-overlap><span class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>작</span><span class="l04-c" data-layout-allow-overlap>은</span></span><span class="l04-sp"></span><span id="l04_L9_kw" class="l04-w l04-kw" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>빛</span><span class="l04-c" data-layout-allow-overlap>이</span></span></div>
+        </div>
+        <!-- L10 밤새 뜨겁게 타올라 -->
+        <div id="l04_L10" class="l04-blk l04-hide">
+          <div class="l04-row" data-layout-allow-overlap><span class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>밤</span><span class="l04-c" data-layout-allow-overlap>새</span></span><span class="l04-sp"></span><span class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>뜨</span><span class="l04-c" data-layout-allow-overlap>겁</span><span class="l04-c" data-layout-allow-overlap>게</span></span></div>
+          <div class="l04-row" data-layout-allow-overlap><span id="l04_L10_w3" class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>타</span><span class="l04-c" data-layout-allow-overlap>올</span><span class="l04-c" data-layout-allow-overlap>라</span></span></div>
+        </div>
+        <!-- L11 괜찮아 아무도 모르게 (whisper) -->
+        <div id="l04_L11" class="l04-blk l04-hide">
+          <div class="l04-row" data-layout-allow-overlap><span class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>괜</span><span class="l04-c" data-layout-allow-overlap>찮</span><span class="l04-c" data-layout-allow-overlap>아</span></span><span class="l04-sp"></span><span class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>아</span><span class="l04-c" data-layout-allow-overlap>무</span><span class="l04-c" data-layout-allow-overlap>도</span></span><span class="l04-sp"></span><span class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>모</span><span class="l04-c" data-layout-allow-overlap>르</span><span class="l04-c" data-layout-allow-overlap>게</span></span></div>
+        </div>
+        <!-- L12 오늘도 병 속에 담을게 -->
+        <div id="l04_L12" class="l04-blk l04-hide" data-layout-allow-overlap>
+          <div id="l04_L12_r1" class="l04-row" data-layout-allow-overlap><span class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>오</span><span class="l04-c" data-layout-allow-overlap>늘</span><span class="l04-c" data-layout-allow-overlap>도</span></span></div>
+          <div id="l04_L12_r2" class="l04-row" data-layout-allow-overlap><span id="l04_L12_kw" class="l04-w l04-kw" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>병</span></span><span class="l04-sp"></span><span class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>속</span><span class="l04-c" data-layout-allow-overlap>에</span></span></div>
+          <div id="l04_L12_r3" class="l04-row" data-layout-allow-overlap><span class="l04-w" data-layout-allow-overlap><span id="l04_d0" class="l04-c" data-layout-allow-overlap>담</span><span id="l04_d1" class="l04-c" data-layout-allow-overlap>을</span><span id="l04_d2" class="l04-c" data-layout-allow-overlap>게</span></span></div>
+        </div>
+        <!-- L13 언젠가 넘쳐 버린다면 -->
+        <div id="l04_L13" class="l04-blk l04-hide">
+          <div class="l04-row" data-layout-allow-overlap><span class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>언</span><span class="l04-c" data-layout-allow-overlap>젠</span><span class="l04-c" data-layout-allow-overlap>가</span></span><span class="l04-sp"></span><span id="l04_L13_nw" class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>넘</span><span class="l04-c" data-layout-allow-overlap>쳐</span></span></div>
+          <div class="l04-row" data-layout-allow-overlap><span class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>버</span><span class="l04-c" data-layout-allow-overlap>린</span><span class="l04-c" data-layout-allow-overlap>다</span><span class="l04-c" data-layout-allow-overlap>면</span></span></div>
+        </div>
+        <!-- L14 그땐 날려 보낼게 -->
+        <div id="l04_L14" class="l04-blk l04-hide" data-layout-allow-overlap>
+          <div class="l04-row" data-layout-allow-overlap><span class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>그</span><span class="l04-c" data-layout-allow-overlap>땐</span></span><span class="l04-sp"></span><span id="l04_L14_kw" class="l04-w l04-kw" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>날</span><span class="l04-c" data-layout-allow-overlap>려</span></span><span class="l04-sp"></span><span class="l04-w" data-layout-allow-overlap><span class="l04-c" data-layout-allow-overlap>보</span><span class="l04-c" data-layout-allow-overlap>낼</span><span class="l04-c" data-layout-allow-overlap>게</span></span></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var T0 = 42.4, DUR = 24.3;
+          function L(t) { return Math.round((t - T0) * 1000) / 1000; } // track s -> local s
+          var seed = 4404; // fixed-seed LCG
+          function rnd() { seed = (Math.imul(1664525, seed) + 1013904223) >>> 0; return seed / 4294967296; }
+          // finite yoyo repeat (odd) that ends back on the start value inside `span`
+          function rep(span, d) { var r = Math.max(0, Math.floor(span / d) - 1); if (r % 2 === 0) r = Math.max(0, r - 1); return r; }
+          // piecewise-linear position along measured light samples [[track_s, x, y], ...]
+          function at(S, t) {
+            if (t <= S[0][0]) return [S[0][1], S[0][2]];
+            for (var i = 1; i < S.length; i++) {
+              if (t <= S[i][0]) { var a = S[i - 1], b = S[i], p = (t - a[0]) / (b[0] - a[0]); return [a[1] + (b[1] - a[1]) * p, a[2] + (b[2] - a[2]) * p]; }
+            }
+            var z = S[S.length - 1]; return [z[1], z[2]];
+          }
+
+          var SH0 = "rgba(220,235,255,0.25) 0px 0px 14px, rgba(220,235,255,0) 0px 0px 40px, rgba(5,7,20,0.75) 0px 1px 2px, rgba(5,7,20,0.5) 0px 0px 10px";
+          var KW0 = "rgba(255,210,122,0.45) 0px 0px 18px, rgba(255,210,122,0.18) 0px 0px 46px, rgba(5,7,20,0.75) 0px 1px 2px, rgba(5,7,20,0.5) 0px 0px 10px";
+          var KWPK = "rgba(255,226,160,0.9) 0px 0px 30px, rgba(255,210,122,0.42) 0px 0px 80px, rgba(5,7,20,0.75) 0px 1px 2px, rgba(5,7,20,0.5) 0px 0px 10px";
+          var MEGA0 = "rgba(255,210,122,0.45) 0px 0px 18px, rgba(255,210,122,0.18) 0px 0px 46px, rgba(5,7,20,0.7) 0px 2px 4px, rgba(5,7,20,0.5) 0px 0px 22px";
+          var MEGAPK = "rgba(255,226,160,0.9) 0px 0px 36px, rgba(255,210,122,0.42) 0px 0px 96px, rgba(5,7,20,0.7) 0px 2px 4px, rgba(5,7,20,0.5) 0px 0px 22px";
+          var MEGASL = "rgba(255,236,190,0.95) 0px 0px 48px, rgba(255,210,122,0.5) 0px 0px 120px, rgba(5,7,20,0.7) 0px 2px 4px, rgba(5,7,20,0.5) 0px 0px 22px";
+          var HEAT = "rgba(255,180,92,0.5) 0px 0px 18px, rgba(255,150,70,0.22) 0px 0px 48px, rgba(24,12,40,0.75) 0px 1px 2px, rgba(24,12,40,0.55) 0px 0px 10px";
+
+          var tl = gsap.timeline({ paused: true });
+          function bloom(sel, t, sc) {
+            tl.to(sel, { textShadow: KWPK, scale: sc, duration: 0.14, ease: "power2.out" }, t);
+            tl.to(sel, { textShadow: KW0, scale: 1, duration: 0.6, ease: "power2.inOut" }, t + 0.14);
+          }
+          // an accent's centre rides a measured light from t0 to t1 (track s)
+          function follow(el, S, t0, t1) {
+            var ts = [t0];
+            S.forEach(function (s) { if (s[0] > t0 && s[0] < t1) ts.push(s[0]); });
+            ts.push(t1);
+            var p0 = at(S, t0), p1 = at(S, ts[1]);
+            tl.fromTo(el, { x: p0[0], y: p0[1] }, { x: p1[0], y: p1[1], duration: L(ts[1]) - L(t0), ease: "none" }, L(t0));
+            for (var i = 2; i < ts.length; i++) {
+              var p = at(S, ts[i]);
+              tl.to(el, { x: p[0], y: p[1], duration: L(ts[i]) - L(ts[i - 1]), ease: "none" }, L(ts[i - 1]));
+            }
+          }
+          function scrimIn(el, t, a, d) { tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: a, duration: d || 0.24, ease: "power1.out" }, t); }
+          function scrimOut(el, t, d) { tl.to(el, { autoAlpha: 0, duration: d || 0.2, ease: "power1.in" }, t); }
+
+          // local anchors (line onsets = shot cuts)
+          var SLAM = L(43.5), LAND = L(43.56);
+          var X8 = L(45.38), X9 = L(48.17), X10 = L(50.95), X11 = L(53.23), X12 = L(55.9), X13 = L(58.64), X14 = L(62.17);
+
+          // ================= L7 — 빛나라 racks into focus out of the defocused close-up (s04a), slams on the cut =================
+          scrimIn("#l04_s7", 0, 0.85, 0.35);
+          var MS = [-110, 0, 110]; // letter-spacing .5em -> 0, done with transforms
+          ["#l04_m0", "#l04_m1", "#l04_m2"].forEach(function (s, i) {
+            var t = 0.02 + i * 0.025;
+            tl.fromTo(s, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.18, ease: "power2.out" }, t);
+            tl.fromTo(s, { x: MS[i], scale: 0.86, filter: "blur(20px)" }, { x: 0, scale: 1, filter: "blur(0px)", duration: 0.85, ease: "power4.out" }, t);
+          });
+          tl.fromTo("#l04_L7m", { textShadow: MEGA0 }, { textShadow: MEGAPK, duration: 0.4, ease: "power2.out" }, 0.06);
+          tl.to("#l04_L7m", { textShadow: MEGA0, duration: 0.55, ease: "sine.inOut" }, 0.46);
+          // band slam on the cut to s04b
+          tl.to("#l04_L7m", { scale: 1.1, textShadow: MEGASL, duration: 0.1, ease: "power4.out" }, SLAM);
+          tl.to("#l04_L7m", { scale: 1, duration: 0.7, ease: "elastic.out(1, 0.5)" }, SLAM + 0.1);
+          tl.to("#l04_L7m", { textShadow: MEGA0, duration: 0.8, ease: "power2.out" }, SLAM + 0.1);
+          tl.to("#l04_L7m", { y: -20, duration: L(45.08) - 1.25, ease: "sine.inOut" }, 1.25);
+
+          // the burst comes from the REAL star landing on the grass (s04b ≈ (830, 893) at 43.56)
+          tl.fromTo("#l04_lhalo", { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 0.55, scale: 1, duration: 0.18, ease: "power2.out" }, LAND - 0.01);
+          tl.to("#l04_lhalo", { autoAlpha: 0, scale: 1.5, duration: 0.95, ease: "sine.inOut" }, LAND + 0.17);
+          for (var i = 0; i < 14; i++) {
+            var a = (-148 + 116 * (i + 0.5) / 14 + (rnd() - 0.5) * 8) * Math.PI / 180;
+            var d = 170 + rnd() * 220, st = LAND + (i % 5) * 0.012, dur = 1.0 + rnd() * 0.4, p = "#l04_p" + i;
+            tl.fromTo(p, { autoAlpha: 0, scale: 0 }, { autoAlpha: 1, scale: 1, duration: 0.08, ease: "power2.out" }, st);
+            tl.fromTo(p, { x: 0, y: 0 }, { x: Math.cos(a) * d * 1.15, y: Math.sin(a) * d * 0.9, duration: dur, ease: "expo.out" }, st);
+            tl.to(p, { autoAlpha: 0, scale: 0.3, duration: dur - 0.4, ease: "power2.in" }, st + 0.4);
+          }
+
+          // "저 하늘 너머로" rises in on the cut, just above the horizon
+          tl.fromTo("#l04_L7s", { autoAlpha: 0, y: 28, filter: "blur(6px)" }, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.16, ease: "power2.out" }, SLAM);
+          tl.to("#l04_L7s", { y: -8, duration: L(45.08) - (SLAM + 0.16), ease: "sine.inOut" }, SLAM + 0.16);
+          bloom("#l04_L7s_kw", L(44.0), 1.06);
+          tl.to(["#l04_L7m", "#l04_L7s"], { autoAlpha: 0, filter: "blur(10px)", duration: 0.14, ease: "power2.in" }, X8 - 0.3);
+          scrimOut("#l04_s7", X8 - 0.3);
+
+          // ================= L8 — rides over the glowing steps; the real stars flow under it =================
+          scrimIn("#l04_s8", X8 - 0.2, 0.9);
+          tl.fromTo("#l04_L8", { autoAlpha: 0, filter: "blur(8px)" }, { autoAlpha: 1, filter: "blur(0px)", duration: 0.14, ease: "power2.out" }, X8 - 0.16);
+          tl.fromTo("#l04_L8", { x: 20, y: 0 }, { x: -20, y: 22, duration: (X9 - 0.3) - (X8 - 0.16), ease: "none" }, X8 - 0.16);
+          bloom("#l04_L8_kw", L(46.27), 1.08);
+          // 별들이: three of the steps' real stars glint (tracked as the camera tilts)
+          var GD = [[46.27, 788, 189], [46.45, 786, 226], [46.7, 787, 273], [47.0, 785, 338], [47.4, 788, 434]];
+          var GC = [[46.27, 856, 359], [46.45, 854, 396], [46.7, 856, 444], [47.0, 854, 509], [47.4, 856, 604]];
+          var GB = [[46.27, 1282, 584], [46.45, 1281, 620], [46.7, 1282, 669], [47.0, 1280, 732], [47.4, 1280, 829]];
+          [[GD, 46.27], [GC, 46.36], [GB, 46.45]].forEach(function (g, k) {
+            var el = "#l04_gl" + k, t = L(g[1]);
+            follow(el, g[0], g[1], g[1] + 0.8);
+            tl.fromTo(el, { autoAlpha: 0, scale: 0 }, { autoAlpha: 1, scale: 1, duration: 0.1, ease: "power2.out" }, t);
+            tl.to(el, { autoAlpha: 0.5, scale: 0.55, duration: 0.35, ease: "sine.inOut" }, t + 0.1);
+            tl.to(el, { autoAlpha: 0, scale: 0.3, duration: 0.34, ease: "power1.in" }, t + 0.45);
+          });
+          tl.to("#l04_L8", { autoAlpha: 0, filter: "blur(8px)", duration: 0.14, ease: "power2.in" }, X9 - 0.3);
+          scrimOut("#l04_s8", X9 - 0.3);
+
+          // ================= L9 — beside the jar at her throat; its real glow beats lub-dub =================
+          scrimIn("#l04_s9", X9 - 0.2, 0.9);
+          tl.fromTo("#l04_L9", { autoAlpha: 0, y: 16, filter: "blur(6px)" }, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.14, ease: "power2.out" }, X9 - 0.16);
+          tl.to("#l04_L9", { y: -6, duration: (X10 - 0.3) - (X9 - 0.02), ease: "sine.inOut" }, X9 - 0.02);
+          bloom("#l04_L9_kw", L(50.35), 1.06);
+          tl.to("#l04_L9", { autoAlpha: 0, filter: "blur(8px)", duration: 0.14, ease: "power2.in" }, X10 - 0.3);
+          scrimOut("#l04_s9", X10 - 0.3);
+          var J9 = [[48.17, 938, 522], [48.44, 912, 502], [48.8, 873, 495], [49.09, 869, 498], [49.4, 866, 469], [49.74, 860, 467],
+                    [50.05, 856, 476], [50.39, 824, 485], [50.7, 797, 488], [50.94, 789, 489]];
+          follow("#l04_jg9", J9, 48.17, 50.94);
+          tl.fromTo("#l04_jg9", { autoAlpha: 0, scale: 0.9 }, { autoAlpha: 0.32, scale: 1, duration: 0.25, ease: "power1.out" }, X9);
+          [48.44, 49.09, 49.74, 50.39].forEach(function (b, k) { // audiomap beats
+            var t = L(b), last = (k === 3);
+            tl.to("#l04_jg9", { autoAlpha: 0.62, scale: 1.2, duration: 0.07, ease: "power2.out" }, t);
+            tl.to("#l04_jg9", { autoAlpha: 0.32, scale: 1, duration: 0.13, ease: "power2.in" }, t + 0.07);
+            tl.to("#l04_jg9", { autoAlpha: 0.5, scale: 1.1, duration: 0.07, ease: "power2.out" }, t + 0.2);
+            tl.to("#l04_jg9", { autoAlpha: last ? 0 : 0.32, scale: last ? 0.9 : 1, duration: last ? 0.26 : 0.3, ease: "power2.inOut" }, t + 0.27);
+          });
+
+          // ================= L10 — heat: starlight -> amber, shimmer; the jar's glow warms =================
+          scrimIn("#l04_s10", X10 - 0.2, 0.9);
+          tl.fromTo("#l04_L10", { autoAlpha: 0, y: 16, filter: "blur(6px)" }, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.14, ease: "power2.out" }, X10 - 0.16);
+          tl.to("#l04_L10", { y: -10, duration: 10.69 - (X10 - 0.02), ease: "sine.inOut" }, X10 - 0.02);
+          var W10 = L(51.43);
+          gsap.utils.toArray("#l04_L10 .l04-c").forEach(function (c, j) {
+            tl.to(c, { color: "#FFC37C", duration: 0.7, ease: "sine.inOut" }, W10 + j * 0.06);
+            var d = 0.18 + (j % 3) * 0.03, s0 = W10 + 0.1 + j * 0.045;
+            tl.to(c, { y: -4.5, duration: d, ease: "sine.inOut", yoyo: true, repeat: rep(10.66 - s0, d) }, s0);
+          });
+          tl.fromTo("#l04_L10", { textShadow: SH0 }, { textShadow: HEAT, duration: 1.0, ease: "sine.inOut" }, W10);
+          tl.to("#l04_L10_w3", { scale: 1.15, duration: 0.4, ease: "back.out(2)" }, L(52.29));
+          tl.to("#l04_L10", { autoAlpha: 0, filter: "blur(8px)", y: -26, duration: 0.2, ease: "power2.in" }, 10.7);
+          scrimOut("#l04_s10", 10.7, 0.22);
+          var J10 = [[50.95, 791, 497], [51.43, 791, 499], [51.9, 824, 526], [52.29, 837, 529], [52.7, 840, 527], [53.22, 838, 528]];
+          follow("#l04_jg10", J10, 50.95, 53.22);
+          tl.fromTo("#l04_jg10", { autoAlpha: 0, scale: 0.9 }, { autoAlpha: 0.3, scale: 1, duration: 0.3, ease: "power1.out" }, X10);
+          tl.to("#l04_jg10", { autoAlpha: 0.75, scale: 1.25, duration: 0.95, ease: "sine.inOut" }, W10);
+          tl.to("#l04_jg10", { autoAlpha: 0.6, duration: 0.11, ease: "sine.inOut", yoyo: true, repeat: rep(0.6, 0.11) }, L(52.4));
+          tl.to("#l04_jg10", { autoAlpha: 0, scale: 1.1, duration: 0.24, ease: "power1.in" }, L(52.96));
+
+          // ================= L11 — a whisper on the path beside her small jar =================
+          scrimIn("#l04_s11", X11 - 0.24, 0.8);
+          tl.fromTo("#l04_L11", { autoAlpha: 0, y: 8, filter: "blur(6px)" }, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.2, ease: "power2.out" }, X11 - 0.22);
+          tl.to("#l04_L11", { x: 8, duration: L(55.72) - (X11 - 0.02), ease: "none" }, X11 - 0.02);
+          tl.to("#l04_L11", { autoAlpha: 0, filter: "blur(6px)", duration: 0.18, ease: "power2.in" }, L(55.72));
+          scrimOut("#l04_s11", L(55.72), 0.18);
+
+          // ================= L12 — 담을게: the letters are tossed into the real jar on the wall =================
+          scrimIn("#l04_s12", X12 - 0.28, 0.85);
+          tl.fromTo("#l04_L12", { autoAlpha: 0, y: 14, filter: "blur(6px)" }, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.22, ease: "power2.out" }, X12 - 0.25);
+          bloom("#l04_L12_kw", L(56.68), 1.08);
+          tl.fromTo("#l04_jg12", { autoAlpha: 0 }, { autoAlpha: 0.25, duration: 0.4, ease: "power1.out" }, X12);
+          tl.to("#l04_jg12", { autoAlpha: 0.6, duration: 0.12, ease: "power2.out" }, L(56.68));
+          tl.to("#l04_jg12", { autoAlpha: 0.3, duration: 0.6, ease: "sine.inOut" }, L(56.68) + 0.12);
+          var DROP0 = L(57.52), FALL = 0.55, D_CX = [1456, 1548, 1640], D_CY = 441; // glyph centres of 담을게 (row 3)
+          D_CX.forEach(function (cx, j) {
+            var el = "#l04_d" + j, t = DROP0 + j * 0.07;
+            var tx = 1300 + j * 30, ty = 892; // through the jar mouth (≈1338, 648) down into the glow of its stars
+            tl.to(el, { x: tx - cx, duration: FALL, ease: "sine.out" }, t);
+            tl.to(el, { y: ty - D_CY, duration: FALL, ease: "power2.in" }, t);
+            tl.to(el, { scale: 0.22, color: "#FFD27A", duration: FALL, ease: "power1.in" }, t);
+            tl.to(el, { autoAlpha: 0, duration: 0.16, ease: "power1.in" }, t + FALL - 0.16);
+          });
+          var LAND12 = DROP0 + FALL; // first glyph reaches the glow
+          tl.to("#l04_jg12", { autoAlpha: 0.62, duration: 0.08, ease: "power2.out" }, LAND12 - 0.04);
+          tl.to("#l04_jg12", { autoAlpha: 0.7, duration: 0.14, ease: "sine.inOut" }, LAND12 + 0.04);
+          tl.to("#l04_jg12", { autoAlpha: 0.42, duration: 0.17, ease: "sine.inOut" }, LAND12 + 0.18);
+          tl.to("#l04_jg12", { autoAlpha: 0, duration: 0.18, ease: "power1.in" }, L(58.42));
+          tl.to(["#l04_L12_r1", "#l04_L12_r2"], { autoAlpha: 0, duration: 0.18, ease: "power2.in" }, L(58.42));
+          scrimOut("#l04_s12", L(58.42), 0.18);
+
+          // ================= L13 — 넘쳐 wobbles; the packed jar's glow swells and spills =================
+          scrimIn("#l04_s13", X13 - 0.16, 0.7);
+          tl.fromTo("#l04_L13", { autoAlpha: 0, x: 24, filter: "blur(6px)" }, { autoAlpha: 1, x: 0, filter: "blur(0px)", duration: 0.14, ease: "power2.out" }, X13 - 0.14);
+          tl.to("#l04_L13", { y: -8, duration: L(62.0) - X13, ease: "sine.inOut" }, X13);
+          var W13 = L(59.64), tw = W13;
+          tl.to("#l04_L13_nw", { color: "#FFF4D6", textShadow: KW0, duration: 0.3, ease: "power1.out" }, W13);
+          [[1.16, 0.9, -4, 0.1], [0.88, 1.1, 3, 0.14], [1.08, 0.95, -2, 0.16], [0.96, 1.03, 1, 0.18], [1, 1, 0, 0.26]].forEach(function (w) {
+            tl.to("#l04_L13_nw", { scaleY: w[0], scaleX: w[1], skewX: w[2], duration: w[3], ease: "sine.inOut" }, tw);
+            tw += w[3];
+          });
+          tl.to("#l04_L13", { autoAlpha: 0, filter: "blur(8px)", x: 16, duration: 0.17, ease: "power2.in" }, L(62.0));
+          scrimOut("#l04_s13", L(62.0), 0.17);
+          var J13 = [[58.64, 965, 756], [60.26, 949, 795], [61.5, 955, 845], [62.17, 955, 880]];
+          follow("#l04_jg13", J13, 58.64, 62.17);
+          tl.fromTo("#l04_jg13", { autoAlpha: 0, scale: 0.95 }, { autoAlpha: 0.22, scale: 1, duration: 0.4, ease: "power1.out" }, X13);
+          tl.to("#l04_jg13", { autoAlpha: 0.55, scale: 1.12, duration: 1.6, ease: "sine.inOut" }, W13);
+          tl.to("#l04_jg13", { autoAlpha: 0, duration: 0.3, ease: "power1.in" }, L(61.86));
+          // a few light motes spill over the jar's shoulders and run down its sides
+          for (var k = 0; k < 6; k++) {
+            var side = (k % 2) ? 1 : -1, m = "#l04_ov" + k, mt = W13 + 0.1 + k * 0.2, mf = 1.5;
+            var sx = 960 + side * (230 + (k % 3) * 25), sy = 500 + (k % 3) * 30 + k * 12;
+            var ex = 960 + side * (390 + (k % 3) * 30), ey = 860 + (k % 3) * 40 + k * 12;
+            tl.fromTo(m, { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 0.9, scale: 1, duration: 0.15, ease: "power2.out" }, mt);
+            tl.fromTo(m, { x: sx }, { x: ex, duration: mf, ease: "sine.out" }, mt);
+            tl.fromTo(m, { y: sy }, { y: ey, duration: mf, ease: "power2.in" }, mt);
+            tl.to(m, { autoAlpha: 0, scale: 0.5, duration: 0.5, ease: "power1.in" }, mt + mf - 0.5);
+          }
+
+          // ================= L14 — 날려: light peels off the word and joins the real shooting star; 보낼게 lifts off =================
+          scrimIn("#l04_s14", X14 - 0.02, 0.85, 0.12);
+          tl.fromTo("#l04_L14", { autoAlpha: 0, y: 12, filter: "blur(5px)" }, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.1, ease: "power2.out" }, X14 - 0.02);
+          var NAL = L(62.69);
+          bloom("#l04_L14_kw", NAL, 1.1);
+          var HEAD = [[62.69, 588, 222], [63.0, 729, 323], [63.29, 845, 420], [63.51, 939, 533], [63.9, 1086, 749]]; // the star's head (s04i)
+          var FM0 = [[1268, 236], [1318, 262], [1388, 230], [1430, 258], [1300, 214], [1410, 210]];          // on 날 / 려
+          FM0.forEach(function (s, k) {
+            var el = "#l04_fm" + k, ts = L(62.72 + k * 0.04), te = L(63.12 + k * 0.06), h = at(HEAD, 63.12 + k * 0.06), fd = te - ts;
+            tl.fromTo(el, { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 1, scale: 1, duration: 0.1, ease: "power2.out" }, ts);
+            tl.fromTo(el, { x: s[0] }, { x: h[0] - 14 - k * 3, duration: fd, ease: "power2.in" }, ts);
+            tl.fromTo(el, { y: s[1] }, { y: s[1] - 36, duration: fd * 0.35, ease: "sine.out" }, ts);
+            tl.to(el, { y: h[1] - 10 - k * 2, duration: fd * 0.65, ease: "power2.in" }, ts + fd * 0.35);
+            tl.to(el, { autoAlpha: 0, scale: 0.5, duration: 0.1, ease: "power1.in" }, te - 0.06);
+          });
+          follow("#l04_head", HEAD, 63.0, 63.75);
+          tl.fromTo("#l04_head", { autoAlpha: 0, scale: 0.6 }, { autoAlpha: 0.7, scale: 1, duration: 0.14, ease: "power2.out" }, L(63.1));
+          tl.to("#l04_head", { autoAlpha: 0, scale: 1.3, duration: 0.33, ease: "sine.in" }, L(63.42));
+          var c14 = gsap.utils.toArray("#l04_L14 .l04-c");
+          c14.forEach(function (c, j) {
+            var t1 = L(63.51) + j * 0.06, t2 = L(64.2) + j * 0.015;
+            tl.to(c, { y: -26, x: -8, duration: Math.max(0.25, t2 - 0.01 - t1), ease: "sine.inOut" }, t1);
+            tl.to(c, { y: -110 - (j % 3) * 12, x: -30, duration: 0.5, ease: "power2.in" }, t2);
+            tl.fromTo(c, { filter: "blur(0px)" }, { filter: "blur(8px)", duration: 0.5, ease: "power2.in" }, t2);
+            tl.to(c, { autoAlpha: 0, duration: 0.26, ease: "power1.in" }, t2 + 0.06);
+          });
+          scrimOut("#l04_s14", L(64.2), 0.35);
+
+          // ================= interlude — one light pops on each hit, on a REAL star of the window sky (s04j) =================
+          var END = 24.0;
+          [64.40, 65.04, 65.69, 66.01, 66.34].forEach(function (hit, n) {
+            var h = L(hit), g = "#l04_pg" + n, k = "#l04_pk" + n;
+            tl.fromTo(g, { autoAlpha: 0, scale: 0.3 }, { autoAlpha: 1, scale: 1.15, duration: 0.08, ease: "power2.out" }, h);
+            tl.fromTo(k, { autoAlpha: 0, scale: 0 }, { autoAlpha: 1, scale: 1, duration: 0.08, ease: "power2.out" }, h);
+            var dd = Math.min(0.55, END - (h + 0.08) - 0.01);
+            if (dd > 0.05) {
+              tl.to(g, { autoAlpha: 0.45, scale: 0.75, duration: dd, ease: "power2.inOut" }, h + 0.08);
+              tl.to(k, { autoAlpha: 0.35, scale: 0.45, duration: dd, ease: "power2.inOut" }, h + 0.08);
+            }
+            tl.to([g, k], { autoAlpha: 0, duration: 0.25, ease: "power1.in" }, Math.max(END, h + 0.1));
+          });
+
+          tl.set({}, {}, DUR);
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s04-chorus1"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

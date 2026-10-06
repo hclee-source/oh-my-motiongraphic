@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <!-- Frame 3 — f3 · span [16.6, 22.98] track s · 6.38s · beat_cut
+         g1 = card-flyby fork (SERIES 02 · 바로바로), re-skinned LOUD in Golden Rabbit v2 Bold Beat.
+         Frame-local time = track_t − 16.6. The runtime clones ONLY the template element; everything lives inside it. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        /* Every f3 element sizes border-box (padded faces / bordered wires stay exactly card-sized). */
+        [class^="f3-"],
+        [class*=" f3-"] {
+          box-sizing: border-box;
+        }
+        /* Root: plain #stage (the compiler scopes this frame's CSS and moves the composition id). */
+        #stage {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #0B0B0B;
+          color: #F2F0EA;
+          font-family: "Paperlogy", sans-serif;
+        }
+        .f3-group {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+
+        /* ── Deck: push wrapper (hold push-in) → perspective → yawed scene ── */
+        .f3-push {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          transform-origin: 50% 55%;
+        }
+        .f3-persp {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          perspective: 2400px;
+          perspective-origin: 50% 55%;
+        }
+        .f3-scene {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          transform-style: preserve-3d;
+          transform: rotateY(-12deg);
+        }
+        .f3-card {
+          position: absolute;
+          left: 260px;
+          top: 145px;
+          width: 1400px;
+          height: 790px;
+          transform-origin: 50% 50%;
+          will-change: transform, opacity;
+          --wipe: 0;
+          --face: #FFE500;
+        }
+
+        /* Wireframe state (pre-landing): square paper-60 outline, mono slot number, ○ corner, rule. */
+        .f3-wire {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          border: 2px solid rgba(242, 240, 234, 0.6);
+          background: rgba(242, 240, 234, 0.02);
+          overflow: hidden;
+        }
+        .f3-wire-label {
+          position: absolute;
+          left: 68px;
+          top: 60px;
+          font-family: "IBM Plex Mono", monospace;
+          font-size: 26px;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          color: rgba(242, 240, 234, 0.6);
+        }
+        .f3-wire-ring {
+          position: absolute;
+          right: 68px;
+          top: 60px;
+          width: 34px;
+          height: 34px;
+          border: 2px solid rgba(242, 240, 234, 0.6);
+          border-radius: 50%;
+        }
+        .f3-wire-bar {
+          position: absolute;
+          left: 68px;
+          right: 68px;
+          bottom: 68px;
+          height: 2px;
+          background: rgba(242, 240, 234, 0.6);
+        }
+
+        /* Solid flat face (yellow / paper), square corners, hard 16px ink offset shadow.
+           Revealed by the template's angled clip-path wipe driven by --wipe; the polygon runs
+           32px below the box so the offset shadow is not clipped once the face is fully in. */
+        .f3-face {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background: var(--face);
+          color: #0B0B0B;
+          box-shadow: 16px 16px 0 #0B0B0B;
+          overflow: visible;
+          clip-path: polygon(
+            0% 0%,
+            calc(var(--wipe) * 200% - 30%) 0%,
+            calc(var(--wipe) * 200% - 80%) calc(100% + 32px),
+            0% calc(100% + 32px)
+          );
+        }
+        /* Solid INK wipe band: rides just behind the reveal edge (a thin face-colored sliver leads),
+           so an ink stripe visibly sweeps across the card and exits off its right edge at --wipe 1. */
+        .f3-band {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background: #0B0B0B;
+          clip-path: polygon(
+            calc(var(--wipe) * 200% - 50%) 0%,
+            calc(var(--wipe) * 200% - 35%) 0%,
+            calc(var(--wipe) * 200% - 85%) 100%,
+            calc(var(--wipe) * 200% - 100%) 100%
+          );
+        }
+
+        /* Label-box chip: ink box (scaleX pop from the left edge) + text in the card's register color. */
+        .f3-chip {
+          position: relative;
+          display: inline-block;
+          padding: 8px 16px 9px;
+          font-size: 30px;
+          line-height: 1.1;
+          white-space: nowrap;
+        }
+        .f3-chip-bg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background: #0B0B0B;
+          transform-origin: 0% 50%;
+        }
+        .f3-chip-tx {
+          position: relative;
+          display: block;
+          color: var(--face);
+        }
+        .f3-chip--latin .f3-chip-tx {
+          font-family: "Archivo Black", sans-serif;
+          font-weight: 400;
+          letter-spacing: 0.02em;
+          text-transform: uppercase;
+        }
+        .f3-chip--ko .f3-chip-tx {
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 800;
+        }
+
+        /* Card 1 — type card */
+        .f3-face--type {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .f3-face--type .f3-chip {
+          position: absolute;
+          left: 72px;
+          top: 64px;
+        }
+        .f3-type-stack {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .f3-type-light {
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 400;
+          font-size: 150px;
+          line-height: 1;
+          letter-spacing: -0.03em;
+          color: #0B0B0B;
+          white-space: nowrap;
+        }
+        .f3-type-heavy {
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 800;
+          font-size: 150px;
+          line-height: 1;
+          letter-spacing: -0.04em;
+          color: #0B0B0B;
+          white-space: nowrap;
+        }
+        .f3-mix {
+          position: relative;
+          display: inline-block;
+          margin-top: 40px;
+          padding: 10px 22px 14px;
+          font-size: 52px;
+          line-height: 1;
+          white-space: nowrap;
+        }
+        .f3-mix-tx {
+          position: relative;
+          display: block;
+        }
+        .f3-mix-caps {
+          font-family: "Archivo Black", sans-serif;
+          font-weight: 400;
+          letter-spacing: 0.02em;
+          color: var(--face);
+        }
+        .f3-mix-dot {
+          font-family: "Archivo Black", sans-serif;
+          font-weight: 400;
+          color: var(--face);
+          margin: 0 0.1em;
+        }
+        .f3-mix-low {
+          font-family: "Playfair Display", serif;
+          font-style: italic;
+          font-weight: 700;
+          color: #F2F0EA;
+        }
+
+        /* Cards 2–5 — book cards: real cover left, label-box tag + title + author right */
+        .f3-face--book {
+          display: flex;
+          align-items: center;
+          padding: 0 80px 0 84px;
+          gap: 72px;
+        }
+        .f3-cover {
+          display: block;
+          flex: none;
+          height: 600px;
+          width: auto;
+          box-shadow: 14px 14px 0 #0B0B0B;
+        }
+        .f3-info {
+          flex: 1;
+          min-width: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .f3-book-title {
+          margin-top: 30px;
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 800;
+          font-size: 88px;
+          line-height: 1.05;
+          letter-spacing: -0.03em;
+          color: #0B0B0B;
+          word-break: keep-all;
+          text-wrap: balance;
+          max-width: 100%;
+        }
+        .f3-author {
+          margin-top: 30px;
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 800;
+          font-size: 34px;
+          line-height: 1.25;
+          color: #0B0B0B;
+        }
+
+        /* Big yellow counter 01→05, top-left corner inside the safe area (0ms ticks). */
+        .f3-counter {
+          position: absolute;
+          left: 96px;
+          top: 136px;
+          width: 180px;
+          height: 124px;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 120px;
+          line-height: 1;
+          color: #FFE500;
+        }
+        .f3-count-n {
+          position: absolute;
+          left: 0;
+          top: 0;
+          display: block;
+          letter-spacing: -0.02em;
+          transform-origin: 0% 0%;
+          opacity: 0;
+        }
+
+        /* Confetti ✕ ● — flat CSS shapes (font-independent), clear of the cover and every readable word. */
+        .f3-cf {
+          position: absolute;
+          opacity: 0;
+        }
+        .f3-cf--x {
+          left: 1740px;
+          top: 150px;
+          width: 72px;
+          height: 72px;
+        }
+        .f3-cf-bar {
+          position: absolute;
+          left: 0;
+          top: 26px;
+          width: 72px;
+          height: 20px;
+          background: #FFE500;
+        }
+        .f3-cf-bar--a {
+          transform: rotate(45deg);
+        }
+        .f3-cf-bar--b {
+          transform: rotate(-45deg);
+        }
+        .f3-cf--dot {
+          left: 150px;
+          top: 842px;
+          width: 64px;
+          height: 64px;
+          border-radius: 50%;
+          background: #F2F0EA;
+        }
+      </style>
+
+      <div data-hf-id="hf-wxvf" id="stage" data-composition-id="03-f3" data-width="1920" data-height="1080" data-duration="6.38">
+        <!-- g1 · card-flyby · frame-local [0, 6.38] -->
+        <div data-hf-id="hf-chzn" class="f3-group" id="f3_g1">
+          <div data-hf-id="hf-vcoa" class="f3-push" id="f3_g1_push" data-layout-allow-overflow="">
+            <div data-hf-id="hf-gr9t" class="f3-persp" id="f3_g1_persp">
+              <div data-hf-id="hf-mn9u" class="f3-scene" id="f3_g1_scene" data-layout-allow-overflow="">
+                <!-- card 1 · type card · YELLOW -->
+                <div data-hf-id="hf-njof" class="f3-card" id="f3_g1_card0" data-layout-allow-overlap="" style="--face: #FFE500">
+                  <div data-hf-id="hf-etvx" class="f3-wire" id="f3_g1_wire0">
+                    <div data-hf-id="hf-j7vb" class="f3-wire-label" id="f3_g1_wlabel0" data-layout-allow-overlap="">01</div>
+                    <div data-hf-id="hf-k8xu" class="f3-wire-ring" id="f3_g1_wring0"></div>
+                    <div data-hf-id="hf-54i2" class="f3-wire-bar" id="f3_g1_wbar0"></div>
+                  </div>
+                  <div data-hf-id="hf-qle8" class="f3-face f3-face--type" id="f3_g1_face0">
+                    <div data-hf-id="hf-vjwp" class="f3-chip f3-chip--latin" id="f3_g1_tag0">
+                      <span data-hf-id="hf-h97q" class="f3-chip-bg" id="f3_g1_tag0_bg"></span>
+                      <span data-hf-id="hf-eayx" class="f3-chip-tx" id="f3_g1_tag0_tx">SERIES 02</span>
+                    </div>
+                    <div data-hf-id="hf-uziw" class="f3-type-stack" id="f3_g1_stack0">
+                      <div data-hf-id="hf-7b40" class="f3-type-light" id="f3_g1_light0">바로 배워</div>
+                      <div data-hf-id="hf-2g8u" class="f3-type-heavy" id="f3_g1_heavy0">바로 쓰는</div>
+                      <div data-hf-id="hf-wo2f" class="f3-mix" id="f3_g1_mix0">
+                        <span data-hf-id="hf-ieos" class="f3-chip-bg" id="f3_g1_mix0_bg"></span>
+                        <span data-hf-id="hf-86bg" class="f3-mix-tx" id="f3_g1_mix0_tx"><span data-hf-id="hf-nsj3" class="f3-mix-caps">BARO</span><span data-hf-id="hf-2bds" class="f3-mix-dot">·</span><span data-hf-id="hf-dc16" class="f3-mix-low">baro</span></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div data-hf-id="hf-o1ed" class="f3-band" id="f3_g1_band0"></div>
+                </div>
+
+                <!-- card 2 · 바로바로 클로드 · PAPER -->
+                <div data-hf-id="hf-jv80" class="f3-card" id="f3_g1_card1" data-layout-allow-overlap="" style="--face: #F2F0EA">
+                  <div data-hf-id="hf-e284" class="f3-wire" id="f3_g1_wire1">
+                    <div data-hf-id="hf-9khb" class="f3-wire-label" id="f3_g1_wlabel1" data-layout-allow-overlap="">02</div>
+                    <div data-hf-id="hf-o71v" class="f3-wire-ring" id="f3_g1_wring1"></div>
+                    <div data-hf-id="hf-ba7v" class="f3-wire-bar" id="f3_g1_wbar1"></div>
+                  </div>
+                  <div data-hf-id="hf-8y4g" class="f3-face f3-face--book" id="f3_g1_face1">
+                    <img data-hf-id="hf-2d3v" class="f3-cover" id="f3_g1_cover1" src="assets/covers/baro-claude.jpg" alt="바로바로 클로드 표지" style="transform: rotate(-2deg)">
+                    <div data-hf-id="hf-m6ns" class="f3-info" id="f3_g1_info1">
+                      <div data-hf-id="hf-skn4" class="f3-chip f3-chip--latin" id="f3_g1_tag1">
+                        <span data-hf-id="hf-kbfd" class="f3-chip-bg" id="f3_g1_tag1_bg"></span>
+                        <span data-hf-id="hf-nfo1" class="f3-chip-tx" id="f3_g1_tag1_tx">BEST</span>
+                      </div>
+                      <div data-hf-id="hf-xyd2" class="f3-book-title" id="f3_g1_title1">바로바로 클로드</div>
+                      <div data-hf-id="hf-0es8" class="f3-author" id="f3_g1_author1">차진우</div>
+                    </div>
+                  </div>
+                  <div data-hf-id="hf-n9qk" class="f3-band" id="f3_g1_band1"></div>
+                </div>
+
+                <!-- card 3 · 챗GPT X 덕테이프 X 코덱스 · YELLOW -->
+                <div data-hf-id="hf-g0b5" class="f3-card" id="f3_g1_card2" data-layout-allow-overlap="" style="--face: #FFE500">
+                  <div data-hf-id="hf-oxpr" class="f3-wire" id="f3_g1_wire2">
+                    <div data-hf-id="hf-furf" class="f3-wire-label" id="f3_g1_wlabel2" data-layout-allow-overlap="">03</div>
+                    <div data-hf-id="hf-dbk8" class="f3-wire-ring" id="f3_g1_wring2"></div>
+                    <div data-hf-id="hf-0eq8" class="f3-wire-bar" id="f3_g1_wbar2"></div>
+                  </div>
+                  <div data-hf-id="hf-hm0b" class="f3-face f3-face--book" id="f3_g1_face2">
+                    <img data-hf-id="hf-s7tk" class="f3-cover" id="f3_g1_cover2" src="assets/covers/baro-chatgpt-codex.jpg" alt="챗GPT X 덕테이프 X 코덱스 표지" style="transform: rotate(2deg)">
+                    <div data-hf-id="hf-uujn" class="f3-info" id="f3_g1_info2">
+                      <div data-hf-id="hf-21k3" class="f3-chip f3-chip--ko" id="f3_g1_tag2">
+                        <span data-hf-id="hf-sch4" class="f3-chip-bg" id="f3_g1_tag2_bg"></span>
+                        <span data-hf-id="hf-5cae" class="f3-chip-tx" id="f3_g1_tag2_tx">바로바로</span>
+                      </div>
+                      <div data-hf-id="hf-mkh5" class="f3-book-title" id="f3_g1_title2">챗GPT X 덕테이프 X 코덱스</div>
+                      <div data-hf-id="hf-4oi6" class="f3-author" id="f3_g1_author2">박현규</div>
+                    </div>
+                  </div>
+                  <div data-hf-id="hf-vxmf" class="f3-band" id="f3_g1_band2"></div>
+                </div>
+
+                <!-- card 4 · 유튜브 AI 비서 고용하기 · PAPER -->
+                <div data-hf-id="hf-3zeu" class="f3-card" id="f3_g1_card3" data-layout-allow-overlap="" style="--face: #F2F0EA">
+                  <div data-hf-id="hf-irzy" class="f3-wire" id="f3_g1_wire3">
+                    <div data-hf-id="hf-5cmz" class="f3-wire-label" id="f3_g1_wlabel3" data-layout-allow-overlap="">04</div>
+                    <div data-hf-id="hf-e381" class="f3-wire-ring" id="f3_g1_wring3"></div>
+                    <div data-hf-id="hf-16e1" class="f3-wire-bar" id="f3_g1_wbar3"></div>
+                  </div>
+                  <div data-hf-id="hf-dnwa" class="f3-face f3-face--book" id="f3_g1_face3">
+                    <img data-hf-id="hf-h8mc" class="f3-cover" id="f3_g1_cover3" src="assets/covers/youtube-ai-secretary.jpg" alt="유튜브 AI 비서 고용하기 표지" style="transform: rotate(-2deg)">
+                    <div data-hf-id="hf-qwfm" class="f3-info" id="f3_g1_info3">
+                      <div data-hf-id="hf-vvua" class="f3-chip f3-chip--ko" id="f3_g1_tag3">
+                        <span data-hf-id="hf-urob" class="f3-chip-bg" id="f3_g1_tag3_bg"></span>
+                        <span data-hf-id="hf-81pd" class="f3-chip-tx" id="f3_g1_tag3_tx">AI 비서</span>
+                      </div>
+                      <div data-hf-id="hf-q329" class="f3-book-title" id="f3_g1_title3">유튜브 AI 비서 고용하기</div>
+                      <div data-hf-id="hf-gd5x" class="f3-author" id="f3_g1_author3">조현정</div>
+                    </div>
+                  </div>
+                  <div data-hf-id="hf-rzie" class="f3-band" id="f3_g1_band3"></div>
+                </div>
+
+                <!-- card 5 · 네이버 블로그 · YELLOW (held final card) -->
+                <div data-hf-id="hf-2723" class="f3-card" id="f3_g1_card4" data-layout-allow-overlap="" style="--face: #FFE500">
+                  <div data-hf-id="hf-tnhl" class="f3-wire" id="f3_g1_wire4">
+                    <div data-hf-id="hf-yun3" class="f3-wire-label" id="f3_g1_wlabel4" data-layout-allow-overlap="">05</div>
+                    <div data-hf-id="hf-5fc6" class="f3-wire-ring" id="f3_g1_wring4"></div>
+                    <div data-hf-id="hf-sii6" class="f3-wire-bar" id="f3_g1_wbar4"></div>
+                  </div>
+                  <div data-hf-id="hf-x3sd" class="f3-face f3-face--book" id="f3_g1_face4">
+                    <img data-hf-id="hf-vjft" class="f3-cover" id="f3_g1_cover4" src="assets/covers/naver-blog.jpg" alt="네이버 블로그 표지" style="transform: rotate(2deg)">
+                    <div data-hf-id="hf-84px" class="f3-info" id="f3_g1_info4">
+                      <div data-hf-id="hf-fbqd" class="f3-chip f3-chip--ko" id="f3_g1_tag4">
+                        <span data-hf-id="hf-tzxm" class="f3-chip-bg" id="f3_g1_tag4_bg"></span>
+                        <span data-hf-id="hf-8yb9" class="f3-chip-tx" id="f3_g1_tag4_tx">돈이 되네?</span>
+                      </div>
+                      <div data-hf-id="hf-mjkx" class="f3-book-title" id="f3_g1_title4">네이버 블로그</div>
+                      <div data-hf-id="hf-ql44" class="f3-author" id="f3_g1_author4">정소희</div>
+                    </div>
+                  </div>
+                  <div data-hf-id="hf-2v01" class="f3-band" id="f3_g1_band4"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- counter 01→05 (stacked spans, swapped at 0ms with tl.set) -->
+          <div data-hf-id="hf-kzph" class="f3-counter" id="f3_g1_counter">
+            <span data-hf-id="hf-su2e" class="f3-count-n" id="f3_g1_count0">01</span>
+            <span data-hf-id="hf-pcn2" class="f3-count-n" id="f3_g1_count1">02</span>
+            <span data-hf-id="hf-0le6" class="f3-count-n" id="f3_g1_count2">03</span>
+            <span data-hf-id="hf-ibxy" class="f3-count-n" id="f3_g1_count3">04</span>
+            <span data-hf-id="hf-hnzi" class="f3-count-n" id="f3_g1_count4">05</span>
+          </div>
+
+          <!-- confetti ✕ ● (pop on the 22.64 kick) -->
+          <div data-hf-id="hf-zrzk" class="f3-cf f3-cf--x" id="f3_g1_cfx">
+            <span data-hf-id="hf-cwg6" class="f3-cf-bar f3-cf-bar--a"></span>
+            <span data-hf-id="hf-8yc5" class="f3-cf-bar f3-cf-bar--b"></span>
+          </div>
+          <div data-hf-id="hf-wz4u" class="f3-cf f3-cf--dot" id="f3_g1_cfdot"></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // ══════════════════════════════════════════════════════════════════
+          //  f3 · CARD FLYBY fork — accelerating 3D deck cascade, Bold Beat skin
+          //  Frame-local seconds (track − 16.6). Host's global gsap. Seek-safe:
+          //  no randomness, every state reachable from the paused timeline.
+          // ══════════════════════════════════════════════════════════════════
+          window.__timelines = window.__timelines || {};
+
+          var FID = "03-f3";
+          var DUR = 6.38; // == data-duration (span 16.6 → 22.98)
+          var N = 5;
+          // role_bindings.landing: track 16.97, 18.39, 19.81, 20.73, 21.69 → local
+          var LAND = [0.37, 1.79, 3.21, 4.13, 5.09];
+          var MIX_POP = 0.838; // 17.438 snare: BARO·baro chip snaps in one beat after card 1
+          var CONFETTI = 6.04; // 22.64 kick
+          var HOLD_FROM = LAND[N - 1]; // hold 21.69 → 22.98
+
+          // Template transition duration: gap × 0.32, clamped 0.12–0.42. Card 1 is capped by its
+          // lead-in (it must land ON 16.97), and durations never grow so the deck keeps accelerating.
+          var TD = [];
+          for (var i = 0; i < N; i++) {
+            var gap = i === 0 ? LAND[1] - LAND[0] : LAND[i] - LAND[i - 1];
+            var d = Math.max(0.12, Math.min(0.42, gap * 0.32));
+            if (i === 0) d = Math.min(d, LAND[0]);
+            else d = Math.min(d, TD[i - 1]);
+            TD.push(d);
+          }
+
+          // Template SLOT poses (depth column; behind cards tilt back, exit tumbles toward camera).
+          var SLOT = {
+            far: { x: 360, y: 380, z: -1080, rotX: 84, scale: 0.74, opacity: 0, zi: 60 },
+            s3: { x: 280, y: 290, z: -820, rotX: 66, scale: 0.8, opacity: 0.32, zi: 70 },
+            s2: { x: 195, y: 200, z: -560, rotX: 46, scale: 0.86, opacity: 0.58, zi: 80 },
+            s1: { x: 105, y: 105, z: -290, rotX: 22, scale: 0.93, opacity: 0.85, zi: 90 },
+            s0: { x: 0, y: 0, z: 0, rotX: 0, scale: 1.0, opacity: 1.0, zi: 100 },
+            exit: { x: -90, y: 620, z: 420, rotX: -88, scale: 1.1, opacity: 0, zi: 110 },
+          };
+          function poseForRel(rel) {
+            if (rel <= -1) return SLOT.exit;
+            if (rel === 0) return SLOT.s0;
+            if (rel === 1) return SLOT.s1;
+            if (rel === 2) return SLOT.s2;
+            if (rel === 3) return SLOT.s3;
+            return SLOT.far;
+          }
+          function cardSel(k) {
+            return "#f3_g1_card" + k;
+          }
+
+          var tl = gsap.timeline({ paused: true });
+
+          // group gate (single group spans the whole frame; the host window closes it at 6.38)
+          tl.set("#f3_g1", { autoAlpha: 1 }, 0);
+
+          function poseTween(k, slot, t, dur, ease) {
+            tl.set(cardSel(k), { zIndex: slot.zi }, t);
+            tl.to(
+              cardSel(k),
+              {
+                x: slot.x,
+                y: slot.y,
+                z: slot.z,
+                rotationX: slot.rotX,
+                scale: slot.scale,
+                opacity: slot.opacity,
+                force3D: true,
+                duration: dur,
+                ease: ease || "power2.inOut",
+              },
+              t,
+            );
+          }
+
+          // ── initial pose: nothing landed; card j waits at rel j+1 (card 1 at s1) ──
+          for (var j = 0; j < N; j++) {
+            var s = poseForRel(j + 1);
+            var props = {
+              x: s.x,
+              y: s.y,
+              z: s.z,
+              rotationX: s.rotX,
+              scale: s.scale,
+              opacity: s.opacity,
+              zIndex: s.zi,
+              force3D: true,
+              "--wipe": 0,
+            };
+            gsap.set(cardSel(j), props);
+            tl.set(cardSel(j), props, 0);
+          }
+
+          // initial hidden states for chips, counter digits, confetti; push at rest
+          var chipBgs = ["#f3_g1_tag0_bg", "#f3_g1_mix0_bg", "#f3_g1_tag1_bg", "#f3_g1_tag2_bg", "#f3_g1_tag3_bg", "#f3_g1_tag4_bg"];
+          var chipTxs = ["#f3_g1_tag0_tx", "#f3_g1_mix0_tx", "#f3_g1_tag1_tx", "#f3_g1_tag2_tx", "#f3_g1_tag3_tx", "#f3_g1_tag4_tx"];
+          var counts = ["#f3_g1_count0", "#f3_g1_count1", "#f3_g1_count2", "#f3_g1_count3", "#f3_g1_count4"];
+          var init = [
+            [chipBgs, { scaleX: 0 }],
+            [chipTxs, { opacity: 0 }],
+            [counts, { opacity: 0, scale: 1 }],
+            [["#f3_g1_cfx", "#f3_g1_cfdot"], { opacity: 0, scale: 0, x: 0, y: 0, rotation: 0 }],
+            [["#f3_g1_push"], { scale: 1 }],
+          ];
+          for (var q = 0; q < init.length; q++) {
+            gsap.set(init[q][0], init[q][1]);
+            tl.set(init[q][0], init[q][1], 0);
+          }
+
+          // label-box pop: ink box scaleX 0→1 from the left edge (~0.12s), text cuts in at 0ms
+          function chipPop(bg, tx, t) {
+            tl.fromTo(bg, { scaleX: 0 }, { scaleX: 1, duration: 0.12, ease: "power3.out", immediateRender: false }, t);
+            tl.set(tx, { opacity: 1 }, t + 0.05);
+          }
+
+          // ── per-landing orchestration (template): window [L-1 .. L+4] ──
+          for (var L = 0; L < N; L++) {
+            var dur = TD[L];
+            var t = Math.max(0, LAND[L] - dur);
+            for (var k = L - 1; k <= L + 4; k++) {
+              if (k < 0 || k >= N) continue;
+              var rel = k - L;
+              var ease = rel === 0 ? "power3.out" : rel < 0 ? "power2.in" : "power2.inOut";
+              poseTween(k, poseForRel(rel), t, dur, ease);
+            }
+            // solid face wipes in (ink band sweeps across it) as the card rolls up; done ON the landing
+            tl.to(cardSel(L), { "--wipe": 1, duration: dur * 0.85, ease: "power2.inOut" }, t + dur * 0.15);
+
+            // counter ticks at 0ms on the landing (each digit punches its own scale: seek-safe)
+            if (L > 0) tl.set(counts[L - 1], { opacity: 0 }, LAND[L]);
+            tl.set(counts[L], { opacity: 1 }, LAND[L]);
+            tl.fromTo(counts[L], { scale: 1.16 }, { scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false }, LAND[L]);
+          }
+
+          // chips snap in on their beats
+          chipPop("#f3_g1_tag0_bg", "#f3_g1_tag0_tx", LAND[0]);
+          chipPop("#f3_g1_mix0_bg", "#f3_g1_mix0_tx", MIX_POP);
+          chipPop("#f3_g1_tag1_bg", "#f3_g1_tag1_tx", LAND[1]);
+          chipPop("#f3_g1_tag2_bg", "#f3_g1_tag2_tx", LAND[2]);
+          chipPop("#f3_g1_tag3_bg", "#f3_g1_tag3_tx", LAND[3]);
+          chipPop("#f3_g1_tag4_bg", "#f3_g1_tag4_tx", LAND[4]);
+
+          // ── hold 21.69 → 22.98: final card holds while the deck pushes in a hair ──
+          tl.to("#f3_g1_push", { scale: 1.02, duration: DUR - HOLD_FROM, ease: "none" }, HOLD_FROM);
+
+          // ── confetti ✕ ● pop with overshoot on 22.64, then drift slightly to the cut ──
+          tl.set(["#f3_g1_cfx", "#f3_g1_cfdot"], { opacity: 1 }, CONFETTI);
+          tl.fromTo("#f3_g1_cfx", { scale: 0, rotation: -40 }, { scale: 1, rotation: 0, duration: 0.22, ease: "back.out(2.4)", immediateRender: false }, CONFETTI);
+          tl.fromTo("#f3_g1_cfdot", { scale: 0 }, { scale: 1, duration: 0.22, ease: "back.out(2.4)", immediateRender: false }, CONFETTI + 0.03);
+          tl.to("#f3_g1_cfx", { x: 8, y: -12, duration: DUR - CONFETTI, ease: "none" }, CONFETTI);
+          tl.to("#f3_g1_cfdot", { x: -6, y: -10, duration: DUR - CONFETTI, ease: "none" }, CONFETTI);
+
+          window.__timelines[FID] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

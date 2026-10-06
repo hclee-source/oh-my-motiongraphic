@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <!-- Frame 3 — f3 · track 10.85–17.21s (6.36s) · beat_cut · FLIPBOOK-RESOLVE · BARO 02 클로드. Head is source metadata only. -->
+  </head>
+  <body>
+    <template id="03-f3-template">
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        /* ---------- root (plain #stage — the compiler scopes it) ---------- */
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #040404;
+        }
+
+        /* register tokens live here; 0ms tl.set flips swap them on the hits */
+        #f3_root {
+          --f3-bg: #040404;
+          --f3-fg: #F2F0EA;
+          --f3-box-bg: #FFE500;
+          --f3-box-fg: #040404;
+          --f3-box-sub: #040404;
+          --f3-chip-bg: #FFE500;
+          --f3-chip-fg: #040404;
+          --f3-shadow: 0px 24px 60px rgba(0, 0, 0, 0.6);
+          position: absolute;
+          inset: 0;
+          font-family: "Paperlogy", sans-serif;
+          color: var(--f3-fg);
+        }
+        #f3_bg {
+          position: absolute;
+          inset: 0;
+          background: var(--f3-bg);
+        }
+        #f3_g1 {
+          position: absolute;
+          inset: 0;
+        }
+        #f3_cam {
+          position: absolute;
+          inset: 0;
+          transform-origin: 50% 50%;
+        }
+
+        /* ---------- accent ■ (pre-roll blink, ink register) ---------- */
+        #f3_dot {
+          position: absolute;
+          left: 1115px;
+          top: 492px;
+          width: 36px;
+          height: 36px;
+          background: #FFE500;
+        }
+
+        /* ---------- key-visual sprite (feathered → INK register only) ---------- */
+        #f3_spr {
+          position: absolute;
+          left: -110px;
+          top: 236px;
+          width: 552px;   /* 1.2 × native 460 */
+          height: 576px;  /* 1.2 × native 480 */
+          transform-origin: 0% 100%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f3_spr img {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
+
+        /* ---------- shared pieces ---------- */
+        .f3-lbox {
+          position: relative;
+          display: inline-block;
+        }
+        .f3-lbox-bg {
+          position: absolute;
+          inset: 0;
+          background: var(--f3-box-bg);
+          transform-origin: 0% 50%;
+        }
+        .f3-lbox-tx {
+          position: relative;
+          display: block;
+          padding: 0.08em 0.18em;
+          color: var(--f3-box-fg);
+          white-space: nowrap;
+        }
+        .f3-chip {
+          position: relative;
+          display: inline-block;
+          font-family: "Archivo Black", sans-serif;
+          font-size: 30px;
+          letter-spacing: 0.02em;
+          line-height: 1;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+        .f3-chip-bg {
+          position: absolute;
+          inset: 0;
+          background: var(--f3-chip-bg);
+          transform-origin: 0% 50%;
+        }
+        .f3-chip-tx {
+          position: relative;
+          display: block;
+          padding: 10px 16px 9px;
+          color: var(--f3-chip-fg);
+        }
+
+        /* ---------- title column (phase A: right of center via x; phase B: left column) ---------- */
+        #f3_col {
+          position: absolute;
+          left: 170px;
+          top: 104px;
+          height: 880px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+        }
+        #f3_kick {
+          font-weight: 800;
+          font-size: 88px;
+          line-height: 1.05;
+          letter-spacing: -0.03em;
+          white-space: nowrap;
+          color: var(--f3-fg);
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f3_title {
+          margin-top: 6px;
+          transform-origin: 0% 100%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f3_title_tx {
+          display: inline-block;
+          font-weight: 800;
+          font-size: 240px;
+          line-height: 0.92;
+          letter-spacing: -0.045em;
+          white-space: nowrap;
+          color: var(--f3-fg);
+        }
+        #f3_chip {
+          margin-top: 22px;
+          visibility: hidden;
+          opacity: 0;
+        }
+
+        /* ---------- flipbook: ONE label box, its word swapped at 0ms per hit ---------- */
+        #f3_flip {
+          position: relative;
+          margin-top: 34px;
+          width: 620px;
+          height: 107px;
+        }
+        .f3-fw {
+          position: absolute;
+          left: 0;
+          top: 0;
+          font-weight: 800;
+          font-size: 88px;
+          line-height: 1.05;
+          letter-spacing: -0.03em;
+          transform-origin: 0% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+
+        /* ---------- tossed cover (real JPG, never cropped / tinted / overlaid) ---------- */
+        .f3-card {
+          position: absolute;
+          left: 1100px;
+          top: 116px;
+          width: 460px;
+          transform-origin: 50% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f3-card img {
+          display: block;
+          width: 100%;
+          height: auto;
+        }
+        .f3-main {
+          box-shadow: var(--f3-shadow);
+        }
+
+        /* ---------- caption label box (under the cover) ---------- */
+        #f3_capzone {
+          position: absolute;
+          left: 1030px;
+          top: 806px;
+          width: 600px;
+          display: flex;
+          justify-content: center;
+        }
+        #f3_capbox {
+          position: relative;
+          display: inline-block;
+          transform-origin: 50% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f3_cap_bg {
+          position: absolute;
+          inset: 0;
+          background: var(--f3-box-bg);
+          transform-origin: 0% 50%;
+        }
+        #f3_cap_in {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 16px 22px;
+        }
+        .f3-cap-row {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+        }
+        .f3-cap-title {
+          font-weight: 800;
+          font-size: 36px;
+          line-height: 1.25;
+          letter-spacing: -0.02em;
+          white-space: nowrap;
+          color: var(--f3-box-fg);
+        }
+        #f3_best {
+          transform-origin: 50% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f3_best .f3-chip-bg {
+          background: var(--f3-box-fg);
+        }
+        #f3_best .f3-chip-tx {
+          color: var(--f3-box-bg);
+        }
+        .f3-cap-sub {
+          margin-top: 8px;
+          font-weight: 400;
+          font-size: 26px;
+          line-height: 1.25;
+          white-space: nowrap;
+          color: var(--f3-box-sub);
+        }
+        .f3-cap-author {
+          margin-top: 4px;
+          font-weight: 800;
+          font-size: 26px;
+          line-height: 1.25;
+          white-space: nowrap;
+          color: var(--f3-box-fg);
+        }
+        #f3_cap_r1,
+        #f3_cap_r2,
+        #f3_cap_r3 {
+          visibility: hidden;
+          opacity: 0;
+        }
+      </style>
+
+      <div id="stage" data-composition-id="03-f3" data-width="1920" data-height="1080" data-duration="6.36">
+        <div id="f3_root">
+          <div id="f3_bg"></div>
+
+          <!-- g1 · free_design · track 10.85–17.21 -->
+          <div id="f3_g1">
+            <div id="f3_cam">
+
+              <!-- pre-roll accent ■ (blinks on the 11.05 hat / 11.15 perc, cleared by the slam) -->
+              <div id="f3_dot" data-layout-ignore=""></div>
+
+              <!-- spr-yellow peeks in from the left edge (ink register only) -->
+              <div id="f3_spr" data-layout-allow-overflow=""><img src="assets/keyvisual/spr-yellow.png" alt=""></div>
+
+              <!-- title column: kicker / display title / pair chip / flipbook box -->
+              <div id="f3_col">
+                <div id="f3_kick">바로바로</div>
+                <div id="f3_title"><span id="f3_title_tx">클로드</span></div>
+                <div class="f3-chip" id="f3_chip">
+                  <span class="f3-chip-bg" id="f3_chip_bg"></span>
+                  <span class="f3-chip-tx">CLAUDE</span>
+                </div>
+                <div id="f3_flip">
+                  <div class="f3-lbox f3-fw" id="f3_w0"><span class="f3-lbox-bg" id="f3_w0_bg"></span><span class="f3-lbox-tx">코워크</span></div>
+                  <div class="f3-lbox f3-fw" id="f3_w1"><span class="f3-lbox-bg" id="f3_w1_bg"></span><span class="f3-lbox-tx">스킬</span></div>
+                  <div class="f3-lbox f3-fw" id="f3_w2"><span class="f3-lbox-bg" id="f3_w2_bg"></span><span class="f3-lbox-tx">클로드 코드</span></div>
+                  <div class="f3-lbox f3-fw" id="f3_w3"><span class="f3-lbox-bg" id="f3_w3_bg"></span><span class="f3-lbox-tx">디자인</span></div>
+                  <div class="f3-lbox f3-fw" id="f3_w4"><span class="f3-lbox-bg" id="f3_w4_bg"></span><span class="f3-lbox-tx">82가지 실습</span></div>
+                </div>
+              </div>
+
+              <!-- tossed cover: 3 speed-trail ghosts + main card -->
+              <div class="f3-card f3-ghost" id="f3_c_g3" data-layout-ignore=""><img src="assets/covers/9791124516133.jpg" alt=""></div>
+              <div class="f3-card f3-ghost" id="f3_c_g2" data-layout-ignore=""><img src="assets/covers/9791124516133.jpg" alt=""></div>
+              <div class="f3-card f3-ghost" id="f3_c_g1" data-layout-ignore=""><img src="assets/covers/9791124516133.jpg" alt=""></div>
+              <div class="f3-card f3-main" id="f3_c" data-layout-allow-overflow=""><img src="assets/covers/9791124516133.jpg" alt="바로바로 클로드 with 코워크, 스킬, 클로드 코드, 디자인"></div>
+
+              <!-- caption label box under the cover -->
+              <div id="f3_capzone">
+                <div id="f3_capbox">
+                  <span id="f3_cap_bg"></span>
+                  <div id="f3_cap_in">
+                    <div class="f3-cap-row" id="f3_cap_r1">
+                      <span class="f3-cap-title">바로바로 클로드</span>
+                      <div class="f3-chip" id="f3_best">
+                        <span class="f3-chip-bg"></span>
+                        <span class="f3-chip-tx">BEST</span>
+                      </div>
+                    </div>
+                    <div class="f3-cap-sub" id="f3_cap_r2">with 코워크, 스킬, 클로드 코드, 디자인</div>
+                    <div class="f3-cap-author" id="f3_cap_r3">차진우</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var D = 6.36;   // frame span length (track 10.85 → 17.21)
+          var T0 = 10.85; // span_sec[0]
+          function L(trackT) { return Math.round((trackT - T0) * 1000) / 1000; }
+
+          // storyboard anchors (track seconds → frame-local)
+          var A_SLAM = L(11.29);   // kick: sprite peeks in, '클로드' slams
+          var A_ROLL = L(12.21);   // accel-roll starts: flipbook box opens
+          var A_BUMP = L(12.70);   // snare: sprite bumps
+          var A_FLIP = L(13.19);   // strongest kick: flip YELLOW, sprite out, cover tossed in
+          var A_CAP = L(13.65);    // snare: caption label box opens under the landed cover
+          var A_LOCK = L(16.0);    // flipbook stops on '82가지 실습'
+          var A_BEST = L(16.49);   // snare: caption locks — BEST chip stamps in
+          var A_PUNCH = L(16.95);  // kick: everything punches 3% into the surge
+          // measured onsets used for micro-timing (audiomap events[])
+          var E_BLINK = [[0, 1], [L(11.053), 0], [L(11.146), 1], [A_SLAM, 0]]; // hat / perc pre-roll
+          var E_CHIP = L(11.378);  // hat: CLAUDE chip
+          var E_CAP2 = L(13.862);  // hat: caption sub line
+          var E_CAP3 = L(13.978);  // perc: caption author
+          var E_PULSE = [L(14.118), L(15.999)]; // kicks: resting cover pulses
+          var E_EXIT = L(17.067);  // hat: title column staggers out before the cut
+
+          // flipbook swap times: every listed storyboard hit, plus the accel-roll's own measured
+          // onsets after 14.58 so the swaps really speed up (≈0.47s → ≈0.1s) into the 16.0 stop.
+          // 15 swaps over 5 words → the cycle lands on '82가지 실습' exactly at 16.0.
+          var FLIP_T = [12.21, 12.70, 13.19, 13.65, 14.12, 14.58, 14.814, 14.93, 15.05,
+                        15.163, 15.302, 15.534, 15.743, 15.906, 16.0].map(L);
+          var NW = 5;
+
+          var Y = "#FFE500", K = "#040404", P = "#F2F0EA";
+          var HARD = "14px 14px 0px rgba(4, 4, 4, 1)";
+          var SOFT = "0px 24px 60px rgba(0, 0, 0, 0.6)";
+          var REG = {
+            ink:    { "--f3-bg": K, "--f3-fg": P, "--f3-box-bg": Y, "--f3-box-fg": K, "--f3-box-sub": K, "--f3-chip-bg": Y, "--f3-chip-fg": K, "--f3-shadow": SOFT },
+            yellow: { "--f3-bg": Y, "--f3-fg": K, "--f3-box-bg": K, "--f3-box-fg": Y, "--f3-box-sub": P, "--f3-chip-bg": K, "--f3-chip-fg": Y, "--f3-shadow": HARD }
+          };
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ---- registers: 0ms flips ON the hits (palette-flip) ----
+          function reg(name, t) { tl.set("#f3_root", REG[name], t); }
+          reg("ink", 0);
+          reg("yellow", A_FLIP);
+
+          // ---- group window (single group spans the whole frame) ----
+          tl.set("#f3_g1", { autoAlpha: 1 }, 0);
+          tl.set("#f3_g1", { autoAlpha: 0 }, D);
+
+          // ---- pre-roll: accent ■ blinks on the hat/perc, cleared by the slam ----
+          for (var b = 0; b < E_BLINK.length; b++) {
+            tl.set("#f3_dot", { autoAlpha: E_BLINK[b][1] }, E_BLINK[b][0]);
+          }
+
+          // ---- 11.29: spr-yellow leans in from the left edge ----
+          tl.set("#f3_spr", { autoAlpha: 1 }, A_SLAM);
+          tl.fromTo("#f3_spr",
+            { x: -540, rotation: -12 },
+            { x: 0, rotation: 7, duration: 0.5, ease: "back.out(1.5)", immediateRender: false }, A_SLAM);
+          // slow lean while the title holds
+          tl.fromTo("#f3_spr",
+            { y: 0 },
+            { y: -10, duration: A_FLIP - (A_SLAM + 0.5), ease: "sine.inOut", immediateRender: false }, A_SLAM + 0.5);
+          // 12.70 snare: bump
+          tl.set("#f3_spr", { scale: 1.06 }, A_BUMP);
+          tl.to("#f3_spr", { scale: 1, duration: 0.16, ease: "power2.out" }, A_BUMP);
+          // 13.19: yellow register → feathered layer cuts out at 0ms
+          tl.set("#f3_spr", { autoAlpha: 0 }, A_FLIP);
+
+          // ---- title column: right of center in phase A, whips to the left column on the flip ----
+          tl.set("#f3_col", { x: 620 }, 0);
+          tl.fromTo("#f3_col", { x: 620 }, { x: 0, duration: 0.24, ease: "expo.out", immediateRender: false }, A_FLIP);
+
+          // 11.29: kicker + '클로드' slam
+          tl.set("#f3_kick", { autoAlpha: 1 }, A_SLAM);
+          tl.fromTo("#f3_kick", { y: -34 }, { y: 0, duration: 0.18, ease: "expo.out", immediateRender: false }, A_SLAM);
+          tl.set("#f3_title", { autoAlpha: 1 }, A_SLAM);
+          tl.fromTo("#f3_title", { scale: 1.4 }, { scale: 1, duration: 0.2, ease: "expo.out", immediateRender: false }, A_SLAM);
+          var shake = [12, -8, 4, 0];
+          for (var s = 0; s < shake.length; s++) {
+            tl.to("#f3_title_tx", { x: shake[s], duration: 0.035, ease: "none" }, A_SLAM + 0.17 + s * 0.035);
+          }
+          // 11.38 hat: pair chip 'CLAUDE'
+          tl.set("#f3_chip", { autoAlpha: 1 }, E_CHIP);
+          tl.fromTo("#f3_chip_bg", { scaleX: 0 }, { scaleX: 1, duration: 0.12, ease: "power3.out", immediateRender: false }, E_CHIP);
+
+          // ---- flipbook (content-swap): one box, word swapped at 0ms on each hit ----
+          var prev = null;
+          for (var i = 0; i < FLIP_T.length; i++) {
+            var node = "#f3_w" + (i % NW);
+            if (prev && prev !== node) tl.set(prev, { autoAlpha: 0 }, FLIP_T[i]);
+            tl.set(node, { autoAlpha: 1 }, FLIP_T[i]);
+            prev = node;
+          }
+          // box snaps open from the left on the first word, the flip, and the lock (set + to = seek-safe)
+          var snaps = [[0, A_ROLL], [2, A_FLIP], [4, A_LOCK]];
+          for (var q = 0; q < snaps.length; q++) {
+            var bg = "#f3_w" + snaps[q][0] + "_bg";
+            tl.set(bg, { scaleX: 0 }, snaps[q][1]);
+            tl.to(bg, { scaleX: 1, duration: 0.11, ease: "power3.out" }, snaps[q][1]);
+          }
+          // 16.0: the cycle stops on '82가지 실습' with a punch
+          tl.set("#f3_w4", { scale: 1.14 }, A_LOCK);
+          tl.to("#f3_w4", { scale: 1, duration: 0.2, ease: "expo.out" }, A_LOCK);
+
+          // ---- 13.19: cover tossed in center-right (overlay-pop), ghost speed trail ----
+          var IN = { x: 760, y: 820, r: 34 };
+          var REST_R = 5, DUR_IN = 0.42, LAG = 0.028;
+          var GHOST_OP = [0.35, 0.2, 0.1];
+          function tossIn(sel, t) {
+            tl.fromTo(sel,
+              { x: IN.x, y: IN.y, rotation: IN.r },
+              { x: 0, y: 0, rotation: REST_R, duration: DUR_IN, ease: "back.out(1.4)", immediateRender: false }, t);
+          }
+          tl.set("#f3_c", { autoAlpha: 1 }, A_FLIP);
+          tossIn("#f3_c", A_FLIP);
+          for (var g = 1; g <= 3; g++) {
+            var gs = "#f3_c_g" + g;
+            tl.set(gs, { autoAlpha: GHOST_OP[g - 1] }, A_FLIP + LAG * g);
+            tossIn(gs, A_FLIP + LAG * g);
+            tl.set(gs, { autoAlpha: 0 }, A_FLIP + 0.22);
+          }
+          // kick pulses on the resting cover
+          for (var k = 0; k < E_PULSE.length; k++) {
+            tl.to("#f3_c", { scale: 1.035, duration: 0.06, ease: "power2.out" }, E_PULSE[k]);
+            tl.to("#f3_c", { scale: 1, duration: 0.14, ease: "power2.out" }, E_PULSE[k] + 0.06);
+          }
+
+          // ---- caption label box: opens on 13.65, lines cascade on the hat/perc ----
+          tl.set("#f3_capbox", { autoAlpha: 1 }, A_CAP);
+          tl.fromTo("#f3_cap_bg", { scaleX: 0 }, { scaleX: 1, duration: 0.12, ease: "power3.out", immediateRender: false }, A_CAP);
+          var rows = [["#f3_cap_r1", A_CAP], ["#f3_cap_r2", E_CAP2], ["#f3_cap_r3", E_CAP3]];
+          for (var r = 0; r < rows.length; r++) {
+            tl.set(rows[r][0], { autoAlpha: 1 }, rows[r][1]);
+            tl.fromTo(rows[r][0], { y: 14 }, { y: 0, duration: 0.14, ease: "power3.out", immediateRender: false }, rows[r][1]);
+          }
+          // 16.49: caption locks — BEST chip stamps in, the box punches
+          tl.set("#f3_best", { autoAlpha: 1 }, A_BEST);
+          tl.fromTo("#f3_best", { scale: 1.7, rotation: -12 }, { scale: 1, rotation: -3, duration: 0.26, ease: "back.out(2.2)", immediateRender: false }, A_BEST);
+          tl.set("#f3_capbox", { scale: 1.05 }, A_BEST);
+          tl.to("#f3_capbox", { scale: 1, duration: 0.18, ease: "power2.out" }, A_BEST);
+
+          // ---- 16.95: whole stage punches 3% into the surge ----
+          tl.to("#f3_cam", { scale: 1.03, duration: 0.12, ease: "power3.out" }, A_PUNCH);
+
+          // ---- 17.07: staggered exit — the title column drops out top-down before the cut;
+          //      cover + caption stay readable until the cut ----
+          var EXIT = ["#f3_kick", "#f3_title", "#f3_chip", "#f3_flip"];
+          for (var e = 0; e < EXIT.length; e++) {
+            tl.fromTo(EXIT[e],
+              { y: 0, autoAlpha: 1 },
+              { y: 80, autoAlpha: 0, duration: 0.07, ease: "power3.in", immediateRender: false }, E_EXIT + e * 0.012);
+          }
+
+          window.__timelines["03-f3"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

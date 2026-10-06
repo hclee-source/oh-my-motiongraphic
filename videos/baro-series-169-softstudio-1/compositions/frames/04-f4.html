@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <!--
+      Frame 4 (f4) — BARO 03 · 제미나이·구글 AI. Style: soft-studio. Ground #D3DEF2.
+      Track span [16.0, 21.01] → frame-local [0, 5.01]  (local = track − 16.0). Pacing: beat_cut.
+      g1 [0, 1.0]  SLOGAN-WEIGHT (braam-punch, adapted: no glow / no flash on this style)
+        0.00  slogan already in place (iris reveals it 0.07–0.37) — not animated in
+        0.51  '바로 쓴다.' weight pulse (scale 1→1.06→1 + per-glyph x tighten) + accent underline draws
+        0.85  slogan slides up and out → 0ms cut at 1.0
+      g2 [1.0, 5.01]  OBJECT-IN-SENTENCE
+        1.00  '바로바로 제미나이 구글 AI' rises in, halves touching
+        1.42  halves slide apart (whoosh 17.4) · 3D book drops into the gap, lands 1.72, soft bounce to 1.96
+        1.96  full 360° spin in the gap (strong kick 17.95 / anchor 18.0), ends 2.86
+        2.99  '공냥이' pill pops (pop 18.99) · 3.07 robot avatar circle pops
+        3.99  camera drift: sentence + book + credit 20px up · 4.50 hold · stripes cover from ~4.72
+      3D book = recipes/book3d.md verbatim (fN→f4, DEEP #223A4E), scaled 0.55 via GSAP scale on #f4_book.
+    -->
+  </head>
+  <body>
+    <template id="04-f4-template">
+      <style>
+        @font-face { font-family: "Gmarket Sans"; src: url("assets/fonts/GmarketSansBold.otf") format("opentype"); font-weight: 700; font-display: block; }
+        @font-face { font-family: "Gmarket Sans"; src: url("assets/fonts/GmarketSansMedium.otf") format("opentype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Gmarket Sans"; src: url("assets/fonts/GmarketSansLight.otf") format("opentype"); font-weight: 300; font-display: block; }
+
+        #stage {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #D3DEF2;
+          color: #1B1A1F;
+          font-family: "Gmarket Sans", sans-serif;
+          -webkit-font-smoothing: antialiased;
+        }
+
+        .f4-group {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        .f4-group,
+        .f4-group * {
+          box-sizing: border-box;
+        }
+        #f4_g2 {
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        /* ---------- g1 · climax slogan ---------- */
+        .f4-g1-wrap {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 14px;
+          padding-bottom: 24px;
+        }
+        .f4-g1-light {
+          font-family: "Gmarket Sans", sans-serif;
+          font-weight: 300;
+          font-size: 130px;
+          line-height: 1.05;
+          letter-spacing: -0.03em;
+          white-space: nowrap;
+        }
+        .f4-g1-boldbox {
+          position: relative;
+        }
+        .f4-g1-bold {
+          position: relative;
+          z-index: 1;
+          display: block;
+          font-family: "Gmarket Sans", sans-serif;
+          font-weight: 700;
+          font-size: 200px;
+          line-height: 1;
+          letter-spacing: -0.04em;
+          white-space: nowrap;
+          transform-origin: 50% 55%;
+        }
+        .f4-ch {
+          display: inline-block;
+        }
+        .f4-g1-ul {
+          position: absolute;
+          z-index: 0;
+          left: 50%;
+          top: 168px;
+          margin-left: -450px;
+          width: 900px;
+          height: 60px;
+          overflow: visible;
+        }
+        .f4-g1-ul-path {
+          fill: none;
+          stroke: #5B5BF0;
+          stroke-width: 16;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+          stroke-dasharray: 1000 2000;
+          stroke-dashoffset: 1050;
+        }
+
+        /* ---------- g2 · object in sentence ---------- */
+        .f4-g2-cam,
+        .f4-g2-line {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        .f4-g2-half {
+          position: absolute;
+          top: 469px;
+          font-family: "Gmarket Sans", sans-serif;
+          font-weight: 700;
+          font-size: 116px;
+          line-height: 1.05;
+          letter-spacing: -0.035em;
+          white-space: nowrap;
+        }
+        /* split end state: gap 999 → 1439 (440px), centred on the book at x 1219 */
+        .f4-g2-left {
+          right: 921px;
+          text-align: right;
+        }
+        .f4-g2-right {
+          left: 1439px;
+        }
+
+        .f4-g2-credit {
+          position: absolute;
+          left: 1019px;
+          top: 765px;
+          width: 400px;
+          height: 110px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 18px;
+        }
+        .f4-g2-avatar {
+          position: relative;
+          flex: none;
+          width: 110px;
+          height: 110px;
+          border-radius: 50%;
+          background: #1B1A1F;
+          overflow: hidden;
+          box-shadow: 0 16px 36px rgba(27, 26, 31, 0.18);
+        }
+        .f4-g2-robot {
+          position: absolute;
+          display: block;
+          left: -19px;
+          top: -12px;
+          width: 168px;
+          height: auto;
+        }
+        .f4-g2-pill {
+          flex: none;
+          display: block;
+          padding: 17px 36px 15px;
+          border-radius: 999px;
+          background: #223A4E;
+          color: #F4EFE6;
+          font-family: "Gmarket Sans", sans-serif;
+          font-weight: 700;
+          font-size: 38px;
+          line-height: 1;
+          white-space: nowrap;
+          box-shadow: 0 16px 36px rgba(27, 26, 31, 0.16);
+        }
+
+        /* ---------- 3D book (recipes/book3d.md, fN → f4, DEEP = #223A4E) ---------- */
+        .f4-bk-shadow { position: absolute; left: -150px; top: 146px; width: 300px; height: 44px; border-radius: 50%;
+          background: rgba(34, 58, 78, 0.30); filter: blur(14px); }
+        .f4-bk-scene { position: absolute; left: 1219px; top: 530px; width: 0; height: 0; perspective: 2200px; }
+        .f4-bk-book { position: absolute; left: -210px; top: -287px; width: 420px; height: 574px; transform-style: preserve-3d; }
+        .f4-bk-book > div, .f4-bk-hinge > div { position: absolute; }
+        .f4-bk-back   { inset: 0; background: #223A4E; transform: rotateY(180deg) translateZ(24px); }
+        .f4-bk-spine  { left: 186px; top: 0; width: 48px; height: 574px; background: #223A4E; transform: rotateY(-90deg) translateZ(210px);
+          display: flex; align-items: center; justify-content: center; color: #F4EFE6; font: 700 22px "Gmarket Sans"; writing-mode: vertical-rl; }
+        .f4-bk-edge   { left: 186px; top: 0; width: 48px; height: 574px; transform: rotateY(90deg) translateZ(210px);
+          background: repeating-linear-gradient(90deg, #FBF8F2 0 2px, #E4DCCD 2px 3px); }
+        .f4-bk-top    { left: 0; top: 263px; width: 420px; height: 48px; transform: rotateX(90deg) translateZ(287px);
+          background: repeating-linear-gradient(0deg, #FBF8F2 0 2px, #E4DCCD 2px 3px); }
+        .f4-bk-bottom { left: 0; top: 263px; width: 420px; height: 48px; transform: rotateX(-90deg) translateZ(287px); background: #E9E1D2; }
+        .f4-bk-page   { inset: 0; background: #FBF8F2; transform: translateZ(22px); display: flex; align-items: center; justify-content: center;
+          color: #223A4E; font: 700 44px/1.25 "Gmarket Sans"; text-align: center; }
+        .f4-bk-hinge  { inset: 0; transform-origin: 0% 50%; transform: translateZ(24px); transform-style: preserve-3d; }
+        .f4-bk-front  { inset: 0; width: 420px; height: 574px; object-fit: cover; backface-visibility: hidden; }
+        .f4-bk-inside { inset: 0; background: #F4EFE6; transform: rotateY(180deg); backface-visibility: hidden; }
+      </style>
+
+      <div id="stage" data-composition-id="04-f4" data-width="1920" data-height="1080" data-duration="5.01">
+        <!-- g1 · [0, 1.0] climax slogan (in place at t=0) -->
+        <div id="f4_g1" class="f4-group">
+          <div id="f4_g1_wrap" class="f4-g1-wrap">
+            <div id="f4_g1_light" class="f4-g1-light">바로 배워,</div>
+            <div id="f4_g1_boldbox" class="f4-g1-boldbox">
+              <svg id="f4_g1_ul" class="f4-g1-ul" width="900" height="60" viewBox="0 0 900 60" data-layout-ignore aria-hidden="true">
+                <path id="f4_g1_ul_path" class="f4-g1-ul-path" pathLength="1000" d="M 34 38 C 150 29, 262 44, 392 35 C 520 27, 640 41, 760 33 C 812 30, 846 31, 868 34" />
+              </svg>
+              <div id="f4_g1_bold" class="f4-g1-bold"><span id="f4_ch0" class="f4-ch">바</span><span id="f4_ch1" class="f4-ch">로</span> <span id="f4_ch2" class="f4-ch">쓴</span><span id="f4_ch3" class="f4-ch">다</span><span id="f4_ch4" class="f4-ch">.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- g2 · [1.0, 5.01] object in sentence -->
+        <div id="f4_g2" class="f4-group">
+          <div id="f4_g2_cam" class="f4-g2-cam">
+            <div id="f4_g2_line" class="f4-g2-line">
+              <div id="f4_g2_left" class="f4-g2-half f4-g2-left">바로바로 제미나이</div>
+              <div id="f4_g2_right" class="f4-g2-half f4-g2-right">구글 AI</div>
+            </div>
+
+            <div class="f4-bk-scene" id="f4_bk_scene" data-layout-allow-overflow data-layout-ignore="">
+              <div class="f4-bk-shadow" id="f4_bk_shadow"></div>
+              <div class="f4-bk-book" id="f4_book">
+                <div class="f4-bk-back"></div>
+                <div class="f4-bk-spine">바로바로 제미나이</div>
+                <div class="f4-bk-edge"></div>
+                <div class="f4-bk-top"></div>
+                <div class="f4-bk-bottom"></div>
+                <div class="f4-bk-page">바로 배워<br />바로 쓰는!</div>
+                <div class="f4-bk-hinge" id="f4_bk_hinge">
+                  <img class="f4-bk-front" id="f4_bk_front" src="assets/covers/9791124516157.jpg" alt="바로바로 제미나이 구글 AI" />
+                  <div class="f4-bk-inside"></div>
+                </div>
+              </div>
+            </div>
+
+            <div id="f4_g2_credit" class="f4-g2-credit">
+              <div id="f4_g2_avatar" class="f4-g2-avatar">
+                <img id="f4_g2_robot" class="f4-g2-robot" src="assets/keyvisual/spr-robot.png" alt="" />
+              </div>
+              <div id="f4_g2_pill" class="f4-g2-pill">공냥이</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var tl = gsap.timeline({ paused: true });
+
+          /* ===== group windows (0ms cut at 1.0) ===== */
+          tl.set("#f4_g1", { autoAlpha: 1 }, 0);
+          tl.set("#f4_g2", { autoAlpha: 0 }, 0);
+          tl.set("#f4_g1", { autoAlpha: 0 }, 1.0);
+          tl.set("#f4_g2", { autoAlpha: 1 }, 1.0);
+
+          /* ===== g1 · slogan — static at t=0, revealed by the incoming iris ===== */
+          // glyph x offsets that read as a quick letter-spacing tighten (transform only)
+          var TIGHT = [11, 5, -4, -10, -14];
+          tl.set("#f4_g1_wrap", { y: 0, opacity: 1 }, 0);
+          tl.set("#f4_g1_bold", { scale: 1 }, 0);
+          for (var i = 0; i < TIGHT.length; i++) tl.set("#f4_ch" + i, { x: 0 }, 0);
+          tl.set("#f4_g1_ul", { opacity: 0 }, 0);
+          tl.set("#f4_g1_ul_path", { strokeDashoffset: 1050 }, 0);
+
+          // 0.51 (beat 16.509): weight pulse + underline
+          tl.to("#f4_g1_bold", { scale: 1.06, duration: 0.09, ease: "power4.out" }, 0.51);
+          tl.to("#f4_g1_bold", { scale: 1, duration: 0.34, ease: "power3.out" }, 0.6);
+          for (var j = 0; j < TIGHT.length; j++) {
+            tl.to("#f4_ch" + j, { x: TIGHT[j], duration: 0.09, ease: "power4.out" }, 0.51);
+            tl.to("#f4_ch" + j, { x: 0, duration: 0.34, ease: "power3.out" }, 0.6);
+          }
+          tl.set("#f4_g1_ul", { opacity: 1 }, 0.51);
+          tl.to("#f4_g1_ul_path", { strokeDashoffset: 0, duration: 0.26, ease: "power2.out" }, 0.51);
+
+          // 0.85 → 1.0: slogan slides up and out into the cut
+          tl.to("#f4_g1_wrap", { y: -260, opacity: 0, duration: 0.15, ease: "power3.in" }, 0.85);
+
+          /* ===== g2 · object in sentence ===== */
+          tl.set("#f4_g2_cam", { y: 0 }, 0);
+          tl.set("#f4_g2_line", { y: 110, opacity: 0 }, 0);
+          tl.set("#f4_g2_left", { x: 204 }, 0); // halves touching (one word space between)
+          tl.set("#f4_g2_right", { x: -204 }, 0);
+          tl.set("#f4_book", { x: 0, y: -840, z: 0, rotationY: -72, rotationX: 30, scale: 0.55 }, 0);
+          tl.set("#f4_bk_hinge", { rotationY: 0 }, 0);
+          tl.set("#f4_bk_shadow", { scaleX: 0.3, opacity: 0 }, 0);
+          tl.set("#f4_g2_pill", { scale: 0 }, 0);
+          tl.set("#f4_g2_avatar", { scale: 0 }, 0);
+          tl.set("#f4_g2_robot", { y: 46, rotation: -10 }, 0);
+
+          // 1.0 (downbeat 16.997): the sentence rises in, halves touching
+          tl.to("#f4_g2_line", { y: 0, opacity: 1, duration: 0.42, ease: "expo.out" }, 1.0);
+
+          // 1.42 (whoosh 17.4 → beat 17.485): halves slide apart, book drops into the gap
+          tl.to("#f4_g2_left", { x: 0, duration: 0.55, ease: "expo.out" }, 1.42);
+          tl.to("#f4_g2_right", { x: 0, duration: 0.55, ease: "expo.out" }, 1.42);
+          tl.to("#f4_book", { y: 0, duration: 0.3, ease: "power2.in" }, 1.42);
+          tl.to("#f4_book", { rotationY: -28, rotationX: 8, duration: 0.3, ease: "power1.out" }, 1.42);
+          tl.to("#f4_bk_shadow", { scaleX: 1, opacity: 1, duration: 0.3, ease: "power2.in" }, 1.42);
+          // soft bounce
+          tl.to("#f4_book", { y: -38, duration: 0.12, ease: "power2.out" }, 1.72);
+          tl.to("#f4_book", { y: 0, duration: 0.12, ease: "power2.in" }, 1.84);
+          tl.to("#f4_bk_shadow", { scaleX: 0.82, opacity: 0.7, duration: 0.12, ease: "power2.out" }, 1.72);
+          tl.to("#f4_bk_shadow", { scaleX: 1, opacity: 1, duration: 0.12, ease: "power2.in" }, 1.84);
+
+          // 1.96 (strong kick 17.95 / anchor 18.0): full spin in the gap — back, spine, pages, front
+          tl.to("#f4_book", { rotationY: 332, duration: 0.9, ease: "power3.inOut" }, 1.96);
+
+          // idle float while held (≤ ±6px over two beats)
+          tl.to("#f4_book", { y: -6, duration: 1.0, ease: "sine.inOut" }, 2.9);
+          tl.to("#f4_book", { y: 0, duration: 1.0, ease: "sine.inOut" }, 3.9);
+          tl.to("#f4_bk_shadow", { scaleX: 0.94, duration: 1.0, ease: "sine.inOut" }, 2.9);
+          tl.to("#f4_bk_shadow", { scaleX: 1, duration: 1.0, ease: "sine.inOut" }, 3.9);
+
+          // 2.99 (downbeat 18.994, pop sfx): author pill, then the robot avatar to its left
+          tl.to("#f4_g2_pill", { scale: 1, duration: 0.42, ease: "back.out(2.2)" }, 2.99);
+          tl.to("#f4_g2_avatar", { scale: 1, duration: 0.42, ease: "back.out(2)" }, 3.07);
+          tl.to("#f4_g2_robot", { y: 0, rotation: 0, duration: 0.5, ease: "back.out(1.6)" }, 3.12);
+
+          // 3.99 (surge 19.99): camera drift — everything 20px up
+          tl.to("#f4_g2_cam", { y: -20, duration: 0.9, ease: "power2.inOut" }, 3.99);
+
+          window.__timelines["04-f4"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

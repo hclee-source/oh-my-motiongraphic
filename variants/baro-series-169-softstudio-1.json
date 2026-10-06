@@ -1,0 +1,82 @@
+{
+  "name": "baro-series-169-softstudio-1",
+  "style": "soft-studio",
+  "palette": {},
+  "aspect": "16:9",
+  "fps": 30,
+  "seed": 11,
+  "intensity": "standard",
+  "hud": false,
+  "message": "AI 입문, 바로바로 네 권이면 충분하다",
+  "destination": "youtube",
+  "bgm": {
+    "id": "1142",
+    "start": 0.37,
+    "duration": 30.75,
+    "fade": 1.0,
+    "license": "Mixkit Stock Music Free License",
+    "title": "Gummies — Michael Ramir C."
+  },
+  "series": [
+    {
+      "label": "BARO 01",
+      "name": "챗GPT",
+      "books": [
+        "9791124516294"
+      ]
+    },
+    {
+      "label": "BARO 02",
+      "name": "클로드",
+      "books": [
+        "9791124516133"
+      ]
+    },
+    {
+      "label": "BARO 03",
+      "name": "제미나이·구글 AI",
+      "books": [
+        "9791124516157"
+      ]
+    },
+    {
+      "label": "BARO 04",
+      "name": "바이브 코딩",
+      "books": [
+        "9791194383871"
+      ]
+    }
+  ],
+  "extra_assets": [
+    {
+      "src": "shared/keyvisuals/baro-kv-01.png",
+      "dest": "assets/keyvisual/baro-kv-01.png",
+      "role": "user-supplied key visual (clay characters) — MUST be used"
+    }
+  ],
+  "copy": {
+    "hook": [
+      "AI 공부,",
+      "어디서부터?"
+    ],
+    "finale": {
+      "line": "시작은, 바로바로.",
+      "cta": "goldenrabbit.co.kr"
+    }
+  },
+  "notes": "Anti-sameness remake of baro-series-169-boldbeat-1: different music (synthpop 117.5 BPM), style (soft-studio), font (Gmarket Sans), camera (CSS-3D books), transitions (shape overlay), hero devices per book (chat UI, open book, object-in-sentence, code editor), SFX layer, no HUD/label boxes/confetti/marquee.",
+  "outputs": [
+    {
+      "file": "videos/baro-series-169-softstudio-1/renders/baro-series-169-softstudio-1.mp4",
+      "duration": 30.766667,
+      "quality": "delivery",
+      "rendered": "2026-10-02T16:51:40"
+    },
+    {
+      "file": "videos/baro-series-169-softstudio-1/renders/baro-series-169-softstudio-1.mp4",
+      "duration": 30.766667,
+      "quality": "delivery",
+      "rendered": "2026-10-02T16:56:58"
+    }
+  ]
+}

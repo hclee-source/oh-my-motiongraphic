@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Frame 10 (final chorus 落ちサビ, track 139.0–149.55): the open bottle releases a slow fountain of stars. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Noto Serif KR"; src: url("assets/fonts/NotoSerifKR-VF.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: block; }
+        @font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/CormorantGaramond-Italic-VF.woff2") format("woff2"); font-weight: 300 700; font-style: italic; font-display: block; }
+
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: transparent;
+          font-family: "Noto Serif KR", serif;
+        }
+        /* zero-size camera: children keep stage coordinates, its own box never overflows */
+        #f10_cam { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-origin: 960px 760px; }
+
+        /* ---- light: residual pop bloom, beam, mouth glow ---- */
+        #f10_bloom {
+          position: absolute; left: 210px; top: 300px; width: 1500px; height: 1100px; opacity: 0.85;
+          background: radial-gradient(ellipse closest-side at 50% 50%, rgba(255,244,214,0.6) 0%, rgba(255,210,122,0.3) 30%, rgba(255,210,122,0.08) 52%, rgba(255,210,122,0) 66%);
+        }
+        .f10-beam {
+          position: absolute; top: 0; height: 856px; transform-origin: 50% 100%; opacity: 0; visibility: hidden;
+          -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 34%, #000 66%, transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0%, #000 34%, #000 66%, transparent 100%);
+        }
+        #f10_beam { left: 810px; width: 300px;
+          background: linear-gradient(to top, rgba(255,244,214,0) 0%, rgba(255,244,214,0.5) 7%, rgba(255,226,166,0.30) 35%, rgba(255,210,122,0.12) 70%, rgba(255,210,122,0) 100%); }
+        #f10_beamcore { left: 938px; width: 44px;
+          background: linear-gradient(to top, rgba(255,248,232,0) 0%, rgba(255,248,232,0.8) 5%, rgba(255,236,190,0.40) 40%, rgba(255,210,122,0.12) 75%, rgba(255,210,122,0) 100%); }
+        #f10_beamhead {
+          position: absolute; left: 790px; top: 756px; width: 340px; height: 200px; opacity: 0; visibility: hidden;
+          background: radial-gradient(ellipse closest-side at 50% 50%, rgba(255,248,230,0.9) 0%, rgba(255,210,122,0.45) 32%, rgba(255,210,122,0) 100%);
+        }
+        #f10_mouth {
+          position: absolute; left: 760px; top: 726px; width: 400px; height: 260px;
+          background: radial-gradient(ellipse closest-side at 50% 50%, rgba(255,244,214,0.78) 0%, rgba(255,210,122,0.36) 30%, rgba(255,210,122,0) 100%);
+        }
+
+        /* ---- the open bottle (assets/motifs/bottle.svg, cork hidden) ---- */
+        #f10_bottlewrap { position: absolute; left: 701px; top: 760px; width: 518px; height: 700px; }
+        #f10_bottlewrap svg { position: absolute; left: 0; top: 0; overflow: visible; }
+
+        /* ---- fountain ---- */
+        #f10_fountain { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+        .f10-sp {
+          position: absolute; opacity: 0;
+          background: radial-gradient(circle closest-side at 50% 50%, rgba(255,244,214,0.62) 0%, rgba(255,210,122,0.28) 32%, rgba(255,210,122,0) 100%);
+        }
+        .f10-spsvg { position: absolute; overflow: visible; }
+
+        /* ---- lyrics ---- */
+        .f10-line { position: absolute; left: 240px; width: 1440px; display: flex; align-items: center; justify-content: center; white-space: nowrap; }
+        .f10-pre { opacity: 0; visibility: hidden; }
+        .f10-row { display: flex; align-items: baseline; justify-content: center; gap: 0.28em; }
+        .f10-wg { display: flex; align-items: baseline; }
+        .f10-w {
+          display: inline-block; color: #F4F1EA; transform-origin: 50% 70%;
+          text-shadow: 0px 0px 14px rgba(220,235,255,0.25), 0px 0px 40px rgba(255,210,122,0);
+        }
+
+        #f10_l33mega { top: 226px; height: 230px; }
+        #f10_l33megarow { font-size: 200px; font-weight: 800; line-height: 1.1; gap: 0; }
+        .f10-ch {
+          display: inline-block; margin: 0 -2px; color: #FFF4D6; opacity: 0; visibility: hidden;
+          text-shadow: 0px 0px 26px rgba(255,210,122,0.85), 0px 0px 72px rgba(255,210,122,0.42);
+        }
+        #f10_l33sub { top: 470px; height: 130px; }
+        #f10_l33subrow { font-size: 72px; font-weight: 400; line-height: 1.3; letter-spacing: 0.01em; }
+        #f10_l33subrow .f10-w { color: #A9B3D6; opacity: 0.72; }
+        #f10_l33subrow .f10-kw { font-size: 100px; font-weight: 500; }
+
+        .f10-pos { top: 345px; height: 190px; }
+        #f10_l34row { font-size: 104px; font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; }
+        #f10_l35row { font-size: 76px; font-weight: 400; line-height: 1.3; letter-spacing: 0.01em; }
+        #f10_l35row .f10-w { color: #C9CFE6; }
+        .f10-r36 { font-size: 96px; font-weight: 600; line-height: 1.25; }
+
+        /* keyword nouns: 1.35-1.4x, one weight heavier, gold glow */
+        .f10-kw34 { font-size: 140px; font-weight: 800; color: #FFF4D6;
+          text-shadow: 0px 0px 18px rgba(255,210,122,0.45), 0px 0px 46px rgba(255,210,122,0.18); }
+        .f10-kw36 { font-size: 134px; font-weight: 700; color: #FFF4D6;
+          text-shadow: 0px 0px 18px rgba(255,210,122,0.45), 0px 0px 46px rgba(255,210,122,0.18); }
+
+        /* spotlight sweep: a soft band that rides up with the beam head, showing a lit copy of the L36 line */
+        #f10_sweepwin {
+          position: absolute; left: 0; top: 656px; width: 1920px; height: 400px; overflow: hidden; opacity: 0; visibility: hidden;
+          -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 36%, #000 64%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0%, #000 36%, #000 64%, transparent 100%);
+        }
+        #f10_sweepin { position: absolute; left: 0; top: -656px; width: 1920px; height: 1080px; }
+        .f10-copy .f10-w { color: #FFF9EC;
+          text-shadow: 0px 0px 22px rgba(255,236,190,0.95), 0px 0px 60px rgba(255,210,122,0.55); }
+        .f10-copy .f10-kw36 { color: #FFE7B0; }
+      </style>
+
+      <div id="stage" data-composition-id="10-f10" data-width="1920" data-height="1080" data-duration="10.55">
+        <div id="f10_cam">
+          <div id="f10_bloom" data-layout-ignore></div>
+          <div id="f10_beam" class="f10-beam" data-layout-ignore></div>
+          <div id="f10_beamcore" class="f10-beam" data-layout-ignore></div>
+
+          <div id="f10_bottlewrap" data-layout-ignore data-layout-allow-overflow>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 540" width="518" height="700" overflow="visible">
+              <defs>
+                <clipPath id="f10_bodyclip">
+                  <path d="M178 74 L178 150 C178 168 160 176 140 186 A170 170 0 1 0 260 186 C240 176 222 168 222 150 L222 74 Z"/>
+                </clipPath>
+                <linearGradient id="f10_glassgrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#CFE4FF" stop-opacity="0.16"/>
+                  <stop offset="0.55" stop-color="#CFE4FF" stop-opacity="0.04"/>
+                  <stop offset="1" stop-color="#CFE4FF" stop-opacity="0.10"/>
+                </linearGradient>
+                <linearGradient id="f10_fillgrad" x1="0" y1="1" x2="0" y2="0">
+                  <stop offset="0" stop-color="#FFD27A" stop-opacity="0.55"/>
+                  <stop offset="1" stop-color="#FFF4D6" stop-opacity="0.18"/>
+                </linearGradient>
+                <radialGradient id="f10_glowgrad" cx="0.5" cy="0.5" r="0.5">
+                  <stop offset="0" stop-color="#FFF4D6" stop-opacity="0.95"/>
+                  <stop offset="0.35" stop-color="#FFD27A" stop-opacity="0.45"/>
+                  <stop offset="1" stop-color="#FFD27A" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+
+              <circle id="f10_halo" cx="200" cy="350" r="250" fill="url(#f10_glowgrad)" opacity="0.5"/>
+
+              <path id="f10_glass" d="M178 74 L178 150 C178 168 160 176 140 186 A170 170 0 1 0 260 186 C240 176 222 168 222 150 L222 74 Z"
+                    fill="url(#f10_glassgrad)" stroke="#DCEBFF" stroke-opacity="0.85" stroke-width="3" stroke-linejoin="round"/>
+
+              <g clip-path="url(#f10_bodyclip)">
+                <!-- fill .7 = scaleY .7 about (200,515), written out as translate+scale -->
+                <rect id="f10_fill" x="20" y="186" width="360" height="330" fill="url(#f10_fillgrad)" transform="translate(0 154.5) scale(1 0.7)"/>
+                <circle id="f10_glow" cx="200" cy="360" r="160" fill="url(#f10_glowgrad)" opacity="0.8"/>
+                <g id="f10_stars" fill="#FFF4D6">
+                  <path id="f10_bs0" d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" transform="translate(150 226) scale(6)"/>
+                  <path id="f10_bs1" d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" transform="translate(204 207) scale(7)"/>
+                  <path id="f10_bs2" d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" transform="translate(252 232) scale(5)"/>
+                  <path id="f10_bs3" d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" transform="translate(112 244) scale(5)"/>
+                  <path id="f10_bs4" d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" transform="translate(290 246) scale(6)"/>
+                </g>
+              </g>
+
+              <ellipse cx="200" cy="74" rx="24" ry="5" fill="none" stroke="#DCEBFF" stroke-opacity="0.9" stroke-width="2.5"/>
+              <ellipse cx="200" cy="505" rx="92" ry="9" fill="none" stroke="#DCEBFF" stroke-opacity="0.25" stroke-width="2"/>
+
+              <g id="f10_shine" fill="none" stroke="#FFFFFF" stroke-linecap="round">
+                <path d="M86 318 A122 122 0 0 1 146 222" stroke-opacity="0.55" stroke-width="7"/>
+                <path d="M80 360 A124 124 0 0 0 84 386" stroke-opacity="0.35" stroke-width="6"/>
+                <path d="M300 440 A120 120 0 0 0 318 404" stroke-opacity="0.22" stroke-width="5"/>
+                <path d="M186 92 L186 140" stroke-opacity="0.4" stroke-width="4"/>
+              </g>
+
+              <!-- cork popped in f9: hidden here -->
+              <g id="f10_cork" display="none">
+                <path d="M172 26 Q172 18 180 18 L220 18 Q228 18 228 26 L226 72 Q226 78 220 78 L180 78 Q174 78 174 72 Z" fill="#B98C62"/>
+                <path d="M180 30 L220 30 M181 44 L219 44 M182 58 L218 58" stroke="#8E6644" stroke-width="2" stroke-opacity="0.6"/>
+                <path d="M178 22 L178 74" stroke="#E2BE93" stroke-width="3" stroke-opacity="0.5" stroke-linecap="round"/>
+              </g>
+            </svg>
+          </div>
+
+          <div id="f10_mouth" data-layout-ignore></div>
+          <div id="f10_fountain" data-layout-ignore></div>
+          <div id="f10_beamhead" data-layout-ignore></div>
+
+          <!-- L33 139.13 날아가 저 하늘 너머로 -->
+          <div id="f10_l33mega" class="f10-line" data-layout-allow-overlap>
+            <div id="f10_l33megarow" class="f10-row">
+              <span id="f10_c0" class="f10-ch">날</span><span id="f10_c1" class="f10-ch">아</span><span id="f10_c2" class="f10-ch">가</span>
+            </div>
+          </div>
+          <div id="f10_l33sub" class="f10-line f10-pre" data-layout-allow-overlap>
+            <div id="f10_l33subrow" class="f10-row">
+              <span id="f10_w33a" class="f10-w">저</span><span id="f10_w33b" class="f10-w f10-kw">하늘</span><span id="f10_w33c" class="f10-w">너머로</span>
+            </div>
+          </div>
+
+          <!-- L34 141.68 모아 둔 별들아 전부 다 -->
+          <div id="f10_l34" class="f10-line f10-pos f10-pre" data-layout-allow-overlap>
+            <div id="f10_l34row" class="f10-row">
+              <span id="f10_w34a" class="f10-w">모아</span><span id="f10_w34b" class="f10-w">둔</span><span id="f10_w34c" class="f10-w f10-kw34">별들아</span><span id="f10_w34d" class="f10-w">전부</span><span id="f10_w34e" class="f10-w">다</span>
+            </div>
+          </div>
+
+          <!-- L35 144.44 한 번도 꺼내지 못했던 -->
+          <div id="f10_l35" class="f10-line f10-pos f10-pre" data-layout-allow-overlap>
+            <div id="f10_l35row" class="f10-row">
+              <span id="f10_w35a" class="f10-w">한</span><span id="f10_w35b" class="f10-w">번도</span><span id="f10_w35c" class="f10-w">꺼내지</span><span id="f10_w35d" class="f10-w">못했던</span>
+            </div>
+          </div>
+
+          <!-- L36 147.20 그 빛을 비춰 줘 -->
+          <div id="f10_l36" class="f10-line f10-pos f10-pre" data-layout-allow-overlap>
+            <div id="f10_l36row" class="f10-row f10-r36">
+              <span id="f10_w36a" class="f10-w">그</span><span class="f10-wg"><span id="f10_w36b1" class="f10-w f10-kw36">빛</span><span id="f10_w36b2" class="f10-w">을</span></span><span id="f10_w36c" class="f10-w">비춰</span><span id="f10_w36d" class="f10-w">줘</span>
+            </div>
+          </div>
+
+          <!-- spotlight sweep window (lit duplicate of L36, revealed only inside the rising band) -->
+          <div id="f10_sweepwin" data-layout-ignore>
+            <div id="f10_sweepin">
+              <div id="f10_l36copy" class="f10-line f10-pos f10-copy" aria-hidden="true">
+                <div id="f10_l36rowB" class="f10-row f10-r36">
+                  <span class="f10-w">그</span><span class="f10-wg"><span id="f10_w36Bb1" class="f10-w f10-kw36">빛</span><span class="f10-w">을</span></span><span class="f10-w">비춰</span><span class="f10-w">줘</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 10.55; // frame-local; track t = local + 139.0
+          var tl = gsap.timeline({ paused: true });
+          var $ = function (id) { return document.getElementById(id); };
+
+          // glow states (identical two-shadow structure so GSAP can interpolate them)
+          var GL_SOFT = "0px 0px 14px rgba(220,235,255,0.25), 0px 0px 40px rgba(255,210,122,0)";
+          var GL_LIGHT = "0px 0px 18px rgba(255,210,122,0.45), 0px 0px 46px rgba(255,210,122,0.18)";
+          var GL_PEAK = "0px 0px 26px rgba(255,210,122,0.85), 0px 0px 72px rgba(255,210,122,0.42)";
+          var C_TEXT = "#F4F1EA", C_STAR = "#FFF4D6", C_GOLD = "#FFD27A";
+
+          // a word "catches light" on its sung time t, then relaxes to `rest`
+          function glowPass(el, t, from, rest, back) {
+            tl.fromTo(el, { textShadow: from }, { textShadow: GL_LIGHT, duration: 0.12, ease: "power2.out", immediateRender: false }, t - 0.12);
+            tl.fromTo(el, { textShadow: GL_LIGHT }, { textShadow: rest, duration: back, ease: "sine.out", immediateRender: false }, t + 0.04);
+          }
+
+          /* =========================== camera =========================== */
+          // slow push while floating, then the inhale (scale .97) before f11's slam
+          tl.fromTo("#f10_cam", { scale: 1 }, { scale: 1.025, duration: 10.2, ease: "sine.inOut" }, 0);
+          tl.to("#f10_cam", { scale: 0.97, duration: 0.3, ease: "power2.inOut" }, 10.2);
+
+          /* ===================== bottle + light ===================== */
+          // residual bloom from f9's cork pop fades as the band drops away (139.80)
+          tl.fromTo("#f10_bloom", { opacity: 0.85, scale: 1 }, { opacity: 0, scale: 1.15, duration: 0.75, ease: "sine.out" }, 0);
+          // mouth glow: settles after the pop, breathes, flares with the beam
+          tl.fromTo("#f10_mouth", { opacity: 1, scale: 1.5 }, { opacity: 0.8, scale: 1, duration: 0.8, ease: "power2.out" }, 0);
+          tl.fromTo("#f10_mouth", { opacity: 0.8 }, { opacity: 1, duration: 1.3, ease: "sine.inOut", yoyo: true, repeat: 5, immediateRender: false }, 0.8);
+          tl.fromTo("#f10_mouth", { scale: 1 }, { scale: 1.3, duration: 0.2, ease: "power2.out", immediateRender: false }, 3.46);
+          tl.fromTo("#f10_mouth", { scale: 1.3 }, { scale: 1, duration: 0.8, ease: "sine.out", immediateRender: false }, 3.7);
+          tl.fromTo("#f10_mouth", { opacity: 0.8, scale: 1 }, { opacity: 1, scale: 1.35, duration: 0.2, ease: "power2.out", immediateRender: false }, 9.04);
+          tl.fromTo("#f10_mouth", { scale: 1.35 }, { scale: 1.05, duration: 0.8, ease: "sine.out", immediateRender: false }, 9.4);
+          tl.fromTo("#f10_mouth", { opacity: 1 }, { opacity: 0.65, duration: 0.3, ease: "sine.inOut", immediateRender: false }, 10.2);
+          // halo (.5 base): swells on 별들아, as the fountain thickens, and with the beam
+          tl.fromTo("#f10_halo", { opacity: 0.5 }, { opacity: 0.64, duration: 0.22, ease: "power2.out" }, 3.46);
+          tl.to("#f10_halo", { opacity: 0.5, duration: 1.0, ease: "sine.inOut" }, 3.8);
+          tl.to("#f10_halo", { opacity: 0.58, duration: 1.2, ease: "sine.inOut" }, 6.0);
+          tl.to("#f10_halo", { opacity: 0.82, duration: 0.2, ease: "power2.out" }, 9.04);
+          tl.to("#f10_halo", { opacity: 0.56, duration: 0.9, ease: "sine.inOut" }, 9.4);
+          // inner glow (.8 base) breathes; the bottle bobs a few px
+          tl.fromTo("#f10_glow", { opacity: 0.8 }, { opacity: 0.95, duration: 1.7, ease: "sine.inOut", yoyo: true, repeat: 5 }, 0);
+          tl.fromTo("#f10_bottlewrap", { y: 0 }, { y: -4, duration: 2.5, ease: "sine.inOut", yoyo: true, repeat: 3 }, 0.2);
+          // the stars still inside twinkle
+          ["f10_bs0", "f10_bs1", "f10_bs2", "f10_bs3", "f10_bs4"].forEach(function (id, j) {
+            var per = 0.6 + j * 0.13, st = 0.1 + j * 0.17;
+            var rep = Math.max(0, Math.floor((10.4 - st) / per) - 1);
+            tl.fromTo("#" + id, { opacity: 0.3 }, { opacity: 1, duration: per, ease: "sine.inOut", yoyo: true, repeat: rep }, st);
+          });
+
+          /* =========================== fountain =========================== */
+          // ~90 sparkles leave the mouth on deterministic curved paths (fixed-seed LCG + index sines).
+          var seed = 0x10f10;
+          function rnd() { seed = (1664525 * seed + 1013904223) >>> 0; return seed / 4294967296; }
+          function lerp(r, t) { return r[0] + (r[1] - r[0]) * t; }
+          var STAR_D = "M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z";
+          var NS = "http://www.w3.org/2000/svg";
+          var field = $("f10_fountain");
+          var MX = 960, MY = 850;
+          var specs = [], i;
+          for (i = 0; i < 10; i++) specs.push({ tb: 0.02 + i * 0.05 + rnd() * 0.03, kind: 0 });      // first gush after the pop
+          for (i = 0; i < 20; i++) specs.push({ tb: 0.7 + (i + rnd() * 0.8) * (5.3 / 20), kind: 1 });  // steady, sparse (voice + keys)
+          for (i = 0; i < 8; i++) specs.push({ tb: 3.46 + i * 0.04 + rnd() * 0.02, kind: 2 });         // 별들아 (142.54) surge
+          for (i = 0; i < 52; i++) specs.push({ tb: 6.0 + (i + rnd() * 0.85) * (3.65 / 52), kind: 3 }); // thickens after 145, stops 9.65
+          var KIND = [
+            { D: [2.6, 3.4], R: [780, 960], X: [140, 760], A: [6, 18], S: [10, 16], P: [0.95, 1.0] },
+            { D: [3.4, 4.6], R: [600, 900], X: [60, 600], A: [10, 30], S: [7, 15], P: [0.8, 0.95] },
+            { D: [2.8, 3.6], R: [760, 960], X: [90, 680], A: [8, 22], S: [11, 16], P: [0.95, 1.0] },
+            { D: [3.0, 4.4], R: [620, 960], X: [60, 740], A: [10, 30], S: [7, 16], P: [0.8, 0.98] }
+          ];
+          specs.forEach(function (sp, n) {
+            var k = KIND[sp.kind];
+            var D = lerp(k.D, rnd()), R = lerp(k.R, rnd());
+            var side = (n % 2 === 0 ? 1 : -1) * (rnd() < 0.15 ? -1 : 1);
+            var X = side * lerp(k.X, Math.pow(rnd(), 0.8));
+            var A = lerp(k.A, rnd()), cyc = 0.7 + rnd() * 1.1, ph = rnd() * Math.PI * 2;
+            var s = Math.round(lerp(k.S, Math.pow(rnd(), 0.9)));
+            var peak = lerp(k.P, rnd());
+            var tw = 2 + rnd() * 3, twph = rnd() * Math.PI * 2;
+            var jx = (rnd() - 0.5) * 22;
+            var H = Math.round(s * 3.6);
+
+            var el = document.createElement("div");
+            el.className = "f10-sp";
+            el.id = "f10_sp" + n;
+            el.setAttribute("data-layout-ignore", "");
+            el.style.width = H + "px";
+            el.style.height = H + "px";
+            el.style.left = (MX + jx - H / 2).toFixed(1) + "px";
+            el.style.top = (MY - H / 2).toFixed(1) + "px";
+            var svg = document.createElementNS(NS, "svg");
+            svg.setAttribute("class", "f10-spsvg");
+            svg.setAttribute("viewBox", "-1 -1 2 2");
+            svg.setAttribute("width", String(s));
+            svg.setAttribute("height", String(s));
+            svg.style.left = ((H - s) / 2).toFixed(1) + "px";
+            svg.style.top = ((H - s) / 2).toFixed(1) + "px";
+            var path = document.createElementNS(NS, "path");
+            path.setAttribute("d", STAR_D);
+            path.setAttribute("fill", n % 4 === 3 ? "#FFE2A6" : "#FFF4D6");
+            svg.appendChild(path);
+            el.appendChild(svg);
+            field.appendChild(el);
+
+            // life clipped to the frame; u = life fraction, every channel is a pure function of u
+            var tEnd = Math.min(sp.tb + D, DUR), d = tEnd - sp.tb, kf = d / D;
+            var fx = function (p) { var u = p * kf; return X * Math.pow(u, 1.5) + A * Math.sin(2 * Math.PI * cyc * u + ph) * Math.min(1, u * 4); };
+            var fy = function (p) { var u = p * kf; return -R * (1 - Math.pow(1 - u, 1.3)); };
+            var fs = function (p) {
+              var u = p * kf;
+              var grow = 0.35 + 0.65 * Math.min(1, u / 0.1);
+              var shrink = u < 0.5 ? 1 : 1 - 0.72 * (u - 0.5) / 0.5;
+              return grow * shrink * (1 + 0.18 * Math.sin(2 * Math.PI * tw * u + twph));
+            };
+            var fo = function (p) {
+              var u = p * kf;
+              var fin = Math.min(1, u / 0.05);
+              var fout = u < 0.45 ? 1 : Math.pow(Math.max(0, 1 - (u - 0.45) / 0.55), 1.2);
+              return peak * fin * fout;
+            };
+            // from 0 to 1 with a function ease: value == ease(p) (px / scale / opacity)
+            tl.fromTo(el, { x: 0 }, { x: 1, duration: d, ease: fx }, sp.tb);
+            tl.fromTo(el, { y: 0 }, { y: 1, duration: d, ease: fy }, sp.tb);
+            tl.fromTo(el, { scale: 0 }, { scale: 1, duration: d, ease: fs }, sp.tb);
+            tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: d, ease: fo }, sp.tb);
+          });
+          // the fountain thins for the inhale
+          tl.fromTo("#f10_fountain", { opacity: 1 }, { opacity: 0.5, duration: 0.3, ease: "sine.inOut" }, 10.2);
+
+          /* ============ L33 139.13 날아가 저 하늘 너머로 (local 0.13 → 2.56) ============ */
+          var chars = [$("f10_c0"), $("f10_c1"), $("f10_c2")];
+          chars.forEach(function (c, j) {
+            var floatY = -(22 + j * 10);
+            // rises from below, fully lit by 0.17 (날아가 sung at 139.17)
+            tl.fromTo(c, { y: 80 + j * 20, autoAlpha: 0, filter: "blur(8px)" },
+                         { y: 0, autoAlpha: 1, filter: "blur(0px)", duration: 0.15, ease: "power3.out" }, 0.005 + j * 0.01);
+            tl.fromTo(c, { textShadow: GL_PEAK }, { textShadow: GL_LIGHT, duration: 0.8, ease: "sine.out", immediateRender: false }, 0.17 + j * 0.03);
+            // keeps floating up, each glyph at its own rate
+            tl.fromTo(c, { y: 0, x: 0 }, { y: floatY, x: (j - 1) * 6, duration: 2.15, ease: "sine.inOut", immediateRender: false }, 0.2 + j * 0.06);
+            // flies off upward as the line ends
+            tl.fromTo(c, { y: floatY, autoAlpha: 1, filter: "blur(0px)" },
+                         { y: floatY - 50, autoAlpha: 0, filter: "blur(10px)", duration: 0.07, ease: "power1.in", immediateRender: false }, 2.56);
+          });
+          // sub line legible (dim) at onset; each word lights on its sung time
+          tl.fromTo("#f10_l33sub", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.1, ease: "power2.out" }, 0.03);
+          [["f10_w33a", 0.89, C_TEXT, GL_LIGHT, GL_SOFT],
+           ["f10_w33b", 1.25, C_STAR, GL_PEAK, GL_LIGHT],   // 하늘: keyword, gold glow stays
+           ["f10_w33c", 1.92, C_TEXT, GL_LIGHT, GL_SOFT]].forEach(function (w) {
+            tl.fromTo("#" + w[0], { color: "#A9B3D6", opacity: 0.72, textShadow: GL_SOFT },
+                                  { color: w[2], opacity: 1, textShadow: w[3], duration: 0.14, ease: "power2.out", immediateRender: false }, w[1] - 0.13);
+            tl.fromTo("#" + w[0], { textShadow: w[3] }, { textShadow: w[4], duration: 0.55, ease: "sine.out", immediateRender: false }, w[1] + 0.06);
+          });
+          tl.fromTo("#f10_l33sub", { autoAlpha: 1, y: 0, filter: "blur(0px)" },
+                                   { autoAlpha: 0, y: -14, filter: "blur(6px)", duration: 0.07, ease: "power1.in", immediateRender: false }, 2.56);
+
+          /* ============ L34 141.68 모아 둔 별들아 전부 다 (local 2.68 → 5.32) ============ */
+          tl.fromTo("#f10_l34", { autoAlpha: 0, y: 28, filter: "blur(12px)" }, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.15, ease: "power1.inOut" }, 2.53);
+          tl.fromTo("#f10_l34row", { y: 0, scale: 1 }, { y: -10, scale: 1.02, duration: 2.6, ease: "sine.inOut" }, 2.68);
+          glowPass("#f10_w34a", 2.72, GL_SOFT, GL_SOFT, 0.6);
+          glowPass("#f10_w34b", 3.08, GL_SOFT, GL_SOFT, 0.6);
+          // 별들아 (3.54): turns gold, swells, the fountain surges with it
+          tl.fromTo("#f10_w34c", { color: C_STAR, textShadow: GL_LIGHT }, { color: C_GOLD, textShadow: GL_PEAK, duration: 0.14, ease: "power2.out", immediateRender: false }, 3.42);
+          tl.fromTo("#f10_w34c", { textShadow: GL_PEAK }, { textShadow: GL_LIGHT, duration: 0.9, ease: "sine.out", immediateRender: false }, 3.7);
+          tl.fromTo("#f10_w34c", { scale: 1 }, { scale: 1.08, duration: 0.2, ease: "power2.out" }, 3.42);
+          tl.fromTo("#f10_w34c", { scale: 1.08 }, { scale: 1.04, duration: 0.7, ease: "sine.out", immediateRender: false }, 3.7);
+          glowPass("#f10_w34d", 4.36, GL_SOFT, GL_SOFT, 0.5);
+          glowPass("#f10_w34e", 4.84, GL_SOFT, GL_SOFT, 0.36);
+          tl.fromTo("#f10_l34", { autoAlpha: 1, y: 0, filter: "blur(0px)" }, { autoAlpha: 0, y: -30, filter: "blur(10px)", duration: 0.07, ease: "power1.in", immediateRender: false }, 5.32);
+
+          /* ============ L35 144.44 한 번도 꺼내지 못했던 (local 5.44 → 8.08) ============ */
+          tl.fromTo("#f10_l35", { autoAlpha: 0, y: 20, filter: "blur(10px)" }, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.15, ease: "power1.inOut" }, 5.29);
+          tl.fromTo("#f10_l35row", { y: 0, scale: 1 }, { y: -8, scale: 1.015, duration: 2.6, ease: "sine.inOut" }, 5.44);
+          [["f10_w35a", 5.48], ["f10_w35b", 5.66], ["f10_w35c", 6.38], ["f10_w35d", 7.44]].forEach(function (w) {
+            tl.fromTo("#" + w[0], { color: "#C9CFE6", textShadow: GL_SOFT }, { color: C_TEXT, textShadow: GL_LIGHT, duration: 0.12, ease: "power2.out", immediateRender: false }, w[1] - 0.12);
+            tl.fromTo("#" + w[0], { textShadow: GL_LIGHT }, { textShadow: GL_SOFT, duration: 0.5, ease: "sine.out", immediateRender: false }, w[1] + 0.06);
+          });
+          tl.fromTo("#f10_l35", { autoAlpha: 1, y: 0, filter: "blur(0px)" }, { autoAlpha: 0, y: -26, filter: "blur(10px)", duration: 0.07, ease: "power1.in", immediateRender: false }, 7.99);
+
+          /* ============ L36 147.20 그 빛을 비춰 줘 (local 8.20 → end) ============ */
+          tl.fromTo("#f10_l36", { autoAlpha: 0, y: 24, filter: "blur(12px)" }, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.15, ease: "power1.inOut" }, 8.06);
+          tl.fromTo(["#f10_l36row", "#f10_l36rowB"], { y: 0, scale: 1 }, { y: -8, scale: 1.02, duration: 2.0, ease: "sine.inOut" }, 8.2);
+          glowPass("#f10_w36a", 8.2, GL_SOFT, GL_SOFT, 0.5);
+          // 빛 (8.58): gold + swell (mirrored on the sweep copy so the two stay registered)
+          tl.fromTo("#f10_w36b1", { color: C_STAR, textShadow: GL_LIGHT }, { color: C_GOLD, textShadow: GL_PEAK, duration: 0.14, ease: "power2.out", immediateRender: false }, 8.46);
+          tl.fromTo("#f10_w36b1", { textShadow: GL_PEAK }, { textShadow: GL_LIGHT, duration: 0.5, ease: "sine.out", immediateRender: false }, 8.64);
+          tl.fromTo(["#f10_w36b1", "#f10_w36Bb1"], { scale: 1 }, { scale: 1.08, duration: 0.2, ease: "power2.out" }, 8.46);
+          tl.fromTo(["#f10_w36b1", "#f10_w36Bb1"], { scale: 1.08 }, { scale: 1.04, duration: 0.7, ease: "sine.out", immediateRender: false }, 8.7);
+          glowPass("#f10_w36b2", 8.58, GL_SOFT, GL_SOFT, 0.5);
+          // 비춰 (9.24): lit, and the beam rises from the bottle mouth through the line
+          tl.fromTo("#f10_w36c", { color: C_TEXT, textShadow: GL_SOFT }, { color: C_STAR, textShadow: GL_LIGHT, duration: 0.14, ease: "power2.out", immediateRender: false }, 9.12);
+          tl.fromTo(["#f10_beam", "#f10_beamcore"], { scaleY: 0 }, { scaleY: 1, duration: 1.0, ease: "sine.out" }, 9.04);
+          tl.fromTo(["#f10_beam", "#f10_beamcore"], { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, ease: "power1.out" }, 9.04);
+          tl.fromTo("#f10_beam", { scaleX: 1 }, { scaleX: 1.35, duration: 1.1, ease: "sine.out" }, 9.3);
+          tl.to(["#f10_beam", "#f10_beamcore"], { autoAlpha: 0.5, duration: 0.3, ease: "sine.inOut" }, 10.04);
+          tl.to(["#f10_beam", "#f10_beamcore"], { autoAlpha: 0.3, duration: 0.2, ease: "sine.inOut" }, 10.34);
+          tl.fromTo("#f10_beamhead", { y: 0 }, { y: -856, duration: 1.0, ease: "sine.out" }, 9.04);
+          tl.fromTo("#f10_beamhead", { scale: 0.6 }, { scale: 1.1, duration: 0.6, ease: "sine.out" }, 9.04);
+          tl.fromTo("#f10_beamhead", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.1, ease: "power1.out" }, 9.04);
+          tl.to("#f10_beamhead", { autoAlpha: 0, duration: 0.35, ease: "sine.in" }, 9.7);
+          // sweep band rides with the head (same ease/time); its content counter-moves so the lit copy stays registered
+          tl.set("#f10_sweepwin", { autoAlpha: 1 }, 9.02);
+          tl.fromTo("#f10_sweepwin", { y: 0 }, { y: -856, duration: 1.0, ease: "sine.out" }, 9.04);
+          tl.fromTo("#f10_sweepin", { y: 0 }, { y: 856, duration: 1.0, ease: "sine.out" }, 9.04);
+          tl.set("#f10_sweepwin", { autoAlpha: 0 }, 10.06);
+          // after the light passes, the whole line stays lit
+          ["#f10_w36a", "#f10_w36b2", "#f10_w36d"].forEach(function (sel) {
+            tl.fromTo(sel, { color: C_TEXT, textShadow: GL_SOFT }, { color: C_STAR, textShadow: GL_LIGHT, duration: 0.32, ease: "sine.out", immediateRender: false }, 9.3);
+          });
+          tl.fromTo("#f10_w36b1", { textShadow: GL_LIGHT }, { textShadow: GL_PEAK, duration: 0.16, ease: "power2.out", immediateRender: false }, 9.28);
+          tl.fromTo("#f10_w36b1", { textShadow: GL_PEAK }, { textShadow: GL_LIGHT, duration: 0.6, ease: "sine.out", immediateRender: false }, 9.5);
+          // 줘 (10.20): last glow, held through the inhale and the cut
+          tl.fromTo("#f10_w36d", { textShadow: GL_LIGHT }, { textShadow: GL_PEAK, duration: 0.14, ease: "power2.out", immediateRender: false }, 10.08);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["10-f10"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

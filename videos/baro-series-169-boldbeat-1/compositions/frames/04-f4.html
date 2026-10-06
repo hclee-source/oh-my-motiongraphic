@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <!--
+      Frame 4 (f4) — MEGA-SPLIT · BARO 03 제미나이·구글 AI.
+      Track span [17.21, 21.95] → frame-local [0, 4.74]. Pacing: beat_cut. Single group g1.
+      Anchors (local = track − 17.21):
+        0.00 YELLOW ground · 0.23 '제미나이' MEGA whips in (speed trail) · 1.16 '구글 AI' ink label-box + chip ·
+        1.65 0ms flip → INK: mega shrinks into a vertical rail, robot pops, cover tossed, yellow ✕ ·
+        2.57 robot bump (wave) · 3.52 screen-shake + yellow ● ring pulse behind ✕ ·
+        4.45 robot + cover arc out on opposite parabolas.
+      Micro hits: 0.669 snare (mega nudge) · 1.366 hihat (box punch) · 1.737/1.877 hihat (cover lands, caption) ·
+        2.086 snare (✕ tick) · 3.038 snare (✕ quarter-spin) · 4.57 hihat strong (✕ tick, hold to the cut).
+      Feathered sprite spr-robot.png appears ONLY on the INK register (1.65 → end).
+    -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        #stage {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #040404;
+          font-family: "Paperlogy", sans-serif;
+          -webkit-font-smoothing: antialiased;
+        }
+        #stage * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        /* ---------- shared ---------- */
+        .f4-fill {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        #stage .f4-chip {
+          position: relative;
+          display: inline-block;
+          font-family: "Archivo Black", sans-serif;
+          font-weight: 400;
+          font-size: 30px;
+          line-height: 1;
+          letter-spacing: 0.02em;
+          text-transform: uppercase;
+          padding: 10px 18px 9px;
+          white-space: nowrap;
+        }
+        .f4-chip-bg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          transform-origin: 0% 50%;
+        }
+        .f4-chip-tx {
+          position: relative;
+          display: block;
+        }
+
+        /* ---------- group g1 ---------- */
+        #f4_g1 {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        #f4_g1_bg {
+          background-color: #FFE500;
+        }
+
+        /* ===== system A — yellow statement ===== */
+        .f4-mega {
+          position: absolute;
+          left: 96px;
+          top: 790px;
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 800;
+          font-size: 360px;
+          line-height: 0.9;
+          letter-spacing: -0.05em;
+          color: #040404;
+          white-space: nowrap;
+        }
+        #f4_g1_ghost1 { opacity: 0.35; }
+        #f4_g1_ghost2 { opacity: 0.2; }
+        #f4_g1_ghost3 { opacity: 0.1; }
+
+        #f4_g1_stmt {
+          position: absolute;
+          right: 96px;
+          top: 150px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 24px;
+        }
+        #f4_g1_box {
+          position: relative;
+          display: block;
+          padding: 0.08em 0.18em 0.06em;
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 800;
+          font-size: 240px;
+          line-height: 0.92;
+          letter-spacing: -0.045em;
+          transform-origin: 100% 50%;
+        }
+        #f4_g1_boxbg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background: #040404;
+          transform-origin: 0% 50%;
+        }
+        #f4_g1_boxword {
+          position: relative;
+          display: block;
+          color: #FFE500;
+          white-space: nowrap;
+        }
+        #f4_g1_chipAbg { background: #040404; }
+        #f4_g1_chipAtx { color: #FFE500; }
+
+        /* ===== system B — INK face-off ===== */
+        #f4_g1_sysB {
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f4_g1_railbox {
+          position: absolute;
+          left: 96px;
+          top: 104px;
+          width: 150px;
+          height: 880px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        #f4_g1_rail {
+          flex: none;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+          white-space: nowrap;
+          transform: rotate(-90deg);
+        }
+        #f4_g1_railword {
+          display: block;
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 800;
+          font-size: 88px;
+          line-height: 1.05;
+          letter-spacing: -0.03em;
+          color: #FFE500;
+        }
+        #f4_g1_raillabel {
+          display: block;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 20px;
+          line-height: 1;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #F2F0EA;
+          padding-left: 6px;
+        }
+
+        /* ● ring pulse — sits behind the ✕, the robot and the cover */
+        #f4_g1_burst {
+          position: absolute;
+          left: 1030px;
+          top: 450px;
+          width: 0;
+          height: 0;
+        }
+        .f4-ring {
+          position: absolute;
+          left: -150px;
+          top: -150px;
+          width: 300px;
+          height: 300px;
+          border-radius: 50%;
+          border: 14px solid #FFE500;
+        }
+        #f4_g1_echowrap {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 0;
+          height: 0;
+          opacity: 0;
+          visibility: hidden;
+        }
+        .f4-dot {
+          position: absolute;
+          border-radius: 50%;
+          background: #FFE500;
+        }
+        #f4_g1_dot0, #f4_g1_dot7 { width: 30px; height: 30px; left: -15px; top: -15px; }
+        #f4_g1_dot1, #f4_g1_dot6 { width: 22px; height: 22px; left: -11px; top: -11px; }
+        #f4_g1_dot2, #f4_g1_dot5 { width: 38px; height: 38px; left: -19px; top: -19px; }
+        #f4_g1_dot3, #f4_g1_dot4 { width: 26px; height: 26px; left: -13px; top: -13px; }
+
+        /* robot sprite (feathered; ink register only) — 400×410 native → 1.28× */
+        #f4_g1_robotarc {
+          position: absolute;
+          left: 330px;
+          top: 200px;
+          width: 512px;
+          height: 525px;
+        }
+        #f4_g1_robotpop,
+        #f4_g1_robotbump {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 512px;
+          height: 525px;
+          transform-origin: 50% 85%;
+        }
+        #f4_g1_robot {
+          display: block;
+          width: 512px;
+          height: 525px;
+        }
+
+        /* cover + caption travel together */
+        #f4_g1_coverarc {
+          position: absolute;
+          left: 1240px;
+          top: 150px;
+          width: 439px;
+          height: 760px;
+        }
+        #f4_g1_card {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 439px;
+          height: 600px;
+          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+          transform: rotate(4deg);
+        }
+        #f4_g1_cover {
+          display: block;
+          width: 439px;
+          height: 600px;
+        }
+        #f4_g1_cap {
+          position: absolute;
+          left: 0;
+          top: 650px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+        }
+        #f4_g1_title {
+          position: relative;
+          display: inline-block;
+          padding: 0.08em 0.18em 0.06em;
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 800;
+          font-size: 34px;
+          line-height: 1.25;
+          letter-spacing: -0.01em;
+          white-space: nowrap;
+        }
+        #f4_g1_titlebg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background: #FFE500;
+          transform-origin: 0% 50%;
+        }
+        #f4_g1_titletx {
+          position: relative;
+          display: block;
+          color: #040404;
+        }
+        #f4_g1_author {
+          display: block;
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 400;
+          font-size: 30px;
+          line-height: 1.2;
+          color: #F2F0EA;
+          padding-left: 6px;
+        }
+
+        /* big yellow ✕ between robot and cover */
+        #f4_g1_x {
+          position: absolute;
+          left: 930px;
+          top: 350px;
+          width: 200px;
+          height: 200px;
+        }
+        .f4-xbar {
+          position: absolute;
+          left: -20px;
+          top: 79px;
+          width: 240px;
+          height: 42px;
+          background: #FFE500;
+        }
+        #f4_g1_xbar1 { transform: rotate(45deg); }
+        #f4_g1_xbar2 { transform: rotate(-45deg); }
+      </style>
+
+      <div id="stage" data-composition-id="04-f4" data-width="1920" data-height="1080" data-duration="4.74">
+        <div id="f4_g1" class="f4-group">
+          <div id="f4_g1_bg" class="f4-fill"></div>
+          <div id="f4_g1_shake" class="f4-fill">
+            <!-- system A: yellow mega statement -->
+            <div id="f4_g1_sysA" class="f4-fill">
+              <div id="f4_g1_ghost3" class="f4-mega f4-ghost" data-layout-ignore>제미나이</div>
+              <div id="f4_g1_ghost2" class="f4-mega f4-ghost" data-layout-ignore>제미나이</div>
+              <div id="f4_g1_ghost1" class="f4-mega f4-ghost" data-layout-ignore>제미나이</div>
+              <div id="f4_g1_mega" class="f4-mega" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow>제미나이</div>
+              <div id="f4_g1_stmt">
+                <div id="f4_g1_box">
+                  <div id="f4_g1_boxbg"></div>
+                  <span id="f4_g1_boxword">구글 AI</span>
+                </div>
+                <div id="f4_g1_chipA" class="f4-chip">
+                  <span id="f4_g1_chipAbg" class="f4-chip-bg"></span>
+                  <span id="f4_g1_chipAtx" class="f4-chip-tx">GEMINI · GOOGLE AI</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- system B: vertical rail + robot vs cover around a big ✕ -->
+            <div id="f4_g1_sysB" class="f4-fill">
+              <div id="f4_g1_railbox">
+                <div id="f4_g1_rail">
+                  <span id="f4_g1_railword">제미나이</span>
+                  <span id="f4_g1_raillabel">GEMINI · GOOGLE AI</span>
+                </div>
+              </div>
+
+              <div id="f4_g1_burst">
+                <div id="f4_g1_ring" class="f4-ring"></div>
+                <div id="f4_g1_echowrap" data-layout-ignore>
+                  <div id="f4_g1_echo" class="f4-ring"></div>
+                </div>
+                <div id="f4_g1_dot0" class="f4-dot"></div>
+                <div id="f4_g1_dot1" class="f4-dot"></div>
+                <div id="f4_g1_dot2" class="f4-dot"></div>
+                <div id="f4_g1_dot3" class="f4-dot"></div>
+                <div id="f4_g1_dot4" class="f4-dot"></div>
+                <div id="f4_g1_dot5" class="f4-dot"></div>
+                <div id="f4_g1_dot6" class="f4-dot"></div>
+                <div id="f4_g1_dot7" class="f4-dot"></div>
+              </div>
+
+              <div id="f4_g1_robotarc">
+                <div id="f4_g1_robotpop">
+                  <div id="f4_g1_robotbump">
+                    <img id="f4_g1_robot" src="assets/keyvisual/spr-robot.png" alt="">
+                  </div>
+                </div>
+              </div>
+
+              <div id="f4_g1_coverarc">
+                <div id="f4_g1_card">
+                  <img id="f4_g1_cover" src="assets/covers/9791124516157.jpg" alt="바로바로 제미나이 구글 AI">
+                </div>
+                <div id="f4_g1_cap">
+                  <div id="f4_g1_title">
+                    <span id="f4_g1_titlebg"></span>
+                    <span id="f4_g1_titletx">바로바로 제미나이 구글 AI</span>
+                  </div>
+                  <span id="f4_g1_author">공냥이</span>
+                </div>
+              </div>
+
+              <div id="f4_g1_x">
+                <div id="f4_g1_xbar1" class="f4-xbar"></div>
+                <div id="f4_g1_xbar2" class="f4-xbar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var ID = "04-f4";
+          var DUR = 4.74;
+          var Y = "#FFE500", INK = "#040404";
+
+          // frame-local anchors = track_t − 17.21
+          var A0 = 0.0, A1 = 0.23, A2 = 1.16, A3 = 1.65, A4 = 2.57, A5 = 3.52, A6 = 4.45;
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ---- group window (single group spans the whole frame) ----
+          tl.set("#f4_g1", { autoAlpha: 1 }, 0);
+          tl.set("#f4_g1", { autoAlpha: 0 }, DUR);
+
+          // ---- palette-flip: YELLOW → INK at 0ms on the 1.65 kick ----
+          tl.set("#f4_g1_bg", { backgroundColor: Y }, A0);
+          tl.set("#f4_g1_bg", { backgroundColor: INK }, A3);
+
+          // ---- system swap at 1.65 ----
+          tl.set("#f4_g1_sysA", { autoAlpha: 1 }, A0);
+          tl.set("#f4_g1_sysB", { autoAlpha: 0 }, A0);
+          tl.set("#f4_g1_sysA", { autoAlpha: 0 }, A3);
+          tl.set("#f4_g1_sysB", { autoAlpha: 1 }, A3);
+
+          // ===== A · 0.23 — '제미나이' MEGA whips in from the right with a speed trail (hypercut-whip) =====
+          var WHIP_X = 1900, WHIP_D = 0.13, WHIP_T = A1 - WHIP_D; // lands on the 0.23 snare
+          tl.fromTo("#f4_g1_mega", { x: WHIP_X }, { x: 0, duration: WHIP_D, ease: "power4.out" }, WHIP_T);
+          ["#f4_g1_ghost1", "#f4_g1_ghost2", "#f4_g1_ghost3"].forEach(function (sel, i) {
+            tl.fromTo(sel, { x: WHIP_X + 110 * (i + 1) }, { x: 0, duration: WHIP_D, ease: "power4.out" }, WHIP_T + 0.026 * (i + 1));
+            tl.set(sel, { autoAlpha: 0 }, 0.42);
+          });
+          // slow creep through the fill (tension), cut at 1.65
+          tl.to("#f4_g1_mega", { x: -40, duration: A3 - A1, ease: "none" }, A1);
+          // 0.669 snare — mega nudge
+          tl.to("#f4_g1_mega", { y: -16, duration: 0.04, ease: "power2.out" }, 0.669);
+          tl.to("#f4_g1_mega", { y: 0, duration: 0.16, ease: "power3.out" }, 0.709);
+
+          // ===== A · 1.16 — '구글 AI' slams in an ink label-box (top-right) =====
+          tl.set("#f4_g1_box", { autoAlpha: 0 }, A0);
+          tl.set("#f4_g1_box", { autoAlpha: 1 }, A2);
+          tl.fromTo("#f4_g1_box", { scale: 1.32, rotation: -4 }, { scale: 1, rotation: 0, duration: 0.14, ease: "back.out(2)" }, A2);
+          tl.fromTo("#f4_g1_boxbg", { scaleX: 0 }, { scaleX: 1, duration: 0.12, ease: "power3.out" }, A2);
+          tl.fromTo("#f4_g1_boxword", { x: -40, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.08, ease: "power3.out" }, A2 + 0.02);
+          // 1.366 hihat — box punch
+          tl.to("#f4_g1_box", { scale: 1.05, duration: 0.04, ease: "power2.out" }, 1.366);
+          tl.to("#f4_g1_box", { scale: 1, duration: 0.16, ease: "power3.out" }, 1.406);
+
+          // chip 'GEMINI · GOOGLE AI' pops under the box
+          tl.set("#f4_g1_chipA", { autoAlpha: 0 }, A0);
+          tl.set("#f4_g1_chipA", { autoAlpha: 1 }, A2 + 0.14);
+          tl.fromTo("#f4_g1_chipAbg", { scaleX: 0 }, { scaleX: 1, duration: 0.1, ease: "power3.out" }, A2 + 0.14);
+          tl.fromTo("#f4_g1_chipAtx", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.04, ease: "none" }, A2 + 0.18);
+
+          // ===== B · 1.65 — INK: the mega word shrinks into a vertical rail on the left edge =====
+          // starts at the mega's size/position (88px × 4.09 ≈ 360px), lands rotated −90°
+          tl.fromTo("#f4_g1_rail",
+            { x: 535, y: 408, scale: 4.09, rotation: 0 },
+            { x: 0, y: 0, scale: 1, rotation: -90, duration: 0.24, ease: "power4.out" }, A3);
+          tl.set("#f4_g1_raillabel", { autoAlpha: 0 }, A0);
+          tl.fromTo("#f4_g1_raillabel", { autoAlpha: 0, x: -24 }, { autoAlpha: 1, x: 0, duration: 0.12, ease: "power3.out", immediateRender: false }, A3 + 0.16);
+
+          // robot pops in left-center (feathered sprite on INK only); peak scale 1.28 × ~1.05 < 1.4× native
+          tl.set("#f4_g1_robotarc", { autoAlpha: 0 }, A0);
+          tl.set("#f4_g1_robotarc", { autoAlpha: 1 }, A3 + 0.03);
+          tl.fromTo("#f4_g1_robotpop", { scale: 0.4, y: 120 }, { scale: 1, y: 0, duration: 0.22, ease: "back.out(1.4)" }, A3 + 0.03);
+          tl.to("#f4_g1_robotpop", { y: -12, duration: A6 - (A3 + 0.25), ease: "sine.inOut" }, A3 + 0.25);
+
+          // cover tossed in right-center (+4°), lands on the 1.877 hihat
+          tl.set("#f4_g1_card", { autoAlpha: 0 }, A0);
+          tl.set("#f4_g1_card", { autoAlpha: 1 }, 1.70);
+          tl.fromTo("#f4_g1_card",
+            { x: 300, y: 900, rotation: 28 },
+            { x: 0, y: 0, rotation: 4, duration: 0.22, ease: "back.out(1.25)" }, 1.70);
+          tl.to("#f4_g1_card", { y: -8, duration: A6 - 1.92, ease: "sine.inOut" }, 1.92);
+
+          // big yellow ✕ slams between them
+          tl.set("#f4_g1_x", { autoAlpha: 0 }, A0);
+          tl.set("#f4_g1_x", { autoAlpha: 1 }, 1.78);
+          tl.fromTo("#f4_g1_x", { scale: 2.6, rotation: -45 }, { scale: 1, rotation: 0, duration: 0.16, ease: "power4.out" }, 1.78);
+
+          // caption label box under the cover (title held 1.88 → 4.45 ≈ 5 beats)
+          tl.set("#f4_g1_title", { autoAlpha: 0 }, A0);
+          tl.set("#f4_g1_title", { autoAlpha: 1 }, 1.88);
+          tl.fromTo("#f4_g1_titlebg", { scaleX: 0 }, { scaleX: 1, duration: 0.12, ease: "power3.out" }, 1.88);
+          tl.fromTo("#f4_g1_titletx", { autoAlpha: 0, x: -20 }, { autoAlpha: 1, x: 0, duration: 0.08, ease: "power3.out" }, 1.91);
+          tl.fromTo("#f4_g1_author", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.14, ease: "power3.out" }, 1.98);
+
+          // 2.086 snare — ✕ tick
+          tl.to("#f4_g1_x", { scale: 1.1, duration: 0.04, ease: "power2.out" }, 2.086);
+          tl.to("#f4_g1_x", { scale: 1, duration: 0.14, ease: "power3.out" }, 2.126);
+
+          // ===== B · 2.57 — robot bump (hop + wave wobble), leads the kick by 40ms =====
+          tl.to("#f4_g1_robotbump", { y: -34, rotation: -6, duration: 0.07, ease: "power2.out" }, A4 - 0.04);
+          tl.to("#f4_g1_robotbump", { y: 0, rotation: 5, duration: 0.1, ease: "power2.in" }, A4 + 0.03);
+          tl.to("#f4_g1_robotbump", { rotation: -3, duration: 0.1, ease: "sine.inOut" }, A4 + 0.13);
+          tl.to("#f4_g1_robotbump", { rotation: 2, duration: 0.1, ease: "sine.inOut" }, A4 + 0.23);
+          tl.to("#f4_g1_robotbump", { rotation: 0, duration: 0.12, ease: "sine.out" }, A4 + 0.33);
+
+          // 3.038 snare — ✕ quarter-spin (lands identical, motion reads as a hit)
+          tl.to("#f4_g1_x", { rotation: 90, duration: 0.2, ease: "power3.out" }, 3.038);
+
+          // ===== C · 3.52 — screen-shake (≤10px) + yellow ● ring pulse behind the ✕ =====
+          var amps = [10, -9, 8, -7, 6, -5, 4, -3, 2, -1];
+          amps.forEach(function (amp, i) {
+            tl.to("#f4_g1_shake", { x: amp, y: amp * 0.6 * (i % 2 ? -1 : 1), duration: 0.03, ease: "steps(1)" }, A5 + i * 0.03);
+          });
+          tl.to("#f4_g1_shake", { x: 0, y: 0, duration: 0.08, ease: "power2.out" }, A5 + amps.length * 0.03);
+
+          tl.fromTo("#f4_g1_ring", { scale: 0 }, { scale: 1, duration: 0.2, ease: "back.out(2.2)" }, A5);
+          tl.set("#f4_g1_echowrap", { autoAlpha: 1 }, A5 + 0.04);
+          tl.fromTo("#f4_g1_echo", { scale: 1, opacity: 1 }, { scale: 1.7, opacity: 0, duration: 0.5, ease: "power2.out" }, A5 + 0.04);
+          // second pulse on the 3.618 strong hihat
+          tl.to("#f4_g1_ring", { scale: 1.12, duration: 0.04, ease: "power2.out" }, 3.618);
+          tl.to("#f4_g1_ring", { scale: 1, duration: 0.18, ease: "power3.out" }, 3.658);
+
+          // ● dots on two arcs of a tall ellipse (above / below the ring), index-derived
+          for (var k = 0; k < 8; k++) {
+            var deg = (k < 4 ? -90 : 90) + ((k % 4) - 1.5) * 30;
+            var ang = (deg * Math.PI) / 180;
+            var Rx = 150, Ry = k % 2 ? 236 : 214;
+            tl.fromTo("#f4_g1_dot" + k,
+              { x: 0, y: 0, scale: 0 },
+              { x: Math.round(Math.cos(ang) * Rx), y: Math.round(Math.sin(ang) * Ry), scale: 1, duration: 0.3, ease: "power3.out" },
+              A5 + 0.01 + (k % 4) * 0.012);
+          }
+          tl.to("#f4_g1_x", { scale: 1.18, duration: 0.05, ease: "power2.out" }, A5);
+          tl.to("#f4_g1_x", { scale: 1, duration: 0.22, ease: "power3.out" }, A5 + 0.05);
+
+          // ===== D · 4.45 — robot and cover arc out on opposite parabolas =====
+          var ARC_D = 0.28;
+          tl.to("#f4_g1_robotarc", { x: -900, rotation: -40, duration: ARC_D, ease: "none" }, A6);
+          tl.to("#f4_g1_robotarc", { y: -150, duration: 0.1, ease: "power2.out" }, A6);
+          tl.to("#f4_g1_robotarc", { y: 1000, duration: ARC_D - 0.1, ease: "power2.in" }, A6 + 0.1);
+          tl.to("#f4_g1_coverarc", { x: 900, rotation: 35, duration: ARC_D, ease: "none" }, A6);
+          tl.to("#f4_g1_coverarc", { y: -150, duration: 0.1, ease: "power2.out" }, A6);
+          tl.to("#f4_g1_coverarc", { y: 1000, duration: ARC_D - 0.1, ease: "power2.in" }, A6 + 0.1);
+
+          // 4.57 strong hihat — ✕ tick, then hold the rail + ✕ + ● ring to the cut
+          tl.to("#f4_g1_x", { scale: 1.1, duration: 0.04, ease: "power2.out" }, 4.57);
+          tl.to("#f4_g1_x", { scale: 1, duration: 0.12, ease: "power3.out" }, 4.61);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines[ID] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <!-- Frame 3 — f3 · span [16.6, 22.98] track s · 6.38s · beat_cut
+         g1 = card-flyby fork (SERIES 02 · 바로바로), re-skinned in the Golden Rabbit brand.
+         The runtime only clones the template element; everything below lives inside it. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        /* Root: id-scoped (every frame's root is #stage, so pin it to this composition id). */
+        #stage {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #0f0e0c;
+          color: #f4efe6;
+          font-family: "Paperlogy", sans-serif;
+        }
+        /* All classes carry an f3- prefix so they never style a sibling frame. */
+        .f3-group {
+          position: absolute;
+          inset: 0;
+        }
+        /* .f3-persp carries the perspective; .f3-scene carries the static yaw (-12deg). */
+        .f3-persp {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          perspective: 2400px;
+          perspective-origin: 50% 55%;
+        }
+        .f3-scene {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          transform-style: preserve-3d;
+          transform: rotateY(-12deg);
+        }
+        .f3-card {
+          position: absolute;
+          left: 260px;
+          top: 145px;
+          width: 1400px;
+          height: 790px;
+          border-radius: 20px;
+          transform-origin: 50% 50%;
+          will-change: transform, opacity;
+          --wipe: 0;
+        }
+
+        /* Wireframe state (pre-landing): cream hairlines, gold ring echo of the logo. */
+        .f3-wire {
+          position: absolute;
+          inset: 0;
+          border-radius: 20px;
+          border: 1.5px solid rgba(244, 239, 230, 0.38);
+          background: rgba(244, 239, 230, 0.012);
+          overflow: hidden;
+        }
+        .f3-wire-label {
+          position: absolute;
+          left: 68px;
+          top: 60px;
+          font-family: "IBM Plex Mono", monospace;
+          font-size: 26px;
+          font-weight: 500;
+          letter-spacing: 0.18em;
+          color: rgba(244, 239, 230, 0.5);
+        }
+        .f3-wire-ring {
+          position: absolute;
+          right: 68px;
+          top: 60px;
+          width: 40px;
+          height: 40px;
+          border: 1.5px solid rgba(206, 174, 115, 0.55);
+          border-radius: 50%;
+        }
+        .f3-wire-bar {
+          position: absolute;
+          left: 68px;
+          right: 68px;
+          bottom: 68px;
+          height: 1.5px;
+          background: rgba(244, 239, 230, 0.22);
+        }
+
+        /* Solid face — revealed by the template's angled clip-path wipe driven by --wipe
+           (wipe=0 collapsed off-element, wipe=1 covers the card). Flat brand color, no gradient. */
+        .f3-face {
+          position: absolute;
+          inset: 0;
+          border-radius: 20px;
+          background: var(--face, #1a1814);
+          overflow: hidden;
+          clip-path: polygon(
+            0% 0%,
+            calc(var(--wipe) * 200% - 30%) 0%,
+            calc(var(--wipe) * 200% - 80%) 100%,
+            0% 100%
+          );
+        }
+        /* Wipe band — a 16%-wide slash riding just behind the face's leading edge.
+           Its color alternates ink-black / gold card to card; fully off-card at wipe 0 and 1. */
+        .f3-band {
+          position: absolute;
+          inset: 0;
+          border-radius: 20px;
+          background: var(--band, #ceae73);
+          pointer-events: none;
+          clip-path: polygon(
+            calc(var(--wipe) * 200% - 46%) 0%,
+            calc(var(--wipe) * 200% - 30%) 0%,
+            calc(var(--wipe) * 200% - 80%) 100%,
+            calc(var(--wipe) * 200% - 96%) 100%
+          );
+        }
+
+        /* Shared face chrome */
+        .f3-ring {
+          position: absolute;
+          right: 64px;
+          top: 56px;
+          width: 52px;
+          height: 52px;
+          border: 3px solid #ceae73;
+          border-radius: 50%;
+          opacity: 0;
+        }
+        .f3-ring--ink {
+          border-color: #0f0e0c;
+        }
+        .f3-count {
+          position: absolute;
+          right: 68px;
+          bottom: 56px;
+          font-family: "IBM Plex Mono", monospace;
+          font-size: 22px;
+          font-weight: 500;
+          letter-spacing: 0.14em;
+          color: #8c877e;
+        }
+        .f3-count--ink {
+          color: rgba(15, 14, 12, 0.6);
+        }
+        .f3-stub {
+          display: block;
+          width: 48px;
+          height: 4px;
+          flex: none;
+          background: #ceae73;
+        }
+        .f3-stub--ink {
+          background: #0f0e0c;
+        }
+
+        /* Card 1 — type card on the gold register */
+        .f3-face--type {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 96px 104px;
+          color: #0f0e0c;
+        }
+        .f3-type-tag {
+          position: absolute;
+          left: 68px;
+          top: 60px;
+          font-family: "IBM Plex Mono", monospace;
+          font-size: 24px;
+          font-weight: 500;
+          letter-spacing: 0.14em;
+          color: rgba(15, 14, 12, 0.6);
+          transform-origin: 0% 50%;
+          opacity: 0;
+        }
+        .f3-type-body {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 40px;
+        }
+        .f3-type-title {
+          font-size: 96px;
+          font-weight: 800;
+          line-height: 1.05;
+          letter-spacing: -0.03em;
+          color: #0f0e0c;
+          text-align: center;
+          word-break: keep-all;
+        }
+        .f3-type-meta {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+        }
+        .f3-type-series {
+          font-size: 40px;
+          font-weight: 500;
+          line-height: 1.35;
+          color: #0f0e0c;
+        }
+
+        /* Cards 2–5 — book cards: real cover left (~70% of card height), copy right */
+        .f3-face--book {
+          display: flex;
+          align-items: center;
+          gap: 88px;
+          padding: 0 104px 0 118px;
+        }
+        .f3-cover {
+          display: block;
+          flex: none;
+          height: 553px;
+          width: auto;
+          border-radius: 6px;
+          box-shadow:
+            0 30px 60px rgba(0, 0, 0, 0.55),
+            0 0 0 1px rgba(255, 255, 255, 0.06);
+        }
+        .f3-info {
+          flex: 1 1 auto;
+          min-width: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .f3-chip {
+          display: inline-flex;
+          align-items: center;
+          align-self: flex-start;
+          height: 52px;
+          padding: 0 24px;
+          border-radius: 999px;
+          background: #ceae73;
+          color: #0f0e0c;
+          font-size: 26px;
+          font-weight: 800;
+          letter-spacing: -0.01em;
+          margin-bottom: 36px;
+          transform-origin: 0% 50%;
+          opacity: 0;
+        }
+        .f3-chip--latin {
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 500;
+          letter-spacing: 0.14em;
+        }
+        .f3-book-title {
+          max-width: 640px;
+          font-size: 56px;
+          font-weight: 800;
+          line-height: 1.15;
+          letter-spacing: -0.02em;
+          color: #f4efe6;
+          word-break: keep-all;
+          text-wrap: balance;
+        }
+        .f3-info .f3-stub {
+          margin: 36px 0 24px;
+        }
+        .f3-author {
+          font-size: 30px;
+          font-weight: 500;
+          line-height: 1.35;
+          color: #8c877e;
+        }
+      </style>
+
+      <div data-hf-id="hf-wxvf" id="stage" data-composition-id="03-f3" data-width="1920" data-height="1080" data-duration="6.38">
+        <!-- g1 · card-flyby · [0, 6.38] local -->
+        <div data-hf-id="hf-chzn" class="f3-group" id="f3_g1">
+          <div data-hf-id="hf-jz5y" class="f3-persp">
+            <div data-hf-id="hf-mn9u" class="f3-scene" id="f3_g1_scene" data-layout-allow-overflow="" data-layout-allow-overlap="">
+              <!-- card 1 · type card (gold) · lands 0.37 -->
+              <div data-hf-id="hf-5pje" class="f3-card" id="f3_g1_card0" data-layout-allow-overlap="" style="--face: #ceae73; --band: #0f0e0c">
+                <div data-hf-id="hf-9ik5" class="f3-wire">
+                  <div data-hf-id="hf-3pin" class="f3-wire-label" data-layout-allow-overlap="">01</div>
+                  <div data-hf-id="hf-h6n0" class="f3-wire-ring"></div>
+                  <div data-hf-id="hf-wux9" class="f3-wire-bar"></div>
+                </div>
+                <div data-hf-id="hf-0j86" class="f3-face f3-face--type">
+                  <div data-hf-id="hf-i9zr" class="f3-type-tag" id="f3_g1_chip0" data-layout-allow-overlap="">SERIES 02</div>
+                  <div data-hf-id="hf-vaki" class="f3-type-body" id="f3_g1_info0">
+                    <div data-hf-id="hf-zkdt" class="f3-type-title">바로 배워 바로 쓰는</div>
+                    <div data-hf-id="hf-cr20" class="f3-type-meta">
+                      <span data-hf-id="hf-zry3" class="f3-stub f3-stub--ink"></span>
+                      <span data-hf-id="hf-hiol" class="f3-type-series">바로바로</span>
+                    </div>
+                  </div>
+                  <div data-hf-id="hf-7s0z" class="f3-ring f3-ring--ink" id="f3_g1_ring0"></div>
+                  <div data-hf-id="hf-rbk9" class="f3-count f3-count--ink">01 / 05</div>
+                </div>
+                <div data-hf-id="hf-oajf" class="f3-band"></div>
+              </div>
+
+              <!-- card 2 · 바로바로 클로드 · lands 1.79 -->
+              <div data-hf-id="hf-38ab" class="f3-card" id="f3_g1_card1" data-layout-allow-overlap="" style="--face: #1a1814; --band: #ceae73">
+                <div data-hf-id="hf-rvc9" class="f3-wire">
+                  <div data-hf-id="hf-3b7m" class="f3-wire-label" data-layout-allow-overlap="">02</div>
+                  <div data-hf-id="hf-oa1g" class="f3-wire-ring"></div>
+                  <div data-hf-id="hf-ytoh" class="f3-wire-bar"></div>
+                </div>
+                <div data-hf-id="hf-a5gt" class="f3-face f3-face--book">
+                  <img data-hf-id="hf-k1bm" class="f3-cover" id="f3_g1_cover1" src="assets/covers/baro-claude.jpg" width="1080" height="1476" alt="바로바로 클로드">
+                  <div data-hf-id="hf-m6ns" class="f3-info" id="f3_g1_info1">
+                    <div data-hf-id="hf-h8f2" class="f3-chip f3-chip--latin" id="f3_g1_chip1">BEST</div>
+                    <div data-hf-id="hf-ivpw" class="f3-book-title">바로바로 클로드</div>
+                    <span data-hf-id="hf-45hx" class="f3-stub"></span>
+                    <div data-hf-id="hf-9gjt" class="f3-author">차진우</div>
+                  </div>
+                  <div data-hf-id="hf-3lfo" class="f3-ring" id="f3_g1_ring1"></div>
+                  <div data-hf-id="hf-wd2b" class="f3-count">02 / 05</div>
+                </div>
+                <div data-hf-id="hf-c7ff" class="f3-band"></div>
+              </div>
+
+              <!-- card 3 · 챗GPT X 덕테이프 X 코덱스 · lands 3.21 -->
+              <div data-hf-id="hf-ek02" class="f3-card" id="f3_g1_card2" data-layout-allow-overlap="" style="--face: #1a1814; --band: #0f0e0c">
+                <div data-hf-id="hf-t29c" class="f3-wire">
+                  <div data-hf-id="hf-2wwl" class="f3-wire-label" data-layout-allow-overlap="">03</div>
+                  <div data-hf-id="hf-n34d" class="f3-wire-ring"></div>
+                  <div data-hf-id="hf-42ko" class="f3-wire-bar"></div>
+                </div>
+                <div data-hf-id="hf-wzxd" class="f3-face f3-face--book">
+                  <img data-hf-id="hf-fvkw" class="f3-cover" id="f3_g1_cover2" src="assets/covers/baro-chatgpt-codex.jpg" width="1080" height="1476" alt="챗GPT X 덕테이프 X 코덱스">
+                  <div data-hf-id="hf-uujn" class="f3-info" id="f3_g1_info2">
+                    <div data-hf-id="hf-fsx7" class="f3-chip" id="f3_g1_chip2">바로바로</div>
+                    <div data-hf-id="hf-vx6u" class="f3-book-title">챗GPT X 덕테이프 X 코덱스</div>
+                    <span data-hf-id="hf-qdqh" class="f3-stub"></span>
+                    <div data-hf-id="hf-txxy" class="f3-author">박현규</div>
+                  </div>
+                  <div data-hf-id="hf-egxb" class="f3-ring" id="f3_g1_ring2"></div>
+                  <div data-hf-id="hf-0vzq" class="f3-count">03 / 05</div>
+                </div>
+                <div data-hf-id="hf-bt4e" class="f3-band"></div>
+              </div>
+
+              <!-- card 4 · 유튜브 AI 비서 고용하기 · lands 4.13 -->
+              <div data-hf-id="hf-371x" class="f3-card" id="f3_g1_card3" data-layout-allow-overlap="" style="--face: #1a1814; --band: #ceae73">
+                <div data-hf-id="hf-snyb" class="f3-wire">
+                  <div data-hf-id="hf-5p1s" class="f3-wire-label" data-layout-allow-overlap="">04</div>
+                  <div data-hf-id="hf-nhfe" class="f3-wire-ring"></div>
+                  <div data-hf-id="hf-3o9n" class="f3-wire-bar"></div>
+                </div>
+                <div data-hf-id="hf-y6ug" class="f3-face f3-face--book">
+                  <img data-hf-id="hf-d8aw" class="f3-cover" id="f3_g1_cover3" src="assets/covers/youtube-ai-secretary.jpg" width="1080" height="1387" alt="유튜브 AI 비서 고용하기">
+                  <div data-hf-id="hf-qwfm" class="f3-info" id="f3_g1_info3">
+                    <div data-hf-id="hf-1zoo" class="f3-chip" id="f3_g1_chip3">AI 비서</div>
+                    <div data-hf-id="hf-55hl" class="f3-book-title">유튜브 AI 비서 고용하기</div>
+                    <span data-hf-id="hf-rknk" class="f3-stub"></span>
+                    <div data-hf-id="hf-evje" class="f3-author">조현정</div>
+                  </div>
+                  <div data-hf-id="hf-8b7i" class="f3-ring" id="f3_g1_ring3"></div>
+                  <div data-hf-id="hf-6okx" class="f3-count">04 / 05</div>
+                </div>
+                <div data-hf-id="hf-betd" class="f3-band"></div>
+              </div>
+
+              <!-- card 5 · 네이버 블로그 · lands 5.09, held to 6.38 -->
+              <div data-hf-id="hf-g6yg" class="f3-card" id="f3_g1_card4" data-layout-allow-overlap="" style="--face: #1a1814; --band: #0f0e0c">
+                <div data-hf-id="hf-qof6" class="f3-wire">
+                  <div data-hf-id="hf-5aqr" class="f3-wire-label" data-layout-allow-overlap="">05</div>
+                  <div data-hf-id="hf-pgyj" class="f3-wire-ring"></div>
+                  <div data-hf-id="hf-xmre" class="f3-wire-bar"></div>
+                </div>
+                <div data-hf-id="hf-xsjf" class="f3-face f3-face--book">
+                  <img data-hf-id="hf-dsen" class="f3-cover" id="f3_g1_cover4" src="assets/covers/naver-blog.jpg" width="1080" height="1476" alt="네이버 블로그">
+                  <div data-hf-id="hf-84px" class="f3-info" id="f3_g1_info4">
+                    <div data-hf-id="hf-5880" class="f3-chip" id="f3_g1_chip4">돈이 되네?</div>
+                    <div data-hf-id="hf-y9gs" class="f3-book-title">네이버 블로그</div>
+                    <span data-hf-id="hf-r6cj" class="f3-stub"></span>
+                    <div data-hf-id="hf-nx7y" class="f3-author">정소희</div>
+                  </div>
+                  <div data-hf-id="hf-j6p5" class="f3-ring" id="f3_g1_ring4"></div>
+                  <div data-hf-id="hf-35do" class="f3-count">05 / 05</div>
+                </div>
+                <div data-hf-id="hf-b0ic" class="f3-band"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // ══════════════════════════════════════════════════════════════════
+          //  f3 · g1 — CARD FLYBY fork (accelerating 3D deck cascade)
+          //  A depth column of cards rolls forward; on each landing the next card
+          //  tumbles into the front slot and wipes in its face, the old front falls
+          //  toward camera on a parabolic arc, and the deck advances one slot.
+          //  Dwells shrink (1.42 → 1.42 → 0.92 → 0.96) into the held final card.
+          // ══════════════════════════════════════════════════════════════════
+          var ID = "03-f3";
+          var DUR = 6.38; // == data-duration == span length
+          var SPAN0 = 16.6; // frame start, track seconds
+
+          function loc(t) {
+            return Math.round((t - SPAN0) * 1000) / 1000;
+          }
+          // role_bindings.landing.times (track s) → frame-local: 0.37 1.79 3.21 4.13 5.09
+          var LANDED = [16.97, 18.39, 19.81, 20.73, 21.69].map(loc);
+          // strong kicks that fall inside a dwell (not on a landing) → ring pulse on the front card
+          var KICKS = [18.878, 22.639].map(loc); // 2.278, 6.039
+          var N = LANDED.length;
+
+          function byId(id) {
+            return document.getElementById(id);
+          }
+          var group = byId("f3_g1");
+          var cards = [],
+            rings = [],
+            chips = [],
+            covers = [],
+            infos = [];
+          for (var i = 0; i < N; i++) {
+            cards.push(byId("f3_g1_card" + i));
+            rings.push(byId("f3_g1_ring" + i));
+            chips.push(byId("f3_g1_chip" + i));
+            covers.push(byId("f3_g1_cover" + i)); // null on the type card
+            infos.push(byId("f3_g1_info" + i));
+          }
+
+          // per-card transition duration from the gap into it (faster as the deck accelerates)
+          function transDur(k) {
+            var gap = k === 0 ? LANDED[1] - LANDED[0] : LANDED[k] - LANDED[k - 1];
+            var d = Math.max(0.12, Math.min(0.42, gap * 0.32));
+            // first card: start at t=0 and land exactly on its beat
+            return k === 0 ? Math.min(d, LANDED[0]) : d;
+          }
+
+          // ── SLOT poses (template values; exit gains x travel + roll for a parabolic arc) ──
+          var SLOT = {
+            far: { x: 360, y: 380, z: -1080, rotX: 84, scale: 0.74, opacity: 0, zi: 60 },
+            s3: { x: 280, y: 290, z: -820, rotX: 66, scale: 0.8, opacity: 0.32, zi: 70 },
+            s2: { x: 195, y: 200, z: -560, rotX: 46, scale: 0.86, opacity: 0.58, zi: 80 },
+            s1: { x: 105, y: 105, z: -290, rotX: 22, scale: 0.93, opacity: 0.85, zi: 90 },
+            s0: { x: 0, y: 0, z: 0, rotX: 0, scale: 1.0, opacity: 1.0, zi: 100 },
+            exit: { x: -240, y: 620, z: 420, rotX: -88, rotZ: -5, scale: 1.1, opacity: 0, zi: 110 },
+          };
+          function poseForRel(rel) {
+            if (rel <= -1) return SLOT.exit;
+            if (rel === 0) return SLOT.s0;
+            if (rel === 1) return SLOT.s1;
+            if (rel === 2) return SLOT.s2;
+            if (rel === 3) return SLOT.s3;
+            return SLOT.far;
+          }
+
+          var tl = gsap.timeline({ paused: true });
+
+          // group window: g1 owns the whole frame
+          gsap.set(group, { autoAlpha: 1 });
+          tl.set(group, { autoAlpha: 1 }, 0);
+
+          function poseTween(idx, slot, t, dur, ease) {
+            tl.set(cards[idx], { zIndex: slot.zi }, t);
+            tl.to(
+              cards[idx],
+              {
+                x: slot.x,
+                y: slot.y,
+                z: slot.z,
+                rotationX: slot.rotX,
+                scale: slot.scale,
+                opacity: slot.opacity,
+                force3D: true,
+                duration: dur,
+                ease: ease,
+              },
+              t,
+            );
+          }
+          // exit = tumble forward + fall toward camera, split so x eases out while y
+          // accelerates in → the card (and its cover) leaves on a parabolic arc.
+          function exitTween(idx, t, dur) {
+            var e = SLOT.exit;
+            tl.set(cards[idx], { zIndex: e.zi }, t);
+            tl.to(cards[idx], { x: e.x, rotationZ: e.rotZ, duration: dur, ease: "power1.out" }, t);
+            tl.to(
+              cards[idx],
+              {
+                y: e.y,
+                z: e.z,
+                rotationX: e.rotX,
+                scale: e.scale,
+                opacity: e.opacity,
+                force3D: true,
+                duration: dur,
+                ease: "power2.in",
+              },
+              t,
+            );
+          }
+
+          // ── Initial pose: nothing landed; card j waits at rel = j + 1 ──
+          for (var j = 0; j < N; j++) {
+            var s = poseForRel(j + 1);
+            var props = {
+              x: s.x,
+              y: s.y,
+              z: s.z,
+              rotationX: s.rotX,
+              rotationZ: 0,
+              scale: s.scale,
+              opacity: s.opacity,
+              zIndex: s.zi,
+              force3D: true,
+              "--wipe": 0,
+            };
+            gsap.set(cards[j], props);
+            tl.set(cards[j], props, 0);
+          }
+
+          // ── Per-landing orchestration ──
+          for (var L = 0; L < N; L++) {
+            var dur = transDur(L);
+            var t = Math.max(0, LANDED[L] - dur);
+            var a = LANDED[L];
+
+            for (var k = L - 1; k <= L + 4; k++) {
+              if (k < 0 || k >= N) continue;
+              var rel = k - L;
+              if (rel < 0) exitTween(k, t, dur);
+              else poseTween(k, poseForRel(rel), t, dur, rel === 0 ? "power3.out" : "power2.inOut");
+            }
+
+            // the landing card wipes in its face (band rides the leading edge)
+            tl.to(cards[L], { "--wipe": 1, duration: dur * 0.85, ease: "power2.inOut" }, t + dur * 0.15);
+
+            // content settles as the face arrives
+            if (covers[L]) {
+              tl.fromTo(
+                covers[L],
+                { y: 40, rotation: L % 2 ? -2.5 : 2.5 },
+                { y: 0, rotation: 0, duration: dur + 0.3, ease: "power3.out" },
+                t,
+              );
+              tl.fromTo(infos[L], { x: 40 }, { x: 0, duration: dur + 0.3, ease: "power3.out" }, t);
+            } else {
+              tl.fromTo(infos[L], { y: 28 }, { y: 0, duration: dur + 0.3, ease: "power3.out" }, t);
+            }
+
+            // percussion ON the landing: ring + tag chip pop
+            tl.fromTo(
+              rings[L],
+              { scale: 0.3, opacity: 0 },
+              { scale: 1, opacity: 1, duration: 0.32, ease: "back.out(2.4)" },
+              a - 0.02,
+            );
+            tl.fromTo(
+              chips[L],
+              { scale: 0.55, opacity: 0 },
+              { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(2.2)" },
+              a,
+            );
+          }
+
+          // ── Strong kicks inside a dwell → the front card's ring pulses ──
+          for (var q = 0; q < KICKS.length; q++) {
+            var tk = KICKS[q];
+            var front = -1;
+            for (var f = 0; f < N; f++) if (LANDED[f] <= tk) front = f;
+            if (front < 0) continue;
+            tl.fromTo(
+              rings[front],
+              { scale: 1 },
+              { scale: 1.35, duration: 0.08, ease: "power2.out", immediateRender: false },
+              tk,
+            );
+            tl.fromTo(
+              rings[front],
+              { scale: 1.35 },
+              { scale: 1, duration: 0.24, ease: "power2.inOut", immediateRender: false },
+              tk + 0.08,
+            );
+          }
+
+          // group window end (hard cut to f4 is the assembler's)
+          tl.set(group, { autoAlpha: 0 }, DUR);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines[ID] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

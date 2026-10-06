@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- s09-finalA lyric/light layer (track 139.00 → 144.30, local = track − 139.00).
+         Over shot s09a (c10-reach-sky, she stands on the hill holding the REAL empty jar).
+         Text sits in the left sky/horizon column; light motes rise out of the jar mouth, veer left past her hair
+         (never over her face) and dissolve into the sky. No drawn objects. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Noto Serif KR"; src: url("assets/fonts/NotoSerifKR-VF.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: block; }
+        @font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/CormorantGaramond-Italic-VF.woff2") format("woff2"); font-weight: 300 700; font-style: italic; font-display: block; }
+
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: transparent;
+          font-family: "Noto Serif KR", serif;
+        }
+
+        /* ---- legibility: one soft dark scrim behind the left text column (fades to 0 before her hair at x≈1080) ---- */
+        #l09_scrim {
+          position: absolute; left: -60px; top: 150px; width: 1180px; height: 640px; opacity: 0;
+          background: radial-gradient(ellipse closest-side at 50% 50%, rgba(5,7,20,0.54) 0%, rgba(5,7,20,0.42) 40%, rgba(5,7,20,0.16) 74%, rgba(5,7,20,0) 100%);
+        }
+
+        /* ---- light accents on real light: the bright star in the sky, the rim of her jar ---- */
+        .l09-bloom { position: absolute; opacity: 0; }
+        /* star of s09a: src (698,215) → screen (698,215) at local 0, drifts with the 1.0→1.06 push about (960,400) */
+        #l09_starbloom {
+          left: 608px; top: 125px; width: 180px; height: 180px;
+          background: radial-gradient(circle closest-side at 50% 50%, rgba(255,244,214,0.7) 0%, rgba(255,210,122,0.34) 26%, rgba(255,210,122,0.1) 58%, rgba(255,210,122,0) 100%);
+        }
+        /* jar mouth: screen (1165,553) at local 0 (tracked below) */
+        #l09_mouth {
+          left: 1080px; top: 498px; width: 170px; height: 110px;
+          background: radial-gradient(ellipse closest-side at 50% 50%, rgba(255,244,214,0.62) 0%, rgba(255,210,122,0.3) 34%, rgba(255,210,122,0.08) 64%, rgba(255,210,122,0) 100%);
+        }
+
+        /* ---- motes (built in script) ---- */
+        #l09_motes { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+        .l09-mote {
+          position: absolute; opacity: 0; border-radius: 50%;
+          background: radial-gradient(circle closest-side at 50% 50%, rgba(255,253,246,1) 0%, rgba(255,248,226,0.96) 7%, rgba(255,234,184,0.72) 15%, rgba(255,218,148,0.46) 27%, rgba(255,210,122,0.25) 44%, rgba(255,210,122,0.09) 68%, rgba(255,210,122,0) 100%);
+        }
+        .l09-mote-cool {
+          background: radial-gradient(circle closest-side at 50% 50%, rgba(252,253,255,1) 0%, rgba(238,245,255,0.95) 7%, rgba(220,235,255,0.68) 15%, rgba(220,235,255,0.4) 27%, rgba(255,226,170,0.2) 44%, rgba(255,226,170,0.07) 68%, rgba(255,226,170,0) 100%);
+        }
+
+        /* ---- lyrics ---- */
+        .l09-line { position: absolute; left: 150px; white-space: nowrap; }
+        .l09-pre { opacity: 0; visibility: hidden; }
+        .l09-row { display: flex; align-items: baseline; gap: 0.28em; }
+        .l09-w {
+          display: inline-block; color: #F4F1EA; transform-origin: 50% 70%;
+          text-shadow: 0px 0px 14px rgba(220,235,255,0.25), 0px 0px 40px rgba(255,210,122,0), 0px 3px 18px rgba(5,7,20,0.8);
+        }
+
+        /* L33 mega 날아가 */
+        #l09_l33mega { top: 280px; height: 200px; }
+        #l09_megarow { font-size: 200px; font-weight: 800; line-height: 1.0; gap: 0; }
+        .l09-ch {
+          display: inline-block; margin: 0 -3px; color: #FFF4D6; opacity: 0; visibility: hidden;
+          text-shadow: 0px 0px 26px rgba(255,210,122,0.85), 0px 0px 72px rgba(255,210,122,0.42), 0px 6px 34px rgba(5,7,20,0.85);
+        }
+        /* L33 sub 저 하늘 너머로 — legible-dim at onset, each word lit on its sung time */
+        #l09_l33sub { top: 498px; left: 158px; }
+        #l09_subrow { font-size: 70px; font-weight: 500; line-height: 1.3; letter-spacing: 0.01em; }
+        #l09_subrow .l09-w { color: #B9C2E0; opacity: 0.86;
+          text-shadow: 0px 0px 14px rgba(220,235,255,0.12), 0px 0px 40px rgba(255,210,122,0), 0px 3px 18px rgba(5,7,20,0.8); }
+        #l09_subrow .l09-kw33 { font-size: 98px; font-weight: 600; }
+
+        /* L34 모아 둔 별들아 / 전부 다 */
+        #l09_l34 { top: 330px; }
+        #l09_l34in { display: flex; flex-direction: column; align-items: flex-start; transform-origin: 0% 50%; }
+        #l09_l34a, #l09_l34b { font-size: 96px; font-weight: 700; line-height: 1.18; letter-spacing: -0.01em; }
+        #l09_l34b { margin-top: 4px; }
+        .l09-kw34 { font-size: 130px; font-weight: 800; color: #FFF4D6;
+          text-shadow: 0px 0px 18px rgba(255,210,122,0.45), 0px 0px 46px rgba(255,210,122,0.18), 0px 3px 18px rgba(5,7,20,0.8); }
+      </style>
+
+      <div id="stage" data-composition-id="s09-finalA" data-width="1920" data-height="1080" data-duration="5.3">
+        <div id="l09_scrim" data-layout-ignore></div>
+        <div id="l09_starbloom" class="l09-bloom" data-layout-ignore></div>
+        <div id="l09_mouth" class="l09-bloom" data-layout-ignore></div>
+        <div id="l09_motes" data-layout-ignore></div>
+
+        <!-- L33 139.13 날아가 저 하늘 너머로 -->
+        <div id="l09_l33mega" class="l09-line" data-layout-allow-overlap>
+          <div id="l09_megarow" class="l09-row">
+            <span id="l09_c0" class="l09-ch">날</span><span id="l09_c1" class="l09-ch">아</span><span id="l09_c2" class="l09-ch">가</span>
+          </div>
+        </div>
+        <div id="l09_l33sub" class="l09-line l09-pre" data-layout-allow-overlap>
+          <div id="l09_subrow" class="l09-row">
+            <span id="l09_w33a" class="l09-w">저</span><span id="l09_w33b" class="l09-w l09-kw33">하늘</span><span id="l09_w33c" class="l09-w">너머로</span>
+          </div>
+        </div>
+
+        <!-- L34 141.68 모아 둔 별들아 전부 다 -->
+        <div id="l09_l34" class="l09-line l09-pre" data-layout-allow-overlap>
+          <div id="l09_l34in">
+            <div id="l09_l34a" class="l09-row">
+              <span id="l09_w34a" class="l09-w">모아</span><span id="l09_w34b" class="l09-w">둔</span><span id="l09_w34c" class="l09-w l09-kw34">별들아</span>
+            </div>
+            <div id="l09_l34b" class="l09-row">
+              <span id="l09_w34d" class="l09-w">전부</span><span id="l09_w34e" class="l09-w">다</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 5.3;     // local; track t = local + 139.00. Everything is gone by 5.245.
+          var tl = gsap.timeline({ paused: true });
+          var $ = function (id) { return document.getElementById(id); };
+
+          // glow states: identical 3-shadow structure (glow, wide glow, dark legibility shadow) so GSAP interpolates
+          var DK = "0px 3px 18px rgba(5,7,20,0.8)";
+          var GL_DIM = "0px 0px 14px rgba(220,235,255,0.12), 0px 0px 40px rgba(255,210,122,0), " + DK;
+          var GL_SOFT = "0px 0px 14px rgba(220,235,255,0.25), 0px 0px 40px rgba(255,210,122,0), " + DK;
+          var GL_LIGHT = "0px 0px 18px rgba(255,210,122,0.45), 0px 0px 46px rgba(255,210,122,0.18), " + DK;
+          var GL_PEAK = "0px 0px 26px rgba(255,210,122,0.85), 0px 0px 72px rgba(255,210,122,0.42), " + DK;
+          var DKM = "0px 6px 34px rgba(5,7,20,0.85)";
+          var GM_LIGHT = "0px 0px 18px rgba(255,210,122,0.5), 0px 0px 50px rgba(255,210,122,0.2), " + DKM;
+          var GM_PEAK = "0px 0px 26px rgba(255,210,122,0.85), 0px 0px 72px rgba(255,210,122,0.42), " + DKM;
+          var C_TEXT = "#F4F1EA", C_STAR = "#FFF4D6", C_GOLD = "#FFD27A", C_DIM = "#B9C2E0";
+
+          // a word "catches light" on its sung time t, then relaxes to `rest`
+          function glowPass(el, t, rest, back) {
+            tl.fromTo(el, { textShadow: GL_SOFT }, { textShadow: GL_LIGHT, duration: 0.12, ease: "power2.out", immediateRender: false }, t - 0.12);
+            tl.fromTo(el, { textShadow: GL_LIGHT }, { textShadow: rest, duration: back, ease: "sine.out", immediateRender: false }, t + 0.04);
+          }
+
+          /* ======================= scrim ======================= */
+          tl.fromTo("#l09_scrim", { opacity: 0 }, { opacity: 1, duration: 0.14, ease: "power1.out" }, 0);
+          tl.fromTo("#l09_scrim", { opacity: 1 }, { opacity: 0, duration: 0.2, ease: "sine.in", immediateRender: false }, 5.03);
+
+          /* ============ real-light accents ============ */
+          // star bloom follows the footage push (linear 1.0→1.06 about (960,400)): (698,215) → (683,204.5) at 5.3
+          tl.fromTo("#l09_starbloom", { x: 0, y: 0 }, { x: -15, y: -10.5, duration: DUR, ease: "none" }, 0);
+          tl.fromTo("#l09_starbloom", { opacity: 0, scale: 0.9 }, { opacity: 0.18, scale: 1, duration: 0.6, ease: "sine.out" }, 0.3);
+          // 하늘 (1.25): the real star answers
+          tl.fromTo("#l09_starbloom", { opacity: 0.18, scale: 1 }, { opacity: 0.55, scale: 1.2, duration: 0.17, ease: "power2.out", immediateRender: false }, 1.13);
+          tl.fromTo("#l09_starbloom", { opacity: 0.55, scale: 1.2 }, { opacity: 0.22, scale: 1.05, duration: 1.0, ease: "sine.out", immediateRender: false }, 1.32);
+          // 별들아 (3.54)
+          tl.fromTo("#l09_starbloom", { opacity: 0.22, scale: 1.05 }, { opacity: 0.42, scale: 1.16, duration: 0.16, ease: "power2.out", immediateRender: false }, 3.42);
+          tl.fromTo("#l09_starbloom", { opacity: 0.42, scale: 1.16 }, { opacity: 0.2, scale: 1.05, duration: 0.9, ease: "sine.out", immediateRender: false }, 3.6);
+          tl.fromTo("#l09_starbloom", { opacity: 0.2 }, { opacity: 0, duration: 0.5, ease: "sine.in", immediateRender: false }, 4.62);
+
+          // jar mouth track (screen px, measured on c10 frames, push applied):
+          // local 0 (1165,553) · 1.613 (1168.5,581) · 3.226 (1156.6,592.6) · 4.032 (1147.8,596.1) · 4.839 (1151.4,599.9) · 5.3 (1150.3,606)
+          var JAR = [[0, 1165, 553], [1.613, 1168.5, 581], [3.226, 1156.6, 592.6], [4.032, 1147.8, 596.1], [4.839, 1151.4, 599.9], [5.3, 1150.3, 606]];
+          function jarAt(t) {
+            for (var k = 0; k < JAR.length - 1; k++) {
+              var a = JAR[k], b = JAR[k + 1];
+              if (t <= b[0]) { var f = (t - a[0]) / (b[0] - a[0]); return [a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f]; }
+            }
+            var z = JAR[JAR.length - 1];
+            return [z[1], z[2]];
+          }
+          // the faint rim glow rides the jar (piecewise-linear like the track)
+          for (var k = 0; k < JAR.length - 1; k++) {
+            var a = JAR[k], b = JAR[k + 1];
+            tl.fromTo("#l09_mouth", { x: a[1] - JAR[0][1], y: a[2] - JAR[0][2] },
+                                    { x: b[1] - JAR[0][1], y: b[2] - JAR[0][2], duration: b[0] - a[0], ease: "none", immediateRender: k === 0 }, a[0]);
+          }
+          tl.fromTo("#l09_mouth", { opacity: 0, scale: 0.8 }, { opacity: 0.3, scale: 1, duration: 0.5, ease: "sine.out" }, 0.18);
+          tl.fromTo("#l09_mouth", { opacity: 0.3 }, { opacity: 0.2, duration: 1.35, ease: "sine.inOut", yoyo: true, repeat: 1, immediateRender: false }, 0.68);
+          tl.fromTo("#l09_mouth", { opacity: 0.3, scale: 1 }, { opacity: 0.55, scale: 1.18, duration: 0.14, ease: "power2.out", immediateRender: false }, 3.44);
+          tl.fromTo("#l09_mouth", { opacity: 0.55, scale: 1.18 }, { opacity: 0.22, scale: 1, duration: 0.9, ease: "sine.out", immediateRender: false }, 3.6);
+          tl.fromTo("#l09_mouth", { opacity: 0.22 }, { opacity: 0, duration: 0.55, ease: "sine.in", immediateRender: false }, 4.5);
+
+          /* ======================= motes ======================= */
+          // A few soft motes leave the jar mouth, veer left past her hair (face spans x≈1115–1410, y≈330–480),
+          // then rise into the open sky. Fixed-seed LCG; every channel is a pure function of tween progress.
+          var seed = 0x51909a;
+          function rnd() { seed = (1664525 * seed + 1013904223) >>> 0; return seed / 4294967296; }
+          function lerp(r, t) { return r[0] + (r[1] - r[0]) * t; }
+          var field = $("l09_motes");
+          var LAST = 5.12;   // every mote is fully faded by here
+          var specs = [], i;
+          [0.30, 0.72, 1.12, 1.52, 1.92].forEach(function (t) { specs.push({ tb: t + rnd() * 0.12, kind: 0 }); });  // trickle under L33
+          [2.22, 2.58, 2.92, 3.22].forEach(function (t) { specs.push({ tb: t + rnd() * 0.1, kind: 1 }); });        // under 모아 둔
+          for (i = 0; i < 6; i++) specs.push({ tb: 3.44 + i * 0.05 + rnd() * 0.02, kind: 2 });                    // 별들아 (3.54) surge
+          [3.95].forEach(function (t) { specs.push({ tb: t + rnd() * 0.05, kind: 3 }); });                        // last breath
+          var KIND = [
+            { D: [2.3, 2.9], R: [420, 520], L: [125, 180], E: [-120, 70], A: [5, 12], H: [58, 80], P: [0.85, 0.98] },
+            { D: [2.1, 2.6], R: [400, 520], L: [125, 185], E: [-140, 80], A: [6, 14], H: [54, 74], P: [0.82, 0.95] },
+            { D: [1.9, 2.3], R: [400, 500], L: [120, 185], E: [-140, 80], A: [6, 14], H: [70, 100], P: [0.92, 1.0] },
+            { D: [1.9, 2.3], R: [380, 460], L: [125, 175], E: [-100, 50], A: [5, 12], H: [48, 64], P: [0.75, 0.9] }
+          ];
+          specs.forEach(function (sp, n) {
+            var kd = KIND[sp.kind];
+            var Dn = lerp(kd.D, rnd());
+            var d = Math.min(Dn, LAST - sp.tb);
+            var kf = d / Dn;                         // motion keeps its natural speed; the fade fits the clipped life
+            var R = lerp(kd.R, rnd()), L = lerp(kd.L, rnd()), E = lerp(kd.E, rnd());
+            var A = lerp(kd.A, rnd()), cyc = 0.6 + rnd() * 0.9, ph = rnd() * Math.PI * 2;
+            var H = Math.round(lerp(kd.H, rnd()));
+            var peak = lerp(kd.P, rnd());
+            var tw = 2 + rnd() * 2.5, twph = rnd() * Math.PI * 2;
+            var p0 = jarAt(sp.tb);
+            var sx = p0[0] + (rnd() - 0.5) * 40, sy = p0[1] + 8;
+
+            var el = document.createElement("div");
+            el.className = (n % 5 === 3) ? "l09-mote l09-mote-cool" : "l09-mote";
+            el.id = "l09_mote" + n;
+            el.setAttribute("data-layout-ignore", "");
+            el.style.width = H + "px";
+            el.style.height = H + "px";
+            el.style.left = (sx - H / 2).toFixed(1) + "px";
+            el.style.top = (sy - H / 2).toFixed(1) + "px";
+            field.appendChild(el);
+
+            var fx = function (p) {
+              var u = p * kf;
+              var left = -L * (1 - Math.pow(1 - Math.min(1, u / 0.32), 2));
+              var drift = E * Math.pow(Math.max(0, (u - 0.45) / 0.55), 1.5);
+              return left + drift + A * Math.sin(2 * Math.PI * cyc * u + ph) * Math.min(1, u * 5);
+            };
+            var fy = function (p) { var u = p * kf; return -R * (1 - Math.pow(1 - u, 1.35)); };
+            var fs = function (p) {
+              var u = p * kf;
+              var grow = 0.4 + 0.6 * Math.min(1, u / 0.1);
+              var shrink = p < 0.55 ? 1 : 1 - 0.5 * (p - 0.55) / 0.45;
+              return grow * shrink * (1 + 0.12 * Math.sin(2 * Math.PI * tw * u + twph));
+            };
+            var fo = function (p) {
+              var u = p * kf;
+              var fin = Math.min(1, u / 0.06);
+              var fout = p < 0.5 ? 1 : Math.pow(Math.max(0, 1 - (p - 0.5) / 0.5), 1.2);
+              return peak * fin * fout * (0.85 + 0.15 * Math.sin(2 * Math.PI * tw * 1.3 * u + twph + 1));
+            };
+            // from 0 to 1 with a function ease: value == ease(p) (px / scale / opacity)
+            tl.fromTo(el, { x: 0 }, { x: 1, duration: d, ease: fx }, sp.tb);
+            tl.fromTo(el, { y: 0 }, { y: 1, duration: d, ease: fy }, sp.tb);
+            tl.fromTo(el, { scale: 0 }, { scale: 1, duration: d, ease: fs }, sp.tb);
+            tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: d, ease: fo }, sp.tb);
+          });
+          // safety: the whole field is dark before the next layer
+          tl.fromTo("#l09_motes", { opacity: 1 }, { opacity: 0, duration: 0.22, ease: "sine.in", immediateRender: false }, 4.96);
+
+          /* ============ L33 139.13 날아가 저 하늘 너머로 (local 0.13 → 2.56) ============ */
+          var chars = [$("l09_c0"), $("l09_c1"), $("l09_c2")];
+          chars.forEach(function (c, j) {
+            var floatY = -(22 + j * 10);
+            // rises from below, fully lit by 0.17 (날아가 sung at 139.17)
+            tl.fromTo(c, { y: 80 + j * 20, autoAlpha: 0, filter: "blur(8px)" },
+                         { y: 0, autoAlpha: 1, filter: "blur(0px)", duration: 0.15, ease: "power3.out" }, 0.005 + j * 0.01);
+            tl.fromTo(c, { textShadow: GM_PEAK }, { textShadow: GM_LIGHT, duration: 0.8, ease: "sine.out", immediateRender: false }, 0.17 + j * 0.03);
+            // keeps floating up, each glyph at its own rate (weightless)
+            tl.fromTo(c, { y: 0, x: 0 }, { y: floatY, x: (j - 1) * 6, duration: 2.15, ease: "sine.inOut", immediateRender: false }, 0.2 + j * 0.06);
+            // flies off upward as the line ends (2.56), gone by 2.60 (hold_until)
+            tl.fromTo(c, { y: floatY, autoAlpha: 1, filter: "blur(0px)" },
+                         { y: floatY - 50, autoAlpha: 0, filter: "blur(10px)", duration: 0.045, ease: "power1.in", immediateRender: false }, 2.555);
+          });
+          // sub line legible (dim) at onset; each word lights on its sung time
+          tl.fromTo("#l09_l33sub", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.1, ease: "power2.out" }, 0.03);
+          tl.fromTo("#l09_subrow", { y: 0 }, { y: -6, duration: 2.4, ease: "sine.inOut" }, 0.13);
+          [["l09_w33a", 0.89, C_TEXT, GL_LIGHT, GL_SOFT],
+           ["l09_w33b", 1.25, C_STAR, GL_PEAK, GL_LIGHT],   // 하늘: keyword, gold glow stays (the real star answers)
+           ["l09_w33c", 1.92, C_TEXT, GL_LIGHT, GL_SOFT]].forEach(function (w) {
+            tl.fromTo("#" + w[0], { color: C_DIM, opacity: 0.86, textShadow: GL_DIM },
+                                  { color: w[2], opacity: 1, textShadow: w[3], duration: 0.14, ease: "power2.out", immediateRender: false }, w[1] - 0.13);
+            tl.fromTo("#" + w[0], { textShadow: w[3] }, { textShadow: w[4], duration: 0.55, ease: "sine.out", immediateRender: false }, w[1] + 0.06);
+          });
+          tl.fromTo("#l09_l33sub", { autoAlpha: 1, y: 0, filter: "blur(0px)" },
+                                   { autoAlpha: 0, y: -14, filter: "blur(6px)", duration: 0.045, ease: "power1.in", immediateRender: false }, 2.555);
+
+          /* ============ L34 141.68 모아 둔 별들아 전부 다 (local 2.68 → held to 5.16, gone 5.24) ============ */
+          tl.fromTo("#l09_l34", { autoAlpha: 0, y: 28, filter: "blur(12px)" }, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.08, ease: "power1.out" }, 2.60);
+          tl.fromTo("#l09_l34in", { y: 0, scale: 1 }, { y: -10, scale: 1.02, duration: 2.48, ease: "sine.inOut" }, 2.68);
+          glowPass("#l09_w34a", 2.72, GL_SOFT, 0.6);
+          glowPass("#l09_w34b", 3.08, GL_SOFT, 0.6);
+          // 별들아 (3.54): turns gold and swells while the jar releases its surge
+          tl.fromTo("#l09_w34c", { color: C_STAR, textShadow: GL_LIGHT }, { color: C_GOLD, textShadow: GL_PEAK, duration: 0.14, ease: "power2.out", immediateRender: false }, 3.42);
+          tl.fromTo("#l09_w34c", { textShadow: GL_PEAK }, { textShadow: GL_LIGHT, duration: 0.9, ease: "sine.out", immediateRender: false }, 3.7);
+          tl.fromTo("#l09_w34c", { scale: 1 }, { scale: 1.08, duration: 0.2, ease: "power2.out" }, 3.42);
+          tl.fromTo("#l09_w34c", { scale: 1.08 }, { scale: 1.04, duration: 0.7, ease: "sine.out", immediateRender: false }, 3.7);
+          glowPass("#l09_w34d", 4.36, GL_SOFT, 0.5);
+          glowPass("#l09_w34e", 4.84, GL_SOFT, 0.3);
+          tl.fromTo("#l09_l34", { autoAlpha: 1, y: 0, filter: "blur(0px)" }, { autoAlpha: 0, y: -24, filter: "blur(8px)", duration: 0.08, ease: "power1.in", immediateRender: false }, 5.16);
+
+          tl.set({}, {}, 5.3);
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s09-finalA"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

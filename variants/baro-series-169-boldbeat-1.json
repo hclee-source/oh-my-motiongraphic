@@ -1,0 +1,80 @@
+{
+  "name": "baro-series-169-boldbeat-1",
+  "style": "bold-beat",
+  "palette": {
+    "ink": "#040404"
+  },
+  "aspect": "16:9",
+  "fps": 30,
+  "seed": 5,
+  "intensity": "hype",
+  "hud": true,
+  "message": "바로 배워 바로 쓰는 — 바로바로 시리즈 4권",
+  "destination": "youtube",
+  "bgm": {
+    "id": "470",
+    "start": 40.68,
+    "duration": 32.0,
+    "fade": 0.9,
+    "license": "Mixkit Stock Music Free License",
+    "title": "Golden Storm — Diego Nava"
+  },
+  "series": [
+    {
+      "label": "BARO 01",
+      "name": "챗GPT",
+      "books": [
+        "9791124516294"
+      ]
+    },
+    {
+      "label": "BARO 02",
+      "name": "클로드",
+      "books": [
+        "9791124516133"
+      ]
+    },
+    {
+      "label": "BARO 03",
+      "name": "제미나이·구글 AI",
+      "books": [
+        "9791124516157"
+      ]
+    },
+    {
+      "label": "BARO 04",
+      "name": "바이브 코딩",
+      "books": [
+        "9791194383871"
+      ]
+    }
+  ],
+  "extra_assets": [
+    {
+      "src": "shared/keyvisuals/baro-kv-01.png",
+      "dest": "assets/keyvisual/baro-kv-01.png",
+      "role": "user-supplied key visual (clay characters + glows on pure black) — MUST be used"
+    }
+  ],
+  "copy": {
+    "hook": [
+      "AI,",
+      "처음이어도",
+      "바로!"
+    ],
+    "finale": {
+      "line": "지금, 바로.",
+      "cta": "goldenrabbit.co.kr"
+    }
+  },
+  "hud_ticker": "바로 배워 바로 쓰는 ✦ 바로바로 시리즈 ✦ 챗GPT ✦ 클로드 ✦ 제미나이 ✦ 바이브 코딩 ✦ goldenrabbit.co.kr ✦ ",
+  "notes": "Single-series cut for 바로바로 (4 books, one frame per book). The user's key visual must carry the piece: hero reveal on the surge, character sprites paired with each book, and a return in the finale. Ink matched to the KV's black so the feathered KV dissolves into the ground.",
+  "outputs": [
+    {
+      "file": "videos/baro-series-169-boldbeat-1/renders/baro-series-169-boldbeat-1.mp4",
+      "duration": 32.0,
+      "quality": "delivery",
+      "rendered": "2026-10-02T15:59:02"
+    }
+  ]
+}

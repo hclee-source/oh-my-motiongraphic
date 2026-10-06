@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ko">
+  <head><meta charset="UTF-8" /><!-- s11-finalB lyric layer (track 155.00–170.05): L39 under the REAL window star with a leader to an EMPTY name slot; L40 "네가 불러 줘" held over s11b/s11c; soft bloom where the real shooting star lands. --></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Noto Serif KR"; src: url("assets/fonts/NotoSerifKR-VF.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: block; }
+        @font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/CormorantGaramond-Italic-VF.woff2") format("woff2"); font-weight: 300 700; font-style: italic; font-display: block; }
+
+        #stage { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+
+        .l11-layer { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; overflow: visible; }
+        .l11-hide { opacity: 0; visibility: hidden; }
+        .l11-glow { position: absolute; border-radius: 50%; pointer-events: none; }
+        .l11-draw { fill: none; stroke-dasharray: 1000; stroke-dashoffset: 1000; }
+
+        /* ---- light on the REAL window star of s11a (screen ≈ 925,122) ---- */
+        #l11_halo { left: 775px; top: -28px; width: 300px; height: 300px;
+          background: radial-gradient(circle, rgba(255,244,214,0.50) 0%, rgba(255,210,122,0.20) 30%, rgba(255,210,122,0.06) 50%, rgba(255,210,122,0) 68%); }
+
+        /* ---- s11a annotation: leader from the star → EMPTY 「 」 (coords measured at 157.14; wrapper follows the footage push about the star) ---- */
+        #l11_annw { transform-origin: 922px 122px; transform: scale(0.9648); }
+
+        /* ---- s11b: the same empty brackets around the real unnamed five stars ---- */
+        #l11_brk { opacity: 0.75; }
+
+        /* ---- legibility scrims (soft, dark, never a flat panel) ---- */
+        .l11-scrim { position: absolute; pointer-events: none;
+          background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(5,7,20,0.50) 0%, rgba(5,7,20,0.38) 40%, rgba(5,7,20,0.13) 72%, rgba(5,7,20,0) 100%); }
+        #l11_s39 { left: 330px; top: 300px; width: 1300px; height: 280px; }
+        #l11_s40 { left: 710px; top: 161px; width: 1000px; height: 260px; }
+
+        /* ---- lyrics ---- */
+        .l11-line { position: absolute; display: flex; align-items: center; justify-content: center;
+          font-family: "Noto Serif KR", serif; color: #F4F1EA; -webkit-font-smoothing: antialiased; transform-origin: 50% 50%; }
+        .l11-drift { position: relative; width: 100%; height: 100%; display: grid; place-items: center; transform-origin: 50% 50%; }
+        .l11-row { grid-area: 1 / 1; white-space: nowrap; line-height: 1.12;
+          text-shadow: 0px 2px 12px rgba(5,7,20,0.85), 0px 0px 14px rgba(220,235,255,0.25), 0px 0px 0px rgba(255,210,122,0); }
+        .l11-w { display: inline-block; margin: 0 0.13em; transform-origin: 50% 70%; }
+
+        /* L39 "이름은 붙이지 않을게" — 100px / 600, key 이름 140px / 700, centred (980, 440) under the star */
+        #l11_l39 { left: 140px; top: 370px; width: 1680px; height: 140px; transform: translateY(12px); filter: blur(6px); }
+        #l11_l39 .l11-row { font-size: 100px; font-weight: 600; letter-spacing: -0.005em; }
+        #l11_l39k { font-size: 140px; font-weight: 700; color: #FFE2A3;
+          text-shadow: 0px 2px 12px rgba(5,7,20,0.85), 0px 0px 18px rgba(255,210,122,0.45), 0px 0px 46px rgba(255,210,122,0.18); }
+
+        /* L40 "네가 불러 줘" — hero 132px / 700, centred (1210, 291): right of her (s11b), above her head and off the shooting-star path (s11c) */
+        #l11_l40 { left: 670px; top: 216px; width: 1080px; height: 150px; transform: scale(1.03); filter: blur(3px); }
+        #l11_l40 .l11-row { font-size: 132px; font-weight: 700; letter-spacing: -0.01em; }
+        /* glow twin behind the hero line: its opacity is what pulses on the downbeats */
+        #l11_l40 .l11-gl { color: #FFD27A; text-shadow: none; filter: blur(14px); opacity: 0; }
+
+        /* ---- landing bloom where the real shooting star of s11c touches down (≈ 1062, 890) ---- */
+        #l11_bloom { left: 732px; top: 560px; width: 660px; height: 660px; transform-origin: 50% 50%;
+          background: radial-gradient(circle, rgba(255,246,222,0.60) 0%, rgba(255,214,140,0.32) 16%, rgba(255,210,122,0.12) 38%, rgba(255,210,122,0.03) 56%, rgba(255,210,122,0) 70%); }
+        #l11_bloomw { left: 362px; top: 190px; width: 1400px; height: 1400px; transform-origin: 50% 50%;
+          background: radial-gradient(circle, rgba(255,214,150,0.16) 0%, rgba(255,200,154,0.08) 25%, rgba(242,163,160,0.03) 45%, rgba(242,163,160,0) 62%); }
+      </style>
+
+      <div id="stage" data-composition-id="s11-finalB" data-width="1920" data-height="1080" data-duration="15.05">
+
+        <div id="l11_halo" class="l11-glow l11-hide" data-layout-ignore=""></div>
+
+        <!-- s11a: leader line from the real star to the EMPTY name slot (nothing is ever written inside) -->
+        <div id="l11_annw" class="l11-layer" data-layout-ignore="">
+          <svg id="l11_ann" class="l11-layer" viewBox="0 0 1920 1080" width="1920" height="1080" data-layout-ignore="">
+            <path id="l11_leadg" class="l11-draw" pathLength="1000" d="M864,150 L700,212 L456,212" stroke="#DCEBFF" stroke-opacity="0.14" stroke-width="6" stroke-linecap="butt" stroke-linejoin="round" />
+            <path id="l11_lead" class="l11-draw" pathLength="1000" d="M864,150 L700,212 L456,212" stroke="#DCEBFF" stroke-opacity="0.85" stroke-width="1.5" stroke-linecap="butt" stroke-linejoin="round" />
+            <g id="l11_slot" opacity="0.85">
+              <path id="l11_brRg" class="l11-draw" pathLength="1000" d="M440,221 L440,265 L392,265" stroke="#DCEBFF" stroke-opacity="0.16" stroke-width="7" stroke-linecap="butt" />
+              <path id="l11_brR" class="l11-draw" pathLength="1000" d="M440,221 L440,265 L392,265" stroke="#DCEBFF" stroke-width="2" stroke-linecap="butt" />
+              <path id="l11_brLg" class="l11-draw" pathLength="1000" d="M200,209 L200,165 L248,165" stroke="#DCEBFF" stroke-opacity="0.16" stroke-width="7" stroke-linecap="butt" />
+              <path id="l11_brL" class="l11-draw" pathLength="1000" d="M200,209 L200,165 L248,165" stroke="#DCEBFF" stroke-width="2" stroke-linecap="butt" />
+            </g>
+          </svg>
+        </div>
+
+        <!-- s11b: the empty brackets return around the real five stars she is looking at -->
+        <svg id="l11_brk" class="l11-layer" viewBox="0 0 1920 1080" width="1920" height="1080" data-layout-ignore="">
+          <g id="l11_bkL" transform="translate(1154,95)">
+            <path id="l11_bkLg" class="l11-draw" pathLength="1000" d="M0,44 L0,0 L44,0" stroke="#DCEBFF" stroke-opacity="0.15" stroke-width="7" stroke-linecap="butt" />
+            <path id="l11_bkLc" class="l11-draw" pathLength="1000" d="M0,44 L0,0 L44,0" stroke="#DCEBFF" stroke-width="2" stroke-linecap="butt" />
+          </g>
+          <g id="l11_bkR" transform="translate(1435,204)">
+            <path id="l11_bkRg" class="l11-draw" pathLength="1000" d="M0,-44 L0,0 L-44,0" stroke="#DCEBFF" stroke-opacity="0.15" stroke-width="7" stroke-linecap="butt" />
+            <path id="l11_bkRc" class="l11-draw" pathLength="1000" d="M0,-44 L0,0 L-44,0" stroke="#DCEBFF" stroke-width="2" stroke-linecap="butt" />
+          </g>
+        </svg>
+
+        <div id="l11_s39" class="l11-scrim l11-hide" data-layout-ignore=""></div>
+        <div id="l11_s40" class="l11-scrim l11-hide" data-layout-ignore=""></div>
+
+        <div id="l11_l39" class="l11-line l11-hide" data-layout-allow-overlap="">
+          <div id="l11_l39d" class="l11-drift">
+            <div class="l11-row"><span class="l11-w" id="l11_l39w1"><span id="l11_l39k">이름</span>은</span><span class="l11-w" id="l11_l39w2">붙이지</span><span class="l11-w" id="l11_l39w3">않을게</span></div>
+          </div>
+        </div>
+
+        <div id="l11_l40" class="l11-line l11-hide" data-layout-allow-overlap="">
+          <div id="l11_l40d" class="l11-drift">
+            <div id="l11_l40g" class="l11-row l11-gl" data-layout-ignore="" aria-hidden="true"><span class="l11-w" id="l11_l40gw1">네가</span><span class="l11-w" id="l11_l40gw2">불러</span><span class="l11-w" id="l11_l40gw3">줘</span></div>
+            <div class="l11-row"><span class="l11-w" id="l11_l40w1">네가</span><span class="l11-w" id="l11_l40w2">불러</span><span class="l11-w" id="l11_l40w3">줘</span></div>
+          </div>
+        </div>
+
+        <div id="l11_bloomw" class="l11-glow l11-hide" data-layout-ignore=""></div>
+        <div id="l11_bloom" class="l11-glow l11-hide" data-layout-ignore=""></div>
+      </div>
+
+      <script>
+        (function () {
+          var tl = gsap.timeline({ paused: true });
+          var S = 155.00;                       // span start (track s)
+          var END = 15.05;                      // span length
+          function T(track) { return Math.round((track - S) * 1000) / 1000; }
+          // every tween is an explicit fromTo that never immediate-renders (seek-safe chains)
+          function ft(target, from, to, pos) { to.immediateRender = false; tl.fromTo(target, from, to, pos); }
+
+          // ---- anchors (local) ----
+          var L39 = { on: T(155.13), w2: T(156.04), w3: T(157.14), end: T(158.50) };
+          var L40 = { on: T(158.62), w2: T(159.24), w3: T(165.11), end: T(169.60) };
+          var IGNITE = T(156.00);                       // the real window star flares up (measured)
+          var CUT_B = T(158.62), CUT_C = T(164.17);     // s11a→s11b, s11b→s11c
+          var DOWN = [T(158.99), T(161.56), T(164.17), T(166.77), T(169.37)];
+          var LAND = T(169.83), LAST = T(169.97);
+
+          // three-shadow text states (dark legibility shadow first, same structure so GSAP interpolates)
+          var DARK  = "0px 2px 12px rgba(5,7,20,0.85)";
+          var SOFT  = DARK + ", 0px 0px 14px rgba(220,235,255,0.25), 0px 0px 0px rgba(255,210,122,0)";
+          var LIGHT = DARK + ", 0px 0px 18px rgba(255,210,122,0.45), 0px 0px 46px rgba(255,210,122,0.18)";
+          var COOL  = DARK + ", 0px 0px 16px rgba(220,235,255,0.40), 0px 0px 40px rgba(220,235,255,0.12)";
+          var WARMG = DARK + ", 0px 0px 18px rgba(255,210,122,0.50), 0px 0px 48px rgba(255,210,122,0.20)";
+          var GOLD  = DARK + ", 0px 0px 22px rgba(255,210,122,0.62), 0px 0px 58px rgba(255,210,122,0.28)";
+
+          // ================= s11a — L39 "이름은 붙이지 않을게" =================
+          ft("#l11_s39", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.12, ease: "power1.out" }, 0);
+          ft("#l11_l39", { autoAlpha: 0, y: 12, filter: "blur(6px)" },
+                         { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.1, ease: "power2.out" }, L39.on - 0.11);
+          ft("#l11_l39d", { scale: 1 }, { scale: 1.02, duration: L39.end - L39.on, ease: "sine.inOut" }, L39.on);
+          [["#l11_l39w2", L39.w2], ["#l11_l39w3", L39.w3]].forEach(function (p) {
+            ft(p[0], { y: 0 }, { y: -5, duration: 0.09, ease: "power2.out" }, p[1] - 0.02);
+            ft(p[0], { y: -5 }, { y: 0, duration: 0.36, ease: "power2.inOut" }, p[1] + 0.07);
+          });
+          // 않을게 — the name's gold cools to glass: it stays unnamed
+          ft("#l11_l39k", { color: "#FFE2A3", textShadow: LIGHT }, { color: "#E4EDFF", textShadow: COOL, duration: 1.0, ease: "sine.inOut" }, L39.w3);
+          ft("#l11_l39", { autoAlpha: 1, y: 0, filter: "blur(0px)" },
+                         { autoAlpha: 0, y: -8, filter: "blur(6px)", duration: 0.06, ease: "power1.in" }, L39.end);
+          ft("#l11_s39", { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.1, ease: "power1.in" }, L39.end - 0.02);
+
+          // soft halo on the real star while it is still small; it hands over to the real flare at ignition
+          ft("#l11_halo", { autoAlpha: 0, scale: 0.7 }, { autoAlpha: 0.55, scale: 1, duration: 0.8, ease: "sine.out" }, L39.on);
+          ft("#l11_halo", { autoAlpha: 0.55, scale: 1 }, { autoAlpha: 0, scale: 1.6, duration: 0.7, ease: "power2.out" }, IGNITE - 0.02);
+
+          // annotation follows the footage push about the star (scale 1.507→1.6 relative to the 157.14 design frame)
+          ft("#l11_annw", { scale: 0.9648 }, { scale: 1.0243, duration: CUT_B, ease: "none" }, 0);
+          // the leader leaves the star as it flares (붙이지), then the empty brackets open around nothing
+          ft(["#l11_leadg", "#l11_lead"], { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.7, ease: "power2.inOut" }, IGNITE - 0.02);
+          ft(["#l11_brRg", "#l11_brR"], { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.42, ease: "power2.out" }, IGNITE + 0.55);
+          ft(["#l11_brLg", "#l11_brL"], { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.42, ease: "power2.out" }, IGNITE + 0.68);
+          // the slot brightens with the flare peak on 않을게, then settles
+          ft("#l11_slot", { opacity: 0.85 }, { opacity: 1, duration: 0.2, ease: "sine.out" }, L39.w3 - 0.04);
+          ft("#l11_slot", { opacity: 1 }, { opacity: 0.85, duration: 1.0, ease: "sine.inOut" }, L39.w3 + 0.16);
+          ft("#l11_annw", { opacity: 1 }, { opacity: 0, duration: 0.14, ease: "power1.in" }, L39.end - 0.06);
+
+          // ================= s11b + s11c — L40 "네가 불러 줘" (the long hold) =================
+          ft("#l11_s40", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.07, ease: "power1.out" }, CUT_B - 0.07);
+          ft("#l11_l40", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.035, ease: "none" }, CUT_B - 0.035);
+          ft("#l11_l40", { scale: 1.03, filter: "blur(3px)" }, { scale: 1, filter: "blur(0px)", duration: 0.22, ease: "expo.out" }, CUT_B - 0.035);
+          // subtle drift through the hold
+          ft("#l11_l40d", { scale: 1 }, { scale: 1.025, duration: L40.end - CUT_B, ease: "sine.inOut" }, CUT_B);
+
+          // 불러 brightens
+          ft("#l11_l40w2", { color: "#F4F1EA", textShadow: SOFT }, { color: "#FFF4D6", textShadow: LIGHT, duration: 0.4, ease: "power2.out" }, L40.w2 - 0.03);
+          ft(["#l11_l40w2", "#l11_l40gw2"], { scale: 1 }, { scale: 1.04, duration: 0.4, ease: "power2.out" }, L40.w2 - 0.03);
+
+          // 줘 — gold; the rest of the line warms with it
+          var GOLDT = L40.w3 - 0.06;
+          ft("#l11_l40w1", { color: "#F4F1EA", textShadow: SOFT }, { color: "#FFEFCF", textShadow: WARMG, duration: 1.3, ease: "sine.inOut" }, GOLDT);
+          ft("#l11_l40w2", { color: "#FFF4D6", textShadow: LIGHT }, { color: "#FFEFCF", textShadow: WARMG, duration: 1.3, ease: "sine.inOut" }, GOLDT);
+          ft("#l11_l40w3", { color: "#F4F1EA", textShadow: SOFT }, { color: "#FFE2A3", textShadow: GOLD, duration: 1.3, ease: "sine.inOut" }, GOLDT);
+          ft(["#l11_l40w3", "#l11_l40gw3"], { scale: 1 }, { scale: 1.05, duration: 2.4, ease: "sine.out" }, GOLDT);
+
+          // glow pulses on the downbeats (glow twin opacity; base rises to 0.3 once the line is gold)
+          var G = "#l11_l40g";
+          ft(G, { opacity: 0 },    { opacity: 0.45, duration: 0.14, ease: "power2.out" }, DOWN[0]);
+          ft(G, { opacity: 0.45 }, { opacity: 0,    duration: 0.9,  ease: "sine.inOut" }, DOWN[0] + 0.14);
+          ft(G, { opacity: 0 },    { opacity: 0.45, duration: 0.14, ease: "power2.out" }, DOWN[1]);
+          ft(G, { opacity: 0.45 }, { opacity: 0,    duration: 0.9,  ease: "sine.inOut" }, DOWN[1] + 0.14);
+          ft(G, { opacity: 0 },    { opacity: 0.5,  duration: 0.14, ease: "power2.out" }, DOWN[2]);
+          ft(G, { opacity: 0.5 },  { opacity: 0.05, duration: 0.7,  ease: "sine.inOut" }, DOWN[2] + 0.14);
+          ft(G, { opacity: 0.05 }, { opacity: 0.3,  duration: 1.3,  ease: "sine.inOut" }, GOLDT);
+          ft(G, { opacity: 0.3 },  { opacity: 0.75, duration: 0.14, ease: "power2.out" }, DOWN[3]);
+          ft(G, { opacity: 0.75 }, { opacity: 0.3,  duration: 1.0,  ease: "sine.inOut" }, DOWN[3] + 0.14);
+          ft(G, { opacity: 0.3 },  { opacity: 0.75, duration: 0.14, ease: "power2.out" }, DOWN[4]);
+          ft(G, { opacity: 0.75 }, { opacity: 0.4,  duration: 0.23, ease: "sine.inOut" }, DOWN[4] + 0.14);
+
+          // L40 leaves right after vocal_end, before the shooting star lands
+          ft("#l11_l40", { autoAlpha: 1, filter: "blur(0px)" }, { autoAlpha: 0, filter: "blur(8px)", duration: 0.2, ease: "power1.in" }, L40.end);
+          ft("#l11_s40", { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.22, ease: "power1.in" }, L40.end);
+
+          // ---- s11b brackets: track the real five stars (measured drift), draw on the first downbeat, gone by the cut ----
+          ft("#l11_bkL", { x: 1154, y: 95 },  { x: 1159, y: 65,  duration: CUT_C - CUT_B, ease: "none" }, CUT_B);
+          ft("#l11_bkR", { x: 1435, y: 204 }, { x: 1477, y: 184, duration: CUT_C - CUT_B, ease: "none" }, CUT_B);
+          ft(["#l11_bkLg", "#l11_bkLc"], { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.45, ease: "power2.out" }, DOWN[0]);
+          ft(["#l11_bkRg", "#l11_bkRc"], { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.45, ease: "power2.out" }, DOWN[0] + 0.12);
+          ft("#l11_brk", { opacity: 0.75 }, { opacity: 1, duration: 0.16, ease: "sine.out" }, DOWN[1]);
+          ft("#l11_brk", { opacity: 1 }, { opacity: 0.75, duration: 0.9, ease: "sine.inOut" }, DOWN[1] + 0.16);
+          ft("#l11_brk", { opacity: 0.75 }, { opacity: 0, duration: 0.3, ease: "power1.in" }, CUT_C - 0.36);
+
+          // ================= landing (169.83) → last hit (169.97): soft bloom at the real landing point =================
+          ft("#l11_bloom", { autoAlpha: 0, scale: 0.35 }, { autoAlpha: 0.45, scale: 0.6, duration: 0.07, ease: "power2.out" }, LAND - 0.04);
+          ft("#l11_bloom", { autoAlpha: 0.45, scale: 0.6 }, { autoAlpha: 0.9, scale: 1, duration: 0.06, ease: "expo.out" }, LAST - 0.02);
+          ft("#l11_bloomw", { autoAlpha: 0, scale: 0.7 }, { autoAlpha: 0.8, scale: 1, duration: 0.07, ease: "expo.out" }, LAST - 0.02);
+
+          tl.set({}, {}, END);
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s11-finalB"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

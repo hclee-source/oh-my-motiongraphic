@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Frame 5 (verse 2): walking past your lit window; footprints of light. Generated, then hand-checked. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Noto Serif KR"; src: url("assets/fonts/NotoSerifKR-VF.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: block; }
+        @font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/CormorantGaramond-Italic-VF.woff2") format("woff2"); font-weight: 300 700; font-style: italic; font-display: block; }
+        #stage { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+        #f5_g1 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+        /* house (pans right -> left, rides the hill up during the camera tilt) */
+        #f5_housepan { position: absolute; left: 0; top: 0; width: 1px; height: 1px; }
+        #f5_houserise { position: absolute; left: 0; top: 0; width: 1px; height: 1px; }
+        .f5-house { position: absolute; left: -120px; top: 670px; width: 600px; height: 430px; display: block; overflow: visible; }
+        #f5_halo_back { position: absolute; left: -247px; top: 513px; width: 760px; height: 760px; opacity: 0.75; transform-origin: 50% 50%; }
+        #f5_aura { position: absolute; left: 0; top: 0; width: 760px; height: 760px;
+          background: radial-gradient(closest-side, rgba(255,180,92,.30) 0%, rgba(255,180,92,.13) 38%, rgba(255,180,92,.04) 70%, rgba(255,180,92,0) 100%); }
+        #f5_halo { position: absolute; left: 13px; top: 773px; width: 240px; height: 240px; opacity: 0.75; transform-origin: 50% 50%;
+          background: radial-gradient(closest-side, rgba(255,214,150,.34) 0%, rgba(255,180,92,.16) 42%, rgba(255,180,92,0) 100%); }
+
+        /* pocket heat (bottom-left corner) */
+        #f5_pocket { position: absolute; left: -560px; top: 520px; width: 1120px; height: 1120px; opacity: 0; visibility: hidden; transform-origin: 50% 50%;
+          background: radial-gradient(closest-side, rgba(255,180,92,.68) 0%, rgba(255,180,92,.34) 26%, rgba(255,160,80,.10) 52%, rgba(255,160,80,0) 100%); }
+        #f5_pstar { position: absolute; left: 40px; top: 954px; width: 120px; height: 120px; opacity: 0; visibility: hidden; transform-origin: 50% 50%; }
+        #f5_pstar svg { display: block; overflow: visible; }
+        .f5-mote { position: absolute; border-radius: 50%; opacity: 0; visibility: hidden;
+          background: radial-gradient(closest-side, rgba(255,236,200,1) 0%, rgba(255,180,92,.75) 40%, rgba(255,180,92,0) 100%); }
+
+        /* footprints of light */
+        .f5-fp { position: absolute; width: 54px; height: 28px; opacity: 0; visibility: hidden; transform-origin: 50% 50%;
+          background: radial-gradient(closest-side, rgba(255,244,214,1) 0%, rgba(255,244,214,.95) 15%, rgba(255,210,122,.55) 36%, rgba(255,210,122,0) 100%); }
+
+        /* lyrics — horizontal, lower-left, one line at a time */
+        .f5-line { position: absolute; left: 176px; top: 660px; white-space: nowrap; opacity: 0; visibility: hidden;
+          font-family: "Noto Serif KR", serif; font-size: 70px; font-weight: 400; line-height: 1.3; letter-spacing: 0.01em; color: #F4F1EA; }
+        .f5-inner { position: relative; display: block; }
+        .f5-u { position: relative; display: inline-block; }
+        .f5-w { position: relative; display: inline-block; }
+        .f5-b { opacity: 0.8; text-shadow: 0 0 14px rgba(220,235,255,.25); }
+        .f5-wipe { position: absolute; left: -44px; right: -44px; top: -44px; bottom: -44px; overflow: hidden; pointer-events: none; }
+        .f5-lit { position: absolute; left: 0; top: 0; right: 0; bottom: 0; box-sizing: border-box; padding: 44px; display: block; white-space: nowrap;
+          color: #FFF4D6; text-shadow: 0 0 18px rgba(255,210,122,.45), 0 0 46px rgba(255,210,122,.18); }
+        .f5-kw { font-size: 98px; font-weight: 500; }
+        .f5-kw .f5-b { opacity: 1; color: #FFF4D6; text-shadow: 0 0 18px rgba(255,210,122,.45), 0 0 46px rgba(255,210,122,.18); }
+        .f5-kw .f5-lit { color: #FFE9B8; text-shadow: 0 0 20px rgba(255,210,122,.75), 0 0 56px rgba(255,210,122,.34); }
+        .f5-am { font-size: 91px; font-weight: 500; }
+        .f5-am .f5-b { opacity: 0.92; }
+        .f5-am .f5-lit, .f5-ah .f5-lit { color: #FFB45C; text-shadow: 0 0 18px rgba(255,180,92,.6), 0 0 46px rgba(255,180,92,.26); }
+      </style>
+
+      <div id="stage" data-composition-id="05-f5" data-width="1920" data-height="1080" data-duration="10.2">
+        <div id="f5_g1">
+          <div id="f5_housepan" data-layout-ignore="">
+            <div id="f5_houserise" data-layout-ignore="">
+              <div id="f5_halo_back" data-layout-ignore=""><div id="f5_aura"></div></div>
+              <svg id="f5_house" class="f5-house" width="600" height="430" viewBox="-120 -320 600 430" aria-hidden="true">
+  <defs>
+    <linearGradient id="f5_wingrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFCF86"/><stop offset="0.55" stop-color="#FFB45C"/><stop offset="1" stop-color="#F29A4A"/></linearGradient>
+    <linearGradient id="f5_moundgrad" gradientUnits="userSpaceOnUse" x1="-120" y1="0" x2="480" y2="0"><stop offset="0" stop-color="#070C20" stop-opacity="0"/><stop offset="0.24" stop-color="#070C20" stop-opacity="1"/><stop offset="0.76" stop-color="#070C20" stop-opacity="1"/><stop offset="1" stop-color="#070C20" stop-opacity="0"/></linearGradient>
+    <linearGradient id="f5_rimgrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9FB6E8" stop-opacity="0"/><stop offset="0.3" stop-color="#9FB6E8" stop-opacity="0.22"/><stop offset="0.7" stop-color="#9FB6E8" stop-opacity="0.22"/><stop offset="1" stop-color="#9FB6E8" stop-opacity="0"/></linearGradient>
+  </defs>
+  <path d="M-120 46 C -70 22, -24 6, 22 2 L 338 2 C 384 6, 430 22, 480 46 L 480 110 L -120 110 Z" fill="url(#f5_moundgrad)"/>
+  <path d="M-120 46 C -70 22, -24 6, 22 2 L 338 2 C 384 6, 430 22, 480 46" fill="none" stroke="url(#f5_rimgrad)" stroke-width="2"/>
+  <rect x="232" y="-282" width="30" height="100" fill="#070C20"/>
+  <rect x="226" y="-292" width="42" height="11" fill="#070C20"/>
+  <path d="M226 -292 L268 -292" stroke="#DCEBFF" stroke-opacity="0.16" stroke-width="1.5"/>
+  <rect x="30" y="-176" width="300" height="180" fill="#070C20"/>
+  <polygon points="8,-170 180,-300 352,-170" fill="#070C20"/>
+  <polyline points="8,-170 180,-300 352,-170" fill="none" stroke="#DCEBFF" stroke-opacity="0.16" stroke-width="1.5" stroke-linejoin="round"/>
+  <rect id="f5_win" x="98" y="-142" width="70" height="90" fill="url(#f5_wingrad)"/>
+  <rect id="f5_winhot" x="98" y="-142" width="70" height="90" fill="#FFF0D2" opacity="0"/>
+  <rect x="131" y="-142" width="4" height="90" fill="#070C20"/>
+  <rect x="98" y="-99" width="70" height="4" fill="#070C20"/>
+  <rect x="92" y="-52" width="82" height="6" fill="#0B1230"/>
+</svg>
+              <div id="f5_halo" data-layout-ignore=""></div>
+            </div>
+          </div>
+          <div id="f5_pocket" data-layout-ignore=""></div>
+          <div id="f5_pstar" data-layout-ignore=""><svg width="120" height="120" viewBox="-60 -60 120 120" aria-hidden="true">
+  <defs><radialGradient id="f5_pstar_glow"><stop offset="0" stop-color="#FFF4D6" stop-opacity="0.9"/><stop offset="0.35" stop-color="#FFD27A" stop-opacity="0.45"/><stop offset="1" stop-color="#FFB45C" stop-opacity="0"/></radialGradient></defs>
+  <circle r="34" fill="url(#f5_pstar_glow)"/>
+  <path d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" transform="scale(16)" fill="#FFF4D6"/>
+  <path id="f5_pstar_amb" d="M0,-1 C0.1,-0.1 0.1,-0.1 1,0 C0.1,0.1 0.1,0.1 0,1 C-0.1,0.1 -0.1,0.1 -1,0 C-0.1,-0.1 -0.1,-0.1 0,-1 Z" transform="scale(16)" fill="#FFB45C" opacity="0"/>
+</svg></div>
+          <div id="f5_motes" data-layout-ignore=""><div id="f5_m0" class="f5-mote" style="left:98px;top:1020px;width:21px;height:21px"></div><div id="f5_m1" class="f5-mote" style="left:143px;top:1034px;width:18px;height:18px"></div><div id="f5_m2" class="f5-mote" style="left:197px;top:1043px;width:12px;height:12px"></div><div id="f5_m3" class="f5-mote" style="left:213px;top:1023px;width:21px;height:21px"></div><div id="f5_m4" class="f5-mote" style="left:255px;top:1017px;width:15px;height:15px"></div><div id="f5_m5" class="f5-mote" style="left:80px;top:1014px;width:18px;height:18px"></div><div id="f5_m6" class="f5-mote" style="left:165px;top:1022px;width:21px;height:21px"></div></div>
+          <div id="f5_feet" data-layout-ignore=""><div id="f5_fp0" class="f5-fp" style="left:153px;top:984px"></div><div id="f5_fp1" class="f5-fp" style="left:284px;top:964px"></div><div id="f5_fp2" class="f5-fp" style="left:416px;top:964px"></div><div id="f5_fp3" class="f5-fp" style="left:547px;top:954px"></div><div id="f5_fp4" class="f5-fp" style="left:679px;top:965px"></div><div id="f5_fp5" class="f5-fp" style="left:810px;top:967px"></div><div id="f5_fp6" class="f5-fp" style="left:942px;top:990px"></div><div id="f5_fp7" class="f5-fp" style="left:1073px;top:993px"></div></div>
+          <div id="f5_l1" class="f5-line"><div id="f5_l1in" class="f5-inner"><span id="f5_l1u0" class="f5-u"><span id="f5_l1w0" class="f5-w"><span class="f5-b">너의</span><span id="f5_l1x0" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l1t0" class="f5-lit" data-layout-ignore="">너의</span></span></span></span> <span id="f5_l1u1" class="f5-u f5-am"><span id="f5_l1w1" class="f5-w"><span class="f5-b">창가</span><span id="f5_l1x1" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l1t1" class="f5-lit" data-layout-ignore="">창가</span></span></span></span><span id="f5_l1u2" class="f5-u"><span id="f5_l1w2" class="f5-w"><span class="f5-b">를</span><span id="f5_l1x2" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l1t2" class="f5-lit" data-layout-ignore="">를</span></span></span></span> <span id="f5_l1u3" class="f5-u"><span id="f5_l1w3" class="f5-w"><span class="f5-b">지나칠</span><span id="f5_l1x3" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l1t3" class="f5-lit" data-layout-ignore="">지나칠</span></span></span></span> <span id="f5_l1u4" class="f5-u"><span id="f5_l1w4" class="f5-w"><span class="f5-b">때면</span><span id="f5_l1x4" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l1t4" class="f5-lit" data-layout-ignore="">때면</span></span></span></span></div></div>
+          <div id="f5_l2" class="f5-line"><div id="f5_l2in" class="f5-inner"><span id="f5_l2u0" class="f5-u"><span id="f5_l2w0" class="f5-w"><span class="f5-b">주머니</span><span id="f5_l2x0" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l2t0" class="f5-lit" data-layout-ignore="">주머니</span></span></span></span> <span id="f5_l2u1" class="f5-u"><span id="f5_l2w1" class="f5-w"><span class="f5-b">속</span><span id="f5_l2x1" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l2t1" class="f5-lit" data-layout-ignore="">속</span></span></span></span> <span id="f5_l2u2" class="f5-u f5-kw"><span id="f5_l2w2" class="f5-w"><span class="f5-b">별</span><span id="f5_l2x2" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l2t2" class="f5-lit" data-layout-ignore="">별</span></span></span></span><span id="f5_l2u3" class="f5-u"><span id="f5_l2w3" class="f5-w"><span class="f5-b">이</span><span id="f5_l2x3" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l2t3" class="f5-lit" data-layout-ignore="">이</span></span></span></span> <span id="f5_l2u4" class="f5-u"><span id="f5_l2w4" class="f5-w"><span class="f5-b">또</span><span id="f5_l2x4" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l2t4" class="f5-lit" data-layout-ignore="">또</span></span></span></span> <span id="f5_l2u5" class="f5-u f5-ah"><span id="f5_l2w5" class="f5-w"><span class="f5-b">뜨</span><span id="f5_l2x5" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l2t5" class="f5-lit" data-layout-ignore="">뜨</span></span></span></span><span id="f5_l2u6" class="f5-u f5-ah"><span id="f5_l2w6" class="f5-w"><span class="f5-b">거</span><span id="f5_l2x6" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l2t6" class="f5-lit" data-layout-ignore="">거</span></span></span></span><span id="f5_l2u7" class="f5-u f5-ah"><span id="f5_l2w7" class="f5-w"><span class="f5-b">워</span><span id="f5_l2x7" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l2t7" class="f5-lit" data-layout-ignore="">워</span></span></span></span><span id="f5_l2u8" class="f5-u f5-ah"><span id="f5_l2w8" class="f5-w"><span class="f5-b">져</span><span id="f5_l2x8" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l2t8" class="f5-lit" data-layout-ignore="">져</span></span></span></span></div></div>
+          <div id="f5_l3" class="f5-line"><div id="f5_l3in" class="f5-inner"><span id="f5_l3u0" class="f5-u"><span id="f5_l3w0" class="f5-w"><span class="f5-b">손을</span><span id="f5_l3x0" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l3t0" class="f5-lit" data-layout-ignore="">손을</span></span></span></span> <span id="f5_l3u1" class="f5-u"><span id="f5_l3w1" class="f5-w"><span class="f5-b">흔들고</span><span id="f5_l3x1" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l3t1" class="f5-lit" data-layout-ignore="">흔들고</span></span></span></span> <span id="f5_l3u2" class="f5-u"><span id="f5_l3w2" class="f5-w"><span class="f5-b">돌아서는</span><span id="f5_l3x2" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l3t2" class="f5-lit" data-layout-ignore="">돌아서는</span></span></span></span> <span id="f5_l3u3" class="f5-u"><span id="f5_l3w3" class="f5-w"><span class="f5-b">길</span><span id="f5_l3x3" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l3t3" class="f5-lit" data-layout-ignore="">길</span></span></span></span></div></div>
+          <div id="f5_l4" class="f5-line"><div id="f5_l4in" class="f5-inner"><span id="f5_l4u0" class="f5-u"><span id="f5_l4w0" class="f5-w"><span class="f5-b">발자국마다</span><span id="f5_l4x0" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l4t0" class="f5-lit" data-layout-ignore="">발자국마다</span></span></span></span> <span id="f5_l4u1" class="f5-u f5-kw"><span id="f5_l4w1" class="f5-w"><span class="f5-b">빛</span><span id="f5_l4x1" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l4t1" class="f5-lit" data-layout-ignore="">빛</span></span></span></span><span id="f5_l4u2" class="f5-u"><span id="f5_l4w2" class="f5-w"><span class="f5-b">이</span><span id="f5_l4x2" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l4t2" class="f5-lit" data-layout-ignore="">이</span></span></span></span> <span id="f5_l4u3" class="f5-u"><span id="f5_l4w3" class="f5-w"><span class="f5-b">떨</span><span id="f5_l4x3" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l4t3" class="f5-lit" data-layout-ignore="">떨</span></span></span></span><span id="f5_l4u4" class="f5-u"><span id="f5_l4w4" class="f5-w"><span class="f5-b">어</span><span id="f5_l4x4" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l4t4" class="f5-lit" data-layout-ignore="">어</span></span></span></span><span id="f5_l4u5" class="f5-u"><span id="f5_l4w5" class="f5-w"><span class="f5-b">져</span><span id="f5_l4x5" class="f5-wipe" data-layout-ignore="" aria-hidden="true"><span id="f5_l4t5" class="f5-lit" data-layout-ignore="">져</span></span></span></span></div></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var tl = gsap.timeline({ paused: true });
+          var T0 = 66.7, SPAN = 10.2;
+          function L(t) { return Math.round((t - T0) * 1000) / 1000; }
+          // later tweens never pre-render their from-state (multiple tweens share a target)
+          function ft(target, from, to, pos) { to.immediateRender = false; tl.fromTo(target, from, to, pos); }
+
+          // group span (single group covers the whole frame)
+          tl.set("#f5_g1", { autoAlpha: 1 }, 0);
+
+          // ---------- house: pan right->left (linear) + ride the hill up with the sky tilt ----------
+          tl.fromTo("#f5_housepan", { x: 1560 }, { x: 1180, duration: SPAN, ease: "none" }, 0);
+          // sky.html: #sky_hillwrap y 340 -> 0, power2.inOut, 2.4s from track 65.86 (= local -0.84)
+          var P0 = 0.84 / 2.4;
+          function pio(p) { return p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; }
+          var E0 = pio(P0);
+          tl.fromTo("#f5_houserise", { y: 340 * (1 - E0) }, { y: 0, duration: 2.4 - 0.84,
+            ease: function (t) { return (pio(P0 + (1 - P0) * t) - E0) / (1 - E0); } }, 0);
+
+          // window halo breathes (finite), brightens on 창가를, dims back on 돌아서는
+          tl.fromTo("#f5_aura", { opacity: 0.8 }, { opacity: 1, duration: 1.3, ease: "sine.inOut", yoyo: true, repeat: 6 }, 0);
+          ft("#f5_halo, #f5_halo_back", { scale: 1, opacity: 0.75 }, { scale: 1.6, opacity: 1, duration: 0.55, ease: "power2.out" }, L(67.39) - 0.05);
+          ft("#f5_winhot", { opacity: 0 }, { opacity: 0.6, duration: 0.45, ease: "power2.out" }, L(67.39) - 0.05);
+          ft("#f5_halo, #f5_halo_back", { scale: 1.6, opacity: 1 }, { scale: 1, opacity: 0.75, duration: 0.9, ease: "sine.inOut" }, L(73.30));
+          ft("#f5_winhot", { opacity: 0.6 }, { opacity: 0, duration: 0.9, ease: "sine.inOut" }, L(73.30));
+
+          // ---------- lyrics: blur-resolve + staggered entrance, drift left (walking), slide-left exit ----------
+          var LINES = [{"id": "f5_l1", "inS": 66.77, "onset": 67.05, "outS": 69.3, "outE": 69.46, "units": [[67.09, 0.26], [67.39, 0.26], [67.65, 0.16], [68.07, 0.45], [68.82, 0.42]]}, {"id": "f5_l2", "inS": 69.46, "onset": 69.64, "outS": 71.9, "outE": 72.04, "units": [[69.68, 0.4], [70.18, 0.2], [70.42, 0.16], [70.58, 0.1], [70.68, 0.2], [70.94, 0.11], [71.05, 0.11], [71.16, 0.11], [71.27, 0.11]]}, {"id": "f5_l3", "inS": 72.04, "onset": 72.22, "outS": 74.54, "outE": 74.68, "units": [[72.26, 0.36], [72.7, 0.48], [73.3, 0.6], [74.42, 0.22]]}, {"id": "f5_l4", "inS": 74.68, "onset": 74.86, "outS": 76.64, "outE": 76.86, "units": [[74.9, 0.85], [75.87, 0.18], [76.05, 0.12], [76.47, 0.09], [76.56, 0.09], [76.65, 0.09]]}];
+          LINES.forEach(function (ln) {
+            var sel = "#" + ln.id;
+            var inT = L(ln.inS), onT = L(ln.onset), outT = L(ln.outS), outD = Math.round((ln.outE - ln.outS) * 1000) / 1000;
+            var inD = Math.round((onT - inT) * 1000) / 1000;
+            ft(sel, { autoAlpha: 0, x: 30, filter: "blur(10px)" }, { autoAlpha: 1, x: 0, filter: "blur(0px)", duration: inD, ease: "power2.out" }, inT);
+            ft(sel, { x: 0 }, { x: -12, duration: Math.round((outT - onT) * 1000) / 1000, ease: "none" }, onT);
+            ft(sel, { x: -12, autoAlpha: 1, filter: "blur(0px)" }, { x: -52, autoAlpha: 0, filter: "blur(6px)", duration: outD, ease: "power2.in" }, outT);
+            var n = ln.units.length, uD = inD * 0.6, step = n > 1 ? (inD * 0.4) / (n - 1) : 0;
+            ln.units.forEach(function (u, k) {
+              tl.fromTo(sel + "u" + k, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: uD, ease: "power2.out" }, inT + k * step);
+              // directional fill: light sweeps left->right through each word as it is sung
+              var wt = Math.max(onT, L(u[0]) - 0.04);
+              tl.fromTo(sel + "x" + k, { xPercent: -100, x: 0 }, { xPercent: 0, duration: u[1], ease: "sine.inOut" }, wt);
+              tl.fromTo(sel + "t" + k, { xPercent: 100, x: 0 }, { xPercent: 0, duration: u[1], ease: "sine.inOut" }, wt);
+            });
+          });
+
+          // L16 뜨거워져: heat shimmer (deterministic per-char phase/amplitude)
+          for (var h = 0; h < 4; h++) {
+            tl.fromTo("#f5_l2w" + (5 + h), { y: 0 }, { y: -(3 + (h % 2) * 2), duration: 0.14, ease: "sine.inOut", yoyo: true, repeat: 5 }, L(70.94) + 0.06 + h * 0.07);
+          }
+
+          // L17 sway once (흔들고 — waving)
+          ft("#f5_l3in", { x: 0 }, { x: 12, duration: 0.26, ease: "sine.out" }, L(72.70));
+          ft("#f5_l3in", { x: 12 }, { x: -8, duration: 0.36, ease: "sine.inOut" }, L(72.70) + 0.26);
+          ft("#f5_l3in", { x: -8 }, { x: 0, duration: 0.32, ease: "sine.out" }, L(72.70) + 0.62);
+
+          // L18 떨어져: letters drop a little (light falling)
+          var DROP = [[9, 2.5], [11, -2], [8, 3]];
+          for (var d = 0; d < 3; d++) {
+            tl.fromTo("#f5_l4w" + (3 + d), { y: 0, rotation: 0 }, { y: DROP[d][0], rotation: DROP[d][1], duration: 0.28, ease: "power2.in" }, L(76.47) + d * 0.06);
+          }
+
+          // ---------- pocket: the hot star in my pocket (L16) ----------
+          ft("#f5_pocket", { autoAlpha: 0, scale: 0.55 }, { autoAlpha: 0.75, scale: 0.9, duration: 0.3, ease: "power2.out" }, L(70.42) - 0.04);
+          ft("#f5_pocket", { autoAlpha: 0.75, scale: 0.9 }, { autoAlpha: 0.45, scale: 0.8, duration: 0.24, ease: "sine.inOut" }, L(70.42) + 0.26);
+          ft("#f5_pocket", { autoAlpha: 0.45, scale: 0.8 }, { autoAlpha: 1, scale: 1.12, duration: 0.3, ease: "power2.out" }, L(70.94) - 0.04);
+          ft("#f5_pocket", { autoAlpha: 1, scale: 1.12 }, { autoAlpha: 0.6, scale: 1, duration: 0.7, ease: "sine.inOut" }, L(70.94) + 0.26);
+          ft("#f5_pocket", { autoAlpha: 0.6, scale: 1 }, { autoAlpha: 0, scale: 0.8, duration: 0.9, ease: "sine.inOut" }, L(73.30));
+
+          ft("#f5_pstar", { autoAlpha: 0, scale: 0.2 }, { autoAlpha: 1, scale: 1.25, duration: 0.22, ease: "power2.out" }, L(70.42) - 0.04);
+          ft("#f5_pstar", { scale: 1.25 }, { scale: 0.95, duration: 0.3, ease: "sine.inOut" }, L(70.42) + 0.18);
+          ft("#f5_pstar", { scale: 0.95 }, { scale: 1.4, duration: 0.2, ease: "power2.out" }, L(70.94) - 0.04);
+          ft("#f5_pstar", { scale: 1.4 }, { scale: 1.1, duration: 0.5, ease: "sine.inOut" }, L(70.94) + 0.16);
+          ft("#f5_pstar", { autoAlpha: 1, scale: 1.1 }, { autoAlpha: 0, scale: 0.7, duration: 0.8, ease: "sine.in" }, L(73.30));
+          tl.fromTo("#f5_pstar_amb", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, L(70.94) - 0.04);
+
+          var MOTES = [{"x": 98, "y": 1020, "dy": 188, "dx": 14, "sz": 7, "dur": 1.41}, {"x": 143, "y": 1034, "dy": 200, "dx": 18, "sz": 6, "dur": 1.35}, {"x": 197, "y": 1043, "dy": 157, "dx": -12, "sz": 4, "dur": 1.16}, {"x": 213, "y": 1023, "dy": 161, "dx": 15, "sz": 7, "dur": 1.09}, {"x": 255, "y": 1017, "dy": 156, "dx": 2, "sz": 5, "dur": 1.37}, {"x": 80, "y": 1014, "dy": 169, "dx": -1, "sz": 6, "dur": 1.23}, {"x": 165, "y": 1022, "dy": 193, "dx": -18, "sz": 7, "dur": 1.09}];
+          MOTES.forEach(function (m, i) {
+            var t = L(70.94) + 0.04 + i * 0.12;
+            ft("#f5_m" + i, { autoAlpha: 0 }, { autoAlpha: 0.9, duration: 0.25, ease: "sine.out" }, t);
+            ft("#f5_m" + i, { x: 0, y: 0 }, { x: m.dx, y: -m.dy, duration: m.dur, ease: "sine.out" }, t);
+            ft("#f5_m" + i, { autoAlpha: 0.9 }, { autoAlpha: 0, duration: m.dur - 0.25, ease: "sine.in" }, t + 0.25);
+          });
+
+          // ---------- footprints of light (L18): 8 steps left->right, each stays and twinkles ----------
+          for (var f = 0; f < 8; f++) {
+            var ts = L(74.90) + f * 0.24, id = "#f5_fp" + f;
+            ft(id, { autoAlpha: 0, scale: 0.2 }, { autoAlpha: 1, scale: 1.35, duration: 0.1, ease: "power2.out" }, ts);
+            ft(id, { scale: 1.35 }, { scale: 1, duration: 0.15, ease: "sine.out" }, ts + 0.1);
+            var tw = ts + 0.29, cyc = 0.42 + (f % 3) * 0.09;
+            var rep = Math.max(0, Math.floor((SPAN - tw) / cyc) - 1);
+            if (SPAN - tw > cyc) {
+              ft(id, { autoAlpha: 1 }, { autoAlpha: 0.55, duration: cyc, ease: "sine.inOut", yoyo: true, repeat: rep }, tw);
+            }
+          }
+
+          tl.set("#f5_g1", { autoAlpha: 0 }, SPAN);
+          tl.seek(0);
+          window.__timelines = window.__timelines || {};
+          window.__timelines["05-f5"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

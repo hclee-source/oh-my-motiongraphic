@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>07-f7 — finale pop (frame 7, 41.0–46.6s)</title>
+  </head>
+  <body>
+    <template>
+      <div data-hf-id="hf-9ixf" id="stage" data-composition-id="07-f7" data-width="1920" data-height="1080" data-duration="5.6">
+        <style>
+          @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+          @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+          @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+          #stage {
+            position: absolute;
+            inset: 0;
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            background: #0f0e0c;
+            color: #f4efe6;
+            font-family: "Paperlogy", sans-serif;
+          }
+          :where(#stage) *,
+          :where(#stage) *::before,
+          :where(#stage) *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+
+          /* ---- group g1: the whole frame ---- */
+          #stage #f7_g1 {
+            position: absolute;
+            inset: 0;
+            width: 1920px;
+            height: 1080px;
+          }
+
+          /* layer 1 — particle-burst (gold sparkles + dots), behind the covers */
+          #stage #f7_g1_particles {
+            position: absolute;
+            left: 960px;
+            top: 540px;
+            width: 0;
+            height: 0;
+            opacity: 0;
+          }
+          #stage .f7-pt {
+            position: absolute;
+            display: block;
+            border-radius: 50%;
+            background: #ceae73;
+            will-change: transform, opacity;
+          }
+          #stage .f7-pt.f7-spark {
+            border-radius: 0;
+            /* 4-point sparkle — the logo's star motif */
+            clip-path: polygon(50% 0%, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0% 50%, 39% 39%);
+          }
+          #stage .f7-pt.f7-deep {
+            background: #a8874a;
+          }
+
+          /* layer 2 — ring wave, behind the covers */
+          #stage #f7_g1_rings {
+            position: absolute;
+            inset: 0;
+            width: 1920px;
+            height: 1080px;
+          }
+          #stage .f7-ring {
+            position: absolute;
+            left: 960px;
+            top: 540px;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 3px solid #ceae73;
+            opacity: 0;
+          }
+          #stage #f7_g1_ring2 {
+            border: 2px solid #a8874a;
+          }
+
+          /* layer 3 — the 8×2 cover grid (slots 156px, gap 24px → 1416px wide, x 252–1668) */
+          #stage #f7_g1_grid {
+            position: absolute;
+            inset: 0;
+            width: 1920px;
+            height: 1080px;
+            transform-origin: 960px 540px;
+          }
+          #stage .f7-row {
+            position: absolute;
+            left: 0;
+            width: 1920px;
+            height: 200px;
+            display: grid;
+            grid-template-columns: repeat(8, 156px);
+            column-gap: 24px;
+            justify-content: center;
+            align-items: center;
+            justify-items: center;
+          }
+          #stage #f7_g1_row0 {
+            top: 326px;
+          }
+          #stage #f7_g1_row1 {
+            top: 554px;
+          }
+          #stage .f7-cell {
+            position: relative;
+            display: block;
+            height: 200px;
+            opacity: 0;
+            will-change: transform, opacity;
+          }
+          #stage .f7-bump {
+            display: block;
+            width: 100%;
+            height: 100%;
+            will-change: transform;
+          }
+          #stage .f7-cover {
+            display: block;
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 6px;
+            box-shadow:
+              0 30px 60px rgba(0, 0, 0, 0.55),
+              0 0 0 1px rgba(255, 255, 255, 0.06);
+          }
+
+          /* layer 4 — the quiet line in the silence */
+          #stage #f7_g1_lineWrap {
+            position: absolute;
+            inset: 0;
+            width: 1920px;
+            height: 1080px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          #stage #f7_g1_line {
+            display: block;
+            font-family: "Paperlogy", sans-serif;
+            font-weight: 800;
+            font-size: 96px;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            color: #f4efe6;
+            white-space: nowrap;
+            opacity: 0;
+            will-change: transform, opacity, filter;
+          }
+
+          /* layer 5 — logo lockup (sits in the band the parted rows open: y 273–807) */
+          #stage #f7_g1_lockup {
+            position: absolute;
+            inset: 0;
+            width: 1920px;
+            height: 1080px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+          }
+          #stage #f7_g1_markWrap {
+            position: relative;
+            display: block;
+            width: 196px;
+            height: 188px;
+          }
+          #stage #f7_g1_disc {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 206px;
+            height: 206px;
+            margin: -103px 0 0 -103px;
+            border-radius: 50%;
+            background: #a8874a;
+            opacity: 0;
+            will-change: transform, opacity;
+          }
+          #stage #f7_g1_markRes,
+          #stage #f7_g1_markBump {
+            position: absolute;
+            inset: 0;
+            display: block;
+            width: 196px;
+            height: 188px;
+          }
+          #stage #f7_g1_markRes {
+            opacity: 0;
+            will-change: transform, opacity, filter;
+          }
+          #stage #f7_g1_mark {
+            display: block;
+            width: 196px;
+            height: 188px;
+          }
+          #stage #f7_g1_name {
+            display: block;
+            margin-top: 22px;
+            font-family: "Paperlogy", sans-serif;
+            font-weight: 800;
+            font-size: 96px;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            color: #f4efe6;
+            white-space: nowrap;
+            opacity: 0;
+            will-change: transform, opacity, filter;
+          }
+          #stage #f7_g1_word {
+            display: block;
+            margin-top: 10px;
+            padding-left: 0.32em; /* balances the trailing tracking so the wordmark centers */
+            font-family: "Montserrat", sans-serif;
+            font-weight: 600;
+            font-size: 44px;
+            line-height: 1;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            color: #ceae73;
+            white-space: nowrap;
+            opacity: 0;
+            will-change: transform, opacity, filter;
+          }
+          #stage #f7_g1_url {
+            display: block;
+            margin-top: 26px;
+            padding-left: 0.14em;
+            font-family: "IBM Plex Mono", monospace;
+            font-weight: 500;
+            font-size: 30px;
+            line-height: 1.2;
+            letter-spacing: 0.14em;
+            color: #ceae73;
+            white-space: nowrap;
+            opacity: 0;
+            will-change: transform, opacity;
+          }
+        </style>
+
+        <div data-hf-id="hf-hvyj" id="f7_g1">
+          <div data-hf-id="hf-uv88" id="f7_g1_particles" data-layout-ignore=""></div>
+
+          <div data-hf-id="hf-699o" id="f7_g1_rings" data-layout-ignore="">
+            <div data-hf-id="hf-gl1o" id="f7_g1_ring1" class="f7-ring"></div>
+            <div data-hf-id="hf-p8xj" id="f7_g1_ring2" class="f7-ring"></div>
+          </div>
+
+          <div data-hf-id="hf-aaq6" id="f7_g1_grid">
+            <div data-hf-id="hf-9k1f" id="f7_g1_row0" class="f7-row">
+              <div data-hf-id="hf-41o2" class="f7-cell" style="width: 146.34px"><div data-hf-id="hf-fw4q" class="f7-bump"><img data-hf-id="hf-hi0l" class="f7-cover" src="assets/covers/gemini81.jpg" alt="제미나이 완전 미친 활용법 81제"></div></div>
+              <div data-hf-id="hf-87xy" class="f7-cell" style="width: 146.34px"><div data-hf-id="hf-auy6" class="f7-bump"><img data-hf-id="hf-i6cz" class="f7-cover" src="assets/covers/openclaw50.jpg" alt="오픈클로 미친 활용법 50제"></div></div>
+              <div data-hf-id="hf-8m8z" class="f7-cell" style="width: 146.34px"><div data-hf-id="hf-b997" class="f7-bump"><img data-hf-id="hf-8n2n" class="f7-cover" src="assets/covers/ai-product-image.jpg" alt="AI 상품 이미지 만들기"></div></div>
+              <div data-hf-id="hf-90k0" class="f7-cell" style="width: 146.34px"><div data-hf-id="hf-bnk8" class="f7-bump"><img data-hf-id="hf-5at3" class="f7-cover" src="assets/covers/baro-claude.jpg" alt="바로바로 클로드"></div></div>
+              <div data-hf-id="hf-68et" class="f7-cell" style="width: 146.34px"><div data-hf-id="hf-8vf1" class="f7-bump"><img data-hf-id="hf-2noy" class="f7-cover" src="assets/covers/baro-chatgpt-codex.jpg" alt="챗GPT X 덕테이프 X 코덱스"></div></div>
+              <div data-hf-id="hf-xdt9" class="f7-cell" style="width: 155.73px"><div data-hf-id="hf-99q2" class="f7-bump"><img data-hf-id="hf-v4xo" class="f7-cover" src="assets/covers/youtube-ai-secretary.jpg" alt="유튜브 AI 비서 고용하기"></div></div>
+              <div data-hf-id="hf-6mpu" class="f7-cell" style="width: 146.34px"><div data-hf-id="hf-9o13" class="f7-bump"><img data-hf-id="hf-wzc9" class="f7-cover" src="assets/covers/naver-blog.jpg" alt="네이버 블로그"></div></div>
+              <div data-hf-id="hf-mmz6" class="f7-cell" style="width: 139.9px"><div data-hf-id="hf-a2c4" class="f7-bump"><img data-hf-id="hf-67lj" class="f7-cover" src="assets/covers/danggeun-ai.jpg" alt="요즘 당근 AI 개발"></div></div>
+            </div>
+            <div data-hf-id="hf-5lxe" id="f7_g1_row1" class="f7-row">
+              <div data-hf-id="hf-0xpp" class="f7-cell" style="width: 146.24px"><div data-hf-id="hf-dn3d" class="f7-bump"><img data-hf-id="hf-0c74" class="f7-cover" src="assets/covers/vibe-harness.jpg" alt="요즘 바이브 코딩 하네스"></div></div>
+              <div data-hf-id="hf-3rie" class="f7-cell" style="width: 150px"><div data-hf-id="hf-e1ee" class="f7-bump"><img data-hf-id="hf-gvem" class="f7-cover" src="assets/covers/ppatta-computer1.jpg" alt="컴퓨터활용능력 1급"></div></div>
+              <div data-hf-id="hf-7jey" class="f7-cell" style="width: 150px"><div data-hf-id="hf-oa4a" class="f7-bump"><img data-hf-id="hf-4yvw" class="f7-cover" src="assets/covers/ppatta-computer2.jpg" alt="컴퓨터활용능력 2급"></div></div>
+              <div data-hf-id="hf-710v" class="f7-cell" style="width: 146.34px"><div data-hf-id="hf-nvt9" class="f7-bump"><img data-hf-id="hf-igr5" class="f7-cover" src="assets/covers/ppatta-bigdata-written.jpg" alt="빅데이터분석기사 필기"></div></div>
+              <div data-hf-id="hf-7fbw" class="f7-cell" style="width: 146.34px"><div data-hf-id="hf-p2qc" class="f7-bump"><img data-hf-id="hf-zl3d" class="f7-cover" src="assets/covers/ppatta-bigdata-practical.jpg" alt="빅데이터분석기사 실기"></div></div>
+              <div data-hf-id="hf-8fzr" class="f7-cell" style="width: 141.27px"><div data-hf-id="hf-oofb" class="f7-bump"><img data-hf-id="hf-6de5" class="f7-cover" src="assets/covers/ai-gukburon.jpg" alt="AI 국부론"></div></div>
+              <div data-hf-id="hf-wnlu" class="f7-cell" style="width: 135.25px"><div data-hf-id="hf-pvce" class="f7-bump"><img data-hf-id="hf-xhta" class="f7-cover" src="assets/covers/ai-literacy.jpg" alt="AI 리터러시"></div></div>
+              <div data-hf-id="hf-znwt" class="f7-cell" style="width: 135.08px"><div data-hf-id="hf-ph1d" class="f7-bump"><img data-hf-id="hf-7yiu" class="f7-cover" src="assets/covers/f1-glossary.jpg" alt="F1 용어집 1211"></div></div>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-uyac" id="f7_g1_lineWrap">
+            <div data-hf-id="hf-q6xt" id="f7_g1_line">당신의 다음 한 권</div>
+          </div>
+
+          <div data-hf-id="hf-cu8w" id="f7_g1_lockup">
+            <div data-hf-id="hf-gxyp" id="f7_g1_markWrap">
+              <div data-hf-id="hf-s44d" id="f7_g1_disc"></div>
+              <div data-hf-id="hf-bk15" id="f7_g1_markRes">
+                <div data-hf-id="hf-tqil" id="f7_g1_markBump">
+                  <img data-hf-id="hf-hz77" id="f7_g1_mark" src="assets/brand/icon.png" alt="골든래빗">
+                </div>
+              </div>
+            </div>
+            <div data-hf-id="hf-3sgi" id="f7_g1_name">골든래빗</div>
+            <div data-hf-id="hf-lkkh" id="f7_g1_word">GOLDEN RABBIT</div>
+            <div data-hf-id="hf-ueon" id="f7_g1_url">goldenrabbit.co.kr</div>
+          </div>
+        </div>
+
+        <script>
+          (function () {
+            window.__timelines = window.__timelines || {};
+            var $ = function (id) {
+              return document.getElementById(id);
+            };
+            var tl = gsap.timeline({ paused: true });
+
+            // ---- frame-local anchors (track_t − 41.0), measured onsets from audiomap.events ----
+            var K1 = 1.493; // 42.493 kick — the "팡": line out, 16 covers burst, sparkles
+            var K2 = 1.957; // 42.957 kick — cover bump + gold ring wave
+            var K3 = 2.421; // 43.421 kick — grid recedes/parts, lockup blur-resolves
+            var K4 = 4.325; // 45.325 final kick — URL pops, disc pulse behind the mark
+            var END = 5.6; // frame span length
+
+            // ---- grid geometry (must match the CSS) ----
+            var SLOT = 156,
+              GAP = 24,
+              COLS = 8,
+              H = 200;
+            var GRID_LEFT = (1920 - (COLS * SLOT + (COLS - 1) * GAP)) / 2; // 252
+            var ROW_TOP = [326, 554];
+            var CX = 960,
+              CY = 540;
+
+            var g1 = $("f7_g1");
+            var line = $("f7_g1_line");
+            var lineWrap = $("f7_g1_lineWrap");
+            var grid = $("f7_g1_grid");
+            var rows = [$("f7_g1_row0"), $("f7_g1_row1")];
+            var pBox = $("f7_g1_particles");
+            var ring1 = $("f7_g1_ring1");
+            var ring2 = $("f7_g1_ring2");
+            var disc = $("f7_g1_disc");
+            var markRes = $("f7_g1_markRes");
+            var markBump = $("f7_g1_markBump");
+            var nameEl = $("f7_g1_name");
+            var wordEl = $("f7_g1_word");
+            var urlEl = $("f7_g1_url");
+
+            // group g1 spans the whole frame
+            tl.set(g1, { autoAlpha: 1 }, 0);
+
+            // ============ 0 → K1 · negative-space-hold (the silence) ============
+            // one readable line, centered in empty black, with a barely-there push
+            tl.fromTo(lineWrap, { scale: 0.97 }, { scale: 1, duration: 1.36, ease: "sine.out" }, 0);
+            tl.fromTo(
+              line,
+              { opacity: 0, y: 18 },
+              { opacity: 1, y: 0, duration: 0.55, ease: "power2.out" },
+              0.04,
+            );
+            // implode into the center right on the kick — the covers are born from that point
+            tl.fromTo(
+              line,
+              { scale: 1, opacity: 1, filter: "blur(0px)" },
+              {
+                scale: 0.42,
+                opacity: 0,
+                filter: "blur(6px)",
+                duration: 0.2,
+                ease: "power3.in",
+                immediateRender: false,
+              },
+              K1 - 0.16,
+            );
+
+            // ============ K1 · mosaic-pack burst — 16 covers pop out from center ============
+            var cells = [];
+            rows.forEach(function (row, r) {
+              Array.prototype.forEach.call(row.querySelectorAll(".f7-cell"), function (cell, c) {
+                cells.push({ el: cell, bump: cell.querySelector(".f7-bump"), row: r, col: c });
+              });
+            });
+            cells.forEach(function (o, i) {
+              var ring = Math.floor(Math.abs(o.col - 3.5)); // 0 (center) … 3 (outer)
+              var cx = GRID_LEFT + o.col * (SLOT + GAP) + SLOT / 2;
+              var cy = ROW_TOP[o.row] + H / 2;
+              var t0 = K1 + ring * 0.035 + o.row * 0.012;
+              var rot0 = ((i * 37) % 29) - 14; // deterministic spin-in
+              tl.fromTo(
+                o.el,
+                { x: CX - cx, y: CY - cy, scale: 0.18, rotation: rot0 },
+                { x: 0, y: 0, scale: 1, rotation: 0, duration: 0.3, ease: "back.out(1.8)" },
+                t0,
+              );
+              tl.fromTo(o.el, { opacity: 0 }, { opacity: 1, duration: 0.06, ease: "none" }, t0);
+              o.ring = ring;
+            });
+
+            // ============ K1 · particle-burst — gold sparkles (behind the covers) ============
+            var N = 36;
+            for (var i = 0; i < N; i++) {
+              var p = document.createElement("div");
+              var isSpark = i % 3 === 0;
+              var sz = isSpark ? 18 + (i % 4) * 5 : 6 + (i % 4) * 2;
+              p.className = "f7-pt" + (isSpark ? " f7-spark" : "") + (i % 4 === 3 ? " f7-deep" : "");
+              p.style.width = sz + "px";
+              p.style.height = sz + "px";
+              p.style.left = -sz / 2 + "px";
+              p.style.top = -sz / 2 + "px";
+              pBox.appendChild(p);
+              var ang = (i / N) * Math.PI * 2 + i * 0.137; // golden-angle jitter
+              var rad = 380 + (i % 5) * 110 + (i % 3) * 50;
+              var dur = 0.95 + (i % 5) * 0.07;
+              tl.fromTo(
+                p,
+                { x: 0, y: 0, scale: 1, rotation: 0, opacity: 1 },
+                {
+                  x: Math.cos(ang) * rad,
+                  y: Math.sin(ang) * rad,
+                  scale: 0,
+                  rotation: isSpark ? ((i * 47) % 180) - 90 : 0,
+                  opacity: 0,
+                  duration: dur,
+                  ease: "expo.out",
+                },
+                K1 + (i % 6) * 0.01,
+              );
+            }
+            // the container gates the particles so nothing shows before the kick
+            tl.fromTo(pBox, { opacity: 0 }, { opacity: 1, duration: 0.02, ease: "none" }, K1);
+
+            // ============ K2 · second pulse — every cover bumps +6%, gold ring wave ============
+            cells.forEach(function (o) {
+              var tb = K2 + o.ring * 0.03;
+              tl.fromTo(o.bump, { scale: 1 }, { scale: 1.06, duration: 0.08, ease: "power2.out" }, tb);
+              tl.fromTo(
+                o.bump,
+                { scale: 1.06 },
+                { scale: 1, duration: 0.32, ease: "power2.out", immediateRender: false },
+                tb + 0.08,
+              );
+            });
+            [ring1, ring2].forEach(function (rg, k) {
+              var tr = K2 + k * 0.1;
+              tl.fromTo(
+                rg,
+                { xPercent: -50, yPercent: -50, width: 140, height: 140 },
+                {
+                  xPercent: -50,
+                  yPercent: -50,
+                  width: 2600,
+                  height: 2600,
+                  duration: 1.05,
+                  ease: "power2.out",
+                },
+                tr,
+              );
+              tl.fromTo(rg, { opacity: 0 }, { opacity: 1, duration: 0.03, ease: "none" }, tr);
+              tl.fromTo(
+                rg,
+                { opacity: 1 },
+                { opacity: 0, duration: 1.0, ease: "power1.in", immediateRender: false },
+                tr + 0.03,
+              );
+            });
+
+            // ============ K3 · grid recedes and parts; lockup blur-resolves in the cleared band ============
+            tl.fromTo(
+              grid,
+              { scale: 1, opacity: 1 },
+              { scale: 0.85, opacity: 0.35, duration: 0.9, ease: "power2.out" },
+              K3,
+            );
+            // rows part to the top / bottom edges (inside the 96px safe area) so no text sits on a cover
+            tl.fromTo(rows[0], { y: 0 }, { y: -300, duration: 0.9, ease: "power3.out" }, K3);
+            tl.fromTo(rows[1], { y: 0 }, { y: 300, duration: 0.9, ease: "power3.out" }, K3);
+            // slow counter-drift through the swell, settling dead still on the final kick
+            tl.fromTo(rows[0], { x: 0 }, { x: -28, duration: K4 - K3, ease: "sine.inOut" }, K3);
+            tl.fromTo(rows[1], { x: 0 }, { x: 28, duration: K4 - K3, ease: "sine.inOut" }, K3);
+
+            // blur-resolve: heavy blur + slight scale-up + dim → crisp
+            [
+              [markRes, 0],
+              [nameEl, 0.1],
+              [wordEl, 0.18],
+            ].forEach(function (pair) {
+              tl.fromTo(
+                pair[0],
+                { filter: "blur(30px)", scale: 1.1, opacity: 0 },
+                { filter: "blur(0px)", scale: 1, opacity: 1, duration: 0.75, ease: "power2.out" },
+                K3 + pair[1],
+              );
+            });
+
+            // ============ K4 · final kick — URL pops, gold disc pulse behind the mark ============
+            tl.fromTo(
+              urlEl,
+              { scale: 0.7, y: 14 },
+              { scale: 1, y: 0, duration: 0.42, ease: "back.out(2.2)" },
+              K4,
+            );
+            tl.fromTo(urlEl, { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power1.out" }, K4);
+
+            tl.fromTo(disc, { scale: 0.9 }, { scale: 1.75, duration: 0.72, ease: "power2.out" }, K4);
+            tl.fromTo(disc, { opacity: 0 }, { opacity: 0.55, duration: 0.03, ease: "none" }, K4);
+            tl.fromTo(
+              disc,
+              { opacity: 0.55 },
+              { opacity: 0, duration: 0.69, ease: "power2.out", immediateRender: false },
+              K4 + 0.03,
+            );
+            tl.fromTo(markBump, { scale: 1 }, { scale: 1.04, duration: 0.08, ease: "power2.out" }, K4);
+            tl.fromTo(
+              markBump,
+              { scale: 1.04 },
+              { scale: 1, duration: 0.4, ease: "power2.out", immediateRender: false },
+              K4 + 0.08,
+            );
+
+            // hold perfectly still from ~5.05 to the end while the audio fades
+            tl.set(g1, { autoAlpha: 0 }, END);
+
+            window.__timelines["07-f7"] = tl;
+            tl.seek(0);
+          })();
+        </script>
+      </div>
+    </template>
+  </body>
+</html>

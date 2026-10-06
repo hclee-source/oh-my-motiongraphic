@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>06-f6 — finale: spine stack → row → lockup (frame 6, 25.01–30.75s)</title>
+  </head>
+  <body>
+    <template>
+      <div id="stage" data-composition-id="06-f6" data-width="1920" data-height="1080" data-duration="5.74">
+        <style>
+          @font-face { font-family: "Gmarket Sans"; src: url("assets/fonts/GmarketSansBold.otf") format("opentype"); font-weight: 700; font-display: block; }
+          @font-face { font-family: "Gmarket Sans"; src: url("assets/fonts/GmarketSansMedium.otf") format("opentype"); font-weight: 500; font-display: block; }
+          @font-face { font-family: "Gmarket Sans"; src: url("assets/fonts/GmarketSansLight.otf") format("opentype"); font-weight: 300; font-display: block; }
+
+          #stage {
+            position: absolute;
+            inset: 0;
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            background: #F4EFE6;
+            color: #1B1A1F;
+            font-family: "Gmarket Sans", sans-serif;
+          }
+          :where(#stage) *,
+          :where(#stage) *::before,
+          :where(#stage) *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+
+          /* ---- group g1: the whole frame (cream ground) ---- */
+          .f6-g1 { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+
+          /* soft contact shadow under the pile (flat, outside every 3D chain) */
+          .f6-pile-shadow {
+            position: absolute;
+            left: 610px;
+            top: 667px;
+            width: 700px;
+            height: 54px;
+            border-radius: 50%;
+            background: rgba(40, 25, 15, 0.28);
+            filter: blur(22px);
+          }
+
+          /* ---- book 1 (deep #365A16) — recipes/book3d.md ---- */
+          .f6-bk1-scene { position: absolute; left: 960px; top: 540px; width: 0; height: 0; perspective: 2200px; }
+          .f6-bk1-shadow { position: absolute; left: -260px; top: 250px; width: 520px; height: 70px; border-radius: 50%;
+            background: rgba(40, 25, 15, 0.30); filter: blur(22px); }
+          .f6-bk1-book { position: absolute; left: -210px; top: -287px; width: 420px; height: 574px; transform-style: preserve-3d; }
+          .f6-bk1-book > div, .f6-bk1-hinge > div { position: absolute; }
+          .f6-bk1-back   { inset: 0; background: #365A16; transform: rotateY(180deg) translateZ(24px); }
+          .f6-bk1-spine  { left: 186px; top: 0; width: 48px; height: 574px; background: #365A16; transform: rotateY(-90deg) translateZ(210px);
+            display: flex; align-items: center; justify-content: center; color: #F4EFE6; font: 700 22px "Gmarket Sans"; writing-mode: vertical-rl;
+            text-orientation: sideways; white-space: nowrap; }
+          .f6-bk1-edge   { left: 186px; top: 0; width: 48px; height: 574px; transform: rotateY(90deg) translateZ(210px);
+            background: repeating-linear-gradient(90deg, #FBF8F2 0 2px, #E4DCCD 2px 3px); }
+          .f6-bk1-top    { left: 0; top: 263px; width: 420px; height: 48px; transform: rotateX(90deg) translateZ(287px);
+            background: repeating-linear-gradient(0deg, #FBF8F2 0 2px, #E4DCCD 2px 3px); }
+          .f6-bk1-bottom { left: 0; top: 263px; width: 420px; height: 48px; transform: rotateX(-90deg) translateZ(287px); background: #E9E1D2; }
+          .f6-bk1-page   { inset: 0; background: #FBF8F2; transform: translateZ(22px); display: flex; align-items: center; justify-content: center;
+            color: #365A16; font: 700 44px/1.25 "Gmarket Sans"; text-align: center; }
+          .f6-bk1-hinge  { inset: 0; transform-origin: 0% 50%; transform: translateZ(24px); transform-style: preserve-3d; }
+          .f6-bk1-front  { inset: 0; width: 420px; height: 574px; object-fit: cover; backface-visibility: hidden; }
+          .f6-bk1-inside { inset: 0; background: #F4EFE6; transform: rotateY(180deg); backface-visibility: hidden; }
+          /* ---- book 2 (deep #622A0E) — recipes/book3d.md ---- */
+          .f6-bk2-scene { position: absolute; left: 960px; top: 540px; width: 0; height: 0; perspective: 2200px; }
+          .f6-bk2-shadow { position: absolute; left: -260px; top: 250px; width: 520px; height: 70px; border-radius: 50%;
+            background: rgba(40, 25, 15, 0.30); filter: blur(22px); }
+          .f6-bk2-book { position: absolute; left: -210px; top: -287px; width: 420px; height: 574px; transform-style: preserve-3d; }
+          .f6-bk2-book > div, .f6-bk2-hinge > div { position: absolute; }
+          .f6-bk2-back   { inset: 0; background: #622A0E; transform: rotateY(180deg) translateZ(24px); }
+          .f6-bk2-spine  { left: 186px; top: 0; width: 48px; height: 574px; background: #622A0E; transform: rotateY(-90deg) translateZ(210px);
+            display: flex; align-items: center; justify-content: center; color: #F4EFE6; font: 700 22px "Gmarket Sans"; writing-mode: vertical-rl;
+            text-orientation: sideways; white-space: nowrap; }
+          .f6-bk2-edge   { left: 186px; top: 0; width: 48px; height: 574px; transform: rotateY(90deg) translateZ(210px);
+            background: repeating-linear-gradient(90deg, #FBF8F2 0 2px, #E4DCCD 2px 3px); }
+          .f6-bk2-top    { left: 0; top: 263px; width: 420px; height: 48px; transform: rotateX(90deg) translateZ(287px);
+            background: repeating-linear-gradient(0deg, #FBF8F2 0 2px, #E4DCCD 2px 3px); }
+          .f6-bk2-bottom { left: 0; top: 263px; width: 420px; height: 48px; transform: rotateX(-90deg) translateZ(287px); background: #E9E1D2; }
+          .f6-bk2-page   { inset: 0; background: #FBF8F2; transform: translateZ(22px); display: flex; align-items: center; justify-content: center;
+            color: #622A0E; font: 700 44px/1.25 "Gmarket Sans"; text-align: center; }
+          .f6-bk2-hinge  { inset: 0; transform-origin: 0% 50%; transform: translateZ(24px); transform-style: preserve-3d; }
+          .f6-bk2-front  { inset: 0; width: 420px; height: 574px; object-fit: cover; backface-visibility: hidden; }
+          .f6-bk2-inside { inset: 0; background: #F4EFE6; transform: rotateY(180deg); backface-visibility: hidden; }
+          /* ---- book 3 (deep #223A4E) — recipes/book3d.md ---- */
+          .f6-bk3-scene { position: absolute; left: 960px; top: 540px; width: 0; height: 0; perspective: 2200px; }
+          .f6-bk3-shadow { position: absolute; left: -260px; top: 250px; width: 520px; height: 70px; border-radius: 50%;
+            background: rgba(40, 25, 15, 0.30); filter: blur(22px); }
+          .f6-bk3-book { position: absolute; left: -210px; top: -287px; width: 420px; height: 574px; transform-style: preserve-3d; }
+          .f6-bk3-book > div, .f6-bk3-hinge > div { position: absolute; }
+          .f6-bk3-back   { inset: 0; background: #223A4E; transform: rotateY(180deg) translateZ(24px); }
+          .f6-bk3-spine  { left: 186px; top: 0; width: 48px; height: 574px; background: #223A4E; transform: rotateY(-90deg) translateZ(210px);
+            display: flex; align-items: center; justify-content: center; color: #F4EFE6; font: 700 22px "Gmarket Sans"; writing-mode: vertical-rl;
+            text-orientation: sideways; white-space: nowrap; }
+          .f6-bk3-edge   { left: 186px; top: 0; width: 48px; height: 574px; transform: rotateY(90deg) translateZ(210px);
+            background: repeating-linear-gradient(90deg, #FBF8F2 0 2px, #E4DCCD 2px 3px); }
+          .f6-bk3-top    { left: 0; top: 263px; width: 420px; height: 48px; transform: rotateX(90deg) translateZ(287px);
+            background: repeating-linear-gradient(0deg, #FBF8F2 0 2px, #E4DCCD 2px 3px); }
+          .f6-bk3-bottom { left: 0; top: 263px; width: 420px; height: 48px; transform: rotateX(-90deg) translateZ(287px); background: #E9E1D2; }
+          .f6-bk3-page   { inset: 0; background: #FBF8F2; transform: translateZ(22px); display: flex; align-items: center; justify-content: center;
+            color: #223A4E; font: 700 44px/1.25 "Gmarket Sans"; text-align: center; }
+          .f6-bk3-hinge  { inset: 0; transform-origin: 0% 50%; transform: translateZ(24px); transform-style: preserve-3d; }
+          .f6-bk3-front  { inset: 0; width: 420px; height: 574px; object-fit: cover; backface-visibility: hidden; }
+          .f6-bk3-inside { inset: 0; background: #F4EFE6; transform: rotateY(180deg); backface-visibility: hidden; }
+          /* ---- book 4 (deep #0E4862) — recipes/book3d.md ---- */
+          .f6-bk4-scene { position: absolute; left: 960px; top: 540px; width: 0; height: 0; perspective: 2200px; }
+          .f6-bk4-shadow { position: absolute; left: -260px; top: 250px; width: 520px; height: 70px; border-radius: 50%;
+            background: rgba(40, 25, 15, 0.30); filter: blur(22px); }
+          .f6-bk4-book { position: absolute; left: -210px; top: -287px; width: 420px; height: 574px; transform-style: preserve-3d; }
+          .f6-bk4-book > div, .f6-bk4-hinge > div { position: absolute; }
+          .f6-bk4-back   { inset: 0; background: #0E4862; transform: rotateY(180deg) translateZ(24px); }
+          .f6-bk4-spine  { left: 186px; top: 0; width: 48px; height: 574px; background: #0E4862; transform: rotateY(-90deg) translateZ(210px);
+            display: flex; align-items: center; justify-content: center; color: #F4EFE6; font: 700 22px "Gmarket Sans"; writing-mode: vertical-rl;
+            text-orientation: sideways; white-space: nowrap; }
+          .f6-bk4-edge   { left: 186px; top: 0; width: 48px; height: 574px; transform: rotateY(90deg) translateZ(210px);
+            background: repeating-linear-gradient(90deg, #FBF8F2 0 2px, #E4DCCD 2px 3px); }
+          .f6-bk4-top    { left: 0; top: 263px; width: 420px; height: 48px; transform: rotateX(90deg) translateZ(287px);
+            background: repeating-linear-gradient(0deg, #FBF8F2 0 2px, #E4DCCD 2px 3px); }
+          .f6-bk4-bottom { left: 0; top: 263px; width: 420px; height: 48px; transform: rotateX(-90deg) translateZ(287px); background: #E9E1D2; }
+          .f6-bk4-page   { inset: 0; background: #FBF8F2; transform: translateZ(22px); display: flex; align-items: center; justify-content: center;
+            color: #0E4862; font: 700 44px/1.25 "Gmarket Sans"; text-align: center; }
+          .f6-bk4-hinge  { inset: 0; transform-origin: 0% 50%; transform: translateZ(24px); transform-style: preserve-3d; }
+          .f6-bk4-front  { inset: 0; width: 420px; height: 574px; object-fit: cover; backface-visibility: hidden; }
+          .f6-bk4-inside { inset: 0; background: #F4EFE6; transform: rotateY(180deg); backface-visibility: hidden; }
+
+          /* ---- slogan: light/bold contrast inside one Korean line ---- */
+          .f6-slogan {
+            position: absolute;
+            left: 0;
+            top: 192px;
+            width: 1920px;
+            height: 137px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 34px;
+            font-size: 130px;
+            line-height: 1.05;
+            color: #1B1A1F;
+            white-space: nowrap;
+            transform-origin: 50% 50%;
+          }
+          .f6-sl-word { display: inline-block; }
+          .f6-sl-light { font-weight: 300; letter-spacing: -0.03em; }
+          .f6-sl-bold { font-weight: 700; letter-spacing: -0.035em; }
+
+          /* ---- logo lockup (gold mark file placed as-is) ---- */
+          .f6-lockup {
+            position: absolute;
+            left: 0;
+            top: 120px;
+            width: 1920px;
+            height: 112px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 28px;
+            transform-origin: 50% 50%;
+          }
+          .f6-mark { display: block; width: 117px; height: 112px; }
+          .f6-lk-text { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+          .f6-wordmark {
+            font-family: "Outfit", sans-serif;
+            font-weight: 700;
+            font-size: 50px;
+            line-height: 1;
+            letter-spacing: 0.2em;
+            margin-right: -0.2em;
+            color: #1B1A1F;
+            white-space: nowrap;
+          }
+          .f6-url {
+            font-family: "Space Mono", monospace;
+            font-weight: 400;
+            font-size: 28px;
+            line-height: 1.2;
+            color: #5B5BF0;
+            white-space: nowrap;
+          }
+        </style>
+
+        <div id="f6_g1" class="f6-g1">
+          <div id="f6_pile_shadow" class="f6-pile-shadow" data-layout-ignore></div>
+
+          <div class="f6-bk1-scene" id="f6_bk1_scene" data-layout-ignore>
+            <div class="f6-bk1-shadow" id="f6_bk1_shadow"></div>
+            <div class="f6-bk1-book" id="f6_bk1_book">
+              <div class="f6-bk1-back"></div>
+              <div class="f6-bk1-spine">바로바로 챗GPT</div>
+              <div class="f6-bk1-edge"></div>
+              <div class="f6-bk1-top"></div>
+              <div class="f6-bk1-bottom"></div>
+              <div class="f6-bk1-page"></div>
+              <div class="f6-bk1-hinge" id="f6_bk1_hinge">
+                <img class="f6-bk1-front" src="assets/covers/9791124516294.jpg" alt="바로바로 챗GPT" />
+                <div class="f6-bk1-inside"></div>
+              </div>
+            </div>
+          </div>
+          <div class="f6-bk2-scene" id="f6_bk2_scene" data-layout-ignore>
+            <div class="f6-bk2-shadow" id="f6_bk2_shadow"></div>
+            <div class="f6-bk2-book" id="f6_bk2_book">
+              <div class="f6-bk2-back"></div>
+              <div class="f6-bk2-spine">바로바로 클로드</div>
+              <div class="f6-bk2-edge"></div>
+              <div class="f6-bk2-top"></div>
+              <div class="f6-bk2-bottom"></div>
+              <div class="f6-bk2-page"></div>
+              <div class="f6-bk2-hinge" id="f6_bk2_hinge">
+                <img class="f6-bk2-front" src="assets/covers/9791124516133.jpg" alt="바로바로 클로드" />
+                <div class="f6-bk2-inside"></div>
+              </div>
+            </div>
+          </div>
+          <div class="f6-bk3-scene" id="f6_bk3_scene" data-layout-ignore>
+            <div class="f6-bk3-shadow" id="f6_bk3_shadow"></div>
+            <div class="f6-bk3-book" id="f6_bk3_book">
+              <div class="f6-bk3-back"></div>
+              <div class="f6-bk3-spine">바로바로 제미나이</div>
+              <div class="f6-bk3-edge"></div>
+              <div class="f6-bk3-top"></div>
+              <div class="f6-bk3-bottom"></div>
+              <div class="f6-bk3-page"></div>
+              <div class="f6-bk3-hinge" id="f6_bk3_hinge">
+                <img class="f6-bk3-front" src="assets/covers/9791124516157.jpg" alt="바로바로 제미나이" />
+                <div class="f6-bk3-inside"></div>
+              </div>
+            </div>
+          </div>
+          <div class="f6-bk4-scene" id="f6_bk4_scene" data-layout-ignore>
+            <div class="f6-bk4-shadow" id="f6_bk4_shadow"></div>
+            <div class="f6-bk4-book" id="f6_bk4_book">
+              <div class="f6-bk4-back"></div>
+              <div class="f6-bk4-spine">바로바로 바이브 코딩</div>
+              <div class="f6-bk4-edge"></div>
+              <div class="f6-bk4-top"></div>
+              <div class="f6-bk4-bottom"></div>
+              <div class="f6-bk4-page"></div>
+              <div class="f6-bk4-hinge" id="f6_bk4_hinge">
+                <img class="f6-bk4-front" src="assets/covers/9791194383871.jpg" alt="바로바로 바이브 코딩" />
+                <div class="f6-bk4-inside"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="f6_slogan" class="f6-slogan">
+            <span id="f6_sl_a" class="f6-sl-word f6-sl-light">시작은,</span>
+            <span id="f6_sl_b" class="f6-sl-word f6-sl-bold">바로바로.</span>
+          </div>
+
+          <div id="f6_lockup" class="f6-lockup">
+            <img id="f6_mark" class="f6-mark" src="assets/brand/icon.png" alt="GOLDEN RABBIT" />
+            <div class="f6-lk-text">
+              <div id="f6_wordmark" class="f6-wordmark" data-layout-allow-overflow="">GOLDEN RABBIT</div>
+              <div id="f6_url" class="f6-url">goldenrabbit.co.kr</div>
+            </div>
+          </div>
+        </div>
+
+        <script>
+          (function () {
+            window.__timelines = window.__timelines || {};
+            const tl = gsap.timeline({ paused: true });
+
+            // ---- frame-local anchors (track second - 25.01) ----
+            const T0 = 25.01;
+            const loc = (t) => Math.round((t - T0) * 1000) / 1000;
+            const DROP = [loc(25.5), loc(26.01), loc(26.49), loc(27.0)]; // 0.49 1.00 1.48 1.99 — one book per beat
+            const KICK = loc(27.45); // 2.44 — un-stack into the row
+            const LINE = loc(28.49); // 3.48 — slogan slides in
+            const LOCK = loc(29.0);  // 3.99 — downbeat: lockup resolves (blur-resolve)
+            const HOP = loc(29.49);  // 4.48 — hop sequence (ends 4.98), then hold still
+            const END = 5.74;
+
+            // ---- geometry ----
+            const RAD = Math.PI / 180;
+            const PSI = 12;          // pile pitched 12deg toward camera: rotationZ -90 + rotationY (90 - PSI)
+            const THICK = 48;        // recipe thickness T
+            const PILE_SY = 40;      // scene y in the pile (shared camera at 960,580)
+            const PILE_Z = 340;      // pile pushed toward camera -> ~1.18x, uniform incl. thickness
+            const SR = 0.68;         // row scale
+            const ROW_X = [450, 790, 1130, 1470];
+            const ROW_Y = 676;
+            const JX = [-18, 14, -8, 20];       // x jitter by index
+            const JR = [1.2, -0.8, 0.6, -1.4];  // resting roll jitter by index
+            const TILT = [-7, 6, -5, 8];        // extra roll while falling
+            const SH_Y = Math.round(287 * SR - 6 - 285); // per-book contact shadow under the scaled book
+            const books = [1, 2, 3, 4].map((n) => ({
+              scene: "#f6_bk" + n + "_scene",
+              book: "#f6_bk" + n + "_book",
+              shadow: "#f6_bk" + n + "_shadow",
+            }));
+
+            // ---- t = 0 state ----
+            tl.set("#f6_g1", { autoAlpha: 1 }, 0);
+            tl.set("#f6_pile_shadow", { opacity: 0, scaleX: 0.4 }, 0);
+            tl.set("#f6_slogan", { y: 0, scale: 1 }, 0);
+            tl.set("#f6_sl_a", { opacity: 0, y: 56 }, 0);
+            tl.set("#f6_sl_b", { opacity: 0, y: 56 }, 0);
+            tl.set("#f6_lockup", { autoAlpha: 0, scale: 1.08, filter: "blur(36px)" }, 0);
+            books.forEach((b, i) => {
+              const off = i - 1.5;
+              tl.set(b.scene, { x: 0, y: PILE_SY - 900 }, 0); // waiting above the frame
+              tl.set(
+                b.book,
+                {
+                  x: JX[i],
+                  y: -off * THICK * Math.cos(PSI * RAD),
+                  z: PILE_Z + off * THICK * Math.sin(PSI * RAD),
+                  rotationZ: -90 + JR[i] + TILT[i],
+                  rotationY: 90 - PSI,
+                  rotationX: 0,
+                  scale: 1,
+                },
+                0,
+              );
+              tl.set(b.shadow, { opacity: 0, y: SH_Y, scaleX: 0.3 * SR, scaleY: SR }, 0);
+            });
+
+            // ---- 0.49 / 1.00 / 1.48 / 1.99: four books DROP into the pile, spines to camera ----
+            const PS_SX = [0.6, 0.74, 0.87, 1];
+            const PS_OP = [0.55, 0.72, 0.86, 1];
+            books.forEach((b, i) => {
+              const t = DROP[i];
+              tl.to(b.scene, { y: PILE_SY, duration: 0.32, ease: "power2.in" }, t - 0.32);
+              tl.to(b.book, { rotationZ: -90 + JR[i], duration: 0.36, ease: "power2.out" }, t - 0.32);
+              // soft rebound on the beat
+              tl.to(b.scene, { y: PILE_SY - 14, duration: 0.09, ease: "power2.out" }, t);
+              tl.to(b.scene, { y: PILE_SY, duration: 0.14, ease: "power2.in" }, t + 0.09);
+              // the books underneath give a little
+              for (let j = 0; j < i; j++) {
+                tl.to(books[j].scene, { y: PILE_SY + 4, duration: 0.05, ease: "power1.out" }, t);
+                tl.to(books[j].scene, { y: PILE_SY, duration: 0.16, ease: "power2.out" }, t + 0.05);
+              }
+              tl.to("#f6_pile_shadow", { opacity: PS_OP[i], scaleX: PS_SX[i], duration: 0.22, ease: "power2.out" }, t - 0.03);
+            });
+
+            // ---- 2.44 kick: un-stack — each book stands up, turns to its FRONT, lands in the row ----
+            tl.to("#f6_pile_shadow", { opacity: 0, scaleX: 1.12, duration: 0.3, ease: "power2.out" }, KICK);
+            [3, 2, 1, 0].forEach((i, k) => {
+              const t = KICK + k * 0.08; // top book leaves first
+              const b = books[i];
+              // x leads; the descent eases in so the book stays high while it rotates upright (keeps corners above y 960)
+              tl.to(b.scene, { x: ROW_X[i] - 960, duration: 0.72, ease: "power3.out" }, t);
+              tl.to(b.scene, { y: ROW_Y - 540, duration: 0.72, ease: "power2.inOut" }, t);
+              tl.to(
+                b.book,
+                { x: 0, y: 0, z: 0, rotationZ: 0, rotationY: -18, rotationX: 6, scale: SR, duration: 0.72, ease: "power3.out" },
+                t,
+              );
+              tl.to(b.shadow, { opacity: 1, scaleX: SR, duration: 0.45, ease: "power2.out" }, t + 0.25);
+            });
+
+            // ---- 3.48: '시작은,' (300) + '바로바로.' (700) slide in above the row ----
+            tl.to("#f6_sl_a", { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, LINE);
+            tl.to("#f6_sl_b", { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, LINE + 0.1);
+
+            // ---- 3.99 downbeat: lockup blur-resolves top-center; slogan settles smaller between lockup and books ----
+            tl.to("#f6_slogan", { y: 80, scale: 0.56, duration: 0.55, ease: "power3.out" }, LOCK - 0.06);
+            tl.fromTo(
+              "#f6_lockup",
+              { autoAlpha: 0.25, scale: 1.08, filter: "blur(36px)" },
+              { autoAlpha: 1, scale: 1, filter: "blur(0px)", duration: 0.7, ease: "power2.out", immediateRender: false },
+              LOCK,
+            );
+
+            // ---- 4.48: tiny hop, left to right (book moves, its floor shadow stays and tightens) ----
+            books.forEach((b, i) => {
+              const t = HOP + i * 0.08;
+              tl.to(b.book, { y: -22, duration: 0.11, ease: "power2.out" }, t);
+              tl.to(b.book, { y: 0, duration: 0.15, ease: "power2.in" }, t + 0.11);
+              tl.to(b.shadow, { scaleX: SR * 0.84, opacity: 0.7, duration: 0.11, ease: "power2.out" }, t);
+              tl.to(b.shadow, { scaleX: SR, opacity: 1, duration: 0.15, ease: "power2.in" }, t + 0.11);
+            });
+
+            // ---- 4.98 -> 5.74: hold perfectly still (audio fades) ----
+            tl.set("#f6_g1", { autoAlpha: 0 }, END);
+
+            window.__timelines["06-f6"] = tl;
+            tl.seek(0);
+          })();
+        </script>
+      </div>
+    </template>
+  </body>
+</html>

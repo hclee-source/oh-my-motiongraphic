@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <!--
+      Frame 4 (f4) — SERIES 03 "요즘 개발".
+      Track span [22.98, 27.70] → frame-local [0, 4.72]. Pacing: beat_cut.
+      Anchors (local): 0.00 yellow + whip · 0.47 개발 slam · 1.08 system-replace → INK ·
+      1.56 cover 1 toss · 2.49 flip → PAPER + cover 2 toss + × · 3.44 shake + ● burst · hold.
+      Micro hits: 0.147 snare (whip lands) · 0.588 snare (chip) · 0.704 hihat (box punch) ·
+      4.487 hard-stop hihat (× tick).
+    -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        #stage {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #F2F0EA;
+          font-family: "Paperlogy", sans-serif;
+          -webkit-font-smoothing: antialiased;
+        }
+        #stage * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        /* ---------- shared ---------- */
+        .f4-fill {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        #stage .f4-chip {
+          position: relative;
+          display: inline-block;
+          font-family: "Archivo Black", sans-serif;
+          font-weight: 400;
+          font-size: 30px;
+          line-height: 1;
+          letter-spacing: 0.02em;
+          text-transform: uppercase;
+          padding: 10px 18px 9px;
+          white-space: nowrap;
+        }
+        .f4-chip-bg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          transform-origin: 0% 50%;
+        }
+        .f4-chip-tx {
+          position: relative;
+          display: block;
+        }
+
+        /* ---------- group g1 ---------- */
+        #f4_g1 {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        #f4_g1_bg {
+          background-color: #FFE500;
+        }
+
+        /* ===== system A — yellow statement ===== */
+        .f4-mega {
+          position: absolute;
+          left: 300px;
+          top: 742px;
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 800;
+          font-size: 360px;
+          line-height: 0.9;
+          letter-spacing: -0.05em;
+          color: #0B0B0B;
+          white-space: nowrap;
+        }
+        #f4_g1_ghost1 { opacity: 0.35; }
+        #f4_g1_ghost2 { opacity: 0.2; }
+        #f4_g1_ghost3 { opacity: 0.1; }
+
+        #f4_g1_stmt {
+          position: absolute;
+          left: 944px;
+          top: 520px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 26px;
+        }
+        #f4_g1_box {
+          position: relative;
+          display: block;
+          padding: 0.08em 0.18em 0.06em;
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 800;
+          font-size: 240px;
+          line-height: 0.92;
+          letter-spacing: -0.045em;
+          transform-origin: 0% 50%;
+        }
+        #f4_g1_boxbg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background: #0B0B0B;
+          transform-origin: 0% 50%;
+        }
+        #f4_g1_boxword {
+          position: relative;
+          display: block;
+          color: #FFE500;
+          white-space: nowrap;
+        }
+        #f4_g1_chipAbg { background: #0B0B0B; }
+        #f4_g1_chipAtx { color: #FFE500; }
+
+        /* ===== system B — split stage (ink → paper) ===== */
+        #f4_g1_sysB {
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f4_g1_railbox {
+          position: absolute;
+          left: 96px;
+          top: 104px;
+          width: 150px;
+          height: 880px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        #f4_g1_rail {
+          flex: none;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+          white-space: nowrap;
+          transform: rotate(-90deg);
+        }
+        #f4_g1_railword {
+          display: block;
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 800;
+          font-size: 88px;
+          line-height: 1.05;
+          letter-spacing: -0.03em;
+          color: #FFE500;
+        }
+        #f4_g1_raillabel {
+          display: block;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 20px;
+          line-height: 1;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #F2F0EA;
+          padding-left: 6px;
+        }
+
+        /* burst ring sits behind the × and behind both covers */
+        #f4_g1_burst {
+          position: absolute;
+          left: 1067px;
+          top: 440px;
+          width: 0;
+          height: 0;
+        }
+        #f4_g1_disc {
+          position: absolute;
+          left: -140px;
+          top: -140px;
+          width: 280px;
+          height: 280px;
+          border-radius: 50%;
+          background: #FFE500;
+        }
+        .f4-dot {
+          position: absolute;
+          border-radius: 50%;
+          background: #FFE500;
+        }
+
+        .f4-card {
+          position: absolute;
+          top: 140px;
+          height: 600px;
+        }
+        .f4-card img {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
+        #f4_g1_card1 {
+          left: 480px;
+          width: 420px;
+          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+          transform: rotate(-5deg);
+        }
+        #f4_g1_card2 {
+          left: 1231px;
+          width: 439px;
+          box-shadow: 14px 14px 0 #0B0B0B;
+          transform: rotate(4deg);
+        }
+
+        .f4-cap {
+          position: absolute;
+          top: 792px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+        }
+        #f4_g1_cap1 { left: 480px; width: 520px; }
+        #f4_g1_cap2 { left: 1231px; width: 560px; }
+        .f4-cap-title {
+          display: block;
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 800;
+          font-size: 34px;
+          line-height: 1.25;
+          letter-spacing: -0.01em;
+          white-space: nowrap;
+        }
+        .f4-cap-line { display: block; }
+        .f4-cap-author {
+          display: block;
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 400;
+          font-size: 30px;
+          line-height: 1.2;
+        }
+        #f4_g1_cap1title { color: #F2F0EA; }
+        #f4_g1_cap1author { color: rgba(242, 240, 234, 0.6); }
+        #f4_g1_cap2title { color: #0B0B0B; }
+        #f4_g1_cap2author { color: rgba(11, 11, 11, 0.6); }
+        #f4_g1_bestbg { background: #FFE500; }
+        #f4_g1_besttx { color: #0B0B0B; }
+
+        #f4_g1_x {
+          position: absolute;
+          left: 967px;
+          top: 340px;
+          width: 200px;
+          height: 200px;
+        }
+        .f4-xbar {
+          position: absolute;
+          left: -20px;
+          top: 79px;
+          width: 240px;
+          height: 42px;
+          background: #0B0B0B;
+        }
+        #f4_g1_xbar1 { transform: rotate(45deg); }
+        #f4_g1_xbar2 { transform: rotate(-45deg); }
+      </style>
+
+      <div data-hf-id="hf-uodh" id="stage" data-composition-id="04-f4" data-width="1920" data-height="1080" data-duration="4.72">
+        <div data-hf-id="hf-tmwj" id="f4_g1" class="f4-group">
+          <div data-hf-id="hf-tz6r" id="f4_g1_bg" class="f4-fill"></div>
+          <div data-hf-id="hf-48yw" id="f4_g1_shake" class="f4-fill">
+            <!-- system A: yellow mega statement -->
+            <div data-hf-id="hf-8342" id="f4_g1_sysA" class="f4-fill">
+              <div data-hf-id="hf-knn5" id="f4_g1_ghost3" class="f4-mega f4-ghost">요즘</div>
+              <div data-hf-id="hf-nqkw" id="f4_g1_ghost2" class="f4-mega f4-ghost">요즘</div>
+              <div data-hf-id="hf-tesz" id="f4_g1_ghost1" class="f4-mega f4-ghost">요즘</div>
+              <div data-hf-id="hf-7qad" id="f4_g1_mega" data-layout-allow-overlap="" data-layout-allow-occlusion="" class="f4-mega">요즘</div>
+              <div data-hf-id="hf-jyk7" id="f4_g1_stmt">
+                <div data-hf-id="hf-5q70" id="f4_g1_box">
+                  <div data-hf-id="hf-o7b9" id="f4_g1_boxbg"></div>
+                  <span data-hf-id="hf-uvi5" id="f4_g1_boxword">개발</span>
+                </div>
+                <div data-hf-id="hf-uebm" id="f4_g1_chipA" class="f4-chip">
+                  <span data-hf-id="hf-ax7e" id="f4_g1_chipAbg" class="f4-chip-bg"></span>
+                  <span data-hf-id="hf-xrmj" id="f4_g1_chipAtx" class="f4-chip-tx">DEV NOW</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- system B: vertical series rail + two covers face off -->
+            <div data-hf-id="hf-1xe9" id="f4_g1_sysB" class="f4-fill">
+              <div data-hf-id="hf-jcno" id="f4_g1_railbox">
+                <div data-hf-id="hf-7ent" id="f4_g1_rail">
+                  <span data-hf-id="hf-rwgi" id="f4_g1_railword">요즘 개발</span>
+                  <span data-hf-id="hf-0zv6" id="f4_g1_raillabel">SERIES 03</span>
+                </div>
+              </div>
+
+              <div data-hf-id="hf-ibil" id="f4_g1_burst">
+                <div data-hf-id="hf-xcna" id="f4_g1_disc"></div>
+              </div>
+
+              <div data-hf-id="hf-fgca" id="f4_g1_card1" class="f4-card">
+                <img data-hf-id="hf-vwyd" id="f4_g1_cover1" src="assets/covers/danggeun-ai.jpg" alt="요즘 당근 AI 개발">
+              </div>
+              <div data-hf-id="hf-bi89" id="f4_g1_card2" class="f4-card">
+                <img data-hf-id="hf-wqnr" id="f4_g1_cover2" src="assets/covers/vibe-harness.jpg" alt="요즘 바이브 코딩 하네스 with 클로드 코드">
+              </div>
+
+              <div data-hf-id="hf-p8p6" id="f4_g1_cap1" class="f4-cap">
+                <div data-hf-id="hf-6j4x" id="f4_g1_best" class="f4-chip">
+                  <span data-hf-id="hf-k1fb" id="f4_g1_bestbg" class="f4-chip-bg"></span>
+                  <span data-hf-id="hf-z9z9" id="f4_g1_besttx" class="f4-chip-tx">BEST</span>
+                </div>
+                <span data-hf-id="hf-7cor" id="f4_g1_cap1title" class="f4-cap-title">요즘 당근 AI 개발</span>
+                <span data-hf-id="hf-mjyv" id="f4_g1_cap1author" class="f4-cap-author">당근 팀</span>
+              </div>
+              <div data-hf-id="hf-lal5" id="f4_g1_cap2" class="f4-cap">
+                <span data-hf-id="hf-xeb9" id="f4_g1_cap2title" class="f4-cap-title"><span data-hf-id="hf-n91y" class="f4-cap-line">요즘 바이브 코딩 하네스</span><span data-hf-id="hf-pzfl" class="f4-cap-line">with 클로드 코드</span></span>
+                <span data-hf-id="hf-bhg2" id="f4_g1_cap2author" class="f4-cap-author">조성진</span>
+              </div>
+
+              <div data-hf-id="hf-cd83" id="f4_g1_x">
+                <div data-hf-id="hf-k3mi" id="f4_g1_xbar1" class="f4-xbar"></div>
+                <div data-hf-id="hf-dxwp" id="f4_g1_xbar2" class="f4-xbar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var ID = "04-f4";
+          var DUR = 4.72;
+          var Y = "#FFE500", INK = "#0B0B0B", PAPER = "#F2F0EA";
+          var INK60 = "rgba(11,11,11,0.6)";
+
+          // frame-local anchors = track_t − 22.98
+          var A0 = 0.0, A1 = 0.47, A2 = 1.08, A3 = 1.56, A4 = 2.49, A5 = 3.44;
+
+          // burst-ring dots: deterministic, derived from index
+          var burst = document.getElementById("f4_g1_burst");
+          var N_DOTS = 10;
+          for (var d = 0; d < N_DOTS; d++) {
+            var dot = document.createElement("div");
+            var size = [26, 38, 20][d % 3];
+            dot.id = "f4_g1_dot" + d;
+            dot.className = "f4-dot";
+            dot.style.width = size + "px";
+            dot.style.height = size + "px";
+            dot.style.left = -size / 2 + "px";
+            dot.style.top = -size / 2 + "px";
+            burst.appendChild(dot);
+          }
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ---- group window (single group spans the whole frame) ----
+          tl.set("#f4_g1", { autoAlpha: 1 }, 0);
+          tl.set("#f4_g1", { autoAlpha: 0 }, DUR);
+
+          // ---- palette-flip: ground + re-skins (0ms sets on hits) ----
+          tl.set("#f4_g1_bg", { backgroundColor: Y }, A0);
+          tl.set("#f4_g1_bg", { backgroundColor: INK }, A2);
+          tl.set("#f4_g1_bg", { backgroundColor: PAPER }, A4);
+
+          // ---- system-replace at 1.08: yellow statement out, split stage boots ----
+          tl.set("#f4_g1_sysA", { autoAlpha: 1 }, A0);
+          tl.set("#f4_g1_sysB", { autoAlpha: 0 }, A0);
+          tl.set("#f4_g1_sysA", { autoAlpha: 0 }, A2);
+          tl.set("#f4_g1_sysB", { autoAlpha: 1 }, A2);
+
+          // ===== A · 0.00 — '요즘' MEGA whips in from the right with a speed trail =====
+          var WHIP_X = 1150, WHIP_D = 0.15;
+          tl.fromTo("#f4_g1_mega", { x: WHIP_X }, { x: 0, duration: WHIP_D, ease: "power4.out" }, A0);
+          ["#f4_g1_ghost1", "#f4_g1_ghost2", "#f4_g1_ghost3"].forEach(function (sel, i) {
+            tl.fromTo(sel, { x: WHIP_X + 90 * (i + 1) }, { x: 0, duration: WHIP_D, ease: "power4.out" }, A0 + 0.028 * (i + 1));
+            tl.set(sel, { autoAlpha: 0 }, 0.26);
+          });
+          // slow creep through the accel roll (tension), cut at 1.08
+          tl.to("#f4_g1_mega", { x: -34, duration: A2 - WHIP_D, ease: "none" }, WHIP_D);
+
+          // ===== A · 0.47 — '개발' slams in an ink label-box =====
+          tl.set("#f4_g1_box", { autoAlpha: 0 }, A0);
+          tl.set("#f4_g1_box", { autoAlpha: 1 }, A1);
+          tl.fromTo("#f4_g1_box", { scale: 1.32, rotation: -4 }, { scale: 1, rotation: 0, duration: 0.14, ease: "back.out(2)" }, A1);
+          tl.fromTo("#f4_g1_boxbg", { scaleX: 0 }, { scaleX: 1, duration: 0.12, ease: "power3.out" }, A1);
+          tl.fromTo("#f4_g1_boxword", { x: -40, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.08, ease: "power3.out" }, A1 + 0.02);
+          // 0.704 strong hihat — box punch
+          tl.to("#f4_g1_box", { scale: 1.06, duration: 0.04, ease: "power2.out" }, 0.704);
+          tl.to("#f4_g1_box", { scale: 1, duration: 0.16, ease: "power3.out" }, 0.744);
+
+          // 0.588 snare — DEV NOW pair-chip
+          tl.set("#f4_g1_chipA", { autoAlpha: 0 }, A0);
+          tl.set("#f4_g1_chipA", { autoAlpha: 1 }, 0.588);
+          tl.fromTo("#f4_g1_chipAbg", { scaleX: 0 }, { scaleX: 1, duration: 0.1, ease: "power3.out" }, 0.588);
+          tl.fromTo("#f4_g1_chipAtx", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.04, ease: "none" }, 0.62);
+
+          // ===== B · 1.08 — INK: the title rotates into a vertical rail =====
+          tl.fromTo("#f4_g1_rail", { rotation: -18, scale: 1.45 }, { rotation: -90, scale: 1, duration: 0.2, ease: "power4.out" }, A2);
+          tl.fromTo("#f4_g1_raillabel", { autoAlpha: 0, x: -24 }, { autoAlpha: 1, x: 0, duration: 0.12, ease: "power3.out" }, A2 + 0.12);
+
+          // ===== B · 1.56 — cover 1 tossed in left-center (−5°) =====
+          tl.set("#f4_g1_card1", { autoAlpha: 0 }, A0);
+          tl.set("#f4_g1_card1", { autoAlpha: 1 }, A3);
+          tl.fromTo("#f4_g1_card1",
+            { x: -220, y: 940, rotation: -24 },
+            { x: 0, y: 0, rotation: -5, duration: 0.24, ease: "back.out(1.25)" }, A3);
+          tl.to("#f4_g1_card1", { y: -6, duration: DUR - 0.05 - (A3 + 0.24), ease: "sine.inOut" }, A3 + 0.24);
+
+          // captions under cover 1
+          tl.set("#f4_g1_best", { autoAlpha: 0 }, A0);
+          tl.set("#f4_g1_best", { autoAlpha: 1 }, A3 + 0.12);
+          tl.fromTo("#f4_g1_bestbg", { scaleX: 0 }, { scaleX: 1, duration: 0.12, ease: "power3.out" }, A3 + 0.12);
+          tl.fromTo("#f4_g1_besttx", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.04, ease: "none" }, A3 + 0.16);
+          tl.fromTo("#f4_g1_cap1title", { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.14, ease: "power3.out" }, A3 + 0.18);
+          tl.fromTo("#f4_g1_cap1author", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.14, ease: "power3.out" }, A3 + 0.24);
+
+          // ===== C · 2.49 — flip to PAPER: same layout re-skinned =====
+          tl.set("#f4_g1_railword", { color: INK }, A4);
+          tl.set("#f4_g1_raillabel", { color: INK }, A4);
+          tl.set("#f4_g1_cap1title", { color: INK }, A4);
+          tl.set("#f4_g1_cap1author", { color: INK60 }, A4);
+          tl.set("#f4_g1_bestbg", { backgroundColor: INK }, A4);
+          tl.set("#f4_g1_besttx", { color: Y }, A4);
+          tl.set("#f4_g1_card1", { boxShadow: "14px 14px 0px 0px " + INK }, A4);
+          // undo the paper skin when seeking back into the ink register
+          tl.set("#f4_g1_railword", { color: Y }, A2);
+          tl.set("#f4_g1_raillabel", { color: PAPER }, A2);
+          tl.set("#f4_g1_cap1title", { color: PAPER }, A2);
+          tl.set("#f4_g1_cap1author", { color: "rgba(242,240,234,0.6)" }, A2);
+          tl.set("#f4_g1_bestbg", { backgroundColor: Y }, A2);
+          tl.set("#f4_g1_besttx", { color: INK }, A2);
+          tl.set("#f4_g1_card1", { boxShadow: "0px 24px 60px 0px rgba(0,0,0,0.6)" }, A2);
+
+          // cover 2 tossed in right-center (+4°, hard ink offset shadow)
+          tl.set("#f4_g1_card2", { autoAlpha: 0 }, A0);
+          tl.set("#f4_g1_card2", { autoAlpha: 1 }, A4);
+          tl.fromTo("#f4_g1_card2",
+            { x: 240, y: 940, rotation: 26 },
+            { x: 0, y: 0, rotation: 4, duration: 0.24, ease: "back.out(1.25)" }, A4);
+          tl.to("#f4_g1_card2", { y: 6, duration: DUR - 0.05 - (A4 + 0.24), ease: "sine.inOut" }, A4 + 0.24);
+
+          // big ink × slams between the covers
+          tl.set("#f4_g1_x", { autoAlpha: 0 }, A0);
+          tl.set("#f4_g1_x", { autoAlpha: 1 }, A4 + 0.06);
+          tl.fromTo("#f4_g1_x", { scale: 2.6, rotation: -45 }, { scale: 1, rotation: 0, duration: 0.16, ease: "power4.out" }, A4 + 0.06);
+
+          // captions under cover 2
+          tl.fromTo("#f4_g1_cap2title", { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.14, ease: "power3.out" }, A4 + 0.14);
+          tl.fromTo("#f4_g1_cap2author", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.14, ease: "power3.out" }, A4 + 0.2);
+
+          // ===== D · 3.44 — screen-shake (≤10px) + yellow ● burst ring behind the × =====
+          var amps = [10, -9, 8, -7, 6, -5, 4, -3, 2, -1];
+          amps.forEach(function (amp, i) {
+            tl.to("#f4_g1_shake", { x: amp, y: amp * 0.6 * (i % 2 ? -1 : 1), duration: 0.03, ease: "steps(1)" }, A5 + i * 0.03);
+          });
+          tl.to("#f4_g1_shake", { x: 0, y: 0, duration: 0.08, ease: "power2.out" }, A5 + amps.length * 0.03);
+
+          tl.fromTo("#f4_g1_disc", { scale: 0 }, { scale: 1, duration: 0.2, ease: "back.out(2.2)" }, A5);
+          for (var k = 0; k < N_DOTS; k++) {
+            // two arcs (above / below the disc) of a tall elliptical ring, so every dot
+            // clears the disc and stays inside the gap between the covers
+            var deg = (k < 5 ? -90 : 90) + ((k % 5) - 2) * 25;
+            var ang = (deg * Math.PI) / 180;
+            var Ry = k % 2 ? 214 : 236;
+            var Rx = 128;
+            tl.fromTo("#f4_g1_dot" + k,
+              { x: 0, y: 0, scale: 0 },
+              { x: Math.cos(ang) * Rx, y: Math.sin(ang) * Ry, scale: 1, duration: 0.3, ease: "power3.out" }, A5 + 0.01);
+          }
+          tl.to("#f4_g1_x", { scale: 1.18, duration: 0.05, ease: "power2.out" }, A5);
+          tl.to("#f4_g1_x", { scale: 1, duration: 0.22, ease: "power3.out" }, A5 + 0.05);
+
+          // 4.487 hard-stop hihat — small × tick, then hold to the cut
+          tl.to("#f4_g1_x", { scale: 1.08, duration: 0.04, ease: "power2.out" }, 4.487);
+          tl.to("#f4_g1_x", { scale: 1, duration: 0.15, ease: "power3.out" }, 4.527);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines[ID] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>
