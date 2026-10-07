@@ -116,7 +116,7 @@ avoid: ["text over covers", "gradients/glows", "copying reference videos' copy o
 - pacing: beat_cut
 - mood: [focused, calm]
 - feel: thinned groove, near-silent breakdown from 23.3 — beat-typed UI. Beats 19.46 19.92 20.41 20.88 | 21.36 21.83 22.31 22.80 | 23.29 23.75 24.24 24.73
-- role: series2 (손안의 CBT)
+- role: series2 (PC·모바일 CBT)
 - pattern_hint: original phone CBT mockup + OMR marks per beat
 - scene_color: #1E2687
 - transition_out: iris
@@ -129,7 +129,8 @@ avoid: ["text over covers", "gradients/glows", "copying reference videos' copy o
   - span_sec: [19.46, 25.19]
   - free_design: { dominant_system: "an original phone mockup running a mock-exam CBT; answers marked one per beat", primitives: ["typewriter-reveal", "counting-punch"], density_topology: "build → replace → hold" }
   - anchors: [19.46, 19.92, 20.41, 20.88, 22.31, 23.29, 23.75, 24.24]
-  - copy: { t1: "지하철에서도", t2: "실전처럼.", n_a: "모의고사 5회", plus: "+", n_b: "기출 5회" }
+  - copy: { t1: "PC도 폰도", t2: "실전처럼.", n_a: "모의고사 5회", plus: "+", n_b: "기출 5회" }
+  - revision_3: "user: the CBT works on desktop AND mobile, so do not push mobile only. Added an original flat desktop monitor behind the phone (same CBT; its OMR answer sheet fills on the same beats as the phone), phone scaled 0.7 in front, t1 changed to PC도 폰도. Also f2: book page-edge stripes made opaque (semi-transparent ink let the back cover bleed through as red/blue stripes)."
   - intent: "(REVISION of the existing file — keep the phone, its screen, timer, OMR marks and the save/pause/hint toolbar icon lighting at 23.29/23.75/24.24.) Text chunks beside the phone ≤ 2 at any moment: 19.46–22.31 show t1+t2; at 22.31 REPLACE them (t1/t2 slide up + fade) with the counts line '모의고사 5회 + 기출 5회' (numerals still count 0→5). DELETE the 'POINT 02' label, the chip '웹 CBT · PC / 모바일' and the three feature pills (the phone toolbar icons lighting up carry that message; keep the phone toast text)."
 
 ## Frame 5 — f5

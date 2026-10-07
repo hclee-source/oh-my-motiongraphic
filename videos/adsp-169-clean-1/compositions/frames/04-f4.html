@@ -2,7 +2,7 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8">
-    <title>04-f4 · 손안의 CBT</title>
+    <title>04-f4 · PC·모바일 CBT</title>
     <!-- Source metadata only. The runtime clones the <template> contents; everything renderable lives there. -->
   </head>
   <body>
@@ -48,8 +48,10 @@
 
         /* ---------- phone mockup (original drawing) ---------- */
         #f4_phonepos {
-          left: 520px;
-          top: 540px;
+          left: 790px;
+          top: 650px;
+          transform: scale(0.7);
+          transform-origin: 0 0;
         }
         #f4_phone {
           position: absolute;
@@ -281,11 +283,176 @@
           background: rgba(30, 38, 135, 0.3);
         }
 
+        /* ---------- desktop monitor (original drawing, behind the phone) ---------- */
+        #f4_monpos {
+          left: 440px;
+          top: 470px;
+        }
+        #f4_mon {
+          position: absolute;
+          left: -340px;
+          top: -250px;
+          width: 680px;
+          height: 600px;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f4-mbody {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 680px;
+          height: 430px;
+          box-sizing: border-box;
+          border-radius: 22px;
+          background: #1E2687;
+          border: 3px solid #F2F0EA;
+          box-shadow: 18px 18px 0px #FFE500;
+        }
+        .f4-mscreen {
+          position: absolute;
+          left: 16px;
+          top: 16px;
+          width: 642px;
+          height: 392px;
+          border-radius: 10px;
+          background: #F2F0EA;
+          overflow: hidden;
+          color: #1E2687;
+        }
+        .f4-mneck {
+          position: absolute;
+          left: 300px;
+          top: 430px;
+          width: 80px;
+          height: 66px;
+          background: #F2F0EA;
+        }
+        .f4-mbase {
+          position: absolute;
+          left: 210px;
+          top: 494px;
+          width: 260px;
+          height: 18px;
+          border-radius: 9px;
+          background: #F2F0EA;
+        }
+        .f4-mhead {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 642px;
+          height: 52px;
+          background: #1E2687;
+          color: #F2F0EA;
+        }
+        .f4-mtitle {
+          position: absolute;
+          left: 22px;
+          top: 11px;
+          font-weight: 800;
+          font-size: 20px;
+          line-height: 30px;
+          white-space: nowrap;
+        }
+        #f4_dtimer {
+          position: absolute;
+          right: 22px;
+          top: 11px;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 22px;
+          line-height: 30px;
+          white-space: nowrap;
+        }
+        .f4-mq {
+          position: absolute;
+          left: 240px;
+          top: 76px;
+          font-weight: 500;
+          font-size: 22px;
+          line-height: 30px;
+        }
+        .f4-mbar {
+          position: absolute;
+          height: 13px;
+          border-radius: 7px;
+          background: rgba(30, 38, 135, 0.14);
+        }
+        .f4-mopt {
+          position: absolute;
+          left: 240px;
+          width: 34px;
+          height: 34px;
+          box-sizing: border-box;
+          border-radius: 50%;
+          border: 2.5px solid #1E2687;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 16px;
+          line-height: 29px;
+          text-align: center;
+        }
+        .f4-omr {
+          position: absolute;
+          left: 22px;
+          top: 66px;
+          width: 190px;
+          height: 306px;
+          box-sizing: border-box;
+          border: 2px solid rgba(30, 38, 135, 0.3);
+          border-radius: 10px;
+        }
+        .f4-omrhd {
+          position: absolute;
+          left: 0;
+          top: 10px;
+          width: 186px;
+          text-align: center;
+          font-weight: 800;
+          font-size: 16px;
+          line-height: 22px;
+        }
+        .f4-orow {
+          position: absolute;
+          left: 12px;
+          width: 166px;
+          height: 30px;
+        }
+        .f4-onum {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 22px;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 15px;
+          line-height: 30px;
+        }
+        .f4-ob,
+        .f4-obm {
+          position: absolute;
+          top: 4px;
+          width: 22px;
+          height: 22px;
+          box-sizing: border-box;
+          border-radius: 50%;
+        }
+        .f4-ob {
+          border: 2px solid rgba(30, 38, 135, 0.45);
+        }
+        .f4-obm {
+          background: #1E2687;
+          transform-origin: 50% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+
         /* ---------- right column copy (vertically centred on the phone, y = 540) ---------- */
         /* state A (19.46–22.31): t1 + t2 stack, block ≈ 380–714 */
         #f4_t1 {
           position: absolute;
-          left: 920px;
+          left: 1010px;
           top: 380px;
           font-weight: 800;
           font-size: 150px;
@@ -309,7 +476,7 @@
         }
         #f4_t2 {
           position: absolute;
-          left: 920px;
+          left: 1010px;
           top: 550px;
           font-weight: 400;
           font-size: 150px;
@@ -337,7 +504,7 @@
         /* state B (22.31→end): the counts line replaces t1 + t2, centred on y = 540 */
         #f4_counts {
           position: absolute;
-          left: 920px;
+          left: 1010px;
           top: 465px;
           height: 150px;
           display: flex;
@@ -377,6 +544,38 @@
 
         <!-- ============ g1: phone CBT (19.46–25.19) ============ -->
         <div data-hf-id="hf-eeqy" id="f4_g1">
+          <!-- original flat desktop monitor: same CBT, same marks (PC and phone in sync) -->
+          <div id="f4_monpos" class="f4-anchor">
+            <div id="f4_mon">
+              <div class="f4-mneck"></div>
+              <div class="f4-mbase"></div>
+              <div class="f4-mbody">
+                <div class="f4-mscreen">
+                  <div class="f4-mhead"><div class="f4-mtitle">ADsP 모의고사 1회</div><div id="f4_dtimer">89:59</div></div>
+                  <div class="f4-mq">Q3.</div>
+                  <div class="f4-mbar" style="left: 290px; top: 85px; width: 300px"></div>
+                  <div class="f4-mbar" style="left: 240px; top: 120px; width: 360px"></div>
+                  <div class="f4-mbar" style="left: 240px; top: 150px; width: 240px"></div>
+                  <div class="f4-mopt" style="top: 196px">1</div><div class="f4-mbar" style="left: 290px; top: 207px; width: 230px"></div>
+                  <div class="f4-mopt" style="top: 242px">2</div><div class="f4-mbar" style="left: 290px; top: 253px; width: 280px"></div>
+                  <div class="f4-mopt" style="top: 288px">3</div><div class="f4-mbar" style="left: 290px; top: 299px; width: 200px"></div>
+                  <div class="f4-mopt" style="top: 334px">4</div><div class="f4-mbar" style="left: 290px; top: 345px; width: 250px"></div>
+                  <div class="f4-omr">
+                    <div class="f4-omrhd">답안 표기란</div>
+                    <div class="f4-orow" style="top: 44px"><div class="f4-onum">1</div><div class="f4-ob" style="left: 34px"></div><div class="f4-ob" style="left: 68px"></div><div class="f4-ob" style="left: 102px"></div><div class="f4-ob" style="left: 136px"></div></div>
+                    <div class="f4-orow" style="top: 92px"><div class="f4-onum">2</div><div class="f4-ob" style="left: 34px"></div><div class="f4-ob" style="left: 68px"></div><div class="f4-ob" style="left: 102px"></div><div class="f4-ob" style="left: 136px"></div></div>
+                    <div class="f4-orow" style="top: 140px"><div class="f4-onum">3</div><div class="f4-ob" style="left: 34px"></div><div class="f4-ob" style="left: 68px"></div><div class="f4-ob" style="left: 102px"></div><div class="f4-ob" style="left: 136px"></div></div>
+                    <div class="f4-orow" style="top: 188px"><div class="f4-onum">4</div><div class="f4-ob" style="left: 34px"></div><div class="f4-ob" style="left: 68px"></div><div class="f4-ob" style="left: 102px"></div><div class="f4-ob" style="left: 136px"></div></div>
+                    <div class="f4-orow" style="top: 236px"><div class="f4-onum">5</div><div class="f4-ob" style="left: 34px"></div><div class="f4-ob" style="left: 68px"></div><div class="f4-ob" style="left: 102px"></div><div class="f4-ob" style="left: 136px"></div></div>
+                    <div id="f4_om1" class="f4-obm" data-layout-allow-overlap="" data-layout-allow-occlusion="" style="left: 80px; top: 48px"></div>
+                    <div id="f4_om2" class="f4-obm" data-layout-allow-overlap="" data-layout-allow-occlusion="" style="left: 148px; top: 96px"></div>
+                    <div id="f4_om3" class="f4-obm" data-layout-allow-overlap="" data-layout-allow-occlusion="" style="left: 46px; top: 144px"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- original flat phone mockup; no real app UI -->
           <div data-hf-id="hf-cv3d" id="f4_phonepos" class="f4-anchor">
             <div data-hf-id="hf-amua" id="f4_phone">
@@ -453,7 +652,7 @@
           </div>
 
           <!-- right column -->
-          <div data-hf-id="hf-4q47" id="f4_t1"><span data-hf-id="hf-w4u3" class="f4-ch">지</span><span data-hf-id="hf-wu2b" class="f4-ch">하</span><span data-hf-id="hf-rnff" class="f4-ch">철</span><span data-hf-id="hf-byh7" class="f4-ch">에</span><span data-hf-id="hf-swjj" class="f4-ch">서</span><span data-hf-id="hf-e6dj" class="f4-ch">도</span><span data-hf-id="hf-72ao" id="f4_caret"></span></div>
+          <div data-hf-id="hf-4q47" id="f4_t1"><span data-hf-id="hf-w4u3" class="f4-ch">PC</span><span data-hf-id="hf-wu2b" class="f4-ch">도</span><span data-hf-id="hf-rnff" class="f4-ch">&nbsp;</span><span data-hf-id="hf-byh7" class="f4-ch">폰</span><span data-hf-id="hf-e6dj" class="f4-ch">도</span><span data-hf-id="hf-72ao" id="f4_caret"></span></div>
           <div data-hf-id="hf-of2e" id="f4_t2"><span data-hf-id="hf-gl1r" class="f4-ulwrap">실전처럼<span data-hf-id="hf-qgt0" id="f4_ul"></span></span>.</div>
           <div data-hf-id="hf-bhku" id="f4_counts">
             <span data-hf-id="hf-ebkq" class="f4-cw">모의고사</span><span data-hf-id="hf-wksg" id="f4_na" class="f4-cn">5</span><span data-hf-id="hf-t6ha" class="f4-cw">회</span>
@@ -479,10 +678,12 @@
           // ---------------- group on (single group spans the whole frame) ----------------
           tl.set("#f4_g1", { autoAlpha: 1 }, 0);
 
-          // 19.46: phone rises in with the -6deg tilt (settles after the wipe clears)
-          tl.set("#f4_phone", { autoAlpha: 1, rotation: -12, y: 760 }, 0);
-          tl.fromTo("#f4_phone", { y: 760 }, { y: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, 0);
-          tl.fromTo("#f4_phone", { rotation: -12 }, { rotation: -6, duration: 0.62, ease: "back.out(1.6)", immediateRender: false }, 0);
+          // 19.46: monitor springs up (blur-in), then the phone rises in front of it with the -6deg tilt
+          tl.set("#f4_mon", { autoAlpha: 1 }, 0);
+          tl.fromTo("#f4_mon", { y: 60, scale: 0.94, filter: "blur(10px)" }, { y: 0, scale: 1, filter: "blur(0px)", duration: 0.45, ease: "back.out(1.4)", immediateRender: false }, 0);
+          tl.set("#f4_phone", { autoAlpha: 1, rotation: -12, y: 1100 }, 0);
+          tl.fromTo("#f4_phone", { y: 1100 }, { y: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, 0.12);
+          tl.fromTo("#f4_phone", { rotation: -12 }, { rotation: -6, duration: 0.62, ease: "back.out(1.6)", immediateRender: false }, 0.12);
           tl.set("#f4_q1", { autoAlpha: 1 }, 0);
 
           // 19.46: t1 types in (typewriter-reveal), done right as the wipe clears
@@ -499,16 +700,20 @@
           tl.set("#f4_caret", { opacity: 0 }, 1.06);
 
           // timer: 0ms digit swaps on beats until the pause feature lands
-          tl.set("#f4_timer", { textContent: "89:59", opacity: 1 }, 0);
+          tl.set(["#f4_timer", "#f4_dtimer"], { textContent: "89:59", opacity: 1 }, 0);
           var TICKS = ["89:58", "89:57", "89:56", "89:55", "89:54", "89:53", "89:52", "89:51"];
           TICKS.forEach(function (txt, j) {
-            tl.set("#f4_timer", { textContent: txt }, B[j + 1]);
+            tl.set(["#f4_timer", "#f4_dtimer"], { textContent: txt }, B[j + 1]);
           });
 
           // OMR marks: fill one bubble per beat, then advance the screen at 0ms on the off-beat
           function mark(id, t) {
             tl.set(id, { autoAlpha: 1 }, t);
             tl.fromTo(id, { scale: 0.3 }, { scale: 1, duration: 0.16, ease: "back.out(2.6)", immediateRender: false }, t);
+            // the desktop answer sheet fills the same bubble on the same beat
+            var om = id.replace("#f4_m", "#f4_om");
+            tl.set(om, { autoAlpha: 1 }, t);
+            tl.fromTo(om, { scale: 0.3 }, { scale: 1, duration: 0.16, ease: "back.out(2.6)", immediateRender: false }, t);
           }
           mark("#f4_m1", B[1]);
           tl.set("#f4_q1", { autoAlpha: 0 }, B[1] + 0.24);
@@ -555,7 +760,7 @@
             tl.fromTo(toast, { y: 18, scale: 0.9 }, { y: 0, scale: 1, duration: 0.22, ease: "back.out(1.8)", immediateRender: false }, t);
           });
           // pause lands: the timer stops at 89:51 and dims
-          tl.set("#f4_timer", { opacity: 0.45 }, B[9]);
+          tl.set(["#f4_timer", "#f4_dtimer"], { opacity: 0.45 }, B[9]);
 
           // hold the full layout to the end (last ~0.3 s calm under the iris)
           tl.set({}, {}, DUR);
