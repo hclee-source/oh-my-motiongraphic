@@ -117,7 +117,7 @@ def cmd_vocal(a):
         with tempfile.TemporaryDirectory() as td:
             wav = Path(td) / "a.wav"
             subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(f), "-ar", "16000", "-ac", "1", str(wav)], check=True)
-            subprocess.run(["npx", "hyperframes", "transcribe", str(wav), "-d", td, "-m", "tiny.en", "--json"], capture_output=True, text=True)
+            subprocess.run([("npx.cmd" if sys.platform == "win32" else "npx"), "hyperframes", "transcribe", str(wav), "-d", td, "-m", "tiny.en", "--json"], capture_output=True, text=True)
             tj = Path(td) / "transcript.json"
             words = []
             if tj.exists():

@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>05-f5 · POINT 03 합격 토탈 패키지 → 노베이스도 한방에!</title>
+    <!-- Source metadata only. The runtime clones the <template> contents; everything renderable lives there. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        /* Root: plain #stage (the compiler scopes CSS and moves data-composition-id to the host). */
+        #stage {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #F2F0EA;
+          font-family: "Paperlogy", sans-serif;
+        }
+        .f5-full {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        /* zero-size transform anchor: children keep stage coordinates */
+        .f5-anchor {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 0;
+          height: 0;
+        }
+        .f5-hide {
+          visibility: hidden;
+          opacity: 0;
+        }
+
+        /* ================= g1 — package equation (PAPER) ================= */
+        #f5_g1 {
+          background: #F2F0EA;
+        }
+        #f5_label {
+          position: absolute;
+          left: 96px;
+          top: 112px;
+          display: flex;
+          align-items: center;
+          gap: 18px;
+        }
+        #f5_labelchip {
+          display: block;
+          padding: 10px 16px;
+          font-family: "Archivo Black", sans-serif;
+          font-size: 30px;
+          line-height: 1;
+          letter-spacing: 0.02em;
+          text-transform: uppercase;
+          white-space: nowrap;
+          background: #1E2687;
+          color: #F2F0EA;
+        }
+        #f5_labelrule {
+          display: block;
+          width: 120px;
+          height: 4px;
+          background: #1E2687;
+        }
+
+        #f5_line {
+          position: absolute;
+          left: 96px;
+          top: 330px;
+          width: 1728px;
+          height: 150px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 14px;
+        }
+        .f5-tok {
+          position: relative;
+          flex: none;
+          transform-origin: 50% 60%;
+        }
+        .f5-tokbox {
+          display: block;
+          padding: 0.06em 0.14em;
+          font-weight: 800;
+          font-size: 132px;
+          line-height: 1;
+          letter-spacing: -0.04em;
+          white-space: nowrap;
+          background: #1E2687;
+          color: #F2F0EA;
+        }
+        .f5-plus {
+          position: relative;
+          flex: none;
+          width: 64px;
+          height: 64px;
+          border-radius: 50%;
+          background: #1E2687;
+          transform-origin: 50% 50%;
+        }
+        .f5-plus::before,
+        .f5-plus::after {
+          content: "";
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          background: #FFE500;
+        }
+        .f5-plus::before {
+          width: 32px;
+          height: 8px;
+          margin: -4px 0 0 -16px;
+        }
+        .f5-plus::after {
+          width: 8px;
+          height: 32px;
+          margin: -16px 0 0 -4px;
+        }
+        .f5-tcf {
+          position: absolute;
+          transform: scale(0);
+        }
+        .f5-tcf svg,
+        .f5-cf svg {
+          display: block;
+          width: 100%;
+          height: 100%;
+          overflow: visible;
+        }
+
+        #f5_sumpos {
+          position: absolute;
+          left: 960px;
+          top: 560px;
+          transform: translateX(-50%);
+          white-space: nowrap;
+        }
+        #f5_sum {
+          position: relative;
+          font-weight: 800;
+          font-size: 88px;
+          line-height: 1.05;
+          letter-spacing: -0.03em;
+          color: #1E2687;
+          white-space: nowrap;
+        }
+        #f5_hl {
+          position: absolute;
+          left: -0.12em;
+          right: -0.12em;
+          top: 46%;
+          height: 46%;
+          display: block;
+          background: #FFE500;
+          transform-origin: 0% 50%;
+          transform: scaleX(0);
+        }
+        #f5_sumtxt {
+          position: relative;
+        }
+        .f5-ch {
+          visibility: hidden;
+          opacity: 0;
+        }
+
+        #f5_ticketwrap {
+          left: 430px;
+          top: 752px;
+        }
+        #f5_ticket {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1060px;
+          height: 156px;
+          display: flex;
+          align-items: center;
+          background: #FFE500;
+          box-shadow: 12px 12px 0 #1E2687;
+          transform-origin: 50% 100%;
+        }
+        #f5_stub {
+          position: relative;
+          flex: none;
+          width: 140px;
+          height: 156px;
+          border-right: 5px dashed #1E2687;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        #f5_stub svg {
+          display: block;
+          width: 60px;
+          height: 60px;
+        }
+        .f5-notch {
+          position: absolute;
+          left: 122px;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: #F2F0EA;
+        }
+        #f5_notch1 {
+          top: -20px;
+        }
+        #f5_notch2 {
+          bottom: -20px;
+        }
+        #f5_tix {
+          padding-left: 44px;
+          font-weight: 800;
+          font-size: 60px;
+          line-height: 1;
+          letter-spacing: -0.03em;
+          color: #1E2687;
+          white-space: nowrap;
+        }
+        .f5-live {
+          font-family: "Playfair Display", serif;
+          font-style: italic;
+          font-weight: 700;
+          letter-spacing: 0;
+        }
+        #f5_stamp {
+          position: absolute;
+          left: 940px;
+          top: -82px;
+          width: 184px;
+          height: 184px;
+          border-radius: 50%;
+          border: 8px solid #E8213F;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transform-origin: 50% 50%;
+        }
+        #f5_stampin {
+          width: 146px;
+          height: 146px;
+          border-radius: 50%;
+          border: 3px solid #E8213F;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 800;
+          font-size: 58px;
+          line-height: 1;
+          letter-spacing: -0.02em;
+          color: #E8213F;
+          white-space: nowrap;
+        }
+
+        /* ================= g2 — climax (INK) ================= */
+        #f5_g2 {
+          background: #1E2687;
+        }
+        #f5_c1 {
+          position: absolute;
+          left: 120px;
+          top: 128px;
+          font-weight: 400;
+          font-size: 150px;
+          line-height: 1;
+          letter-spacing: -0.03em;
+          color: #F2F0EA;
+          white-space: nowrap;
+          transform-origin: 0% 50%;
+        }
+        #f5_c2pos {
+          position: absolute;
+          left: 960px;
+          top: 470px;
+          transform: translateX(-50%);
+          white-space: nowrap;
+        }
+        #f5_c2 {
+          position: relative;
+          padding: 0.08em 0.18em;
+          font-weight: 800;
+          font-size: 360px;
+          line-height: 0.9;
+          letter-spacing: -0.05em;
+          color: #FFE500;
+          white-space: nowrap;
+          transform-origin: 50% 50%;
+        }
+        #f5_c2box {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          display: block;
+          background: #FFE500;
+          transform-origin: 0% 50%;
+          transform: scaleX(0);
+        }
+        #f5_c2txt {
+          position: relative;
+        }
+        #f5_burst {
+          left: 960px;
+          top: 660px;
+        }
+        .f5-arm {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 0;
+          height: 0;
+        }
+        .f5-ray {
+          position: absolute;
+          left: -5px;
+          width: 10px;
+          background: #FFE500;
+          transform-origin: 50% 100%;
+          transform: scaleY(0);
+        }
+        .f5-cf {
+          position: absolute;
+          transform: scale(0);
+        }
+      </style>
+
+      <div id="stage" data-composition-id="05-f5" data-width="1920" data-height="1080" data-duration="6.02">
+        <!-- ============ g1: package equation (25.19–29.28) ============ -->
+        <div id="f5_g1" class="f5-full">
+          <div id="f5_g1shake" class="f5-anchor">
+            <div id="f5_label"><span id="f5_labelchip">POINT 03</span><span id="f5_labelrule"></span></div>
+
+            <div id="f5_line">
+              <div id="f5_tok0" class="f5-tok"><span class="f5-tokbox">책</span></div>
+              <div id="f5_plus1" class="f5-plus f5-hide"></div>
+              <div id="f5_tok1" class="f5-tok f5-hide"><span class="f5-tokbox">특강</span></div>
+              <div id="f5_plus2" class="f5-plus f5-hide"></div>
+              <div id="f5_tok2" class="f5-tok f5-hide"><span class="f5-tokbox">CBT</span></div>
+              <div id="f5_plus3" class="f5-plus f5-hide"></div>
+              <div id="f5_tok3" class="f5-tok f5-hide"><span class="f5-tokbox">카페</span></div>
+              <div id="f5_plus4" class="f5-plus f5-hide"></div>
+              <div id="f5_tok4" class="f5-tok f5-hide"><span class="f5-tokbox">단톡</span></div>
+            </div>
+
+            <div id="f5_sumpos">
+              <div id="f5_sum"><span id="f5_hl"></span><span id="f5_sumtxt"></span></div>
+            </div>
+
+            <div id="f5_ticketwrap" class="f5-anchor f5-hide">
+              <div id="f5_ticket">
+                <div id="f5_stub">
+                  <svg viewBox="0 0 100 100"><path fill="#1E2687" d="M50 2 C54 38 62 46 98 50 C62 54 54 62 50 98 C46 62 38 54 2 50 C38 46 46 38 50 2Z" /></svg>
+                  <span id="f5_notch1" class="f5-notch"></span>
+                  <span id="f5_notch2" class="f5-notch"></span>
+                </div>
+                <div id="f5_tix">시험 직전 <span class="f5-live">Live</span> 마무리 특강</div>
+              </div>
+              <div id="f5_stamp" class="f5-hide" data-layout-allow-overlap=""><div id="f5_stampin">합격</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ g2: climax slam (29.28–31.21) ============ -->
+        <div id="f5_g2" class="f5-full f5-hide">
+          <div id="f5_g2shake" class="f5-anchor">
+            <div id="f5_burst" class="f5-anchor" data-layout-ignore=""></div>
+            <div id="f5_conf" class="f5-anchor" data-layout-ignore=""></div>
+            <div id="f5_c1" class="f5-hide">노베이스도</div>
+            <div id="f5_c2pos">
+              <div id="f5_c2" class="f5-hide"><span id="f5_c2box"></span><span id="f5_c2txt">한방에!</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var FID = "05-f5";
+          function $(id) {
+            return document.getElementById(id);
+          }
+          var INK = "#1E2687";
+          var ACC = "#FFE500";
+          var PAP = "#F2F0EA";
+
+          // Frame-local anchors (track seconds − 25.19)
+          var T = {
+            tok: [0.0, 0.49, 0.98, 1.54, 2.07], // 25.19 25.68 26.17 26.73 27.26 — one token per beat
+            sum: 2.6, //    27.79 riser — 'sum' types in + highlighter
+            ticket: 3.14, // 28.33 — ticket slides up, stamp thumps
+            cut: 4.09, //   29.28 SURGE — 0ms flip to INK
+            slam: 4.3, //   29.49 kick — '한방에!' MEGA slam, burst, confetti
+            spark: 4.58, // 29.77 sparkle — second confetti wave
+            hit: 5.07, //   30.26 — label-box pulse + shake
+            freeze: 5.53, // 30.72 — freeze to frame end 6.02
+          };
+
+          // flat confetti shapes: ● ■ ▲ ○ ✕ ◆
+          var SHAPES = [
+            '<circle cx="50" cy="50" r="50" fill="currentColor"/>',
+            '<rect x="6" y="6" width="88" height="88" fill="currentColor"/>',
+            '<polygon points="50,4 98,92 2,92" fill="currentColor"/>',
+            '<circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="18"/>',
+            '<path d="M16 0 L50 34 L84 0 L100 16 L66 50 L100 84 L84 100 L50 66 L16 100 L0 84 L34 50 L0 16Z" fill="currentColor"/>',
+            '<polygon points="50,0 100,50 50,100 0,50" fill="currentColor"/>',
+          ];
+          function makeShape(cls, shape, size, color) {
+            var d = document.createElement("div");
+            d.className = cls;
+            d.style.width = size + "px";
+            d.style.height = size + "px";
+            d.style.color = color;
+            d.innerHTML = '<svg viewBox="0 0 100 100">' + SHAPES[shape] + "</svg>";
+            return d;
+          }
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ============================ g1 — package equation ============================
+          tl.set("#f5_g1", { autoAlpha: 1 }, 0);
+
+          var toks = [$("f5_tok0"), $("f5_tok1"), $("f5_tok2"), $("f5_tok3"), $("f5_tok4")];
+          var pluses = [null, $("f5_plus1"), $("f5_plus2"), $("f5_plus3"), $("f5_plus4")];
+
+          // per-token landing confetti (● ■ ▲), placed above the box, index-derived
+          var TCF = [
+            { l: -6, t: -46, s: 26, sh: 0 },
+            { l: 46, t: -78, s: 22, sh: 1 },
+            { l: 98, t: -40, s: 28, sh: 2 },
+          ];
+          toks.forEach(function (tk, i) {
+            var old = tk.querySelectorAll(".f5-tcf");
+            for (var q = 0; q < old.length; q++) tk.removeChild(old[q]); // idempotent
+            var t = T.tok[i];
+
+            if (pluses[i]) {
+              tl.set(pluses[i], { autoAlpha: 1 }, t);
+              tl.fromTo(pluses[i], { scale: 0, rotation: -90 }, { scale: 1, rotation: 0, duration: 0.2, ease: "back.out(2.6)", immediateRender: false }, t);
+            }
+            // token 0 is visible by default (a 0→0 seek never fires a set at t=0); its pop starts at t=0
+            if (i > 0) tl.set(tk, { autoAlpha: 1 }, t);
+            tl.fromTo(tk, { scale: 0.4, y: 24 }, { scale: 1, y: 0, duration: 0.24, ease: "back.out(2.6)", immediateRender: i === 0 }, i === 0 ? 0 : t + 0.02);
+
+            TCF.forEach(function (c, j) {
+              var k = i * 3 + j;
+              var el = makeShape("f5-tcf", (c.sh + i) % 3, c.s, k % 3 === 1 ? ACC : INK);
+              el.style.left = c.l + "%";
+              el.style.top = c.t + "px";
+              tk.appendChild(el);
+              var dx = (j - 1) * 26;
+              var spin = (k % 2 ? -1 : 1) * (40 + (k % 4) * 20);
+              tl.fromTo(el, { scale: 0, x: 0, y: 30, rotation: 0, opacity: 1 }, { scale: 1, x: dx, y: 0, rotation: spin, duration: 0.24, ease: "back.out(2.4)", immediateRender: false }, t + 0.06 + j * 0.02);
+              tl.to(el, { y: -26, opacity: 0, duration: 0.26, ease: "power2.in" }, t + 0.36 + j * 0.02);
+            });
+          });
+
+          // 27.79: 'sum' types in (char-by-char tl.set) with a yellow highlighter sweep
+          var sumTxt = $("f5_sumtxt");
+          sumTxt.innerHTML = "";
+          var SUM = "합격 토탈 패키지";
+          var chars = [];
+          for (var c = 0; c < SUM.length; c++) {
+            var sp = document.createElement("span");
+            sp.className = "f5-ch";
+            sp.textContent = SUM.charAt(c) === " " ? " " : SUM.charAt(c);
+            sumTxt.appendChild(sp);
+            chars.push(sp);
+          }
+          chars.forEach(function (sp, j) {
+            tl.set(sp, { autoAlpha: 1 }, T.sum + j * 0.034);
+          });
+          tl.fromTo("#f5_hl", { scaleX: 0 }, { scaleX: 1, duration: 0.36, ease: "power2.out", immediateRender: false }, T.sum + 0.06);
+
+          // 28.33: ticket slides up from the bottom, then the red 합격 stamp thumps onto its corner
+          tl.set("#f5_ticketwrap", { autoAlpha: 1 }, T.ticket);
+          tl.fromTo("#f5_ticket", { y: 420, rotation: 3 }, { y: 0, rotation: -1.2, duration: 0.3, ease: "power3.out", immediateRender: false }, T.ticket);
+          var tStamp = T.ticket + 0.22;
+          tl.set("#f5_stamp", { autoAlpha: 1 }, tStamp);
+          tl.fromTo("#f5_stamp", { scale: 1.6, rotation: -24 }, { scale: 1, rotation: -14, duration: 0.12, ease: "power3.in", immediateRender: false }, tStamp);
+          var SAMP = [8, -6, 6, -4, 3, -2];
+          SAMP.forEach(function (a, j) {
+            tl.to("#f5_g1shake", { x: a, y: a * 0.5 * (j % 2 ? 1 : -1), duration: 0.03, ease: "steps(1)" }, tStamp + 0.12 + j * 0.03);
+          });
+          tl.to("#f5_g1shake", { x: 0, y: 0, duration: 0.06, ease: "power2.out" }, tStamp + 0.12 + SAMP.length * 0.03);
+
+          // ============================ g1 → g2 (0ms cut, flip to INK) ============================
+          tl.set("#f5_g1", { autoAlpha: 0 }, T.cut);
+          tl.set("#f5_g2", { autoAlpha: 1 }, T.cut);
+
+          // 29.28: '노베이스도' lands upper-left
+          tl.set("#f5_c1", { autoAlpha: 1 }, T.cut);
+          tl.fromTo("#f5_c1", { x: -60, scale: 1.18 }, { x: 0, scale: 1, duration: 0.16, ease: "power4.out", immediateRender: false }, T.cut);
+
+          // 29.49: '한방에!' MEGA slam (braam-punch)
+          tl.set("#f5_c2", { autoAlpha: 1 }, T.slam);
+          tl.fromTo("#f5_c2", { scale: 1.42 }, { scale: 1, duration: 0.16, ease: "power4.out", immediateRender: false }, T.slam);
+
+          // radial burst lines on an ellipse that clears the label box (box ≈ 1120×380 centred on 960,660);
+          // they stay on screen (explode → freeze). rotate(ang) points 'up' → direction (sin, −cos).
+          var CX = 960;
+          var CY = 660;
+          var burst = $("f5_burst");
+          burst.innerHTML = "";
+          var NR = 24;
+          var rays = [];
+          for (var r = 0; r < NR; r++) {
+            var ang = r * (360 / NR) + 7.5;
+            var rad = (ang * Math.PI) / 180;
+            var rr = 1 / Math.sqrt(Math.pow(Math.sin(rad) / 800, 2) + Math.pow(Math.cos(rad) / 300, 2));
+            var len = 60 + (r % 4) * 22 + (r % 3) * 10;
+            var sx = CX + Math.sin(rad) * rr;
+            var cs = Math.cos(rad);
+            // rays reaching up-left toward '노베이스도' stop short at y = 300
+            if (sx < 860 && cs > 0.05) len = Math.max(28, Math.min(len, (CY - cs * rr - 300) / cs));
+            var arm = document.createElement("div");
+            arm.className = "f5-arm";
+            arm.style.transform = "rotate(" + ang + "deg)";
+            var ray = document.createElement("div");
+            ray.className = "f5-ray";
+            ray.style.height = Math.round(len) + "px";
+            ray.style.top = -Math.round(rr + len) + "px";
+            arm.appendChild(ray);
+            burst.appendChild(arm);
+            rays.push(ray);
+          }
+          rays.forEach(function (ry0, j) {
+            var t0 = T.slam + (j % 5) * 0.012;
+            tl.fromTo(ry0, { scaleY: 0, y: 30 }, { scaleY: 1, y: 0, duration: 0.2, ease: "power4.out", immediateRender: false }, t0);
+            tl.fromTo(ry0, { y: 0 }, { y: -12 - (j % 3) * 5, duration: T.freeze - (t0 + 0.2), ease: "none", immediateRender: false }, t0 + 0.2);
+          });
+
+          // confetti ● ■ ▲ ○ ✕ ◆ — one per gap between rays, on a wider ellipse; position / size / rotation
+          // derived from the index. 18 burst on the kick, the rest on the 29.77 sparkle.
+          var conf = $("f5_conf");
+          conf.innerHTML = "";
+          var n = 0;
+          for (var k = 0; k < NR; k++) {
+            var a = (k * (360 / NR) * Math.PI) / 180;
+            var ring = k % 3;
+            var R = 1 / Math.sqrt(Math.pow(Math.sin(a) / (900 + ring * 50), 2) + Math.pow(Math.cos(a) / (390 + ring * 30), 2));
+            // pull back along the same radial (stays in its gap between rays) so it sits inside 70..1850 × 70..1010
+            var sa = Math.sin(a);
+            var ca = -Math.cos(a);
+            if (Math.abs(sa) > 1e-6) R = Math.min(R, (sa > 0 ? 1850 - CX : CX - 70) / Math.abs(sa));
+            if (Math.abs(ca) > 1e-6) R = Math.min(R, (ca > 0 ? 1010 - CY : CY - 70) / Math.abs(ca));
+            var px = CX + sa * R;
+            var py = CY + ca * R;
+            if (px < 860 && py < 320) continue; // keep clear of '노베이스도'
+            if (py > 940 && px > 300 && px < 1620) continue; // lower ray fan stays clean
+            var size = 28 + ((k * 29) % 48);
+            var col = k % 3 === 2 ? PAP : ACC;
+            var el2 = makeShape("f5-cf", k % 6, size, col);
+            el2.style.left = Math.round(px - size / 2) + "px";
+            el2.style.top = Math.round(py - size / 2) + "px";
+            conf.appendChild(el2);
+
+            var t1 = (n >= 16 ? T.spark : T.slam + 0.02) + (k % 6) * 0.012;
+            n++;
+            var dx2 = px - CX;
+            var dy2 = py - CY;
+            var dd = Math.sqrt(dx2 * dx2 + dy2 * dy2) || 1;
+            var rot0 = (k * 53) % 360;
+            var spin2 = (k % 2 ? -1 : 1) * (30 + (k % 3) * 15);
+            tl.fromTo(
+              el2,
+              { x: (-dx2 / dd) * 220, y: (-dy2 / dd) * 220, scale: 0, rotation: rot0 - spin2 },
+              { x: 0, y: 0, scale: 1, rotation: rot0, duration: 0.4, ease: "back.out(2.2)", immediateRender: false },
+              t1
+            );
+            tl.fromTo(
+              el2,
+              { y: 0, rotation: rot0 },
+              { y: 10 + (k % 3) * 6, rotation: rot0 + (k % 2 ? 1 : -1) * (16 + (k % 4) * 8), duration: T.freeze - (t1 + 0.4), ease: "none", immediateRender: false },
+              t1 + 0.4
+            );
+          }
+
+          // 30.26: accent label-box snaps behind '한방에!' (text → ink), pulse + one screen-shake
+          tl.set("#f5_c2txt", { color: INK }, T.hit);
+          tl.fromTo("#f5_c2box", { scaleX: 0 }, { scaleX: 1, duration: 0.1, ease: "expo.out", immediateRender: false }, T.hit);
+          tl.fromTo("#f5_c2", { scale: 1.08 }, { scale: 1, duration: 0.26, ease: "power3.out", immediateRender: false }, T.hit);
+          var AMP = [10, -8, 8, -6, 5, -3, 2];
+          AMP.forEach(function (am, j) {
+            tl.to("#f5_g2shake", { x: am, y: am * 0.6 * (j % 2 ? 1 : -1), duration: 0.03, ease: "steps(1)" }, T.hit + j * 0.03);
+          });
+          tl.to("#f5_g2shake", { x: 0, y: 0, duration: 0.08, ease: "power2.out" }, T.hit + AMP.length * 0.03);
+
+          // 30.72 → 31.21 freeze: everything stays on screen to the last frame (hard cut to finale)
+          tl.set({}, {}, 6.02);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines[FID] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

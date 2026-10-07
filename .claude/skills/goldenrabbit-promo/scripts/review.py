@@ -29,7 +29,7 @@ def main():
     ts.update(float(x) for x in a.extra.split(",") if x)
     ts = sorted(round(t, 2) for t in ts if 0 <= t <= D - 0.05)
     print(f"snapshotting {len(ts)} times → {a.out}")
-    r = subprocess.run(["npx", "hyperframes", "snapshot", ".", "-o", a.out, "--at", ",".join(map(str, ts)), "--no-end", "--describe", "false"],
+    r = subprocess.run([("npx.cmd" if sys.platform == "win32" else "npx"), "hyperframes", "snapshot", ".", "-o", a.out, "--at", ",".join(map(str, ts)), "--no-end", "--describe", "false"],
                        cwd=proj, capture_output=True, text=True)
     print(r.stdout[-400:] if r.returncode == 0 else r.stderr[-800:])
     sheets = sorted((proj / a.out).glob("contact-sheet*.jpg"))

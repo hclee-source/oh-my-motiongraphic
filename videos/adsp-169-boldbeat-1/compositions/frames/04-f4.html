@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>04-f4 · POINT 02 — 손안의 CBT</title>
+    <!-- Source metadata only. The runtime clones the <template> contents; everything renderable lives there. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        /* Root: plain #stage (the compiler scopes CSS and moves data-composition-id to the host). */
+        #stage {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #1E2687;
+          font-family: "Paperlogy", sans-serif;
+        }
+        #f4_bg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          background: #1E2687;
+        }
+        #f4_g1 {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f4-anchor {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 0;
+          height: 0;
+        }
+
+        /* ---------- side label ---------- */
+        #f4_label {
+          position: absolute;
+          left: 96px;
+          top: 96px;
+          padding: 8px 14px;
+          background: #FFE500;
+          color: #1E2687;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 20px;
+          line-height: 1.2;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+
+        /* ---------- phone mockup (original drawing) ---------- */
+        #f4_phonepos {
+          left: 520px;
+          top: 540px;
+        }
+        #f4_phone {
+          position: absolute;
+          left: -200px;
+          top: -410px;
+          width: 400px;
+          height: 820px;
+          box-sizing: border-box;
+          border-radius: 58px;
+          background: #1E2687;
+          border: 3px solid #F2F0EA;
+          box-shadow: 18px 18px 0px #FFE500;
+          transform-origin: 50% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f4_screen {
+          position: absolute;
+          left: 14px;
+          top: 14px;
+          width: 366px;
+          height: 786px;
+          border-radius: 42px;
+          background: #F2F0EA;
+          overflow: hidden;
+          color: #1E2687;
+        }
+        .f4-notch {
+          position: absolute;
+          left: 128px;
+          top: 14px;
+          width: 110px;
+          height: 26px;
+          border-radius: 13px;
+          background: #1E2687;
+        }
+        .f4-ptitle {
+          position: absolute;
+          left: 24px;
+          top: 60px;
+          font-weight: 800;
+          font-size: 21px;
+          line-height: 30px;
+          white-space: nowrap;
+        }
+        .f4-timerbox {
+          position: absolute;
+          right: 22px;
+          top: 58px;
+          height: 34px;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .f4-timerbox svg {
+          width: 22px;
+          height: 22px;
+          display: block;
+        }
+        #f4_timer {
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 24px;
+          line-height: 34px;
+          letter-spacing: 0.02em;
+          white-space: nowrap;
+        }
+        .f4-divider {
+          position: absolute;
+          left: 24px;
+          top: 106px;
+          width: 318px;
+          height: 2px;
+          background: rgba(30, 38, 135, 0.16);
+        }
+        .f4-qpanel {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 366px;
+          height: 786px;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f4-qtext {
+          position: absolute;
+          left: 24px;
+          top: 128px;
+          width: 318px;
+          font-weight: 500;
+          font-size: 26px;
+          line-height: 1.42;
+          letter-spacing: -0.01em;
+          word-break: keep-all;
+        }
+        .f4-qnum {
+          position: absolute;
+          left: 24px;
+          top: 128px;
+          font-weight: 500;
+          font-size: 26px;
+          line-height: 37px;
+        }
+        .f4-qbar {
+          position: absolute;
+          height: 16px;
+          border-radius: 8px;
+          background: rgba(30, 38, 135, 0.14);
+        }
+        .f4-opt {
+          position: absolute;
+          left: 24px;
+          width: 318px;
+          height: 56px;
+        }
+        .f4-bub {
+          position: absolute;
+          left: 0;
+          top: 5px;
+          width: 46px;
+          height: 46px;
+          box-sizing: border-box;
+          border-radius: 50%;
+          border: 3px solid #1E2687;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 20px;
+          line-height: 40px;
+          text-align: center;
+        }
+        .f4-mark {
+          position: absolute;
+          left: 0;
+          top: 5px;
+          width: 46px;
+          height: 46px;
+          border-radius: 50%;
+          background: #1E2687;
+          color: #F2F0EA;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 20px;
+          line-height: 46px;
+          text-align: center;
+          transform-origin: 50% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f4-obar {
+          position: absolute;
+          left: 64px;
+          top: 20px;
+          height: 16px;
+          border-radius: 8px;
+          background: rgba(30, 38, 135, 0.14);
+        }
+        .f4-toast {
+          position: absolute;
+          left: 24px;
+          top: 594px;
+          width: 318px;
+          height: 62px;
+          box-sizing: border-box;
+          border-radius: 18px;
+          background: #1E2687;
+          color: #F2F0EA;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 0 20px;
+          font-weight: 800;
+          font-size: 22px;
+          line-height: 1;
+          white-space: nowrap;
+          transform-origin: 50% 100%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f4-toast svg {
+          width: 30px;
+          height: 30px;
+          display: block;
+          flex: none;
+        }
+        .f4-tool {
+          position: absolute;
+          top: 684px;
+          width: 96px;
+          height: 64px;
+        }
+        .f4-toolbtn,
+        .f4-toolon {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 96px;
+          height: 64px;
+          box-sizing: border-box;
+          border-radius: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .f4-toolbtn {
+          border: 2px solid rgba(30, 38, 135, 0.45);
+          color: rgba(30, 38, 135, 0.55);
+        }
+        .f4-toolon {
+          background: #1E2687;
+          border: 2px solid #1E2687;
+          color: #F2F0EA;
+          transform-origin: 50% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f4-toolbtn svg,
+        .f4-toolon svg {
+          width: 32px;
+          height: 32px;
+          display: block;
+        }
+        .f4-home {
+          position: absolute;
+          left: 123px;
+          top: 764px;
+          width: 120px;
+          height: 6px;
+          border-radius: 3px;
+          background: rgba(30, 38, 135, 0.3);
+        }
+
+        /* ---------- right column copy ---------- */
+        #f4_t1 {
+          position: absolute;
+          left: 920px;
+          top: 150px;
+          font-weight: 800;
+          font-size: 150px;
+          line-height: 1;
+          letter-spacing: -0.04em;
+          color: #F2F0EA;
+          white-space: nowrap;
+          display: flex;
+          align-items: center;
+        }
+        .f4-ch {
+          opacity: 0;
+        }
+        #f4_caret {
+          display: block;
+          width: 10px;
+          height: 128px;
+          margin-left: 10px;
+          background: #FFE500;
+          opacity: 0;
+        }
+        #f4_t2 {
+          position: absolute;
+          left: 920px;
+          top: 316px;
+          font-weight: 400;
+          font-size: 150px;
+          line-height: 1;
+          letter-spacing: -0.03em;
+          color: #F2F0EA;
+          white-space: nowrap;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f4-ulwrap {
+          position: relative;
+          display: inline-block;
+        }
+        #f4_ul {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: -14px;
+          height: 14px;
+          background: #FFE500;
+          transform-origin: 0% 50%;
+          transform: scaleX(0);
+        }
+        #f4_chip {
+          position: absolute;
+          left: 920px;
+          top: 520px;
+          padding: 12px 20px;
+          background: #FFE500;
+          color: #1E2687;
+          font-weight: 800;
+          font-size: 30px;
+          line-height: 1.2;
+          white-space: nowrap;
+          transform-origin: 0% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f4_counts {
+          position: absolute;
+          left: 920px;
+          top: 612px;
+          height: 150px;
+          display: flex;
+          align-items: baseline;
+          gap: 12px;
+          white-space: nowrap;
+          color: #F2F0EA;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f4-cw {
+          font-weight: 800;
+          font-size: 72px;
+          line-height: 1;
+          letter-spacing: -0.03em;
+        }
+        .f4-cn {
+          display: inline-block;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 132px;
+          line-height: 1;
+          color: #FFE500;
+          transform-origin: 50% 70%;
+        }
+        .f4-cplus {
+          font-weight: 800;
+          font-size: 72px;
+          line-height: 1;
+          margin: 0 6px;
+          color: #FFE500;
+        }
+        #f4_feats {
+          position: absolute;
+          left: 920px;
+          top: 810px;
+          display: flex;
+          gap: 20px;
+        }
+        .f4-pill {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 12px 26px 12px 20px;
+          border: 2px solid #F2F0EA;
+          border-radius: 999px;
+          color: #F2F0EA;
+          font-weight: 800;
+          font-size: 30px;
+          line-height: 1.2;
+          white-space: nowrap;
+          transform-origin: 50% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f4-pill svg {
+          width: 30px;
+          height: 30px;
+          display: block;
+          flex: none;
+        }
+      </style>
+
+      <div id="stage" data-composition-id="04-f4" data-width="1920" data-height="1080" data-duration="5.73">
+        <div id="f4_bg"></div>
+
+        <!-- ============ g1: phone CBT (19.46–25.19) ============ -->
+        <div id="f4_g1">
+          <div id="f4_label">POINT 02</div>
+
+          <!-- original flat phone mockup; no real app UI -->
+          <div id="f4_phonepos" class="f4-anchor">
+            <div id="f4_phone">
+              <div id="f4_screen">
+                <div class="f4-notch"></div>
+                <div class="f4-ptitle">ADsP 모의고사 1회</div>
+                <div class="f4-timerbox">
+                  <svg viewBox="0 0 32 32" fill="none" stroke="#1E2687" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="17" r="11" /><path d="M16 11 V17 L20 20" /><path d="M13 3 H19" /></svg>
+                  <div id="f4_timer">89:59</div>
+                </div>
+                <div class="f4-divider"></div>
+
+                <!-- Q1 -->
+                <div id="f4_q1" class="f4-qpanel">
+                  <div class="f4-qtext">Q1. 다음 중 DIKW 피라미드의 순서로 옳은 것은?</div>
+                  <div class="f4-opt" style="top: 300px"><div class="f4-bub">1</div><div class="f4-obar" style="width: 190px"></div></div>
+                  <div class="f4-opt" style="top: 370px"><div class="f4-bub">2</div><div class="f4-obar" style="width: 230px"></div><div id="f4_m1" class="f4-mark" data-layout-allow-overlap data-layout-allow-occlusion>2</div></div>
+                  <div class="f4-opt" style="top: 440px"><div class="f4-bub">3</div><div class="f4-obar" style="width: 170px"></div></div>
+                  <div class="f4-opt" style="top: 510px"><div class="f4-bub">4</div><div class="f4-obar" style="width: 210px"></div></div>
+                </div>
+                <!-- Q2 -->
+                <div id="f4_q2" class="f4-qpanel">
+                  <div class="f4-qnum">Q2.</div>
+                  <div class="f4-qbar" style="left: 82px; top: 139px; width: 236px"></div>
+                  <div class="f4-qbar" style="left: 24px; top: 176px; width: 300px"></div>
+                  <div class="f4-qbar" style="left: 24px; top: 213px; width: 168px"></div>
+                  <div class="f4-opt" style="top: 300px"><div class="f4-bub">1</div><div class="f4-obar" style="width: 220px"></div></div>
+                  <div class="f4-opt" style="top: 370px"><div class="f4-bub">2</div><div class="f4-obar" style="width: 160px"></div></div>
+                  <div class="f4-opt" style="top: 440px"><div class="f4-bub">3</div><div class="f4-obar" style="width: 240px"></div></div>
+                  <div class="f4-opt" style="top: 510px"><div class="f4-bub">4</div><div class="f4-obar" style="width: 190px"></div><div id="f4_m2" class="f4-mark" data-layout-allow-overlap data-layout-allow-occlusion>4</div></div>
+                </div>
+                <!-- Q3 -->
+                <div id="f4_q3" class="f4-qpanel">
+                  <div class="f4-qnum">Q3.</div>
+                  <div class="f4-qbar" style="left: 82px; top: 139px; width: 200px"></div>
+                  <div class="f4-qbar" style="left: 24px; top: 176px; width: 284px"></div>
+                  <div class="f4-qbar" style="left: 24px; top: 213px; width: 220px"></div>
+                  <div class="f4-opt" style="top: 300px"><div class="f4-bub">1</div><div class="f4-obar" style="width: 200px"></div><div id="f4_m3" class="f4-mark" data-layout-allow-overlap data-layout-allow-occlusion>1</div></div>
+                  <div class="f4-opt" style="top: 370px"><div class="f4-bub">2</div><div class="f4-obar" style="width: 250px"></div></div>
+                  <div class="f4-opt" style="top: 440px"><div class="f4-bub">3</div><div class="f4-obar" style="width: 180px"></div></div>
+                  <div class="f4-opt" style="top: 510px"><div class="f4-bub">4</div><div class="f4-obar" style="width: 226px"></div></div>
+                </div>
+
+                <!-- toasts: matching icon per feature -->
+                <div id="f4_toast0" class="f4-toast">
+                  <svg viewBox="0 0 32 32" fill="none" stroke="#F2F0EA" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="22" height="22" rx="4" /><path d="M10.5 16.5 L14.5 20.5 L22 12" /></svg>
+                  <span>중간 저장</span>
+                </div>
+                <div id="f4_toast1" class="f4-toast">
+                  <svg viewBox="0 0 32 32" fill="none" stroke="#F2F0EA" stroke-width="3.4" stroke-linecap="round"><path d="M12 9 V23" /><path d="M20 9 V23" /></svg>
+                  <span>일시 정지</span>
+                </div>
+                <div id="f4_toast2" class="f4-toast">
+                  <svg viewBox="0 0 32 32" fill="none" stroke="#F2F0EA" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4 C11.3 4 8 7.6 8 12 C8 14.9 9.5 17 11.3 18.6 C12.3 19.5 12.8 20.6 12.8 21.8 V23 H19.2 V21.8 C19.2 20.6 19.7 19.5 20.7 18.6 C22.5 17 24 14.9 24 12 C24 7.6 20.7 4 16 4 Z" /><path d="M13 27 H19" /><path d="M16 23 V17" /></svg>
+                  <span>힌트 보기</span>
+                </div>
+
+                <!-- toolbar: save / pause / hint -->
+                <div class="f4-tool" style="left: 24px">
+                  <div class="f4-toolbtn"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="22" height="22" rx="4" /><path d="M10.5 16.5 L14.5 20.5 L22 12" /></svg></div>
+                  <div id="f4_on0" class="f4-toolon"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="22" height="22" rx="4" /><path d="M10.5 16.5 L14.5 20.5 L22 12" /></svg></div>
+                </div>
+                <div class="f4-tool" style="left: 135px">
+                  <div class="f4-toolbtn"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"><path d="M12 9 V23" /><path d="M20 9 V23" /></svg></div>
+                  <div id="f4_on1" class="f4-toolon"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"><path d="M12 9 V23" /><path d="M20 9 V23" /></svg></div>
+                </div>
+                <div class="f4-tool" style="left: 246px">
+                  <div class="f4-toolbtn"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4 C11.3 4 8 7.6 8 12 C8 14.9 9.5 17 11.3 18.6 C12.3 19.5 12.8 20.6 12.8 21.8 V23 H19.2 V21.8 C19.2 20.6 19.7 19.5 20.7 18.6 C22.5 17 24 14.9 24 12 C24 7.6 20.7 4 16 4 Z" /><path d="M13 27 H19" /><path d="M16 23 V17" /></svg></div>
+                  <div id="f4_on2" class="f4-toolon"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4 C11.3 4 8 7.6 8 12 C8 14.9 9.5 17 11.3 18.6 C12.3 19.5 12.8 20.6 12.8 21.8 V23 H19.2 V21.8 C19.2 20.6 19.7 19.5 20.7 18.6 C22.5 17 24 14.9 24 12 C24 7.6 20.7 4 16 4 Z" /><path d="M13 27 H19" /><path d="M16 23 V17" /></svg></div>
+                </div>
+                <div class="f4-home"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- right column -->
+          <div id="f4_t1"><span class="f4-ch">지</span><span class="f4-ch">하</span><span class="f4-ch">철</span><span class="f4-ch">에</span><span class="f4-ch">서</span><span class="f4-ch">도</span><span id="f4_caret"></span></div>
+          <div id="f4_t2"><span class="f4-ulwrap">실전처럼<span id="f4_ul"></span></span>.</div>
+          <div id="f4_chip">웹 CBT · PC / 모바일</div>
+          <div id="f4_counts">
+            <span class="f4-cw">모의고사</span><span id="f4_na" class="f4-cn">5</span><span class="f4-cw">회</span>
+            <span class="f4-cplus">+</span>
+            <span class="f4-cw">기출</span><span id="f4_nb" class="f4-cn">5</span><span class="f4-cw">회</span>
+          </div>
+          <div id="f4_feats">
+            <div id="f4_pill0" class="f4-pill">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#F2F0EA" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="22" height="22" rx="4" /><path d="M10.5 16.5 L14.5 20.5 L22 12" /></svg>
+              <span>중간 저장</span>
+            </div>
+            <div id="f4_pill1" class="f4-pill">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#F2F0EA" stroke-width="3.4" stroke-linecap="round"><path d="M12 9 V23" /><path d="M20 9 V23" /></svg>
+              <span>일시 정지</span>
+            </div>
+            <div id="f4_pill2" class="f4-pill">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#F2F0EA" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4 C11.3 4 8 7.6 8 12 C8 14.9 9.5 17 11.3 18.6 C12.3 19.5 12.8 20.6 12.8 21.8 V23 H19.2 V21.8 C19.2 20.6 19.7 19.5 20.7 18.6 C22.5 17 24 14.9 24 12 C24 7.6 20.7 4 16 4 Z" /><path d="M13 27 H19" /><path d="M16 23 V17" /></svg>
+              <span>힌트 보기</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var FID = "04-f4";
+          var DUR = 5.73;
+          function $(id) {
+            return document.getElementById(id);
+          }
+
+          // Frame-local beats (track seconds - 19.46)
+          var B = [0.0, 0.46, 0.95, 1.42, 1.9, 2.37, 2.85, 3.34, 3.83, 4.29, 4.78, 5.27];
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ---------------- group on (single group spans the whole frame) ----------------
+          tl.set("#f4_g1", { autoAlpha: 1 }, 0);
+
+          // 19.46: phone rises in with the -6deg tilt (settles after the wipe clears)
+          tl.set("#f4_phone", { autoAlpha: 1, rotation: -12, y: 760 }, 0);
+          tl.fromTo("#f4_phone", { y: 760 }, { y: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, 0);
+          tl.fromTo("#f4_phone", { rotation: -12 }, { rotation: -6, duration: 0.62, ease: "back.out(1.6)", immediateRender: false }, 0);
+          tl.set("#f4_q1", { autoAlpha: 1 }, 0);
+
+          // 19.46: t1 types in (typewriter-reveal), done right as the wipe clears
+          var chars = $("f4_t1").querySelectorAll(".f4-ch");
+          var STEP = 0.06;
+          for (var c = 0; c < chars.length; c++) {
+            tl.set(chars[c], { opacity: 1 }, c * STEP);
+          }
+          tl.set("#f4_caret", { opacity: 1 }, 0);
+          var caretBlinks = [0.42, 0.58, 0.74, 0.9, 1.06];
+          caretBlinks.forEach(function (t, j) {
+            tl.set("#f4_caret", { opacity: j % 2 ? 1 : 0 }, t);
+          });
+          tl.set("#f4_caret", { opacity: 0 }, 1.06);
+
+          // timer: 0ms digit swaps on beats until the pause feature lands
+          tl.set("#f4_timer", { textContent: "89:59", opacity: 1 }, 0);
+          var TICKS = ["89:58", "89:57", "89:56", "89:55", "89:54", "89:53", "89:52", "89:51"];
+          TICKS.forEach(function (txt, j) {
+            tl.set("#f4_timer", { textContent: txt }, B[j + 1]);
+          });
+
+          // OMR marks: fill one bubble per beat, then advance the screen at 0ms on the off-beat
+          function mark(id, t) {
+            tl.set(id, { autoAlpha: 1 }, t);
+            tl.fromTo(id, { scale: 0.3 }, { scale: 1, duration: 0.16, ease: "back.out(2.6)", immediateRender: false }, t);
+          }
+          mark("#f4_m1", B[1]);
+          tl.set("#f4_q1", { autoAlpha: 0 }, B[1] + 0.24);
+          tl.set("#f4_q2", { autoAlpha: 1 }, B[1] + 0.24);
+          mark("#f4_m2", B[2]);
+          tl.set("#f4_q2", { autoAlpha: 0 }, B[2] + 0.24);
+          tl.set("#f4_q3", { autoAlpha: 1 }, B[2] + 0.24);
+          mark("#f4_m3", B[3]);
+
+          // 20.41: t2 lands, accent underline draws under '실전처럼'
+          tl.set("#f4_t2", { autoAlpha: 1 }, B[2]);
+          tl.fromTo("#f4_t2", { y: 46 }, { y: 0, duration: 0.2, ease: "power4.out", immediateRender: false }, B[2]);
+          tl.fromTo("#f4_ul", { scaleX: 0 }, { scaleX: 1, duration: 0.32, ease: "expo.out", immediateRender: false }, B[2] + 0.1);
+
+          // 21.36: chip pops
+          tl.set("#f4_chip", { autoAlpha: 1 }, B[4]);
+          tl.fromTo("#f4_chip", { scale: 0.4 }, { scale: 1, duration: 0.26, ease: "back.out(2.2)", immediateRender: false }, B[4]);
+
+          // 22.31: counts — numerals tick 0 -> 5 with 0ms text swaps, then punch-and-lock
+          var TC = B[6];
+          tl.set("#f4_counts", { autoAlpha: 1 }, TC);
+          tl.fromTo("#f4_counts", { y: 30 }, { y: 0, duration: 0.2, ease: "power3.out", immediateRender: false }, TC);
+          [["#f4_na", 0], ["#f4_nb", 0.1]].forEach(function (n) {
+            var t0 = TC + n[1];
+            for (var k = 0; k <= 5; k++) {
+              tl.set(n[0], { textContent: String(k) }, t0 + k * 0.065);
+            }
+            var tLand = t0 + 5 * 0.065;
+            tl.fromTo(n[0], { scale: 1.35 }, { scale: 1, duration: 0.24, ease: "power4.out", immediateRender: false }, tLand);
+          });
+          // seek-safe: before the count starts both numerals read 0
+          tl.set("#f4_na", { textContent: "0" }, 0);
+          tl.set("#f4_nb", { textContent: "0" }, 0);
+
+          // 23.29 / 23.75 / 24.24: feature chips pop in a row; phone toolbar + toast match each
+          [B[8], B[9], B[10]].forEach(function (t, j) {
+            var pill = "#f4_pill" + j;
+            tl.set(pill, { autoAlpha: 1 }, t);
+            tl.fromTo(pill, { scale: 0.55 }, { scale: 1, duration: 0.3, ease: "back.out(2.4)", immediateRender: false }, t);
+
+            var on = "#f4_on" + j;
+            tl.set(on, { autoAlpha: 1 }, t);
+            tl.fromTo(on, { scale: 1.2 }, { scale: 1, duration: 0.22, ease: "back.out(2)", immediateRender: false }, t);
+            if (j > 0) tl.set("#f4_on" + (j - 1), { autoAlpha: 0 }, t);
+
+            if (j > 0) tl.set("#f4_toast" + (j - 1), { autoAlpha: 0 }, t);
+            var toast = "#f4_toast" + j;
+            tl.set(toast, { autoAlpha: 1 }, t);
+            tl.fromTo(toast, { y: 18, scale: 0.9 }, { y: 0, scale: 1, duration: 0.22, ease: "back.out(1.8)", immediateRender: false }, t);
+          });
+          // pause lands: the timer stops at 89:51 and dims
+          tl.set("#f4_timer", { opacity: 0.45 }, B[9]);
+
+          // hold the full layout to the end (last ~0.3 s calm under the iris)
+          tl.set({}, {}, DUR);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines[FID] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

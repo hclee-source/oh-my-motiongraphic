@@ -217,7 +217,7 @@ def main():
 
     # ---- project
     if not (proj / "hyperframes.json").exists():
-        sh(["npx", "-y", "hyperframes", "init", str(proj), "--non-interactive", "--example=blank", "--skill=music-to-video"])
+        sh([("npx.cmd" if sys.platform == "win32" else "npx"), "-y", "hyperframes", "init", str(proj), "--non-interactive", "--example=blank", "--skill=music-to-video"])
         print(f"  ✓ hyperframes init {proj.relative_to(ROOT)}")
     for d in ("assets/covers", "assets/brand", "assets/fonts", "renders", "compositions/frames"):
         (proj / d).mkdir(parents=True, exist_ok=True)

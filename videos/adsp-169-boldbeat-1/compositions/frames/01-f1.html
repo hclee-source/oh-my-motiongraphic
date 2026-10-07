@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>01-f1 · 비전공자? 노베이스? 통계 0? → 50문항·90분·과락 → ADsP, 나도 될까?</title>
+  </head>
+  <body>
+    <template id="f1_template">
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #F2F0EA;
+          color: #1E2687;
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 800;
+          -webkit-font-smoothing: antialiased;
+        }
+
+        .f1-g {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        #f1_g2 {
+          opacity: 0;
+          visibility: hidden;
+        }
+        .f1-fill {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        #f1_g1_bg { background: #F2F0EA; }
+        #f1_g2_bg { background: #1E2687; }
+
+        /* ---------- g1 states ---------- */
+        .f1-g1-state {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f1_g1_s0 {
+          opacity: 1;
+          visibility: inherit;
+        }
+        .f1-col {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 34px;
+        }
+        .f1-line {
+          white-space: nowrap;
+          word-break: keep-all;
+        }
+        .f1-ch {
+          display: inline-block;
+        }
+        .f1-display {
+          font-size: 240px;
+          font-weight: 800;
+          line-height: 0.92;
+          letter-spacing: -0.045em;
+        }
+        .f1-h2 {
+          font-size: 88px;
+          font-weight: 800;
+          line-height: 1.05;
+          letter-spacing: -0.03em;
+        }
+        .f1-caption {
+          font-size: 34px;
+          font-weight: 800;
+          line-height: 1.25;
+        }
+        .f1-mono0 {
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 1.3em;
+          letter-spacing: -0.02em;
+          line-height: 0.7;
+        }
+        .f1-chip {
+          display: inline-block;
+          font-family: "Archivo Black", sans-serif;
+          font-weight: 400;
+          font-size: 30px;
+          line-height: 1;
+          letter-spacing: 0.02em;
+          text-transform: uppercase;
+          padding: 10px 18px 9px;
+          white-space: nowrap;
+          clip-path: inset(0% 100% 0% 0%);
+        }
+        .f1-chip-ink { background: #1E2687; color: #F2F0EA; }
+        .f1-chip-acc { background: #FFE500; color: #1E2687; }
+        .f1-chip-inkacc { background: #1E2687; color: #FFE500; }
+
+        #f1_g1_cursor {
+          position: absolute;
+          left: 948px;
+          top: 500px;
+          width: 24px;
+          height: 80px;
+          background: #1E2687;
+        }
+        #f1_g1_w1 { color: #1E2687; }
+        #f1_g1_w2 { color: #F2F0EA; }
+        #f1_g1_w3 { color: #1E2687; }
+
+        /* s4 · sticky notes + sub */
+        .f1-note {
+          position: absolute;
+          left: 170px;
+          display: inline-block;
+          padding: 0.1em 0.26em 0.12em;
+          background: #FFE500;
+          color: #1E2687;
+          box-shadow: 10px 10px 0 #1E2687;
+          white-space: nowrap;
+          opacity: 0;
+        }
+        #f1_g1_n1 { top: 236px; }
+        #f1_g1_n2 { top: 446px; left: 236px; }
+        #f1_g1_n3 { top: 656px; left: 190px; }
+        #f1_g1_sub {
+          position: absolute;
+          left: 1060px;
+          top: 500px;
+          width: 700px;
+          white-space: nowrap;
+          color: #1E2687;
+        }
+        #f1_g1_subrule {
+          position: absolute;
+          left: 1060px;
+          top: 566px;
+          width: 470px;
+          height: 8px;
+          background: #1E2687;
+          transform-origin: 0% 50%;
+          transform: scaleX(0);
+        }
+        .f1-tw {
+          display: inline-block;
+          opacity: 0;
+        }
+
+        /* ---------- g2 · OMR sheet + facts + question ---------- */
+        #f1_g2_shake {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        #f1_g2_omr {
+          position: absolute;
+          left: 36px;
+          top: 100px;
+          width: 150px;
+          height: 880px;
+        }
+        .f1-omr-row {
+          position: absolute;
+          left: 0;
+          height: 30px;
+          width: 150px;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .f1-omr-num {
+          width: 22px;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 15px;
+          color: rgba(242, 240, 234, 0.3);
+          text-align: right;
+          margin-right: 4px;
+        }
+        .f1-omr-b {
+          position: relative;
+          width: 26px;
+          height: 26px;
+          box-sizing: border-box;
+          border: 2px solid rgba(242, 240, 234, 0.3);
+          border-radius: 50%;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 13px;
+          line-height: 22px;
+          text-align: center;
+          color: rgba(242, 240, 234, 0.3);
+        }
+        .f1-omr-dot {
+          position: absolute;
+          left: -2px;
+          top: -2px;
+          width: 26px;
+          height: 26px;
+          border-radius: 50%;
+          background: #FFE500;
+          opacity: 0;
+        }
+
+        #f1_g2_facts {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          transform-origin: 960px 470px;
+        }
+        .f1-cell {
+          position: absolute;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f1_g2_c1 { left: 200px; top: 360px; width: 500px; height: 220px; }
+        #f1_g2_c2 { left: 720px; top: 360px; width: 480px; height: 220px; }
+        #f1_g2_c3 { left: 1230px; top: 320px; width: 590px; height: 300px; }
+        .f1-num {
+          display: flex;
+          align-items: baseline;
+          color: #F2F0EA;
+          white-space: nowrap;
+        }
+        .f1-num-d {
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 200px;
+          line-height: 1;
+          letter-spacing: -0.04em;
+        }
+        .f1-num-u {
+          font-size: 96px;
+          font-weight: 800;
+          line-height: 1;
+          letter-spacing: -0.03em;
+          margin-left: 10px;
+        }
+        #f1_g2_n3 {
+          position: relative;
+          width: 590px;
+          height: 300px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          color: #F2F0EA;
+        }
+        #f1_g2_n3a {
+          font-size: 64px;
+          font-weight: 800;
+          line-height: 1.05;
+          letter-spacing: -0.03em;
+          white-space: nowrap;
+        }
+        #f1_g2_n3b {
+          display: flex;
+          align-items: baseline;
+          white-space: nowrap;
+          line-height: 1;
+        }
+        .f1-n3-d {
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 128px;
+          letter-spacing: -0.04em;
+        }
+        .f1-n3-u {
+          font-size: 108px;
+          font-weight: 800;
+          letter-spacing: -0.03em;
+          margin-left: 22px;
+        }
+        #f1_g2_pen {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 590px;
+          height: 300px;
+          overflow: visible;
+        }
+        .f1-pen {
+          fill: none;
+          stroke: #E8213F;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+          stroke-dasharray: 1000;
+          stroke-dashoffset: 1000;
+        }
+        #f1_g2_box { stroke-width: 7; }
+        .f1-x { stroke-width: 12; }
+
+        /* question */
+        .f1-q {
+          position: absolute;
+          left: 0;
+          width: 1920px;
+          display: flex;
+          justify-content: center;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f1_g2_q1row { top: 140px; height: 280px; }
+        #f1_g2_q2row { top: 462px; height: 230px; }
+        .f1-q1 {
+          position: relative;
+          font-family: "Archivo Black", sans-serif;
+          font-weight: 400;
+          font-size: 260px;
+          line-height: 1;
+          letter-spacing: -0.01em;
+          white-space: nowrap;
+        }
+        #f1_g2_q1o {
+          color: transparent;
+          -webkit-text-stroke: 4px #FFE500;
+        }
+        #f1_g2_q1f {
+          position: absolute;
+          left: 0;
+          top: 0;
+          color: #FFE500;
+          clip-path: inset(100% 0% 0% 0%);
+        }
+        #f1_g2_q2 {
+          font-size: 200px;
+          font-weight: 800;
+          line-height: 1;
+          letter-spacing: -0.04em;
+          color: #F2F0EA;
+          white-space: nowrap;
+          display: flex;
+          align-items: center;
+        }
+        #f1_g2_q2box {
+          display: inline-block;
+          margin-left: 0.22em;
+          padding: 0.06em 0.16em 0.1em;
+          background: #FFE500;
+          color: #1E2687;
+          clip-path: inset(0% 100% 0% 0%);
+        }
+        #f1_g2_qm {
+          display: inline-block;
+          transform-origin: 50% 90%;
+        }
+      </style>
+
+      <div id="stage" data-composition-id="01-f1" data-width="1920" data-height="1080" data-duration="7.92">
+        <!-- ===================== f1_g1 · three doubts (0 → 4.09) ===================== -->
+        <div id="f1_g1" class="f1-g">
+          <div id="f1_g1_bg" class="f1-fill"></div>
+
+          <!-- s0 · 0 → 0.21 : paper ground, ink cursor -->
+          <div id="f1_g1_s0" class="f1-g1-state">
+            <div id="f1_g1_cursor"></div>
+          </div>
+
+          <!-- s1 · 0.21 : 비전공자? / NON-MAJOR (paper) -->
+          <div id="f1_g1_s1" class="f1-g1-state f1-col">
+            <div id="f1_g1_w1" class="f1-display f1-line"><span class="f1-ch f1-c1">비</span><span class="f1-ch f1-c1">전</span><span class="f1-ch f1-c1">공</span><span class="f1-ch f1-c1">자</span><span class="f1-ch f1-c1">?</span></div>
+            <div id="f1_g1_chip1" class="f1-chip f1-chip-ink">NON-MAJOR</div>
+          </div>
+
+          <!-- s2 · 1.21 : 노베이스? / ZERO BASE (ink) -->
+          <div id="f1_g1_s2" class="f1-g1-state f1-col">
+            <div id="f1_g1_w2" class="f1-display f1-line"><span class="f1-ch f1-c2">노</span><span class="f1-ch f1-c2">베</span><span class="f1-ch f1-c2">이</span><span class="f1-ch f1-c2">스</span><span class="f1-ch f1-c2">?</span></div>
+            <div id="f1_g1_chip2" class="f1-chip f1-chip-acc">ZERO BASE</div>
+          </div>
+
+          <!-- s3 · 2.16 : 통계 0? / STATS 0 (accent) -->
+          <div id="f1_g1_s3" class="f1-g1-state f1-col">
+            <div id="f1_g1_w3" class="f1-display f1-line"><span class="f1-ch f1-c3">통</span><span class="f1-ch f1-c3">계</span>&nbsp;<span class="f1-ch f1-c3 f1-mono0">0</span><span class="f1-ch f1-c3">?</span></div>
+            <div id="f1_g1_chip3" class="f1-chip f1-chip-inkacc">STATS 0</div>
+          </div>
+
+          <!-- s4 · 3.13 : sticky notes + sub (paper) -->
+          <div id="f1_g1_s4" class="f1-g1-state">
+            <div id="f1_g1_n1" class="f1-note f1-h2">비전공자?</div>
+            <div id="f1_g1_n2" class="f1-note f1-h2">노베이스?</div>
+            <div id="f1_g1_n3" class="f1-note f1-h2">통계 <span class="f1-mono0">0</span>?</div>
+            <div id="f1_g1_sub" class="f1-caption"></div>
+            <div id="f1_g1_subrule"></div>
+          </div>
+        </div>
+
+        <!-- ===================== f1_g2 · OMR facts → held question (4.09 → 7.92) ===================== -->
+        <div id="f1_g2" class="f1-g">
+          <div id="f1_g2_bg" class="f1-fill"></div>
+          <div id="f1_g2_shake">
+            <div id="f1_g2_omr" data-layout-ignore=""></div>
+
+            <div id="f1_g2_facts">
+              <div id="f1_g2_c1" class="f1-cell">
+                <div class="f1-num"><span id="f1_g2_d1" class="f1-num-d">0</span><span class="f1-num-u">문항</span></div>
+              </div>
+              <div id="f1_g2_c2" class="f1-cell">
+                <div class="f1-num"><span id="f1_g2_d2" class="f1-num-d">0</span><span class="f1-num-u">분</span></div>
+              </div>
+              <div id="f1_g2_c3" class="f1-cell">
+                <div id="f1_g2_n3">
+                  <div id="f1_g2_n3a">과목별</div>
+                  <div id="f1_g2_n3b"><span class="f1-n3-d">40%</span><span class="f1-n3-u">과락</span></div>
+                  <svg id="f1_g2_pen" viewBox="0 0 590 300" data-layout-ignore="">
+                    <path id="f1_g2_box" class="f1-pen" pathLength="1000" d="M30 26 C170 14 420 18 566 22 C572 110 566 200 560 280 C420 290 170 288 22 282 C16 200 20 110 34 18" />
+                    <path id="f1_g2_x1" class="f1-pen f1-x" pathLength="1000" d="M70 54 C210 120 380 200 524 254" />
+                    <path id="f1_g2_x2" class="f1-pen f1-x" pathLength="1000" d="M522 46 C380 118 220 196 72 262" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div id="f1_g2_q1row" class="f1-q">
+              <div class="f1-q1">
+                <span id="f1_g2_q1o" data-layout-ignore="">ADsP,</span>
+                <span id="f1_g2_q1f">ADsP,</span>
+              </div>
+            </div>
+            <div id="f1_g2_q2row" class="f1-q">
+              <div id="f1_g2_q2"><span>나도</span><span id="f1_g2_q2box">될까<span id="f1_g2_qm">?</span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // Frame 1 spans track 0.0 → 7.92, so frame-local time == track time.
+          // Beats 0.21 0.72 1.21 1.67 | 2.16 2.65 3.13 3.60 | 4.09 4.55 5.04 5.53 | 6.01 6.48 6.97 7.43
+          var ACC = "#FFE500";
+          var INK = "#1E2687";
+          var PAPER = "#F2F0EA";
+          var END = 7.92;
+          var CUT = 4.09;
+
+          // ---------- static builds (deterministic, index-derived) ----------
+          var SUB = "ADsP 준비, 이런 고민 중이라면";
+          var subEl = document.getElementById("f1_g1_sub");
+          var subHtml = "";
+          for (var i = 0; i < SUB.length; i++) {
+            var c = SUB.charAt(i) === " " ? "&nbsp;" : SUB.charAt(i);
+            subHtml += '<span id="f1_g1_tw' + i + '" class="f1-tw">' + c + "</span>";
+          }
+          if (subEl) subEl.innerHTML = subHtml;
+
+          var OMR_ROWS = 22;
+          var CIRC = ["①", "②", "③", "④"];
+          var omr = document.getElementById("f1_g2_omr");
+          var omrHtml = "";
+          for (var r = 0; r < OMR_ROWS; r++) {
+            omrHtml += '<div class="f1-omr-row" style="top:' + r * 40 + 'px"><span class="f1-omr-num">' + (r + 1) + "</span>";
+            for (var b = 0; b < 4; b++) {
+              omrHtml += '<span class="f1-omr-b">' + CIRC[b] + '<span id="f1_g2_od_' + r + "_" + b + '" class="f1-omr-dot"></span></span>';
+            }
+            omrHtml += "</div>";
+          }
+          if (omr) omr.innerHTML = omrHtml;
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ---------- group windows (0ms cut at 4.09) ----------
+          tl.set("#f1_g1", { autoAlpha: 1 }, 0);
+          tl.set("#f1_g2", { autoAlpha: 0 }, 0);
+          tl.set("#f1_g1", { autoAlpha: 0 }, CUT);
+          tl.set("#f1_g2", { autoAlpha: 1 }, CUT);
+
+          function win(id, a, b) {
+            tl.set(id, { autoAlpha: 1 }, a);
+            if (b !== undefined) tl.set(id, { autoAlpha: 0 }, b);
+          }
+          function snap(id, t, dur) {
+            tl.fromTo(id, { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: dur || 0.12, ease: "power3.out" }, t);
+          }
+          // braam-punch: hit with a 1-frame overshoot, weighted settle
+          function punch(id, t, from) {
+            tl.fromTo(id, { scale: from || 1.3 }, { scale: 0.97, duration: 0.067, ease: "power4.out", force3D: false }, t);
+            tl.fromTo(id, { scale: 0.97 }, { scale: 1, duration: 0.18, ease: "power2.out", force3D: false, immediateRender: false }, t + 0.067);
+          }
+          // seek-safe shake: fixed amplitude table
+          function shake(t, amps) {
+            amps.forEach(function (a, k) {
+              tl.to("#f1_g2_shake", { x: a, y: a * 0.6 * (k % 2 ? -1 : 1), duration: 0.033, ease: "steps(1)" }, t + k * 0.033);
+            });
+            tl.to("#f1_g2_shake", { x: 0, y: 0, duration: 0.06, ease: "power2.out" }, t + amps.length * 0.033);
+          }
+          // counting-punch: numerals swapped with tl.set
+          function count(id, t, steps) {
+            steps.forEach(function (v, k) {
+              tl.set(id, { textContent: String(v) }, t + k * 0.034);
+            });
+          }
+
+          // ===================== g1 · palette-flip (0ms) =====================
+          tl.set("#f1_g1_bg", { backgroundColor: PAPER }, 0);
+          tl.set("#f1_g1_bg", { backgroundColor: INK }, 1.21);
+          tl.set("#f1_g1_bg", { backgroundColor: ACC }, 2.16);
+          tl.set("#f1_g1_bg", { backgroundColor: PAPER }, 3.13);
+
+          tl.set("#f1_g1_s0", { autoAlpha: 1 }, 0);
+          tl.set("#f1_g1_s0", { autoAlpha: 0 }, 0.21);
+          win("#f1_g1_s1", 0.21, 1.21);
+          win("#f1_g1_s2", 1.21, 2.16);
+          win("#f1_g1_s3", 2.16, 3.13);
+          win("#f1_g1_s4", 3.13, CUT);
+
+          // s0 cursor blink
+          tl.set("#f1_g1_cursor", { opacity: 1 }, 0);
+          tl.set("#f1_g1_cursor", { opacity: 0 }, 0.1);
+
+          // s1 · 0.21 '비전공자?'
+          punch("#f1_g1_w1", 0.21, 1.32);
+          tl.fromTo(".f1-c1", { yPercent: -40 }, { yPercent: 0, duration: 0.12, ease: "power4.out", stagger: 0.016 }, 0.21);
+          snap("#f1_g1_chip1", 0.3);
+          tl.fromTo("#f1_g1_s1", { scale: 1 }, { scale: 1.035, duration: 1.0, ease: "none", force3D: false }, 0.21);
+          tl.fromTo("#f1_g1_chip1", { y: 0 }, { y: -6, duration: 0.06, ease: "power2.out", yoyo: true, repeat: 1 }, 0.72);
+
+          // s2 · 1.21 '노베이스?' on INK
+          punch("#f1_g1_w2", 1.21, 1.32);
+          tl.fromTo(".f1-c2", { yPercent: -40 }, { yPercent: 0, duration: 0.12, ease: "power4.out", stagger: 0.016 }, 1.21);
+          snap("#f1_g1_chip2", 1.3);
+          tl.fromTo("#f1_g1_s2", { scale: 1 }, { scale: 1.035, duration: 0.95, ease: "none", force3D: false }, 1.21);
+          tl.fromTo("#f1_g1_chip2", { y: 0 }, { y: -6, duration: 0.06, ease: "power2.out", yoyo: true, repeat: 1 }, 1.67);
+
+          // s3 · 2.16 '통계 0?' on ACCENT — the mono 0 lands a beat-fraction late, bigger
+          punch("#f1_g1_w3", 2.16, 1.32);
+          tl.fromTo(".f1-c3", { yPercent: -40 }, { yPercent: 0, duration: 0.12, ease: "power4.out", stagger: 0.02 }, 2.16);
+          tl.fromTo("#f1_g1_w3 .f1-mono0", { scale: 1.5, rotation: -8 }, { scale: 1, rotation: 0, duration: 0.2, ease: "back.out(3)", force3D: false }, 2.2);
+          snap("#f1_g1_chip3", 2.25);
+          tl.fromTo("#f1_g1_s3", { scale: 1 }, { scale: 1.035, duration: 0.97, ease: "none", force3D: false }, 2.16);
+          tl.fromTo("#f1_g1_w3 .f1-mono0", { y: 0 }, { y: -18, duration: 0.07, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, 2.65);
+
+          // s4 · 3.13 sticky notes (tilted) + sub types in
+          var NOTES = [
+            { id: "#f1_g1_n1", rot: -4, t: 3.13 },
+            { id: "#f1_g1_n2", rot: 3, t: 3.18 },
+            { id: "#f1_g1_n3", rot: -2, t: 3.23 },
+          ];
+          NOTES.forEach(function (n) {
+            tl.set(n.id, { opacity: 1 }, n.t);
+            tl.fromTo(n.id, { scale: 1.28, rotation: n.rot * 2.5 }, { scale: 1, rotation: n.rot, duration: 0.1, ease: "power4.out", force3D: false }, n.t);
+          });
+          for (var s = 0; s < SUB.length; s++) {
+            tl.set("#f1_g1_tw" + s, { opacity: 1 }, 3.3 + s * 0.026);
+          }
+          tl.fromTo("#f1_g1_subrule", { scaleX: 0 }, { scaleX: 1, duration: 0.14, ease: "power3.out" }, 3.6);
+          tl.fromTo("#f1_g1_n1", { y: 0 }, { y: -8, duration: 0.06, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, 3.6);
+
+          // ===================== g2 · OMR facts (INK) =====================
+          // 4.09 '50문항' (left third)
+          win("#f1_g2_c1", 4.09);
+          count("#f1_g2_d1", 4.09, [0, 7, 15, 24, 32, 39, 44, 48, 50]);
+          punch("#f1_g2_c1", 4.09, 1.2);
+          tl.fromTo("#f1_g2_c1", { y: 0 }, { y: -10, duration: 0.05, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, 4.39);
+
+          // 4.55 '90분' (middle third)
+          win("#f1_g2_c2", 4.55);
+          count("#f1_g2_d2", 4.55, [0, 12, 27, 42, 56, 68, 78, 85, 90]);
+          punch("#f1_g2_c2", 4.55, 1.2);
+          tl.fromTo("#f1_g2_c2", { y: 0 }, { y: -10, duration: 0.05, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, 4.85);
+
+          // 5.04 '과목별 40% 과락' (right third) in a red pen box, struck with a red ✕ + shake
+          win("#f1_g2_c3", 5.04);
+          punch("#f1_g2_c3", 5.04, 1.22);
+          tl.fromTo("#f1_g2_box", { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.2, ease: "power2.out" }, 5.06);
+          tl.fromTo("#f1_g2_x1", { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.1, ease: "power3.out" }, 5.28);
+          tl.fromTo("#f1_g2_x2", { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.1, ease: "power3.out" }, 5.4);
+          shake(5.04, [22, -18, 15, -12, 9, -6, 3]);
+          shake(5.5, [8, -6, 4, -2]);
+
+          // 6.01 facts shrink into a caption row at y≈880; kick roll begins
+          tl.fromTo("#f1_g2_facts", { scale: 1, y: 0 }, { scale: 0.36, y: 410, duration: 0.24, ease: "power3.inOut", force3D: false }, 6.01);
+
+          // OMR bubbles marked one per kick in the roll (accumulate)
+          var MARKS = [
+            { t: 4.09, r: 2, b: 1 },
+            { t: 4.55, r: 5, b: 3 },
+            { t: 5.04, r: 8, b: 0 },
+            { t: 6.01, r: 11, b: 2 },
+            { t: 6.48, r: 13, b: 1 },
+            { t: 6.97, r: 15, b: 3 },
+            { t: 7.2, r: 17, b: 0 },
+            { t: 7.43, r: 19, b: 2 },
+            { t: 7.66, r: 21, b: 1 },
+          ];
+          MARKS.forEach(function (m) {
+            var id = "#f1_g2_od_" + m.r + "_" + m.b;
+            tl.set(id, { opacity: 1 }, m.t);
+            tl.fromTo(id, { scale: 1.6 }, { scale: 1, duration: 0.08, ease: "power3.out", immediateRender: false }, m.t);
+          });
+
+          // 6.48 'ADsP,' — outline punches in, fill rises (outline-to-fill)
+          win("#f1_g2_q1row", 6.48);
+          punch("#f1_g2_q1row", 6.48, 1.35);
+          tl.fromTo("#f1_g2_q1f", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.3, ease: "expo.out" }, 6.56);
+
+          // 6.97 '나도 될까?' — '될까?' accent label box snaps from the left; HOLD to the end
+          win("#f1_g2_q2row", 6.97);
+          punch("#f1_g2_q2row", 6.97, 1.28);
+          snap("#f1_g2_q2box", 7.02, 0.12);
+          tl.set("#f1_g2_q2box", { clipPath: "none" }, 7.3);
+
+          // 7.43 micro shake + the question mark bounces
+          shake(7.43, [10, -8, 6, -4, 2]);
+          tl.fromTo("#f1_g2_qm", { y: 0, rotation: 0 }, { y: -46, rotation: 10, duration: 0.1, ease: "power3.out", force3D: false }, 7.43);
+          tl.fromTo("#f1_g2_qm", { y: -46, rotation: 10 }, { y: 0, rotation: 0, duration: 0.28, ease: "bounce.out", force3D: false, immediateRender: false }, 7.53);
+
+          // hold through the last frame (end marker keeps duration == span)
+          tl.set("#f1_g2", { autoAlpha: 1 }, END - 0.001);
+
+          window.__timelines["01-f1"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>
