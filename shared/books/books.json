@@ -14,7 +14,7 @@
       1080,
       1476
     ],
-    "cover": "shared/books/covers/9791124516034.jpg",
+    "cover": "shared\\books\\covers\\9791124516034.jpg",
     "badges": [
       "BEST"
     ],
@@ -59,7 +59,7 @@
       1080,
       1528
     ],
-    "cover": "shared/books/covers/9791124516096.jpg",
+    "cover": "shared\\books\\covers\\9791124516096.jpg",
     "badges": []
   },
   {
@@ -78,7 +78,7 @@
       1080,
       1476
     ],
-    "cover": "shared/books/covers/9791124516133.jpg",
+    "cover": "shared\\books\\covers\\9791124516133.jpg",
     "badges": [
       "BEST"
     ],
@@ -120,7 +120,7 @@
       1080,
       1543
     ],
-    "cover": "shared/books/covers/9791124516171.jpg",
+    "cover": "shared\\books\\covers\\9791124516171.jpg",
     "badges": []
   },
   {
@@ -138,7 +138,7 @@
       1080,
       1477
     ],
-    "cover": "shared/books/covers/9791124516195.jpg",
+    "cover": "shared\\books\\covers\\9791124516195.jpg",
     "badges": [],
     "title": "요즘 바이브 코딩 하네스 with 클로드 코드",
     "series_label": "요즘 바이브 코딩",
@@ -159,7 +159,7 @@
       1080,
       1387
     ],
-    "cover": "shared/books/covers/9791124516218.jpg",
+    "cover": "shared\\books\\covers\\9791124516218.jpg",
     "badges": [],
     "title": "유튜브 AI 비서 고용하기 제미나이 X 노트북LM X 구글 스프레드시트",
     "series_label": "AI 비서",
@@ -181,7 +181,7 @@
       1080,
       1528
     ],
-    "cover": "shared/books/covers/9791124516256.jpg",
+    "cover": "shared\\books\\covers\\9791124516256.jpg",
     "badges": []
   },
   {
@@ -221,7 +221,7 @@
       1080,
       1476
     ],
-    "cover": "shared/books/covers/9791124516294.jpg",
+    "cover": "shared\\books\\covers\\9791124516294.jpg",
     "badges": [],
     "title": "바로바로 챗GPT X 덕테이프 X 코덱스",
     "series_label": "바로바로",
@@ -291,7 +291,7 @@
       1080,
       1476
     ],
-    "cover": "shared/books/covers/9791124516478.jpg"
+    "cover": "shared\\books\\covers\\9791124516478.jpg"
   },
   {
     "isbn": "9791124516515",
@@ -377,7 +377,7 @@
       1080,
       1599
     ],
-    "cover": "shared/books/covers/9791124516591.jpg",
+    "cover": "shared\\books\\covers\\9791124516591.jpg",
     "badges": []
   },
   {
@@ -441,7 +441,7 @@
       1080,
       1597
     ],
-    "cover": "shared/books/covers/9791124516652.jpg",
+    "cover": "shared\\books\\covers\\9791124516652.jpg",
     "badges": [
       "Coming Soon"
     ],
@@ -479,7 +479,7 @@
       1080,
       1387
     ],
-    "cover": "shared/books/covers/9791124516690.jpg"
+    "cover": "shared\\books\\covers\\9791124516690.jpg"
   },
   {
     "isbn": "9791124516713",
@@ -508,13 +508,13 @@
       1080,
       1476
     ],
-    "cover": "shared/books/covers/9791124516713.jpg"
+    "cover": "shared\\books\\covers\\9791124516713.jpg"
   },
   {
     "isbn": "9791124516737",
     "title": "이게 되네? 힉스필드 AI 영상 만들기 캡컷·수노",
     "badges": [
-      "NEW"
+      "BEST"
     ],
     "series_label": "이게 되네?",
     "author_card": "신무경, 여승호",
@@ -532,7 +532,7 @@
       1080,
       1476
     ],
-    "cover": "shared/books/covers/9791124516737.jpg"
+    "cover": "shared\\books\\covers\\9791124516737.jpg"
   },
   {
     "isbn": "9791124516799",
@@ -555,7 +555,7 @@
       1080,
       1476
     ],
-    "cover": "shared/books/covers/9791124516799.jpg"
+    "cover": "shared\\books\\covers\\9791124516799.jpg"
   },
   {
     "isbn": "9791194383475",
@@ -572,7 +572,7 @@
       1080,
       1544
     ],
-    "cover": "shared/books/covers/9791194383475.jpg",
+    "cover": "shared\\books\\covers\\9791194383475.jpg",
     "badges": [
       "BEST"
     ],
@@ -598,8 +598,29 @@
       898,
       1329
     ],
-    "cover": "shared/books/covers/9791194383598.jpg",
+    "cover": "shared\\books\\covers\\9791194383598.jpg",
     "badges": []
+  },
+  {
+    "isbn": "9791194383697",
+    "title_full": "2026 ADsP 빠르게 따는 방법 - 빠따 시리즈 (이론+족보+기출)",
+    "authors": [
+      "임한울",
+      "조영훈",
+      "이유성"
+    ],
+    "published": "2026-01-12",
+    "cover_id": "1BTEf6sVq5Fx-eE0uUvzmCC5z3Guir_od",
+    "price": 30000,
+    "availability": "InStock",
+    "description": "ADsP 데이터분석준전문가 자격증을 빠르게 취득하세요! 노베이스 비전공자도 OK. 웹 CBT 제공, 시험 직전 Live 특강으로 합격률 극대화.",
+    "cover_size": [
+      1080,
+      1476
+    ],
+    "cover": "shared\\books\\covers\\9791194383697.jpg",
+    "badges": [],
+    "title": "2026 ADsP 빠르게 따는 방법"
   },
   {
     "isbn": "9791194383796",
@@ -617,7 +638,7 @@
       1080,
       1476
     ],
-    "cover": "shared/books/covers/9791194383796.jpg",
+    "cover": "shared\\books\\covers\\9791194383796.jpg",
     "badges": [
       "BEST"
     ],
@@ -658,7 +679,7 @@
       1080,
       1529
     ],
-    "cover": "shared/books/covers/9791194383895.jpg",
+    "cover": "shared\\books\\covers\\9791194383895.jpg",
     "badges": [],
     "title": "AI 국부론",
     "author_card": "이승현"
@@ -679,7 +700,7 @@
       1080,
       1599
     ],
-    "cover": "shared/books/covers/9791194383932.jpg",
+    "cover": "shared\\books\\covers\\9791194383932.jpg",
     "badges": [],
     "series_label": "그랑프리 블랙북",
     "author_card": "윤재수"
@@ -699,7 +720,7 @@
       1080,
       1476
     ],
-    "cover": "shared/books/covers/pre_aiyle0zs.jpg",
+    "cover": "shared\\books\\covers\\pre_aiyle0zs.jpg",
     "badges": [],
     "title": "돈이 되네? 수익과 성장이 동시에 터지는 네이버 블로그",
     "series_label": "돈이 되네?",
