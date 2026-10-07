@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>01-f1 · HOOK — search autocomplete</title>
+    <!-- Source metadata only. The runtime clones the <template> contents; everything renderable lives there. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        /* Root: plain #stage (the compiler scopes CSS and moves data-composition-id to the host). */
+        #stage {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #1E2687;
+          font-family: "Paperlogy", sans-serif;
+          color: #1E2687;
+        }
+        #f1_bg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          background: #1E2687;
+        }
+        #f1_bg svg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          display: block;
+        }
+        .f1-group {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        /* g1 is the t=0 state (a tl.set at exactly 0 does not fire on seek 0) */
+        #f1_g1 { visibility: inherit; opacity: 1; }
+        #f1_g2 { visibility: hidden; opacity: 0; }
+
+        /* ---------- search bar (original generic design) ---------- */
+        .f1-bar {
+          position: absolute;
+          left: 410px;
+          top: 240px;
+          width: 1100px;
+          height: 120px;
+          box-sizing: border-box;
+          border-radius: 60px;
+          background: #F2F0EA;
+          box-shadow: 6px 6px 0px #FFE500;
+          transform-origin: 50% 50%;
+        }
+        #f1_g1_bar {
+          opacity: 0;
+          transform: translateY(70px);
+        }
+        .f1-bar-icon {
+          position: absolute;
+          left: 46px;
+          top: 38px;
+          width: 44px;
+          height: 44px;
+          display: block;
+        }
+        .f1-query {
+          position: absolute;
+          left: 122px;
+          top: 0;
+          height: 120px;
+          display: flex;
+          align-items: center;
+          white-space: pre;
+          font-weight: 800;
+          font-size: 58px;
+          letter-spacing: -0.02em;
+          line-height: 1;
+        }
+        .f1-qtext {
+          display: inline-block;
+          white-space: pre;
+        }
+        #f1_g1 .f1-ch { display: none; }
+        #f1_g2 .f1-ch { display: inline; }
+        .f1-ulwrap {
+          position: relative;
+          display: inline;
+        }
+        .f1-ul {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: -10px;
+          height: 5px;
+          background: #FFE500;
+          transform-origin: 0% 50%;
+        }
+        #f1_g1_ul { transform: scaleX(0); }
+        .f1-caret {
+          display: inline-block;
+          width: 4px;
+          height: 64px;
+          margin-left: 6px;
+          background: #1E2687;
+        }
+        #f1_g2_caret { opacity: 0; }
+
+        /* ---------- autocomplete dropdown ---------- */
+        .f1-panel {
+          position: absolute;
+          left: 410px;
+          top: 376px;
+          width: 1100px;
+          height: 392px;
+          background: #F2F0EA;
+          transform-origin: 50% 0%;
+        }
+        #f1_g1_panel { visibility: hidden; opacity: 0; }
+        .f1-row {
+          position: absolute;
+          left: 410px;
+          width: 1100px;
+          height: 92px;
+          isolation: isolate;
+        }
+        #f1_g1 .f1-row { visibility: hidden; opacity: 0; }
+        .f1-row.f1-div::before {
+          content: "";
+          position: absolute;
+          left: 44px;
+          right: 44px;
+          top: -1px;
+          height: 2px;
+          background: rgba(30, 38, 135, 0.22);
+        }
+        .f1-row-icon {
+          position: absolute;
+          left: 50px;
+          top: 31px;
+          width: 30px;
+          height: 30px;
+          display: block;
+          opacity: 0.55;
+        }
+        .f1-row-text {
+          position: absolute;
+          left: 108px;
+          top: 0;
+          height: 92px;
+          line-height: 92px;
+          font-weight: 500;
+          font-size: 44px;
+          letter-spacing: -0.015em;
+          white-space: nowrap;
+        }
+        .f1-hlwrap {
+          position: relative;
+          display: inline-block;
+          isolation: isolate;
+        }
+        .f1-hl {
+          position: absolute;
+          left: -10px;
+          right: -10px;
+          top: 24px;
+          height: 48px;
+          background: #FFE500;
+          z-index: -1;
+          transform-origin: 0% 50%;
+        }
+        #f1_g1_hl { transform: scaleX(0); }
+        .f1-flash {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1100px;
+          height: 92px;
+          background: #FFE500;
+          z-index: -2;
+          visibility: hidden;
+          opacity: 0;
+        }
+
+        /* ---------- cursor (drawn arrow) ---------- */
+        .f1-cursor {
+          position: absolute;
+          left: 704px;
+          top: 716px;
+          width: 46px;
+          height: 62px;
+          transform-origin: 0% 0%;
+        }
+        .f1-cursor svg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 46px;
+          height: 62px;
+          display: block;
+        }
+        #f1_g1_cursor { visibility: hidden; opacity: 0; }
+
+        /* ---------- g2: result card + camera push ---------- */
+        #f1_cam {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        #f1_card {
+          position: absolute;
+          left: 500px;
+          top: 370px;
+          width: 920px;
+          height: 420px;
+          background: #F2F0EA;
+          box-shadow: 8px 8px 0px #FFE500;
+          transform-origin: 169px 210px;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f1_cover {
+          position: absolute;
+          left: 44px;
+          top: 39px;
+          width: 250px;
+          height: 342px;
+          display: block;
+          box-shadow: 8px 8px 0px #1E2687;
+        }
+        #f1_cardtext {
+          position: absolute;
+          left: 350px;
+          top: 0;
+          width: 530px;
+          height: 420px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+        #f1_result {
+          font-weight: 800;
+          font-size: 56px;
+          line-height: 1.16;
+          letter-spacing: -0.03em;
+          white-space: nowrap;
+        }
+        #f1_meta {
+          margin-top: 26px;
+          font-weight: 500;
+          font-size: 30px;
+          line-height: 1.3;
+          opacity: 0.7;
+          white-space: nowrap;
+        }
+      </style>
+
+      <div data-hf-id="hf-q47s" id="stage" data-composition-id="01-f1" data-width="1920" data-height="1080" data-duration="7.92">
+        <!-- held INK ground + flat paper dot grid (6%) -->
+        <div id="f1_bg">
+          <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <pattern id="f1_dots" x="0" y="0" width="48" height="48" patternUnits="userSpaceOnUse">
+                <circle cx="24" cy="24" r="2.4" fill="#F2F0EA"></circle>
+              </pattern>
+            </defs>
+            <rect x="0" y="0" width="1920" height="1080" fill="url(#f1_dots)" opacity="0.06"></rect>
+          </svg>
+        </div>
+
+        <!-- ============ g1: search bar types, autocomplete stacks (0.00–4.55) ============ -->
+        <div id="f1_g1" class="f1-group">
+          <div id="f1_g1_bar" class="f1-bar">
+            <svg class="f1-bar-icon" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="18" cy="18" r="13" fill="none" stroke="#1E2687" stroke-width="5"></circle>
+              <line x1="28" y1="28" x2="40" y2="40" stroke="#1E2687" stroke-width="6" stroke-linecap="round"></line>
+            </svg>
+            <div class="f1-query"><span class="f1-qtext"><span class="f1-ch" id="f1_c0">A</span><span class="f1-ch" id="f1_c1">D</span><span class="f1-ch" id="f1_c2">s</span><span class="f1-ch" id="f1_c3">P</span><span class="f1-ch" id="f1_c4"> </span><span class="f1-ulwrap"><span class="f1-ch" id="f1_c5">비</span><span class="f1-ch" id="f1_c6">전</span><span class="f1-ch" id="f1_c7">공</span><span class="f1-ch" id="f1_c8">자</span><span class="f1-ul" id="f1_g1_ul"></span></span><span class="f1-ch" id="f1_c9"> </span><span class="f1-ch" id="f1_c10">독</span><span class="f1-ch" id="f1_c11">학</span></span><span class="f1-caret" id="f1_g1_caret"></span></div>
+          </div>
+
+          <div id="f1_g1_panel" class="f1-panel"></div>
+          <div id="f1_g1_r0" class="f1-row" style="top: 388px;">
+            <svg class="f1-row-icon" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="#1E2687" stroke-width="3.5"></circle><line x1="18.5" y1="18.5" x2="27" y2="27" stroke="#1E2687" stroke-width="4" stroke-linecap="round"></line></svg>
+            <div class="f1-row-text">ADsP 노베이스 합격</div>
+          </div>
+          <div id="f1_g1_r1" class="f1-row f1-div" style="top: 480px;">
+            <svg class="f1-row-icon" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="#1E2687" stroke-width="3.5"></circle><line x1="18.5" y1="18.5" x2="27" y2="27" stroke="#1E2687" stroke-width="4" stroke-linecap="round"></line></svg>
+            <div class="f1-row-text">ADsP 통계 몰라도</div>
+          </div>
+          <div id="f1_g1_r2" class="f1-row f1-div" style="top: 572px;">
+            <svg class="f1-row-icon" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="#1E2687" stroke-width="3.5"></circle><line x1="18.5" y1="18.5" x2="27" y2="27" stroke="#1E2687" stroke-width="4" stroke-linecap="round"></line></svg>
+            <div class="f1-row-text">ADsP 과락 40%</div>
+          </div>
+          <div id="f1_g1_r3" class="f1-row f1-div" style="top: 664px;">
+            <svg class="f1-row-icon" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="#1E2687" stroke-width="3.5"></circle><line x1="18.5" y1="18.5" x2="27" y2="27" stroke="#1E2687" stroke-width="4" stroke-linecap="round"></line></svg>
+            <div class="f1-row-text"><span class="f1-hlwrap"><span class="f1-hl" id="f1_g1_hl"></span>ADsP 책 추천</span></div>
+          </div>
+
+          <div id="f1_g1_cursor" class="f1-cursor">
+            <svg viewBox="0 0 46 62" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M3 3 L3 50 L15 39 L24 58 L32 54 L23 36 L39 36 Z" fill="#1E2687" stroke="#F2F0EA" stroke-width="3.5" stroke-linejoin="round"></path>
+            </svg>
+          </div>
+        </div>
+
+        <!-- ============ g2: click → result card → camera push into the cover (4.55–7.92) ============ -->
+        <div id="f1_g2" class="f1-group">
+          <div id="f1_g2_bar" class="f1-bar">
+            <svg class="f1-bar-icon" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="18" cy="18" r="13" fill="none" stroke="#1E2687" stroke-width="5"></circle>
+              <line x1="28" y1="28" x2="40" y2="40" stroke="#1E2687" stroke-width="6" stroke-linecap="round"></line>
+            </svg>
+            <div class="f1-query"><span class="f1-qtext"><span class="f1-ch">A</span><span class="f1-ch">D</span><span class="f1-ch">s</span><span class="f1-ch">P</span><span class="f1-ch"> </span><span class="f1-ulwrap"><span class="f1-ch">비</span><span class="f1-ch">전</span><span class="f1-ch">공</span><span class="f1-ch">자</span><span class="f1-ul" id="f1_g2_ul"></span></span><span class="f1-ch"> </span><span class="f1-ch">독</span><span class="f1-ch">학</span></span><span class="f1-caret" id="f1_g2_caret"></span></div>
+          </div>
+
+          <div id="f1_g2_panel" class="f1-panel"></div>
+          <div id="f1_g2_r0" class="f1-row" style="top: 388px;">
+            <svg class="f1-row-icon" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="#1E2687" stroke-width="3.5"></circle><line x1="18.5" y1="18.5" x2="27" y2="27" stroke="#1E2687" stroke-width="4" stroke-linecap="round"></line></svg>
+            <div class="f1-row-text">ADsP 노베이스 합격</div>
+          </div>
+          <div id="f1_g2_r1" class="f1-row f1-div" style="top: 480px;">
+            <svg class="f1-row-icon" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="#1E2687" stroke-width="3.5"></circle><line x1="18.5" y1="18.5" x2="27" y2="27" stroke="#1E2687" stroke-width="4" stroke-linecap="round"></line></svg>
+            <div class="f1-row-text">ADsP 통계 몰라도</div>
+          </div>
+          <div id="f1_g2_r2" class="f1-row f1-div" style="top: 572px;">
+            <svg class="f1-row-icon" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="#1E2687" stroke-width="3.5"></circle><line x1="18.5" y1="18.5" x2="27" y2="27" stroke="#1E2687" stroke-width="4" stroke-linecap="round"></line></svg>
+            <div class="f1-row-text">ADsP 과락 40%</div>
+          </div>
+          <div id="f1_g2_r3" class="f1-row f1-div" style="top: 664px;">
+            <div class="f1-flash" id="f1_g2_flash"></div>
+            <svg class="f1-row-icon" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="#1E2687" stroke-width="3.5"></circle><line x1="18.5" y1="18.5" x2="27" y2="27" stroke="#1E2687" stroke-width="4" stroke-linecap="round"></line></svg>
+            <div class="f1-row-text"><span class="f1-hlwrap"><span class="f1-hl" id="f1_g2_hl"></span>ADsP 책 추천</span></div>
+          </div>
+
+          <div id="f1_g2_cursor" class="f1-cursor">
+            <svg viewBox="0 0 46 62" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M3 3 L3 50 L15 39 L24 58 L32 54 L23 36 L39 36 Z" fill="#1E2687" stroke="#F2F0EA" stroke-width="3.5" stroke-linejoin="round"></path>
+            </svg>
+          </div>
+
+          <div id="f1_cam">
+            <div id="f1_card">
+              <img id="f1_cover" src="assets/covers/9791194383697.jpg" alt="2026 빠르게 따는 ADsP 표지">
+              <div id="f1_cardtext">
+                <div id="f1_result">2026 빠르게 따는<br>ADsP</div>
+                <div id="f1_meta">골든래빗 · 임한울 외</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var FID = "01-f1";
+          var DUR = 7.92;
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ================= g1 (0.00–4.55) — visible by CSS default =================
+          // 0.00–0.40: bar rises into place with a soft spring (CSS default == from state)
+          tl.fromTo("#f1_g1_bar", { y: 70, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "back.out(1.4)", immediateRender: false }, 0);
+
+          // caret blink (0ms sets on beat / half-beat)
+          tl.set("#f1_g1_caret", { opacity: 0 }, 0.46);
+          tl.set("#f1_g1_caret", { opacity: 1 }, 0.72);
+          var blink = [2.40, 2.65, 2.89, 3.13, 3.37, 3.60, 3.85, 4.09, 4.32];
+          blink.forEach(function (t, i) {
+            tl.set("#f1_g1_caret", { opacity: i % 2 === 0 ? 0 : 1 }, t);
+          });
+
+          // 0.72→2.16: query types in, chars spread evenly (12 chars, last lands on 2.16)
+          var NCH = 12;
+          var step = (2.16 - 0.72) / (NCH - 1);
+          for (var i = 0; i < NCH; i++) {
+            tl.set("#f1_c" + i, { display: "inline" }, 0.72 + i * step);
+          }
+          // '비전공자' accent underline once '자' has landed
+          tl.fromTo("#f1_g1_ul", { scaleX: 0 }, { scaleX: 1, duration: 0.22, ease: "power3.out", immediateRender: false }, 0.72 + 8 * step + 0.04);
+
+          // 2.65 / 3.13 / 3.60 / 4.09: dropdown grows, one row per beat (stacked)
+          var rowT = [2.65, 3.13, 3.60, 4.09];
+          var PANEL_H = 392;
+          tl.set("#f1_g1_panel", { autoAlpha: 1, scaleY: 0 }, rowT[0]);
+          rowT.forEach(function (t, k) {
+            var sy = (12 + 92 * (k + 1) + 12) / PANEL_H;
+            tl.to("#f1_g1_panel", { scaleY: sy, duration: 0.3, ease: "power3.out" }, t);
+            tl.fromTo("#f1_g1_r" + k,
+              { autoAlpha: 0, y: -12, filter: "blur(8px)" },
+              { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "power3.out", immediateRender: false },
+              t);
+          });
+          // 4.09: accent highlight behind the last row (the only accent word)
+          tl.fromTo("#f1_g1_hl", { scaleX: 0 }, { scaleX: 1, duration: 0.2, ease: "power3.out", immediateRender: false }, 4.09 + 0.08);
+
+          // 4.24→4.50: cursor glides onto 'ADsP 책 추천'
+          tl.fromTo("#f1_g1_cursor",
+            { autoAlpha: 0, x: 200, y: 150 },
+            { autoAlpha: 1, x: 0, y: 0, duration: 0.26, ease: "power3.out", immediateRender: false },
+            4.24);
+
+          // ---- cut g1 → g2 (0ms, identical layout) ----
+          tl.set("#f1_g1", { autoAlpha: 0 }, 4.55);
+          tl.set("#f1_g2", { autoAlpha: 1 }, 4.55);
+
+          // ================= g2 (4.55–7.92) =================
+          // 4.55: click — cursor press + row flashes accent for 2 frames
+          tl.to("#f1_g2_cursor", { scale: 0.84, duration: 0.05, ease: "power2.out" }, 4.55);
+          tl.to("#f1_g2_cursor", { scale: 1, duration: 0.1, ease: "power2.out" }, 4.60);
+          tl.set("#f1_g2_flash", { autoAlpha: 1 }, 4.55);
+          tl.set("#f1_g2_flash", { autoAlpha: 0 }, 4.55 + 2 / 30);
+          tl.to("#f1_g2_cursor", { autoAlpha: 0, duration: 0.12, ease: "power2.out" }, 4.68);
+
+          // 4.68→4.93: dropdown folds up into the bar (staggered exit, bottom row first)
+          [3, 2, 1, 0].forEach(function (k, j) {
+            tl.to("#f1_g2_r" + k, { autoAlpha: 0, y: -14, duration: 0.14, ease: "power2.in" }, 4.68 + j * 0.035);
+          });
+          tl.to("#f1_g2_panel", { scaleY: 0, duration: 0.25, ease: "power3.in" }, 4.68);
+          tl.set("#f1_g2_panel", { autoAlpha: 0 }, 4.93);
+
+          // 4.78→5.04: bar slides up to y≈150 and scales 0.8
+          tl.to("#f1_g2_bar", { y: -150, scale: 0.8, duration: 0.26, ease: "power3.inOut" }, 4.78);
+
+          // 5.04: the answer card springs in centre
+          tl.fromTo("#f1_card",
+            { autoAlpha: 0, scale: 0.9, y: 40, filter: "blur(10px)" },
+            { autoAlpha: 1, scale: 1, y: 0, filter: "blur(0px)", duration: 0.5, ease: "back.out(1.6)", immediateRender: false },
+            5.04);
+
+          tl.set("#f1_card", { filter: "none" }, 5.7);
+
+          // 6.01→7.85: slow-then-fast camera push into the cover (scale around the cover centre)
+          tl.to("#f1_card", { scale: 3.1, x: 291, y: -40, duration: 1.84, ease: "power3.in" }, 6.01);
+          tl.to("#f1_g2_bar", { y: -470, duration: 1.4, ease: "power3.in" }, 6.01);
+          tl.to("#f1_cardtext", { opacity: 0, duration: 0.7, ease: "power2.in" }, 6.6);
+
+          // light 1-frame shakes on 6.97 and 7.43
+          tl.set("#f1_cam", { x: 9, y: -6 }, 6.97);
+          tl.set("#f1_cam", { x: 0, y: 0 }, 6.97 + 1 / 30);
+          tl.set("#f1_cam", { x: -8, y: 6 }, 7.43);
+          tl.set("#f1_cam", { x: 0, y: 0 }, 7.43 + 1 / 30);
+
+          // hold the cover large and centred into the hard cut
+          tl.set({}, {}, DUR);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines[FID] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

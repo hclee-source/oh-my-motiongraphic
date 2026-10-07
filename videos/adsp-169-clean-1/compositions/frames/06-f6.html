@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <!-- Frame 6 — f6 · track 31.21–40.85 (9.64s) · beat_cut · finale: 3D book + stat cards → lockup → icon burst. Head is source metadata only. -->
+  </head>
+  <body>
+    <template id="06-f6-template">
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        /* ---------- root (plain #stage); INK ground from t=0 ---------- */
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #1E2687;
+          color: #F2F0EA;
+          font-family: "Paperlogy", sans-serif;
+        }
+        .f6-layer {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        #f6_g1, #f6_g2 { visibility: hidden; opacity: 0; }
+
+        /* ---------- 3D book (recipes/book3d.md, fN → f6; 430×588, T = 44; real back + spine images) ---------- */
+        .f6-bk-scene { position: absolute; left: 960px; top: 540px; width: 0; height: 0; perspective: 2200px; }
+        .f6-bk-shadow { position: absolute; left: -265px; top: 256px; width: 530px; height: 72px; border-radius: 50%;
+          background: rgba(6, 8, 40, 0.55); filter: blur(22px); opacity: 0; }
+        .f6-bk-book { position: absolute; left: -215px; top: -294px; width: 430px; height: 588px; transform-style: preserve-3d; }
+        .f6-bk-book > div, .f6-bk-hinge > div { position: absolute; }
+        .f6-bk-back   { inset: 0; background: #1E2687; transform: rotateY(180deg) translateZ(22px); }
+        .f6-bk-back img, .f6-bk-spine img { display: block; width: 100%; height: 100%; }
+        .f6-bk-spine  { left: 193px; top: 0; width: 44px; height: 588px; background: #1E2687; transform: rotateY(-90deg) translateZ(215px); }
+        .f6-bk-edge   { left: 193px; top: 0; width: 44px; height: 588px; transform: rotateY(90deg) translateZ(215px);
+          background: repeating-linear-gradient(90deg, #FBF8F2 0 2px, #E4DCCD 2px 3px); }
+        .f6-bk-top    { left: 0; top: 272px; width: 430px; height: 44px; transform: rotateX(90deg) translateZ(294px);
+          background: repeating-linear-gradient(0deg, #FBF8F2 0 2px, #E4DCCD 2px 3px); }
+        .f6-bk-bottom { left: 0; top: 272px; width: 430px; height: 44px; transform: rotateX(-90deg) translateZ(294px); background: #E9E1D2; }
+        .f6-bk-page   { inset: 0; background: #FBF8F2; transform: translateZ(21px); }
+        .f6-bk-hinge  { inset: 0; transform-origin: 0% 50%; transform: translateZ(22px); transform-style: preserve-3d; }
+        .f6-bk-front  { position: absolute; inset: 0; width: 430px; height: 588px; object-fit: cover; backface-visibility: hidden; }
+        .f6-bk-inside { inset: 0; background: #F2F0EA; transform: rotateY(180deg); backface-visibility: hidden; }
+
+        /* ---------- g1: stat cards (paper, 0 radius, accent hard offset shadow) ---------- */
+        .f6-card {
+          position: absolute;
+          width: 380px;
+          height: 220px;
+          box-sizing: border-box;
+          padding: 26px 30px 0;
+          background: #F2F0EA;
+          color: #1E2687;
+          box-shadow: 14px 14px 0 #FFE500;
+          transform-origin: 50% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f6_c1 { left: 250px; top: 196px; }
+        #f6_c2 { left: 250px; top: 606px; }
+        #f6_c3 { left: 1300px; top: 400px; }
+        .f6-cn {
+          position: relative;
+          display: block;
+          height: 120px;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 120px;
+          line-height: 1;
+          letter-spacing: -0.02em;
+        }
+        .f6-cv {
+          position: absolute;
+          left: 0;
+          top: 0;
+          white-space: nowrap;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f6-cl {
+          display: block;
+          margin-top: 18px;
+          font-weight: 800;
+          font-size: 30px;
+          line-height: 1.25;
+          letter-spacing: -0.02em;
+          white-space: nowrap;
+        }
+        #f6_s4 {
+          position: absolute;
+          left: 0;
+          top: 912px;
+          width: 1920px;
+          text-align: center;
+          font-weight: 800;
+          font-size: 34px;
+          line-height: 1.25;
+          letter-spacing: -0.01em;
+          color: #F2F0EA;
+          white-space: nowrap;
+          visibility: hidden;
+          opacity: 0;
+        }
+
+        /* ---------- g2: lockup (right column x 980–1800) ---------- */
+        .f6-mask {
+          position: absolute;
+          left: 980px;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+        .f6-mi { display: block; }
+        #f6_t1m { top: 128px; height: 100px; }
+        #f6_t1 {
+          font-weight: 800;
+          font-size: 88px;
+          line-height: 1.12;
+          letter-spacing: -0.03em;
+          color: #F2F0EA;
+        }
+        #f6_t2m { top: 226px; height: 230px; }
+        #f6_t2 {
+          font-family: "Archivo Black", sans-serif;
+          font-weight: 400;
+          font-size: 220px;
+          line-height: 1.04;
+          letter-spacing: -0.01em;
+          color: #FFE500;
+        }
+        #f6_rule {
+          position: absolute;
+          left: 984px;
+          top: 486px;
+          width: 120px;
+          height: 6px;
+          background: #FFE500;
+          transform-origin: 0% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f6_where {
+          position: absolute;
+          left: 984px;
+          top: 510px;
+          font-weight: 800;
+          font-size: 34px;
+          line-height: 1.25;
+          color: #F2F0EA;
+          white-space: nowrap;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f6_url {
+          position: absolute;
+          left: 984px;
+          top: 604px;
+          height: 72px;
+          padding: 0 24px;
+          display: flex;
+          align-items: center;
+          transform-origin: 0% 50%;
+        }
+        #f6_urlbg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background: #FFE500;
+          transform-origin: 0% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f6_urltx {
+          position: relative;
+          display: block;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 44px;
+          line-height: 1;
+          letter-spacing: 0.01em;
+          color: #1E2687;
+          white-space: nowrap;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f6_mark {
+          position: absolute;
+          left: 984px;
+          top: 760px;
+          width: 120px;
+          height: 115px;
+          display: block;
+          transform-origin: 50% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f6_brand {
+          position: absolute;
+          left: 1128px;
+          top: 788px;
+          font-weight: 800;
+          font-size: 48px;
+          line-height: 1.2;
+          letter-spacing: -0.02em;
+          color: #F2F0EA;
+          white-space: nowrap;
+          visibility: hidden;
+          opacity: 0;
+        }
+
+        /* six flat line icons (accent / paper strokes) — burst from the mark, settle on a ring */
+        .f6-ic {
+          position: absolute;
+          left: 1021px;
+          top: 795px;
+          width: 46px;
+          height: 46px;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f6-ic svg { display: block; width: 46px; height: 46px; overflow: visible; }
+      </style>
+
+      <div data-hf-id="hf-flcn" id="stage" data-composition-id="06-f6" data-width="1920" data-height="1080" data-duration="9.64">
+
+        <!-- shared 3D book: centre stage in g1, glides left for the g2 lockup -->
+        <div data-hf-id="hf-fp0a" id="f6_bookwrap" class="f6-layer">
+          <div data-hf-id="hf-qcfq" class="f6-bk-scene" id="f6_bkscene" data-layout-ignore="">
+            <div data-hf-id="hf-jvcy" class="f6-bk-shadow" id="f6_bk_shadow"></div>
+            <div data-hf-id="hf-ccmo" class="f6-bk-book" id="f6_book">
+              <div data-hf-id="hf-syew" class="f6-bk-back"><img data-hf-id="hf-azpc" src="assets/book/back.jpg" alt=""></div>
+              <div data-hf-id="hf-f1pa" class="f6-bk-spine"><img data-hf-id="hf-15ro" src="assets/book/spine.jpg" alt=""></div>
+              <div data-hf-id="hf-fhji" class="f6-bk-edge"></div>
+              <div data-hf-id="hf-0nca" class="f6-bk-top"></div>
+              <div data-hf-id="hf-767s" class="f6-bk-bottom"></div>
+              <div data-hf-id="hf-dfz8" class="f6-bk-page"></div>
+              <div data-hf-id="hf-nyc6" class="f6-bk-hinge" id="f6_bk_hinge">
+                <img data-hf-id="hf-2fzx" class="f6-bk-front" src="assets/covers/9791194383697.jpg" alt="2026 빠르게 따는 ADsP">
+                <div data-hf-id="hf-114d" class="f6-bk-inside"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- g1 · free_design · track 31.21–35.06 · stat cards pop around the book -->
+        <div data-hf-id="hf-keyh" id="f6_g1" class="f6-layer">
+          <div data-hf-id="hf-v0mc" class="f6-card" id="f6_c1"><span data-hf-id="hf-79ww" class="f6-cn" id="f6_c1n"></span><span data-hf-id="hf-pm4k" class="f6-cl">빈출 족보 테마</span></div>
+          <div data-hf-id="hf-5w3z" class="f6-card" id="f6_c2"><span data-hf-id="hf-bm05" class="f6-cn" id="f6_c2n"></span><span data-hf-id="hf-wlpr" class="f6-cl">2025 최신 기출 (회분)</span></div>
+          <div data-hf-id="hf-1xzy" class="f6-card" id="f6_c3"><span data-hf-id="hf-wexy" class="f6-cn" id="f6_c3n"></span><span data-hf-id="hf-s0ik" class="f6-cl">LEVEL 모의고사 (회분)</span></div>
+          <div data-hf-id="hf-gu64" id="f6_s4">+ 유튜브 무료 강의 · 카페 Q&amp;A</div>
+        </div>
+
+        <!-- g2 · free_design · track 35.06–40.85 · lockup + icon burst, held still from ~39.4 -->
+        <div data-hf-id="hf-qkoa" id="f6_g2" class="f6-layer">
+          <div data-hf-id="hf-izd4" class="f6-mask" id="f6_t1m"><span data-hf-id="hf-rj32" class="f6-mi" id="f6_t1">2026 빠르게 따는</span></div>
+          <div data-hf-id="hf-gpw9" class="f6-mask" id="f6_t2m"><span data-hf-id="hf-t7hl" class="f6-mi" id="f6_t2">ADsP</span></div>
+          <div data-hf-id="hf-iigq" id="f6_rule"></div>
+          <div data-hf-id="hf-npnv" id="f6_where">예스24 · 교보문고 · 알라딘</div>
+          <div data-hf-id="hf-24tn" id="f6_url"><div data-hf-id="hf-5uvy" id="f6_urlbg"></div><span data-hf-id="hf-rzhu" id="f6_urltx">goldenrabbit.co.kr</span></div>
+          <img data-hf-id="hf-8nua" id="f6_mark" src="assets/brand/icon.png" alt="">
+          <div data-hf-id="hf-jrku" id="f6_brand">골든래빗</div>
+
+          <!-- book -->
+          <div data-hf-id="hf-ttbe" class="f6-ic" id="f6_ic0"><svg data-hf-id="hf-1rsw" viewBox="0 0 60 60" fill="none" stroke="#FFE500" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-gefj" d="M30 17 C24 13 16 13 9 15 V46 C16 44 24 44 30 48 C36 44 44 44 51 46 V15 C44 13 36 13 30 17 Z" /><path data-hf-id="hf-zb9k" d="M30 17 V48" /></svg></div>
+          <!-- check -->
+          <div data-hf-id="hf-xrff" class="f6-ic" id="f6_ic1"><svg data-hf-id="hf-ax26" viewBox="0 0 60 60" fill="none" stroke="#F2F0EA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle data-hf-id="hf-7pct" cx="30" cy="30" r="21" /><path data-hf-id="hf-5k5b" d="M20 31 L27 38 L41 23" /></svg></div>
+          <!-- phone -->
+          <div data-hf-id="hf-mvxs" class="f6-ic" id="f6_ic2"><svg data-hf-id="hf-gr20" viewBox="0 0 60 60" fill="none" stroke="#FFE500" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect data-hf-id="hf-xs9k" x="18" y="8" width="24" height="44" rx="4" /><path data-hf-id="hf-ow0t" d="M27 45 H33" /></svg></div>
+          <!-- star -->
+          <div data-hf-id="hf-nnll" class="f6-ic" id="f6_ic3"><svg data-hf-id="hf-g62q" viewBox="0 0 60 60" fill="none" stroke="#F2F0EA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-p0dy" d="M30 9 L35.29 23.72 L50.92 24.2 L38.56 33.78 L42.93 48.8 L30 40 L17.07 48.8 L21.44 33.78 L9.08 24.2 L24.71 23.72 Z" /></svg></div>
+          <!-- chat -->
+          <div data-hf-id="hf-ezpq" class="f6-ic" id="f6_ic4"><svg data-hf-id="hf-fk4x" viewBox="0 0 60 60" fill="none" stroke="#FFE500" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-4jhb" d="M9 13 H51 V40 H28 L18 49 V40 H9 Z" /><path data-hf-id="hf-5m1r" d="M18 23 H42 M18 30 H34" /></svg></div>
+          <!-- stamp -->
+          <div data-hf-id="hf-ixtr" class="f6-ic" id="f6_ic5"><svg data-hf-id="hf-gkdr" viewBox="0 0 60 60" fill="none" stroke="#F2F0EA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-vezm" d="M24 9 H36 V25 H24 Z" /><path data-hf-id="hf-l3kh" d="M27 25 V33 M33 25 V33" /><path data-hf-id="hf-2rsd" d="M11 33 H49 V43 H11 Z" /><path data-hf-id="hf-w60s" d="M9 51 H51" /></svg></div>
+        </div>
+
+      </div>
+
+      <script>
+        (function () {
+          var D = 9.64;   // frame span length (track 31.21 → 40.85)
+          var T0 = 31.21; // span_sec[0]
+          function L(trackT) { return Math.round((trackT - T0) * 1000) / 1000; }
+          function R(t) { return Math.round(t * 1000) / 1000; }
+
+          // g1 anchors
+          var A_IN = L(31.21);   // 0 — book swings in
+          var A_C1 = L(32.16);   // card 1 (80)
+          var A_C2 = L(33.13);   // card 2 (4)
+          var A_C3 = L(34.09);   // card 3 (3)
+          var A_S4 = L(34.58);   // caption
+          // g2 anchors
+          var A_G2 = L(35.06);   // cards fly out, book glides left, title mask-reveal
+          var A_WH = L(36.01);   // where-to-buy
+          var A_LG = L(36.97);   // logo mark + wordmark
+          var A_URL = L(37.92);  // URL label box
+          var A_BURST = L(38.89);// icon ring burst
+          var A_STILL = L(39.4); // everything settled — hold to the end
+
+          // ---- count-up digits: pre-built stacked spans, swapped with 0ms tl.set (seek-safe) ----
+          function easeOut(p) { return 1 - Math.pow(1 - p, 3); }
+          function buildSeq(target, steps) {
+            var out = [], last = -1;
+            for (var i = 0; i <= steps; i++) {
+              var v = Math.round(target * easeOut(i / steps));
+              if (v !== last) { out.push(v); last = v; }
+            }
+            return out;
+          }
+          var COUNTS = [
+            { id: "f6_c1n", seq: buildSeq(80, 14), t: A_C1 },
+            { id: "f6_c2n", seq: [0, 1, 2, 3, 4], t: A_C2 },
+            { id: "f6_c3n", seq: [0, 1, 2, 3], t: A_C3 }
+          ];
+          for (var c = 0; c < COUNTS.length; c++) {
+            var host = document.getElementById(COUNTS[c].id);
+            host.innerHTML = "";
+            for (var s = 0; s < COUNTS[c].seq.length; s++) {
+              var sp = document.createElement("span");
+              sp.className = "f6-cv";
+              sp.id = COUNTS[c].id + "_" + s;
+              sp.textContent = String(COUNTS[c].seq[s]);
+              host.appendChild(sp);
+            }
+          }
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ---- group spans ----
+          tl.set("#f6_bookwrap", { autoAlpha: 1 }, 0);
+          tl.set("#f6_g1", { autoAlpha: 1 }, 0);
+          tl.set("#f6_g2", { autoAlpha: 0 }, 0);
+          tl.set("#f6_g2", { autoAlpha: 1 }, A_G2);       // 0ms cut in (shares the screen with g1's exit arcs)
+          tl.set("#f6_g1", { autoAlpha: 0 }, R(A_G2 + 0.7)); // g1 gone once the cards have flown off
+
+          // ---- start states ----
+          tl.set("#f6_bkscene", { x: 0 }, 0);
+          tl.set("#f6_book", { x: 760, y: 0, z: -700, rotationY: -120, rotationX: 18, scale: 1 }, 0);
+          tl.set("#f6_bk_hinge", { rotationY: 0 }, 0);
+          tl.set("#f6_bk_shadow", { scaleX: 0.3, opacity: 0 }, 0);
+          tl.set(["#f6_c1", "#f6_c2", "#f6_c3"], { autoAlpha: 0, scale: 0.55, x: 0, y: 0, rotation: 0 }, 0);
+          tl.set("#f6_s4", { autoAlpha: 0, y: 30 }, 0);
+          for (c = 0; c < COUNTS.length; c++) {
+            for (s = 0; s < COUNTS[c].seq.length; s++) tl.set("#" + COUNTS[c].id + "_" + s, { autoAlpha: 0 }, 0);
+          }
+          tl.set(["#f6_t1", "#f6_t2"], { yPercent: 105 }, 0);
+          tl.set("#f6_rule", { autoAlpha: 0, scaleX: 0 }, 0);
+          tl.set("#f6_where", { autoAlpha: 0, y: 26 }, 0);
+          tl.set("#f6_urlbg", { autoAlpha: 0, scaleX: 0 }, 0);
+          tl.set("#f6_urltx", { autoAlpha: 0 }, 0);
+          tl.set("#f6_url", { y: 0 }, 0);
+          tl.set("#f6_mark", { autoAlpha: 0, scale: 0, rotation: -24 }, 0);
+          tl.set("#f6_brand", { autoAlpha: 0, x: -24 }, 0);
+          for (var k = 0; k < 6; k++) tl.set("#f6_ic" + k, { autoAlpha: 0, x: 0, y: 0, scale: 0.2, rotation: 0 }, 0);
+
+          // ================= g1 =================
+          // 31.21 — book3d ENTER: swings in from the right, landing in the rest pose
+          tl.to("#f6_book", { x: 0, z: 0, rotationY: -28, rotationX: 8, duration: 0.62, ease: "expo.out" }, A_IN);
+          tl.to("#f6_bk_shadow", { scaleX: 1, opacity: 1, duration: 0.62, ease: "expo.out" }, A_IN);
+
+          // idle sway ±4° (2 beats each, explicit tweens, ends before the glide)
+          var SW = [[0.62, 1.56, -24], [1.56, 2.5, -32], [2.5, 3.45, -26]];
+          for (var w = 0; w < SW.length; w++) {
+            tl.to("#f6_book", { rotationY: SW[w][2], y: (w % 2 === 0) ? -6 : 0, duration: R(SW[w][1] - SW[w][0]), ease: "sine.inOut" }, SW[w][0]);
+          }
+
+          // stat cards: overlay-pop + 3d-card-flip-ish tilt settle, count-up swaps
+          var CARDS = [
+            { id: "#f6_c1", t: A_C1, rot: -3, ry: -70 },
+            { id: "#f6_c2", t: A_C2, rot: 2, ry: -70 },
+            { id: "#f6_c3", t: A_C3, rot: -2, ry: 70 }
+          ];
+          for (var i = 0; i < CARDS.length; i++) {
+            var cd = CARDS[i];
+            tl.set(cd.id, { autoAlpha: 1, rotationY: cd.ry, transformPerspective: 900 }, R(cd.t - 0.04));
+            tl.to(cd.id, { scale: 1, rotation: cd.rot, duration: 0.36, ease: "back.out(2.2)" }, R(cd.t - 0.04));
+            tl.to(cd.id, { rotationY: 0, duration: 0.42, ease: "power3.out" }, R(cd.t - 0.04));
+            // count-up: 0ms swaps
+            var seq = COUNTS[i].seq, step = seq.length > 6 ? 0.03 : 0.07;
+            for (s = 0; s < seq.length; s++) {
+              var ts = R(cd.t + s * step);
+              if (s > 0) tl.set("#" + COUNTS[i].id + "_" + (s - 1), { autoAlpha: 0 }, ts);
+              tl.set("#" + COUNTS[i].id + "_" + s, { autoAlpha: 1 }, ts);
+            }
+            // landing punch on the final value
+            var tEnd = R(cd.t + (seq.length - 1) * step);
+            tl.fromTo("#" + COUNTS[i].id, { scale: 1.12 }, { scale: 1, duration: 0.24, ease: "power3.out", immediateRender: false, transformOrigin: "0% 100%" }, tEnd);
+          }
+
+          // 34.58 — caption along the bottom
+          tl.to("#f6_s4", { autoAlpha: 1, y: 0, duration: 0.3, ease: "power3.out" }, R(A_S4 - 0.06));
+
+          // ================= g2 =================
+          // 35.06 — staggered exit: cards fly off on parabolic arcs, caption drops
+          var EXIT = [
+            { id: "#f6_c1", x: -620, up: -150, dn: 760, rot: -38 },
+            { id: "#f6_c2", x: -560, up: -110, dn: 620, rot: -30 },
+            { id: "#f6_c3", x: 680, up: -170, dn: 760, rot: 36 }
+          ];
+          for (i = 0; i < EXIT.length; i++) {
+            var ex = EXIT[i], te = R(A_G2 + i * 0.05);
+            tl.to(ex.id, { x: ex.x, rotation: ex.rot, duration: 0.55, ease: "power1.in" }, te);
+            tl.to(ex.id, { y: ex.up, duration: 0.18, ease: "power2.out" }, te);
+            tl.to(ex.id, { y: ex.dn, duration: 0.37, ease: "power2.in" }, R(te + 0.18));
+          }
+          tl.to("#f6_s4", { autoAlpha: 0, y: 60, duration: 0.22, ease: "power2.in" }, A_G2);
+
+          // book glides left to x≈560 and scales up slightly, back to the rest pose
+          tl.to("#f6_bkscene", { x: -400, duration: 0.75, ease: "power3.inOut" }, A_G2);
+          tl.to("#f6_book", { scale: 1.08, rotationY: -28, rotationX: 8, y: 0, duration: 0.75, ease: "power3.inOut" }, A_G2);
+          tl.to("#f6_bk_shadow", { scaleX: 1.08, duration: 0.75, ease: "power3.inOut" }, A_G2);
+
+          // title mask-reveal
+          tl.to("#f6_t1", { yPercent: 0, duration: 0.55, ease: "expo.out" }, R(A_G2 + 0.08));
+          tl.to("#f6_t2", { yPercent: 0, duration: 0.6, ease: "expo.out" }, R(A_G2 + 0.18));
+
+          // idle sway after the glide — ends exactly in the rest pose at the hold point
+          var SW2 = [[4.6, 5.55, -24, -6], [5.55, 6.5, -31, 0], [6.5, 7.45, -25, -5], [7.45, A_STILL, -28, 0]];
+          for (w = 0; w < SW2.length; w++) {
+            tl.to("#f6_book", { rotationY: SW2[w][2], y: SW2[w][3], duration: R(SW2[w][1] - SW2[w][0]), ease: "sine.inOut" }, SW2[w][0]);
+          }
+
+          // 36.01 — where-to-buy with the accent rule
+          tl.set("#f6_rule", { autoAlpha: 1 }, R(A_WH - 0.04));
+          tl.to("#f6_rule", { scaleX: 1, duration: 0.24, ease: "power3.out" }, R(A_WH - 0.04));
+          tl.to("#f6_where", { autoAlpha: 1, y: 0, duration: 0.32, ease: "power3.out" }, A_WH);
+
+          // 36.97 — gold mark pops, wordmark slides in beside it
+          tl.set("#f6_mark", { autoAlpha: 1 }, A_LG);
+          tl.to("#f6_mark", { scale: 1, rotation: 0, duration: 0.42, ease: "back.out(2.2)" }, A_LG);
+          tl.to("#f6_brand", { autoAlpha: 1, x: 0, duration: 0.32, ease: "power3.out" }, R(A_LG + 0.08));
+
+          // 37.92 — URL label box snaps open from the left, text appears inside
+          tl.set("#f6_urlbg", { autoAlpha: 1 }, A_URL);
+          tl.to("#f6_urlbg", { scaleX: 1, duration: 0.12, ease: "power2.out" }, A_URL);
+          tl.set("#f6_urltx", { autoAlpha: 1 }, R(A_URL + 0.08));
+          tl.fromTo("#f6_url", { y: 10 }, { y: 0, duration: 0.3, ease: "back.out(2)", immediateRender: false }, A_URL);
+
+          // 38.89 — six line icons burst from the mark and settle on an ellipse around the logo row
+          // ring centre (1150, 818), rx 300, ry 104; icon home (left/top 1021/795 → centre 1044, 818)
+          var RING = [[1450, 818], [1300, 922], [1000, 922], [850, 818], [1000, 714], [1300, 714]];
+          for (k = 0; k < 6; k++) {
+            var tk = R(A_BURST + k * 0.02);
+            var dx = RING[k][0] - 1044, dy = RING[k][1] - 818;
+            tl.set("#f6_ic" + k, { autoAlpha: 1 }, tk);
+            tl.to("#f6_ic" + k, { x: dx, y: dy, scale: 1, rotation: (k % 2 === 0 ? 360 : -360), duration: 0.4, ease: "back.out(1.6)" }, tk);
+          }
+          // mark punches on the burst
+          tl.to("#f6_mark", { scale: 1.12, duration: 0.08, ease: "power2.out" }, A_BURST);
+          tl.to("#f6_mark", { scale: 1, duration: 0.3, ease: "power3.out" }, R(A_BURST + 0.08));
+
+          // final pose composed and held still from ~39.4 s (local 8.19) to the end — no tweens after this point
+          tl.set("#f6_g2", { autoAlpha: 1 }, D); // no-op marker: pins the timeline length to the span
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["06-f6"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

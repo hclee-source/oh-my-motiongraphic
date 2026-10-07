@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>04-f4 · 손안의 CBT</title>
+    <!-- Source metadata only. The runtime clones the <template> contents; everything renderable lives there. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        /* Root: plain #stage (the compiler scopes CSS and moves data-composition-id to the host). */
+        #stage {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #1E2687;
+          font-family: "Paperlogy", sans-serif;
+        }
+        #f4_bg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          background: #1E2687;
+        }
+        #f4_g1 {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f4-anchor {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 0;
+          height: 0;
+        }
+
+        /* ---------- phone mockup (original drawing) ---------- */
+        #f4_phonepos {
+          left: 520px;
+          top: 540px;
+        }
+        #f4_phone {
+          position: absolute;
+          left: -200px;
+          top: -410px;
+          width: 400px;
+          height: 820px;
+          box-sizing: border-box;
+          border-radius: 58px;
+          background: #1E2687;
+          border: 3px solid #F2F0EA;
+          box-shadow: 18px 18px 0px #FFE500;
+          transform-origin: 50% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f4_screen {
+          position: absolute;
+          left: 14px;
+          top: 14px;
+          width: 366px;
+          height: 786px;
+          border-radius: 42px;
+          background: #F2F0EA;
+          overflow: hidden;
+          color: #1E2687;
+        }
+        .f4-notch {
+          position: absolute;
+          left: 128px;
+          top: 14px;
+          width: 110px;
+          height: 26px;
+          border-radius: 13px;
+          background: #1E2687;
+        }
+        .f4-ptitle {
+          position: absolute;
+          left: 24px;
+          top: 60px;
+          font-weight: 800;
+          font-size: 21px;
+          line-height: 30px;
+          white-space: nowrap;
+        }
+        .f4-timerbox {
+          position: absolute;
+          right: 22px;
+          top: 58px;
+          height: 34px;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .f4-timerbox svg {
+          width: 22px;
+          height: 22px;
+          display: block;
+        }
+        #f4_timer {
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 24px;
+          line-height: 34px;
+          letter-spacing: 0.02em;
+          white-space: nowrap;
+        }
+        .f4-divider {
+          position: absolute;
+          left: 24px;
+          top: 106px;
+          width: 318px;
+          height: 2px;
+          background: rgba(30, 38, 135, 0.16);
+        }
+        .f4-qpanel {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 366px;
+          height: 786px;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f4-qtext {
+          position: absolute;
+          left: 24px;
+          top: 128px;
+          width: 318px;
+          font-weight: 500;
+          font-size: 26px;
+          line-height: 1.42;
+          letter-spacing: -0.01em;
+          word-break: keep-all;
+        }
+        .f4-qnum {
+          position: absolute;
+          left: 24px;
+          top: 128px;
+          font-weight: 500;
+          font-size: 26px;
+          line-height: 37px;
+        }
+        .f4-qbar {
+          position: absolute;
+          height: 16px;
+          border-radius: 8px;
+          background: rgba(30, 38, 135, 0.14);
+        }
+        .f4-opt {
+          position: absolute;
+          left: 24px;
+          width: 318px;
+          height: 56px;
+        }
+        .f4-bub {
+          position: absolute;
+          left: 0;
+          top: 5px;
+          width: 46px;
+          height: 46px;
+          box-sizing: border-box;
+          border-radius: 50%;
+          border: 3px solid #1E2687;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 20px;
+          line-height: 40px;
+          text-align: center;
+        }
+        .f4-mark {
+          position: absolute;
+          left: 0;
+          top: 5px;
+          width: 46px;
+          height: 46px;
+          border-radius: 50%;
+          background: #1E2687;
+          color: #F2F0EA;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 20px;
+          line-height: 46px;
+          text-align: center;
+          transform-origin: 50% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f4-obar {
+          position: absolute;
+          left: 64px;
+          top: 20px;
+          height: 16px;
+          border-radius: 8px;
+          background: rgba(30, 38, 135, 0.14);
+        }
+        .f4-toast {
+          position: absolute;
+          left: 24px;
+          top: 594px;
+          width: 318px;
+          height: 62px;
+          box-sizing: border-box;
+          border-radius: 18px;
+          background: #1E2687;
+          color: #F2F0EA;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 0 20px;
+          font-weight: 800;
+          font-size: 22px;
+          line-height: 1;
+          white-space: nowrap;
+          transform-origin: 50% 100%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f4-toast svg {
+          width: 30px;
+          height: 30px;
+          display: block;
+          flex: none;
+        }
+        .f4-tool {
+          position: absolute;
+          top: 684px;
+          width: 96px;
+          height: 64px;
+        }
+        .f4-toolbtn,
+        .f4-toolon {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 96px;
+          height: 64px;
+          box-sizing: border-box;
+          border-radius: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .f4-toolbtn {
+          border: 2px solid rgba(30, 38, 135, 0.45);
+          color: rgba(30, 38, 135, 0.55);
+        }
+        .f4-toolon {
+          background: #1E2687;
+          border: 2px solid #1E2687;
+          color: #F2F0EA;
+          transform-origin: 50% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f4-toolbtn svg,
+        .f4-toolon svg {
+          width: 32px;
+          height: 32px;
+          display: block;
+        }
+        .f4-home {
+          position: absolute;
+          left: 123px;
+          top: 764px;
+          width: 120px;
+          height: 6px;
+          border-radius: 3px;
+          background: rgba(30, 38, 135, 0.3);
+        }
+
+        /* ---------- right column copy (vertically centred on the phone, y = 540) ---------- */
+        /* state A (19.46–22.31): t1 + t2 stack, block ≈ 380–714 */
+        #f4_t1 {
+          position: absolute;
+          left: 920px;
+          top: 380px;
+          font-weight: 800;
+          font-size: 150px;
+          line-height: 1;
+          letter-spacing: -0.04em;
+          color: #F2F0EA;
+          white-space: nowrap;
+          display: flex;
+          align-items: center;
+        }
+        .f4-ch {
+          opacity: 0;
+        }
+        #f4_caret {
+          display: block;
+          width: 10px;
+          height: 128px;
+          margin-left: 10px;
+          background: #FFE500;
+          opacity: 0;
+        }
+        #f4_t2 {
+          position: absolute;
+          left: 920px;
+          top: 550px;
+          font-weight: 400;
+          font-size: 150px;
+          line-height: 1;
+          letter-spacing: -0.03em;
+          color: #F2F0EA;
+          white-space: nowrap;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f4-ulwrap {
+          position: relative;
+          display: inline-block;
+        }
+        #f4_ul {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: -14px;
+          height: 14px;
+          background: #FFE500;
+          transform-origin: 0% 50%;
+          transform: scaleX(0);
+        }
+        /* state B (22.31→end): the counts line replaces t1 + t2, centred on y = 540 */
+        #f4_counts {
+          position: absolute;
+          left: 920px;
+          top: 465px;
+          height: 150px;
+          display: flex;
+          align-items: baseline;
+          gap: 12px;
+          white-space: nowrap;
+          color: #F2F0EA;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f4-cw {
+          font-weight: 800;
+          font-size: 72px;
+          line-height: 1;
+          letter-spacing: -0.03em;
+        }
+        .f4-cn {
+          display: inline-block;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 132px;
+          line-height: 1;
+          color: #FFE500;
+          transform-origin: 50% 70%;
+        }
+        .f4-cplus {
+          font-weight: 800;
+          font-size: 72px;
+          line-height: 1;
+          margin: 0 6px;
+          color: #FFE500;
+        }
+      </style>
+
+      <div data-hf-id="hf-k7vj" id="stage" data-composition-id="04-f4" data-width="1920" data-height="1080" data-duration="5.73">
+        <div data-hf-id="hf-n8yr" id="f4_bg"></div>
+
+        <!-- ============ g1: phone CBT (19.46–25.19) ============ -->
+        <div data-hf-id="hf-eeqy" id="f4_g1">
+          <!-- original flat phone mockup; no real app UI -->
+          <div data-hf-id="hf-cv3d" id="f4_phonepos" class="f4-anchor">
+            <div data-hf-id="hf-amua" id="f4_phone">
+              <div data-hf-id="hf-fzmm" id="f4_screen">
+                <div data-hf-id="hf-njw3" class="f4-notch"></div>
+                <div data-hf-id="hf-qwq2" class="f4-ptitle">ADsP 모의고사 1회</div>
+                <div data-hf-id="hf-awp9" class="f4-timerbox">
+                  <svg data-hf-id="hf-oxxh" viewBox="0 0 32 32" fill="none" stroke="#1E2687" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle data-hf-id="hf-fkqf" cx="16" cy="17" r="11" /><path data-hf-id="hf-mpba" d="M16 11 V17 L20 20" /><path data-hf-id="hf-94a2" d="M13 3 H19" /></svg>
+                  <div data-hf-id="hf-n142" id="f4_timer">89:59</div>
+                </div>
+                <div data-hf-id="hf-ca3e" class="f4-divider"></div>
+
+                <!-- Q1 -->
+                <div data-hf-id="hf-l7kv" id="f4_q1" class="f4-qpanel">
+                  <div data-hf-id="hf-7rc2" class="f4-qtext">Q1. 다음 중 DIKW 피라미드의 순서로 옳은 것은?</div>
+                  <div data-hf-id="hf-bnaw" class="f4-opt" style="top: 300px"><div data-hf-id="hf-31rd" class="f4-bub">1</div><div data-hf-id="hf-t5b3" class="f4-obar" style="width: 190px"></div></div>
+                  <div data-hf-id="hf-d5h9" class="f4-opt" style="top: 370px"><div data-hf-id="hf-48og" class="f4-bub">2</div><div data-hf-id="hf-gkia" class="f4-obar" style="width: 230px"></div><div data-hf-id="hf-a5hj" id="f4_m1" class="f4-mark" data-layout-allow-overlap="" data-layout-allow-occlusion="">2</div></div>
+                  <div data-hf-id="hf-ovkr" class="f4-opt" style="top: 440px"><div data-hf-id="hf-3udf" class="f4-bub">3</div><div data-hf-id="hf-5trl" class="f4-obar" style="width: 170px"></div></div>
+                  <div data-hf-id="hf-f8uh" class="f4-opt" style="top: 510px"><div data-hf-id="hf-1uua" class="f4-bub">4</div><div data-hf-id="hf-utqk" class="f4-obar" style="width: 210px"></div></div>
+                </div>
+                <!-- Q2 -->
+                <div data-hf-id="hf-cjp0" id="f4_q2" class="f4-qpanel">
+                  <div data-hf-id="hf-8e7n" class="f4-qnum">Q2.</div>
+                  <div data-hf-id="hf-pfjt" class="f4-qbar" style="left: 82px; top: 139px; width: 236px"></div>
+                  <div data-hf-id="hf-zt2o" class="f4-qbar" style="left: 24px; top: 176px; width: 300px"></div>
+                  <div data-hf-id="hf-r48s" class="f4-qbar" style="left: 24px; top: 213px; width: 168px"></div>
+                  <div data-hf-id="hf-kt5c" class="f4-opt" style="top: 300px"><div data-hf-id="hf-4iot" class="f4-bub">1</div><div data-hf-id="hf-qt2t" class="f4-obar" style="width: 220px"></div></div>
+                  <div data-hf-id="hf-nea9" class="f4-opt" style="top: 370px"><div data-hf-id="hf-81xk" class="f4-bub">2</div><div data-hf-id="hf-94se" class="f4-obar" style="width: 160px"></div></div>
+                  <div data-hf-id="hf-0jkr" class="f4-opt" style="top: 440px"><div data-hf-id="hf-8n43" class="f4-bub">3</div><div data-hf-id="hf-lzvn" class="f4-obar" style="width: 240px"></div></div>
+                  <div data-hf-id="hf-pj7h" class="f4-opt" style="top: 510px"><div data-hf-id="hf-wdae" class="f4-bub">4</div><div data-hf-id="hf-vhcv" class="f4-obar" style="width: 190px"></div><div data-hf-id="hf-di7k" id="f4_m2" class="f4-mark" data-layout-allow-overlap="" data-layout-allow-occlusion="">4</div></div>
+                </div>
+                <!-- Q3 -->
+                <div data-hf-id="hf-99dp" id="f4_q3" class="f4-qpanel">
+                  <div data-hf-id="hf-86qe" class="f4-qnum">Q3.</div>
+                  <div data-hf-id="hf-pzhe" class="f4-qbar" style="left: 82px; top: 139px; width: 200px"></div>
+                  <div data-hf-id="hf-waf9" class="f4-qbar" style="left: 24px; top: 176px; width: 284px"></div>
+                  <div data-hf-id="hf-6tqf" class="f4-qbar" style="left: 24px; top: 213px; width: 220px"></div>
+                  <div data-hf-id="hf-jm89" class="f4-opt" style="top: 300px"><div data-hf-id="hf-5plw" class="f4-bub">1</div><div data-hf-id="hf-nahr" class="f4-obar" style="width: 200px"></div><div data-hf-id="hf-ky8k" id="f4_m3" class="f4-mark" data-layout-allow-overlap="" data-layout-allow-occlusion="">1</div></div>
+                  <div data-hf-id="hf-ol7c" class="f4-opt" style="top: 370px"><div data-hf-id="hf-6v0h" class="f4-bub">2</div><div data-hf-id="hf-06q8" class="f4-obar" style="width: 250px"></div></div>
+                  <div data-hf-id="hf-059q" class="f4-opt" style="top: 440px"><div data-hf-id="hf-88t2" class="f4-bub">3</div><div data-hf-id="hf-ygy4" class="f4-obar" style="width: 180px"></div></div>
+                  <div data-hf-id="hf-qq4k" class="f4-opt" style="top: 510px"><div data-hf-id="hf-wrlf" class="f4-bub">4</div><div data-hf-id="hf-zxab" class="f4-obar" style="width: 226px"></div></div>
+                </div>
+
+                <!-- toasts: matching icon per feature -->
+                <div data-hf-id="hf-lk4g" id="f4_toast0" class="f4-toast">
+                  <svg data-hf-id="hf-cxu5" viewBox="0 0 32 32" fill="none" stroke="#F2F0EA" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect data-hf-id="hf-7uyv" x="5" y="5" width="22" height="22" rx="4" /><path data-hf-id="hf-s6p1" d="M10.5 16.5 L14.5 20.5 L22 12" /></svg>
+                  <span data-hf-id="hf-or17">중간 저장</span>
+                </div>
+                <div data-hf-id="hf-mbs9" id="f4_toast1" class="f4-toast">
+                  <svg data-hf-id="hf-b4hy" viewBox="0 0 32 32" fill="none" stroke="#F2F0EA" stroke-width="3.4" stroke-linecap="round"><path data-hf-id="hf-kzgs" d="M12 9 V23" /><path data-hf-id="hf-ljxv" d="M20 9 V23" /></svg>
+                  <span data-hf-id="hf-il12">일시 정지</span>
+                </div>
+                <div data-hf-id="hf-q9wa" id="f4_toast2" class="f4-toast">
+                  <svg data-hf-id="hf-g60x" viewBox="0 0 32 32" fill="none" stroke="#F2F0EA" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-rcss" d="M16 4 C11.3 4 8 7.6 8 12 C8 14.9 9.5 17 11.3 18.6 C12.3 19.5 12.8 20.6 12.8 21.8 V23 H19.2 V21.8 C19.2 20.6 19.7 19.5 20.7 18.6 C22.5 17 24 14.9 24 12 C24 7.6 20.7 4 16 4 Z" /><path data-hf-id="hf-alt2" d="M13 27 H19" /><path data-hf-id="hf-xo8h" d="M16 23 V17" /></svg>
+                  <span data-hf-id="hf-qpjv">힌트 보기</span>
+                </div>
+
+                <!-- toolbar: save / pause / hint -->
+                <div data-hf-id="hf-ne3g" class="f4-tool" style="left: 24px">
+                  <div data-hf-id="hf-fhbj" class="f4-toolbtn"><svg data-hf-id="hf-ffzw" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect data-hf-id="hf-9ktj" x="5" y="5" width="22" height="22" rx="4" /><path data-hf-id="hf-wda1" d="M10.5 16.5 L14.5 20.5 L22 12" /></svg></div>
+                  <div data-hf-id="hf-xpvi" id="f4_on0" class="f4-toolon"><svg data-hf-id="hf-p7hw" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect data-hf-id="hf-96ii" x="5" y="5" width="22" height="22" rx="4" /><path data-hf-id="hf-xk74" d="M10.5 16.5 L14.5 20.5 L22 12" /></svg></div>
+                </div>
+                <div data-hf-id="hf-66qr" class="f4-tool" style="left: 135px">
+                  <div data-hf-id="hf-0fpr" class="f4-toolbtn"><svg data-hf-id="hf-4glf" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"><path data-hf-id="hf-74bo" d="M12 9 V23" /><path data-hf-id="hf-4akz" d="M20 9 V23" /></svg></div>
+                  <div data-hf-id="hf-3vlb" id="f4_on1" class="f4-toolon"><svg data-hf-id="hf-ykjn" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"><path data-hf-id="hf-5xel" d="M12 9 V23" /><path data-hf-id="hf-3w9y" d="M20 9 V23" /></svg></div>
+                </div>
+                <div data-hf-id="hf-t1hu" class="f4-tool" style="left: 246px">
+                  <div data-hf-id="hf-01eq" class="f4-toolbtn"><svg data-hf-id="hf-o0kt" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-clgk" d="M16 4 C11.3 4 8 7.6 8 12 C8 14.9 9.5 17 11.3 18.6 C12.3 19.5 12.8 20.6 12.8 21.8 V23 H19.2 V21.8 C19.2 20.6 19.7 19.5 20.7 18.6 C22.5 17 24 14.9 24 12 C24 7.6 20.7 4 16 4 Z" /><path data-hf-id="hf-50tm" d="M13 27 H19" /><path data-hf-id="hf-k4x1" d="M16 23 V17" /></svg></div>
+                  <div data-hf-id="hf-t03o" id="f4_on2" class="f4-toolon"><svg data-hf-id="hf-oevu" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-bejh" d="M16 4 C11.3 4 8 7.6 8 12 C8 14.9 9.5 17 11.3 18.6 C12.3 19.5 12.8 20.6 12.8 21.8 V23 H19.2 V21.8 C19.2 20.6 19.7 19.5 20.7 18.6 C22.5 17 24 14.9 24 12 C24 7.6 20.7 4 16 4 Z" /><path data-hf-id="hf-5f4n" d="M13 27 H19" /><path data-hf-id="hf-lbu4" d="M16 23 V17" /></svg></div>
+                </div>
+                <div data-hf-id="hf-qm2a" class="f4-home"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- right column -->
+          <div data-hf-id="hf-4q47" id="f4_t1"><span data-hf-id="hf-w4u3" class="f4-ch">지</span><span data-hf-id="hf-wu2b" class="f4-ch">하</span><span data-hf-id="hf-rnff" class="f4-ch">철</span><span data-hf-id="hf-byh7" class="f4-ch">에</span><span data-hf-id="hf-swjj" class="f4-ch">서</span><span data-hf-id="hf-e6dj" class="f4-ch">도</span><span data-hf-id="hf-72ao" id="f4_caret"></span></div>
+          <div data-hf-id="hf-of2e" id="f4_t2"><span data-hf-id="hf-gl1r" class="f4-ulwrap">실전처럼<span data-hf-id="hf-qgt0" id="f4_ul"></span></span>.</div>
+          <div data-hf-id="hf-bhku" id="f4_counts">
+            <span data-hf-id="hf-ebkq" class="f4-cw">모의고사</span><span data-hf-id="hf-wksg" id="f4_na" class="f4-cn">5</span><span data-hf-id="hf-t6ha" class="f4-cw">회</span>
+            <span data-hf-id="hf-0gu0" class="f4-cplus">+</span>
+            <span data-hf-id="hf-dje2" class="f4-cw">기출</span><span data-hf-id="hf-s7mx" id="f4_nb" class="f4-cn">5</span><span data-hf-id="hf-70gi" class="f4-cw">회</span>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var FID = "04-f4";
+          var DUR = 5.73;
+          function $(id) {
+            return document.getElementById(id);
+          }
+
+          // Frame-local beats (track seconds - 19.46)
+          var B = [0.0, 0.46, 0.95, 1.42, 1.9, 2.37, 2.85, 3.34, 3.83, 4.29, 4.78, 5.27];
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ---------------- group on (single group spans the whole frame) ----------------
+          tl.set("#f4_g1", { autoAlpha: 1 }, 0);
+
+          // 19.46: phone rises in with the -6deg tilt (settles after the wipe clears)
+          tl.set("#f4_phone", { autoAlpha: 1, rotation: -12, y: 760 }, 0);
+          tl.fromTo("#f4_phone", { y: 760 }, { y: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, 0);
+          tl.fromTo("#f4_phone", { rotation: -12 }, { rotation: -6, duration: 0.62, ease: "back.out(1.6)", immediateRender: false }, 0);
+          tl.set("#f4_q1", { autoAlpha: 1 }, 0);
+
+          // 19.46: t1 types in (typewriter-reveal), done right as the wipe clears
+          var chars = $("f4_t1").querySelectorAll(".f4-ch");
+          var STEP = 0.06;
+          for (var c = 0; c < chars.length; c++) {
+            tl.set(chars[c], { opacity: 1 }, c * STEP);
+          }
+          tl.set("#f4_caret", { opacity: 1 }, 0);
+          var caretBlinks = [0.42, 0.58, 0.74, 0.9, 1.06];
+          caretBlinks.forEach(function (t, j) {
+            tl.set("#f4_caret", { opacity: j % 2 ? 1 : 0 }, t);
+          });
+          tl.set("#f4_caret", { opacity: 0 }, 1.06);
+
+          // timer: 0ms digit swaps on beats until the pause feature lands
+          tl.set("#f4_timer", { textContent: "89:59", opacity: 1 }, 0);
+          var TICKS = ["89:58", "89:57", "89:56", "89:55", "89:54", "89:53", "89:52", "89:51"];
+          TICKS.forEach(function (txt, j) {
+            tl.set("#f4_timer", { textContent: txt }, B[j + 1]);
+          });
+
+          // OMR marks: fill one bubble per beat, then advance the screen at 0ms on the off-beat
+          function mark(id, t) {
+            tl.set(id, { autoAlpha: 1 }, t);
+            tl.fromTo(id, { scale: 0.3 }, { scale: 1, duration: 0.16, ease: "back.out(2.6)", immediateRender: false }, t);
+          }
+          mark("#f4_m1", B[1]);
+          tl.set("#f4_q1", { autoAlpha: 0 }, B[1] + 0.24);
+          tl.set("#f4_q2", { autoAlpha: 1 }, B[1] + 0.24);
+          mark("#f4_m2", B[2]);
+          tl.set("#f4_q2", { autoAlpha: 0 }, B[2] + 0.24);
+          tl.set("#f4_q3", { autoAlpha: 1 }, B[2] + 0.24);
+          mark("#f4_m3", B[3]);
+
+          // 20.41: t2 lands, accent underline draws under '실전처럼'
+          tl.set("#f4_t2", { autoAlpha: 1 }, B[2]);
+          tl.fromTo("#f4_t2", { y: 46 }, { y: 0, duration: 0.2, ease: "power4.out", immediateRender: false }, B[2]);
+          tl.fromTo("#f4_ul", { scaleX: 0 }, { scaleX: 1, duration: 0.32, ease: "expo.out", immediateRender: false }, B[2] + 0.1);
+
+          // 22.31: REPLACE — t1 + t2 slide up and fade out (≤ 2 text chunks on screen at any time)
+          var TC = B[6];
+          tl.fromTo(["#f4_t1", "#f4_t2"], { y: 0, autoAlpha: 1 }, { y: -60, autoAlpha: 0, duration: 0.22, ease: "power2.in", stagger: 0.04, immediateRender: false }, TC - 0.12);
+
+          // 22.31: counts blur-in on the same centre line — numerals tick 0 -> 5 with 0ms text swaps, then punch-and-lock
+          tl.set("#f4_counts", { autoAlpha: 1 }, TC);
+          tl.fromTo("#f4_counts", { y: 40, opacity: 0, filter: "blur(10px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power3.out", immediateRender: false }, TC);
+          [["#f4_na", 0], ["#f4_nb", 0.1]].forEach(function (n) {
+            var t0 = TC + n[1];
+            for (var k = 0; k <= 5; k++) {
+              tl.set(n[0], { textContent: String(k) }, t0 + k * 0.065);
+            }
+            var tLand = t0 + 5 * 0.065;
+            tl.fromTo(n[0], { scale: 1.35 }, { scale: 1, duration: 0.24, ease: "power4.out", immediateRender: false }, tLand);
+          });
+          // seek-safe: before the count starts both numerals read 0
+          tl.set("#f4_na", { textContent: "0" }, 0);
+          tl.set("#f4_nb", { textContent: "0" }, 0);
+
+          // 23.29 / 23.75 / 24.24: phone toolbar icons light up one per beat, toast matches each
+          [B[8], B[9], B[10]].forEach(function (t, j) {
+            var on = "#f4_on" + j;
+            tl.set(on, { autoAlpha: 1 }, t);
+            tl.fromTo(on, { scale: 1.2 }, { scale: 1, duration: 0.22, ease: "back.out(2)", immediateRender: false }, t);
+            if (j > 0) tl.set("#f4_on" + (j - 1), { autoAlpha: 0 }, t);
+
+            if (j > 0) tl.set("#f4_toast" + (j - 1), { autoAlpha: 0 }, t);
+            var toast = "#f4_toast" + j;
+            tl.set(toast, { autoAlpha: 1 }, t);
+            tl.fromTo(toast, { y: 18, scale: 0.9 }, { y: 0, scale: 1, duration: 0.22, ease: "back.out(1.8)", immediateRender: false }, t);
+          });
+          // pause lands: the timer stops at 89:51 and dims
+          tl.set("#f4_timer", { opacity: 0.45 }, B[9]);
+
+          // hold the full layout to the end (last ~0.3 s calm under the iris)
+          tl.set({}, {}, DUR);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines[FID] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

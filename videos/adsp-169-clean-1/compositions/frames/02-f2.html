@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <!-- Frame 2 — f2 · track 7.92–13.68 (5.76s) · beat_cut · BOOK3D crash-in + "된다." turn. Head is source metadata only. -->
+  </head>
+  <body>
+    <template id="02-f2-template">
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        /* ---------- root (plain #stage — the compiler scopes it); ACCENT ground from t=0 ---------- */
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #FFE500;
+        }
+        #f2_cam {
+          position: absolute;
+          inset: 0;
+          transform-origin: 50% 50%;
+          font-family: "Paperlogy", sans-serif;
+          color: #1E2687;
+        }
+        .f2-group {
+          position: absolute;
+          inset: 0;
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        /* ---------- g1: one soft concentric ring pulse behind the book (2 px ink outline) ---------- */
+        #f2_pulse {
+          position: absolute;
+          left: 910px;    /* 1260 - 350 */
+          top: 190px;     /* 540 - 350 */
+          width: 700px;
+          height: 700px;
+          box-sizing: border-box;
+          border: 2px solid #1E2687;
+          border-radius: 50%;
+          transform-origin: 50% 50%;
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        /* ---------- g1: "된다." mega + "빠르게 따면." ---------- */
+        #f2_g1_text {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          transform-origin: 20% 45%;
+        }
+        #f2_a1 {
+          position: absolute;
+          left: 36px;
+          top: 214px;
+          font-weight: 800;
+          font-size: 360px;
+          line-height: 0.9;
+          letter-spacing: -0.05em;
+          white-space: nowrap;
+          transform-origin: 0% 60%;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f2_a2 {
+          position: absolute;
+          left: 112px;
+          top: 606px;
+          display: flex;
+          align-items: baseline;
+          gap: 0.26em;
+          font-size: 150px;
+          line-height: 1;
+          white-space: nowrap;
+        }
+        #f2_a2a {
+          display: inline-block;
+          font-weight: 800;
+          letter-spacing: -0.04em;
+          transform-origin: 0% 100%;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f2_a2b {
+          display: inline-block;
+          font-weight: 400;
+          letter-spacing: -0.03em;
+          transform-origin: 0% 100%;
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        /* ---------- g2: title lockup (left column, x 120–1000) ---------- */
+        #f2_lock {
+          position: absolute;
+          left: 120px;
+          top: 330px;
+          width: 900px;
+        }
+        .f2-lbox {
+          position: relative;
+          display: inline-block;
+        }
+        .f2-lbox-bg {
+          position: absolute;
+          inset: 0;
+          background: #1E2687;
+          transform-origin: 0% 50%;
+        }
+        .f2-lbox-tx {
+          position: relative;
+          display: block;
+          padding: 0.08em 0.18em;
+          color: #FFE500;
+          white-space: nowrap;
+        }
+        #f2_t1 {
+          margin-top: 0;
+          font-weight: 800;
+          font-size: 88px;
+          line-height: 1.05;
+          letter-spacing: -0.03em;
+          white-space: nowrap;
+          clip-path: inset(0 100% 0 0);
+        }
+        #f2_t2 {
+          margin-top: 14px;
+          margin-left: -0.04em;
+          font-family: "Archivo Black", sans-serif;
+          font-weight: 400;
+          font-size: 200px;
+          line-height: 1;
+          letter-spacing: -0.01em;
+          transform-origin: 0% 50%;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f2_t2_tx {
+          clip-path: inset(0 100% 0 0);
+        }
+        #f2_sub {
+          margin-top: 34px;
+          font-weight: 500;
+          font-size: 40px;
+          line-height: 1.3;
+          white-space: nowrap;
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        /* ---------- shared 3D book (recipes/book3d.md, fN → f2; 430×588, T = 44 to match the real 88×1200 spine) ---------- */
+        #f2_booklayer {
+          position: absolute;
+          inset: 0;
+        }
+        .f2-bk-scene { position: absolute; left: 1260px; top: 540px; width: 0; height: 0; perspective: 2200px; }
+        /* hard ink shadow plate on the ground (flat, outside the 3D chain) */
+        .f2-bk-shadow { position: absolute; left: -196px; top: 282px; width: 420px; height: 34px; background: #1E2687;
+          transform-origin: 50% 50%; opacity: 0; visibility: hidden; }
+        .f2-bk-book { position: absolute; left: -215px; top: -294px; width: 430px; height: 588px; transform-style: preserve-3d; }
+        .f2-bk-book > div, .f2-bk-book > img, .f2-bk-hinge > div { position: absolute; }
+        .f2-bk-back   { left: 0; top: 0; width: 430px; height: 588px; display: block; object-fit: fill; transform: rotateY(180deg) translateZ(22px); }
+        .f2-bk-spine  { left: 193px; top: 0; width: 44px; height: 588px; display: block; object-fit: fill; transform: rotateY(-90deg) translateZ(215px); }
+        .f2-bk-edge   { left: 193px; top: 0; width: 44px; height: 588px; transform: rotateY(90deg) translateZ(215px);
+          background: repeating-linear-gradient(90deg, #F2F0EA 0 2px, rgba(30, 38, 135, 0.16) 2px 3px); }
+        .f2-bk-top    { left: 0; top: 272px; width: 430px; height: 44px; transform: rotateX(90deg) translateZ(294px);
+          background: repeating-linear-gradient(0deg, #F2F0EA 0 2px, rgba(30, 38, 135, 0.16) 2px 3px); }
+        .f2-bk-bottom { left: 0; top: 272px; width: 430px; height: 44px; transform: rotateX(-90deg) translateZ(294px); background: #E4E1D8; }
+        .f2-bk-page   { inset: 0; background: #F2F0EA; transform: translateZ(20px); }
+        .f2-bk-hinge  { inset: 0; transform-origin: 0% 50%; transform: translateZ(22px); transform-style: preserve-3d; }
+        .f2-bk-front  { position: absolute; left: 0; top: 0; width: 430px; height: 588px; display: block; object-fit: fill; backface-visibility: hidden; }
+        .f2-bk-inside { inset: 0; background: #F2F0EA; transform: rotateY(180deg); backface-visibility: hidden; }
+      </style>
+
+      <div data-hf-id="hf-9uhu" id="stage" data-composition-id="02-f2" data-width="1920" data-height="1080" data-duration="5.76">
+        <div data-hf-id="hf-6o9d" id="f2_cam">
+
+          <!-- g1 · free_design · track 7.92–9.85 · ring pulse + "된다." -->
+          <div data-hf-id="hf-dp6v" id="f2_g1" class="f2-group">
+            <div data-hf-id="hf-s7t5" id="f2_pulse" data-layout-ignore=""></div>
+            <div data-hf-id="hf-a2xm" id="f2_g1_text">
+              <div data-hf-id="hf-kbec" id="f2_a1" data-layout-allow-overlap="">된다.</div>
+              <div data-hf-id="hf-j4d1" id="f2_a2"><span data-hf-id="hf-gmbv" id="f2_a2a">빠르게</span><span data-hf-id="hf-8sp4" id="f2_a2b">따면.</span></div>
+            </div>
+          </div>
+
+          <!-- g2 · free_design · track 9.85–13.68 · title lockup -->
+          <div data-hf-id="hf-2tp8" id="f2_g2" class="f2-group">
+            <div data-hf-id="hf-j895" id="f2_lock">
+              <div data-hf-id="hf-wpt5" id="f2_t1">2026 빠르게 따는</div>
+              <div data-hf-id="hf-qxw9" class="f2-lbox" id="f2_t2">
+                <span data-hf-id="hf-47i4" class="f2-lbox-bg" id="f2_t2_bg"></span>
+                <span data-hf-id="hf-qm7u" class="f2-lbox-tx" id="f2_t2_tx">ADsP</span>
+              </div>
+              <div data-hf-id="hf-1uqd" id="f2_sub">데이터분석 준전문가</div>
+            </div>
+          </div>
+
+          <!-- shared CSS-3D book (spans both groups) -->
+          <div data-hf-id="hf-g4s6" id="f2_booklayer">
+            <div data-hf-id="hf-ad1z" class="f2-bk-scene" id="f2_bk_scene" data-layout-ignore="">
+              
+              <div data-hf-id="hf-cm7k" class="f2-bk-book" id="f2_book">
+                <img data-hf-id="hf-zyoh" class="f2-bk-back" src="assets/book/back.jpg" alt="">
+                <img data-hf-id="hf-wfzx" class="f2-bk-spine" src="assets/book/spine.jpg" alt="">
+                <div data-hf-id="hf-f6i2" class="f2-bk-edge"></div>
+                <div data-hf-id="hf-65jy" class="f2-bk-top"></div>
+                <div data-hf-id="hf-5bb0" class="f2-bk-bottom"></div>
+                <div data-hf-id="hf-esps" class="f2-bk-page"></div>
+                <div data-hf-id="hf-hxhi" class="f2-bk-hinge" id="f2_bk_hinge">
+                  <img data-hf-id="hf-w8w9" class="f2-bk-front" src="assets/covers/9791194383697.jpg" alt="2026 빠르게 따는 ADsP">
+                  <div data-hf-id="hf-zhch" class="f2-bk-inside"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var D = 5.76;   // frame span length (track 7.92 → 13.68)
+          var T0 = 7.92;  // span_sec[0]
+          function L(trackT) { return Math.round((trackT - T0) * 1000) / 1000; }
+          function r3(v) { return Math.round(v * 1000) / 1000; }
+
+          // storyboard anchors (track seconds → frame-local)
+          var A_BOOK = L(7.99);   // book crashes in + one ring pulse behind it
+          var A_A1 = L(8.45);     // '된다.' blur-in
+          var A_B3 = L(8.87);     // beat: book pulse
+          var A_A2 = L(9.36);     // '빠르게 따면.'
+          var A_G2 = L(9.85);     // group cut: text clears left, book glides
+          var A_T = L(10.31);     // title mask wipe
+          var A_SUB = L(10.80);   // sub caption
+          var A_SPIN = L(11.75);  // 360° Y-spin start
+          var A_BACK = L(12.24);  // back cover facing
+          var A_B12 = L(12.72);   // beat: spin resumes
+          var A_LAND = L(13.21);  // spin lands on the front
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ---- group spans (0ms cut in; g1 stays up 0.3s past 9.85 only to finish the arc exit) ----
+          tl.set("#f2_g1", { autoAlpha: 1 }, 0);
+          tl.set("#f2_g2", { autoAlpha: 0 }, 0);
+          tl.set("#f2_g2", { autoAlpha: 1 }, A_G2);
+          tl.set("#f2_g2", { autoAlpha: 0 }, D);
+
+          // ---- start states ----
+          tl.set("#f2_cam", { scale: 1 }, 0);
+          tl.set("#f2_pulse", { autoAlpha: 0, scale: 0.6 }, 0);
+          tl.set("#f2_g1_text", { x: 0, y: 0, rotation: 0 }, 0);
+          tl.set("#f2_a1", { autoAlpha: 0, scale: 1.08, x: 0, filter: "blur(12px)" }, 0);
+          tl.set(["#f2_a2a", "#f2_a2b"], { autoAlpha: 0, scale: 1, y: 0, filter: "blur(10px)" }, 0);
+          tl.set("#f2_t1", { clipPath: "inset(0% 100% 0% 0%)" }, 0);
+          tl.set("#f2_t2", { autoAlpha: 0, scale: 1 }, 0);
+          tl.set("#f2_t2_bg", { scaleX: 0 }, 0);
+          tl.set("#f2_t2_tx", { clipPath: "inset(0% 100% 0% 0%)" }, 0);
+          tl.set("#f2_sub", { autoAlpha: 0, y: 24 }, 0);
+          tl.set("#f2_bk_scene", { x: -300, y: 0 }, 0);  // starts centred & large = continuity with f1's cover push
+          tl.set("#f2_book", { x: 0, y: 0, z: 0, scale: 1.8, rotationY: 0, rotationX: 0 }, 0);
+          tl.set("#f2_bk_hinge", { rotationY: 0 }, 0);
+          
+          // ---- 7.99 one soft concentric ring pulse behind the book (single, 0.5 s) ----
+          tl.set("#f2_pulse", { autoAlpha: 1 }, A_BOOK);
+          tl.to("#f2_pulse", { scale: 1.6, duration: 0.5, ease: "power2.out" }, A_BOOK);
+          tl.to("#f2_pulse", { autoAlpha: 0, duration: 0.5, ease: "power1.in" }, A_BOOK);
+
+          // ---- 7.99 book crash-zoom from deep z, spinning in, lands in rest pose ----
+          var B_LAND = r3(A_BOOK + 0.36);
+          tl.to("#f2_book", { scale: 1.1, duration: 0.36, ease: "power3.out" }, A_BOOK);
+          tl.to("#f2_bk_scene", { x: 0, duration: 0.36, ease: "power3.out" }, A_BOOK);
+          tl.to("#f2_book", { rotationY: -28, rotationX: 8, duration: 0.36, ease: "power2.out" }, A_BOOK);
+          tl.to("#f2_book", { scale: 0.96, duration: 0.07, ease: "power3.out" }, B_LAND);
+          tl.to("#f2_book", { scale: 1, duration: 0.4, ease: "elastic.out(1, 0.55)" }, r3(B_LAND + 0.07));
+                    
+          // ---- 8.45 '된다.' soft blur-in: scale 1.08→1 (tiny overshoot) + blur 12→0 + fade, 0.18 s; one micro shake ----
+          tl.to("#f2_a1", { autoAlpha: 1, filter: "blur(0px)", duration: 0.18, ease: "power2.out" }, A_A1);
+          tl.to("#f2_a1", { scale: 1, duration: 0.18, ease: "back.out(1.6)" }, A_A1);
+          tl.to("#f2_a1", { x: 5, duration: 0.03, ease: "none" }, r3(A_A1 + 0.18));
+          tl.to("#f2_a1", { x: 0, duration: 0.05, ease: "power2.out" }, r3(A_A1 + 0.21));
+
+          // book kick pulses + idle bob while g1 holds
+          var PUL = [A_B3, A_A2];
+          for (var p = 0; p < PUL.length; p++) {
+            tl.to("#f2_book", { scale: 1.04, duration: 0.06, ease: "power2.out" }, PUL[p]);
+            tl.to("#f2_book", { scale: 1, duration: 0.16, ease: "power2.out" }, r3(PUL[p] + 0.06));
+          }
+          tl.to("#f2_book", { y: -6, duration: 0.44, ease: "sine.inOut" }, A_B3);
+          tl.to("#f2_book", { y: 0, duration: 0.44, ease: "sine.inOut" }, r3(A_B3 + 0.44));
+
+          // ---- 9.36 '빠르게' 800 / '따면.' 400 ----
+          // blur-in (blur 10→0 + y 16→0 + fade) instead of a scale slam
+          tl.fromTo("#f2_a2a", { y: 16 }, { y: 0, autoAlpha: 1, filter: "blur(0px)", duration: 0.22, ease: "power3.out", immediateRender: false }, A_A2);
+          tl.fromTo("#f2_a2b", { y: 16 }, { y: 0, autoAlpha: 1, filter: "blur(0px)", duration: 0.22, ease: "power3.out", immediateRender: false }, r3(A_A2 + 0.12));
+
+          // ---- 9.85 cut: g1 text clears left on a parabolic arc (y ∝ t², x ∝ t³) ----
+          var EX = 0.3;
+          tl.to("#f2_g1_text", { y: -900, duration: EX, ease: "power1.in" }, A_G2);
+          tl.to("#f2_g1_text", { x: -1500, rotation: -14, duration: EX, ease: "power2.in" }, A_G2);
+          tl.set("#f2_g1", { autoAlpha: 0 }, r3(A_G2 + EX));
+
+          // book glides to x≈1320
+          tl.to("#f2_bk_scene", { x: 60, duration: 0.6, ease: "power3.inOut" }, A_G2);
+          tl.to("#f2_book", { rotationY: -24, rotationX: 7, duration: 0.6, ease: "power3.inOut" }, A_G2);
+          // idle bob until the spin
+          var BOB0 = r3(A_G2 + 0.6);
+          tl.to("#f2_book", { y: -6, duration: 0.65, ease: "sine.inOut" }, BOB0);
+          tl.to("#f2_book", { y: 0, duration: 0.65, ease: "sine.inOut" }, r3(BOB0 + 0.65));
+
+          // ---- 10.31 title mask wipe: line 1, then the ADsP ink box + text ----
+          tl.to("#f2_t1", { clipPath: "inset(0% 0% 0% 0%)", duration: 0.5, ease: "expo.out" }, A_T);
+          tl.set("#f2_t2", { autoAlpha: 1 }, r3(A_T + 0.1));
+          tl.to("#f2_t2_bg", { scaleX: 1, duration: 0.14, ease: "power3.out" }, r3(A_T + 0.1));
+          tl.to("#f2_t2_tx", { clipPath: "inset(0% 0% 0% 0%)", duration: 0.5, ease: "expo.out" }, r3(A_T + 0.16));
+
+          // ---- 10.80 sub caption fades up ----
+          tl.to("#f2_sub", { autoAlpha: 1, y: 0, duration: 0.36, ease: "power3.out" }, A_SUB);
+
+          // ---- 11.75 one slow 360° Y-spin: front → spine → back (held a beat) → front at 13.21 ----
+          tl.to("#f2_book", { rotationY: 165, duration: r3(A_BACK - A_SPIN + 0.08), ease: "power3.inOut" }, A_SPIN);
+          tl.to("#f2_book", { rotationY: 196, duration: r3(A_B12 - A_BACK - 0.08), ease: "none" }, r3(A_BACK + 0.08));
+          tl.to("#f2_book", { rotationY: 336, duration: r3(A_LAND - A_B12), ease: "power3.inOut" }, A_B12);
+                    
+          // 12.72 beat: ADsP lockup pulse
+          tl.to("#f2_t2", { scale: 1.04, duration: 0.06, ease: "power2.out" }, A_B12);
+          tl.to("#f2_t2", { scale: 1, duration: 0.2, ease: "power2.out" }, r3(A_B12 + 0.06));
+
+          // 13.21 → end: calm hold (stripes transition overlay covers the last ~0.29s)
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["02-f2"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>
