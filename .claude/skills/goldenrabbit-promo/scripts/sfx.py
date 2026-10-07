@@ -9,6 +9,7 @@ Automatic: every frame with a `transition_out` (≠ none) gets `whoosh-short` 0.
 Library (shared/sfx, Pixabay Content License — commercial use, no attribution required):
   whoosh whoosh-short whoosh-cinematic riser · impact-bass-1 impact-bass-2 ping pop · glitch-1/2/3 error ·
   click click-soft key-press typing notification · chime sparkle
+Synthesized here (CC0, shared/sfx/src/synth_sfx.py): tick tock (clock, for silent cold opens) · bat-crack (wooden bat hit)
 
   python3 sfx.py videos/<name>          # idempotent: replaces previously injected sfx clips
 """
@@ -20,7 +21,8 @@ from gr_common import SHARED, parse_storyboard  # noqa: E402
 
 VOL = {"whoosh": 0.40, "whoosh-short": 0.40, "whoosh-cinematic": 0.35, "riser": 0.35, "impact-bass-1": 0.5, "impact-bass-2": 0.5,
        "ping": 0.35, "pop": 0.45, "glitch-1": 0.3, "glitch-2": 0.3, "glitch-3": 0.3, "error": 0.3, "click": 0.4, "click-soft": 0.4,
-       "key-press": 0.35, "typing": 0.30, "notification": 0.35, "chime": 0.45, "sparkle": 0.40}
+       "key-press": 0.35, "typing": 0.30, "notification": 0.35, "chime": 0.45, "sparkle": 0.40,
+       "tick": 0.55, "tock": 0.5, "bat-crack": 0.85}
 
 
 def dur(p):
@@ -31,6 +33,8 @@ def dur(p):
 def main():
     proj = Path(sys.argv[1]).resolve()
     D = json.loads((proj / "audiomap.json").read_text())["audio"]["duration_sec"]
+    vj = proj / "variant.json"
+    gain = float(json.loads(vj.read_text()).get("sfx_gain", 1.0)) if vj.exists() else 1.0   # <1 under a vocal song
     cues = []
     for f in parse_storyboard(proj / "STORYBOARD.md"):
         for c in [x.strip() for x in f["fields"].get("sfx", "").split(",") if x.strip()]:
@@ -53,7 +57,7 @@ def main():
         track = next(k for k in range(21, 40) if last_end.get(k, -1) <= t)   # overlapping clips need distinct tracks
         last_end[track] = t + d
         tags.append(f'      <audio id="sfx-{n:02d}" class="gr-sfx" src="assets/sfx/{name}.mp3" data-start="{max(0, t):.3f}" '
-                    f'data-duration="{d:.3f}" data-track-index="{track}" data-volume="{VOL.get(name, 0.4)}"></audio>')
+                    f'data-duration="{d:.3f}" data-track-index="{track}" data-volume="{round(VOL.get(name, 0.4) * gain, 3)}"></audio>')
     idx = proj / "index.html"
     s = idx.read_text()
     s = re.sub(r'\n\s*<audio id="sfx-\d+" class="gr-sfx"[^>]*></audio>', "", s)

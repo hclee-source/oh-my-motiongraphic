@@ -22,3 +22,6 @@ videos/*/.work/**/*.png
 videos/*/.work/**/*.jpg
 *.log
 *.err
+
+# API 키 (.env의 주석이 전제하는 규칙)
+.env*

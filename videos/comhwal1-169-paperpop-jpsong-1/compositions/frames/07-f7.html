@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Frame 7 — f7 · BUBBLE-POP (PLUS · 이 모든 게 한 권에) · track 29.44–34.09 (local 0–4.65)
+         Built from the paper-pop kit (styles/paper-pop/kit.html), f1 → f7 renamed. -->
+  </head>
+  <body>
+    <template id="07-f7-template">
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-7Bold.ttf") format("truetype"); font-weight: 700; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-6SemiBold.ttf") format("truetype"); font-weight: 600; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+
+        #stage { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; background: #FFF4C2; font-family: "Paperlogy", sans-serif; color: #1A1A22; }
+
+        /* gingham ground: two crossing translucent cover-yellow stripe sets, 96 px period */
+        .f7-gingham { position: absolute; inset: 0; background-color: #FFF4C2;
+          background-image: repeating-linear-gradient(0deg, rgba(255,225,58,.55) 0 48px, transparent 48px 96px), repeating-linear-gradient(90deg, rgba(255,225,58,.55) 0 48px, transparent 48px 96px); }
+        .f7-world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+        .f7-parts { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+        /* BOOK COVER in a white padded wrapper (never filter/tint/overlay the cover itself) */
+        .f7-book { position: absolute; background: #fff; padding: 12px; border-radius: 6px; box-shadow: 0 3px 0 rgba(0,0,0,.08), 0 26px 46px rgba(40,30,10,.32); }
+        .f7-book img { display: block; width: 100%; height: auto; }
+
+        /* FEATURE BUBBLES — paper circles */
+        .f7-bub { position: absolute; width: 270px; height: 270px; }
+        .f7-bfloat { position: absolute; left: 0; top: 0; width: 270px; height: 270px; }
+        .f7-circle { position: absolute; left: 0; top: 0; width: 270px; height: 270px; box-sizing: border-box; border-radius: 50%;
+          display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+          font-family: "Paperlogy";  white-space: nowrap; padding-top: 6px; font-weight: 600; }
+        .f7-navy { background: #23268C; color: #FFFFFF; box-shadow: 0 0 0 7px #FFFFFF, 0 3px 0 7px rgba(0,0,0,.08), 0 14px 24px 6px rgba(60,40,10,.24); }
+        .f7-red { background: #E5352B; color: #FFFFFF; box-shadow: 0 0 0 7px #FFFFFF, 0 3px 0 7px rgba(0,0,0,.08), 0 14px 24px 6px rgba(60,40,10,.24); }
+        .f7-white { background: #FFFDF8; color: #1A1A22; border: 4px solid #1A1A22; box-shadow: 0 2px 0 rgba(0,0,0,.08), 0 14px 24px rgba(60,40,10,.24); }
+        .f7-circle b { font-weight: 800; }
+        .f7-navy b, .f7-red b { color: #FFE13A; }
+        .f7-white b { color: #E5352B; }
+        .f7-l1 { display: block; font-size: 36px; line-height: 1.15; }
+        .f7-l2 { display: block; font-size: 50px; line-height: 1.05; }
+        /* numbers: Paperlogy 800, unit at 0.45x (price-card ratio) */
+        .f7-num { font-family: "Paperlogy"; font-weight: 800; font-size: 80px; line-height: 0.95; letter-spacing: -0.02em; }
+        .f7-num small { font-size: 0.45em; margin-left: 2px; }
+        .f7-yr { font-family: "Paperlogy"; font-weight: 800; font-size: 34px; letter-spacing: -0.01em; line-height: 1.2; }
+
+        /* FACE: wrapper takes the pop / hop, the <img> takes the 8 fps boil */
+        .f7-face { position: absolute; width: 130px; height: 130px; }
+        .f7-face img { display: block; width: 100%; height: 100%; }
+
+        /* PARTICLE BURST bits (ink pop-marks + paper dots) */
+        .f7-pdash { position: absolute; width: 6px; height: 26px; margin: -13px 0 0 -3px; background: #1A1A22; border-radius: 3px; }
+        .f7-pdot { position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px; box-sizing: border-box; border-radius: 50%; border: 3px solid #1A1A22; box-shadow: 0 3px 4px rgba(60,40,10,.25); }
+
+        /* SHOUT telop — double outline: white fill / ink stroke / navy outer (+ ink offset shadow) */
+        .f7-shoutw { position: absolute; left: 0; top: 92px; width: 1920px; height: 112px; display: flex; align-items: center; justify-content: center; gap: 30px; }
+        .f7-telop { position: relative; white-space: nowrap; font-family: "Paperlogy"; font-weight: 600; font-size: 96px; letter-spacing: 0.02em; line-height: 1.05; }
+        .f7-telop > span { display: block; }
+        .f7-telop > span + span { position: absolute; left: 0; top: 0; }
+        .f7-telop em { font-style: normal; }
+        .f7-ch { display: inline-block; }
+        .f7-t-outer { color: #23268C; -webkit-text-stroke: 0.13em #23268C; transform: translate(0.03em, 0.045em); text-shadow: 7px 9px 0 #1A1A22; }
+        .f7-t-mid { color: #FFFFFF; -webkit-text-stroke: 0.13em #FFFFFF; }
+        .f7-t-fill { color: #1A1A22; }
+        .f7-t-fill em { color: #E5352B; }
+        /* ＼ ／ shout brackets */
+        .f7-br { position: relative; width: 44px; height: 100px; flex: none; }
+        .f7-br-bar { position: absolute; left: 14px; top: 4px; width: 16px; height: 92px; background: #1A1A22; border-radius: 8px;
+          box-shadow: 0 0 0 5px #FFFFFF, 5px 7px 0 5px rgba(26,26,34,.22); }
+      </style>
+
+      <div id="stage" data-composition-id="07-f7" data-width="1920" data-height="1080" data-duration="5.020">
+        <div id="f7_ground" class="f7-gingham" data-layout-ignore></div>
+
+        <div id="f7_world" class="f7-world">
+          <div id="f7_parts" class="f7-parts" data-layout-ignore></div>
+
+          <div id="f7_book" class="f7-book" style="left:765px;top:300px;width:390px;"><img src="assets/covers/9791124516614.jpg" alt="" /></div>
+
+          <!-- b1 · top-left · NAVY -->
+          <div id="f7_b1" class="f7-bub" style="left:205px;top:185px;">
+            <div id="f7_b1_f" class="f7-bfloat">
+              <div id="f7_b1_c" class="f7-circle f7-navy"><span class="f7-l1">유튜브</span><span class="f7-l2"><b>무료</b> 강의</span></div>
+              <div id="f7_b1_face" class="f7-face" style="left:-40px;top:-40px;" data-layout-allow-overlap><img id="f7_b1_fi" src="assets/faces/happy/alice.png" alt="" /></div>
+            </div>
+          </div>
+          <!-- b2 · top-right · WHITE -->
+          <div id="f7_b2" class="f7-bub" style="left:1445px;top:185px;">
+            <div id="f7_b2_f" class="f7-bfloat">
+              <div id="f7_b2_c" class="f7-circle f7-white"><span class="f7-l1" style="font-size:34px;">저자 <b>직문직답</b></span><span class="f7-l2">오픈채팅</span></div>
+              <div id="f7_b2_face" class="f7-face" style="left:180px;top:-40px;" data-layout-allow-overlap><img id="f7_b2_fi" src="assets/faces/happy/esther.png" alt="" /></div>
+            </div>
+          </div>
+          <!-- b3 · left · RED -->
+          <div id="f7_b3" class="f7-bub" style="left:165px;top:505px;">
+            <div id="f7_b3_f" class="f7-bfloat">
+              <div id="f7_b3_c" class="f7-circle f7-red"><span class="f7-l1">합격왕 카페</span><span class="f7-l2"><b>스터디</b></span></div>
+              <div id="f7_b3_face" class="f7-face" style="left:-40px;top:180px;" data-layout-allow-overlap><img id="f7_b3_fi" src="assets/faces/happy/p.png" alt="" /></div>
+            </div>
+          </div>
+          <!-- b4 · right · NAVY -->
+          <div id="f7_b4" class="f7-bub" style="left:1485px;top:505px;">
+            <div id="f7_b4_f" class="f7-bfloat">
+              <div id="f7_b4_c" class="f7-circle f7-navy"><span class="f7-l1">엑셀 함수</span><span class="f7-l2">정리 <b>PDF</b></span></div>
+              <div id="f7_b4_face" class="f7-face" style="left:180px;top:180px;" data-layout-allow-overlap><img id="f7_b4_fi" src="assets/faces/happy/toynbee.png" alt="" /></div>
+            </div>
+          </div>
+          <!-- b5 · bottom-left · WHITE -->
+          <div id="f7_b5" class="f7-bub" style="left:425px;top:715px;">
+            <div id="f7_b5_f" class="f7-bfloat">
+              <div id="f7_b5_c" class="f7-circle f7-white"><span class="f7-l1">웹 CBT</span><span class="f7-l2 f7-num"><b>10</b><small>회</small></span></div>
+            </div>
+          </div>
+          <!-- b6 · bottom-right · RED -->
+          <div id="f7_b6" class="f7-bub" style="left:1225px;top:715px;">
+            <div id="f7_b6_f" class="f7-bfloat">
+              <div id="f7_b6_c" class="f7-circle f7-red"><span class="f7-l1 f7-yr"><b>2027~2029</b></span><span class="f7-l2" style="font-size:40px;">출제기준 반영</span></div>
+            </div>
+          </div>
+
+          <!-- shout: ＼ 이 모든 게, 한 권에! ／ -->
+          <div id="f7_shoutw" class="f7-shoutw">
+            <div id="f7_brL" class="f7-br"><div id="f7_brL_i" class="f7-br-bar"></div></div>
+            <div id="f7_shout" class="f7-telop"></div>
+            <div id="f7_brR" class="f7-br"><div id="f7_brR_i" class="f7-br-bar"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var D = 4.65;            // frame span (29.44 → 34.09)
+          var F = 1 / 30;
+          var tl = gsap.timeline({ paused: true });
+          var q = function (s) { return document.querySelector(s); };
+          // deterministic pseudo-random in [0,1) from an integer
+          function rnd(i) { var x = Math.sin(i * 12.9898 + 78.233) * 43758.5453; return x - Math.floor(x); }
+
+          // frame-local anchors (track − 29.44)
+          var T_BOOK = 0.0;                                   // 29.44 downbeat
+          var T = [0.37, 0.79, 1.16, 1.56, 1.93, 2.33];       // 29.81 30.23 30.60 31.00 31.37 31.77
+          var T_S = 3.09;                                     // 32.53 downbeat — shout
+          var C = [[340, 320], [1580, 320], [300, 640], [1620, 640], [560, 850], [1360, 850]]; // bubble centres
+          var DOT = ["#FFE13A", "#E5352B", "#FFE13A", "#FFE13A", "#E5352B", "#FFE13A"];
+          var BOOK = { x0: 745, y0: 280, x1: 1175, y1: 832 };  // cover rect (+20 px) — particles never land on it
+
+          // POP-IN (ぽよん): 0 → 1.2 (5f) → 1 (2f) → squash
+          function popIn(target, at) {
+            tl.set(target, { autoAlpha: 0 }, 0);
+            tl.fromTo(target, { scale: 0, autoAlpha: 1 }, { scale: 1.2, autoAlpha: 1, duration: 5 * F, ease: "power2.out", immediateRender: false }, at);
+            tl.to(target, { scale: 1, duration: 2 * F, ease: "power1.in" }, at + 5 * F);
+            tl.to(target, { scaleX: 1.08, scaleY: 0.95, duration: 2 * F }, at + 7 * F);
+            tl.to(target, { scaleX: 1, scaleY: 1, duration: 3 * F, ease: "power1.out" }, at + 9 * F);
+          }
+          // PLACE: a sheet of paper laid down (tilt −6 → +1.5 → 0, from y+40)
+          function place(target, at, rot) {
+            rot = rot || 0;
+            tl.set(target, { autoAlpha: 0 }, 0);
+            tl.fromTo(target, { y: 40, rotation: rot - 6, autoAlpha: 0 }, { y: 0, rotation: rot + 1.5, autoAlpha: 1, duration: 0.17, ease: "power2.out", immediateRender: false }, at);
+            tl.to(target, { rotation: rot, duration: 0.08, ease: "power1.inOut" }, at + 0.17);
+          }
+          // BOIL (カクカク): 8 fps rotation/offset jitter around a base tilt, clamped to the frame
+          function boil(target, idx, from, to, amp, base) {
+            amp = amp || 1; base = base || 0;
+            for (var k = Math.floor(from * 8); k / 8 <= to + 1e-6; k++) {
+              var s = idx * 131 + k * 7;
+              tl.set(target, { rotation: base + (rnd(s) - 0.5) * 3 * amp, x: Math.round((rnd(s + 1) - 0.5) * 4 * amp), y: Math.round((rnd(s + 2) - 0.5) * 4 * amp) }, k / 8);
+            }
+          }
+          // FLOAT: ±6 px on a 2 s sine, phase by index, amplitude ramps in over 0.5 s; one tween ending at `to`
+          function floatY(target, idx, from, to) {
+            var Dd = to - from, ph = idx * 1.1;
+            tl.fromTo(target, { y: 0 }, { y: 6, duration: Dd, immediateRender: false, ease: function (p) {
+              var t = p * Dd; return Math.sin(Math.PI * t + ph) * Math.min(1, t / 0.5);
+            } }, from);
+          }
+          // TELOP per character: three full-line layers (outer / mid / fill), each glyph wrapped so the
+          // kinetic letter-in can move glyph i in all three layers together (outer strokes stay under all fills)
+          function telopChars(el, segs) {
+            function layer(cls) {
+              var h = '<span class="' + cls + '">';
+              segs.forEach(function (sg) {
+                var inner = "";
+                for (var i = 0; i < sg[0].length; i++) { var c = sg[0].charAt(i); inner += c === " " ? " " : '<span class="f7-ch">' + c + "</span>"; }
+                h += sg[1] ? "<em>" + inner + "</em>" : inner;
+              });
+              return h + "</span>";
+            }
+            el.innerHTML = layer("f7-t-outer") + layer("f7-t-mid") + layer("f7-t-fill");
+            var L = el.children, out = [];
+            var n = L[0].querySelectorAll(".f7-ch").length;
+            for (var i = 0; i < n; i++) out.push([L[0].querySelectorAll(".f7-ch")[i], L[1].querySelectorAll(".f7-ch")[i], L[2].querySelectorAll(".f7-ch")[i]]);
+            return out;
+          }
+
+          // ---- BOOK: placed at centre on the downbeat; small bumps as each bubble pops out of it
+          place("#f7_book", T_BOOK, -2);
+          function bump(at, s) {
+            tl.fromTo("#f7_book", { scale: 1 }, { scale: s, duration: 0.05, ease: "power2.out", immediateRender: false }, at);
+            tl.fromTo("#f7_book", { scale: s }, { scale: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, at + 0.05);
+          }
+
+          // ---- BUBBLES: one per beat, ぽよん + particle burst; then float + boil
+          var parts = q("#f7_parts");
+          var TILT = [-10, 9, 8, -8];
+          for (var b = 0; b < 6; b++) {
+            var n = b + 1, t = T[b];
+            popIn("#f7_b" + n, t);
+            bump(t, 1.022);
+            boil("#f7_b" + n + "_c", 20 + b, t, D, 0.5, 0);
+            floatY("#f7_b" + n + "_f", b, t + 0.4, D);
+            if (b < 4) {
+              popIn("#f7_b" + n + "_face", t + 0.07);
+              boil("#f7_b" + n + "_fi", 40 + b, t, D, 1, TILT[b]);
+            }
+            // particle burst (ink pop-marks alternating with paper dots), launched from behind the bubble rim
+            for (var i = 0; i < 10; i++) {
+              var s = b * 100 + i;
+              var a = (i / 10) * Math.PI * 2 + b * 0.5 + (rnd(s) - 0.5) * 0.35;
+              var r0 = 118, r1 = 190 + rnd(s + 7) * 55;
+              var ex = C[b][0] + Math.cos(a) * r1, ey = C[b][1] + Math.sin(a) * r1;
+              if (ex > BOOK.x0 && ex < BOOK.x1 && ey > BOOK.y0 && ey < BOOK.y1) continue;
+              var dash = i % 2 === 0;
+              var p = document.createElement("div");
+              p.id = "f7_p" + b + "_" + i;
+              p.className = dash ? "f7-pdash" : "f7-pdot";
+              p.style.left = C[b][0] + "px";
+              p.style.top = C[b][1] + "px";
+              if (!dash) p.style.backgroundColor = i % 4 === 1 ? DOT[b] : "#FFFFFF";
+              parts.appendChild(p);
+              var t0 = t + (i % 3) * 0.012;
+              tl.set(p, { autoAlpha: 0 }, 0);
+              tl.fromTo(p, { x: Math.cos(a) * r0, y: Math.sin(a) * r0, rotation: (a * 180) / Math.PI - 90, scale: 1, autoAlpha: 1 },
+                { x: Math.cos(a) * r1, y: Math.sin(a) * r1, scale: 0.35, duration: 0.42, ease: "expo.out", immediateRender: false }, t0);
+              tl.fromTo(p, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.14, ease: "power1.in", immediateRender: false }, t0 + 0.26);
+            }
+          }
+
+          // ---- SHOUT (32.53 downbeat): ＼ brackets slide in, glyphs kinetic-letter-in, 3 px shake, faces hop
+          var glyphs = telopChars(q("#f7_shout"), [["이 모든 게, ", false], ["한 권", true], ["에!", false]]);
+          glyphs.forEach(function (g, i) {
+            var at = T_S + i * 0.028;
+            tl.set(g, { autoAlpha: 0 }, 0);
+            tl.set(g, { autoAlpha: 1 }, at);
+            tl.fromTo(g, { y: 64, scale: 0.45, rotation: (rnd(900 + i) - 0.5) * 18 }, { y: 0, scale: 1, rotation: 0, duration: 0.3, ease: "back.out(2.2)", immediateRender: false }, at);
+          });
+          tl.set("#f7_brL_i", { rotation: -28 }, 0);
+          tl.set("#f7_brR_i", { rotation: 28 }, 0);
+          tl.set(["#f7_brL", "#f7_brR"], { autoAlpha: 0 }, 0);
+          tl.fromTo("#f7_brL", { x: -12, autoAlpha: 1 }, { x: 0, duration: 0.12, ease: "power3.out", immediateRender: false }, T_S);
+          tl.fromTo("#f7_brR", { x: 12, autoAlpha: 1 }, { x: 0, duration: 0.12, ease: "power3.out", immediateRender: false }, T_S);
+          for (var k = 0; T_S + 0.12 + k * 2 * F <= D + 1e-6; k++) {
+            var tj = T_S + 0.12 + k * 2 * F;
+            tl.set("#f7_brL_i", { rotation: -28, x: Math.round((rnd(500 + k) - 0.5) * 4), y: Math.round((rnd(600 + k) - 0.5) * 4) }, tj);
+            tl.set("#f7_brR_i", { rotation: 28, x: Math.round((rnd(700 + k) - 0.5) * 4), y: Math.round((rnd(800 + k) - 0.5) * 4) }, tj);
+          }
+          var SH = [[3, -2], [-3, 2], [2, 3], [-2, -1], [1, -2], [0, 0]];
+          SH.forEach(function (o, k) { tl.set("#f7_world", { x: o[0], y: o[1] }, T_S + k * F); });
+          bump(T_S, 1.04);
+          for (var f = 1; f <= 4; f++) {
+            var th = T_S + 0.04 + (f - 1) * 0.03;
+            tl.fromTo("#f7_b" + f + "_face", { y: 0 }, { y: -16, duration: 0.09, ease: "power2.out", immediateRender: false }, th);
+            tl.fromTo("#f7_b" + f + "_face", { y: -16 }, { y: 0, duration: 0.16, ease: "power2.in", immediateRender: false }, th + 0.09);
+          }
+
+          tl.seek(0.001); tl.seek(0);
+          window.__timelines = window.__timelines || {};
+          window.__timelines = window.__timelines || {};
+          // ---- retimed by goldenrabbit-promo/scripts/retime.py: the authored timeline (OLD s) is driven through a
+          // piecewise-linear warp so its bar lines land on the new track's downbeats (NEW s). Seek-safe: a tween on tl.time.
+          (function (inner) {
+            var MAP = [[0.0, 0.0], [1.7, 1.56], [3.34, 3.09], [5.02, 4.65]];   // [new local s, old local s]
+            var OLD = 4.6500, NEW = 5.0200;
+            function warp(p) {
+              var t = p * NEW;
+              for (var i = 1; i < MAP.length; i++) {
+                if (t <= MAP[i][0] || i === MAP.length - 1) {
+                  var a = MAP[i - 1], b = MAP[i], u = (t - a[0]) / (b[0] - a[0]);
+                  return (a[1] + (b[1] - a[1]) * Math.max(0, Math.min(1, u))) / OLD;
+                }
+              }
+              return 1;
+            }
+            inner.pause();
+            var outer = gsap.timeline({ paused: true });
+            outer.fromTo(inner, { time: 0 }, { time: OLD, duration: NEW, ease: warp, immediateRender: false }, 0);
+            outer.seek(0.001); outer.seek(0);
+            window.__timelines["07-f7"] = outer;
+          })(tl);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

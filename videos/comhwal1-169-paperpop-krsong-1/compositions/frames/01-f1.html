@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>01-f1 · silent cold open — target call → 8.8% → pain voices → bat</title>
+  </head>
+  <body>
+    <template id="f1_template">
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-7Bold.ttf") format("truetype"); font-weight: 700; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-6SemiBold.ttf") format("truetype"); font-weight: 600; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+
+        #stage { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; background: #F4EEE1;
+          font-family: "Paperlogy", sans-serif; color: #1A1A22; -webkit-font-smoothing: antialiased; }
+
+        /* group layers (full frame). g1 / shared are on at t=0; the others start hidden and are toggled with autoAlpha */
+        .f1-layer { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+        #f1_g2b, #f1_g2, #f1_gn, #f1_g3 { opacity: 0; visibility: hidden; }
+
+        /* ---------- CROWD BOARD (shared geometry with F8): x 1000–1840, y 120–960, 10×10 cells of 84 px ---------- */
+        #f1_bwrap { position: absolute; left: 1000px; top: 120px; width: 840px; height: 840px; }
+        .f1-board { position: absolute; left: 0; top: 0; width: 840px; height: 840px; background-color: #F7F2E7;
+          background-image: repeating-linear-gradient(0deg, #E3D9C4 0 2px, transparent 2px 84px), repeating-linear-gradient(90deg, #E3D9C4 0 2px, transparent 2px 84px);
+          box-shadow: inset 0 0 0 2px #E3D9C4, 0 2px 0 rgba(0,0,0,.08), 0 14px 26px rgba(60,40,10,.18);
+          transform-origin: 462px 378px; /* centre of jini's cell (4,5) */ }
+        .f1-cf { position: absolute; width: 76px; height: 76px; }          /* cell face: pop / fall / squash */
+        .f1-cb { position: absolute; left: 0; top: 0; width: 76px; height: 76px; } /* boil layer */
+        .f1-cb img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; }
+        .f1-gloom { position: absolute; width: 3px; border-radius: 1.5px; background: #9FD3F2; box-shadow: 0 0 0 0.6px #1A1A22; }
+
+        /* ---------- TELOP: stacked layers (offset shadow / outer stroke / inner stroke / fill). One colour per layer,
+             so per-letter spans never paint artefacts over their neighbours. ---------- */
+        .f1-telop { position: absolute; white-space: nowrap; font-family: "Paperlogy"; font-weight: 600; letter-spacing: 0.02em; line-height: 1.05; }
+        .f1-telop > span { display: block; position: absolute; left: 0; top: 0; }
+        .f1-telop > span:first-child { position: relative; }
+        .f1-ch, .f1-em { display: inline-block; transform-origin: 50% 85%; }
+        /* g1 telop: white fill / 8 px ink / 18 px yellow outer / 6 px ink offset shadow */
+        .f1-telop > .f1-t-shd { left: 0.03em; top: 0.045em; color: rgba(26,26,34,.32); -webkit-text-stroke: 0.15em rgba(26,26,34,.32); }
+        .f1-t-out { color: #FFE13A; -webkit-text-stroke: 0.15em #FFE13A; }
+        .f1-t-mid { color: #FFFFFF; -webkit-text-stroke: 0.1em #FFFFFF; }
+        .f1-t-fill { color: #1A1A22; }
+        /* mega numeral (kit f1-num variant): red fill / white inline / thick ink outline / ink offset shadow */
+        .f1-stat { font-size: 300px; line-height: 0.9; font-weight: 800; letter-spacing: -0.02em; transform-origin: 40% 55%; }
+        .f1-telop > .f1-n-shd { left: 10px; top: 12px; color: #1A1A22; -webkit-text-stroke: 40px #1A1A22; }
+        .f1-n-out { color: #1A1A22; -webkit-text-stroke: 40px #1A1A22; }
+        .f1-n-mid { color: #FFFFFF; -webkit-text-stroke: 20px #FFFFFF; }
+        .f1-n-fill { color: #E5352B; }
+        .f1-s45 { font-size: 0.45em; margin-left: 0.05em; }
+        /* l4 telop: ink fill / white outer stroke / ink offset shadow, key words red */
+        .f1-telop > .f1-w-shd { left: 0.03em; top: 0.04em; color: #1A1A22; -webkit-text-stroke: 0.13em #1A1A22; }
+        .f1-w-out { color: #FFFFFF; -webkit-text-stroke: 0.13em #FFFFFF; }
+        .f1-w-fill { color: #1A1A22; }
+        .f1-w-fill .f1-red { color: #E5352B; }
+
+        /* CUSHION (座布団) — navy bar scales in from the left, text follows */
+        .f1-cush { position: absolute; left: 110px; top: 170px; }
+        .f1-cush-bg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; background: #23268C; border-radius: 6px;
+          box-shadow: 0 2px 0 rgba(0,0,0,.1), 0 10px 18px rgba(60,40,10,.22); transform-origin: 0% 50%; }
+        .f1-cush-tx { position: relative; display: block; padding: 16px 34px 8px; font-family: "Paperlogy"; font-size: 92px; line-height: 1.15; color: #FFFFFF; white-space: nowrap; font-weight: 600; }
+
+        /* FOOTNOTE ※ */
+        .f1-fn { position: absolute; left: 96px; top: 1018px; font-family: "Paperlogy"; font-weight: 500; font-size: 20px; color: rgba(26,26,34,.55); white-space: nowrap; }
+
+        .f1-svg { position: absolute; left: 0; top: 0; overflow: visible; }
+
+        /* ---------- g3: big faces + speech bubbles + bat ---------- */
+        .f1-face { position: absolute; top: 606px; width: 360px; height: 360px; }
+        .f1-fb { position: absolute; left: 0; top: 0; width: 360px; height: 360px; }
+        .f1-fb img { display: block; width: 100%; height: 100%; }
+        .f1-cshadow { position: absolute; left: 60px; top: 322px; width: 240px; height: 34px; border-radius: 50%;
+          background: radial-gradient(closest-side, rgba(60,40,10,.24), rgba(60,40,10,0)); }
+        .f1-banc { position: absolute; width: 0; height: 0; display: flex; align-items: flex-start; }
+        .f1-banc.f1-c { justify-content: center; }
+        .f1-banc.f1-l { justify-content: flex-start; }
+        .f1-banc.f1-r { justify-content: flex-end; }
+        .f1-bubble { position: relative; flex: none; background: #FFFFFF; border: 4px solid #1A1A22; border-radius: 30px; padding: 18px 28px 12px;
+          font-family: "Paperlogy"; font-size: 50px; line-height: 1.2; color: #1A1A22; white-space: nowrap;
+          box-shadow: 0 2px 0 rgba(0,0,0,.08), 0 10px 18px rgba(60,40,10,.2); transform-origin: var(--f1-tail, 50%) 118%; font-weight: 600; }
+        .f1-bubble::after { content: ""; position: absolute; left: var(--f1-tail, 50%); bottom: -19px; width: 30px; height: 30px; background: #FFFFFF;
+          border-right: 4px solid #1A1A22; border-bottom: 4px solid #1A1A22; transform: translateX(-50%) rotate(45deg); }
+
+        /* bat: wrapper pivots at the grip (handle); the image is mirrored so the barrel leads leftwards */
+        .f1-bat { position: absolute; left: 874px; top: 266px; width: 700px; height: 700px; transform-origin: 526.8px 546.9px; }
+        .f1-bat img { display: block; width: 100%; height: 100%; transform: scaleX(-1); }
+      </style>
+
+      <div id="stage" data-composition-id="01-f1" data-width="1920" data-height="1080" data-duration="7.940">
+        <div id="f1_cam" class="f1-layer">
+          <!-- g2 (back): concentration lines, painted under the board -->
+          <div id="f1_g2b" class="f1-layer" data-layout-ignore>
+            <svg id="f1_burst" class="f1-svg" width="1920" height="1080" viewBox="0 0 1920 1080"></svg>
+          </div>
+
+          <!-- shared g1+g2 layer: the crowd board and the l3 cushion persist from 1.55 to 6.20 -->
+          <div id="f1_gs" class="f1-layer">
+            <div id="f1_bwrap" data-layout-allow-overflow>
+              <div id="f1_board" class="f1-board">
+                <!-- 100 crowd cells are generated in script, inserted before these gloom lines -->
+                <div id="f1_gl0" class="f1-gloom" style="left:447px;top:325px;height:18px;transform:rotate(-4deg)"></div>
+                <div id="f1_gl1" class="f1-gloom" style="left:459.5px;top:321px;height:22px;"></div>
+                <div id="f1_gl2" class="f1-gloom" style="left:472px;top:325px;height:18px;transform:rotate(4deg)"></div>
+              </div>
+            </div>
+            <div id="f1_l3" class="f1-cush"><i id="f1_l3bg" class="f1-cush-bg"></i><span id="f1_l3tx" class="f1-cush-tx" data-layout-allow-overlap>실기 합격률은?</span></div>
+          </div>
+
+          <!-- g1: target call telop -->
+          <div id="f1_g1" class="f1-layer">
+            <div id="f1_l1" class="f1-telop" data-layout-allow-overlap style="left:110px;top:200px;font-size:120px;" data-text="컴활 1급,"></div>
+            <div id="f1_l2" class="f1-telop" style="left:110px;top:352px;font-size:104px;" data-text="준비 중이세요?"></div>
+          </div>
+
+          <!-- g2 (front): number shock -->
+          <div id="f1_g2" class="f1-layer">
+            <div id="f1_stat" class="f1-telop f1-stat" style="left:116px;top:322px;" data-text="8.8%" data-layout-allow-overflow data-layout-allow-overlap></div>
+            <div id="f1_l4a" class="f1-telop" style="left:112px;top:652px;font-size:84px;" data-text="100번 보면 91번"></div>
+            <div id="f1_l4b" class="f1-telop" style="left:112px;top:764px;font-size:84px;" data-text="떨어지는 시험"></div>
+          </div>
+
+          <!-- source line for the statistic: on from the slam to the end of the frame -->
+          <div id="f1_gn" class="f1-layer">
+            <div id="f1_note" class="f1-fn">※ 2025년 컴퓨터활용능력 1급 실기 합격률 · 국가기술자격 통계연보(대한상공회의소) · 응시 건 기준</div>
+          </div>
+
+          <!-- g3: pain voices + bat -->
+          <div id="f1_g3" class="f1-layer">
+            <div id="f1_fa0" class="f1-face" style="left:90px;"><i class="f1-cshadow"></i><div id="f1_fb0" class="f1-fb"><img src="assets/faces/worry/lucas.png" alt="" /></div></div>
+            <div id="f1_fa1" class="f1-face" style="left:470px;"><i class="f1-cshadow"></i><div id="f1_fb1" class="f1-fb"><img src="assets/faces/worry/thomas.png" alt="" /></div></div>
+            <div id="f1_fa2" class="f1-face" style="left:850px;"><i class="f1-cshadow"></i><div id="f1_fb2" class="f1-fb"><img src="assets/faces/worry/cindy.png" alt="" /></div></div>
+            <div id="f1_fa3" class="f1-face" style="left:1230px;"><i class="f1-cshadow"></i><div id="f1_fb3" class="f1-fb"><img src="assets/faces/worry/benny.png" alt="" /></div></div>
+
+            <div class="f1-banc f1-l" style="left:60px;top:300px;"><div id="f1_b0" class="f1-bubble" style="--f1-tail:210px;">함수만 보면 머리가 하얘져…</div></div>
+            <div class="f1-banc f1-c" style="left:650px;top:432px;"><div id="f1_b1" class="f1-bubble">액세스는 복불복이래…</div></div>
+            <div class="f1-banc f1-c" style="left:1030px;top:300px;"><div id="f1_b2" class="f1-bubble">벌써 3트째…</div></div>
+            <div class="f1-banc f1-r" style="left:1583px;top:432px;"><div id="f1_b3" class="f1-bubble" style="--f1-tail:calc(100% - 173px);">노베이스인데 될까?</div></div>
+
+            <svg id="f1_burst2" class="f1-svg" width="1920" height="1080" viewBox="0 0 1920 1080" style="position:absolute;left:0;top:0;opacity:0" data-layout-ignore></svg>
+            <div id="f1_glow" data-layout-ignore style="position:absolute;left:0;top:0;width:1920px;height:1080px;opacity:0;background:radial-gradient(circle at 960px 540px, rgba(255,255,255,.95) 0, rgba(255,255,255,.75) 260px, rgba(255,255,255,0) 760px);"></div>
+            <div id="f1_bat2" class="f1-bat" data-layout-allow-overflow><img src="assets/props/bat.png" alt="" /></div>
+            <div id="f1_bat1" class="f1-bat" data-layout-allow-overflow><img src="assets/props/bat.png" alt="" /></div>
+            <div id="f1_bat" class="f1-bat" data-layout-allow-overflow><img src="assets/props/bat.png" alt="" /></div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var D = 7.75, F = 1 / 30, SEED = 27;
+          var tl = gsap.timeline({ paused: true });
+          function q(id) { return document.getElementById(id); }
+          // deterministic pseudo-random in [0,1) from an integer (seeded by the variant seed)
+          function rnd(i) { var x = Math.sin((i + SEED * 101) * 12.9898 + 78.233) * 43758.5453; return x - Math.floor(x); }
+
+          // ---------------- helpers (paper-pop kit, renamed) ----------------
+          // TELOP builder: one span per layer; optional per-letter spans so a line can land letter by letter.
+          function telop(el, segs, layers, perChar) {
+            var html = "";
+            layers.forEach(function (L) {
+              var inner = "";
+              segs.forEach(function (s) {
+                var body = s[0];
+                if (perChar) body = body.split("").map(function (c) { return c === " " ? " " : '<span class="f1-ch">' + c + "</span>"; }).join("");
+                inner += s[1] ? "<span class='" + s[1] + "'>" + body + "</span>" : body;
+              });
+              // copy layers (shadow/outer/mid) are decoration: keep the layout checker on the fill layer only
+              var deco = /-(shd|out|mid)$/.test(L) ? " data-layout-ignore" : "";
+              html += "<span class='" + L + "'" + deco + ">" + inner + "</span>";
+            });
+            el.innerHTML = html;
+          }
+          function charGroups(el) {
+            var per = Array.prototype.map.call(el.children, function (L) { return L.querySelectorAll(".f1-ch"); });
+            var out = [];
+            for (var i = 0; i < per[0].length; i++) out.push(per.map(function (P) { return P[i]; }));
+            return out;
+          }
+          // KINETIC LETTER-IN (paper flavour): each syllable pops up from below with a seeded tilt, back.out overshoot
+          function letterIn(el, t0, step, seed) {
+            var groups = charGroups(el), all = [];
+            groups.forEach(function (g) { all = all.concat(g); });
+            tl.set(el, { autoAlpha: 0 }, 0);
+            tl.set(all, { opacity: 0 }, 0);
+            tl.set(el, { autoAlpha: 1 }, t0);
+            groups.forEach(function (g, i) {
+              var r = (rnd(seed + i * 3) - 0.5) * 18;
+              tl.fromTo(g, { y: 54, scale: 0.15, rotation: r, opacity: 0 },
+                { y: 0, scale: 1, rotation: 0, opacity: 1, duration: 0.3, ease: "back.out(2.6)", immediateRender: false }, t0 + i * step);
+            });
+          }
+          // POP-IN (ぽよん): 0 → 1.2 (5f) → 1 (2f) → squash. k < 1 compresses it (used near the frame end).
+          // autoAlpha sits in BOTH from- and to-vars: a from-only autoAlpha is lost after a seek back to 0 and forward again.
+          function popIn(target, at, k) {
+            k = k || 1;
+            tl.set(target, { autoAlpha: 0 }, 0);
+            tl.fromTo(target, { scale: 0, autoAlpha: 1 }, { scale: 1.2, autoAlpha: 1, duration: 5 * F * k, ease: "power2.out", immediateRender: false }, at);
+            tl.to(target, { scale: 1, duration: 2 * F * k, ease: "power1.in" }, at + 5 * F * k);
+            tl.to(target, { scaleX: 1.08, scaleY: 0.95, duration: 2 * F * k }, at + 7 * F * k);
+            tl.to(target, { scaleX: 1, scaleY: 1, duration: 3 * F * k, ease: "power1.out" }, at + 9 * F * k);
+          }
+          // BOIL (カクカク): stepped rotation/offset jitter from an index-seeded table, on the inner layer only.
+          // amp.r scales rotation (±1.5°), amp.xy scales offset (±2 px). Never sets past the frame end.
+          function boil(target, idx, from, to, fps, amp) {
+            for (var k = Math.ceil(from * fps - 1e-6); k / fps < to - 1e-6 && k / fps < D - 1e-6; k++) {
+              var s = idx * 131 + k * 7 + fps * 1000;
+              tl.set(target, {
+                rotation: Math.round((rnd(s) - 0.5) * 3 * amp.r * 100) / 100,
+                x: Math.round((rnd(s + 1) - 0.5) * 4 * amp.xy * 10) / 10,
+                y: Math.round((rnd(s + 2) - 0.5) * 4 * amp.xy * 10) / 10
+              }, k / fps);
+            }
+          }
+          // CONCENTRATION LINES (集中線): K pre-built line sets, one visible per 1/8 s from `from` to `to`
+          function burst(svg, cx, cy, inner, n, sets, color, from, to) {
+            var ns = "http://www.w3.org/2000/svg", R = 1500, groups = [];
+            for (var g = 0; g < sets; g++) {
+              var G = document.createElementNS(ns, "g"); G.setAttribute("fill", color); G.setAttribute("opacity", "0");
+              for (var i = 0; i < n; i++) {
+                var a = (i + rnd(g * 1000 + i) * 0.8) / n * Math.PI * 2, w = 0.004 + rnd(g * 1000 + i + 500) * 0.012;
+                var r0 = inner * (1 + rnd(g * 77 + i) * 0.35);
+                var p = [[cx + Math.cos(a) * r0, cy + Math.sin(a) * r0], [cx + Math.cos(a - w) * R, cy + Math.sin(a - w) * R], [cx + Math.cos(a + w) * R, cy + Math.sin(a + w) * R]];
+                var poly = document.createElementNS(ns, "polygon");
+                poly.setAttribute("points", p.map(function (x) { return x[0].toFixed(1) + "," + x[1].toFixed(1); }).join(" "));
+                G.appendChild(poly);
+              }
+              svg.appendChild(G); groups.push(G);
+            }
+            var times = [from];
+            for (var k = Math.floor(from * 8) + 1; k / 8 < to - 1e-6; k++) times.push(k / 8);
+            times.forEach(function (t, j) { groups.forEach(function (G, gi) { tl.set(G, { opacity: gi === j % sets ? 1 : 0 }, t); }); });
+            groups.forEach(function (G) { tl.set(G, { opacity: 0 }, to); });
+          }
+          // SHAKE: stepped x/y offsets, one per frame
+          function shake(el, t, xs, ys) {
+            xs.forEach(function (x, k) { tl.set(el, { x: x, y: ys[k] || 0 }, t + k * F); });
+          }
+
+          var TL = ["f1-t-shd", "f1-t-out", "f1-t-mid", "f1-t-fill"];
+          var NL = ["f1-n-shd", "f1-n-out", "f1-n-mid", "f1-n-fill"];
+          var WL = ["f1-w-shd", "f1-w-out", "f1-w-fill"];
+
+          // ---------------- group spans (0 ms swaps) ----------------
+          var G1 = q("f1_g1"), GS = q("f1_gs"), G2 = q("f1_g2"), G2B = q("f1_g2b"), GN = q("f1_gn"), G3 = q("f1_g3");
+          tl.set([G1, GS], { autoAlpha: 1 }, 0);
+          tl.set(G1, { autoAlpha: 0 }, 3.10);
+          tl.set([G2, G2B, GN], { autoAlpha: 1 }, 3.10);
+          tl.set([GS, G2, G2B], { autoAlpha: 0 }, 6.20);
+          tl.set(G3, { autoAlpha: 1 }, 6.20);
+
+          // ---------------- CROWD BOARD ----------------
+          var SLUGS = ["p", "rei", "lucas", "bible", "benny", "cindy", "esther", "alice", "ian", "jini", "kate", "thomas", "toynbee"];
+          var SURV = [7, 13, 29, 35, 41, 56, 62, 78, 84]; // (0,7)(1,3)(2,9)(3,5)(4,1)(5,6)(6,2)(7,8)(8,4)
+          var JI = 45;                                    // jini, cell (4,5)
+          var board = q("f1_board"), gloom0 = q("f1_gl0");
+          function mkImg(parent, src, hidden) {
+            var im = document.createElement("img");
+            im.src = src; im.alt = "";
+            if (hidden) im.style.opacity = "0";
+            parent.appendChild(im);
+            return im;
+          }
+          var cells = [];
+          for (var i = 0; i < 100; i++) {
+            var r = Math.floor(i / 10), c = i % 10;
+            var slug = i === JI ? "jini" : SLUGS[(i * 5) % 13];
+            var d = Math.sqrt((r - 4) * (r - 4) + (c - 5) * (c - 5));
+            var surv = SURV.indexOf(i) >= 0;
+            var cf = document.createElement("div");
+            cf.className = "f1-cf"; cf.id = "f1_cf" + i;
+            cf.style.left = (c * 84 + 4) + "px"; cf.style.top = (r * 84 + 4) + "px";
+            var cb = document.createElement("div"); cb.className = "f1-cb";
+            // cells seen up close during the pull-back use the 512 px art so they stay crisp; the rest use the 160 px crowd copies
+            var w = mkImg(cb, (i === JI || d <= 4.5 ? "assets/faces/worry/" : "assets/faces/sm/worry/") + slug + ".png", false);
+            var w2 = i === JI ? mkImg(cb, "assets/faces/sm/worry/jini.png", true) : null;
+            var h = surv ? mkImg(cb, "assets/faces/sm/happy/" + slug + ".png", true) : null;
+            cf.appendChild(cb);
+            board.insertBefore(cf, gloom0);
+            cells.push({ i: i, r: r, c: c, d: d, surv: surv, cf: cf, cb: cb, w: w, w2: w2, h: h,
+              tilt: i === JI ? 0 : Math.round((rnd(i * 7 + 1) - 0.5) * 8 * 10) / 10 });
+          }
+
+          // dolly: slow push-in on jini while she worries, then the pull-back reveals the 100-face exam board
+          tl.fromTo(board, { scale: 6.5 }, { scale: 6.8, duration: 1.55, ease: "sine.inOut", force3D: false }, 0);
+          tl.fromTo(board, { scale: 6.8 }, { scale: 1, duration: 0.6, ease: "power3.inOut", force3D: false, immediateRender: false }, 1.55);
+
+          // jini — pops on the first tick, boils (offset scaled down while the board is magnified), swaps to the crowd copy
+          var J = cells[JI];
+          popIn(J.cf, 0.0);
+          boil(J.cb, JI, 0, 2.15, 8, { r: 1, xy: 0.15 });
+          tl.set(J.w, { opacity: 0 }, 2.15);
+          tl.set(J.w2, { opacity: 1 }, 2.15);
+
+          // ガーン gloom lines drop above her head (inside the board, so they live in her magnified space)
+          ["f1_gl0", "f1_gl1", "f1_gl2"].forEach(function (id, k) {
+            var g = q(id);
+            tl.set(g, { autoAlpha: 0 }, 0);
+            tl.fromTo(g, { y: -10, autoAlpha: 1 }, { y: 0, autoAlpha: 1, duration: 2 * F, ease: "power2.in", immediateRender: false }, 0.95 + k * F);
+            tl.set(g, { autoAlpha: 0 }, 1.55);
+          });
+
+          // the other 99 worried faces ripple in from jini's cell outward during the pull-back
+          cells.forEach(function (C) {
+            if (C.i === JI) return;
+            C.pop = 1.66 + C.d * 0.06;
+            tl.set(C.cf, { rotation: C.tilt }, 0);
+            popIn(C.cf, C.pop);
+          });
+
+          // 2.325 (tock): one nervous 2 px shiver of the whole board
+          shake(q("f1_bwrap"), 2.325, [2, -2, 2, -1, 0], [1, -1, 0, 1, 0]);
+
+          // ---------------- g1 telop ----------------
+          var L1 = q("f1_l1"), L2 = q("f1_l2");
+          telop(L1, [["컴활 1급,"]], TL, true);
+          telop(L2, [["준비 중이세요?"]], TL, true);
+          letterIn(L1, 0.30, 0.045, 11);
+          letterIn(L2, 0.775, 0.04, 41);
+          tl.set([L1, L2], { autoAlpha: 0 }, 1.55);
+
+          // 1.55: l3 on a navy cushion (bar first, text 0.06 s later); it stays through g2
+          var L3 = q("f1_l3");
+          tl.set(L3, { autoAlpha: 0 }, 0);
+          tl.set(L3, { autoAlpha: 1 }, 1.55);
+          tl.fromTo(q("f1_l3bg"), { scaleX: 0 }, { scaleX: 1, duration: 0.2, ease: "power3.out", immediateRender: false }, 1.55);
+          tl.set(q("f1_l3tx"), { opacity: 0 }, 0);
+          tl.fromTo(q("f1_l3tx"), { x: -26, opacity: 0 }, { x: 0, opacity: 1, duration: 0.16, ease: "power2.out", immediateRender: false }, 1.61);
+
+          // ---------------- g2: number shock ----------------
+          var ST = q("f1_stat");
+          telop(ST, [["8.8"], ["%", "f1-s45"]], NL, false);
+          tl.set(ST, { autoAlpha: 0 }, 0);
+          tl.fromTo(ST, { scale: 1.6, autoAlpha: 1 }, { scale: 1, autoAlpha: 1, duration: 3 * F, ease: "power2.in", immediateRender: false }, 3.10);
+          tl.to(ST, { scaleX: 1.04, scaleY: 0.96, duration: 2 * F }, 3.10 + 3 * F);
+          tl.to(ST, { scaleX: 1, scaleY: 1, duration: 3 * F, ease: "power1.out" }, 3.10 + 5 * F);
+          burst(q("f1_burst"), 420, 455, 330, 110, 4, "#1A1A22", 3.10, 3.50);
+          var CAM = q("f1_cam");
+          shake(CAM, 3.10, [4, -4, 3, -3, 2, -1, 0], [-3, 3, -2, 2, -1, 1, 0]);
+
+          // 3.30 →: the 91 non-survivors peel off and FALL off the board in a seeded order (떨어지다)
+          var fallers = cells.filter(function (C) { return !C.surv; });
+          fallers.sort(function (a, b) { return rnd(a.i * 3 + 7001) - rnd(b.i * 3 + 7001); });
+          fallers.forEach(function (C, k) {
+            var s = 3.30 + (k / (fallers.length - 1)) * 0.8;
+            var dur = 0.55 + rnd(C.i * 5 + 3) * 0.2;
+            var top = 120 + C.r * 84 + 4;
+            var dy = Math.round(Math.max(900 + rnd(C.i * 5 + 4) * 300, 1080 - top + 70));
+            var dir = rnd(C.i * 5 + 5) < 0.5 ? -1 : 1;
+            var rot = dir * (25 + rnd(C.i * 5 + 6) * 35);
+            var dx = Math.round(dir * (8 + rnd(C.i * 5 + 7) * 36));
+            tl.set(C.cf, { zIndex: 3 }, s);
+            tl.to(C.cf, { y: -12, rotation: C.tilt + dir * 6, duration: 0.08, ease: "power1.out" }, s);
+            tl.to(C.cf, { y: dy, x: dx, rotation: C.tilt + rot, duration: dur, ease: "power2.in" }, s + 0.08);
+            tl.set(C.cf, { autoAlpha: 0 }, s + 0.08 + dur);
+            C.gone = s + 0.08 + dur;
+          });
+
+          // crowd boil: from each face's pop until it has fallen (survivors until the cut)
+          cells.forEach(function (C) {
+            var from = C.i === JI ? 2.15 : C.pop;
+            boil(C.cb, C.i, from, C.surv ? 6.20 : C.gone, 8, { r: 1, xy: 1 });
+          });
+
+          // 4.20: the 9 survivors turn happy (0 ms swap + tiny squash pop)
+          cells.forEach(function (C) {
+            if (!C.surv) return;
+            tl.set(C.w, { opacity: 0 }, 4.20);
+            tl.set(C.h, { opacity: 1 }, 4.20);
+            tl.to(C.cf, { scale: 0.88, duration: 2 * F, ease: "power1.out" }, 4.20);
+            tl.to(C.cf, { scale: 1.14, duration: 2 * F, ease: "power1.out" }, 4.20 + 2 * F);
+            tl.to(C.cf, { scale: 1, duration: 3 * F, ease: "power1.inOut" }, 4.20 + 4 * F);
+          });
+
+          // 4.65 (buzzer): l4a / l4b stack under the stat; '떨어지는' drops 10 px and bounces once
+          var L4A = q("f1_l4a"), L4B = q("f1_l4b");
+          telop(L4A, [["100번 보면 "], ["91번", "f1-red"]], WL, true);
+          telop(L4B, [["떨어지는", "f1-em f1-red"], [" 시험"]], WL, true);
+          letterIn(L4A, 4.65, 0.03, 71);
+          letterIn(L4B, 4.77, 0.03, 97);
+          var EM = L4B.querySelectorAll(".f1-em");
+          tl.to(EM, { y: 14, duration: 0.1, ease: "power2.in" }, 5.16);
+          tl.to(EM, { y: 4, duration: 0.09, ease: "power2.out" }, 5.26);
+          tl.to(EM, { y: 10, duration: 0.09, ease: "power2.in" }, 5.35);
+
+          // 5.425 (tock): the stat gives one small 2 px wobble
+          tl.to(ST, { x: 2, rotation: -0.8, duration: 2 * F }, 5.425);
+          tl.to(ST, { x: -2, rotation: 0.8, duration: 2 * F }, 5.425 + 2 * F);
+          tl.to(ST, { x: 0, rotation: 0, duration: 3 * F, ease: "power1.out" }, 5.425 + 4 * F);
+
+          // ---------------- g3: pain voices on the accelerating ticks ----------------
+          var TICKS = [6.20, 6.59, 6.98, 7.36];
+          var RAMP = [[6.20, 6.59, 8, 1], [6.59, 6.98, 10, 1.3], [6.98, 7.36, 12, 1.7], [7.36, D, 15, 2.2]]; // faster, wider jitter
+          TICKS.forEach(function (t, n) {
+            var k = n === 3 ? 0.85 : 1; // last pop compressed so it finishes inside the frame
+            popIn(q("f1_fa" + n), t, k);
+            popIn(q("f1_b" + n), t + 0.04, k);
+            RAMP.forEach(function (seg) {
+              if (seg[1] <= t) return;
+              boil(q("f1_fb" + n), 300 + n, Math.max(seg[0], t), seg[1], seg[2], { r: seg[3], xy: seg[3] });
+            });
+          });
+          [[6.20, 1.5], [6.59, 2], [6.98, 3], [7.36, 4]].forEach(function (s) {
+            shake(CAM, s[0], [s[1], -s[1], s[1] / 2, 0], [-s[1] / 2, s[1] / 2, 0, 0]);
+          });
+
+          // 6.98 → 7.75: the swing is READABLE — the bat rises into frame (wind-up), cocks back, then accelerates through
+          // the centre so the barrel meets the impact point exactly on the crack (7.75). Pose = {x, y, rotation} of the
+          // grip-pivoted wrapper; F2 starts from the same final pose, so the cut is a match cut on the swing.
+          var BAT = q("f1_bat"), BAT1 = q("f1_bat1"), BAT2 = q("f1_bat2");
+          var UP = { x: 340, y: 60, rotation: 34 }, BACK = { x: 352, y: 44, rotation: 52 }, HIT = { x: 0, y: 0, rotation: -15 };
+          tl.set([BAT, BAT1, BAT2], { autoAlpha: 0 }, 0);
+          tl.set(BAT, { autoAlpha: 1 }, 6.98);
+          tl.fromTo(BAT, { x: UP.x, y: 520, rotation: 22 }, { x: UP.x, y: UP.y, rotation: UP.rotation, duration: 0.3, ease: "back.out(1.6)", immediateRender: false }, 6.98);
+          tl.to(BAT, { x: BACK.x, y: BACK.y, rotation: BACK.rotation, duration: 0.3, ease: "power1.inOut" }, 7.12);
+          tl.to(BAT, { x: HIT.x, y: HIT.y, rotation: HIT.rotation, duration: D - 7.42, ease: "power3.in" }, 7.42);
+          // motion smear on the swing only (two lagging copies)
+          [[BAT1, 0.03, 0.35], [BAT2, 0.06, 0.16]].forEach(function (b) {
+            tl.set(b[0], { x: BACK.x, y: BACK.y, rotation: BACK.rotation }, 0);
+            tl.set(b[0], { autoAlpha: b[2] }, 7.42 + b[1]);
+            tl.to(b[0], { x: HIT.x * 0.9 + BACK.x * 0.1, y: HIT.y * 0.9 + BACK.y * 0.1, rotation: HIT.rotation + (BACK.rotation - HIT.rotation) * 0.12,
+                          duration: D - 7.42 - b[1], ease: "power3.in" }, 7.42 + b[1]);
+          });
+          // the four voices flinch away from the incoming bat
+          [0, 1, 2, 3].forEach(function (n) {
+            tl.to(q("f1_fa" + n), { x: -14 - n * 4, rotation: -5, duration: 0.18, ease: "power2.out" }, 7.48 + n * 0.02);
+          });
+          // camera leans in, concentration lines gather on the impact point, light builds → F2 opens on the same burst + flash
+          tl.fromTo(q("f1_cam"), { scale: 1 }, { scale: 1.07, duration: D - 7.0, ease: "power2.in", transformOrigin: "960px 540px", immediateRender: false }, 7.0);
+          burst(q("f1_burst2"), 960, 540, 300, 110, 4, "#1A1A22", 7.40, D);
+          tl.fromTo(q("f1_burst2"), { opacity: 0 }, { opacity: 0.75, duration: D - 7.40, ease: "power2.in", immediateRender: false }, 7.40);
+          tl.fromTo(q("f1_glow"), { opacity: 0 }, { opacity: 0.85, duration: D - 7.55, ease: "power2.in", immediateRender: false }, 7.55);
+
+          // prime: on a fresh timeline seek(0) is a no-op, so the t=0 sets would never render if the first requested frame is 0
+          tl.seek(0.001);
+          tl.seek(0);
+          window.__timelines = window.__timelines || {};
+          window.__timelines = window.__timelines || {};
+          // ---- retimed by goldenrabbit-promo/scripts/retime.py: the authored timeline (OLD s) is driven through a
+          // piecewise-linear warp so its bar lines land on the new track's downbeats (NEW s). Seek-safe: a tween on tl.time.
+          (function (inner) {
+            var MAP = [[0, 0], [2.28, 3.1], [4.18, 4.65], [6.08, 6.2], [7.94, 7.75]];   // [new local s, old local s]
+            var OLD = 7.7500, NEW = 7.9400;
+            function warp(p) {
+              var t = p * NEW;
+              for (var i = 1; i < MAP.length; i++) {
+                if (t <= MAP[i][0] || i === MAP.length - 1) {
+                  var a = MAP[i - 1], b = MAP[i], u = (t - a[0]) / (b[0] - a[0]);
+                  return (a[1] + (b[1] - a[1]) * Math.max(0, Math.min(1, u))) / OLD;
+                }
+              }
+              return 1;
+            }
+            inner.pause();
+            var outer = gsap.timeline({ paused: true });
+            outer.fromTo(inner, { time: 0 }, { time: OLD, duration: NEW, ease: warp, immediateRender: false }, 0);
+            outer.seek(0.001); outer.seek(0);
+            window.__timelines["01-f1"] = outer;
+          })(tl);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Frame 5 — f5 · POINT 3 TRI-PANEL (기출변형 30회분). span 20.16–24.80 s (4.64 s), beat_cut.
+         Built from the paper-pop kit (telop / popIn / boil, panel = kit card, side label) +
+         staggered-exit (panels in, staggered), counting-punch (odometer 0→10 + settle punch + underline),
+         braam-punch (sum band slam + shake). Frame-local t = track t − 20.16. -->
+  </head>
+  <body>
+    <template id="05-f5-template">
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-7Bold.ttf") format("truetype"); font-weight: 700; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-6SemiBold.ttf") format("truetype"); font-weight: 600; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+
+        #stage { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; background: #DDEDF8; font-family: "Paperlogy", sans-serif; color: #1A1A22; }
+
+        .f5-g, .f5-world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+        /* SIDE LABEL pill (サイドテロップ) — kit */
+        .f5-side { position: absolute; left: 96px; top: 56px; display: flex; align-items: center; gap: 14px; font-family: "Paperlogy"; font-size: 34px; color: #1A1A22; white-space: nowrap; font-weight: 600; }
+        .f5-side b { font-weight: 700; background: #FFE13A; color: #1A1A22; padding: 8px 20px 4px; border-radius: 999px; border: 4px solid #1A1A22; }
+
+        /* PANEL — white paper sheet (kit card), 470×560, radius 18 */
+        .f5-panel { position: absolute; top: 176px; width: 470px; height: 560px; background: #FFFDF8; border-radius: 18px;
+          box-shadow: 0 2px 0 rgba(0,0,0,.06), 0 18px 34px rgba(60,40,10,.20); }
+
+        /* FACE: wrapper takes squash/hop, the <img>s take the 8 fps boil */
+        .f5-face { position: absolute; left: 135px; top: 16px; width: 200px; height: 200px; transform-origin: 50% 92%; }
+        .f5-face img { display: block; width: 100%; height: 100%; }
+
+        /* COUNT — Paperlogy 800 150px numerals, '회' at 0.45×; one stacked span per value (0 ms swaps) */
+        .f5-mark { position: absolute; left: 104px; top: 318px; width: 262px; height: 36px; background: rgba(255,225,58,.92); border-radius: 6px; transform-origin: 0% 50%; }
+        .f5-count { position: absolute; left: 0; top: 216px; width: 470px; height: 160px; }
+        .f5-cv { position: absolute; left: 0; top: 0; width: 470px; height: 160px; text-align: center; font-family: "Paperlogy"; font-weight: 800;
+          font-size: 150px; line-height: 160px; letter-spacing: -0.04em; white-space: nowrap; font-variant-numeric: tabular-nums; color: #1A1A22;
+          text-shadow: 3px 4px 0 rgba(26,26,34,.12); }
+        .f5-cv small { font-size: 0.45em; letter-spacing: 0; margin-left: 6px; }
+
+        /* LABEL CUSHION (座布団) along the panel bottom — scaleX 0→1 from the left */
+        .f5-lab { position: absolute; left: 28px; top: 388px; width: 414px; height: 80px; box-sizing: border-box; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+          font-family: "Paperlogy"; font-size: 52px; line-height: 1; padding-top: 6px; transform-origin: 0% 50%;
+          box-shadow: 0 2px 0 rgba(0,0,0,.1), 0 8px 14px rgba(60,40,10,.18); font-weight: 600; }
+        .f5-lab span { display: block; white-space: nowrap; }
+        .f5-lab-y { background: #FFE13A; color: #1A1A22; }
+        .f5-lab-w { background: #FFFFFF; color: #1A1A22; border: 4px solid #1A1A22; }
+        .f5-lab-n { background: #23268C; color: #FFFFFF; }
+
+        /* '+' paper chips between the panels */
+        .f5-chip { position: absolute; top: 426px; width: 92px; height: 92px; }
+        .f5-chip-in { position: absolute; left: 0; top: 0; width: 92px; height: 92px; box-sizing: border-box; border-radius: 50%; background: #FFE13A; border: 4px solid #1A1A22;
+          box-shadow: 0 2px 0 rgba(0,0,0,.1), 0 8px 14px rgba(60,40,10,.22); display: flex; align-items: center; justify-content: center;
+          font-family: "Paperlogy"; font-weight: 800; font-size: 76px; line-height: 1; color: #1A1A22; padding-bottom: 6px; }
+
+        /* SUM band — red tilted cushion, 1300×150 */
+        .f5-sum { position: absolute; left: 310px; top: 697px; width: 1300px; height: 150px; background: #E5352B; border-radius: 8px;
+          box-shadow: 0 3px 0 rgba(0,0,0,.12), 0 18px 30px rgba(80,20,10,.28); display: flex; align-items: center; justify-content: center; }
+        .f5-sumrow { display: flex; align-items: baseline; gap: 36px; padding-top: 4px; }
+
+        /* TELOP — kit double-outline layering (outer / mid / fill), used inline in the sum band */
+        .f5-telop { position: relative; white-space: nowrap; font-family: "Paperlogy"; font-weight: 700; letter-spacing: 0.02em; line-height: 1.05; }
+        .f5-telop > span { display: block; }
+        .f5-telop > span + span { position: absolute; left: 0; top: 0; }
+        .f5-telop > .f5-t-mid { display: none; }
+        .f5-suma { font-size: 64px; }
+        .f5-suma .f5-t-outer { color: #1A1A22; -webkit-text-stroke: 0.12em #1A1A22; text-shadow: 5px 6px 0 rgba(26,26,34,.35); }
+        .f5-suma .f5-t-fill { color: #FFFFFF; }
+        .f5-sumb { font-size: 104px; }
+        .f5-sumb .f5-t-outer { color: #1A1A22; -webkit-text-stroke: 0.12em #1A1A22; text-shadow: 7px 9px 0 rgba(26,26,34,.35); }
+        .f5-sumb .f5-t-fill { color: #FFE13A; }
+        .f5-big { font-size: 1.3em; }
+
+        /* four-point paper sparkles */
+        .f5-spk { position: absolute; }
+        .f5-spk svg { display: block; overflow: visible; }
+      </style>
+
+      <div id="stage" data-composition-id="05-f5" data-width="1920" data-height="1080" data-duration="4.64">
+        <div id="f5_g1" class="f5-g">
+          <div id="f5_world" class="f5-world">
+            <!-- panel 1 · 필기 · kate -->
+            <div id="f5_p1" class="f5-panel" style="left:190px;">
+              <div id="f5_p1_face" class="f5-face"><img id="f5_p1_fw" src="assets/faces/worry/kate.png" alt="" /><img id="f5_p1_fh" src="assets/faces/happy/kate.png" alt="" style="position:absolute;left:0;top:0;opacity:0" /></div>
+              <div id="f5_p1_mark" class="f5-mark"></div>
+              <div id="f5_p1_count" class="f5-count" data-max="10"></div>
+              <div id="f5_p1_cush" class="f5-lab f5-lab-y"><span id="f5_p1_lab">필기</span></div>
+            </div>
+            <!-- panel 2 · 엑셀 · cindy -->
+            <div id="f5_p2" class="f5-panel" style="left:725px;">
+              <div id="f5_p2_face" class="f5-face"><img id="f5_p2_fw" src="assets/faces/worry/cindy.png" alt="" /><img id="f5_p2_fh" src="assets/faces/happy/cindy.png" alt="" style="position:absolute;left:0;top:0;opacity:0" /></div>
+              <div id="f5_p2_mark" class="f5-mark"></div>
+              <div id="f5_p2_count" class="f5-count" data-max="10"></div>
+              <div id="f5_p2_cush" class="f5-lab f5-lab-w"><span id="f5_p2_lab">엑셀</span></div>
+            </div>
+            <!-- panel 3 · 액세스 · thomas -->
+            <div id="f5_p3" class="f5-panel" style="left:1260px;">
+              <div id="f5_p3_face" class="f5-face"><img id="f5_p3_fw" src="assets/faces/worry/thomas.png" alt="" /><img id="f5_p3_fh" src="assets/faces/happy/thomas.png" alt="" style="position:absolute;left:0;top:0;opacity:0" /></div>
+              <div id="f5_p3_mark" class="f5-mark"></div>
+              <div id="f5_p3_count" class="f5-count" data-max="10"></div>
+              <div id="f5_p3_cush" class="f5-lab f5-lab-n"><span id="f5_p3_lab">액세스</span></div>
+            </div>
+
+            <!-- '+' chips in the panel gaps -->
+            <div id="f5_plus1" class="f5-chip" style="left:646px;"><div id="f5_plus1_in" class="f5-chip-in">+</div></div>
+            <div id="f5_plus2" class="f5-chip" style="left:1181px;"><div id="f5_plus2_in" class="f5-chip-in">+</div></div>
+
+            <!-- SUM band -->
+            <div id="f5_sum" class="f5-sum">
+              <div class="f5-sumrow">
+                <div id="f5_suma" class="f5-telop f5-suma" data-text="기출변형"></div>
+                <div id="f5_sumb" class="f5-telop f5-sumb" data-text="총 &lt;span class=&quot;f5-big&quot;&gt;30&lt;/span&gt;회분"></div>
+              </div>
+            </div>
+
+            <!-- sparkles (sparkle sfx @ 23.40) -->
+            <div id="f5_spk1" class="f5-spk" style="left:1202px;top:610px;width:52px;height:52px;"><svg id="f5_spk1_in" width="52" height="52" viewBox="-26 -26 52 52"><path d="M0,-24 Q4.5,-4.5 24,0 Q4.5,4.5 0,24 Q-4.5,4.5 -24,0 Q-4.5,-4.5 0,-24 Z" fill="#FFE13A" stroke="#1A1A22" stroke-width="3.5" stroke-linejoin="round" /></svg></div>
+            <div id="f5_spk2" class="f5-spk" style="left:1166px;top:856px;width:36px;height:36px;"><svg id="f5_spk2_in" width="36" height="36" viewBox="-18 -18 36 36"><path d="M0,-16 Q3,-3 16,0 Q3,3 0,16 Q-3,3 -16,0 Q-3,-3 0,-16 Z" fill="#FFE13A" stroke="#1A1A22" stroke-width="3" stroke-linejoin="round" /></svg></div>
+            <div id="f5_spk3" class="f5-spk" style="left:1236px;top:878px;width:28px;height:28px;"><svg id="f5_spk3_in" width="28" height="28" viewBox="-14 -14 28 28"><path d="M0,-12 Q2.4,-2.4 12,0 Q2.4,2.4 0,12 Q-2.4,2.4 -12,0 Q-2.4,-2.4 0,-12 Z" fill="#FFFFFF" stroke="#1A1A22" stroke-width="3" stroke-linejoin="round" /></svg></div>
+          </div>
+
+          <div id="f5_side" class="f5-side"><b>POINT 3</b><span>최신 기출변형</span></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var D = 4.64;
+          var tl = gsap.timeline({ paused: true });
+          var q = function (s) { return document.querySelector(s); };
+          // deterministic pseudo-random in [0,1) from an integer
+          function rnd(i) { var x = Math.sin(i * 12.9898 + 78.233) * 43758.5453; return x - Math.floor(x); }
+
+          // TELOP builder (kit): 3 stacked copies (outer / mid / fill)
+          function telop(el) {
+            var t = el.getAttribute("data-text");
+            el.innerHTML = '<span class="f5-t-outer">' + t + '</span><span class="f5-t-mid">' + t + '</span><span class="f5-t-fill">' + t + '</span>';
+          }
+          // POP-IN (ぽよん, kit): 0 → 1.2 (5f) → 1 (2f) → squash
+          function popIn(target, at) {
+            var f = 1 / 30;
+            tl.set(target, { autoAlpha: 0 }, 0);
+            tl.fromTo(target, { scale: 0, autoAlpha: 1 }, { scale: 1.2, autoAlpha: 1, duration: 5 * f, ease: "power2.out", immediateRender: false }, at);
+            tl.to(target, { scale: 1, duration: 2 * f, ease: "power1.in" }, at + 5 * f);
+            tl.to(target, { scaleX: 1.08, scaleY: 0.95, duration: 2 * f }, at + 7 * f);
+            tl.to(target, { scaleX: 1, scaleY: 1, duration: 3 * f, ease: "power1.out" }, at + 9 * f);
+          }
+          // BOIL (カクカク, kit): 8 fps rotation/offset jitter, clamped to the frame span
+          function boil(target, idx, from, to, amp) {
+            amp = amp || 1;
+            for (var k = Math.floor(from * 8); k / 8 <= to; k++) {
+              var s = idx * 131 + k * 7;
+              tl.set(target, { rotation: (rnd(s) - 0.5) * 3 * amp, x: Math.round((rnd(s + 1) - 0.5) * 4 * amp), y: Math.round((rnd(s + 2) - 0.5) * 4 * amp) }, k / 8);
+            }
+          }
+
+          // frame-local anchors (track − 20.16, from audiomap beats)
+          var T = {
+            panel: 0.0,                      // 20.16 downbeat — panels slide up, 0.1 s stagger
+            side: 0.20,                      // 20.36 side label
+            count: [0.366, 0.761, 1.156],    // 20.53 / 20.92 / 21.32 odometer 0→10
+            happy: [1.551, 1.922, 2.317],    // 21.71 / 22.08 / 22.48 worry → happy
+            plus: 2.688,                     // 22.85 '+' chips
+            sum: 3.083,                      // 23.24 downbeat — SUM slam
+            spark: 3.24,                     // 23.40 sparkle sfx
+            hop: 3.455                       // 23.61 beat — happy hop, then hold
+          };
+
+          telop(q("#f5_suma"));
+          telop(q("#f5_sumb"));
+
+          tl.set("#f5_g1", { autoAlpha: 1 }, 0);
+          tl.set("#f5_world", { x: 0, y: 0 }, 0);
+
+          // SIDE LABEL
+          tl.set("#f5_side", { autoAlpha: 0 }, 0);
+          tl.fromTo("#f5_side", { x: -60, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.22, ease: "power3.out", immediateRender: false }, T.side);
+
+          var P = [{ id: "#f5_p1", tilt: -2.0 }, { id: "#f5_p2", tilt: 1.6 }, { id: "#f5_p3", tilt: -1.4 }];
+          P.forEach(function (p, i) {
+            var el = p.id;
+
+            // odometer values 0…10 as stacked spans (swapped at 0 ms)
+            var cnt = q(el + "_count"), html = "";
+            for (var v = 0; v <= 10; v++) html += '<span class="f5-cv" id="' + el.slice(1) + "_v" + v + '">' + v + "<small>회</small></span>";
+            cnt.innerHTML = html;
+
+            // PANEL slides up from below the frame (staggered), lands on its tilt
+            var at = T.panel + i * 0.1;
+            tl.set(el, { y: 1000, rotation: p.tilt + 8 }, 0);
+            tl.fromTo(el, { y: 1000, rotation: p.tilt + 8 }, { y: 0, rotation: p.tilt, duration: 0.34, ease: "back.out(1.15)", immediateRender: false }, at);
+
+            // LABEL CUSHION scaleX 0→1 from the left, text follows 0.06 s later
+            var ct = at + 0.26;
+            tl.set(el + "_cush", { scaleX: 0 }, 0);
+            tl.set(el + "_lab", { autoAlpha: 0 }, 0);
+            tl.fromTo(el + "_cush", { scaleX: 0 }, { scaleX: 1, duration: 0.2, ease: "power3.out", immediateRender: false }, ct);
+            tl.fromTo(el + "_lab", { autoAlpha: 0, x: -14 }, { autoAlpha: 1, x: 0, duration: 0.14, ease: "power2.out", immediateRender: false }, ct + 0.06);
+
+            // COUNT 0→10 in ~0.3 s (0 ms swaps + カタカタ y-jitter), then counting-punch settle + highlighter underline
+            var t0 = T.count[i], cw = el + "_count";
+            tl.set(el + "_v0", { autoAlpha: 1 }, 0);
+            for (v = 1; v <= 10; v++) tl.set(el + "_v" + v, { autoAlpha: 0 }, 0);
+            tl.set(cw, { y: 0, scale: 1 }, 0);
+            for (v = 1; v <= 10; v++) {
+              var ts = t0 + (v - 1) * 0.03;
+              tl.set(el + "_v" + (v - 1), { autoAlpha: 0 }, ts);
+              tl.set(el + "_v" + v, { autoAlpha: 1 }, ts);
+              tl.set(cw, { y: v === 10 ? 0 : (v % 2 ? -5 : 4) }, ts);
+            }
+            var land = t0 + 0.27;
+            tl.fromTo(cw, { scale: 1 }, { scale: 1.14, duration: 0.08, ease: "power4.out", immediateRender: false }, land);
+            tl.to(cw, { scale: 1, duration: 0.4, ease: "elastic.out(1, 0.6)" }, land + 0.08);
+            tl.set(el + "_mark", { scaleX: 0 }, 0);
+            tl.fromTo(el + "_mark", { scaleX: 0 }, { scaleX: 1, duration: 0.16, ease: "power2.out", immediateRender: false }, land + 0.02);
+
+            // FACE worry → happy (0 ms swap + squash pop)
+            var fw = el + "_fw", fh = el + "_fh", fc = el + "_face", ht = T.happy[i];
+            tl.set(fw, { opacity: 1 }, 0);
+            tl.set(fh, { opacity: 0 }, 0);
+            tl.set(fc, { y: 0, scale: 1 }, 0);
+            tl.set(fw, { opacity: 0 }, ht);
+            tl.set(fh, { opacity: 1 }, ht);
+            tl.fromTo(fc, { scale: 1 }, { scale: 0.92, duration: 0.04, ease: "power1.out", immediateRender: false }, ht);
+            tl.to(fc, { scale: 1.05, duration: 0.05, ease: "power1.out" }, ht + 0.04);
+            tl.to(fc, { scale: 1, duration: 0.06, ease: "power1.inOut" }, ht + 0.09);
+
+            // HOP on the 23.61 beat (all three cheer, tiny stagger), then hold
+            var hp = T.hop + i * 0.04;
+            tl.fromTo(fc, { y: 0 }, { y: -26, duration: 0.12, ease: "power2.out", immediateRender: false }, hp);
+            tl.to(fc, { y: 0, duration: 0.11, ease: "power2.in" }, hp + 0.12);
+            tl.to(fc, { scaleX: 1.06, scaleY: 0.93, duration: 0.05, ease: "power1.out" }, hp + 0.23);
+            tl.to(fc, { scaleX: 1, scaleY: 1, duration: 0.08, ease: "power1.out" }, hp + 0.28);
+
+            // paper boil on both face images (same seed so the swap is seamless)
+            boil(fw, i + 1, 0, D);
+            boil(fh, i + 1, 0, D);
+          });
+
+          // '+' CHIPS
+          popIn("#f5_plus1", T.plus);
+          popIn("#f5_plus2", T.plus + 0.06);
+          boil("#f5_plus1_in", 11, T.plus, D, 0.8);
+          boil("#f5_plus2_in", 12, T.plus, D, 0.8);
+
+          // SUM band slam: scale 1.3 → 1 in 3 frames, squash, 3 px shake
+          tl.set("#f5_sum", { autoAlpha: 0, rotation: -3, scale: 1.3 }, 0);
+          tl.set("#f5_sum", { autoAlpha: 1 }, T.sum);
+          tl.fromTo("#f5_sum", { scale: 1.3 }, { scale: 1, duration: 0.1, ease: "power2.in", immediateRender: false }, T.sum);
+          tl.to("#f5_sum", { scaleX: 1.025, scaleY: 0.95, duration: 0.05, ease: "power1.out" }, T.sum + 0.1);
+          tl.to("#f5_sum", { scaleX: 1, scaleY: 1, duration: 0.1, ease: "power1.out" }, T.sum + 0.15);
+          [[3, -2], [-3, 2], [2, 1], [-2, -1], [1, 1], [0, 0]].forEach(function (s, j) {
+            tl.set("#f5_world", { x: s[0], y: s[1] }, T.sum + j / 30);
+          });
+
+          // SPARKLES around '30'
+          ["#f5_spk1", "#f5_spk2", "#f5_spk3"].forEach(function (s, j) {
+            popIn(s, T.spark + j * 0.05);
+            boil(s + "_in", 21 + j, T.spark, D, 1.4);
+          });
+
+          tl.set({}, {}, D);
+          document.querySelectorAll(".f5-t-outer,.f5-t-mid,.f5-t-shadow,.f5-t-shd").forEach(function (e) { e.setAttribute("data-layout-ignore", ""); });
+          tl.seek(0.001); tl.seek(0);
+          window.__timelines = window.__timelines || {};
+          window.__timelines["05-f5"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

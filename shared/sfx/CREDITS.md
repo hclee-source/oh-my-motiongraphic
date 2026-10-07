@@ -33,3 +33,8 @@ All files are distributed under the [Pixabay Content License](https://pixabay.co
 - Redistribution as part of derivative works (such as videos rendered with HyperFrames)
 
 without any attribution requirement.
+
+## Synthesized in this project (no third-party source)
+
+`tick.mp3`, `tock.mp3` (clock ticks for silent cold opens) and `bat-crack.mp3` (wooden bat hit) were synthesized from
+noise and sine partials by `src/synth_sfx.py` on 2026-10-07. Dedicated to the public domain (CC0).

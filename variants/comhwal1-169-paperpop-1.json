@@ -1,0 +1,101 @@
+{
+  "name": "comhwal1-169-paperpop-1",
+  "style": "paper-pop",
+  "palette": {},
+  "aspect": "16:9",
+  "fps": 30,
+  "seed": 27,
+  "intensity": "standard",
+  "hud": false,
+  "storyboard": "no",
+  "message": "합격률 8.8%의 컴활 1급 실기, 쌩초보도 빠따로 한 방에",
+  "destination": "youtube",
+  "bgm": {
+    "id": "780",
+    "start": 29.648,
+    "duration": 48.0,
+    "fade": 0.6,
+    "preroll": 7.73,
+    "segments": [
+      [
+        29.648,
+        42.057
+      ],
+      [
+        91.591,
+        120.0
+      ]
+    ],
+    "license": "Mixkit Stock Music Free License",
+    "title": "Okay — Michael Ramir C. (Ska, ~155 BPM)",
+    "notes": "silent cold open (ticks are SFX) → first chorus bar 1 lands with the bat crack at 7.74s; chorus 8 bars → final chorus bar 1 (chroma 0.999 match) → the song's real ending hit at 46.46s"
+  },
+  "faces": {
+    "expressions": [
+      "base",
+      "worry",
+      "happy",
+      "fired"
+    ],
+    "crowd": [
+      "worry",
+      "happy"
+    ],
+    "props": [
+      "bat.png"
+    ]
+  },
+  "series": [
+    {
+      "label": "빠따 컴활 1급",
+      "name": "컴퓨터활용능력 1급 필기+실기",
+      "books": [
+        "9791124516614"
+      ]
+    }
+  ],
+  "copy": {
+    "hook": [
+      "컴활 1급 준비 중?",
+      "실기 합격률",
+      "8.8%",
+      "100번 보면 91번 떨어지는 시험"
+    ],
+    "finale": {
+      "line": "합격까지 가장 빠른 길",
+      "search": "빠따 컴활 1급",
+      "cta": "goldenrabbit.co.kr"
+    }
+  },
+  "facts": {
+    "pass_rate": "2025년 컴활 1급 실기 합격률 8.8% (국가기술자격 통계연보 2026 / 대한상공회의소, 응시 건 기준). 2024년 6.9%.",
+    "book": "760쪽, 1권 필기(빈출 족보+기출변형 10회) + 2권 실기(따라하기+집중 트레이닝+엑셀 기출변형 10회+액세스 기출변형 10회); 웹 CBT 10회(PC/모바일); 실기 자동 채점(엑셀 10·액세스 10); 6주(필기 2주+실기 4주) 합격 패스; 유튜브 무료 강의; 엑셀 함수 정리 PDF; 합격왕 카페 + 저자 직문직답 오픈채팅; 2027~2029 출제기준 반영(필기 AI 기초 신설); 저자 이강용(컴활킹) 16년 강의"
+  },
+  "treatment": {
+    "camera": "2.5d-paper",
+    "hero": "paper-faces",
+    "transition": "paper-shape"
+  },
+  "texture": "paper",
+  "notes": "Japanese qualification-ad grammar (cold-open target call + number hook → bat-crack reveal → その1–4 points with a side label → bubble-pop bundle → callback climax → search-bar CTA) built in paper: user's doodle avatars regenerated as layered paper-cut faces (worry/happy/fired). New style, new music genre (ska), new transitions (rings/tear/paper), new hero (paper faces), cold open with no music.",
+  "outputs": [
+    {
+      "file": "videos/comhwal1-169-paperpop-1/renders/comhwal1-169-paperpop-1.mp4",
+      "duration": 48.0,
+      "quality": "delivery",
+      "rendered": "2026-10-07T09:32:02"
+    },
+    {
+      "file": "videos/comhwal1-169-paperpop-1/renders/comhwal1-169-paperpop-1.mp4",
+      "duration": 48.0,
+      "quality": "delivery",
+      "rendered": "2026-10-07T09:42:51"
+    },
+    {
+      "file": "videos/comhwal1-169-paperpop-1/renders/comhwal1-169-paperpop-1.mp4",
+      "duration": 48.0,
+      "quality": "delivery",
+      "rendered": "2026-10-07T09:53:52"
+    }
+  ]
+}

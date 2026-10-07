@@ -1,0 +1,12 @@
+{
+  "name": "paper-pop",
+  "summary": "Japanese paper-craft ad look (切り絵 + テロップ): warm paper ground with fibre texture and graph-paper/gingham boards, layered paper-cut character faces (shared/characters/paper) that boil at 8fps, white-rim cutout stickers with stacked soft shadows, double-outlined telop on cushions (座布団), shout brackets ＼ ／, red-pen marks / red sheet / masking tape, manga concentration lines. Cover colours (yellow/navy) + red pen; gold on the logo only. Concentric-ring / paper-tear transitions.",
+  "tokens": { "paper": "#F4EEE1", "ink": "#1A1A22", "yellow": "#FFE13A", "navy": "#23268C", "red": "#E5352B", "sky": "#9FD3F2", "grid": "#E3D9C4", "logo": "#CEAE73" },
+  "palette_keys": ["paper", "ink", "yellow", "navy", "red"],
+  "font_line": "Paperlogy only — 600 outlined telop / bubbles / labels, 700 plain text, 800 numerals + onomatopoeia (shared/fonts Paperlogy 5/6/7/8)",
+  "hud": { "box": "ink", "text": "paper", "accent": "yellow", "default": false },
+  "registers": ["paper", "yellow", "navy"],
+  "accent_alternatives": ["#FFE13A cover yellow + #23268C navy (빠따)", "take yellow/navy from any cover with cover_palette.py"],
+  "texture": "paper",
+  "reference_build": "videos/comhwal1-169-paperpop-1"
+}

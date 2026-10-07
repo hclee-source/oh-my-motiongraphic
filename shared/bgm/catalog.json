@@ -521,12 +521,13 @@
     "title": "Basketball Training",
     "genre": "Pop",
     "artist": "Arulo",
-    "duration": 112.31,
+    "duration": 112,
     "url": "https://assets.mixkit.co/music/349/349.mp3",
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
-      "hip-hop"
+      "hip-hop",
+      "pop"
     ],
     "file": "shared/bgm/349.mp3",
     "bpm": 89.1,
@@ -621,7 +622,8 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
-      "hip-hop"
+      "hip-hop",
+      "quirky"
     ]
   },
   "283": {
@@ -673,7 +675,8 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
-      "hip-hop"
+      "hip-hop",
+      "quirky"
     ]
   },
   "476": {
@@ -894,7 +897,8 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
-      "playful"
+      "playful",
+      "quirky"
     ]
   },
   "2": {
@@ -907,7 +911,8 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
-      "playful"
+      "playful",
+      "quirky"
     ]
   },
   "1072": {
@@ -920,6 +925,7 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
+      "happy",
       "playful"
     ]
   },
@@ -933,6 +939,7 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
+      "happy",
       "playful"
     ]
   },
@@ -946,7 +953,8 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
-      "playful"
+      "playful",
+      "quirky"
     ]
   },
   "3": {
@@ -959,6 +967,7 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
+      "happy",
       "playful"
     ]
   },
@@ -972,7 +981,9 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
-      "playful"
+      "happy",
+      "playful",
+      "quirky"
     ]
   },
   "506": {
@@ -985,7 +996,8 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
-      "playful"
+      "playful",
+      "quirky"
     ]
   },
   "823": {
@@ -998,6 +1010,7 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
+      "happy",
       "playful"
     ]
   },
@@ -1011,6 +1024,7 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
+      "happy",
       "playful"
     ]
   },
@@ -1019,12 +1033,14 @@
     "title": "Okay",
     "genre": "Ska",
     "artist": "Michael Ramir C.",
-    "duration": 120.37,
+    "duration": 120,
     "url": "https://assets.mixkit.co/music/780/780.mp3",
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
-      "playful"
+      "happy",
+      "playful",
+      "ska"
     ],
     "file": "shared/bgm/780.mp3",
     "bpm": 152.0,
@@ -1042,6 +1058,7 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
+      "happy",
       "playful"
     ]
   },
@@ -1068,6 +1085,7 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
+      "happy",
       "playful"
     ]
   },
@@ -1094,6 +1112,7 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
+      "happy",
       "playful"
     ]
   },
@@ -1198,40 +1217,1519 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "file": "shared/bgm/1077.mp3",
-    "duration": 96.0,
+    "duration": 96,
     "bpm": 117.5,
     "pulse": 0.064,
-    "energy5s": "*+*--=+*+#%@***#**+"
+    "energy5s": "*+*--=+*+#%@***#**+",
+    "title": "Sounds Good",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "url": "https://assets.mixkit.co/music/1077/1077.mp3",
+    "tags": [
+      "funk"
+    ]
   },
   "989": {
     "id": "989",
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "file": "shared/bgm/989.mp3",
-    "duration": 89.15,
+    "duration": 89,
     "bpm": 117.5,
     "pulse": 0.08,
     "energy5s": "+*#*+***%#%#+=%%@-",
-    "vocal_words": 0
+    "vocal_words": 0,
+    "title": "Dirty Thinkin'",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "url": "https://assets.mixkit.co/music/989/989.mp3",
+    "tags": [
+      "funk"
+    ]
   },
   "1131": {
     "id": "1131",
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "file": "shared/bgm/1131.mp3",
-    "duration": 111.45,
+    "duration": 112,
     "bpm": 143.6,
     "pulse": 0.075,
-    "energy5s": "-=***##+**#%**=@%%%%%# "
+    "energy5s": "-=***##+**#%**=@%%%%%# ",
+    "title": "Bopper from Memphis",
+    "genre": "Corporate Music",
+    "artist": "Michael Ramir C.",
+    "url": "https://assets.mixkit.co/music/1131/1131.mp3",
+    "tags": [
+      "pop"
+    ]
   },
   "158": {
     "id": "158",
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "file": "shared/bgm/158.mp3",
-    "duration": 100.1,
+    "duration": 100,
     "bpm": 117.5,
     "pulse": 0.082,
-    "energy5s": "#%%%@%%%%%%%%%%%#%#:"
+    "energy5s": "#%%%@%%%%%%%%%%%#%#:",
+    "title": "Happy Times",
+    "genre": "Pop",
+    "artist": "Alejandro Magaña (A. M.)",
+    "url": "https://assets.mixkit.co/music/158/158.mp3",
+    "tags": [
+      "pop"
+    ]
+  },
+  "839": {
+    "id": "839",
+    "title": "Tears of Joy",
+    "genre": "Folk Pop",
+    "artist": "Michael Ramir C.",
+    "duration": 140,
+    "url": "https://assets.mixkit.co/music/839/839.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy"
+    ]
+  },
+  "1076": {
+    "id": "1076",
+    "title": "Smile",
+    "genre": "Children",
+    "artist": "Michael Ramir C.",
+    "duration": 97,
+    "url": "https://assets.mixkit.co/music/1076/1076.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy"
+    ]
+  },
+  "5": {
+    "id": "5",
+    "title": "Feeling Happy",
+    "genre": "Children",
+    "artist": "Ahjay Stelino",
+    "duration": 148,
+    "url": "https://assets.mixkit.co/music/5/5.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy",
+      "pop"
+    ]
+  },
+  "801": {
+    "id": "801",
+    "title": "Happy Home",
+    "genre": "Pop",
+    "artist": "Michael Ramir C.",
+    "duration": 110,
+    "url": "https://assets.mixkit.co/music/801/801.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy",
+      "pop"
+    ]
+  },
+  "91": {
+    "id": "91",
+    "title": "Summer's Here",
+    "genre": "Children",
+    "artist": "Ahjay Stelino",
+    "duration": 96,
+    "url": "https://assets.mixkit.co/music/91/91.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy"
+    ]
+  },
+  "1063": {
+    "id": "1063",
+    "title": "Fun at the Farm",
+    "genre": "Country",
+    "artist": "Michael Ramir C.",
+    "duration": 106,
+    "url": "https://assets.mixkit.co/music/1063/1063.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy"
+    ]
+  },
+  "532": {
+    "id": "532",
+    "title": "A Happy Child",
+    "genre": "Folk Pop",
+    "artist": "Diego Nava",
+    "duration": 112,
+    "url": "https://assets.mixkit.co/music/532/532.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy"
+    ]
+  },
+  "12": {
+    "id": "12",
+    "title": "Playground Fun",
+    "genre": "Children",
+    "artist": "Ahjay Stelino",
+    "duration": 182,
+    "url": "https://assets.mixkit.co/music/12/12.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy"
+    ]
+  },
+  "847": {
+    "id": "847",
+    "title": "It's April",
+    "genre": "Children",
+    "artist": "Michael Ramir C.",
+    "duration": 92,
+    "url": "https://assets.mixkit.co/music/847/847.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy"
+    ]
+  },
+  "813": {
+    "id": "813",
+    "title": "Magical moment",
+    "genre": "Folk Pop",
+    "artist": "Michael Ramir C.",
+    "duration": 98,
+    "url": "https://assets.mixkit.co/music/813/813.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy"
+    ]
+  },
+  "821": {
+    "id": "821",
+    "title": "At the Playhouse",
+    "genre": "Pop",
+    "artist": "Michael Ramir C.",
+    "duration": 91,
+    "url": "https://assets.mixkit.co/music/821/821.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy",
+      "pop"
+    ]
+  },
+  "859": {
+    "id": "859",
+    "title": "Under the Sun",
+    "genre": "Country",
+    "artist": "Michael Ramir C.",
+    "duration": 103,
+    "url": "https://assets.mixkit.co/music/859/859.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy"
+    ]
+  },
+  "11": {
+    "id": "11",
+    "title": "Just Kidding",
+    "genre": "Children",
+    "artist": "Ahjay Stelino",
+    "duration": 179,
+    "url": "https://assets.mixkit.co/music/11/11.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy"
+    ]
+  },
+  "805": {
+    "id": "805",
+    "title": "I Will Marry That Cowgirl",
+    "genre": "Country",
+    "artist": "Michael Ramir C.",
+    "duration": 94,
+    "url": "https://assets.mixkit.co/music/805/805.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy"
+    ]
+  },
+  "1057": {
+    "id": "1057",
+    "title": "Cupcakes",
+    "genre": "Children",
+    "artist": "Michael Ramir C.",
+    "duration": 100,
+    "url": "https://assets.mixkit.co/music/1057/1057.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy"
+    ]
+  },
+  "1069": {
+    "id": "1069",
+    "title": "My Pride and Joy",
+    "genre": "Children",
+    "artist": "Michael Ramir C.",
+    "duration": 129,
+    "url": "https://assets.mixkit.co/music/1069/1069.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy"
+    ]
+  },
+  "8": {
+    "id": "8",
+    "title": "Jumping Around",
+    "genre": "Children",
+    "artist": "Ahjay Stelino",
+    "duration": 143,
+    "url": "https://assets.mixkit.co/music/8/8.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy"
+    ]
+  },
+  "831": {
+    "id": "831",
+    "title": "I Love You Mommy",
+    "genre": "Children",
+    "artist": "Michael Ramir C.",
+    "duration": 92,
+    "url": "https://assets.mixkit.co/music/831/831.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy",
+      "pop"
+    ]
+  },
+  "791": {
+    "id": "791",
+    "title": "Birthday Gift",
+    "genre": "Folk",
+    "artist": "Michael Ramir C.",
+    "duration": 91,
+    "url": "https://assets.mixkit.co/music/791/791.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy"
+    ]
+  },
+  "1052": {
+    "id": "1052",
+    "title": "Baby Yohan",
+    "genre": "Folk Pop",
+    "artist": "Michael Ramir C.",
+    "duration": 95,
+    "url": "https://assets.mixkit.co/music/1052/1052.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy"
+    ]
+  },
+  "862": {
+    "id": "862",
+    "title": "Christmas Gifts",
+    "genre": "Children",
+    "artist": "Michael Ramir C.",
+    "duration": 132,
+    "url": "https://assets.mixkit.co/music/862/862.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy"
+    ]
+  },
+  "14": {
+    "id": "14",
+    "title": "Swings and Slides",
+    "genre": "Pop",
+    "artist": "Ahjay Stelino",
+    "duration": 134,
+    "url": "https://assets.mixkit.co/music/14/14.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy",
+      "pop"
+    ]
+  },
+  "1084": {
+    "id": "1084",
+    "title": "Let's Play Africa",
+    "genre": "World",
+    "artist": "Michael Ramir C.",
+    "duration": 114,
+    "url": "https://assets.mixkit.co/music/1084/1084.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy"
+    ]
+  },
+  "916": {
+    "id": "916",
+    "title": "See You Next Christmas",
+    "genre": "Children",
+    "artist": "Michael Ramir C.",
+    "duration": 103,
+    "url": "https://assets.mixkit.co/music/916/916.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy",
+      "pop"
+    ]
+  },
+  "827": {
+    "id": "827",
+    "title": "Clumsy Daddy",
+    "genre": "Pop",
+    "artist": "Michael Ramir C.",
+    "duration": 93,
+    "url": "https://assets.mixkit.co/music/827/827.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy"
+    ]
+  },
+  "844": {
+    "id": "844",
+    "title": "Down the Hill",
+    "genre": "Country",
+    "artist": "Michael Ramir C.",
+    "duration": 105,
+    "url": "https://assets.mixkit.co/music/844/844.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "happy"
+    ]
+  },
+  "9": {
+    "id": "9",
+    "title": "Kidding Around",
+    "genre": "Children",
+    "artist": "Ahjay Stelino",
+    "duration": 107,
+    "url": "https://assets.mixkit.co/music/9/9.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "284": {
+    "id": "284",
+    "title": "Mi Gente",
+    "genre": "Reggaeton",
+    "artist": "Arulo",
+    "duration": 105,
+    "url": "https://assets.mixkit.co/music/284/284.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "6": {
+    "id": "6",
+    "title": "Fun and Games",
+    "genre": "Film Score",
+    "artist": "Ahjay Stelino",
+    "duration": 139,
+    "url": "https://assets.mixkit.co/music/6/6.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "689": {
+    "id": "689",
+    "title": "Classical Jazz",
+    "genre": "World",
+    "artist": "Grigoriy Nuzhny",
+    "duration": 161,
+    "url": "https://assets.mixkit.co/music/689/689.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "602": {
+    "id": "602",
+    "title": "The Snail",
+    "genre": "Film Score",
+    "artist": "Eugenio Mininni",
+    "duration": 189,
+    "url": "https://assets.mixkit.co/music/602/602.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "410": {
+    "id": "410",
+    "title": "Lil Pump Type",
+    "genre": "Hip Hop",
+    "artist": "Arulo",
+    "duration": 100,
+    "url": "https://assets.mixkit.co/music/410/410.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "638": {
+    "id": "638",
+    "title": "Jazz 2",
+    "genre": "Kitsch Lounge",
+    "artist": "Francisco Alvear",
+    "duration": 140,
+    "url": "https://assets.mixkit.co/music/638/638.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "1254": {
+    "id": "1254",
+    "title": "Party Robot",
+    "genre": "EDM",
+    "artist": "Michael Ramir C.",
+    "duration": 164,
+    "url": "https://assets.mixkit.co/music/1254/1254.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "673": {
+    "id": "673",
+    "title": "Cuban Flavor",
+    "genre": "World",
+    "artist": "Francisco Alvear",
+    "duration": 119,
+    "url": "https://assets.mixkit.co/music/673/673.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "274": {
+    "id": "274",
+    "title": "Reggaetton",
+    "genre": "Reggaeton",
+    "artist": "Arulo",
+    "duration": 108,
+    "url": "https://assets.mixkit.co/music/274/274.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "55": {
+    "id": "55",
+    "title": "Allure",
+    "genre": "Kitsch Lounge",
+    "artist": "Ahjay Stelino",
+    "duration": 105,
+    "url": "https://assets.mixkit.co/music/55/55.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "407": {
+    "id": "407",
+    "title": "K. K.",
+    "genre": "Trap",
+    "artist": "Arulo",
+    "duration": 96,
+    "url": "https://assets.mixkit.co/music/407/407.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "101": {
+    "id": "101",
+    "title": "Smooth Grooves",
+    "genre": "Hip Hop",
+    "artist": "Ahjay Stelino",
+    "duration": 97,
+    "url": "https://assets.mixkit.co/music/101/101.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "205": {
+    "id": "205",
+    "title": "India",
+    "genre": "EDM",
+    "artist": "Arulo",
+    "duration": 105,
+    "url": "https://assets.mixkit.co/music/205/205.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "841": {
+    "id": "841",
+    "title": "Tonight",
+    "genre": "Hip Hop",
+    "artist": "Michael Ramir C.",
+    "duration": 113,
+    "url": "https://assets.mixkit.co/music/841/841.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "82": {
+    "id": "82",
+    "title": "Keeping Fit",
+    "genre": "Chiptune",
+    "artist": "Ahjay Stelino",
+    "duration": 99,
+    "url": "https://assets.mixkit.co/music/82/82.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "chiptune",
+      "quirky"
+    ]
+  },
+  "435": {
+    "id": "435",
+    "title": "Uncontrollable",
+    "genre": "Reggaeton",
+    "artist": "Arulo",
+    "duration": 180,
+    "url": "https://assets.mixkit.co/music/435/435.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "465": {
+    "id": "465",
+    "title": "Watch Me Breezy",
+    "genre": "Hip Hop",
+    "artist": "Arulo",
+    "duration": 118,
+    "url": "https://assets.mixkit.co/music/465/465.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "764": {
+    "id": "764",
+    "title": "Lo-Fi 02",
+    "genre": "Chillout",
+    "artist": "Lily J",
+    "duration": 98,
+    "url": "https://assets.mixkit.co/music/764/764.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "994": {
+    "id": "994",
+    "title": "Goo Lee Goo Lee Yup",
+    "genre": "Children",
+    "artist": "Michael Ramir C.",
+    "duration": 108,
+    "url": "https://assets.mixkit.co/music/994/994.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "429": {
+    "id": "429",
+    "title": "State of Mind",
+    "genre": "Electronica",
+    "artist": "Arulo",
+    "duration": 104,
+    "url": "https://assets.mixkit.co/music/429/429.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "295": {
+    "id": "295",
+    "title": "Dreamy Trap",
+    "genre": "Hip Hop",
+    "artist": "Arulo",
+    "duration": 108,
+    "url": "https://assets.mixkit.co/music/295/295.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "244": {
+    "id": "244",
+    "title": "Tom",
+    "genre": "Hip Hop",
+    "artist": "Arulo",
+    "duration": 132,
+    "url": "https://assets.mixkit.co/music/244/244.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "66": {
+    "id": "66",
+    "title": "Experimental Fabric",
+    "genre": "Hip Hop",
+    "artist": "Ahjay Stelino",
+    "duration": 105,
+    "url": "https://assets.mixkit.co/music/66/66.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "527": {
+    "id": "527",
+    "title": "Vocal Percussions",
+    "genre": "Rhythmic Underscore",
+    "artist": "Diego Nava",
+    "duration": 105,
+    "url": "https://assets.mixkit.co/music/527/527.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "962": {
+    "id": "962",
+    "title": "Jihad",
+    "genre": "World",
+    "artist": "Michael Ramir C.",
+    "duration": 103,
+    "url": "https://assets.mixkit.co/music/962/962.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "1089": {
+    "id": "1089",
+    "title": "Bruh!",
+    "genre": "Hip Hop",
+    "artist": "Michael Ramir C.",
+    "duration": 119,
+    "url": "https://assets.mixkit.co/music/1089/1089.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "883": {
+    "id": "883",
+    "title": "The Barber",
+    "genre": "Hip Hop",
+    "artist": "Michael Ramir C.",
+    "duration": 101,
+    "url": "https://assets.mixkit.co/music/883/883.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "70": {
+    "id": "70",
+    "title": "Shock and Awe",
+    "genre": "Corporate Music",
+    "artist": "Ahjay Stelino",
+    "duration": 100,
+    "url": "https://assets.mixkit.co/music/70/70.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "quirky"
+    ]
+  },
+  "872": {
+    "id": "872",
+    "title": "Gimme that Groove!",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "duration": 88,
+    "url": "https://assets.mixkit.co/music/872/872.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "1140": {
+    "id": "1140",
+    "title": "Funkee Monkeee",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "duration": 98,
+    "url": "https://assets.mixkit.co/music/1140/1140.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "1141": {
+    "id": "1141",
+    "title": "Funky Triplets",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "duration": 109,
+    "url": "https://assets.mixkit.co/music/1141/1141.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "1147": {
+    "id": "1147",
+    "title": "Midnight Funk",
+    "genre": "Pop",
+    "artist": "Michael Ramir C.",
+    "duration": 107,
+    "url": "https://assets.mixkit.co/music/1147/1147.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk",
+      "pop"
+    ]
+  },
+  "868": {
+    "id": "868",
+    "title": "Dry Gin",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "duration": 109,
+    "url": "https://assets.mixkit.co/music/868/868.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "849": {
+    "id": "849",
+    "title": "Light it Up Boy",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "duration": 94,
+    "url": "https://assets.mixkit.co/music/849/849.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "787": {
+    "id": "787",
+    "title": "Love",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "duration": 71,
+    "url": "https://assets.mixkit.co/music/787/787.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "860": {
+    "id": "860",
+    "title": "Year 2001",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "duration": 111,
+    "url": "https://assets.mixkit.co/music/860/860.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "1190": {
+    "id": "1190",
+    "title": "Dude",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "duration": 109,
+    "url": "https://assets.mixkit.co/music/1190/1190.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "635": {
+    "id": "635",
+    "title": "Adone",
+    "genre": "Funk",
+    "artist": "Eugenio Mininni",
+    "duration": 182,
+    "url": "https://assets.mixkit.co/music/635/635.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "850": {
+    "id": "850",
+    "title": "Marcus",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "duration": 125,
+    "url": "https://assets.mixkit.co/music/850/850.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "72": {
+    "id": "72",
+    "title": "Stripped Bare",
+    "genre": "Funk",
+    "artist": "Ahjay Stelino",
+    "duration": 102,
+    "url": "https://assets.mixkit.co/music/72/72.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "1029": {
+    "id": "1029",
+    "title": "Funky Martian",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "duration": 100,
+    "url": "https://assets.mixkit.co/music/1029/1029.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "858": {
+    "id": "858",
+    "title": "Too Hot",
+    "genre": "World",
+    "artist": "Michael Ramir C.",
+    "duration": 108,
+    "url": "https://assets.mixkit.co/music/858/858.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "824": {
+    "id": "824",
+    "title": "Bob",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "duration": 122,
+    "url": "https://assets.mixkit.co/music/824/824.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "757": {
+    "id": "757",
+    "title": "Workout 02",
+    "genre": "Funk",
+    "artist": "Lily J",
+    "duration": 105,
+    "url": "https://assets.mixkit.co/music/757/757.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "1003": {
+    "id": "1003",
+    "title": "Keep the Funk ON",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "duration": 151,
+    "url": "https://assets.mixkit.co/music/1003/1003.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "1054": {
+    "id": "1054",
+    "title": "Blue Funk",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "duration": 143,
+    "url": "https://assets.mixkit.co/music/1054/1054.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "983": {
+    "id": "983",
+    "title": "Cherry on Top",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "duration": 106,
+    "url": "https://assets.mixkit.co/music/983/983.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "1109": {
+    "id": "1109",
+    "title": "My Mind Goes Wah Wah",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "duration": 114,
+    "url": "https://assets.mixkit.co/music/1109/1109.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "696": {
+    "id": "696",
+    "title": "Pop 04",
+    "genre": "Funk",
+    "artist": "Grigoriy Nuzhny",
+    "duration": 190,
+    "url": "https://assets.mixkit.co/music/696/696.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "1060": {
+    "id": "1060",
+    "title": "Five",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "duration": 106,
+    "url": "https://assets.mixkit.co/music/1060/1060.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "1152": {
+    "id": "1152",
+    "title": "One Night Gamble",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "duration": 101,
+    "url": "https://assets.mixkit.co/music/1152/1152.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "1042": {
+    "id": "1042",
+    "title": "Simon Says",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "duration": 147,
+    "url": "https://assets.mixkit.co/music/1042/1042.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "853": {
+    "id": "853",
+    "title": "Night Patrol",
+    "genre": "Rhythmic Underscore",
+    "artist": "Michael Ramir C.",
+    "duration": 89,
+    "url": "https://assets.mixkit.co/music/853/853.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "911": {
+    "id": "911",
+    "title": "Let's All Dance This Christmas",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "duration": 113,
+    "url": "https://assets.mixkit.co/music/911/911.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "610": {
+    "id": "610",
+    "title": "Peenzee O'Traak",
+    "genre": "Funk",
+    "artist": "Eugenio Mininni",
+    "duration": 181,
+    "url": "https://assets.mixkit.co/music/610/610.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "1127": {
+    "id": "1127",
+    "title": "Are U Ready For This?",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "duration": 97,
+    "url": "https://assets.mixkit.co/music/1127/1127.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "1027": {
+    "id": "1027",
+    "title": "Evolution",
+    "genre": "Funk",
+    "artist": "Michael Ramir C.",
+    "duration": 115,
+    "url": "https://assets.mixkit.co/music/1027/1027.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "funk"
+    ]
+  },
+  "288": {
+    "id": "288",
+    "title": "One More Dance",
+    "genre": "Pop",
+    "artist": "Arulo",
+    "duration": 100,
+    "url": "https://assets.mixkit.co/music/288/288.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "250": {
+    "id": "250",
+    "title": "Island Beat",
+    "genre": "Contemporary R&B",
+    "artist": "Arulo",
+    "duration": 102,
+    "url": "https://assets.mixkit.co/music/250/250.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "970": {
+    "id": "970",
+    "title": "Night Sky Hip Hop",
+    "genre": "Pop",
+    "artist": "Michael Ramir C.",
+    "duration": 257,
+    "url": "https://assets.mixkit.co/music/970/970.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "1000": {
+    "id": "1000",
+    "title": "I Can Hear Your Heartbeat",
+    "genre": "Pop",
+    "artist": "Michael Ramir C.",
+    "duration": 110,
+    "url": "https://assets.mixkit.co/music/1000/1000.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "200": {
+    "id": "200",
+    "title": "Oh Lord",
+    "genre": "Dance-Pop",
+    "artist": "Arulo",
+    "duration": 143,
+    "url": "https://assets.mixkit.co/music/200/200.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "837": {
+    "id": "837",
+    "title": "Life is a Dream",
+    "genre": "Disco",
+    "artist": "Michael Ramir C.",
+    "duration": 99,
+    "url": "https://assets.mixkit.co/music/837/837.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "350": {
+    "id": "350",
+    "title": "Follow Me Home",
+    "genre": "Pop",
+    "artist": "Arulo",
+    "duration": 74,
+    "url": "https://assets.mixkit.co/music/350/350.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "935": {
+    "id": "935",
+    "title": "Disco Ain't Old School",
+    "genre": "Disco",
+    "artist": "Michael Ramir C.",
+    "duration": 98,
+    "url": "https://assets.mixkit.co/music/935/935.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "851": {
+    "id": "851",
+    "title": "Me and You",
+    "genre": "Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 157,
+    "url": "https://assets.mixkit.co/music/851/851.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "854": {
+    "id": "854",
+    "title": "Old Letter",
+    "genre": "Pop",
+    "artist": "Michael Ramir C.",
+    "duration": 165,
+    "url": "https://assets.mixkit.co/music/854/854.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "228": {
+    "id": "228",
+    "title": "Fashion",
+    "genre": "Contemporary R&B",
+    "artist": "Arulo",
+    "duration": 144,
+    "url": "https://assets.mixkit.co/music/228/228.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "1087": {
+    "id": "1087",
+    "title": "A Special Feeling",
+    "genre": "Pop",
+    "artist": "Michael Ramir C.",
+    "duration": 100,
+    "url": "https://assets.mixkit.co/music/1087/1087.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "94": {
+    "id": "94",
+    "title": "Traveling Along",
+    "genre": "Pop",
+    "artist": "Ahjay Stelino",
+    "duration": 100,
+    "url": "https://assets.mixkit.co/music/94/94.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "1030": {
+    "id": "1030",
+    "title": "I Believe in Us",
+    "genre": "Pop",
+    "artist": "Michael Ramir C.",
+    "duration": 168,
+    "url": "https://assets.mixkit.co/music/1030/1030.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "1166": {
+    "id": "1166",
+    "title": "Chicken Out",
+    "genre": "Pop",
+    "artist": "Michael Ramir C.",
+    "duration": 120,
+    "url": "https://assets.mixkit.co/music/1166/1166.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "1012": {
+    "id": "1012",
+    "title": "Take this Higher",
+    "genre": "EDM",
+    "artist": "Michael Ramir C.",
+    "duration": 99,
+    "url": "https://assets.mixkit.co/music/1012/1012.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "927": {
+    "id": "927",
+    "title": "This Our Year! (Happy New Year!)",
+    "genre": "Pop",
+    "artist": "Michael Ramir C.",
+    "duration": 142,
+    "url": "https://assets.mixkit.co/music/927/927.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "1124": {
+    "id": "1124",
+    "title": "You and Me",
+    "genre": "Pop",
+    "artist": "Michael Ramir C.",
+    "duration": 101,
+    "url": "https://assets.mixkit.co/music/1124/1124.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "553": {
+    "id": "553",
+    "title": "Shame",
+    "genre": "Electronica",
+    "artist": "Eugenio Mininni",
+    "duration": 128,
+    "url": "https://assets.mixkit.co/music/553/553.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "1164": {
+    "id": "1164",
+    "title": "It's A Cool Thing",
+    "genre": "Pop",
+    "artist": "Michael Ramir C.",
+    "duration": 109,
+    "url": "https://assets.mixkit.co/music/1164/1164.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "327": {
+    "id": "327",
+    "title": "Aerobic Fashion",
+    "genre": "Pop",
+    "artist": "Arulo",
+    "duration": 98,
+    "url": "https://assets.mixkit.co/music/327/327.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "1138": {
+    "id": "1138",
+    "title": "Follow My Voice",
+    "genre": "Pop",
+    "artist": "Michael Ramir C.",
+    "duration": 119,
+    "url": "https://assets.mixkit.co/music/1138/1138.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "1048": {
+    "id": "1048",
+    "title": "Turn This Up a Little Louder!",
+    "genre": "Pop",
+    "artist": "Michael Ramir C.",
+    "duration": 113,
+    "url": "https://assets.mixkit.co/music/1048/1048.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "487": {
+    "id": "487",
+    "title": "Peace",
+    "genre": "Contemporary R&B",
+    "artist": "Diego Nava",
+    "duration": 99,
+    "url": "https://assets.mixkit.co/music/487/487.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "432": {
+    "id": "432",
+    "title": "Angel Watching Me",
+    "genre": "Pop",
+    "artist": "Arulo",
+    "duration": 101,
+    "url": "https://assets.mixkit.co/music/432/432.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "1146": {
+    "id": "1146",
+    "title": "I'm Not The Only One",
+    "genre": "Pop",
+    "artist": "Michael Ramir C.",
+    "duration": 98,
+    "url": "https://assets.mixkit.co/music/1146/1146.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "pop"
+    ]
+  },
+  "62": {
+    "id": "62",
+    "title": "Bold and Brash",
+    "genre": "Chiptune",
+    "artist": "Ahjay Stelino",
+    "duration": 99,
+    "url": "https://assets.mixkit.co/music/62/62.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "chiptune"
+    ]
   }
 }

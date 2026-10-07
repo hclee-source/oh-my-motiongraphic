@@ -35,10 +35,18 @@ STYLE_PATTERNS = {  # each style owns its own vocabulary, so styles never conver
         "climax": ["SLOGAN-WEIGHT"],
         "finale": ["SPINE-STACK", "SHELF-LOCKUP"],
     },
+    "paper-pop": {   # Japanese qualification-ad grammar in paper (references/scene-patterns.md § Paper-pop)
+        "intro": ["COLD-OPEN-GRID", "TARGET-CALL", "BAT-CRACK"],
+        "series": ["RED-SHEET", "PROGRESS-WALK", "TRI-PANEL", "SCORE-CARD", "BUBBLE-POP", "STEP-PILLS", "CHAT-BUBBLES"],
+        "climax": ["TAPE-BACK"],
+        "finale": ["SEARCH-CTA"],
+    },
 }
 PATTERNS = _FLAT
-REGISTERS = {"bold-beat": ["yellow", "ink", "paper"], "editorial-gold": ["ink", "gold"], "soft-studio": ["cream", "scene-tint", "ink"]}
+REGISTERS = {"bold-beat": ["yellow", "ink", "paper"], "editorial-gold": ["ink", "gold"], "soft-studio": ["cream", "scene-tint", "ink"],
+             "paper-pop": ["paper", "yellow", "navy"]}
 TRANSITIONS = ["iris", "blinds", "wipe", "stripes"]
+STYLE_TRANSITIONS = {"paper-pop": ["rings", "tear", "paper"]}
 TREATMENT_AXES = ["style", "music", "palette", "transition", "camera", "hero", "hud"]
 
 
@@ -141,9 +149,9 @@ def treatment_of(spec, style):
     t.setdefault("style", spec.get("style", "bold-beat"))
     t.setdefault("music", str(spec.get("bgm", {}).get("id", "?")))
     t.setdefault("palette", ",".join(f"{k}={v}" for k, v in sorted(spec.get("palette", {}).items())) or "preset")
-    t.setdefault("transition", "shape" if t["style"] == "soft-studio" else "hard-cut")
-    t.setdefault("camera", "3d" if t["style"] == "soft-studio" else "flat")
-    t.setdefault("hero", "book3d" if t["style"] == "soft-studio" else ("tossed-cover" if t["style"] == "bold-beat" else "cover-prop"))
+    t.setdefault("transition", {"soft-studio": "shape", "paper-pop": "paper-shape"}.get(t["style"], "hard-cut"))
+    t.setdefault("camera", {"soft-studio": "3d", "paper-pop": "2.5d-paper"}.get(t["style"], "flat"))
+    t.setdefault("hero", {"soft-studio": "book3d", "bold-beat": "tossed-cover", "paper-pop": "paper-faces"}.get(t["style"], "cover-prop"))
     t.setdefault("hud", str(spec.get("hud", style.get("hud", {}).get("default", True))).lower())
     return t
 
@@ -223,6 +231,26 @@ def main():
     for f in [*(SHARED / "fonts").glob("*.ttf"), *(SHARED / "fonts").glob("*.otf")]:
         shutil.copy2(f, proj / "assets/fonts" / f.name)
     extras = []
+    if spec.get("faces"):   # paper-cut character faces (shared/characters/paper/<expr>/<slug>.png) → 512px + 160px crowd copies
+        from PIL import Image
+        fc = spec["faces"]
+        for expr in fc.get("expressions", ["base", "worry", "happy"]):
+            for f in sorted((SHARED / "characters/paper" / expr).glob("*.png")):
+                for sub, px in ((expr, 512), (f"sm/{expr}", 160)):
+                    if sub.startswith("sm/") and expr not in fc.get("crowd", ["worry", "happy"]):
+                        continue
+                    d = proj / "assets/faces" / sub / f.name
+                    d.parent.mkdir(parents=True, exist_ok=True)
+                    if not d.exists():
+                        Image.open(f).resize((px, px), Image.LANCZOS).save(d, optimize=True)
+        for f in fc.get("props", []):
+            d = proj / "assets/props" / Path(f).name
+            d.parent.mkdir(parents=True, exist_ok=True)
+            if not d.exists():
+                im = Image.open(SHARED / "characters/props" / f)
+                im.thumbnail((768, 768), Image.LANCZOS)
+                im.save(d, optimize=True)
+        extras.append("assets/faces/{" + ",".join(fc.get("expressions", [])) + "}/<slug>.png — paper-cut character faces (512px; sm/ = 160px crowd copies)")
     for ex in spec.get("extra_assets", []):   # user-supplied visuals: [{"src": path, "dest": "assets/…", "role": "…"}]
         s = Path(ex["src"]).expanduser()
         s = s if s.is_absolute() else ROOT / s
@@ -237,10 +265,31 @@ def main():
     if not src.exists():
         sys.exit(f"✗ shared/bgm/{bg['id']}.mp3 missing — bgm.py fetch {bg['id']}")
     dur = float(bg["duration"])
-    sh(["ffmpeg", "-loglevel", "error", "-y", "-ss", str(bg["start"]), "-t", str(dur), "-i", str(src),
-        "-af", f"afade=t=in:st=0:d=0.08,afade=t=out:st={max(0, dur - bg.get('fade', 1.0))}:d={bg.get('fade', 1.0)}",
-        "-c:a", "libmp3lame", "-b:a", "256k", str(proj / "assets/bgm.mp3")])
-    print(f"  ✓ assets: {sum(len(s['books']) for s in series)} covers, logo, fonts, bgm {bg['id']} [{bg['start']}s +{dur}s]")
+    fade = bg.get("fade", 1.0)
+    if bg.get("segments"):
+        # composed bed: optional silent pre-roll (cold open) + bar-aligned segments joined with a 12ms crossfade.
+        # Cut points should sit on matching downbeats of repeated material (check chroma per bar first).
+        segs, pre = bg["segments"], float(bg.get("preroll", 0))
+        parts, labels = [], []
+        for k, (a0, a1) in enumerate(segs):
+            parts.append(f"[0]atrim=start={a0}:end={a1},asetpts=PTS-STARTPTS[s{k}]")
+            labels.append(f"s{k}")
+        chain, cur = [], labels[0]
+        for k, lab in enumerate(labels[1:], 1):
+            chain.append(f"[{cur}][{lab}]acrossfade=d=0.012:c1=tri:c2=tri[x{k}]")
+            cur = f"x{k}"
+        # real silent samples (adelay's leading silence is dropped by the MP3 encoder)
+        sil = f"aevalsrc=0|0:d={pre}:s=44100:channel_layout=stereo[sil];[{cur}]afade=t=in:st=0:d=0.01[mus];[sil][mus]concat=n=2:v=0:a=1[cat]" if pre > 0 else f"[{cur}]anull[cat]"
+        tail = sil + f";[cat]afade=t=out:st={max(0, dur - fade)}:d={fade}[out]"
+        sh(["ffmpeg", "-loglevel", "error", "-y", "-i", str(src), "-filter_complex", ";".join(parts + chain + [tail]),
+            "-map", "[out]", "-t", str(dur), "-c:a", "libmp3lame", "-b:a", "256k", str(proj / "assets/bgm.mp3")])
+        desc = f"pre-roll {pre}s + " + " + ".join(f"[{a0}–{a1}]" for a0, a1 in segs)
+    else:
+        sh(["ffmpeg", "-loglevel", "error", "-y", "-ss", str(bg["start"]), "-t", str(dur), "-i", str(src),
+            "-af", f"afade=t=in:st=0:d=0.08,afade=t=out:st={max(0, dur - fade)}:d={fade}",
+            "-c:a", "libmp3lame", "-b:a", "256k", str(proj / "assets/bgm.mp3")])
+        desc = f"[{bg['start']}s +{dur}s]"
+    print(f"  ✓ assets: {sum(len(s['books']) for s in series)} covers, logo, fonts, bgm {bg['id']} {desc}")
 
     # ---- audiomap
     if not PY.exists():
@@ -282,18 +331,19 @@ def main():
     if card["transition"] != "hard-cut":
         from cover_palette import saturated_colors, mix, hexs
         from gr_common import hex_rgb
-        cream = hex_rgb(tokens.get("cream", "#F4EFE6"))
+        base_hex = tokens.get("cream", tokens.get("paper", "#F4EFE6"))
+        cream = hex_rgb(base_hex)
         for role in roles:
             if role.startswith("series"):
                 cols = saturated_colors(ROOT / books[series[int(role[6:])]["books"][0]]["cover"])
-                scene_colors.append(hexs(mix(cream, cols[0][1], 0.24)) if cols else tokens.get("cream", "#F4EFE6"))
+                scene_colors.append(hexs(mix(cream, cols[0][1], 0.24)) if cols else base_hex)
             else:
-                scene_colors.append(tokens.get("cream", "#F4EFE6"))
+                scene_colors.append(base_hex)
         last = None
         for i in range(len(roles)):
             if i == len(roles) - 1:
                 trans.append("none"); break
-            opts = [t for t in TRANSITIONS if t != last]
+            opts = [t for t in STYLE_TRANSITIONS.get(style_name, TRANSITIONS) if t != last]
             last = opts[rng.randrange(len(opts))]
             trans.append(last)
     rng.shuffle(regs)

@@ -24,7 +24,8 @@ Sources:
 3. **One hero device per scene, never the previous video's.** Patterns used by the last variant are deprioritized
    automatically (rationing). Each style owns its own pattern pool (`STYLE_PATTERNS`).
 4. **Rotate music genre and tempo.**
-   - Used so far: 470 EDM 129 BPM (v1, v2, baro-boldbeat) and 1142 synthpop 117.5 (baro-softstudio).
+   - Used so far: 470 EDM 129 BPM (v1, v2, baro-boldbeat), 1142 synthpop 117.5 (baro-softstudio), 780 ska ~155 (comhwal1-paperpop,
+     silent cold open + bar-aligned splice into the song's real ending via `bgm.preroll` / `bgm.segments`).
    - Analyzed and ready: 780 ska 152, 989 funk 117.5, 167 electronica 117.5, 1062/836 house.
 5. **Pacing quota.** At least one hold of 1.5 s or more on a beautiful still, at least one continuous (shape) transition, and
    every video gets a sound-design layer (`sfx.py`).
@@ -41,6 +42,8 @@ Sources:
 | | velocity-matched exits/entries (power2.in out, power2.out in, same direction) | frame-worker instruction |
 | | match cut on a shape (the book becomes the next window) | plan it across two frames' `intent` |
 | Texture | paper grain jittered at 12 fps (seek-safe) | automatic in soft-studio (`texture: grain`) |
+| | static seamless washi/paper-fibre overlay | automatic in paper-pop (`texture: paper`) |
+| Character | user's avatars regenerated as layered paper-cut faces with expressions (worry/happy/fired) | `shared/characters/` (OpenAI image edit, base → expression) |
 | | print/halftone/dither on covers | `npx hyperframes media-treatment --capability print` (render cost unmeasured) |
 | | stop-motion "on twos" | stepped eases / `tl.set` at 1/12 s |
 | Typography | type-as-window (the KV seen through letters) | `background-clip: text` with the KV image |
@@ -50,6 +53,7 @@ Sources:
 | Layout/info | original chat-window mockup, code-editor mockup | `CHAT-UI`, `CODE-UI` (never copy real product UIs) |
 | | dotted stat ring + count-up ("82가지 실습", "45개 실습") | `STAT-RING` |
 | Pacing | hold and release (≥ 1.5 s still), speed ramp after a hold | storyboard `intent` |
+| Sound | silent cold open with clock ticks (`tick`/`tock`), the band entering on a hit (`bat-crack`) | `bgm.preroll` + `- sfx:` cues (comhwal1-paperpop) |
 | Sound | whoosh on transitions, pop on landings, typing on UI, chime on lockup, impact on the climax | `- sfx:` cues + `sfx.py` (shared/sfx, Pixabay licence) |
 | Narrative | character as guide (KV avatars inside the UI), "a question → an answer per book" | copy + avatars |
 | Color | cover-derived pastel per scene | `cover_palette.py`, written to `scene_color` automatically |
