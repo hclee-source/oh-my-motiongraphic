@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Frame 8 — f8 · TAPE-BACK climax (track 34.09–40.29 s, local 0–6.20 s).
+         The F1 exam board returns; the 91 fallen faces are slapped back on with masking tape in 7 waves; '이번엔, 붙는다!' slams. -->
+  </head>
+  <body>
+    <template id="08-f8-template">
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-7Bold.ttf") format("truetype"); font-weight: 700; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-6SemiBold.ttf") format("truetype"); font-weight: 600; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+
+        #stage { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; background: #F4EEE1; font-family: "Paperlogy", sans-serif; color: #1A1A22; }
+        .f8-cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+        .f8-svg { position: absolute; left: 0; top: 0; overflow: visible; }
+
+        /* CROWD BOARD — identical to F1 (x 1000–1840, y 120–960, 10×10 cells of 84 px) */
+        .f8-board { position: absolute; left: 1000px; top: 120px; width: 840px; height: 840px; background-color: #F7F2E7;
+          background-image: repeating-linear-gradient(0deg, #E3D9C4 0 2px, transparent 2px 84px), repeating-linear-gradient(90deg, #E3D9C4 0 2px, transparent 2px 84px);
+          box-shadow: 0 2px 0 rgba(0,0,0,.08), 0 14px 26px rgba(60,40,10,.18); transform-origin: 50% 50%; }
+        /* empty slot: faint dashed outline where a face used to be */
+        .f8-slot { position: absolute; width: 66px; height: 66px; border: 3px dashed rgba(26,26,34,.22); border-radius: 50%; }
+        /* crowd face: wrapper takes the slap, inner takes the 8 fps boil (img + its tape) */
+        .f8-cf { position: absolute; width: 76px; height: 76px; transform-origin: 50% 60%; }
+        .f8-ci { position: absolute; left: 0; top: 0; width: 76px; height: 76px; }
+        .f8-ci img { display: block; width: 76px; height: 76px; }
+        /* MASKING TAPE (マステ), crowd size, with zig-zag torn ends */
+        .f8-tape { position: absolute; left: 7px; top: -5px; width: 62px; height: 18px; background-color: rgba(255,225,58,.86);
+          background-image: repeating-linear-gradient(90deg, rgba(255,255,255,.28) 0 4px, transparent 4px 9px);
+          box-shadow: 0 1px 2px rgba(60,40,10,.18);
+          clip-path: polygon(0 0,5% 18%,0 36%,5% 54%,0 72%,5% 90%,0 100%,100% 100%,95% 82%,100% 64%,95% 46%,100% 28%,95% 10%,100% 0); }
+        .f8-tape.f8-sky { background-color: rgba(159,211,242,.9); }
+        /* initial state for everything that enters later (autoAlpha brings it back with visibility:inherit) */
+        .f8-off, .f8-tape { opacity: 0; visibility: hidden; }
+
+        /* TELOP — double outline as stacked copies (offset shadow / outer stroke / mid stroke / fill) */
+        .f8-telop { position: absolute; white-space: nowrap; font-family: "Paperlogy"; font-weight: 600; letter-spacing: 0.02em; line-height: 1.05; }
+        .f8-telop > span { display: block; }
+        .f8-telop > span + span { position: absolute; left: 0; top: 0; }
+        /* offset ink shadow = a full-silhouette copy (text-shadow only shadows the fill, which hides under the wide outer stroke) */
+        .f8-ink .f8-t-shadow { color: #1A1A22; -webkit-text-stroke: 0.13em #1A1A22; transform: translate(0.03em, 0.04em); }
+        .f8-mega .f8-t-shadow { color: #1A1A22; -webkit-text-stroke: 0.17em #1A1A22; transform: translate(0.04em, 0.05em); }
+        /* l1: ink fill + white outer */
+        .f8-ink .f8-t-outer { color: #FFFFFF; -webkit-text-stroke: 0.13em #FFFFFF; }
+        .f8-ink .f8-t-mid { color: #1A1A22; -webkit-text-stroke: 4px #1A1A22; }
+        .f8-ink .f8-t-fill { color: #1A1A22; }
+        /* l2 MEGA: yellow fill / 12 px ink stroke / 22 px white outer / ink offset shadow */
+        .f8-mega .f8-t-outer { color: #FFFFFF; -webkit-text-stroke: 0.17em #FFFFFF; }
+        .f8-mega .f8-t-mid { color: #1A1A22; -webkit-text-stroke: 0.07em #1A1A22; } .f8-telop.f8-mega { font-weight: 700; }
+        .f8-mega .f8-t-fill { color: #FFE13A; }
+
+        /* CUSHION (座布団) — small yellow, ink Paperlogy */
+        .f8-cushion { position: absolute; background: #FFE13A; color: #1A1A22; font-family: "Paperlogy";  white-space: nowrap;
+          padding: 14px 32px 8px; border-radius: 6px; box-shadow: 0 2px 0 rgba(0,0,0,.1), 0 10px 18px rgba(60,40,10,.22); transform-origin: 0% 50%; font-weight: 600; }
+        .f8-cushion > span { display: block; }
+      </style>
+
+      <div id="stage" data-composition-id="08-f8" data-width="1920" data-height="1080" data-duration="6.2">
+        <div id="f8_cam" class="f8-cam">
+          <svg id="f8_burst" class="f8-svg" width="1920" height="1080" viewBox="0 0 1920 1080"></svg>
+
+          <div id="f8_board" class="f8-board">
+          <div id="f8_s0" class="f8-slot" style="left:9px;top:9px;"></div>
+          <div id="f8_s1" class="f8-slot" style="left:93px;top:9px;"></div>
+          <div id="f8_s2" class="f8-slot" style="left:177px;top:9px;"></div>
+          <div id="f8_s3" class="f8-slot" style="left:261px;top:9px;"></div>
+          <div id="f8_s4" class="f8-slot" style="left:345px;top:9px;"></div>
+          <div id="f8_s5" class="f8-slot" style="left:429px;top:9px;"></div>
+          <div id="f8_s6" class="f8-slot" style="left:513px;top:9px;"></div>
+          <div id="f8_s8" class="f8-slot" style="left:681px;top:9px;"></div>
+          <div id="f8_s9" class="f8-slot" style="left:765px;top:9px;"></div>
+          <div id="f8_s10" class="f8-slot" style="left:9px;top:93px;"></div>
+          <div id="f8_s11" class="f8-slot" style="left:93px;top:93px;"></div>
+          <div id="f8_s12" class="f8-slot" style="left:177px;top:93px;"></div>
+          <div id="f8_s14" class="f8-slot" style="left:345px;top:93px;"></div>
+          <div id="f8_s15" class="f8-slot" style="left:429px;top:93px;"></div>
+          <div id="f8_s16" class="f8-slot" style="left:513px;top:93px;"></div>
+          <div id="f8_s17" class="f8-slot" style="left:597px;top:93px;"></div>
+          <div id="f8_s18" class="f8-slot" style="left:681px;top:93px;"></div>
+          <div id="f8_s19" class="f8-slot" style="left:765px;top:93px;"></div>
+          <div id="f8_s20" class="f8-slot" style="left:9px;top:177px;"></div>
+          <div id="f8_s21" class="f8-slot" style="left:93px;top:177px;"></div>
+          <div id="f8_s22" class="f8-slot" style="left:177px;top:177px;"></div>
+          <div id="f8_s23" class="f8-slot" style="left:261px;top:177px;"></div>
+          <div id="f8_s24" class="f8-slot" style="left:345px;top:177px;"></div>
+          <div id="f8_s25" class="f8-slot" style="left:429px;top:177px;"></div>
+          <div id="f8_s26" class="f8-slot" style="left:513px;top:177px;"></div>
+          <div id="f8_s27" class="f8-slot" style="left:597px;top:177px;"></div>
+          <div id="f8_s28" class="f8-slot" style="left:681px;top:177px;"></div>
+          <div id="f8_s30" class="f8-slot" style="left:9px;top:261px;"></div>
+          <div id="f8_s31" class="f8-slot" style="left:93px;top:261px;"></div>
+          <div id="f8_s32" class="f8-slot" style="left:177px;top:261px;"></div>
+          <div id="f8_s33" class="f8-slot" style="left:261px;top:261px;"></div>
+          <div id="f8_s34" class="f8-slot" style="left:345px;top:261px;"></div>
+          <div id="f8_s36" class="f8-slot" style="left:513px;top:261px;"></div>
+          <div id="f8_s37" class="f8-slot" style="left:597px;top:261px;"></div>
+          <div id="f8_s38" class="f8-slot" style="left:681px;top:261px;"></div>
+          <div id="f8_s39" class="f8-slot" style="left:765px;top:261px;"></div>
+          <div id="f8_s40" class="f8-slot" style="left:9px;top:345px;"></div>
+          <div id="f8_s42" class="f8-slot" style="left:177px;top:345px;"></div>
+          <div id="f8_s43" class="f8-slot" style="left:261px;top:345px;"></div>
+          <div id="f8_s44" class="f8-slot" style="left:345px;top:345px;"></div>
+          <div id="f8_s45" class="f8-slot" style="left:429px;top:345px;"></div>
+          <div id="f8_s46" class="f8-slot" style="left:513px;top:345px;"></div>
+          <div id="f8_s47" class="f8-slot" style="left:597px;top:345px;"></div>
+          <div id="f8_s48" class="f8-slot" style="left:681px;top:345px;"></div>
+          <div id="f8_s49" class="f8-slot" style="left:765px;top:345px;"></div>
+          <div id="f8_s50" class="f8-slot" style="left:9px;top:429px;"></div>
+          <div id="f8_s51" class="f8-slot" style="left:93px;top:429px;"></div>
+          <div id="f8_s52" class="f8-slot" style="left:177px;top:429px;"></div>
+          <div id="f8_s53" class="f8-slot" style="left:261px;top:429px;"></div>
+          <div id="f8_s54" class="f8-slot" style="left:345px;top:429px;"></div>
+          <div id="f8_s55" class="f8-slot" style="left:429px;top:429px;"></div>
+          <div id="f8_s57" class="f8-slot" style="left:597px;top:429px;"></div>
+          <div id="f8_s58" class="f8-slot" style="left:681px;top:429px;"></div>
+          <div id="f8_s59" class="f8-slot" style="left:765px;top:429px;"></div>
+          <div id="f8_s60" class="f8-slot" style="left:9px;top:513px;"></div>
+          <div id="f8_s61" class="f8-slot" style="left:93px;top:513px;"></div>
+          <div id="f8_s63" class="f8-slot" style="left:261px;top:513px;"></div>
+          <div id="f8_s64" class="f8-slot" style="left:345px;top:513px;"></div>
+          <div id="f8_s65" class="f8-slot" style="left:429px;top:513px;"></div>
+          <div id="f8_s66" class="f8-slot" style="left:513px;top:513px;"></div>
+          <div id="f8_s67" class="f8-slot" style="left:597px;top:513px;"></div>
+          <div id="f8_s68" class="f8-slot" style="left:681px;top:513px;"></div>
+          <div id="f8_s69" class="f8-slot" style="left:765px;top:513px;"></div>
+          <div id="f8_s70" class="f8-slot" style="left:9px;top:597px;"></div>
+          <div id="f8_s71" class="f8-slot" style="left:93px;top:597px;"></div>
+          <div id="f8_s72" class="f8-slot" style="left:177px;top:597px;"></div>
+          <div id="f8_s73" class="f8-slot" style="left:261px;top:597px;"></div>
+          <div id="f8_s74" class="f8-slot" style="left:345px;top:597px;"></div>
+          <div id="f8_s75" class="f8-slot" style="left:429px;top:597px;"></div>
+          <div id="f8_s76" class="f8-slot" style="left:513px;top:597px;"></div>
+          <div id="f8_s77" class="f8-slot" style="left:597px;top:597px;"></div>
+          <div id="f8_s79" class="f8-slot" style="left:765px;top:597px;"></div>
+          <div id="f8_s80" class="f8-slot" style="left:9px;top:681px;"></div>
+          <div id="f8_s81" class="f8-slot" style="left:93px;top:681px;"></div>
+          <div id="f8_s82" class="f8-slot" style="left:177px;top:681px;"></div>
+          <div id="f8_s83" class="f8-slot" style="left:261px;top:681px;"></div>
+          <div id="f8_s85" class="f8-slot" style="left:429px;top:681px;"></div>
+          <div id="f8_s86" class="f8-slot" style="left:513px;top:681px;"></div>
+          <div id="f8_s87" class="f8-slot" style="left:597px;top:681px;"></div>
+          <div id="f8_s88" class="f8-slot" style="left:681px;top:681px;"></div>
+          <div id="f8_s89" class="f8-slot" style="left:765px;top:681px;"></div>
+          <div id="f8_s90" class="f8-slot" style="left:9px;top:765px;"></div>
+          <div id="f8_s91" class="f8-slot" style="left:93px;top:765px;"></div>
+          <div id="f8_s92" class="f8-slot" style="left:177px;top:765px;"></div>
+          <div id="f8_s93" class="f8-slot" style="left:261px;top:765px;"></div>
+          <div id="f8_s94" class="f8-slot" style="left:345px;top:765px;"></div>
+          <div id="f8_s95" class="f8-slot" style="left:429px;top:765px;"></div>
+          <div id="f8_s96" class="f8-slot" style="left:513px;top:765px;"></div>
+          <div id="f8_s97" class="f8-slot" style="left:597px;top:765px;"></div>
+          <div id="f8_s98" class="f8-slot" style="left:681px;top:765px;"></div>
+          <div id="f8_s99" class="f8-slot" style="left:765px;top:765px;"></div>
+          <div id="f8_c0" class="f8-cf f8-off" style="left:4px;top:4px;"><div id="f8_ci0" class="f8-ci" data-tilt="-2.76" style="transform:rotate(-2.76deg);"><img src="assets/faces/sm/happy/p.png" alt="" /><div id="f8_t0" class="f8-tape" style="transform:rotate(17.2deg);"></div></div></div>
+          <div id="f8_c1" class="f8-cf f8-off" style="left:88px;top:4px;"><div id="f8_ci1" class="f8-ci" data-tilt="-1.25" style="transform:rotate(-1.25deg);"><img src="assets/faces/sm/happy/cindy.png" alt="" /><div id="f8_t1" class="f8-tape f8-sky" style="transform:rotate(0.0deg);"></div></div></div>
+          <div id="f8_c2" class="f8-cf f8-off" style="left:172px;top:4px;"><div id="f8_ci2" class="f8-ci" data-tilt="-0.77" style="transform:rotate(-0.77deg);"><img src="assets/faces/sm/happy/kate.png" alt="" /><div id="f8_t2" class="f8-tape" style="transform:rotate(-2.6deg);"></div></div></div>
+          <div id="f8_c3" class="f8-cf f8-off" style="left:256px;top:4px;"><div id="f8_ci3" class="f8-ci" data-tilt="1.12" style="transform:rotate(1.12deg);"><img src="assets/faces/sm/happy/lucas.png" alt="" /><div id="f8_t3" class="f8-tape f8-sky" style="transform:rotate(18.4deg);"></div></div></div>
+          <div id="f8_c4" class="f8-cf f8-off" style="left:340px;top:4px;"><div id="f8_ci4" class="f8-ci" data-tilt="-1.9" style="transform:rotate(-1.9deg);"><img src="assets/faces/sm/happy/alice.png" alt="" /><div id="f8_t4" class="f8-tape" style="transform:rotate(-16.7deg);"></div></div></div>
+          <div id="f8_c5" class="f8-cf f8-off" style="left:424px;top:4px;"><div id="f8_ci5" class="f8-ci" data-tilt="1.12" style="transform:rotate(1.12deg);"><img src="assets/faces/sm/happy/toynbee.png" alt="" /><div id="f8_t5" class="f8-tape f8-sky" style="transform:rotate(-4.2deg);"></div></div></div>
+          <div id="f8_c6" class="f8-cf f8-off" style="left:508px;top:4px;"><div id="f8_ci6" class="f8-ci" data-tilt="2.47" style="transform:rotate(2.47deg);"><img src="assets/faces/sm/happy/benny.png" alt="" /><div id="f8_t6" class="f8-tape" style="transform:rotate(-21.4deg);"></div></div></div>
+          <div id="f8_c7" class="f8-cf" style="left:592px;top:4px;"><div id="f8_ci7" class="f8-ci" data-tilt="-0.53" style="transform:rotate(-0.53deg);"><img src="assets/faces/sm/happy/jini.png" alt="" /></div></div>
+          <div id="f8_c8" class="f8-cf f8-off" style="left:676px;top:4px;"><div id="f8_ci8" class="f8-ci" data-tilt="-0.15" style="transform:rotate(-0.15deg);"><img src="assets/faces/sm/happy/rei.png" alt="" /><div id="f8_t8" class="f8-tape" style="transform:rotate(-10.3deg);"></div></div></div>
+          <div id="f8_c9" class="f8-cf f8-off" style="left:760px;top:4px;"><div id="f8_ci9" class="f8-ci" data-tilt="-3.39" style="transform:rotate(-3.39deg);"><img src="assets/faces/sm/happy/esther.png" alt="" /><div id="f8_t9" class="f8-tape f8-sky" style="transform:rotate(-16.0deg);"></div></div></div>
+          <div id="f8_c10" class="f8-cf f8-off" style="left:4px;top:88px;"><div id="f8_ci10" class="f8-ci" data-tilt="-1.27" style="transform:rotate(-1.27deg);"><img src="assets/faces/sm/happy/thomas.png" alt="" /><div id="f8_t10" class="f8-tape f8-sky" style="transform:rotate(14.1deg);"></div></div></div>
+          <div id="f8_c11" class="f8-cf f8-off" style="left:88px;top:88px;"><div id="f8_ci11" class="f8-ci" data-tilt="0.11" style="transform:rotate(0.11deg);"><img src="assets/faces/sm/happy/bible.png" alt="" /><div id="f8_t11" class="f8-tape" style="transform:rotate(19.3deg);"></div></div></div>
+          <div id="f8_c12" class="f8-cf f8-off" style="left:172px;top:88px;"><div id="f8_ci12" class="f8-ci" data-tilt="3.64" style="transform:rotate(3.64deg);"><img src="assets/faces/sm/happy/ian.png" alt="" /><div id="f8_t12" class="f8-tape f8-sky" style="transform:rotate(7.5deg);"></div></div></div>
+          <div id="f8_c13" class="f8-cf" style="left:256px;top:88px;"><div id="f8_ci13" class="f8-ci" data-tilt="-3.35" style="transform:rotate(-3.35deg);"><img src="assets/faces/sm/happy/p.png" alt="" /></div></div>
+          <div id="f8_c14" class="f8-cf f8-off" style="left:340px;top:88px;"><div id="f8_ci14" class="f8-ci" data-tilt="-0.8" style="transform:rotate(-0.8deg);"><img src="assets/faces/sm/happy/cindy.png" alt="" /><div id="f8_t14" class="f8-tape f8-sky" style="transform:rotate(24.1deg);"></div></div></div>
+          <div id="f8_c15" class="f8-cf f8-off" style="left:424px;top:88px;"><div id="f8_ci15" class="f8-ci" data-tilt="-0.29" style="transform:rotate(-0.29deg);"><img src="assets/faces/sm/happy/kate.png" alt="" /><div id="f8_t15" class="f8-tape" style="transform:rotate(21.5deg);"></div></div></div>
+          <div id="f8_c16" class="f8-cf f8-off" style="left:508px;top:88px;"><div id="f8_ci16" class="f8-ci" data-tilt="-1.33" style="transform:rotate(-1.33deg);"><img src="assets/faces/sm/happy/lucas.png" alt="" /><div id="f8_t16" class="f8-tape f8-sky" style="transform:rotate(-13.9deg);"></div></div></div>
+          <div id="f8_c17" class="f8-cf f8-off" style="left:592px;top:88px;"><div id="f8_ci17" class="f8-ci" data-tilt="3.84" style="transform:rotate(3.84deg);"><img src="assets/faces/sm/happy/alice.png" alt="" /><div id="f8_t17" class="f8-tape" style="transform:rotate(25.0deg);"></div></div></div>
+          <div id="f8_c18" class="f8-cf f8-off" style="left:676px;top:88px;"><div id="f8_ci18" class="f8-ci" data-tilt="0.25" style="transform:rotate(0.25deg);"><img src="assets/faces/sm/happy/toynbee.png" alt="" /><div id="f8_t18" class="f8-tape f8-sky" style="transform:rotate(14.9deg);"></div></div></div>
+          <div id="f8_c19" class="f8-cf f8-off" style="left:760px;top:88px;"><div id="f8_ci19" class="f8-ci" data-tilt="2.12" style="transform:rotate(2.12deg);"><img src="assets/faces/sm/happy/benny.png" alt="" /><div id="f8_t19" class="f8-tape" style="transform:rotate(-22.2deg);"></div></div></div>
+          <div id="f8_c20" class="f8-cf f8-off" style="left:4px;top:172px;"><div id="f8_ci20" class="f8-ci" data-tilt="-2.96" style="transform:rotate(-2.96deg);"><img src="assets/faces/sm/happy/jini.png" alt="" /><div id="f8_t20" class="f8-tape" style="transform:rotate(-16.6deg);"></div></div></div>
+          <div id="f8_c21" class="f8-cf f8-off" style="left:88px;top:172px;"><div id="f8_ci21" class="f8-ci" data-tilt="-2.61" style="transform:rotate(-2.61deg);"><img src="assets/faces/sm/happy/rei.png" alt="" /><div id="f8_t21" class="f8-tape f8-sky" style="transform:rotate(5.4deg);"></div></div></div>
+          <div id="f8_c22" class="f8-cf f8-off" style="left:172px;top:172px;"><div id="f8_ci22" class="f8-ci" data-tilt="0.95" style="transform:rotate(0.95deg);"><img src="assets/faces/sm/happy/esther.png" alt="" /><div id="f8_t22" class="f8-tape" style="transform:rotate(10.6deg);"></div></div></div>
+          <div id="f8_c23" class="f8-cf f8-off" style="left:256px;top:172px;"><div id="f8_ci23" class="f8-ci" data-tilt="-1.15" style="transform:rotate(-1.15deg);"><img src="assets/faces/sm/happy/thomas.png" alt="" /><div id="f8_t23" class="f8-tape f8-sky" style="transform:rotate(0.1deg);"></div></div></div>
+          <div id="f8_c24" class="f8-cf f8-off" style="left:340px;top:172px;"><div id="f8_ci24" class="f8-ci" data-tilt="-1.85" style="transform:rotate(-1.85deg);"><img src="assets/faces/sm/happy/bible.png" alt="" /><div id="f8_t24" class="f8-tape" style="transform:rotate(-4.0deg);"></div></div></div>
+          <div id="f8_c25" class="f8-cf f8-off" style="left:424px;top:172px;"><div id="f8_ci25" class="f8-ci" data-tilt="-1.16" style="transform:rotate(-1.16deg);"><img src="assets/faces/sm/happy/ian.png" alt="" /><div id="f8_t25" class="f8-tape f8-sky" style="transform:rotate(13.8deg);"></div></div></div>
+          <div id="f8_c26" class="f8-cf f8-off" style="left:508px;top:172px;"><div id="f8_ci26" class="f8-ci" data-tilt="3.28" style="transform:rotate(3.28deg);"><img src="assets/faces/sm/happy/p.png" alt="" /><div id="f8_t26" class="f8-tape" style="transform:rotate(-23.6deg);"></div></div></div>
+          <div id="f8_c27" class="f8-cf f8-off" style="left:592px;top:172px;"><div id="f8_ci27" class="f8-ci" data-tilt="-3.46" style="transform:rotate(-3.46deg);"><img src="assets/faces/sm/happy/cindy.png" alt="" /><div id="f8_t27" class="f8-tape f8-sky" style="transform:rotate(-22.2deg);"></div></div></div>
+          <div id="f8_c28" class="f8-cf f8-off" style="left:676px;top:172px;"><div id="f8_ci28" class="f8-ci" data-tilt="0.61" style="transform:rotate(0.61deg);"><img src="assets/faces/sm/happy/kate.png" alt="" /><div id="f8_t28" class="f8-tape" style="transform:rotate(12.1deg);"></div></div></div>
+          <div id="f8_c29" class="f8-cf" style="left:760px;top:172px;"><div id="f8_ci29" class="f8-ci" data-tilt="0.96" style="transform:rotate(0.96deg);"><img src="assets/faces/sm/happy/lucas.png" alt="" /></div></div>
+          <div id="f8_c30" class="f8-cf f8-off" style="left:4px;top:256px;"><div id="f8_ci30" class="f8-ci" data-tilt="-3.76" style="transform:rotate(-3.76deg);"><img src="assets/faces/sm/happy/alice.png" alt="" /><div id="f8_t30" class="f8-tape f8-sky" style="transform:rotate(19.0deg);"></div></div></div>
+          <div id="f8_c31" class="f8-cf f8-off" style="left:88px;top:256px;"><div id="f8_ci31" class="f8-ci" data-tilt="-1.46" style="transform:rotate(-1.46deg);"><img src="assets/faces/sm/happy/toynbee.png" alt="" /><div id="f8_t31" class="f8-tape" style="transform:rotate(15.1deg);"></div></div></div>
+          <div id="f8_c32" class="f8-cf f8-off" style="left:172px;top:256px;"><div id="f8_ci32" class="f8-ci" data-tilt="0.74" style="transform:rotate(0.74deg);"><img src="assets/faces/sm/happy/benny.png" alt="" /><div id="f8_t32" class="f8-tape f8-sky" style="transform:rotate(-5.2deg);"></div></div></div>
+          <div id="f8_c33" class="f8-cf f8-off" style="left:256px;top:256px;"><div id="f8_ci33" class="f8-ci" data-tilt="2.05" style="transform:rotate(2.05deg);"><img src="assets/faces/sm/happy/jini.png" alt="" /><div id="f8_t33" class="f8-tape" style="transform:rotate(2.6deg);"></div></div></div>
+          <div id="f8_c34" class="f8-cf f8-off" style="left:340px;top:256px;"><div id="f8_ci34" class="f8-ci" data-tilt="-2.46" style="transform:rotate(-2.46deg);"><img src="assets/faces/sm/happy/rei.png" alt="" /><div id="f8_t34" class="f8-tape f8-sky" style="transform:rotate(6.1deg);"></div></div></div>
+          <div id="f8_c35" class="f8-cf" style="left:424px;top:256px;"><div id="f8_ci35" class="f8-ci" data-tilt="3.13" style="transform:rotate(3.13deg);"><img src="assets/faces/sm/happy/esther.png" alt="" /></div></div>
+          <div id="f8_c36" class="f8-cf f8-off" style="left:508px;top:256px;"><div id="f8_ci36" class="f8-ci" data-tilt="-3.9" style="transform:rotate(-3.9deg);"><img src="assets/faces/sm/happy/thomas.png" alt="" /><div id="f8_t36" class="f8-tape f8-sky" style="transform:rotate(2.3deg);"></div></div></div>
+          <div id="f8_c37" class="f8-cf f8-off" style="left:592px;top:256px;"><div id="f8_ci37" class="f8-ci" data-tilt="0.15" style="transform:rotate(0.15deg);"><img src="assets/faces/sm/happy/bible.png" alt="" /><div id="f8_t37" class="f8-tape" style="transform:rotate(21.0deg);"></div></div></div>
+          <div id="f8_c38" class="f8-cf f8-off" style="left:676px;top:256px;"><div id="f8_ci38" class="f8-ci" data-tilt="-3.48" style="transform:rotate(-3.48deg);"><img src="assets/faces/sm/happy/ian.png" alt="" /><div id="f8_t38" class="f8-tape f8-sky" style="transform:rotate(19.3deg);"></div></div></div>
+          <div id="f8_c39" class="f8-cf f8-off" style="left:760px;top:256px;"><div id="f8_ci39" class="f8-ci" data-tilt="-3.48" style="transform:rotate(-3.48deg);"><img src="assets/faces/sm/happy/p.png" alt="" /><div id="f8_t39" class="f8-tape" style="transform:rotate(9.7deg);"></div></div></div>
+          <div id="f8_c40" class="f8-cf f8-off" style="left:4px;top:340px;"><div id="f8_ci40" class="f8-ci" data-tilt="-0.11" style="transform:rotate(-0.11deg);"><img src="assets/faces/sm/happy/cindy.png" alt="" /><div id="f8_t40" class="f8-tape" style="transform:rotate(-23.1deg);"></div></div></div>
+          <div id="f8_c41" class="f8-cf" style="left:88px;top:340px;"><div id="f8_ci41" class="f8-ci" data-tilt="-0.93" style="transform:rotate(-0.93deg);"><img src="assets/faces/sm/happy/kate.png" alt="" /></div></div>
+          <div id="f8_c42" class="f8-cf f8-off" style="left:172px;top:340px;"><div id="f8_ci42" class="f8-ci" data-tilt="-2.21" style="transform:rotate(-2.21deg);"><img src="assets/faces/sm/happy/lucas.png" alt="" /><div id="f8_t42" class="f8-tape" style="transform:rotate(10.3deg);"></div></div></div>
+          <div id="f8_c43" class="f8-cf f8-off" style="left:256px;top:340px;"><div id="f8_ci43" class="f8-ci" data-tilt="-1.31" style="transform:rotate(-1.31deg);"><img src="assets/faces/sm/happy/alice.png" alt="" /><div id="f8_t43" class="f8-tape f8-sky" style="transform:rotate(-24.9deg);"></div></div></div>
+          <div id="f8_c44" class="f8-cf f8-off" style="left:340px;top:340px;"><div id="f8_ci44" class="f8-ci" data-tilt="-3.48" style="transform:rotate(-3.48deg);"><img src="assets/faces/sm/happy/toynbee.png" alt="" /><div id="f8_t44" class="f8-tape" style="transform:rotate(21.4deg);"></div></div></div>
+          <div id="f8_c45" class="f8-cf f8-off" style="left:424px;top:340px;"><div id="f8_ci45" class="f8-ci" data-tilt="-2.84" style="transform:rotate(-2.84deg);"><img src="assets/faces/sm/happy/jini.png" alt="" /><div id="f8_t45" class="f8-tape f8-sky" style="transform:rotate(2.4deg);"></div></div></div>
+          <div id="f8_c46" class="f8-cf f8-off" style="left:508px;top:340px;"><div id="f8_ci46" class="f8-ci" data-tilt="0.29" style="transform:rotate(0.29deg);"><img src="assets/faces/sm/happy/jini.png" alt="" /><div id="f8_t46" class="f8-tape" style="transform:rotate(0.8deg);"></div></div></div>
+          <div id="f8_c47" class="f8-cf f8-off" style="left:592px;top:340px;"><div id="f8_ci47" class="f8-ci" data-tilt="-2.91" style="transform:rotate(-2.91deg);"><img src="assets/faces/sm/happy/rei.png" alt="" /><div id="f8_t47" class="f8-tape f8-sky" style="transform:rotate(-8.5deg);"></div></div></div>
+          <div id="f8_c48" class="f8-cf f8-off" style="left:676px;top:340px;"><div id="f8_ci48" class="f8-ci" data-tilt="-2.98" style="transform:rotate(-2.98deg);"><img src="assets/faces/sm/happy/esther.png" alt="" /><div id="f8_t48" class="f8-tape" style="transform:rotate(-17.0deg);"></div></div></div>
+          <div id="f8_c49" class="f8-cf f8-off" style="left:760px;top:340px;"><div id="f8_ci49" class="f8-ci" data-tilt="2.45" style="transform:rotate(2.45deg);"><img src="assets/faces/sm/happy/thomas.png" alt="" /><div id="f8_t49" class="f8-tape f8-sky" style="transform:rotate(-11.2deg);"></div></div></div>
+          <div id="f8_c50" class="f8-cf f8-off" style="left:4px;top:424px;"><div id="f8_ci50" class="f8-ci" data-tilt="3.49" style="transform:rotate(3.49deg);"><img src="assets/faces/sm/happy/bible.png" alt="" /><div id="f8_t50" class="f8-tape f8-sky" style="transform:rotate(-11.0deg);"></div></div></div>
+          <div id="f8_c51" class="f8-cf f8-off" style="left:88px;top:424px;"><div id="f8_ci51" class="f8-ci" data-tilt="-2.21" style="transform:rotate(-2.21deg);"><img src="assets/faces/sm/happy/ian.png" alt="" /><div id="f8_t51" class="f8-tape" style="transform:rotate(-9.6deg);"></div></div></div>
+          <div id="f8_c52" class="f8-cf f8-off" style="left:172px;top:424px;"><div id="f8_ci52" class="f8-ci" data-tilt="1.9" style="transform:rotate(1.9deg);"><img src="assets/faces/sm/happy/p.png" alt="" /><div id="f8_t52" class="f8-tape f8-sky" style="transform:rotate(10.8deg);"></div></div></div>
+          <div id="f8_c53" class="f8-cf f8-off" style="left:256px;top:424px;"><div id="f8_ci53" class="f8-ci" data-tilt="2.29" style="transform:rotate(2.29deg);"><img src="assets/faces/sm/happy/cindy.png" alt="" /><div id="f8_t53" class="f8-tape" style="transform:rotate(12.7deg);"></div></div></div>
+          <div id="f8_c54" class="f8-cf f8-off" style="left:340px;top:424px;"><div id="f8_ci54" class="f8-ci" data-tilt="1.79" style="transform:rotate(1.79deg);"><img src="assets/faces/sm/happy/kate.png" alt="" /><div id="f8_t54" class="f8-tape f8-sky" style="transform:rotate(20.7deg);"></div></div></div>
+          <div id="f8_c55" class="f8-cf f8-off" style="left:424px;top:424px;"><div id="f8_ci55" class="f8-ci" data-tilt="1.01" style="transform:rotate(1.01deg);"><img src="assets/faces/sm/happy/lucas.png" alt="" /><div id="f8_t55" class="f8-tape" style="transform:rotate(23.2deg);"></div></div></div>
+          <div id="f8_c56" class="f8-cf" style="left:508px;top:424px;"><div id="f8_ci56" class="f8-ci" data-tilt="2.35" style="transform:rotate(2.35deg);"><img src="assets/faces/sm/happy/alice.png" alt="" /></div></div>
+          <div id="f8_c57" class="f8-cf f8-off" style="left:592px;top:424px;"><div id="f8_ci57" class="f8-ci" data-tilt="0.58" style="transform:rotate(0.58deg);"><img src="assets/faces/sm/happy/toynbee.png" alt="" /><div id="f8_t57" class="f8-tape" style="transform:rotate(7.3deg);"></div></div></div>
+          <div id="f8_c58" class="f8-cf f8-off" style="left:676px;top:424px;"><div id="f8_ci58" class="f8-ci" data-tilt="0.09" style="transform:rotate(0.09deg);"><img src="assets/faces/sm/happy/benny.png" alt="" /><div id="f8_t58" class="f8-tape f8-sky" style="transform:rotate(-5.3deg);"></div></div></div>
+          <div id="f8_c59" class="f8-cf f8-off" style="left:760px;top:424px;"><div id="f8_ci59" class="f8-ci" data-tilt="-3.17" style="transform:rotate(-3.17deg);"><img src="assets/faces/sm/happy/jini.png" alt="" /><div id="f8_t59" class="f8-tape" style="transform:rotate(-23.2deg);"></div></div></div>
+          <div id="f8_c60" class="f8-cf f8-off" style="left:4px;top:508px;"><div id="f8_ci60" class="f8-ci" data-tilt="1.08" style="transform:rotate(1.08deg);"><img src="assets/faces/sm/happy/rei.png" alt="" /><div id="f8_t60" class="f8-tape" style="transform:rotate(-4.0deg);"></div></div></div>
+          <div id="f8_c61" class="f8-cf f8-off" style="left:88px;top:508px;"><div id="f8_ci61" class="f8-ci" data-tilt="-2.98" style="transform:rotate(-2.98deg);"><img src="assets/faces/sm/happy/esther.png" alt="" /><div id="f8_t61" class="f8-tape f8-sky" style="transform:rotate(-8.2deg);"></div></div></div>
+          <div id="f8_c62" class="f8-cf" style="left:172px;top:508px;"><div id="f8_ci62" class="f8-ci" data-tilt="-1.97" style="transform:rotate(-1.97deg);"><img src="assets/faces/sm/happy/thomas.png" alt="" /></div></div>
+          <div id="f8_c63" class="f8-cf f8-off" style="left:256px;top:508px;"><div id="f8_ci63" class="f8-ci" data-tilt="-0.68" style="transform:rotate(-0.68deg);"><img src="assets/faces/sm/happy/bible.png" alt="" /><div id="f8_t63" class="f8-tape f8-sky" style="transform:rotate(18.4deg);"></div></div></div>
+          <div id="f8_c64" class="f8-cf f8-off" style="left:340px;top:508px;"><div id="f8_ci64" class="f8-ci" data-tilt="-3.11" style="transform:rotate(-3.11deg);"><img src="assets/faces/sm/happy/ian.png" alt="" /><div id="f8_t64" class="f8-tape" style="transform:rotate(-19.1deg);"></div></div></div>
+          <div id="f8_c65" class="f8-cf f8-off" style="left:424px;top:508px;"><div id="f8_ci65" class="f8-ci" data-tilt="3.88" style="transform:rotate(3.88deg);"><img src="assets/faces/sm/happy/p.png" alt="" /><div id="f8_t65" class="f8-tape f8-sky" style="transform:rotate(11.5deg);"></div></div></div>
+          <div id="f8_c66" class="f8-cf f8-off" style="left:508px;top:508px;"><div id="f8_ci66" class="f8-ci" data-tilt="0.7" style="transform:rotate(0.7deg);"><img src="assets/faces/sm/happy/cindy.png" alt="" /><div id="f8_t66" class="f8-tape" style="transform:rotate(1.9deg);"></div></div></div>
+          <div id="f8_c67" class="f8-cf f8-off" style="left:592px;top:508px;"><div id="f8_ci67" class="f8-ci" data-tilt="-0.11" style="transform:rotate(-0.11deg);"><img src="assets/faces/sm/happy/kate.png" alt="" /><div id="f8_t67" class="f8-tape f8-sky" style="transform:rotate(18.3deg);"></div></div></div>
+          <div id="f8_c68" class="f8-cf f8-off" style="left:676px;top:508px;"><div id="f8_ci68" class="f8-ci" data-tilt="0.74" style="transform:rotate(0.74deg);"><img src="assets/faces/sm/happy/lucas.png" alt="" /><div id="f8_t68" class="f8-tape" style="transform:rotate(1.0deg);"></div></div></div>
+          <div id="f8_c69" class="f8-cf f8-off" style="left:760px;top:508px;"><div id="f8_ci69" class="f8-ci" data-tilt="2.48" style="transform:rotate(2.48deg);"><img src="assets/faces/sm/happy/alice.png" alt="" /><div id="f8_t69" class="f8-tape f8-sky" style="transform:rotate(10.6deg);"></div></div></div>
+          <div id="f8_c70" class="f8-cf f8-off" style="left:4px;top:592px;"><div id="f8_ci70" class="f8-ci" data-tilt="-1.98" style="transform:rotate(-1.98deg);"><img src="assets/faces/sm/happy/toynbee.png" alt="" /><div id="f8_t70" class="f8-tape f8-sky" style="transform:rotate(16.4deg);"></div></div></div>
+          <div id="f8_c71" class="f8-cf f8-off" style="left:88px;top:592px;"><div id="f8_ci71" class="f8-ci" data-tilt="3.69" style="transform:rotate(3.69deg);"><img src="assets/faces/sm/happy/benny.png" alt="" /><div id="f8_t71" class="f8-tape" style="transform:rotate(-7.8deg);"></div></div></div>
+          <div id="f8_c72" class="f8-cf f8-off" style="left:172px;top:592px;"><div id="f8_ci72" class="f8-ci" data-tilt="-3.36" style="transform:rotate(-3.36deg);"><img src="assets/faces/sm/happy/jini.png" alt="" /><div id="f8_t72" class="f8-tape f8-sky" style="transform:rotate(-4.7deg);"></div></div></div>
+          <div id="f8_c73" class="f8-cf f8-off" style="left:256px;top:592px;"><div id="f8_ci73" class="f8-ci" data-tilt="-2.52" style="transform:rotate(-2.52deg);"><img src="assets/faces/sm/happy/rei.png" alt="" /><div id="f8_t73" class="f8-tape" style="transform:rotate(2.4deg);"></div></div></div>
+          <div id="f8_c74" class="f8-cf f8-off" style="left:340px;top:592px;"><div id="f8_ci74" class="f8-ci" data-tilt="-2.53" style="transform:rotate(-2.53deg);"><img src="assets/faces/sm/happy/esther.png" alt="" /><div id="f8_t74" class="f8-tape f8-sky" style="transform:rotate(-13.7deg);"></div></div></div>
+          <div id="f8_c75" class="f8-cf f8-off" style="left:424px;top:592px;"><div id="f8_ci75" class="f8-ci" data-tilt="0.08" style="transform:rotate(0.08deg);"><img src="assets/faces/sm/happy/thomas.png" alt="" /><div id="f8_t75" class="f8-tape" style="transform:rotate(9.9deg);"></div></div></div>
+          <div id="f8_c76" class="f8-cf f8-off" style="left:508px;top:592px;"><div id="f8_ci76" class="f8-ci" data-tilt="-0.69" style="transform:rotate(-0.69deg);"><img src="assets/faces/sm/happy/bible.png" alt="" /><div id="f8_t76" class="f8-tape f8-sky" style="transform:rotate(-6.0deg);"></div></div></div>
+          <div id="f8_c77" class="f8-cf f8-off" style="left:592px;top:592px;"><div id="f8_ci77" class="f8-ci" data-tilt="3.83" style="transform:rotate(3.83deg);"><img src="assets/faces/sm/happy/ian.png" alt="" /><div id="f8_t77" class="f8-tape" style="transform:rotate(9.2deg);"></div></div></div>
+          <div id="f8_c78" class="f8-cf" style="left:676px;top:592px;"><div id="f8_ci78" class="f8-ci" data-tilt="-0.47" style="transform:rotate(-0.47deg);"><img src="assets/faces/sm/happy/p.png" alt="" /></div></div>
+          <div id="f8_c79" class="f8-cf f8-off" style="left:760px;top:592px;"><div id="f8_ci79" class="f8-ci" data-tilt="-2.8" style="transform:rotate(-2.8deg);"><img src="assets/faces/sm/happy/cindy.png" alt="" /><div id="f8_t79" class="f8-tape" style="transform:rotate(22.2deg);"></div></div></div>
+          <div id="f8_c80" class="f8-cf f8-off" style="left:4px;top:676px;"><div id="f8_ci80" class="f8-ci" data-tilt="-1.79" style="transform:rotate(-1.79deg);"><img src="assets/faces/sm/happy/kate.png" alt="" /><div id="f8_t80" class="f8-tape" style="transform:rotate(-9.9deg);"></div></div></div>
+          <div id="f8_c81" class="f8-cf f8-off" style="left:88px;top:676px;"><div id="f8_ci81" class="f8-ci" data-tilt="-0.49" style="transform:rotate(-0.49deg);"><img src="assets/faces/sm/happy/lucas.png" alt="" /><div id="f8_t81" class="f8-tape f8-sky" style="transform:rotate(23.8deg);"></div></div></div>
+          <div id="f8_c82" class="f8-cf f8-off" style="left:172px;top:676px;"><div id="f8_ci82" class="f8-ci" data-tilt="-1.72" style="transform:rotate(-1.72deg);"><img src="assets/faces/sm/happy/alice.png" alt="" /><div id="f8_t82" class="f8-tape" style="transform:rotate(-1.1deg);"></div></div></div>
+          <div id="f8_c83" class="f8-cf f8-off" style="left:256px;top:676px;"><div id="f8_ci83" class="f8-ci" data-tilt="2.28" style="transform:rotate(2.28deg);"><img src="assets/faces/sm/happy/toynbee.png" alt="" /><div id="f8_t83" class="f8-tape f8-sky" style="transform:rotate(16.0deg);"></div></div></div>
+          <div id="f8_c84" class="f8-cf" style="left:340px;top:676px;"><div id="f8_ci84" class="f8-ci" data-tilt="0.53" style="transform:rotate(0.53deg);"><img src="assets/faces/sm/happy/benny.png" alt="" /></div></div>
+          <div id="f8_c85" class="f8-cf f8-off" style="left:424px;top:676px;"><div id="f8_ci85" class="f8-ci" data-tilt="-0.38" style="transform:rotate(-0.38deg);"><img src="assets/faces/sm/happy/jini.png" alt="" /><div id="f8_t85" class="f8-tape f8-sky" style="transform:rotate(-0.8deg);"></div></div></div>
+          <div id="f8_c86" class="f8-cf f8-off" style="left:508px;top:676px;"><div id="f8_ci86" class="f8-ci" data-tilt="2.51" style="transform:rotate(2.51deg);"><img src="assets/faces/sm/happy/rei.png" alt="" /><div id="f8_t86" class="f8-tape" style="transform:rotate(-10.2deg);"></div></div></div>
+          <div id="f8_c87" class="f8-cf f8-off" style="left:592px;top:676px;"><div id="f8_ci87" class="f8-ci" data-tilt="-1.63" style="transform:rotate(-1.63deg);"><img src="assets/faces/sm/happy/esther.png" alt="" /><div id="f8_t87" class="f8-tape f8-sky" style="transform:rotate(3.0deg);"></div></div></div>
+          <div id="f8_c88" class="f8-cf f8-off" style="left:676px;top:676px;"><div id="f8_ci88" class="f8-ci" data-tilt="3.02" style="transform:rotate(3.02deg);"><img src="assets/faces/sm/happy/thomas.png" alt="" /><div id="f8_t88" class="f8-tape" style="transform:rotate(-10.7deg);"></div></div></div>
+          <div id="f8_c89" class="f8-cf f8-off" style="left:760px;top:676px;"><div id="f8_ci89" class="f8-ci" data-tilt="-2.06" style="transform:rotate(-2.06deg);"><img src="assets/faces/sm/happy/bible.png" alt="" /><div id="f8_t89" class="f8-tape f8-sky" style="transform:rotate(-20.4deg);"></div></div></div>
+          <div id="f8_c90" class="f8-cf f8-off" style="left:4px;top:760px;"><div id="f8_ci90" class="f8-ci" data-tilt="-1.9" style="transform:rotate(-1.9deg);"><img src="assets/faces/sm/happy/ian.png" alt="" /><div id="f8_t90" class="f8-tape f8-sky" style="transform:rotate(2.0deg);"></div></div></div>
+          <div id="f8_c91" class="f8-cf f8-off" style="left:88px;top:760px;"><div id="f8_ci91" class="f8-ci" data-tilt="0.49" style="transform:rotate(0.49deg);"><img src="assets/faces/sm/happy/p.png" alt="" /><div id="f8_t91" class="f8-tape" style="transform:rotate(6.3deg);"></div></div></div>
+          <div id="f8_c92" class="f8-cf f8-off" style="left:172px;top:760px;"><div id="f8_ci92" class="f8-ci" data-tilt="0.29" style="transform:rotate(0.29deg);"><img src="assets/faces/sm/happy/cindy.png" alt="" /><div id="f8_t92" class="f8-tape f8-sky" style="transform:rotate(6.2deg);"></div></div></div>
+          <div id="f8_c93" class="f8-cf f8-off" style="left:256px;top:760px;"><div id="f8_ci93" class="f8-ci" data-tilt="1.42" style="transform:rotate(1.42deg);"><img src="assets/faces/sm/happy/kate.png" alt="" /><div id="f8_t93" class="f8-tape" style="transform:rotate(-15.4deg);"></div></div></div>
+          <div id="f8_c94" class="f8-cf f8-off" style="left:340px;top:760px;"><div id="f8_ci94" class="f8-ci" data-tilt="3.45" style="transform:rotate(3.45deg);"><img src="assets/faces/sm/happy/lucas.png" alt="" /><div id="f8_t94" class="f8-tape f8-sky" style="transform:rotate(-21.4deg);"></div></div></div>
+          <div id="f8_c95" class="f8-cf f8-off" style="left:424px;top:760px;"><div id="f8_ci95" class="f8-ci" data-tilt="-2.45" style="transform:rotate(-2.45deg);"><img src="assets/faces/sm/happy/alice.png" alt="" /><div id="f8_t95" class="f8-tape" style="transform:rotate(4.2deg);"></div></div></div>
+          <div id="f8_c96" class="f8-cf f8-off" style="left:508px;top:760px;"><div id="f8_ci96" class="f8-ci" data-tilt="3.28" style="transform:rotate(3.28deg);"><img src="assets/faces/sm/happy/toynbee.png" alt="" /><div id="f8_t96" class="f8-tape f8-sky" style="transform:rotate(5.6deg);"></div></div></div>
+          <div id="f8_c97" class="f8-cf f8-off" style="left:592px;top:760px;"><div id="f8_ci97" class="f8-ci" data-tilt="2.36" style="transform:rotate(2.36deg);"><img src="assets/faces/sm/happy/benny.png" alt="" /><div id="f8_t97" class="f8-tape" style="transform:rotate(-5.5deg);"></div></div></div>
+          <div id="f8_c98" class="f8-cf f8-off" style="left:676px;top:760px;"><div id="f8_ci98" class="f8-ci" data-tilt="0.05" style="transform:rotate(0.05deg);"><img src="assets/faces/sm/happy/jini.png" alt="" /><div id="f8_t98" class="f8-tape f8-sky" style="transform:rotate(-16.5deg);"></div></div></div>
+          <div id="f8_c99" class="f8-cf f8-off" style="left:760px;top:760px;"><div id="f8_ci99" class="f8-ci" data-tilt="-1.31" style="transform:rotate(-1.31deg);"><img src="assets/faces/sm/happy/rei.png" alt="" /><div id="f8_t99" class="f8-tape" style="transform:rotate(-1.3deg);"></div></div></div>
+          </div>
+
+          <div id="f8_l1" class="f8-telop f8-ink f8-off" style="left:112px;top:206px;font-size:130px;transform-origin:30% 60%;" data-text="이번엔,"></div>
+          <div id="f8_l2" class="f8-telop f8-mega f8-off" style="left:120px;top:382px;font-size:260px;transform-origin:45% 55%;" data-layout-allow-overlap data-text="붙는다!"></div>
+          <div id="f8_sub" class="f8-cushion f8-off" style="left:128px;top:716px;font-size:56px;"><span id="f8_subt">쌩초보도, 한 방에.</span></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var D = 6.2, F = 1 / 30;
+          var tl = gsap.timeline({ paused: true });
+          var q = function (s) { return document.querySelector(s); };
+          function rnd(i) { var x = Math.sin(i * 12.9898 + 78.233) * 43758.5453; return x - Math.floor(x); }
+
+          // ---- TELOP builder (stacked copies: offset shadow / outer stroke / ink stroke / fill)
+          function telop(el) {
+            var t = el.getAttribute("data-text");
+            el.innerHTML = '<span class="f8-t-shadow">' + t + '</span><span class="f8-t-outer">' + t + '</span><span class="f8-t-mid">' + t + '</span><span class="f8-t-fill">' + t + '</span>';
+          }
+          telop(q("#f8_l1")); telop(q("#f8_l2"));
+
+          // ---- POP-IN (ぽよん)
+          function popIn(target, at) {
+            tl.set(target, { autoAlpha: 0 }, 0);
+            tl.fromTo(target, { scale: 0, autoAlpha: 1 }, { scale: 1.2, autoAlpha: 1, duration: 5 * F, ease: "power2.out", immediateRender: false }, at);
+            tl.to(target, { scale: 1, duration: 2 * F, ease: "power1.in" }, at + 5 * F);
+            tl.to(target, { scaleX: 1.08, scaleY: 0.95, duration: 2 * F }, at + 7 * F);
+            tl.to(target, { scaleX: 1, scaleY: 1, duration: 3 * F, ease: "power1.out" }, at + 9 * F);
+          }
+          // ---- BOIL (カクカク, 8 fps) — rotation keeps the element's seeded tilt
+          function boil(target, idx, from, tilt, amp) {
+            for (var k = Math.floor(from * 8); k / 8 < D; k++) {
+              var s = idx * 131 + k * 7;
+              tl.set(target, { rotation: tilt + (rnd(s) - 0.5) * 3 * amp, x: Math.round((rnd(s + 1) - 0.5) * 4 * amp), y: Math.round((rnd(s + 2) - 0.5) * 4 * amp) }, k / 8);
+            }
+          }
+          // ---- SHAKE: per-frame stepped offsets, then rest
+          function shake(target, at, amps) {
+            for (var i = 0; i < amps.length; i++) {
+              tl.set(target, { x: amps[i], y: Math.round(amps[i] * 0.6) * (i % 2 ? 1 : -1) }, at + i * F);
+            }
+            tl.set(target, { x: 0, y: 0 }, at + amps.length * F);
+          }
+          // ---- CONCENTRATION LINES (集中線): `sets` pre-built line sets, one visible per 1/8 s; elliptical empty centre
+          function burst(svg, cx, cy, rx, ry, n, sets, color, from, to, fades) {
+            var ns = "http://www.w3.org/2000/svg", R = 1700, groups = [];
+            for (var g = 0; g < sets; g++) {
+              var G = document.createElementNS(ns, "g");
+              G.setAttribute("id", "f8_bst" + g); G.setAttribute("fill", color); G.setAttribute("opacity", "0");
+              for (var i = 0; i < n; i++) {
+                var a = (i + rnd(g * 1000 + i) * 0.8) / n * Math.PI * 2, w = 0.004 + rnd(g * 1000 + i + 500) * 0.012;
+                var k0 = 1 + rnd(g * 77 + i) * 0.3;
+                var p = [[cx + Math.cos(a) * rx * k0, cy + Math.sin(a) * ry * k0], [cx + Math.cos(a - w) * R, cy + Math.sin(a - w) * R], [cx + Math.cos(a + w) * R, cy + Math.sin(a + w) * R]];
+                var poly = document.createElementNS(ns, "polygon");
+                poly.setAttribute("points", p.map(function (x) { return x[0].toFixed(1) + "," + x[1].toFixed(1); }).join(" "));
+                G.appendChild(poly);
+              }
+              svg.appendChild(G); groups.push(G);
+            }
+            // step times: exactly `from`, then every following 1/8 s boundary before `to`
+            var times = [from];
+            for (var k = Math.floor(from * 8) + 1; k / 8 < to - 1e-6; k++) times.push(k / 8);
+            times.forEach(function (t, si) {
+              var op = fades[Math.min(si, fades.length - 1)];
+              groups.forEach(function (G, gi) { tl.set(G, { opacity: gi === si % sets ? op : 0 }, t); });
+            });
+            groups.forEach(function (G) { tl.set(G, { opacity: 0 }, to); });
+          }
+
+          // ---- anchors (frame-local = track − 34.09)
+          var T_L1 = 0.21;                                         // 34.30
+          var WAVES = [0.37, 0.76, 1.16, 1.92, 2.32, 2.69, 3.08];  // 34.46 34.85 35.25 | 36.01 36.41 36.78 | 37.17
+          var T_L2 = 1.55;                                         // 35.64 downbeat — MEGA slam
+          var T_END = 3.08;                                        // 37.17 downbeat — board bounce + sub
+
+          // ---- CROWD: survivors already on the board (happy); 91 others return in 7 seeded waves of 13
+          var SURV = [7, 13, 29, 35, 41, 56, 62, 78, 84];
+          var rest = [];
+          for (var i = 0; i < 100; i++) if (SURV.indexOf(i) < 0) rest.push(i);
+          rest.sort(function (a, b) { return rnd(a * 7.13 + 27) - rnd(b * 7.13 + 27) || a - b; });   // seed 27
+          function tiltOf(i) { return parseFloat(q("#f8_ci" + i).getAttribute("data-tilt")) || 0; }
+
+          SURV.forEach(function (i) { boil("#f8_ci" + i, i, 0, tiltOf(i), 0.8); });
+
+          rest.forEach(function (i, k) {
+            var w = Math.floor(k / 13), t = WAVES[w] + Math.floor(rnd(i + 900) * 3) * F;   // 0–2 frame scatter inside a wave
+            var cf = "#f8_c" + i;
+            tl.set(cf, { autoAlpha: 0 }, 0);
+            tl.set("#f8_t" + i, { autoAlpha: 0 }, 0);
+            // slap: from slightly above, 1.15 → 1 in 3 frames
+            tl.set(cf, { autoAlpha: 1 }, t);
+            tl.fromTo(cf, { y: -30, scale: 1.15 }, { y: 0, scale: 1, duration: 3 * F, ease: "power2.in", immediateRender: false }, t);
+            tl.to(cf, { scaleX: 1.06, scaleY: 0.94, duration: 2 * F, ease: "power1.out" }, t + 3 * F);
+            tl.to(cf, { scaleX: 1, scaleY: 1, duration: 3 * F, ease: "power1.out" }, t + 5 * F);
+            tl.set("#f8_s" + i, { autoAlpha: 0 }, t + 3 * F);   // the dashed slot is covered
+            tl.set("#f8_t" + i, { autoAlpha: 1 }, t + 3 * F);   // tape slapped on at 0 ms
+            boil("#f8_ci" + i, i, t, tiltOf(i), 0.8);
+          });
+          // the board shakes 2 px as each wave lands
+          WAVES.forEach(function (t) { shake("#f8_board", t + 3 * F, [2, -2, 1, -1]); });
+
+          // ---- l1 '이번엔,'
+          popIn("#f8_l1", T_L1);
+
+          // ---- l2 MEGA '붙는다!' slam: 1.6 → 1 in 3 frames, squash, 5 px camera shake, concentration lines ~0.5 s
+          tl.set("#f8_l2", { autoAlpha: 0 }, 0);
+          tl.set("#f8_l2", { autoAlpha: 1 }, T_L2);
+          tl.fromTo("#f8_l2", { scale: 1.6 }, { scale: 1, duration: 3 * F, ease: "power3.in", immediateRender: false }, T_L2);
+          tl.to("#f8_l2", { scaleX: 1.05, scaleY: 0.95, duration: 2 * F, ease: "power1.out" }, T_L2 + 3 * F);
+          tl.to("#f8_l2", { scaleX: 1, scaleY: 1, duration: 4 * F, ease: "power1.out" }, T_L2 + 5 * F);
+          burst(q("#f8_burst"), 520, 530, 470, 205, 110, 4, "#1A1A22", T_L2, T_L2 + 0.5, [1, 1, 0.75, 0.45, 0.25]);
+          shake("#f8_cam", T_L2 + 3 * F, [5, -5, 4, -3, 2, -1]);
+
+          // ---- 37.17: the whole board does one happy bounce; 'sub' fades up under l2 on its yellow cushion
+          tl.to("#f8_board", { scale: 1.02, duration: 0.1, ease: "power2.out" }, T_END + 3 * F);
+          tl.to("#f8_board", { scale: 1, duration: 0.26, ease: "power2.inOut" }, T_END + 3 * F + 0.1);
+          tl.set("#f8_sub", { autoAlpha: 0 }, 0);
+          tl.set("#f8_sub", { autoAlpha: 1 }, T_END);
+          tl.fromTo("#f8_sub", { scaleX: 0 }, { scaleX: 1, duration: 0.2, ease: "power3.out", immediateRender: false }, T_END);
+          tl.fromTo("#f8_subt", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.24, ease: "power2.out", immediateRender: false }, T_END + 0.06);
+
+          // 37.6 → 40.0 HOLD: only the 8 fps boil moves (boil steps run to the frame end); last 0.3 s clean for the tear transition
+          document.querySelectorAll(".f8-t-outer,.f8-t-mid,.f8-t-shadow,.f8-t-shd").forEach(function (e) { e.setAttribute("data-layout-ignore", ""); });
+          tl.seek(0.001); tl.seek(0);
+          window.__timelines["08-f8"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,159 @@
+---
+compositionId: bgm
+duration_s: 32.68 # == audiomap.audio.duration_sec
+canvas: { w: 1920, h: 1080, fps: 30 }
+mode: autonomous
+message: "합격률 8.8%의 컴활 1급 실기, 쌩초보도 빠따로 한 방에"
+variant: { name: comhwal1-169-paperpop-krsong-1, style: paper-pop, aspect: "16:9", seed: 27, intensity: standard }
+style:
+  font: "Paperlogy only — 600 telop/bubbles/labels/pen notes, 700 plain text, 800 numerals + onomatopoeia"
+  palette: ["#F4EEE1", "#1A1A22", "#FFE13A", "#23268C", "#E5352B"]
+assets: "assets/covers/9791124516614.jpg (the book, 1080×1440); assets/faces/{base,worry,happy,fired}/<slug>.png (512px paper-cut faces) + assets/faces/sm/{worry,happy}/<slug>.png (160px crowd copies); assets/props/bat.png (paper-cut baseball bat, transparent, diagonal handle bottom-left → barrel top-right); assets/brand/icon.png (gold rabbit logo mark); assets/fonts/*"
+build_notes:
+  - "RETIMED from comhwal1-169-paperpop-1 onto comhwal1-song-kr.mp3 by scripts/retime.py — frame timelines are warped; edit the source variant, then re-run retime"
+  - "follow references/worker-dispatch.md project notes (bare #stage, f<N>_ prefixes, no visibility:visible, transforms only)"
+  - "no HUD in this variant — keep readable content in y 96–984, x 96–1824"
+  - "AUDIO: 0–7.75 s is a SILENT cold open (no music; clock tick SFX on a 155-BPM grid: tick every 0.775 s, then quarter ticks 6.20/6.59/6.98/7.36). The band enters with the bat crack at 7.75. Bar = 1.55 s, beat = 0.3875 s."
+  - "slugs: p rei lucas bible benny cindy esther alice ian jini kate thomas toynbee (fired/ only benny, jini). Faces are already paper-cut with their own shadow — add only a soft contact shadow if needed, never a CSS filter chain on 100 crowd faces (performance)."
+  - "CROWD BOARD (F1 + F8 share it exactly): graph-paper board x 1000–1840, y 120–960 (840×840), 10×10 cells of 84 px, crowd face 76 px centred in each cell. Cell (r,c) index i = r*10+c; slug = SLUGS[(i*5) % 13] with SLUGS in the order above, EXCEPT cell (4,5) = jini. Survivors (9 cells that stay in F1 and are already happy in F8): (0,7) (1,3) (2,9) (3,5) (4,1) (5,6) (6,2) (7,8) (8,4)."
+  - "paper boil (frame.md `boil`) on every face and sticker; telop = frame.md `telop` double outline; every frame starts on its scene_color ground; nothing essential in its first 0.3 s / last 0.3 s when a transition is set"
+  - "the paper-fibre texture overlay and all transitions are added by the assembler — do not add grain or cover/reveal wipes yourself"
+avoid: ["text over the cover", "drawn people/objects in SVG/CSS (use the face/prop PNGs)", "HUD chrome, confetti, label-box register flips (bold-beat devices)", "1위/No.1 claims", "black letterbox + top caption (Korean shorts cliché)"]
+---
+
+## Frame 1 — f1
+
+- src: compositions/frames/01-f1.html
+- duration: 7.940s
+- span_sec: [0.0, 7.94]
+- retimed: old [0, 3.1, 4.65, 6.2, 7.75] → new [0, 2.28, 4.18, 6.08, 7.94] (group intents keep their ORIGINAL seconds)
+- pacing: beat_cut
+- mood: [tense, comic]
+- feel: SILENT cold open on a clock-tick grid (tick 0.0, tock 0.775, tick 1.55, tock 2.325, tick 3.10, tock 3.875, tick 4.65, tock 5.425, then accelerating quarter ticks 6.20, 6.59, 6.98, 7.36); bat swing 7.42 → crack at 7.75 (= F2 start)
+- role: intro
+- pattern_hint: COLD-OPEN-GRID (target call → number shock → pain voices → bat)
+- scene_color: #F4EEE1
+- transition_out: none
+- sfx: impact-bass-1@2.28, error@4.18, pop@6.08, pop@6.55, pop@7.02, pop@7.47, whoosh-short@7.54
+- copy_hint: ["컴활 1급,", "준비 중이세요?", "실기 합격률은?", "8.8%", "100번 보면 91번", "떨어지는 시험"]
+
+### Groups
+
+- **g1** — free_design
+  - span_sec: [0.0, 2.28]
+  - free_design: { dominant_system: "target call on a single worried paper face, then a pull-back reveals it is one of 100 faces on a graph-paper exam board", primitives: ["kinetic-letter-in", "dolly-zoom", "staggered-exit"], density_topology: "one → many" }
+  - anchors: [0.0, 0.22, 0.57, 1.14, 1.71]
+  - copy: { l1: "컴활 1급,", l2: "준비 중이세요?", l3: "실기 합격률은?" }
+  - intent: "PAPER ground #F4EEE1 with the graph-paper CROWD BOARD (see build_notes) at the right, but at t=0 the board is scaled ~6.8× about jini's cell (4,5) so only jini fills the right half (~520 px, worry expression from assets/faces/worry/jini.png laid over her cell); all other crowd faces hidden. 0.0 (tick): jini pops in (ぽよん) and starts boiling at 8 fps. 0.30: telop 'l1' lands top-left (x≈110, y≈200; Paperlogy 800 ~120 px, white fill / 8 px ink stroke / 18 px yellow outer stroke / 6 px ink offset shadow). 0.775 (tock): 'l2' stacks under it (same telop, slightly smaller ~104 px). 0.95: three short ガーン gloom lines (sky blue) drop above jini's head. 1.55 (tick): the board zooms OUT to scale 1 (≈0.6 s, power3.inOut) about jini's cell while the 99 other worried crowd faces (assets/faces/sm/worry/<slug>.png, 76 px, tiny seeded tilts ±4°) pop in from the centre outward in a ripple; jini's cell swaps to the 160 px crowd copy so she ends as one ordinary cell. At the same time l1/l2 swap (0 ms) to 'l3' on a NAVY cushion (cushion scaleX 0→1 from left, white Paperlogy 600/Paperlogy text, ~92 px) top-left. 2.325 (tock): the whole board does one 2 px 'nervous' shake."
+- **g2** — free_design
+  - span_sec: [2.28, 6.08]
+  - free_design: { dominant_system: "number slam + 91 paper faces physically FALL off the board (떨어지다 = fall/fail)", primitives: ["braam-punch", "radial-burst-lines", "staggered-exit"], density_topology: "slam → collapse → read" }
+  - anchors: [2.28, 2.53, 3.23, 3.63, 4.18, 5.13]
+  - copy: { stat: "8.8%", l4a: "100번 보면 91번", l4b: "떨어지는 시험", note: "※ 2025년 컴퓨터활용능력 1급 실기 합격률 · 국가기술자격 통계연보(대한상공회의소) · 응시 건 기준" }
+  - intent: "3.10 (tick + impact): 'l3' stays small at top-left; the MEGA stat '8.8%' slams in on the left half (Paperlogy 800 ~300 px numerals, '%' at 0.45×, RED #E5352B fill with 10 px ink stroke + 20 px white outer stroke + ink offset shadow), scale 1.6→1 in 3 frames with a 4 px screen shake, while a ring of ink manga concentration lines flashes behind it for ~0.4 s. Footnote 'note' appears bottom-left (y≈1028, Paperlogy 500 20 px, ink 55%) and stays to the end of the frame. 3.30–4.30: the 91 non-survivor crowd faces FALL off the board in a seeded order (each: y +900…+1200 with gravity ease power2.in, rotation ±25…60°, 0.55–0.75 s each, staggered across ~1.0 s) — the survivors in build_notes stay. 4.20: the 9 survivors swap to sm/happy (tiny squash pop). 4.65 (tick + buzzer): 'l4a' and 'l4b' stack under the stat (telop ~84 px, ink fill + white outer stroke, the words '91번' and '떨어지는' in RED); '떨어지는' drops 10 px and bounces once (it 'falls'). 5.425: the stat gives one small 2 px wobble. Everything holds to 6.20."
+- **g3** — free_design
+  - span_sec: [6.08, 7.94]
+  - free_design: { dominant_system: "pain voices: four big worried faces each pop a speech bubble on an accelerating tick, then the paper bat swings in", primitives: ["overlay-pop", "screen-shake"], density_topology: "accumulate → strike" }
+  - anchors: [6.08, 6.55, 7.02, 7.47, 7.54, 7.94]
+  - copy: { b1: "함수만 보면 머리가 하얘져…", b2: "액세스는 복불복이래…", b3: "벌써 3트째…", b4: "노베이스인데 될까?" }
+  - intent: "6.20 (0 ms cut inside the frame, same paper ground, board and telop gone): four big worried faces (assets/faces/worry/{lucas,thomas,cindy,benny}.png, ~300 px) stand in a row along the bottom (y≈640–940, x≈170/610/1050/1490), each popping in on its tick (6.20 lucas, 6.59 thomas, 6.98 cindy, 7.36 benny) with a white paper speech bubble above it (frame.md `bubble`, Paperlogy 600 ~44 px, ink text; bubbles alternate heights y≈300–520 so they don't collide) carrying b1…b4. Each face jitters faster as ticks accelerate. 6.98–7.75 (revised 2026-10-07, the user found the cut too abrupt): the paper bat rises into frame at the far right (wind-up, ~6.98), cocks back (7.12–7.42), then accelerates (power3.in) through the centre so the barrel meets the impact point exactly at 7.75, with 2 smear copies; the four faces flinch left at 7.48; the camera layer leans in 1→1.07 from 7.0; concentration lines gather on the centre from 7.40 and a radial light builds from 7.55. F2 opens on the same bat pose (match cut), the same burst and a radial flash that fades over 0.22 s."
+
+## Frame 2 — f2
+
+- src: compositions/frames/02-f2.html
+- duration: 3.550s
+- span_sec: [7.94, 11.49]
+- retimed: old [7.75, 9.3, 10.84] → new [7.94, 9.75, 11.49] (group intents keep their ORIGINAL seconds)
+- pacing: beat_cut
+- mood: [hype]
+- feel: band enters with the bat crack on the downbeat 7.75 (hi-hat fill into it); beats 8.13 8.54 8.92 | 9.31 9.68 10.08 10.45
+- role: series0
+- pattern_hint: BAT-CRACK (manga impact reveal of the book)
+- scene_color: #FFE13A
+- transition_out: tear
+- sfx: bat-crack@7.94, impact-bass-2@7.94, whoosh@8.0, pop@8.86, pop@9.76, sparkle@10.63
+- book: 9791124516614 | 2027 빠르게 따는 컴퓨터활용능력 1급 필기+실기 | 이강용(컴활킹) | NEW | assets/covers/9791124516614.jpg
+
+### Groups
+
+- **g1** — free_design
+  - span_sec: [7.94, 11.49]
+  - free_design: { dominant_system: "manga impact: concentration lines + onomatopoeia, the book is batted into frame and lands as a white-rimmed paper sticker", primitives: ["radial-burst-lines", "braam-punch", "kinetic-letter-in", "screen-shake"], density_topology: "impact → settle → read" }
+  - anchors: [7.94, 8.38, 8.86, 9.76, 10.63]
+  - copy: { sfx_word: "딱!", shout: "노베이스도 한 방에!", kicker: "2027 빠르게 따는", title: "컴퓨터활용능력 1급 필기+실기", badge: "2027~2029 출제기준 반영", brand: "골든래빗" }
+  - intent: "YELLOW #FFE13A ground. 7.75 (crack, 0 ms): ink manga concentration lines fill the frame around an empty centre (frame.md `burst`, re-seeded every 1/8 s for the whole frame, opacity easing from 1 to ~0.35 by 8.6); a 1-frame white flash; the onomatopoeia '딱!' (Paperlogy 800 ~340 px, white fill, 12 px ink stroke, ink offset shadow, rotated −10°) pops at upper-left (x≈150–650, y≈90–420) with an 8 px shake; the paper bat (assets/props/bat.png ~560 px) is seen at lower-right finishing its follow-through (rotation continues −15°→−40°, then slides off-frame by 8.6). 7.80–8.30: the BOOK flies out of the impact point at frame centre — real cover assets/covers/9791124516614.jpg inside a white padded paper wrapper (12 px white border, radius 6, layered paper shadow; NO filter/text on the cover), ~450×600, spinning 1.5 turns with scale 0.25→1.08→1 and landing at x≈1080–1530, y≈200–800 tilted +4° (frame.md `place` landing). 8.54: shout telop '＼ 노베이스도 한 방에! ／' (frame.md `shout` + `telop`, ~92 px, white fill / ink stroke / navy outer) lands at left (x≈110–1000, y≈470–580). 9.31 (downbeat): a NAVY cushion bar slides in bottom-left (x≈110–1010, y≈650–860): kicker '2027 빠르게 따는' (Paperlogy 600 40 px, yellow) over title '컴퓨터활용능력 1급 필기+실기' (Paperlogy 800 ~62 px, white). From 8.13 a small brand sticker sits top-right (x≈1610–1824, y≈60–130): assets/brand/icon.png (~56 px) + '골든래빗' (Paperlogy 800 30 px ink) on a white paper pill. 10.08: a round red badge (~170 px, red paper circle with white Paperlogy 600 text 'badge' on 2–3 lines) pops on the book's lower-left corner OUTSIDE the cover edge (overlapping only the white wrapper margin/background, never the cover art). Hold."
+
+## Frame 3 — f4
+
+- src: compositions/frames/04-f4.html
+- duration: 5.650s
+- span_sec: [11.49, 17.14]
+- retimed: old [15.51, 17.04, 18.6, 20.16] → new [11.49, 13.4, 15.28, 17.14] (group intents keep their ORIGINAL seconds)
+- pacing: beat_cut
+- mood: [hype]
+- feel: steady chorus; beats 15.88 16.28 16.65 | 17.04 17.44 17.83 18.20 | 18.60 18.97 19.36 19.74; downbeat 20.16 = next frame (and the music edit — keep the end clean, the transition covers it)
+- role: series2
+- pattern_hint: PROGRESS-WALK (POINT 2 — 6주 합격 패스)
+- scene_color: #23268C
+- transition_out: paper
+- sfx: click-soft@12.45, click-soft@12.91, click-soft@13.4, click-soft@13.88, click-soft@14.35, click-soft@14.8, chime@15.28
+- hud_label: POINT 2 · 쌩초보 6주 플랜
+
+### Groups
+
+- **g1** — free_design
+  - span_sec: [11.49, 17.14]
+  - free_design: { dominant_system: "a fired-up paper face hops block-to-block across six week tiles that drop in on the beats, reaching a 합격 sign", primitives: ["staggered-exit", "counting-punch", "overlay-pop"], density_topology: "path → arrival" }
+  - anchors: [11.49, 11.95, 12.45, 12.91, 13.4, 13.88, 14.35, 14.8, 15.28, 15.72]
+  - copy: { label_num: "POINT 2", label: "쌩초보 6주 플랜", t1a: "쌩초보 기준,", t1b: "딱 6주", t2: "필기 2주 + 실기 4주 합격 패스", wk: ["1주", "2주", "3주", "4주", "5주", "6주"], br1: "필기 2주", br2: "실기 4주", goal: "합격!" }
+  - intent: "NAVY #23268C ground (a faint lighter-navy graph grid is fine). 15.81: side label top-left (yellow pill 'POINT 2' + 'label' in white Paperlogy 600). 15.88: telop 't1a' + 't1b' on one line, top-centre (y≈170–300): Paperlogy 800 ~110 px white fill with ink stroke + navy-dark outer, '6주' in YELLOW at 1.35× with a pop. Track: six paper tiles (≈190×110, gap 22, x≈210…1520, y≈640–750; tiles 1–2 YELLOW paper, tiles 3–6 WHITE paper; Paperlogy 600 ~44 px ink 'wk[i]') — tile i DROPS in (place motion, from y −60, slight rotation) on beats 16.28, 16.65, 17.04, 17.44, 17.83, 18.20. Brackets above them: a yellow bracket + 'br1' (Paperlogy 600 36 px yellow) over tiles 1–2, a white bracket + 'br2' (Paperlogy 600 36 px white) over tiles 3–6 — the brackets draw on at 17.04 and 18.20. The runner: assets/faces/fired/benny.png (~210 px, headband) starts at the left of tile 1 at 15.88 and HOPS onto each tile as it lands (each hop = parabolic arc, 0.3 s, motion stepped at 12 fps for a cut-paper puppet feel, a little squash on landing). 18.60 (downbeat): at the end of the track a paper goal sign pops (white paper board ~260×170 on a short stick, red border, 'goal' in RED Paperlogy 600 ~72 px) and benny makes a bigger jump onto it, swapping to assets/faces/happy/benny.png at the apex. 17.04: 't2' appears under the main telop (Paperlogy 600 ~44 px, white, y≈330). Hold the arrival (boil only) to the end."
+
+## Frame 4 — f8
+
+- src: compositions/frames/08-f8.html
+- duration: 7.590s
+- span_sec: [17.14, 24.73]
+- retimed: old [34.09, 35.64, 37.17, 38.73, 40.29] → new [17.14, 19.06, 20.92, 22.82, 24.73] (group intents keep their ORIGINAL seconds)
+- pacing: beat_cut
+- mood: [hype]
+- feel: chorus climax; beats 34.46 34.85 35.25 | 35.64 (downbeat) 36.01 36.41 36.78 | 37.17 (downbeat) …; then a still hold 37.6–40.0
+- role: climax
+- pattern_hint: TAPE-BACK (callback to F1 — the faces get taped back on: 붙는다 = stick / pass)
+- scene_color: #F4EEE1
+- transition_out: tear
+- sfx: pop@17.6, pop@18.08, pop@18.58, impact-bass-2@19.06, pop@19.51, pop@20.0, pop@20.45, sparkle@20.92
+- hud_label: CLIMAX · 이번엔 붙는다
+
+### Groups
+
+- **g1** — free_design
+  - span_sec: [17.14, 24.73]
+  - free_design: { dominant_system: "the F1 exam board returns; the 91 fallen faces are slapped back on with masking tape, wave by wave, all happy; the pun line slams", primitives: ["tile-mosaic", "braam-punch", "radial-burst-lines", "screen-shake"], density_topology: "empty → filled → hold" }
+  - anchors: [17.14, 17.6, 18.08, 18.58, 19.06, 19.51, 20.0, 20.45, 20.92, 22.82]
+  - copy: { l1: "이번엔,", l2: "붙는다!", sub: "쌩초보도, 한 방에." }
+  - intent: "PAPER ground with the CROWD BOARD exactly as in F1 (same geometry/slugs, build_notes): only the 9 survivors are on it (sm/happy), the other 91 cells show faint dashed outlines (empty slots). 34.30: 'l1' lands top-left (x≈110, y≈230; telop ~130 px, ink fill + white outer). WAVES: on the beats 34.46, 34.85, 35.25, 36.01, 36.41, 36.78, 37.17 (7 waves, 13 faces each, seeded order) faces (assets/faces/sm/happy/<slug>.png) slap onto their cells from slightly above (y −30, scale 1.15 → 1 in 3 frames) and each gets one masking-tape strip across its top (frame.md `tape`, alternating yellow/sky, seeded angle ±25°); the board shakes 2 px on each wave. 35.64 (downbeat): MEGA 'l2' slams under 'l1' (Paperlogy 800 ~260 px, YELLOW fill, 12 px ink stroke, 22 px white outer stroke, ink offset shadow; scale 1.6→1 in 3 frames), with a burst of ink concentration lines behind it for ~0.5 s and a 5 px shake. 37.17 (downbeat): the full board does one happy 'bounce' (scale 1→1.02→1) and 'sub' fades up under l2 (Paperlogy 600 ~56 px, ink, on a small yellow cushion). 37.6 → 40.0: HOLD — only the 8 fps boil moves (this is the video's ≥1.5 s still). Keep the last 0.3 s clean for the tear transition."
+
+## Frame 5 — f9
+
+- src: compositions/frames/09-f9.html
+- duration: 7.950s
+- span_sec: [24.73, 32.68]
+- retimed: old [40.29, 41.82, 43.38, 46.46, 48.0] → new [24.73, 26.61, 28.47, 30.37, 32.68] (group intents keep their ORIGINAL seconds)
+- pacing: beat_cut
+- mood: [hype → resolve]
+- feel: last chorus bars then the song's stop-time ending: hits 44.14, 44.52, 44.92 (triplet), 45.69, FINAL HIT 46.46, decay to 48.0
+- role: finale
+- pattern_hint: SEARCH-CTA (vertical slogan + search bar typed on the stop-time hits + logo on the final hit)
+- scene_color: #23268C
+- transition_out: none
+- sfx: click-soft@24.73, key-press@28.94, key-press@29.17, key-press@29.42, click@29.89, chime@30.37
+- copy_hint: {"line": "합격으로 가는 가장 빠른 길", "search": "빠따 컴활 1급", "cta": "goldenrabbit.co.kr"}
+
+### Groups
+
+- **g1** — free_design
+  - span_sec: [24.73, 32.68]
+  - free_design: { dominant_system: "Japanese ad end card: book + vertical slogan, then a generic search bar typed on the stop-time hits, cursor click, logo lockup on the final hit", primitives: ["mask-reveal", "typewriter-reveal", "overlay-pop"], density_topology: "assemble → type → land → hold" }
+  - anchors: [24.73, 25.18, 26.61, 28.47, 28.94, 29.17, 29.42, 29.89, 30.37]
+  - copy: { v1: "합격으로 가는", v2: "가장 빠른 길", kicker: "2027 빠르게 따는", title: "컴퓨터활용능력 1급", title2: "필기+실기", author: "이강용(컴활킹) 지음", search: "빠따 컴활 1급", brand: "골든래빗", url: "goldenrabbit.co.kr" }
+  - intent: "NAVY #23268C ground. 40.29 (downbeat): the BOOK (cover in the white padded paper wrapper, ≈480×640, no filter/text on the cover) is placed at left (x≈200–680, y≈200–840, tilt −3°) with the place motion; two happy faces peek from behind its edges (assets/faces/happy/kate.png ~170 px at the top-right edge, assets/faces/happy/bible.png ~150 px at the bottom-left edge; boil). 40.66: VERTICAL slogan at the far right (writing-mode: vertical-rl, two columns x≈1600–1830, y≈120–860): 'v1' and 'v2' in Paperlogy 800 ~104 px white with ink stroke, '빠른' in YELLOW — revealed top-to-bottom by a clip-path wipe (~0.6 s per column, v2 starts at 41.05). 41.82 (downbeat): title block in the middle column (x≈760–1520, y≈200–470): 'kicker' (Paperlogy 600 40 px yellow), 'title' (Paperlogy 800 ~84 px white), 'title2' (Paperlogy 800 ~60 px white), 'author' (Paperlogy 600 32 px white 80%). 43.38 (downbeat): a generic SEARCH BAR (frame.md `search`: white pill ≈740×104, 5 px ink outline, magnifier icon at right, NO real service logo) slides up into x≈770–1510, y≈560–664 with a blinking caret (0 ms toggles). Text 'search' types in three chunks on the stop-time hits: 44.14 '빠따', 44.52 ' 컴활', 44.92 ' 1급' (Paperlogy 600 ~52 px ink). 45.30–45.69: a white paper cursor arrow (ink outline) glides in and CLICKS the magnifier at 45.69 (press 0.9→1 + a yellow ripple ring). 46.46 (FINAL HIT): the logo lockup pops below the bar (x≈770–1510, y≈730–880): assets/brand/icon.png (~110 px) + 'brand' (Paperlogy 800 ~64 px white) + 'url' (Paperlogy 600 34 px yellow), with a small burst of yellow paper four-point sparkles around it; the faces swap to a final squash. 46.46 → 48.0: HOLD (only boil). Last frame must look like a finished poster."

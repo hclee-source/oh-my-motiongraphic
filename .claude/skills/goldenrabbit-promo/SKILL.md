@@ -28,6 +28,9 @@ Earlier videos all felt the same: one track, one font, flat 2D, hard cuts, and t
   - `bold-beat`: loud, flat, register flips, HUD
   - `editorial-gold`: calm, gold
   - `soft-studio`: cover-derived pastels, CSS-3D books, shape transitions, grain, UI mockups, SFX
+  - `paper-pop`: Japanese qualification-ad grammar in paper — paper-cut character faces (`shared/characters`), double-outlined
+    telop on cushions, red pen / red sheet / masking tape, concentration lines, rings/tear/paper transitions, search-bar CTA.
+    Building blocks: `styles/paper-pop/kit.html`. Research: `research/jp-exam-ads/PRINCIPLES.md`.
 - **Every video gets:** at least one ≥1.5s hold, at least one non-hard-cut transition (`transition_out:`), and SFX cues (`- sfx:`).
 
 ## 1. Intake → a variant spec
@@ -61,7 +64,8 @@ $B fetch <id> && $B analyze <id> && $B vocal <id>     # keep: instrumental, puls
 $B windows <id> --length <seconds>        # bar-aligned windows that end on a strong hit
 ```
 Put the chosen `{id, start, duration}` into the spec's `bgm`. Each window of the same track is a valid,
-different variant.
+different variant. For a silent cold open and/or a cut into the song's real ending, add `"preroll": <s>` and
+`"segments": [[a0,a1],[b0,b1]]` (cut on matching downbeats of repeated material — check per-bar chroma similarity first).
 
 ## 4. Scaffold
 ```bash
@@ -151,6 +155,16 @@ python3 SKILL/scripts/retint.py videos/<src> <new-name> --accent "#3DF5B0"   # a
 (cd videos/<new-name> && npx hyperframes check .) && python3 SKILL/scripts/review.py videos/<new-name>
 bash SKILL/scripts/finalize.sh videos/<new-name>
 ```
+
+## 9b. Retime onto another song (e.g. the user's own CM song)
+```bash
+python3 SKILL/scripts/retime.py videos/<src> <new-name> --bgm <song.mp3> --plan plan.json --sfx-gain 0.7
+python3 SKILL/scripts/assemble.py videos/<new-name> && (cd videos/<new-name> && npx hyperframes check .) && bash SKILL/scripts/finalize.sh videos/<new-name>
+```
+`plan.json` maps each kept frame's old bar lines to the song's downbeats (`analyze-beatgrid.py` on the song). Frames are warped
+piecewise-linearly (seek-safe tween on the inner timeline's `time`), so nothing is rebuilt; drop frames for a shorter song.
+Separate the vocals first (`.venv/bin/python -m demucs --two-stems=vocals`) and put frame boundaries in vocal gaps / on
+lyric cues (e.g. the book reveal on "이게 바로 합격 루트"). Tick SFX are dropped by default. Reference: `comhwal1-169-paperpop-{jp,kr}song-1`.
 
 ## 10. Learning from a new reference video
 ```bash

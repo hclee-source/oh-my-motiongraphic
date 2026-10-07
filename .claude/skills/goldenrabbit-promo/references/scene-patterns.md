@@ -43,6 +43,25 @@ Reference implementations live in `examples/` (`bold-beat-45s/frames/0N-fN.html`
 | **SPINE-STACK** | finale | beats into a downbeat | all | Books drop one per beat into a pile of spines, then stand up and turn to the front into a row. Slogan, then logo lockup. |
 | **SHELF-LOCKUP** | finale | calm end | all | Books slide onto a shelf spine-out. The logo lockup sits above. The last book turns to its front on the final hit. |
 
+## Paper-pop patterns (STYLE_PATTERNS["paper-pop"]); reference build `videos/comhwal1-169-paperpop-1`
+Japanese qualification-ad grammar in paper (research: `research/jp-exam-ads/PRINCIPLES.md`). Building blocks: `styles/paper-pop/kit.html`.
+A single-book promo tiles **one `series[]` entry per selling point** (or hand-write the frame table, as the reference build did).
+
+| id | role | music fit | what happens |
+|---|---|---|---|
+| **COLD-OPEN-GRID** | intro | silent pre-roll (`bgm.preroll`) + tick SFX | Target call on one worried face → pull back to a 10×10 board of faces → stat slam with ※ source → most faces FALL off (떨어지다) → pain bubbles on accelerating ticks. |
+| **TARGET-CALL** | intro | first bars | "○○ 준비 중이세요?" on a face, then one stat. Shorter version of the above. |
+| **BAT-CRACK** | reveal | the band's first downbeat | Manga impact: concentration lines + onomatopoeia; the book is batted into frame and lands as a white-rimmed sticker; shout line + title cushion. |
+| **RED-SHEET** | point | 3 bars | Notebook telop; red-pen ✕ over the wrong idea; the answer hidden under a 赤シート slides out; hanamaru; face worry → happy. |
+| **PROGRESS-WALK** | point | 6–8 beats | Week tiles drop per beat; a fired-up (headband) face hops tile to tile at 12 fps to a 합격 sign. |
+| **TRI-PANEL** | point | 3 bars | Three paper panels slide up (Japanese 3-split) with faces + count-ups; the sum slams on a tilted cushion. |
+| **SCORE-CARD** | point | 3 bars | Original paper grading card: file drops in, score bars pass a red 70 line, hanamaru; telop one word per beat; ※화면은 연출. |
+| **BUBBLE-POP** | bundle | 6 beats + downbeat | Gingham ground, book centre, six feature bubbles pop one per beat, faces cling to bubbles; ＼ shout ／. |
+| **STEP-PILLS** | point | steady | FOM-style STEP 1–3 pills stacked per beat, current step at 100%, others 40%. (unused so far) |
+| **CHAT-BUBBLES** | point | steady | Faces ask questions in bubbles, the author/book answers (community / Q&A). (unused so far) |
+| **TAPE-BACK** | climax | strongest chorus | Callback to the cold-open board: fallen faces are slapped back with masking tape in beat waves (붙다 = stick/pass), mega pun line, ≥1.5 s hold. |
+| **SEARCH-CTA** | finale | stop-time ending hits | Book + vertical slogan (縦書き) → generic search bar typed on the stop hits → cursor click → logo on the final hit, hold. |
+
 ## Timing rules every pattern obeys
 - Hard hits are 0ms `tl.set`. Eased entrances run 0.3–0.5s; macro builds run 0.8–2s across a roll.
 - Lead the anchor: a move that must land on a beat starts 40–190ms early.

@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Frame 2 — f2 · BAT-CRACK (manga impact reveal of the book) · track 7.75–10.84 s (local 0–3.09)
+         local anchors: crack 0.00 · book flight 0.05 · brand 0.38 · shout 0.79 · cushion 1.56 · badge 2.33 -->
+  </head>
+  <body>
+    <template id="02-f2-template">
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-7Bold.ttf") format("truetype"); font-weight: 700; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-6SemiBold.ttf") format("truetype"); font-weight: 600; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+
+        #stage { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; background: #FFE13A; font-family: "Paperlogy", sans-serif; color: #1A1A22; }
+
+        .f2-world { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+        .f2-svg { position: absolute; left: 0; top: 0; overflow: visible; }
+        .f2-flash { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: radial-gradient(circle at 960px 540px, #FFFFFF 0, rgba(255,255,255,.9) 300px, rgba(255,255,255,.45) 900px); opacity: 0; }
+
+        /* TELOP — double outline as three stacked copies (outer / mid / fill), per-character spans for the letter-in */
+        .f2-telop { position: absolute; white-space: nowrap; font-family: "Paperlogy"; font-weight: 600; letter-spacing: 0.02em; line-height: 1.05; }
+        .f2-telop > span { display: block; }
+        .f2-telop > span + span { position: absolute; left: 0; top: 0; }
+        .f2-t-outer { color: #FFE13A; -webkit-text-stroke: 0.11em #FFE13A; text-shadow: 8px 10px 0 #1A1A22; }
+        .f2-t-mid { color: #1A1A22; -webkit-text-stroke: 0.06em #1A1A22; }
+        .f2-t-fill { color: #FFFFFF; }
+        .f2-ch { display: inline-block; transform-origin: 50% 90%; }
+        /* shout variant: white fill / ink stroke / NAVY outer, strokes scaled for ~92 px */
+        .f2-shout-tel { position: relative; }
+        .f2-shout-tel .f2-t-outer { color: #23268C; -webkit-text-stroke: 0.11em #23268C; text-shadow: 7px 9px 0 #1A1A22; }
+        .f2-shout-tel .f2-t-mid { -webkit-text-stroke: 0.06em #1A1A22; }
+
+        /* SHOUT row ＼ … ／ */
+        .f2-shout { position: absolute; left: 110px; top: 474px; display: flex; align-items: center; gap: 30px; }
+        .f2-br { position: relative; width: 22px; height: 96px; }
+        .f2-br-j { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+        .f2-br-bar { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #FFFFFF; border: 5px solid #1A1A22; border-radius: 12px;
+          box-shadow: 0 0 0 7px #23268C, 6px 8px 0 7px #1A1A22; }
+
+        /* ONOMATOPOEIA */
+        .f2-sfx { position: absolute; }
+        .f2-sfx-r { transform: rotate(-10deg); }
+        .f2-sfx-b { font-family: "Paperlogy"; color: #FFFFFF; -webkit-text-stroke: 18px #1A1A22; paint-order: stroke fill; text-shadow: 12px 14px 0 #1A1A22; line-height: 1; white-space: nowrap; font-weight: 800; }
+
+        /* BAT prop (paper-cut PNG) — wrapper swings about the grip, <img> boils */
+        .f2-bat { position: absolute; left: 874px; top: 266px; width: 700px; height: 700px; transform-origin: 526.8px 546.9px; }  /* same geometry as F1's bat (match cut) */
+        .f2-bat img { display: block; width: 100%; height: 100%; transform: scaleX(-1); }
+
+        /* BOOK COVER in a white padded wrapper (never filter/tint/overlay the cover itself) */
+        .f2-book { position: absolute; left: 1080px; top: 204px; width: 450px; }
+        .f2-book-in { background: #FFFFFF; padding: 12px; border-radius: 6px; box-shadow: 0 3px 0 rgba(0,0,0,.08), 0 26px 46px rgba(40,30,10,.32); }
+        .f2-book-in img { display: block; width: 100%; height: auto; }
+
+        /* BRAND sticker (white paper pill) */
+        .f2-brand { position: absolute; right: 96px; top: 96px; }
+        .f2-brand-in { display: flex; align-items: center; gap: 10px; background: #FFFFFF; border-radius: 999px; padding: 10px;
+          box-shadow: 0 2px 0 rgba(0,0,0,.08), 0 10px 18px rgba(60,40,10,.18); font-family: "Paperlogy"; font-weight: 800; font-size: 30px; line-height: 1; color: #1A1A22; white-space: nowrap; }
+        .f2-brand-in img { display: block; width: 64px; height: auto; }
+
+        /* CUSHION title block (座布団) */
+        .f2-title { position: absolute; left: 110px; top: 650px; transform: rotate(-1.5deg); transform-origin: 0% 50%; }
+        .f2-cush { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #23268C; border-radius: 8px; transform-origin: 0% 50%;
+          box-shadow: 0 2px 0 rgba(0,0,0,.1), 0 14px 24px rgba(60,40,10,.26); }
+        .f2-title-txt { position: relative; padding: 30px 40px 36px; white-space: nowrap; }
+        .f2-kick { font-family: "Paperlogy"; font-size: 40px; line-height: 1.1; color: #FFE13A; font-weight: 600; }
+        .f2-ttl { margin-top: 14px; font-family: "Paperlogy"; font-weight: 700; font-size: 62px; line-height: 1.1; letter-spacing: 0; color: #FFFFFF; }
+
+        /* BADGE (red paper circle, white Paperlogy) — sits OUTSIDE the cover edge, below the book's lower-left corner */
+        .f2-badge { position: absolute; left: 1026px; top: 786px; width: 170px; height: 170px; }
+        .f2-badge-in { width: 100%; height: 100%; border-radius: 50%; background: #E5352B; border: 5px solid #FFFFFF; color: #FFFFFF; font-family: "Paperlogy"; text-align: center;
+          display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 2px 0 rgba(0,0,0,.1), 0 10px 18px rgba(60,40,10,.25); font-weight: 600; }
+        .f2-badge-in span { display: block; line-height: 1.12; white-space: nowrap; }
+        .f2-b1 { font-size: 25px; }
+        .f2-b2 { font-size: 35px; }
+        .f2-b3 { font-size: 31px; }
+
+        /* SPARKLES (paper four-point stars) */
+        .f2-spk { position: absolute; width: 44px; height: 44px; }
+      </style>
+
+      <div id="stage" data-composition-id="02-f2" data-width="1920" data-height="1080" data-duration="3.09">
+        <div id="f2_g1" class="f2-world">
+          <svg id="f2_burst" class="f2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" data-layout-allow-overlap></svg>
+
+          <div id="f2_bat_g2" class="f2-bat" data-layout-allow-overlap><img src="assets/props/bat.png" alt="" /></div>
+          <div id="f2_bat_g1" class="f2-bat" data-layout-allow-overlap><img src="assets/props/bat.png" alt="" /></div>
+          <div id="f2_bat" class="f2-bat" data-layout-allow-overlap><img id="f2_bat_b" src="assets/props/bat.png" alt="" /></div>
+
+          <div id="f2_book" class="f2-book" data-layout-allow-overlap>
+            <div id="f2_book_b" class="f2-book-in"><img src="assets/covers/9791124516614.jpg" alt="2027 빠르게 따는 컴퓨터활용능력 1급 필기+실기" /></div>
+          </div>
+
+          <div id="f2_badge" class="f2-badge">
+            <div id="f2_badge_b" class="f2-badge-in"><span class="f2-b1">2027~2029</span><span class="f2-b2">출제기준</span><span class="f2-b3">반영</span></div>
+          </div>
+          <svg id="f2_spk1" class="f2-spk" style="left:1222px;top:806px;" viewBox="-22 -22 44 44"><path d="M0,-19 C2,-5 5,-2 19,0 C5,2 2,5 0,19 C-2,5 -5,2 -19,0 C-5,-2 -2,-5 0,-19 Z" fill="#FFFFFF" stroke="#1A1A22" stroke-width="3" stroke-linejoin="round" /></svg>
+          <svg id="f2_spk2" class="f2-spk" style="left:1236px;top:884px;width:32px;height:32px;" viewBox="-22 -22 44 44"><path d="M0,-19 C2,-5 5,-2 19,0 C5,2 2,5 0,19 C-2,5 -5,2 -19,0 C-5,-2 -2,-5 0,-19 Z" fill="#FFFFFF" stroke="#1A1A22" stroke-width="3.5" stroke-linejoin="round" /></svg>
+          <svg id="f2_spk3" class="f2-spk" style="left:1150px;top:944px;width:30px;height:30px;" viewBox="-22 -22 44 44"><path d="M0,-19 C2,-5 5,-2 19,0 C5,2 2,5 0,19 C-2,5 -5,2 -19,0 C-5,-2 -2,-5 0,-19 Z" fill="#FFFFFF" stroke="#1A1A22" stroke-width="3.5" stroke-linejoin="round" /></svg>
+
+          <div id="f2_shout" class="f2-shout">
+            <div id="f2_brL" class="f2-br"><div id="f2_brL_j" class="f2-br-j"><div class="f2-br-bar" style="transform:rotate(-28deg)"></div></div></div>
+            <div id="f2_tel" class="f2-telop f2-shout-tel" style="font-size:92px;" data-text="노베이스도 한 방에!"></div>
+            <div id="f2_brR" class="f2-br"><div id="f2_brR_j" class="f2-br-j"><div class="f2-br-bar" style="transform:rotate(28deg)"></div></div></div>
+          </div>
+
+          <div id="f2_title" class="f2-title">
+            <div id="f2_cush" class="f2-cush"></div>
+            <div class="f2-title-txt">
+              <div id="f2_kick" class="f2-kick">2027 빠르게 따는</div>
+              <div id="f2_ttl" class="f2-ttl">컴퓨터활용능력 1급 필기+실기</div>
+            </div>
+          </div>
+
+          <div id="f2_sfx" class="f2-sfx" style="left:150px;top:100px;" data-layout-allow-overlap>
+            <div class="f2-sfx-r"><div id="f2_sfx_b" class="f2-sfx-b" style="font-size:250px;">딱!</div></div>
+          </div>
+
+          <div id="f2_brand" class="f2-brand">
+            <div id="f2_brand_b" class="f2-brand-in"><img src="assets/brand/icon.png" alt="" /></div>
+          </div>
+        </div>
+        <div id="f2_flash" class="f2-flash"></div>
+      </div>
+
+      <script>
+        (function () {
+          var D = 3.09;               // frame span 7.75 → 10.84
+          var F = 1 / 30;
+          // frame-local anchors (track − 7.75)
+          var T_CRACK = 0.0, T_BOOK = 0.05, T_BRAND = 0.38, T_SHOUT = 0.79, T_CUSH = 1.56, T_BADGE = 2.33;
+          var tl = gsap.timeline({ paused: true });
+          var q = function (s) { return document.querySelector(s); };
+          // deterministic pseudo-random in [0,1) from an integer
+          function rnd(i) { var x = Math.sin(i * 12.9898 + 78.233) * 43758.5453; return x - Math.floor(x); }
+
+          // TELOP (per-character): 3 stacked layers, each split into .f2-ch spans so one index animates in all layers at once
+          function telopChars(el) {
+            var chars = Array.from(el.getAttribute("data-text"));
+            function layer(cls) {
+              return '<span class="' + cls + '">' + chars.map(function (c, i) {
+                return '<span class="f2-ch" data-i="' + i + '">' + (c === " " ? "&nbsp;" : c) + "</span>";
+              }).join("") + "</span>";
+            }
+            el.innerHTML = layer("f2-t-outer") + layer("f2-t-mid") + layer("f2-t-fill");
+            return chars.length;
+          }
+          // POP-IN (ぽよん): 0 → peak (5f) → 1 (2f) → squash
+          function popIn(target, at, peak) {
+            peak = peak || 1.2;
+            tl.set(target, { autoAlpha: 0 }, 0);
+            tl.fromTo(target, { scale: 0, autoAlpha: 1 }, { scale: peak, autoAlpha: 1, duration: 5 * F, ease: "power2.out", immediateRender: false }, at);
+            tl.to(target, { scale: 1, duration: 2 * F, ease: "power1.in" }, at + 5 * F);
+            tl.to(target, { scaleX: 1.08, scaleY: 0.95, duration: 2 * F }, at + 7 * F);
+            tl.to(target, { scaleX: 1, scaleY: 1, duration: 3 * F, ease: "power1.out" }, at + 9 * F);
+          }
+          // BOIL (カクカク): 8 fps rotation/offset jitter on an inner element (never the wrapper being animated)
+          function boil(target, idx, from, to, amp) {
+            amp = amp || 1;
+            for (var k = Math.floor(from * 8); k <= Math.ceil(to * 8) && k / 8 < to; k++) {
+              var s = idx * 131 + k * 7;
+              tl.set(target, { rotation: (rnd(s) - 0.5) * 3 * amp, x: Math.round((rnd(s + 1) - 0.5) * 4 * amp), y: Math.round((rnd(s + 2) - 0.5) * 4 * amp) }, k / 8);
+            }
+          }
+          // CONCENTRATION LINES: K pre-built line sets, one visible per 1/8 s (re-seeding look), for [from, to)
+          function burst(svg, cx, cy, inner, n, sets, color, from, to) {
+            var ns = "http://www.w3.org/2000/svg", R = 1500, groups = [];
+            for (var g = 0; g < sets; g++) {
+              var G = document.createElementNS(ns, "g"); G.setAttribute("fill", color); G.setAttribute("opacity", "0");
+              for (var i = 0; i < n; i++) {
+                var a = (i + rnd(g * 1000 + i) * 0.8) / n * Math.PI * 2, w = 0.004 + rnd(g * 1000 + i + 500) * 0.012;
+                var r0 = inner * (1 + rnd(g * 77 + i) * 0.35);
+                var p = [[cx + Math.cos(a) * r0, cy + Math.sin(a) * r0], [cx + Math.cos(a - w) * R, cy + Math.sin(a - w) * R], [cx + Math.cos(a + w) * R, cy + Math.sin(a + w) * R]];
+                var poly = document.createElementNS(ns, "polygon");
+                poly.setAttribute("points", p.map(function (x) { return x[0].toFixed(1) + "," + x[1].toFixed(1); }).join(" "));
+                G.appendChild(poly);
+              }
+              svg.appendChild(G); groups.push(G);
+            }
+            for (var k = Math.floor(from * 8); k / 8 < to; k++) {
+              groups.forEach(function (G, gi) { tl.set(G, { opacity: gi === k % sets ? 1 : 0 }, k / 8); });
+            }
+          }
+
+          // ── 0.00 CRACK: concentration lines for the whole frame, easing 1 → 0.35 by 8.60 (local 0.85)
+          burst(q("#f2_burst"), 960, 540, 235, 110, 4, "#1A1A22", 0, D);
+          tl.fromTo("#f2_burst", { opacity: 1 }, { opacity: 0.35, duration: 0.85, ease: "power1.out", immediateRender: false }, T_CRACK);
+
+          // 1-frame white flash
+          tl.set("#f2_flash", { opacity: 0.85 }, T_CRACK);
+          tl.to("#f2_flash", { opacity: 0, duration: 0.22, ease: "power2.out" }, T_CRACK + F);
+
+          // 8 px screen shake (stepped, decaying)
+          [8, -7, 6, -5, 4, -3, 2, -1].forEach(function (amp, i) {
+            tl.set("#f2_g1", { x: amp, y: Math.round(amp * 0.7) * (i % 2 ? 1 : -1) }, T_CRACK + i * F);
+          });
+          tl.set("#f2_g1", { x: 0, y: 0 }, T_CRACK + 8 * F);
+
+          // 딱! onomatopoeia pops upper-left, boils
+          popIn("#f2_sfx", T_CRACK);
+          boil("#f2_sfx_b", 1, 0, D, 1);
+
+          // BAT follow-through: starts in F1's final pose (barrel on the impact point) and keeps swinging through —
+          // decelerating after contact, then sweeping out low-left before the shout lands
+          tl.set("#f2_bat", { rotation: -15, x: 0, y: 0, autoAlpha: 1 }, 0);
+          tl.to("#f2_bat", { rotation: -62, x: -60, y: 30, duration: 0.42, ease: "power2.out" }, T_CRACK);
+          tl.to("#f2_bat", { x: -700, y: 520, rotation: -92, duration: 0.32, ease: "power2.in" }, 0.42);
+          tl.set("#f2_bat", { autoAlpha: 0 }, 0.74);
+          boil("#f2_bat_b", 2, 0, 0.74, 1);
+          // motion-smear copies trailing the swing (they lag behind, toward the incoming side)
+          [["#f2_bat_g1", 9, 0.35, 0.05], ["#f2_bat_g2", 18, 0.16, 0.10]].forEach(function (g) {
+            tl.set(g[0], { rotation: -15 + g[1], x: 0, y: 0, autoAlpha: g[2] }, 0);
+            tl.to(g[0], { rotation: -62 + g[1] * 0.5, x: -60, y: 30, duration: 0.42 + g[3], ease: "power2.out" }, T_CRACK);
+            tl.to(g[0], { autoAlpha: 0, duration: 0.3, ease: "power1.in" }, T_CRACK);
+          });
+
+          // BOOK batted out of the impact point (frame centre): 1.5 turns, scale 0.25 → 1.08 → 1, lands tilted +4° (place landing)
+          var B1 = 0.42, B2 = 0.52, B3 = 0.60;
+          tl.set("#f2_book", { autoAlpha: 0 }, 0);
+          tl.set("#f2_book", { autoAlpha: 1 }, T_BOOK);
+          tl.fromTo("#f2_book", { x: -345 }, { x: 0, duration: B1 - T_BOOK, ease: "power2.out", immediateRender: false }, T_BOOK);
+          tl.fromTo("#f2_book", { y: 40 }, { y: -40, duration: 0.22, ease: "power2.out", immediateRender: false }, T_BOOK);
+          tl.to("#f2_book", { y: 0, duration: B2 - T_BOOK - 0.22, ease: "power2.in" }, T_BOOK + 0.22);
+          tl.fromTo("#f2_book", { scale: 0.25 }, { scale: 1.08, duration: B1 - T_BOOK, ease: "power2.out", immediateRender: false }, T_BOOK);
+          tl.to("#f2_book", { scale: 1, duration: B2 - B1, ease: "power1.inOut" }, B1);
+          tl.fromTo("#f2_book", { rotation: -536 }, { rotation: -2, duration: B1 - T_BOOK, ease: "power2.out", immediateRender: false }, T_BOOK);
+          tl.to("#f2_book", { rotation: 5.5, duration: B2 - B1, ease: "power2.out" }, B1);
+          tl.to("#f2_book", { rotation: 4, duration: B3 - B2, ease: "power1.inOut" }, B2);
+          tl.set("#f2_book", { x: -345, y: 40, scale: 0.25, rotation: -536 }, 0);
+          boil("#f2_book_b", 3, B3, D, 0.4);
+
+          // 8.13 brand sticker top-right
+          popIn("#f2_brand", T_BRAND);
+          boil("#f2_brand_b", 4, T_BRAND, D, 0.6);
+
+          // 8.54 shout ＼ 노베이스도 한 방에! ／ — kinetic letter-in + brackets sliding in from outside, 2 px jitter every 2 frames
+          var n = telopChars(q("#f2_tel"));
+          for (var i = 0; i < n; i++) {
+            var chs = q("#f2_tel").querySelectorAll('.f2-ch[data-i="' + i + '"]');
+            var at = T_SHOUT + i * 0.028;
+            // 0 ms reveal (no opacity fade: a half-transparent stack of outer/mid/fill reads muddy), motion = y + scale
+            tl.set(chs, { autoAlpha: 0, y: 64, scale: 0.3 }, 0);
+            tl.set(chs, { autoAlpha: 1 }, at);
+            tl.to(chs, { y: 0, scale: 1, duration: 0.36, ease: "back.out(2)" }, at);
+          }
+          tl.set(["#f2_brL", "#f2_brR"], { autoAlpha: 0 }, 0);
+          tl.fromTo("#f2_brL", { x: -12, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.16, ease: "power2.out", immediateRender: false }, T_SHOUT);
+          tl.fromTo("#f2_brR", { x: 12, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.16, ease: "power2.out", immediateRender: false }, T_SHOUT + 0.24);
+          for (var k = 0; T_SHOUT + 0.16 + k * 2 * F < D; k++) {
+            var t = T_SHOUT + 0.16 + k * 2 * F;
+            tl.set("#f2_brL_j", { x: Math.round((rnd(900 + k) - 0.5) * 4), y: Math.round((rnd(950 + k) - 0.5) * 4) }, t);
+            tl.set("#f2_brR_j", { x: Math.round((rnd(700 + k) - 0.5) * 4), y: Math.round((rnd(750 + k) - 0.5) * 4) }, t);
+          }
+
+          // 9.31 navy cushion: bar scaleX 0 → 1 from the left, kicker + title follow 0.06 s later
+          tl.set("#f2_cush", { scaleX: 0 }, 0);
+          tl.to("#f2_cush", { scaleX: 1, duration: 0.2, ease: "power3.out" }, T_CUSH);
+          tl.set(["#f2_kick", "#f2_ttl"], { autoAlpha: 0 }, 0);
+          tl.fromTo("#f2_kick", { x: -24, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.22, ease: "power3.out", immediateRender: false }, T_CUSH + 0.06);
+          tl.fromTo("#f2_ttl", { x: -24, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.24, ease: "power3.out", immediateRender: false }, T_CUSH + 0.10);
+
+          // 10.08 red badge pops below the book's lower-left corner (outside the cover edge), with paper sparkles
+          popIn("#f2_badge", T_BADGE, 1.1);
+          boil("#f2_badge_b", 5, T_BADGE, D, 0.8);
+          ["#f2_spk1", "#f2_spk2", "#f2_spk3"].forEach(function (s, j) {
+            var at = T_BADGE + 0.04 + j * 0.05;
+            tl.set(s, { autoAlpha: 0, scale: 0, rotation: 0 }, 0);
+            tl.to(s, { autoAlpha: 1, scale: 1.2, rotation: 20, duration: 0.12, ease: "power2.out" }, at);
+            tl.to(s, { scale: 0, rotation: 70, duration: 0.24, ease: "power2.in" }, at + 0.16);
+            tl.set(s, { autoAlpha: 0 }, at + 0.40);
+          });
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["02-f2"] = tl;
+          tl.seek(0.001); tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

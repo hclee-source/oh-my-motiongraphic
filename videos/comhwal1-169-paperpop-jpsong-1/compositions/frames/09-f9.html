@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- F9 — finale / SEARCH-CTA (paper-pop). Track span 40.29 → 48.0 s (local 0 → 7.71).
+         Book placed + faces peek → vertical slogan wipe → title block → search bar typed on the
+         stop-time hits → cursor click → logo lockup on the final hit → poster hold. -->
+  </head>
+  <body>
+    <template id="09-f9-template">
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-7Bold.ttf") format("truetype"); font-weight: 700; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-6SemiBold.ttf") format("truetype"); font-weight: 600; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+
+        #stage { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; background: #23268C; font-family: "Paperlogy", sans-serif; color: #FFFFFF; }
+        .f9-g { position: absolute; inset: 0; }
+
+        /* FACE: wrapper takes the big moves (peek / squash), the <img> takes the 8 fps boil */
+        .f9-face { position: absolute; }
+        .f9-face img { display: block; width: 100%; height: 100%; }
+
+        /* BOOK COVER in a white padded paper wrapper (never filter / tint / overlay the cover itself) */
+        .f9-book { position: absolute; background: #FFFFFF; padding: 12px; border-radius: 6px;
+          box-shadow: 0 3px 0 rgba(0,0,0,.12), 0 30px 52px rgba(6,6,34,.5); }
+        .f9-book img { display: block; width: 100%; height: auto; }
+
+        /* TELOP — double outline (二重袋文字): white outer rim (+ ink offset shadow) / ink stroke / fill */
+        .f9-telop { position: relative; white-space: nowrap; font-family: "Paperlogy"; font-weight: 600; letter-spacing: 0.02em; line-height: 1.05; }
+        .f9-telop > span { display: block; }
+        .f9-telop > span + span { position: absolute; left: 0; top: 0; }
+        .f9-telop em { font-style: normal; font-size: 1.08em; }
+        .f9-t-outer { color: #10124F; -webkit-text-stroke: 0.13em #10124F; text-shadow: 8px 10px 0 #1A1A22; }
+        .f9-t-mid { color: #1A1A22; -webkit-text-stroke: 0.07em #1A1A22; }
+        .f9-t-fill { color: #FFFFFF; }
+        .f9-t-fill em { color: #FFE13A; }
+
+        /* VERTICAL SLOGAN (縦書き) — each column is clip-wiped top → bottom; a yellow paper strip rides the edge */
+        .f9-vwrap { position: absolute; writing-mode: vertical-rl; }
+        .f9-vcol { position: relative; padding: 30px 34px; clip-path: inset(0% 0% 100% 0%); }
+        .f9-vt { font-size: 100px; }
+        .f9-swtrk { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+        .f9-sweep { position: absolute; display: block; left: 18px; right: 18px; top: -6px; height: 12px; background: #FFE13A;
+          border-radius: 3px; box-shadow: 0 2px 0 rgba(0,0,0,.12), 0 6px 10px rgba(6,6,34,.4); }
+
+        /* TITLE BLOCK (middle column) */
+        .f9-kick { position: absolute; font-family: "Paperlogy"; font-size: 40px; color: #FFE13A; white-space: nowrap; line-height: 1.2; font-weight: 600; }
+        .f9-title { position: absolute; font-family: "Paperlogy"; font-weight: 700; font-size: 84px; letter-spacing: -0.01em; line-height: 1.1;
+          white-space: nowrap; color: #FFFFFF; text-shadow: 5px 7px 0 #1A1A22; transform-origin: 0% 60%; }
+        .f9-c2 { position: absolute; }
+        .f9-c2bg { position: absolute; inset: 0; background: #1A1A22; border-radius: 6px; transform-origin: 0% 50%;
+          box-shadow: 0 2px 0 rgba(0,0,0,.1), 0 10px 18px rgba(6,6,34,.35); }
+        .f9-c2tx { position: relative; display: block; padding: 10px 26px 4px; font-family: "Paperlogy"; font-weight: 700; font-size: 60px;
+          letter-spacing: -0.02em; line-height: 1.1; color: #FFFFFF; white-space: nowrap; }
+        .f9-auth { position: absolute; font-family: "Paperlogy"; font-size: 32px; color: rgba(255,255,255,.8); white-space: nowrap; line-height: 1.2; font-weight: 600; }
+
+        /* SEARCH BAR — generic (no service logo): white paper pill, ink outline, yellow magnifier button */
+        .f9-bar { position: absolute; box-sizing: border-box; background: #FFFDF8; border: 5px solid #1A1A22; border-radius: 999px;
+          box-shadow: 0 3px 0 rgba(0,0,0,.12), 8px 10px 0 rgba(8,8,36,.5); }
+        .f9-q { position: absolute; left: 44px; top: 0; bottom: 0; right: 110px; display: flex; align-items: center;
+          font-family: "Paperlogy"; font-size: 52px; color: #1A1A22; white-space: pre; font-weight: 600; }
+        .f9-chunk { display: inline-block; white-space: pre; line-height: 1.2; transform-origin: 0% 80%; }
+        .f9-cw { position: relative; display: inline-block; width: 0; height: 60px; }
+        .f9-caret { position: absolute; display: block; left: 4px; top: 0; width: 5px; height: 60px; background: #1A1A22; border-radius: 2px; }
+        .f9-btn { position: absolute; right: 8px; top: 8px; width: 78px; height: 78px; box-sizing: border-box; border-radius: 50%;
+          background: #FFE13A; border: 4px solid #1A1A22; display: flex; align-items: center; justify-content: center; }
+        .f9-btn svg { display: block; }
+        .f9-ring { position: absolute; box-sizing: border-box; width: 92px; height: 92px; border-radius: 50%; border: 7px solid #FFE13A; }
+
+        /* CURSOR — white paper arrow with ink outline */
+        .f9-cur { position: absolute; width: 56px; height: 80px; transform-origin: 4px 4px; }
+        .f9-cur svg { display: block; filter: drop-shadow(4px 6px 0 rgba(8,8,36,.5)); }
+
+        /* LOGO LOCKUP */
+        .f9-logo { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; transform-origin: 50% 50%; }
+        .f9-icon { display: block; width: 132px; height: auto; }
+        .f9-lt { display: block; }
+        .f9-brand { font-family: "Paperlogy"; font-weight: 800; font-size: 64px; letter-spacing: -0.02em; line-height: 1.05; color: #FFFFFF;
+          text-shadow: 4px 6px 0 #1A1A22; white-space: nowrap; }
+        .f9-url { font-family: "Paperlogy"; font-size: 34px; line-height: 1.2; color: #FFE13A; white-space: nowrap; font-weight: 600; }
+
+        /* SPARKLES — yellow paper four-point stars */
+        .f9-spark { position: absolute; }
+        .f9-spark svg { display: block; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(3px 5px 0 rgba(8,8,36,.45)); }
+      </style>
+
+      <div id="stage" data-composition-id="09-f9" data-width="1920" data-height="1080" data-duration="12.380">
+        <div id="f9_g1" class="f9-g">
+          <!-- faces first so they sit BEHIND the book and peek from its edges -->
+          <div id="f9_kate" class="f9-face" data-layout-allow-overlap style="left:500px;top:66px;width:170px;height:170px;"><img id="f9_kate_i" src="assets/faces/happy/kate.png" alt="" /></div>
+          <div id="f9_bible" class="f9-face" data-layout-allow-overlap style="left:104px;top:700px;width:150px;height:150px;"><img id="f9_bible_i" src="assets/faces/happy/bible.png" alt="" /></div>
+          <div id="f9_book" class="f9-book" style="left:200px;top:200px;width:480px;"><img src="assets/covers/9791124516614.jpg" alt="" /></div>
+
+          <!-- vertical slogan: v1 = right column, v2 = left column (vertical-rl reading order), v2 staggered lower -->
+          <div id="f9_v1w" class="f9-vwrap" style="left:1668px;top:96px;">
+            <div id="f9_v1" class="f9-vcol"><div id="f9_v1t" class="f9-telop f9-vt" data-text="합격으로 가는"></div></div>
+            <div id="f9_v1sw" class="f9-swtrk" data-layout-ignore><i class="f9-sweep"></i></div>
+          </div>
+          <div id="f9_v2w" class="f9-vwrap" style="left:1500px;top:186px;">
+            <div id="f9_v2" class="f9-vcol"><div id="f9_v2t" class="f9-telop f9-vt" data-text="가장 <em>빠른</em> 길"></div></div>
+            <div id="f9_v2sw" class="f9-swtrk" data-layout-ignore><i class="f9-sweep"></i></div>
+          </div>
+
+          <!-- title block -->
+          <div id="f9_kick" class="f9-kick" style="left:760px;top:194px;">2027 빠르게 따는</div>
+          <div id="f9_title" class="f9-title" style="left:760px;top:246px;">컴퓨터활용능력 1급</div>
+          <div id="f9_c2" class="f9-c2" style="left:760px;top:352px;"><div id="f9_c2bg" class="f9-c2bg"></div><span id="f9_c2tx" class="f9-c2tx">필기+실기</span></div>
+          <div id="f9_auth" class="f9-auth" style="left:762px;top:456px;">이강용(컴활킹) 지음</div>
+
+          <!-- search bar -->
+          <div id="f9_bar" class="f9-bar" style="left:760px;top:560px;width:704px;height:104px;">
+            <div id="f9_q" class="f9-q">
+              <span class="f9-cw"><i id="f9_c0" class="f9-caret"></i></span>
+              <span id="f9_k1" class="f9-chunk">빠따</span><span class="f9-cw"><i id="f9_c1" class="f9-caret"></i></span>
+              <span id="f9_k2" class="f9-chunk"> 컴활</span><span class="f9-cw"><i id="f9_c2c" class="f9-caret"></i></span>
+              <span id="f9_k3" class="f9-chunk"> 1급</span><span class="f9-cw"><i id="f9_c3" class="f9-caret"></i></span>
+            </div>
+            <div id="f9_btn" class="f9-btn">
+              <svg width="42" height="42" viewBox="0 0 42 42"><circle cx="17" cy="17" r="11" fill="none" stroke="#1A1A22" stroke-width="5" /><line x1="25.5" y1="25.5" x2="36" y2="36" stroke="#1A1A22" stroke-width="6" stroke-linecap="round" /></svg>
+            </div>
+          </div>
+          <div id="f9_ring" class="f9-ring" data-layout-ignore style="left:1366px;top:566px;"></div>
+
+          <!-- logo lockup -->
+          <div id="f9_logo" class="f9-logo" style="left:760px;top:700px;width:704px;height:200px;">
+            <img id="f9_icon" class="f9-icon" src="assets/brand/icon.png" alt="" />
+            <div class="f9-lt"><div class="f9-url">goldenrabbit.co.kr</div></div>
+          </div>
+          <div id="f9_sparks" data-layout-ignore></div>
+
+          <!-- cursor (tip at svg 4,4 → lands on the magnifier button) -->
+          <div id="f9_cur" class="f9-cur" data-layout-ignore style="left:1420px;top:620px;">
+            <svg width="56" height="80" viewBox="-4 -4 56 80"><path d="M0,0 L0,58 L14,45 L24,68 L35,63 L25,41 L42,41 Z" fill="#FFFFFF" stroke="#1A1A22" stroke-width="4" stroke-linejoin="round" /></svg>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var D = 7.71, T0 = 40.29;
+          // track seconds → frame-local seconds
+          function L(t) { return Math.round((t - T0) * 1000) / 1000; }
+          var tl = gsap.timeline({ paused: true });
+          var q = function (s) { return document.querySelector(s); };
+          function rnd(i) { var x = Math.sin(i * 12.9898 + 78.233) * 43758.5453; return x - Math.floor(x); }
+
+          // TELOP builder: 3 stacked copies (outer / mid / fill); outline-only copies are ignored by the layout audit
+          function telop(el) {
+            var t = el.getAttribute("data-text");
+            el.innerHTML = '<span class="f9-t-outer" data-layout-ignore>' + t + '</span><span class="f9-t-mid" data-layout-ignore>' + t + '</span><span class="f9-t-fill">' + t + '</span>';
+          }
+          telop(q("#f9_v1t")); telop(q("#f9_v2t"));
+
+          // SPARKLES (four-point stars) — built from a fixed table
+          var SP = [[850, 742, 50], [922, 884, 34], [1378, 726, 42], [1416, 846, 56], [1172, 702, 28], [1058, 906, 30], [798, 830, 26]];
+          var LC = [1112, 797];   // lockup centre
+          (function () {
+            var host = q("#f9_sparks"), html = "";
+            SP.forEach(function (s, i) {
+              html += '<div id="f9_sp' + i + '" class="f9-spark" style="left:' + (s[0] - s[2] / 2) + 'px;top:' + (s[1] - s[2] / 2) + 'px;width:' + s[2] + 'px;height:' + s[2] + 'px;">' +
+                '<svg id="f9_spi' + i + '" viewBox="-1.1 -1.1 2.2 2.2"><path d="M0,-1 Q0.16,-0.16 1,0 Q0.16,0.16 0,1 Q-0.16,0.16 -1,0 Q-0.16,-0.16 0,-1 Z" fill="#FFE13A" stroke="#1A1A22" stroke-width="3" vector-effect="non-scaling-stroke" stroke-linejoin="round" /></svg></div>';
+            });
+            host.innerHTML = html;
+          })();
+
+          // POP-IN (ぽよん): 0 → 1.2 (5f) → 1 (2f) → squash
+          function popIn(target, at) {
+            var f = 1 / 30;
+            tl.set(target, { autoAlpha: 0 }, 0);
+            tl.fromTo(target, { scale: 0, autoAlpha: 1 }, { scale: 1.2, autoAlpha: 1, duration: 5 * f, ease: "power2.out", immediateRender: false }, at);
+            tl.to(target, { scale: 1, duration: 2 * f, ease: "power1.in" }, at + 5 * f);
+            tl.to(target, { scaleX: 1.08, scaleY: 0.95, duration: 2 * f }, at + 7 * f);
+            tl.to(target, { scaleX: 1, scaleY: 1, duration: 3 * f, ease: "power1.out" }, at + 9 * f);
+          }
+          // PLACE: a sheet of paper laid down (tilt −6 → +1.5 → 0, from y+40)
+          function place(target, at, rot) {
+            rot = rot || 0;
+            tl.set(target, { autoAlpha: 0 }, 0);
+            tl.fromTo(target, { y: 40, rotation: rot - 6, autoAlpha: 0 }, { y: 0, rotation: rot + 1.5, autoAlpha: 1, duration: 0.17, ease: "power2.out", immediateRender: false }, at);
+            tl.to(target, { rotation: rot, duration: 0.08, ease: "power1.inOut" }, at + 0.17);
+          }
+          // BOIL (カクカク): 8 fps rotation/offset jitter on an inner element, index-seeded
+          function boil(target, idx, from, to, amp) {
+            amp = amp || 1;
+            for (var k = Math.ceil(from * 8); k / 8 < to; k++) {
+              var s = idx * 131 + k * 7;
+              tl.set(target, { rotation: (rnd(s) - 0.5) * 3 * amp, x: Math.round((rnd(s + 1) - 0.5) * 4 * amp), y: Math.round((rnd(s + 2) - 0.5) * 4 * amp) }, k / 8);
+            }
+          }
+          // SQUASH (expression-change beat): 1 → 0.92 → 1.04 → 1 in 0.12 s
+          function squash(target, at) {
+            tl.to(target, { scale: 0.92, duration: 0.04, ease: "power1.out" }, at);
+            tl.to(target, { scale: 1.04, duration: 0.04, ease: "power1.inOut" }, at + 0.04);
+            tl.to(target, { scale: 1, duration: 0.04, ease: "power1.in" }, at + 0.08);
+          }
+          // CARET window: solid at s, blinks every 0.19 s (0 ms toggles), off at e
+          function caret(sel, s, e) {
+            tl.set(sel, { autoAlpha: 0 }, 0);
+            tl.set(sel, { autoAlpha: 1 }, s);
+            for (var i = 1; s + i * 0.19 < e - 0.01; i++) {
+              tl.set(sel, { autoAlpha: i % 2 ? 0 : 1 }, Math.round((s + i * 0.19) * 1000) / 1000);
+            }
+            tl.set(sel, { autoAlpha: 0 }, e);
+          }
+
+          // ---- anchors (track seconds from the storyboard → local)
+          var tBook = L(40.29), tV1 = L(40.66), tV2 = L(41.05), tBible = L(41.42), tTitle = L(41.82), tT2 = L(42.21), tAuth = L(42.61),
+              tBar = L(43.38), tK1 = L(44.14), tK2 = L(44.52), tK3 = L(44.92), tCur = L(45.30), tClick = L(45.69), tFinal = L(46.46);
+
+          tl.set("#f9_g1", { autoAlpha: 1 }, 0);
+
+          // 40.29 — BOOK placed (tilt −3°)
+          place("#f9_book", tBook, -3);
+
+          // faces peek from behind the book's edges (start fully hidden behind it)
+          tl.set("#f9_kate", { autoAlpha: 0, rotation: 10, x: -30, y: 150 }, 0);
+          tl.set("#f9_kate", { autoAlpha: 1 }, tV1);
+          tl.to("#f9_kate", { x: 0, y: 0, duration: 0.32, ease: "back.out(1.7)" }, tV1);
+          tl.set("#f9_bible", { autoAlpha: 0, rotation: -12, x: 150, y: 10 }, 0);
+          tl.set("#f9_bible", { autoAlpha: 1 }, tBible);
+          tl.to("#f9_bible", { x: 0, y: 0, duration: 0.32, ease: "back.out(1.7)" }, tBible);
+          boil("#f9_kate_i", 1, 0, D);
+          boil("#f9_bible_i", 2, 0, D);
+
+          // 40.66 / 41.05 — VERTICAL slogan, clip-path wipe top → bottom, yellow strip rides the edge
+          [["#f9_v1", "#f9_v1sw", tV1], ["#f9_v2", "#f9_v2sw", tV2]].forEach(function (c) {
+            tl.set(c[0], { clipPath: "inset(0% 0% 100% 0%)" }, 0);
+            tl.set(c[1], { yPercent: 0, autoAlpha: 0 }, 0);
+            tl.to(c[0], { clipPath: "inset(0% 0% 0% 0%)", duration: 0.6, ease: "power2.inOut" }, c[2]);
+            tl.set(c[1], { autoAlpha: 1 }, c[2]);
+            tl.to(c[1], { yPercent: 100, duration: 0.6, ease: "power2.inOut" }, c[2]);
+            tl.to(c[1], { autoAlpha: 0, duration: 0.12, ease: "power1.in" }, c[2] + 0.6);
+          });
+
+          // 41.82 — TITLE BLOCK: kicker slides, title slams; 42.21 title2 cushion; 42.61 author
+          tl.set(["#f9_kick", "#f9_title", "#f9_c2tx", "#f9_auth"], { autoAlpha: 0 }, 0);
+          tl.set("#f9_c2bg", { scaleX: 0 }, 0);
+          tl.fromTo("#f9_kick", { x: -28, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.22, ease: "power3.out", immediateRender: false }, tTitle);
+          tl.fromTo("#f9_title", { scale: 1.16, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.1, ease: "power2.out", immediateRender: false }, tTitle + 0.04);
+          tl.to("#f9_c2bg", { scaleX: 1, duration: 0.2, ease: "power3.out" }, tT2);
+          tl.fromTo("#f9_c2tx", { x: -18, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, tT2 + 0.06);
+          tl.fromTo("#f9_auth", { y: 14, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.25, ease: "power2.out", immediateRender: false }, tAuth);
+
+          // 43.38 — SEARCH BAR slides up (place-like settle)
+          tl.set("#f9_bar", { autoAlpha: 0 }, 0);
+          tl.fromTo("#f9_bar", { y: 110, rotation: -2.5, autoAlpha: 0 }, { y: 0, rotation: 0.8, autoAlpha: 1, duration: 0.24, ease: "power3.out", immediateRender: false }, tBar);
+          tl.to("#f9_bar", { rotation: 0, duration: 0.1, ease: "power1.inOut" }, tBar + 0.24);
+
+          // 44.14 / 44.52 / 44.92 — typed in three chunks on the stop-time hits
+          tl.set(["#f9_k1", "#f9_k2", "#f9_k3"], { autoAlpha: 0 }, 0);
+          [["#f9_k1", tK1], ["#f9_k2", tK2], ["#f9_k3", tK3]].forEach(function (k) {
+            tl.set(k[0], { autoAlpha: 1 }, k[1]);
+            tl.fromTo(k[0], { scale: 1.3, y: -6 }, { scale: 1, y: 0, duration: 0.14, ease: "back.out(2.5)", immediateRender: false }, k[1]);
+            tl.fromTo("#f9_bar", { scale: 0.985 }, { scale: 1, duration: 0.12, ease: "power2.out", immediateRender: false }, k[1]);
+          });
+          caret("#f9_c0", tBar, tK1);
+          caret("#f9_c1", tK1, tK2);
+          caret("#f9_c2c", tK2, tK3);
+          caret("#f9_c3", tK3, tClick);
+
+          // 45.30 → 45.69 — cursor glides in and CLICKS the magnifier
+          tl.set("#f9_cur", { autoAlpha: 0 }, 0);
+          tl.fromTo("#f9_cur", { x: 200, y: 360 }, { x: 0, y: 0, duration: 0.34, ease: "power3.out", immediateRender: false }, tCur);
+          tl.fromTo("#f9_cur", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.08, ease: "none", immediateRender: false }, tCur);
+          tl.to("#f9_cur", { scale: 0.82, duration: 0.04, ease: "power1.in" }, tClick - 0.04);
+          tl.to("#f9_cur", { scale: 1, duration: 0.16, ease: "back.out(3)" }, tClick);
+          tl.to("#f9_btn", { scale: 0.86, duration: 0.04, ease: "power1.in" }, tClick - 0.04);
+          tl.to("#f9_btn", { scale: 1, duration: 0.2, ease: "back.out(3)" }, tClick);
+          tl.set("#f9_ring", { autoAlpha: 0 }, 0);
+          tl.fromTo("#f9_ring", { scale: 0.55, autoAlpha: 1 }, { scale: 2.2, autoAlpha: 0, duration: 0.5, ease: "power2.out", immediateRender: false }, tClick);
+
+          // 46.46 — FINAL HIT: logo lockup pops, yellow paper sparkles burst, faces squash
+          popIn("#f9_logo", tFinal);
+          SP.forEach(function (s, i) {
+            var sel = "#f9_sp" + i, at = tFinal + i * 0.02;
+            tl.set(sel, { autoAlpha: 0 }, 0);
+            tl.fromTo(sel, { x: (LC[0] - s[0]) * 0.7, y: (LC[1] - s[1]) * 0.7, scale: 0, rotation: -40, autoAlpha: 1 },
+              { x: 0, y: 0, scale: 1.2, rotation: 0, duration: 0.2, ease: "power3.out", immediateRender: false }, at);
+            tl.to(sel, { scale: 1, duration: 0.1, ease: "power1.inOut" }, at + 0.2);
+            boil("#f9_spi" + i, 10 + i, tFinal + 0.32, D, 1.2);
+          });
+          squash("#f9_kate", tFinal);
+          squash("#f9_bible", tFinal + 0.03);
+
+          // 46.46 → 48.0 HOLD (only the boil moves)
+          tl.set({}, {}, D);
+          tl.seek(0.001); tl.seek(0);
+          window.__timelines = window.__timelines || {};
+          window.__timelines = window.__timelines || {};
+          // ---- retimed by goldenrabbit-promo/scripts/retime.py: the authored timeline (OLD s) is driven through a
+          // piecewise-linear warp so its bar lines land on the new track's downbeats (NEW s). Seek-safe: a tween on tl.time.
+          (function (inner) {
+            var MAP = [[0.0, 0.0], [3.3, 1.53], [6.53, 3.09], [8.22, 4.64], [10.65, 6.17], [12.38, 7.71]];   // [new local s, old local s]
+            var OLD = 7.7100, NEW = 12.3800;
+            function warp(p) {
+              var t = p * NEW;
+              for (var i = 1; i < MAP.length; i++) {
+                if (t <= MAP[i][0] || i === MAP.length - 1) {
+                  var a = MAP[i - 1], b = MAP[i], u = (t - a[0]) / (b[0] - a[0]);
+                  return (a[1] + (b[1] - a[1]) * Math.max(0, Math.min(1, u))) / OLD;
+                }
+              }
+              return 1;
+            }
+            inner.pause();
+            var outer = gsap.timeline({ paused: true });
+            outer.fromTo(inner, { time: 0 }, { time: OLD, duration: NEW, ease: warp, immediateRender: false }, 0);
+            outer.seek(0.001); outer.seek(0);
+            window.__timelines["09-f9"] = outer;
+          })(tl);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

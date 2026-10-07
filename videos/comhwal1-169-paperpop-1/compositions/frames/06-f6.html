@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Frame 6 — f6 · POINT 4 SCORE-CARD (웹 CBT · 자동 채점) · span 24.80–29.44 s (local 0–4.64) -->
+  </head>
+  <body>
+    <template id="06-f6-template">
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-7Bold.ttf") format("truetype"); font-weight: 700; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-6SemiBold.ttf") format("truetype"); font-weight: 600; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+
+        #stage * { box-sizing: border-box; }
+        #stage { box-sizing: border-box; position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; background: #F4EEE1; font-family: "Paperlogy", sans-serif; font-weight: 800; color: #1A1A22; }
+
+        /* SIDE LABEL pill (サイドテロップ) */
+        .f6-side { position: absolute; left: 96px; top: 56px; display: flex; align-items: center; gap: 14px; font-family: "Paperlogy";  font-size: 34px; color: #1A1A22; white-space: nowrap; font-weight: 600; }
+        .f6-side b { font-weight: 700; background: #FFE13A; color: #1A1A22; padding: 8px 20px 4px; border-radius: 999px; border: 4px solid #1A1A22; }
+
+        /* ORIGINAL paper "grading" card (no real product UI) */
+        .f6-card { position: absolute; background: #FFFDF8; border-radius: 20px;
+          box-shadow: 0 2px 0 rgba(0,0,0,.06), 0 10px 18px rgba(60,40,10,.14), 0 26px 44px rgba(60,40,10,.16); }
+        .f6-strip { position: absolute; left: 0; top: 0; width: 880px; height: 84px; background: #23268C; border-radius: 20px 20px 0 0;
+          font-family: "Paperlogy";  font-size: 40px; line-height: 88px; color: #fff; padding-left: 40px; white-space: nowrap; font-weight: 600; }
+        .f6-tray { position: absolute; left: 50px; top: 124px; width: 780px; height: 336px; border-radius: 24px; }
+        .f6-tray-lo { position: absolute; inset: 0; border: 4px dashed rgba(26,26,34,.32); border-radius: 24px; background: rgba(35,38,140,.035); }
+        .f6-tray-hi { position: absolute; inset: 0; border: 4px dashed #23268C; border-radius: 24px; background: rgba(255,225,58,.13); }
+        .f6-tray-txt { position: absolute; left: 0; top: 238px; width: 780px; text-align: center; font-family: "Paperlogy";  font-size: 30px; color: rgba(26,26,34,.5); white-space: nowrap; font-weight: 600; }
+
+        /* FILE card (yellow paper) with an 'xlsx' corner tab */
+        .f6-file { position: absolute; left: 190px; top: 66px; width: 400px; height: 112px; }
+        .f6-file-in { position: absolute; inset: 0; background: #FFE13A; border-radius: 12px; border: 3px solid #1A1A22;
+          box-shadow: 0 2px 0 rgba(0,0,0,.08), 0 10px 18px rgba(60,40,10,.2); }
+        .f6-file-name { position: absolute; left: 0; top: 40px; width: 394px; text-align: center; font-family: "Paperlogy";  font-size: 26px; color: #1A1A22; white-space: nowrap; font-weight: 600; }
+        .f6-file-tab { position: absolute; right: -16px; top: -18px; background: #23268C; color: #fff; font-family: "Paperlogy";  font-size: 22px;
+          padding: 5px 14px 2px; border-radius: 8px; transform: rotate(8deg); box-shadow: 0 4px 8px rgba(30,20,60,.25); font-weight: 600; }
+
+        /* thin progress bar under the tray */
+        .f6-prog { position: absolute; left: 50px; top: 496px; width: 780px; height: 18px; border-radius: 9px; background: rgba(26,26,34,.10); overflow: hidden; }
+        .f6-prog-fill { position: absolute; left: 0; top: 0; width: 780px; height: 18px; background: #23268C; transform-origin: 0% 50%; transform: scaleX(0); }
+
+        /* RESULT rows (directional fill) */
+        .f6-rows { position: absolute; left: 0; top: 0; width: 880px; height: 640px; }
+        .f6-row { position: absolute; left: 0; width: 880px; height: 100px; }
+        .f6-row-lbl { position: absolute; left: 50px; top: 26px; font-family: "Paperlogy";  font-size: 40px; line-height: 48px; color: #1A1A22; white-space: nowrap; font-weight: 600; }
+        .f6-track { position: absolute; left: 190px; top: 22px; width: 520px; height: 56px; border-radius: 12px; border: 3px solid #1A1A22; background: #F1EADB; overflow: hidden;
+          box-shadow: inset 0 3px 0 rgba(0,0,0,.06); }
+        .f6-fill { position: absolute; left: 0; top: 0; width: 514px; height: 50px; background: #FFE13A; transform-origin: 0% 50%; transform: scaleX(0);
+          background-image: repeating-linear-gradient(-45deg, rgba(255,255,255,.22) 0 10px, transparent 10px 22px); }
+        .f6-line { position: absolute; left: 552px; top: 184px; width: 4px; height: 286px; border-left: 4px dashed #E5352B; transform-origin: 50% 0%; }
+        .f6-line-lbl { position: absolute; left: 489px; top: 148px; width: 130px; text-align: center; font-family: "Paperlogy";  font-size: 22px; color: #E5352B; white-space: nowrap; font-weight: 600; }
+
+        /* SCORES: counting values are outline-only, the final value fills from the bottom (outline-to-fill) */
+        .f6-score { position: absolute; left: 760px; top: 18px; width: 120px; height: 64px; font-family: "Paperlogy"; font-weight: 800; font-size: 56px; line-height: 64px; letter-spacing: -0.02em; white-space: nowrap; transform-origin: 30% 60%; }
+        .f6-score small { font-size: 0.45em; letter-spacing: 0; margin-left: 2px; }
+        .f6-sv { position: absolute; left: 0; top: 0; color: transparent; -webkit-text-stroke: 2.5px #1A1A22; }
+        .f6-sv small, .f6-fin-stroke small { -webkit-text-stroke-width: 1px; }
+        .f6-fin { position: absolute; left: 0; top: 0; width: 120px; height: 64px; }
+        .f6-fin-stroke { position: absolute; left: 0; top: 0; color: transparent; -webkit-text-stroke: 2.5px #1A1A22; }
+        .f6-mask { position: absolute; left: 0; top: 0; width: 120px; height: 64px; overflow: hidden; }
+        .f6-fin-fill { position: absolute; left: 0; top: 0; color: #1A1A22; }
+
+        /* RED PEN */
+        .f6-svg { position: absolute; left: 0; top: 0; overflow: visible; }
+        .f6-pen { position: absolute; left: 600px; top: 498px; width: 300px; height: 100px; transform: rotate(-6deg); transform-origin: 0% 50%; }
+        .f6-pen-m { position: absolute; left: 0; top: 0; width: 300px; height: 100px; overflow: hidden; }
+        .f6-pen-t { position: absolute; left: 0; top: 0; font-family: "Paperlogy";  font-size: 50px; line-height: 100px; color: #E5352B; white-space: nowrap; font-weight: 600; }
+
+        /* TELOP — double outline: ink fill / white band / thin ink rim + offset shadow (3 stacked copies) */
+        .f6-telop { position: absolute; white-space: nowrap; font-family: "Paperlogy"; font-weight: 600; letter-spacing: 0.02em; line-height: 1.05; transform-origin: 30% 60%; }
+        .f6-telop > span { display: block; }
+        .f6-telop > span + span { position: absolute; left: 0; top: 0; }
+        .f6-t-outer { color: rgba(26,26,34,.32); -webkit-text-stroke: 0.13em rgba(26,26,34,.32); transform: translate(0.03em, 0.045em); text-shadow: 8px 10px 0 rgba(26,26,34,.28); }
+        .f6-t-mid { color: #FFFFFF; -webkit-text-stroke: 0.13em #FFFFFF; }
+        .f6-t-fill { color: #1A1A22; }
+        .f6-ch { display: inline-block; transform-origin: 50% 100%; }
+
+        /* CUSHION (座布団) */
+        .f6-cushion { position: absolute; border-radius: 6px; box-shadow: 0 2px 0 rgba(0,0,0,.1), 0 10px 18px rgba(60,40,10,.22); transform-origin: 0% 50%; }
+        .f6-cush-y { background: #FFE13A; }
+        .f6-cush-n { background: #23268C; color: #fff; font-family: "Paperlogy";  padding: 14px 30px 10px; white-space: nowrap; font-weight: 600; }
+
+        /* FACES: wrapper takes the big moves, the <img> takes the 8 fps boil */
+        .f6-face { position: absolute; transform-origin: 50% 100%; }
+        .f6-face img { position: absolute; left: 0; top: 0; display: block; width: 100%; height: 100%; }
+
+        /* FOOTNOTE ※ */
+        .f6-note-band { position: absolute; left: 110px; top: 1018px; font-family: "Paperlogy"; font-weight: 500; font-size: 20px; color: rgba(26,26,34,.55); white-space: nowrap; }
+      </style>
+
+      <div id="stage" data-composition-id="06-f6" data-width="1920" data-height="1080" data-duration="4.64">
+        <!-- LEFT: paper grading card -->
+        <div id="f6_card" class="f6-card" style="left:110px;top:200px;width:880px;height:640px;transform:rotate(-1deg);">
+          <div id="f6_strip" class="f6-strip">실기 자동 채점</div>
+
+          <div id="f6_tray" class="f6-tray">
+            <div class="f6-tray-lo"></div>
+            <div id="f6_trayhi" class="f6-tray-hi"></div>
+            <div id="f6_traytxt" class="f6-tray-txt">답안 파일을 올려 주세요</div>
+            <div id="f6_file" class="f6-file">
+              <div id="f6_file_in" class="f6-file-in">
+                <div class="f6-file-name">기출변형_07회.xlsx</div>
+                <div class="f6-file-tab">xlsx</div>
+              </div>
+            </div>
+          </div>
+          <div id="f6_prog" class="f6-prog"><div id="f6_progfill" class="f6-prog-fill"></div></div>
+
+          <div id="f6_rows" class="f6-rows">
+            <div id="f6_row1" class="f6-row" style="top:212px;">
+              <div class="f6-row-lbl">엑셀</div>
+              <div class="f6-track"><div id="f6_fill1" class="f6-fill"></div></div>
+              <div id="f6_s1" class="f6-score">
+                <span id="f6_s1_v0" class="f6-sv" data-layout-ignore>0<small>점</small></span>
+                <span id="f6_s1_v1" class="f6-sv" data-layout-ignore>17<small>점</small></span>
+                <span id="f6_s1_v2" class="f6-sv" data-layout-ignore>34<small>점</small></span>
+                <span id="f6_s1_v3" class="f6-sv" data-layout-ignore>51<small>점</small></span>
+                <span id="f6_s1_v4" class="f6-sv" data-layout-ignore>68<small>점</small></span>
+                <div id="f6_s1_fin" class="f6-fin">
+                  <span class="f6-fin-stroke" data-layout-ignore>85<small>점</small></span>
+                  <div id="f6_s1_mask" class="f6-mask"><span id="f6_s1_fill" class="f6-fin-fill" data-layout-allow-overflow>85<small>점</small></span></div>
+                </div>
+              </div>
+            </div>
+            <div id="f6_row2" class="f6-row" style="top:362px;">
+              <div class="f6-row-lbl">액세스</div>
+              <div class="f6-track"><div id="f6_fill2" class="f6-fill"></div></div>
+              <div id="f6_s2" class="f6-score">
+                <span id="f6_s2_v0" class="f6-sv" data-layout-ignore>0<small>점</small></span>
+                <span id="f6_s2_v1" class="f6-sv" data-layout-ignore>20<small>점</small></span>
+                <span id="f6_s2_v2" class="f6-sv" data-layout-ignore>40<small>점</small></span>
+                <span id="f6_s2_v3" class="f6-sv" data-layout-ignore>60<small>점</small></span>
+                <div id="f6_s2_fin" class="f6-fin">
+                  <span class="f6-fin-stroke" data-layout-ignore>80<small>점</small></span>
+                  <div id="f6_s2_mask" class="f6-mask"><span id="f6_s2_fill" class="f6-fin-fill" data-layout-allow-overflow>80<small>점</small></span></div>
+                </div>
+              </div>
+            </div>
+            <div id="f6_line" class="f6-line" data-layout-allow-overlap></div>
+            <div id="f6_linelbl" class="f6-line-lbl">합격선 70</div>
+          </div>
+
+          <svg id="f6_hana" class="f6-svg" width="880" height="640" viewBox="0 0 880 640" data-layout-allow-overlap><path id="f6_hana_p" fill="none" stroke="#E5352B" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" pathLength="1000" stroke-dasharray="1000" stroke-dashoffset="1000"/></svg>
+          <div id="f6_pen" class="f6-pen" data-layout-allow-overlap>
+            <div id="f6_pen_m" class="f6-pen-m"><div id="f6_pen_t" class="f6-pen-t">합격권!</div></div>
+          </div>
+        </div>
+
+        <!-- RIGHT: telop stack -->
+        <div id="f6_t1" class="f6-telop" style="left:1110px;top:178px;font-size:118px;" data-text="풀고,"></div>
+        <div id="f6_t2" class="f6-telop" style="left:1176px;top:318px;font-size:118px;" data-text="올리면,"></div>
+        <div id="f6_cush3" class="f6-cushion f6-cush-y" style="left:1090px;top:468px;width:564px;height:160px;transform:rotate(-2deg);"></div>
+        <div id="f6_t3" class="f6-telop" style="left:1139px;top:484px;font-size:118px;" data-text="바로 채점!"></div>
+
+        <!-- faces -->
+        <div id="f6_rei" class="f6-face" style="left:1236px;top:694px;width:232px;height:232px;">
+          <img id="f6_rei_w" src="assets/faces/worry/rei.png" alt="" />
+          <img id="f6_rei_h" src="assets/faces/happy/rei.png" alt="" style="opacity:0" />
+        </div>
+        <div id="f6_ian" class="f6-face" style="left:1512px;top:704px;width:232px;height:232px;">
+          <img id="f6_ian_w" src="assets/faces/worry/ian.png" alt="" />
+          <img id="f6_ian_h" src="assets/faces/happy/ian.png" alt="" style="opacity:0" />
+        </div>
+
+        <!-- bottom caption + footnote -->
+        <div id="f6_cap" class="f6-cushion f6-cush-n" style="left:110px;top:896px;font-size:36px;"><span id="f6_cap_t" style="display:inline-block;">필기는 웹 CBT 10회 · 실기는 자동 채점(엑셀·액세스)</span></div>
+        <div id="f6_note" class="f6-note-band">※ 화면은 이해를 돕기 위한 연출입니다</div>
+
+        <div id="f6_side" class="f6-side"><b>POINT 4</b><span>웹 CBT · 자동 채점</span></div>
+      </div>
+
+      <script>
+        (function () {
+          var D = 4.64;               // frame span 24.80 → 29.44 (local = track − 24.80)
+          var F = 1 / 30;
+          var tl = gsap.timeline({ paused: true });
+          var q = function (s) { return document.querySelector(s); };
+          function rnd(i) { var x = Math.sin(i * 12.9898 + 78.233) * 43758.5453; return x - Math.floor(x); }
+
+          // TELOP builder (3 stacked copies); perChar wraps each glyph in .f6-c<i> across all three layers
+          function telop(el, perChar) {
+            var t = el.getAttribute("data-text"), inner = t, n = 0;
+            if (perChar) {
+              inner = "";
+              Array.from(t).forEach(function (c) {
+                if (c === " ") { inner += " "; } else { inner += '<span class="f6-ch f6-c' + n + '">' + c + "</span>"; n++; }
+              });
+            }
+            el.innerHTML = '<span class="f6-t-outer">' + inner + '</span><span class="f6-t-mid">' + inner + '</span><span class="f6-t-fill">' + inner + "</span>";
+            return n;
+          }
+          telop(q("#f6_t1"));
+          telop(q("#f6_t2"));
+          var n3 = telop(q("#f6_t3"), true);
+
+          // POP-IN (ぽよん)
+          function popIn(target, at) {
+            tl.set(target, { autoAlpha: 0 }, 0);
+            tl.fromTo(target, { scale: 0, autoAlpha: 1 }, { scale: 1.2, autoAlpha: 1, duration: 5 * F, ease: "power2.out", immediateRender: false }, at);
+            tl.to(target, { scale: 1, duration: 2 * F, ease: "power1.in" }, at + 5 * F);
+            tl.to(target, { scaleX: 1.08, scaleY: 0.95, duration: 2 * F }, at + 7 * F);
+            tl.to(target, { scaleX: 1, scaleY: 1, duration: 3 * F, ease: "power1.out" }, at + 9 * F);
+          }
+          // SQUASH on an expression swap (1 → 0.92 → 1.04 → 1, 0.12 s)
+          function squash(target, at) {
+            tl.to(target, { scale: 0.92, duration: 0.03, ease: "power1.out" }, at);
+            tl.to(target, { scale: 1.04, duration: 0.04, ease: "power1.out" }, at + 0.03);
+            tl.to(target, { scale: 1, duration: 0.05, ease: "power1.in" }, at + 0.07);
+          }
+          // BOIL (カクカク): 8 fps rotation/offset jitter from an index-seeded table
+          function boil(target, idx, from, to, amp) {
+            amp = amp || 1;
+            for (var k = Math.floor(from * 8); k < Math.floor(to * 8); k++) {
+              var s = idx * 131 + k * 7;
+              tl.set(target, { rotation: (rnd(s) - 0.5) * 3 * amp, x: Math.round((rnd(s + 1) - 0.5) * 4 * amp), y: Math.round((rnd(s + 2) - 0.5) * 4 * amp) }, k / 8);
+            }
+          }
+          // HANAMARU (はなまる): scalloped spiral circle as one path
+          function hanamaru(path, cx, cy, rx, ry) {
+            var d = "", N = 220, turns = 1.35;
+            for (var i = 0; i <= N; i++) {
+              var t = i / N, a = -Math.PI * 0.6 + t * turns * Math.PI * 2, s = 1 - t * 0.18 + Math.sin(a * 6) * 0.05;
+              d += (i ? "L" : "M") + (cx + Math.cos(a) * rx * s).toFixed(1) + "," + (cy + Math.sin(a) * ry * s).toFixed(1);
+            }
+            path.setAttribute("d", d);
+          }
+          hanamaru(q("#f6_hana_p"), 809, 337, 92, 150);
+
+          // ---------- 0.20 (25.00) side label slides in, stays
+          tl.set("#f6_side", { autoAlpha: 0 }, 0);
+          tl.fromTo("#f6_side", { x: -40, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.22, ease: "power3.out", immediateRender: false }, 0.20);
+
+          // ---------- 0.37 (25.17) file card drops into the tray (place-style landing) + t1 + rei
+          tl.set("#f6_file", { autoAlpha: 0 }, 0);
+          tl.fromTo("#f6_file", { y: -230, rotation: -9, scale: 1.08, autoAlpha: 1 }, { y: 0, rotation: 2, scale: 1, duration: 0.17, ease: "power2.in", immediateRender: false }, 0.37);
+          tl.to("#f6_file", { rotation: 0, duration: 0.08, ease: "power1.inOut" }, 0.54);
+          tl.set("#f6_trayhi", { autoAlpha: 0 }, 0);
+          tl.set("#f6_trayhi", { autoAlpha: 1 }, 0.54);
+          tl.to("#f6_tray", { y: 3, duration: 0.04, ease: "power1.out" }, 0.54);
+          tl.to("#f6_tray", { y: 0, duration: 0.06, ease: "power1.in" }, 0.58);
+          popIn("#f6_t1", 0.37);
+          popIn("#f6_rei", 0.37);
+
+          // ---------- 0.77 (25.57) progress bar fills in 12 fps steps + t2 + ian
+          tl.set("#f6_progfill", { scaleX: 0 }, 0);
+          [0.22, 0.46, 0.68, 0.88, 1].forEach(function (v, j) { tl.set("#f6_progfill", { scaleX: v }, 0.77 + j / 12); });
+          popIn("#f6_t2", 0.77);
+          popIn("#f6_ian", 0.77);
+
+          // ---------- 1.14 (25.94) 0 ms swap: tray → result rows; t3 on its yellow cushion (kinetic letter-in)
+          tl.set("#f6_tray", { autoAlpha: 1 }, 0);
+          tl.set("#f6_prog", { autoAlpha: 1 }, 0);
+          tl.set("#f6_tray", { autoAlpha: 0 }, 1.14);
+          tl.set("#f6_prog", { autoAlpha: 0 }, 1.14);
+          tl.set("#f6_rows", { autoAlpha: 0 }, 0);
+          tl.set("#f6_rows", { autoAlpha: 1 }, 1.14);
+          tl.fromTo("#f6_row1", { y: 26, rotation: -1.5 }, { y: 0, rotation: 0, duration: 0.17, ease: "power2.out", immediateRender: false }, 1.14);
+          tl.fromTo("#f6_row2", { y: 26, rotation: 1.5 }, { y: 0, rotation: 0, duration: 0.17, ease: "power2.out", immediateRender: false }, 1.18);
+          tl.set("#f6_line", { scaleY: 0 }, 0);
+          tl.fromTo("#f6_line", { scaleY: 0 }, { scaleY: 1, duration: 0.16, ease: "power2.out", immediateRender: false }, 1.16);
+          popIn("#f6_linelbl", 1.16);
+
+          tl.set("#f6_cush3", { scaleX: 0 }, 0);
+          tl.fromTo("#f6_cush3", { scaleX: 0 }, { scaleX: 1, duration: 0.2, ease: "power3.out", immediateRender: false }, 1.14);
+          for (var i = 0; i < n3; i++) {
+            var c = "#f6_t3 .f6-c" + i;
+            var at = 1.20 + i * 0.045;
+            // visibility swaps instantly (no opacity blend — the 3 stacked telop layers must stay opaque)
+            tl.set(c, { autoAlpha: 0 }, 0);
+            tl.set(c, { autoAlpha: 1 }, at);
+            tl.fromTo(c, { y: 64, scale: 0.5 }, { y: 0, scale: 1, duration: 0.34, ease: "back.out(2.2)", immediateRender: false }, at);
+          }
+
+          // ---------- 1.197 → 1.53 (26.33): bars fill (directional, 12 fps steps), scores count in outline, both pass 70 on the downbeat
+          var STEP = 1 / 12, DOWN = 1.53;
+          function rowFill(fill, vals) {
+            tl.set(fill, { scaleX: 0 }, 0);
+            vals.forEach(function (v, j) { tl.set(fill, { scaleX: v }, DOWN - (vals.length - 1 - j) * STEP); });
+          }
+          rowFill("#f6_fill1", [0.17, 0.34, 0.51, 0.68, 0.85]);
+          rowFill("#f6_fill2", [0.20, 0.40, 0.60, 0.80]);
+          function counter(pre, nInter) {
+            // v0 shows at the swap; v1..v(n-1) on the 12 fps steps; the final value lands on the downbeat
+            var shows = [1.14];
+            for (var j = 1; j < nInter; j++) shows.push(DOWN - (nInter - j) * STEP);
+            for (var k = 0; k < nInter; k++) {
+              var id = "#" + pre + "_v" + k;
+              tl.set(id, { autoAlpha: 0 }, 0);
+              tl.set(id, { autoAlpha: 1 }, shows[k]);
+              tl.set(id, { autoAlpha: 0 }, k + 1 < nInter ? shows[k + 1] : DOWN);
+            }
+            tl.set("#" + pre + "_fin", { autoAlpha: 0 }, 0);
+            tl.set("#" + pre + "_fin", { autoAlpha: 1 }, DOWN);
+            // outline → fill: the fill rises from the bottom (mask/inner counter-translate, transforms only)
+            tl.fromTo("#" + pre + "_mask", { y: 64 }, { y: 0, duration: 0.3, ease: "expo.out", immediateRender: false }, DOWN);
+            tl.fromTo("#" + pre + "_fill", { y: -64 }, { y: 0, duration: 0.3, ease: "expo.out", immediateRender: false }, DOWN);
+            tl.fromTo("#" + pre, { scale: 1.25 }, { scale: 1, duration: 0.16, ease: "back.out(3)", immediateRender: false }, DOWN);
+          }
+          counter("f6_s1", 5);
+          counter("f6_s2", 4);
+          tl.fromTo("#f6_linelbl", { scale: 1.3 }, { scale: 1, duration: 0.14, ease: "power2.out", immediateRender: false }, DOWN);
+
+          // faces worry → happy on the downbeat (0 ms swap + squash), small hop on 26.73
+          [["rei", 0], ["ian", 1]].forEach(function (f) {
+            var w = "#f6_" + f[0] + "_w", h = "#f6_" + f[0] + "_h", wrap = "#f6_" + f[0];
+            tl.set(h, { opacity: 1 }, DOWN);
+            tl.set(w, { opacity: 0 }, DOWN);
+            squash(wrap, DOWN);
+            var hop = 1.93 + f[1] * 0.05;
+            tl.to(wrap, { y: -22, duration: 0.12, ease: "power2.out" }, hop);
+            tl.to(wrap, { y: 0, duration: 0.12, ease: "power2.in" }, hop + 0.12);
+            boil(w, 61 + f[1], 0, D);
+            boil(h, 61 + f[1], 0, D);
+          });
+          boil("#f6_file_in", 67, 0, 1.14, 0.6);
+
+          // ---------- 2.32 (27.12) red hanamaru around both scores + '합격권!' handwritten
+          tl.to("#f6_hana_p", { strokeDashoffset: 0, duration: 0.4, ease: "power1.inOut" }, 2.32);
+          tl.set("#f6_pen", { autoAlpha: 0 }, 0);
+          tl.set("#f6_pen", { autoAlpha: 1 }, 2.44);
+          tl.fromTo("#f6_pen_m", { x: -300 }, { x: 0, duration: 0.32, ease: "power1.inOut", immediateRender: false }, 2.44);
+          tl.fromTo("#f6_pen_t", { x: 300 }, { x: 0, duration: 0.32, ease: "power1.inOut", immediateRender: false }, 2.44);
+
+          // ---------- 3.09 (27.89) caption on a navy cushion + footnote
+          tl.set("#f6_cap", { scaleX: 0 }, 0);
+          tl.fromTo("#f6_cap", { scaleX: 0 }, { scaleX: 1, duration: 0.2, ease: "power3.out", immediateRender: false }, 3.09);
+          tl.set("#f6_cap_t", { autoAlpha: 0 }, 0);
+          tl.fromTo("#f6_cap_t", { autoAlpha: 0, x: -12 }, { autoAlpha: 1, x: 0, duration: 0.16, ease: "power2.out", immediateRender: false }, 3.15);
+          tl.set("#f6_note", { autoAlpha: 0 }, 0);
+          tl.fromTo("#f6_note", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2, ease: "power1.out", immediateRender: false }, 3.09);
+
+          // 3.3 → 4.64: hold (boil only); the rings transition covers the last 0.3 s
+          window.__timelines = window.__timelines || {};
+          window.__timelines["06-f6"] = tl;
+          document.querySelectorAll(".f6-t-outer,.f6-t-mid,.f6-t-shadow,.f6-t-shd").forEach(function (e) { e.setAttribute("data-layout-ignore", ""); });
+          tl.seek(0.001); tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- F4 · POINT 2 · 쌩초보 6주 플랜 — PROGRESS-WALK (track 15.51 → 20.16, local 0 → 4.65).
+         Built from the paper-pop kit (telop / popIn / place / boil), f1 → f4 renamed. -->
+  </head>
+  <body>
+    <template id="04-f4-template">
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-7Bold.ttf") format("truetype"); font-weight: 700; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-6SemiBold.ttf") format("truetype"); font-weight: 600; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+
+        /* NAVY ground + faint lighter-navy graph grid */
+        #stage { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; background-color: #23268C;
+          background-image: repeating-linear-gradient(0deg, rgba(255,255,255,.055) 0 2px, transparent 2px 84px), repeating-linear-gradient(90deg, rgba(255,255,255,.055) 0 2px, transparent 2px 84px);
+          font-family: "Paperlogy", sans-serif; color: #FFFFFF; }
+
+        /* SIDE LABEL pill (サイドテロップ) — topic in white on navy */
+        .f4-side { position: absolute; left: 96px; top: 56px; display: flex; align-items: center; gap: 14px; font-family: "Paperlogy"; font-size: 34px; color: #FFFFFF; font-weight: 600; }
+        .f4-side b { font-weight: 700; background: #FFE13A; color: #1A1A22; padding: 8px 20px 4px; border-radius: 999px; border: 4px solid #1A1A22; }
+
+        /* TELOP — double outline: navy-dark outer (+ink offset shadow) / ink stroke / fill */
+        .f4-row { position: absolute; left: 0; top: 150px; width: 1920px; display: flex; justify-content: center; align-items: baseline; gap: 30px; }
+        .f4-telop { position: relative; white-space: nowrap; font-family: "Paperlogy"; font-weight: 600; letter-spacing: 0.02em; line-height: 1.05; }
+        .f4-telop > span { display: block; }
+        .f4-telop > span + span { position: absolute; left: 0; top: 0; }
+        .f4-t-outer { color: #10124F; -webkit-text-stroke: 0.11em #10124F; text-shadow: 8px 10px 0 #1A1A22; }
+        .f4-t-mid { color: #1A1A22; -webkit-text-stroke: 0.06em #1A1A22; }
+        .f4-t-fill { color: #FFFFFF; }
+        .f4-yel .f4-t-fill { color: #FFE13A; }
+
+        .f4-sub { position: absolute; left: 0; top: 352px; width: 1920px; text-align: center; font-family: "Paperlogy"; font-size: 44px; color: #FFFFFF;
+          text-shadow: 3px 4px 0 rgba(10,10,40,.45); white-space: nowrap; font-weight: 600; }
+
+        /* WEEK TILES — paper pieces (1–2 yellow, 3–6 white) */
+        .f4-tile { position: absolute; top: 680px; width: 180px; height: 110px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+          padding-top: 6px; box-sizing: border-box; font-family: "Paperlogy"; font-size: 44px; color: #1A1A22;
+          box-shadow: 0 2px 0 rgba(0,0,0,.14), 0 12px 20px rgba(6,6,40,.38); font-weight: 600; }
+        .f4-tile-y { background: #FFE13A; }
+        .f4-tile-w { background: #FFFDF8; }
+
+        /* BRACKETS under the tiles + their labels */
+        .f4-svg { position: absolute; left: 0; top: 0; overflow: visible; filter: drop-shadow(2px 3px 0 rgba(10,10,40,.45)); }
+        .f4-brl { position: absolute; top: 852px; width: 320px; text-align: center; font-family: "Paperlogy"; font-size: 36px; white-space: nowrap;
+          text-shadow: 2px 3px 0 rgba(10,10,40,.45); font-weight: 600; }
+
+        /* GOAL SIGN — white paper board, red border, short stick */
+        .f4-goal { position: absolute; left: 1550px; top: 550px; width: 260px; height: 240px; transform-origin: 50% 100%; }
+        .f4-goal-in { position: absolute; left: 0; top: 0; width: 260px; height: 240px; transform-origin: 50% 100%; }
+        .f4-stick { position: absolute; left: 119px; top: 150px; width: 22px; height: 90px; box-sizing: border-box; background: #E3D9C4; border: 4px solid #1A1A22; border-radius: 5px;
+          box-shadow: 0 8px 14px rgba(6,6,40,.35); }
+        .f4-board { position: absolute; left: 0; top: 0; width: 260px; height: 170px; box-sizing: border-box; background: #FFFDF8; border: 8px solid #E5352B; border-radius: 16px;
+          display: flex; align-items: center; justify-content: center; padding-top: 8px; font-family: "Paperlogy"; font-size: 72px; color: #E5352B; white-space: nowrap;
+          box-shadow: 0 2px 0 rgba(0,0,0,.14), 0 14px 24px rgba(6,6,40,.4); font-weight: 600; }
+
+        /* FACE: wrapper = hop path + squash, inner = pop / expression squash, <img> = 8 fps boil */
+        .f4-face { position: absolute; }
+        .f4-face img { display: block; position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+        #f4_run { left: 125px; top: 497px; width: 210px; height: 210px; transform-origin: 50% 87%; }
+        /* late entrances start transparent in CSS so t=0 is correct even when a seek(0) renders nothing */
+        .f4-pre { opacity: 0; }
+
+        #f4_runPop { position: absolute; left: 0; top: 0; width: 210px; height: 210px; transform-origin: 50% 87%; }
+      </style>
+
+      <div id="stage" data-composition-id="04-f4" data-width="1920" data-height="1080" data-duration="5.650">
+        <div id="f4_side" class="f4-side f4-pre"><b>POINT</b><span>쌩초보 6주 플랜</span></div>
+
+        <div id="f4_row" class="f4-row">
+          <div id="f4_telA" class="f4-telop f4-pre" style="font-size:110px;" data-text="쌩초보 기준, 딱"></div>
+          <div id="f4_telB" class="f4-telop f4-yel f4-pre" style="font-size:148px;transform-origin:50% 80%;" data-text="6주"></div>
+        </div>
+        <div id="f4_t2" class="f4-sub f4-pre">필기 2주 + 실기 4주 합격 패스</div>
+
+        <div id="f4_tile0" class="f4-tile f4-tile-y f4-pre" style="left:340px;">1주</div>
+        <div id="f4_tile1" class="f4-tile f4-tile-y f4-pre" style="left:540px;">2주</div>
+        <div id="f4_tile2" class="f4-tile f4-tile-w f4-pre" style="left:740px;">3주</div>
+        <div id="f4_tile3" class="f4-tile f4-tile-w f4-pre" style="left:940px;">4주</div>
+        <div id="f4_tile4" class="f4-tile f4-tile-w f4-pre" style="left:1140px;">5주</div>
+        <div id="f4_tile5" class="f4-tile f4-tile-w f4-pre" style="left:1340px;">6주</div>
+
+        <svg id="f4_brk" class="f4-svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+          <path id="f4_brk1" d="M343,806 L343,827 L516,827 L530,841 L544,827 L717,827 L717,806" fill="none" stroke="#FFE13A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" pathLength="1000" stroke-dasharray="1000" stroke-dashoffset="1000" />
+          <path id="f4_brk2" d="M743,806 L743,827 L1116,827 L1130,841 L1144,827 L1517,827 L1517,806" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" pathLength="1000" stroke-dasharray="1000" stroke-dashoffset="1000" />
+        </svg>
+        <div id="f4_br1" class="f4-brl f4-pre" style="left:370px;color:#FFE13A;">필기 2주</div>
+        <div id="f4_br2" class="f4-brl f4-pre" style="left:970px;color:#FFFFFF;">실기 4주</div>
+
+        <div id="f4_goal" class="f4-goal f4-pre">
+          <div id="f4_goalIn" class="f4-goal-in">
+            <div class="f4-stick"></div>
+            <div class="f4-board">합격!</div>
+          </div>
+        </div>
+
+        <div id="f4_run" class="f4-face">
+          <div id="f4_runPop" class="f4-pre">
+            <img id="f4_runF" src="assets/faces/fired/benny.png" alt="" />
+            <img id="f4_runH" src="assets/faces/happy/benny.png" alt="" style="opacity:0" />
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var D = 4.65;
+          var tl = gsap.timeline({ paused: true });
+          var q = function (s) { return document.querySelector(s); };
+          // deterministic pseudo-random in [0,1) from an integer
+          function rnd(i) { var x = Math.sin(i * 12.9898 + 78.233) * 43758.5453; return x - Math.floor(x); }
+
+          // TELOP builder: 3 stacked copies (outer / mid / fill)
+          function telop(el) {
+            var t = el.getAttribute("data-text");
+            el.innerHTML = '<span class="f4-t-outer" data-layout-ignore>' + t + '</span><span class="f4-t-mid" data-layout-ignore>' + t + '</span><span class="f4-t-fill">' + t + '</span>';
+          }
+          ["#f4_telA", "#f4_telB"].forEach(function (s) { telop(q(s)); });
+
+          // POP-IN (ぽよん): 0 → 1.2 (5f) → 1 (2f) → squash
+          function popIn(target, at) {
+            var f = 1 / 30;
+            tl.set(target, { autoAlpha: 0 }, 0);
+            tl.fromTo(target, { scale: 0, autoAlpha: 1 }, { scale: 1.2, autoAlpha: 1, duration: 5 * f, ease: "power2.out", immediateRender: false }, at);
+            tl.to(target, { scale: 1, duration: 2 * f, ease: "power1.in" }, at + 5 * f);
+            tl.to(target, { scaleX: 1.08, scaleY: 0.95, duration: 2 * f }, at + 7 * f);
+            tl.to(target, { scaleX: 1, scaleY: 1, duration: 3 * f, ease: "power1.out" }, at + 9 * f);
+          }
+          // DROP: a paper tile falls from y −60 and is laid down (place motion), landing exactly at `land`
+          function drop(target, land, rot) {
+            var fall = 0.12;
+            tl.set(target, { autoAlpha: 0 }, 0);
+            tl.fromTo(target, { y: -60, rotation: rot - 6, autoAlpha: 0 }, { y: 0, rotation: rot + 1.5, autoAlpha: 1, duration: fall, ease: "power2.in", immediateRender: false }, land - fall);
+            tl.to(target, { rotation: rot, duration: 0.08, ease: "power1.inOut" }, land);
+          }
+          // BOIL (カクカク): 8 fps rotation/offset jitter (never on the wrapper that carries the big moves)
+          function boil(target, idx, from, to, amp) {
+            amp = amp || 1;
+            for (var k = Math.ceil(from * 8); k <= Math.floor(to * 8); k++) {
+              var s = idx * 131 + k * 7;
+              tl.set(target, { rotation: (rnd(s) - 0.5) * 3 * amp, x: Math.round((rnd(s + 1) - 0.5) * 4 * amp), y: Math.round((rnd(s + 2) - 0.5) * 4 * amp) }, k / 8);
+            }
+          }
+          // HOP: cut-paper puppet hop — parabolic arc sampled in N steps (≈12 fps), takeoff stretch, landing squash
+          var RUN = "#f4_run";
+          function hop(t0, x0, y0, x1, y1, H, dur, rots) {
+            var N = 4, st = dur / N;
+            tl.set(RUN, { x: x0, y: y0, rotation: -3, scaleX: 0.92, scaleY: 1.09 }, t0);
+            for (var k = 1; k <= N; k++) {
+              var u = k / N;
+              var p = { x: Math.round(x0 + (x1 - x0) * u), y: Math.round(y0 + (y1 - y0) * u - 4 * H * u * (1 - u)), rotation: k < N ? rots[k - 1] : 0 };
+              if (k === 1) { p.scaleX = 1; p.scaleY = 1; }
+              if (k === N) { p.scaleX = 1.1; p.scaleY = 0.9; }
+              tl.set(RUN, p, t0 + k * st);
+            }
+            tl.set(RUN, { scaleX: 0.97, scaleY: 1.04 }, t0 + dur + 0.04);
+            tl.set(RUN, { scaleX: 1, scaleY: 1 }, t0 + dur + 0.08);
+            return t0 + dur;
+          }
+
+          // ---- frame-local anchors (track − 15.51)
+          var T_SIDE = 0.30;                                   // 15.81
+          var T_TEL = 0.37;                                    // 15.88
+          var BEATS = [0.77, 1.14, 1.53, 1.93, 2.32, 2.69];    // 16.28 16.65 17.04 17.44 17.83 18.20
+          var T_GOAL = 3.09;                                   // 18.60 downbeat
+          var T_ARRIVE = 3.46;                                 // 18.97
+
+          var START_CX = 230, CHIN = 680;
+          var TILE_CX = [430, 630, 830, 1030, 1230, 1430];
+          var GOAL_CX = 1680, GOAL_TOP = 550;
+
+          // side label (stays the whole frame)
+          tl.set("#f4_side", { autoAlpha: 0 }, 0);
+          tl.fromTo("#f4_side", { x: -40, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.22, ease: "power3.out", immediateRender: false }, T_SIDE);
+
+          // main telop: '쌩초보 기준, 딱' then the YELLOW '6주' pops a beat-eighth later
+          popIn("#f4_telA", T_TEL);
+          popIn("#f4_telB", T_TEL + 0.16);
+
+          // runner pops in at the left of tile 1
+          tl.set(RUN, { x: 0, y: 0, rotation: 0, scaleX: 1, scaleY: 1 }, 0);
+          popIn("#f4_runPop", T_TEL);
+
+          // tiles drop on the beats; benny hops onto each as it lands
+          var px = 0;
+          for (var i = 0; i < 6; i++) {
+            var tile = "#f4_tile" + i;
+            var rot = Math.round((rnd(i * 17 + 5) - 0.5) * 30) / 10;   // ±1.5°
+            drop(tile, BEATS[i], rot);
+            var nx = TILE_CX[i] - START_CX;
+            var land = hop(BEATS[i], px, 0, nx, 0, 70, 0.28, [7, 3, -4]);
+            // the tile gives a little under his landing
+            tl.fromTo(tile, { y: 5 }, { y: 0, duration: 0.14, ease: "power2.out", immediateRender: false }, land);
+            px = nx;
+          }
+
+          // t2 under the main telop
+          tl.set("#f4_t2", { autoAlpha: 0 }, 0);
+          tl.fromTo("#f4_t2", { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.24, ease: "back.out(2)", immediateRender: false }, BEATS[2]);
+
+          // brackets draw on (17.04 / 18.20), labels pop right after
+          tl.fromTo("#f4_brk1", { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.26, ease: "power1.inOut", immediateRender: false }, BEATS[2]);
+          popIn("#f4_br1", BEATS[2] + 0.12);
+          tl.fromTo("#f4_brk2", { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.3, ease: "power1.inOut", immediateRender: false }, BEATS[5]);
+          popIn("#f4_br2", BEATS[5] + 0.12);
+
+          // counting punch: the 6th week lands → the headline '6주' punches
+          tl.to("#f4_telB", { scale: 1.16, duration: 0.06, ease: "power2.out" }, BEATS[5]);
+          tl.to("#f4_telB", { scale: 1, duration: 0.3, ease: "back.out(3)" }, BEATS[5] + 0.06);
+
+          // 18.60: goal sign pops, benny makes the big jump onto it (happy at the apex), lands 18.97
+          popIn("#f4_goal", T_GOAL);
+          var jd = T_ARRIVE - T_GOAL;
+          hop(T_GOAL, px, 0, GOAL_CX - START_CX, GOAL_TOP - CHIN, 120, jd, [9, 2, -7]);
+          var apex = T_GOAL + jd / 2;
+          tl.set("#f4_runH", { opacity: 1 }, apex);
+          tl.set("#f4_runF", { opacity: 0 }, apex);
+          tl.to("#f4_runPop", { scale: 0.92, duration: 0.03 }, apex);
+          tl.to("#f4_runPop", { scale: 1.04, duration: 0.04 }, apex + 0.03);
+          tl.to("#f4_runPop", { scale: 1, duration: 0.05, ease: "power1.out" }, apex + 0.07);
+          // the sign gives under the landing
+          tl.fromTo("#f4_goalIn", { scaleY: 0.93 }, { scaleY: 1, duration: 0.2, ease: "back.out(3)", immediateRender: false }, T_ARRIVE);
+
+          // paper boil — faces and the sign
+          boil("#f4_runF", 4, 0, D);
+          boil("#f4_runH", 4, 0, D);
+          boil("#f4_goalIn", 9, T_GOAL, D, 0.5);
+
+          tl.set({}, {}, D);
+          tl.seek(0.001); tl.seek(0);
+          window.__timelines = window.__timelines || {};
+          window.__timelines = window.__timelines || {};
+          // ---- retimed by goldenrabbit-promo/scripts/retime.py: the authored timeline (OLD s) is driven through a
+          // piecewise-linear warp so its bar lines land on the new track's downbeats (NEW s). Seek-safe: a tween on tl.time.
+          (function (inner) {
+            var MAP = [[0.0, 0.0], [1.91, 1.53], [3.79, 3.09], [5.65, 4.65]];   // [new local s, old local s]
+            var OLD = 4.6500, NEW = 5.6500;
+            function warp(p) {
+              var t = p * NEW;
+              for (var i = 1; i < MAP.length; i++) {
+                if (t <= MAP[i][0] || i === MAP.length - 1) {
+                  var a = MAP[i - 1], b = MAP[i], u = (t - a[0]) / (b[0] - a[0]);
+                  return (a[1] + (b[1] - a[1]) * Math.max(0, Math.min(1, u))) / OLD;
+                }
+              }
+              return 1;
+            }
+            inner.pause();
+            var outer = gsap.timeline({ paused: true });
+            outer.fromTo(inner, { time: 0 }, { time: OLD, duration: NEW, ease: warp, immediateRender: false }, 0);
+            outer.seek(0.001); outer.seek(0);
+            window.__timelines["04-f4"] = outer;
+          })(tl);
+        })();
+      </script>
+    </template>
+  </body>
+</html>
