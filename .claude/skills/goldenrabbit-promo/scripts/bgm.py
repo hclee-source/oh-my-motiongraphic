@@ -18,7 +18,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[4]
 LIB = ROOT / "shared" / "bgm"
 CAT = LIB / "catalog.json"
-PY = ROOT / ".venv" / "bin" / "python"
+PY = ROOT / ".venv" / ("Scripts/python.exe" if sys.platform == "win32" else "bin/python")
 ANALYZER = Path.home() / ".claude/skills/music-to-video/scripts/analyze-beatgrid.py"
 UA = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/128 Safari/537.36"}
 

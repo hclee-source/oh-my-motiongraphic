@@ -7,13 +7,15 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../../../.." && pwd)"
 cd "$ROOT"
 
-if [ ! -x .venv/bin/python ]; then
+case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*) VPY=.venv/Scripts/python.exe ;; *) VPY=.venv/bin/python ;; esac
+
+if [ ! -x "$VPY" ]; then
   echo "▸ creating .venv (python 3.12 via uv)"
   uv venv -q --python 3.12 .venv
 fi
 echo "▸ installing librosa / numpy / soundfile / pillow"
-uv pip install -q --python .venv/bin/python librosa numpy soundfile pillow
-.venv/bin/python -c "import librosa, PIL; print('  librosa', librosa.__version__)"
+uv pip install -q --python "$VPY" librosa numpy soundfile pillow
+"$VPY" -c "import librosa, PIL; print('  librosa', librosa.__version__)"
 
 echo "▸ refreshing HyperFrames skills (music-to-video + core)"
 npx -y hyperframes skills update music-to-video >/dev/null 2>&1 && echo "  ok" || echo "  ⚠ skills update failed — run: npx hyperframes skills update music-to-video"

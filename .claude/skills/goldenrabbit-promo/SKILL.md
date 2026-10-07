@@ -10,7 +10,8 @@ This skill runs the pipeline that produced `videos/goldenrabbit-books-promo` (v1
 from a spec**, not a hand-rebuild. The design rules are in `references/principles.md`. Read it once per session.
 
 `SKILL` = `.claude/skills/goldenrabbit-promo`, `ROOT` = this project folder. Python that needs librosa
-runs as `.venv/bin/python`; every other script runs on plain `python3`.
+runs as `.venv/bin/python`; every other script runs on plain `python3`. On Windows (Git Bash) use
+`.venv/Scripts/python.exe` wherever this file says `.venv/bin/python`.
 
 ## 0. Setup (once per machine)
 ```bash

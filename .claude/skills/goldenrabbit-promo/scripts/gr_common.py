@@ -1,5 +1,5 @@
 """Shared helpers for the goldenrabbit-promo skill scripts."""
-import json, re
+import json, re, sys
 from pathlib import Path
 
 SKILL = Path(__file__).resolve().parents[1]
@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[4]
 SHARED = ROOT / "shared"
 VIDEOS = ROOT / "videos"
 VARIANTS = ROOT / "variants"
-PY = ROOT / ".venv" / "bin" / "python"
+PY = ROOT / ".venv" / ("Scripts/python.exe" if sys.platform == "win32" else "bin/python")
 M2V = Path.home() / ".claude" / "skills" / "music-to-video"
 
 # Canvas + layout per aspect. "content" = where readable frame content may sit when the HUD is on.
