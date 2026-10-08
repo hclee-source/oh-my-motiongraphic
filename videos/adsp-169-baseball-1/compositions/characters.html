@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>characters · 야구 캐릭터 리액션 레이어</title>
+    <!-- Full-length overlay (track time = local time), mounted by assemble.py when this file exists.
+         Art = the user's character sheet (shared/keyvisuals/adsp-baseball-sheet-01.png), cut out with
+         scripts/checker_cutout.py and cropped to assets/characters/*.png — placed, never redrawn.
+         Reactions only, in empty corners, never over copy or covers. User review 2026-10-08: no character in the
+         search-bar hook or on the 2회독 steps; the reveal swing gets a real impact (flash, burst lines, afterimages,
+         a home-run ball). f5 has its own batter (stance → swing) inside 05-f5.html. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #stage {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: transparent;
+          pointer-events: none;
+        }
+        .ch-anchor {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 0;
+          height: 0;
+        }
+        .ch-img {
+          position: absolute;
+          display: block;
+          visibility: hidden;
+          opacity: 0;
+        }
+
+        /* ---- reveal swing (f2, 8.64) — sprite 359×367 at 1.45 → 520×532, hangs from the bottom edge ---- */
+        #ch_swingpos { left: 430px; top: 1080px; }
+        #ch_swing, .ch-ghost { left: -260px; top: -532px; width: 520px; height: 532px; transform-origin: 40% 100%; }
+        /* impact point = the bat's sweet spot ≈ (612, 681) on the stage */
+        #ch_impact { left: 612px; top: 681px; }
+        .ch-ray {
+          position: absolute;
+          left: 0;
+          top: -11px;
+          width: 900px;
+          height: 22px;
+          background: #1E2687;
+          clip-path: polygon(0 50%, 100% 0, 100% 100%);   /* thin wedge, point at the impact */
+          transform-origin: 0% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #ch_flash {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          background: #FFFFFF;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .ch-ball {
+          position: absolute;
+          left: -34px;
+          top: -34px;
+          width: 68px;
+          height: 68px;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .ch-ball svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+        /* ---- 2회독 back cover (f3, 19.32): slide safe ---- */
+        #ch_slidepos { left: 650px; top: 1072px; }
+        #ch_slide { left: -269px; top: -320px; width: 538px; height: 320px; transform-origin: 50% 100%; }
+
+        /* ---- CBT (f4, 22.42): thumbs-up wink ---- */
+        #ch_thumbpos { left: 1730px; top: 1080px; }
+        #ch_thumbs { left: -167px; top: -372px; width: 334px; height: 372px; transform-origin: 50% 100%; }
+      </style>
+
+      <div id="stage" data-composition-id="characters" data-width="1920" data-height="1080" data-duration="43.15">
+        <div id="ch_flash" data-layout-ignore=""></div>
+        <div id="ch_impact" class="ch-anchor" data-layout-ignore=""></div>
+        <div id="ch_balls" class="ch-anchor" data-layout-ignore=""></div>
+        <div id="ch_swingpos" class="ch-anchor" data-layout-ignore="">
+          <img id="ch_ghost2" class="ch-img ch-ghost" src="assets/characters/swing.png" alt="">
+          <img id="ch_ghost1" class="ch-img ch-ghost" src="assets/characters/swing.png" alt="">
+          <img id="ch_ghost0" class="ch-img ch-ghost" src="assets/characters/swing.png" alt="">
+          <img id="ch_swing" class="ch-img" src="assets/characters/swing.png" alt="">
+        </div>
+        <div id="ch_slidepos" class="ch-anchor" data-layout-ignore="">
+          <img id="ch_slide" class="ch-img" src="assets/characters/slide.png" alt="">
+        </div>
+        <div id="ch_thumbpos" class="ch-anchor" data-layout-ignore="">
+          <img id="ch_thumbs" class="ch-img" src="assets/characters/thumbs.png" alt="">
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          function $(id) {
+            return document.getElementById(id);
+          }
+          var tl = gsap.timeline({ paused: true });
+
+          // ================= f2 reveal: the swing on the drop ('빠따' = 빠르게 따는) =================
+          var HIT = 8.64;      // drop downbeat — impact-bass + bat-crack
+          var IN = 0.14;       // the swing whips in just before contact
+
+          // swing whips in from the left edge, lands ON the hit with a scale punch
+          tl.set("#ch_swing", { autoAlpha: 1 }, HIT - IN);
+          tl.fromTo("#ch_swing", { x: -520, rotation: -18, scale: 1 }, { x: 0, rotation: 0, duration: IN, ease: "power3.in", immediateRender: false }, HIT - IN);
+          tl.fromTo("#ch_swing", { scale: 1.12 }, { scale: 1, duration: 0.3, ease: "power3.out", immediateRender: false }, HIT);
+          // afterimages trail the whip (E8: 3 copies at .35/.2/.1, each a little behind), gone ~0.2 s after contact
+          [0.35, 0.2, 0.1].forEach(function (op, j) {
+            var g = "#ch_ghost" + j;
+            var lag = 0.035 * (j + 1);
+            tl.set(g, { autoAlpha: op }, HIT - IN + lag);
+            tl.fromTo(g, { x: -520, rotation: -18 }, { x: 0, rotation: 0, duration: IN, ease: "power3.in", immediateRender: false }, HIT - IN + lag);
+            tl.to(g, { opacity: 0, duration: 0.12, ease: "power1.out" }, HIT + 0.06 + j * 0.03);
+            tl.set(g, { autoAlpha: 0 }, HIT + 0.3);
+          });
+
+          // impact flash: one full white frame, then a fast fade (reads as a hit, not a glitch)
+          tl.set("#ch_flash", { autoAlpha: 0.85 }, HIT);
+          tl.to("#ch_flash", { opacity: 0, duration: 0.16, ease: "power2.out" }, HIT + 1 / 30);
+          tl.set("#ch_flash", { autoAlpha: 0 }, HIT + 0.22);
+
+          // burst lines from the bat's sweet spot (ink wedges on the yellow ground), index-derived angles/lengths
+          var imp = $("ch_impact");
+          imp.innerHTML = "";
+          var NR = 14;
+          for (var k = 0; k < NR; k++) {
+            var r = document.createElement("div");
+            r.className = "ch-ray";
+            imp.appendChild(r);
+            var ang = -150 + k * (260 / (NR - 1)) + ((k * 7) % 5) - 2;    // fan away from the batter (up/right/down)
+            var len = 0.7 + ((k * 5) % 4) * 0.12;
+            tl.set(r, { autoAlpha: 1, rotation: ang }, HIT);
+            tl.fromTo(r, { x: 50, scaleX: 0.25 * len, opacity: 1 }, { x: 170, scaleX: len, opacity: 0, duration: 0.45, ease: "power3.out", immediateRender: false }, HIT);
+            tl.set(r, { autoAlpha: 0 }, HIT + 0.47);
+          }
+
+          // the home-run ball: leaves the sweet spot up-right off frame on an arc, with a 4-ball trail
+          var balls = $("ch_balls");
+          balls.innerHTML = "";
+          var BALL = '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#FFFFFF" stroke="#1E2687" stroke-width="4"/>' +
+            '<path d="M22 18 C38 34 38 66 22 82" fill="none" stroke="#E8213F" stroke-width="5" stroke-dasharray="6 6"/>' +
+            '<path d="M78 18 C62 34 62 66 78 82" fill="none" stroke="#E8213F" stroke-width="5" stroke-dasharray="6 6"/></svg>';
+          var P0 = { x: 612, y: 681 }, P1 = { x: 860, y: 260 }, P2 = { x: 1080, y: -160 };   // up and out over the top, clear of the cover
+          for (var b = 0; b < 5; b++) {
+            var el = document.createElement("div");
+            el.className = "ch-ball";
+            el.innerHTML = BALL;
+            balls.appendChild(el);
+            var lagB = b * 0.03;
+            var t0 = HIT + 0.02 + lagB;
+            var s0 = 1.1 - b * 0.12;
+            tl.set(el, { autoAlpha: b === 0 ? 1 : 0.5 - b * 0.1 }, t0);
+            tl.fromTo(el, { x: P0.x, y: P0.y, scale: s0, rotation: 0 },
+              { x: P1.x, y: P1.y, scale: s0 * 0.72, rotation: 360, duration: 0.3, ease: "power1.out", immediateRender: false }, t0);
+            tl.fromTo(el, { x: P1.x, y: P1.y, scale: s0 * 0.72, rotation: 360 },
+              { x: P2.x, y: P2.y, scale: s0 * 0.45, rotation: 720, duration: 0.3, ease: "power1.in", immediateRender: false }, t0 + 0.3);
+            tl.set(el, { autoAlpha: 0 }, t0 + 0.62);
+          }
+
+          // the batter holds the follow-through for a beat, then drops out before '된다.' needs the eye
+          tl.to("#ch_swing", { x: -30, rotation: 3, duration: 0.6, ease: "power1.out" }, HIT + 0.3);
+          tl.to("#ch_swing", { y: 560, duration: 0.28, ease: "power2.in" }, 9.55);
+          tl.set("#ch_swing", { autoAlpha: 0 }, 9.83);
+
+          // ================= f3 back cover: slide safe =================
+          tl.set("#ch_slide", { autoAlpha: 1 }, 19.32);
+          tl.fromTo("#ch_slide", { x: -900 }, { x: 0, duration: 0.36, ease: "power3.out", immediateRender: false }, 19.32);
+          tl.to("#ch_slide", { opacity: 0, y: 30, duration: 0.3, ease: "power2.in" }, 20.9);
+          tl.set("#ch_slide", { autoAlpha: 0 }, 21.2);
+
+          // ================= f4 CBT: thumbs-up wink beside the devices =================
+          tl.set("#ch_thumbs", { autoAlpha: 1 }, 22.42);
+          tl.fromTo("#ch_thumbs", { y: 420 }, { y: 0, duration: 0.4, ease: "back.out(1.5)", immediateRender: false }, 22.42);
+          tl.fromTo("#ch_thumbs", { scale: 1 }, { scale: 1.06, duration: 0.12, ease: "power2.out", immediateRender: false }, 25.91);
+          tl.to("#ch_thumbs", { scale: 1, duration: 0.2, ease: "power2.inOut" }, 26.03);
+          tl.to("#ch_thumbs", { y: 440, duration: 0.3, ease: "power2.in" }, 27.6);
+          tl.set("#ch_thumbs", { autoAlpha: 0 }, 27.9);
+
+          tl.set({}, {}, 43.15);
+          window.__timelines = window.__timelines || {};
+          window.__timelines["characters"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

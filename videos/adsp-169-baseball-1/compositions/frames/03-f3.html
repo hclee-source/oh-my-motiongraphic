@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <title>03-f3 — 완독 = 2회독</title>
+    <!-- Frame 3 (track 13.68–19.46s, 5.78s). Frame-local t = track_t − 13.68.
+         Local anchors: 0.48 '완독' blur-in · 0.97 '= 2회독' blur-in + one micro shake ·
+         1.92 / 2.41 / 2.88 / 3.36 step cards (one word each, red ✓) · 3.85 steps clear + back cover tossed in (g2) ·
+         5.49–5.78 calm (wipe out). Stripes transition in: no essential read before 0.37.
+         Silent; the host owns audio and gsap. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #F2F0EA;
+          color: #1E2687;
+          font-family: "Paperlogy", sans-serif;
+        }
+        .f3-group {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          opacity: 0;
+          visibility: hidden;
+        }
+        .f3-hide {
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        /* ---------- g1 — equation + 4-step path ---------- */
+        #f3_g1_bg {
+          position: absolute;
+          inset: 0;
+          background: #F2F0EA;
+        }
+        #f3_eq {
+          position: absolute;
+          left: 0;
+          top: 260px;   /* centred on y≈380 */
+          width: 1920px;
+          height: 240px;
+          transform-origin: 50% 50%;
+        }
+        #f3_shake {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 48px;
+        }
+        .f3-eqw {
+          flex: none;
+          position: relative;
+          font-weight: 800;
+          font-size: 200px;
+          line-height: 0.92;
+          letter-spacing: -0.045em;
+          white-space: nowrap;
+          color: #1E2687;
+          transform-origin: 50% 50%;
+        }
+        #f3_e2 {
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          letter-spacing: 0;
+        }
+        #f3_e3 {
+          padding: 0.08em 0.18em;
+        }
+        #f3_e3_box {
+          position: absolute;
+          inset: 0;
+          background: #FFE500;
+          transform-origin: 0 50%;
+        }
+        #f3_e3_txt {
+          position: relative;
+          display: block;
+        }
+
+        /* step cards: 4 × 340×150, gap 110, x 115–1805, centred on y≈700 */
+        .f3-card {
+          position: absolute;
+          top: 625px;
+          width: 340px;
+          height: 150px;
+          box-sizing: border-box;
+          border: 4px solid #1E2687;
+          background: #F2F0EA;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f3_card0 { left: 115px; }
+        #f3_card1 { left: 565px; }
+        #f3_card2 { left: 1015px; }
+        #f3_card3 { left: 1465px; }
+        .f3-step {
+          position: relative;
+          display: inline-block;
+          font-weight: 800;
+          font-size: 64px;
+          line-height: 1.1;
+          letter-spacing: -0.03em;
+          white-space: nowrap;
+          color: #1E2687;
+        }
+        .f3-step-txt {
+          position: relative;
+        }
+        .f3-check {
+          position: absolute;
+          right: -18px;
+          top: -34px;
+          width: 84px;
+          height: 76px;
+          overflow: visible;
+        }
+        .f3-check path {
+          fill: none;
+          stroke: #E8213F;
+          stroke-width: 11;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+          stroke-dasharray: 1000;
+          stroke-dashoffset: 1000;
+        }
+        .f3-conn {
+          position: absolute;
+          top: 698px;
+          width: 70px;
+          height: 0;
+          border-top: 4px dashed #1E2687;
+          transform-origin: 0 50%;
+          transform: scaleX(0);
+        }
+        #f3_conn1 { left: 475px; }
+        #f3_conn2 { left: 925px; }
+        #f3_conn3 { left: 1375px; }
+
+        /* ---------- g2 — real back cover as evidence ---------- */
+        #f3_cover_toss {
+          position: absolute;
+          left: 970px;
+          top: 157px;
+          width: 560px;
+          height: 766px;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f3_cover {
+          display: block;
+          width: 560px;
+          height: 766px;
+          box-shadow: 14px 14px 0 #1E2687;
+          transform-origin: 50% 50%;
+        }
+        #f3_cap1 {
+          position: absolute;
+          left: 96px;
+          top: 360px;
+        }
+        .f3-c1-mask {
+          overflow: hidden;
+          padding: 4px 12px 8px 0;
+        }
+        .f3-c1 {
+          position: relative;
+          display: inline-block;
+          font-weight: 800;
+          font-size: 150px;
+          line-height: 1;
+          letter-spacing: -0.04em;
+          white-space: nowrap;
+          color: #1E2687;
+        }
+        #f3_c1b {
+          margin-top: 10px;
+          padding: 0.08em 0.18em;
+        }
+        #f3_c1b_box {
+          position: absolute;
+          inset: 0;
+          background: #FFE500;
+          transform-origin: 0 50%;
+        }
+        #f3_c1b_txt {
+          position: relative;
+          display: block;
+        }
+      </style>
+
+      <div data-hf-id="hf-bs9y" id="stage" data-composition-id="03-f3" data-width="1920" data-height="1080" data-duration="6.360">
+        <!-- g1: equation + 4-step path -->
+        <div data-hf-id="hf-chzn" id="f3_g1" class="f3-group">
+          <div data-hf-id="hf-pbnv" id="f3_g1_bg"></div>
+
+          <div data-hf-id="hf-93vl" id="f3_eq">
+            <div data-hf-id="hf-pa4n" id="f3_shake">
+              <div data-hf-id="hf-2xdo" id="f3_e1" class="f3-eqw f3-hide">완독</div>
+              <div data-hf-id="hf-a3dn" id="f3_e2" class="f3-eqw f3-hide">=</div>
+              <div data-hf-id="hf-5td9" id="f3_e3" class="f3-eqw f3-hide"><div data-hf-id="hf-4m25" id="f3_e3_box"></div><span data-hf-id="hf-q6so" id="f3_e3_txt">2회독</span></div>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-4ikt" id="f3_conn1" class="f3-conn"></div>
+          <div data-hf-id="hf-8gou" id="f3_conn2" class="f3-conn"></div>
+          <div data-hf-id="hf-cesv" id="f3_conn3" class="f3-conn"></div>
+
+          <div data-hf-id="hf-yv90" id="f3_card0" class="f3-card">
+            <div data-hf-id="hf-8pr4" class="f3-step"><span data-hf-id="hf-gwlf" class="f3-step-txt">이론</span></div>
+            <svg data-hf-id="hf-unbd" id="f3_chk0" class="f3-check" viewBox="0 0 84 76" data-layout-allow-overlap=""><path data-hf-id="hf-559c" id="f3_chkp0" pathLength="1000" d="M10 40 L32 62 L76 10" /></svg>
+          </div>
+          <div data-hf-id="hf-zmwt" id="f3_card1" class="f3-card">
+            <div data-hf-id="hf-evdk" class="f3-step"><span data-hf-id="hf-ig8n" class="f3-step-txt">족보</span></div>
+            <svg data-hf-id="hf-f8e0" id="f3_chk1" class="f3-check" viewBox="0 0 84 76" data-layout-allow-overlap=""><path data-hf-id="hf-zwvl" id="f3_chkp1" pathLength="1000" d="M10 40 L32 62 L76 10" /></svg>
+          </div>
+          <div data-hf-id="hf-3l0u" id="f3_card2" class="f3-card">
+            <div data-hf-id="hf-dogh" class="f3-step"><span data-hf-id="hf-rvr3" class="f3-step-txt">기출</span></div>
+            <svg data-hf-id="hf-syrj" id="f3_chk2" class="f3-check" viewBox="0 0 84 76" data-layout-allow-overlap=""><path data-hf-id="hf-4lny" id="f3_chkp2" pathLength="1000" d="M10 40 L32 62 L76 10" /></svg>
+          </div>
+          <div data-hf-id="hf-7j4v" id="f3_card3" class="f3-card">
+            <div data-hf-id="hf-e2ri" class="f3-step"><span data-hf-id="hf-urk9" class="f3-step-txt">XO</span></div>
+            <svg data-hf-id="hf-j56m" id="f3_chk3" class="f3-check" viewBox="0 0 84 76" data-layout-allow-overlap=""><path data-hf-id="hf-4fzz" id="f3_chkp3" pathLength="1000" d="M10 40 L32 62 L76 10" /></svg>
+          </div>
+        </div>
+
+        <!-- g2: the real back cover as evidence -->
+        <div data-hf-id="hf-3u3s" id="f3_g2" class="f3-group">
+          <div data-hf-id="hf-nbi6" id="f3_cover_toss">
+            <img data-hf-id="hf-qirl" id="f3_cover" src="assets/book/back.jpg" alt="2026 빠르게 따는 ADsP 뒤표지">
+          </div>
+          <div data-hf-id="hf-i8fm" id="f3_cap1">
+            <div data-hf-id="hf-ad2c" id="f3_c1a_m" class="f3-c1-mask"><div data-hf-id="hf-cjj9" id="f3_c1a" class="f3-c1">뒤표지에</div></div>
+            <div data-hf-id="hf-32fn" id="f3_c1b_m" class="f3-c1-mask"><div data-hf-id="hf-5w9y" id="f3_c1b" class="f3-c1"><div data-hf-id="hf-5dhh" id="f3_c1b_box"></div><span data-hf-id="hf-hbyl" id="f3_c1b_txt">다 있다</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({ paused: true });
+
+          // Frame-local anchors (track_t − 13.68)
+          const T_E1 = 0.48; //   14.16 '완독' blur-in
+          const T_E3 = 0.97; //   14.65 '= 2회독' blur-in + one micro shake
+          const STEP = [1.92, 2.41, 2.88, 3.36]; // 15.60 / 16.09 / 16.56 / 17.04 step cards
+          const T_G2 = 3.85; //   17.53 steps clear, back cover tossed in
+          const T_CALM = 5.49; // last ~0.29 s calm (wipe out)
+          const END = 5.78;
+
+          // ---- group windows ----
+          tl.set("#f3_g1", { autoAlpha: 1 }, 0);
+          tl.set("#f3_g2", { autoAlpha: 1 }, T_G2); // 0ms cut in; g1's leftovers clear on arcs underneath
+          tl.set("#f3_g1", { autoAlpha: 0 }, 4.3);
+          tl.set("#f3_g2", { autoAlpha: 0 }, END);
+
+          // ---- start states (blur-in entrances) ----
+          tl.set(["#f3_e1", "#f3_e2", "#f3_e3"], { autoAlpha: 0, y: 16, filter: "blur(10px)" }, 0);
+          tl.set("#f3_e3_box", { scaleX: 0 }, 0);
+          tl.set(["#f3_card0", "#f3_card1", "#f3_card2", "#f3_card3"], { autoAlpha: 0, y: 16, filter: "blur(10px)" }, 0);
+
+          // ---- '완독' blur-in (equation stays big and central, y≈380) ----
+          tl.to("#f3_e1", { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.26, ease: "power3.out" }, T_E1);
+
+          // '=' + '2회독' blur-in, accent box sweeps from the left
+          tl.to("#f3_e2", { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, T_E3);
+          tl.to("#f3_e3", { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.26, ease: "power3.out" }, T_E3 + 0.04);
+          tl.to("#f3_e3_box", { scaleX: 1, duration: 0.2, ease: "power3.out" }, T_E3 + 0.12);
+          // one micro shake on '2회독' landing
+          tl.to("#f3_shake", { x: 6, duration: 0.03, ease: "none" }, T_E3 + 0.3);
+          tl.to("#f3_shake", { x: 0, duration: 0.06, ease: "power2.out" }, T_E3 + 0.33);
+
+          // ---- 4-step path: one card per beat, red ✓ + dashed connector ----
+          for (let i = 0; i < 4; i++) {
+            const t = STEP[i];
+            const card = "#f3_card" + i;
+            if (i > 0) {
+              tl.fromTo("#f3_conn" + i, { scaleX: 0 }, { scaleX: 1, duration: 0.14, ease: "power2.out" }, t - 0.1);
+            }
+            tl.to(card, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.24, ease: "power3.out" }, t);
+            tl.fromTo("#f3_chkp" + i, { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.18, ease: "power2.inOut" }, t + 0.16);
+          }
+
+          // ---- 3.85 staggered-exit: right-most card first, parabolic arcs up-left ----
+          const EX_DUR = 0.32;
+          for (let k = 0; k < 4; k++) {
+            const i = 3 - k;
+            const card = "#f3_card" + i;
+            const ex = T_G2 + k * 0.05;
+            tl.fromTo(card, { x: 0 }, { x: -520 - k * 80, duration: EX_DUR, ease: "power2.in", immediateRender: false }, ex);
+            tl.fromTo(card, { y: 0 }, { y: -1000, duration: EX_DUR, ease: "power1.in", immediateRender: false }, ex);
+            tl.fromTo(card, { rotation: 0 }, { rotation: -24 - k * 4, duration: EX_DUR, ease: "power1.in", immediateRender: false }, ex);
+          }
+          tl.fromTo(["#f3_conn1", "#f3_conn2", "#f3_conn3"], { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.08, ease: "none", immediateRender: false }, T_G2);
+          tl.fromTo("#f3_eq", { y: 0 }, { y: -700, duration: 0.28, ease: "power3.in", immediateRender: false }, T_G2 + 0.04);
+
+          // ---- g2: back cover tossed in from the right, then a slow push ----
+          const IN_DUR = 0.4;
+          tl.set("#f3_cover_toss", { autoAlpha: 1 }, T_G2);
+          tl.fromTo("#f3_cover_toss", { x: 1000, y: 120, rotation: 22 }, { x: 0, y: 0, rotation: -4, duration: IN_DUR, ease: "expo.out" }, T_G2);
+          tl.fromTo("#f3_cover", { scale: 1 }, { scale: 1.08, duration: T_CALM - (T_G2 + IN_DUR), ease: "sine.inOut" }, T_G2 + IN_DUR);
+
+          // cap1: mask slide-up per line, '다 있다' accent box sweeps from the left
+          tl.fromTo("#f3_c1a", { y: 180 }, { y: 0, duration: 0.24, ease: "expo.out" }, T_G2 + 0.06);
+          tl.fromTo("#f3_c1b", { y: 200 }, { y: 0, duration: 0.24, ease: "expo.out" }, T_G2 + 0.14);
+          tl.fromTo("#f3_c1b_box", { scaleX: 0 }, { scaleX: 1, duration: 0.14, ease: "power3.out" }, T_G2 + 0.26);
+
+          // 5.49–5.78: calm hold for the wipe
+          tl.set({}, {}, END);
+
+          window.__timelines = window.__timelines || {};
+          // ---- retimed by goldenrabbit-promo/scripts/retime.py: the authored timeline (OLD s) is driven through a
+          // piecewise-linear warp so its bar lines land on the new track's downbeats (NEW s). Seek-safe: a tween on tl.time.
+          (function (inner) {
+            var MAP = [[0.0, 0.0], [2.3, 1.92], [4.34, 3.85], [6.36, 5.78]];   // [new local s, old local s]
+            var OLD = 5.7800, NEW = 6.3600;
+            function warp(p) {
+              var t = p * NEW;
+              for (var i = 1; i < MAP.length; i++) {
+                if (t <= MAP[i][0] || i === MAP.length - 1) {
+                  var a = MAP[i - 1], b = MAP[i], u = (t - a[0]) / (b[0] - a[0]);
+                  return (a[1] + (b[1] - a[1]) * Math.max(0, Math.min(1, u))) / OLD;
+                }
+              }
+              return 1;
+            }
+            inner.pause();
+            var outer = gsap.timeline({ paused: true });
+            outer.fromTo(inner, { time: 0 }, { time: OLD, duration: NEW, ease: warp, immediateRender: false }, 0);
+            outer.seek(0.001); outer.seek(0);
+            window.__timelines["03-f3"] = outer;
+          })(tl);
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

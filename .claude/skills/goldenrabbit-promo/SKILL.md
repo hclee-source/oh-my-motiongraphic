@@ -136,6 +136,24 @@ Store the original in `shared/keyvisuals/`, list it in the spec's `extra_assets`
 
 Reference build: `videos/baro-series-169-boldbeat-1` (바로바로 series, 2026-10-02).
 
+**Character sheet with a fake "transparent" (baked-in checkerboard) background** — common from AI image tools:
+```bash
+.venv/bin/python SKILL/scripts/checker_cutout.py shared/keyvisuals/<sheet>.png shared/keyvisuals/<sheet>-cut.png --preview /tmp/navy.jpg
+```
+It classifies the checker *grid cells* (light + flat + ≥ 8-level step to neighbours), so white trousers survive — the AI
+matte made them translucent and a light-colour flood leaked into them (they carry a faint copy of the checker). Then crop
+each pose to `assets/characters/<pose>.png`, dropping small fragments that touch the crop edge (neighbouring poses).
+Poses whose art is cut flat (hips, chest) hang from the frame's bottom edge so the cut reads as the frame.
+
+**Character reactions as one overlay:** write `compositions/characters.html` (full length, track time, ids `ch_*`) and
+`assemble.py` mounts it automatically — on track 2 when the HUD is off (below the transition wipes), else track 4.
+Reactions sit in empty corners only. User verdict (2026-10-08, `adsp-169-baseball-1`): **less is more** — no character
+on the search-bar hook or on step lists; where one does appear on a hit, give it a real impact (white flash 1 frame +
+fade, ink burst lines from the contact point, 3 afterimages, a ball/prop leaving frame clear of the cover, `bat-crack`).
+
+**Re-cutting an approved video onto a new track** (`scripts/retime.py`, §9b) is the cheapest way to add characters to a
+look the user already approved: retime, rebuild only the frames whose content changes, add the overlay.
+
 ## 5. Plan (fill every `### Groups`)
 Read `references/scene-patterns.md`, the skeleton, `frame.md`, and the matching reference frames in
 `SKILL/examples/`. For each frame, replace `- TBD (Step 3)` with groups in music-to-video format. Each group

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>05-f5 · 타석 대기 → 노베이스도 한방에!</title>
+    <!-- Source metadata only. The runtime clones the <template> contents; everything renderable lives there. -->
+    <!-- Native timing on the new track (no retime wrapper): local 0 = track 28.07. Breakdown 28.07–29.81 (near silence),
+         snare 29.81 = the swing, downbeat 30.23 = label-box hit, hi-hats 31.53/31.81 = sparkle, hold to 32.39. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        /* Root: plain #stage (the compiler scopes CSS and moves data-composition-id to the host). */
+        #stage {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #F2F0EA;
+          font-family: "Paperlogy", sans-serif;
+        }
+        .f5-full {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        .f5-anchor {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 0;
+          height: 0;
+        }
+        .f5-hide {
+          visibility: hidden;
+          opacity: 0;
+        }
+
+        /* ================= g1 — at bat, waiting (PAPER) ================= */
+        #f5_g1 {
+          background: #F2F0EA;
+        }
+        #f5_a1 {
+          position: absolute;
+          left: 150px;
+          top: 400px;
+          font-weight: 800;
+          font-size: 170px;
+          line-height: 1;
+          letter-spacing: -0.04em;
+          color: #1E2687;
+          white-space: nowrap;
+        }
+        #f5_a1ul {
+          position: absolute;
+          left: 150px;
+          top: 594px;
+          width: 840px;
+          height: 22px;
+          background: #FFE500;
+          transform-origin: 0% 50%;
+          transform: scaleX(0);
+        }
+        /* real character art (user's key visual) — placed, never redrawn. Feet on the floor line y = 1040. */
+        #f5_stancepos {
+          left: 1450px;
+          top: 1040px;
+        }
+        #f5_stance {
+          position: absolute;
+          left: -306px;
+          top: -808px;
+          width: 612px;
+          height: 808px;
+          display: block;
+          transform-origin: 50% 100%;
+        }
+
+        /* ================= g2 — climax (INK) ================= */
+        #f5_g2 {
+          background: #1E2687;
+        }
+        #f5_c1 {
+          position: absolute;
+          left: 120px;
+          top: 128px;
+          font-weight: 400;
+          font-size: 150px;
+          line-height: 1;
+          letter-spacing: -0.03em;
+          color: #F2F0EA;
+          white-space: nowrap;
+          transform-origin: 0% 50%;
+        }
+        #f5_c2pos {
+          position: absolute;
+          left: 780px;
+          top: 470px;
+          transform: translateX(-50%);
+          white-space: nowrap;
+        }
+        #f5_c2 {
+          position: relative;
+          padding: 0.08em 0.18em;
+          font-weight: 800;
+          font-size: 330px;
+          line-height: 0.9;
+          letter-spacing: -0.05em;
+          color: #FFE500;
+          white-space: nowrap;
+          transform-origin: 50% 50%;
+        }
+        #f5_c2box {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          display: block;
+          background: #FFE500;
+          transform-origin: 0% 50%;
+          transform: scaleX(0);
+        }
+        #f5_c2txt {
+          position: relative;
+        }
+        #f5_burst {
+          left: 780px;
+          top: 645px;
+        }
+        .f5-ring {
+          position: absolute;
+          box-sizing: border-box;
+          border-radius: 50%;
+          border: 6px solid #FFE500;
+          transform-origin: 50% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f5_ring0 {
+          left: -380px;
+          top: -380px;
+          width: 760px;
+          height: 760px;
+        }
+        #f5_ring1 {
+          left: -530px;
+          top: -530px;
+          width: 1060px;
+          height: 1060px;
+        }
+        .f5-cf {
+          position: absolute;
+          transform: scale(0);
+        }
+        .f5-cf svg {
+          display: block;
+          width: 100%;
+          height: 100%;
+          overflow: visible;
+        }
+        /* the swing (art cut flat at the hips) sits on the bottom edge, so the crop reads as the frame edge */
+        #f5_swingpos {
+          left: 1600px;
+          top: 1080px;
+        }
+        #f5_swing {
+          position: absolute;
+          left: -330px;
+          top: -675px;
+          width: 660px;
+          height: 675px;
+          display: block;
+          transform-origin: 40% 100%;
+        }
+      </style>
+
+      <div id="stage" data-composition-id="05-f5" data-width="1920" data-height="1080" data-duration="4.320">
+        <!-- ============ g1: at bat (28.07–29.81) ============ -->
+        <div id="f5_g1" class="f5-full">
+          <div id="f5_a1" class="f5-hide">노베이스도</div>
+          <div id="f5_a1ul" data-layout-ignore=""></div>
+          <div id="f5_stancepos" class="f5-anchor" data-layout-ignore="">
+            <img id="f5_stance" class="f5-hide" src="assets/characters/stance.png" alt="">
+          </div>
+        </div>
+
+        <!-- ============ g2: climax swing (29.81–32.39) ============ -->
+        <div id="f5_g2" class="f5-full f5-hide">
+          <div id="f5_g2shake" class="f5-anchor">
+            <div id="f5_burst" class="f5-anchor" data-layout-ignore=""><div id="f5_ring0" class="f5-ring"></div><div id="f5_ring1" class="f5-ring"></div></div>
+            <div id="f5_conf" class="f5-anchor" data-layout-ignore=""></div>
+            <div id="f5_c1" class="f5-hide">노베이스도</div>
+            <div id="f5_c2pos">
+              <div id="f5_c2" class="f5-hide"><span id="f5_c2box"></span><span id="f5_c2txt">한방에!</span></div>
+            </div>
+            <div id="f5_swingpos" class="f5-anchor" data-layout-ignore="">
+              <img id="f5_swing" class="f5-hide" src="assets/characters/swing.png" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var FID = "05-f5";
+          function $(id) {
+            return document.getElementById(id);
+          }
+          var INK = "#1E2687";
+          var ACC = "#FFE500";
+          var PAP = "#F2F0EA";
+
+          // Frame-local anchors (track seconds − 28.07)
+          var T = {
+            a1: 0.08, //   28.15 — '노베이스도' resolves in the breakdown
+            ul: 0.56, //   28.63 beat — highlighter under it
+            bob: [0.56, 1.09, 1.63], // 28.63 29.16 29.70 — bat waggle on the quiet beats
+            cut: 1.74, //  29.81 snare — 0ms flip to INK, swing + '한방에!'
+            hit: 2.16, //  30.23 downbeat — label box + shake
+            spark: 3.46, // 31.53 hi-hat — second confetti wave
+            end: 4.32,
+          };
+
+          var SHAPES = [
+            '<circle cx="50" cy="50" r="50" fill="currentColor"/>',
+            '<rect x="6" y="6" width="88" height="88" fill="currentColor"/>',
+            '<polygon points="50,4 98,92 2,92" fill="currentColor"/>',
+            '<circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="18"/>',
+            '<path d="M16 0 L50 34 L84 0 L100 16 L66 50 L100 84 L84 100 L50 66 L16 100 L0 84 L34 50 L0 16Z" fill="currentColor"/>',
+            '<polygon points="50,0 100,50 50,100 0,50" fill="currentColor"/>',
+          ];
+          function makeShape(cls, shape, size, color) {
+            var d = document.createElement("div");
+            d.className = cls;
+            d.style.width = size + "px";
+            d.style.height = size + "px";
+            d.style.color = color;
+            d.innerHTML = '<svg viewBox="0 0 100 100">' + SHAPES[shape] + "</svg>";
+            return d;
+          }
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ============================ g1 — at bat ============================
+          // the batter slides in from the right on a soft spring, then waits (bat waggles on the quiet beats)
+          tl.set("#f5_stance", { autoAlpha: 1 }, 0);
+          tl.fromTo("#f5_stance", { x: 520, filter: "blur(10px)" }, { x: 0, filter: "blur(0px)", duration: 0.42, ease: "back.out(1.4)", immediateRender: false }, 0);
+          T.bob.forEach(function (t, j) {
+            tl.fromTo("#f5_stance", { rotation: 0 }, { rotation: j % 2 ? 1.6 : -1.6, duration: 0.12, ease: "power2.out", immediateRender: false }, t);
+            tl.to("#f5_stance", { rotation: 0, duration: 0.3, ease: "power2.inOut" }, t + 0.12);
+          });
+
+          tl.set("#f5_a1", { autoAlpha: 1 }, T.a1);
+          tl.fromTo("#f5_a1", { y: 40, filter: "blur(12px)" }, { y: 0, filter: "blur(0px)", duration: 0.34, ease: "power3.out", immediateRender: false }, T.a1);
+          tl.fromTo("#f5_a1ul", { scaleX: 0 }, { scaleX: 1, duration: 0.32, ease: "expo.out", immediateRender: false }, T.ul);
+
+          // ============================ g1 → g2 (0ms cut, flip to INK) ============================
+          tl.set("#f5_g1", { autoAlpha: 0 }, T.cut);
+          tl.set("#f5_g2", { autoAlpha: 1 }, T.cut);
+
+          tl.set("#f5_c1", { autoAlpha: 1 }, T.cut);
+          tl.fromTo("#f5_c1", { x: -60, scale: 1.18 }, { x: 0, scale: 1, duration: 0.16, ease: "power4.out", immediateRender: false }, T.cut);
+
+          // the swing crashes in from the right edge, bat through the zone
+          tl.set("#f5_swing", { autoAlpha: 1 }, T.cut);
+          tl.fromTo("#f5_swing", { x: 420, rotation: 10 }, { x: 0, rotation: 0, duration: 0.2, ease: "power4.out", immediateRender: false }, T.cut);
+
+          // '한방에!' MEGA slam
+          tl.set("#f5_c2", { autoAlpha: 1 }, T.cut + 0.04);
+          tl.fromTo("#f5_c2", { scale: 1.42 }, { scale: 1, duration: 0.16, ease: "power4.out", immediateRender: false }, T.cut + 0.04);
+
+          var CX = 780;
+          var CY = 645;
+          ["#f5_ring0", "#f5_ring1"].forEach(function (rg, j) {
+            var t0 = T.cut + 0.04 + j * 0.12;
+            tl.set(rg, { autoAlpha: 1 }, t0);
+            tl.fromTo(rg, { scale: 0.7, opacity: 1 }, { scale: 1.5, opacity: 0, duration: 0.75, ease: "power2.out", immediateRender: false }, t0);
+          });
+
+          // 10 confetti pieces on an ellipse around the word (index-derived; even on the swing, odd on the hi-hat)
+          var conf = $("f5_conf");
+          conf.innerHTML = "";
+          var NC = 10;
+          for (var k = 0; k < NC; k++) {
+            var a = ((k * (360 / NC) + 18) * Math.PI) / 180;
+            var px = CX + Math.sin(a) * 690;
+            var py = CY - Math.cos(a) * 280;
+            if (px > 1260 && py > 560) continue;   // keep the batter's corner clear
+            var size = 30 + ((k * 7) % 4) * 7;
+            var col = k % 3 === 2 ? PAP : ACC;
+            var el2 = makeShape("f5-cf", k % 6, size, col);
+            el2.style.left = Math.round(px - size / 2) + "px";
+            el2.style.top = Math.round(py - size / 2) + "px";
+            conf.appendChild(el2);
+            var t1 = (k % 2 ? T.spark : T.cut + 0.06) + (k % 5) * 0.012;
+            var dx2 = px - CX;
+            var dy2 = py - CY;
+            var dd = Math.sqrt(dx2 * dx2 + dy2 * dy2) || 1;
+            var rot0 = (k * 53) % 360;
+            var spin2 = (k % 2 ? -1 : 1) * (30 + (k % 3) * 15);
+            tl.fromTo(el2, { x: (-dx2 / dd) * 200, y: (-dy2 / dd) * 200, scale: 0, rotation: rot0 - spin2 },
+              { x: 0, y: 0, scale: 1, rotation: rot0, duration: 0.4, ease: "back.out(1.8)", immediateRender: false }, t1);
+            tl.fromTo(el2, { y: 0, rotation: rot0 },
+              { y: 6 + (k % 3) * 4, rotation: rot0 + (k % 2 ? 1 : -1) * (16 + (k % 4) * 8), duration: T.end - (t1 + 0.4), ease: "none", immediateRender: false }, t1 + 0.4);
+          }
+
+          // 30.23: accent label-box snaps behind '한방에!' (text → ink), pulse + one screen-shake
+          tl.set("#f5_c2txt", { color: INK }, T.hit);
+          tl.fromTo("#f5_c2box", { scaleX: 0 }, { scaleX: 1, duration: 0.1, ease: "expo.out", immediateRender: false }, T.hit);
+          tl.fromTo("#f5_c2", { scale: 1.08 }, { scale: 1, duration: 0.26, ease: "power3.out", immediateRender: false }, T.hit);
+          var AMP = [10, -8, 8, -6, 5, -3, 2];
+          AMP.forEach(function (am, j) {
+            tl.to("#f5_g2shake", { x: am, y: am * 0.6 * (j % 2 ? 1 : -1), duration: 0.03, ease: "steps(1)" }, T.hit + j * 0.03);
+          });
+          tl.to("#f5_g2shake", { x: 0, y: 0, duration: 0.08, ease: "power2.out" }, T.hit + AMP.length * 0.03);
+
+          // hold to the end (hard cut into the finale on the 32.39 downbeat)
+          tl.set({}, {}, T.end);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines[FID] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

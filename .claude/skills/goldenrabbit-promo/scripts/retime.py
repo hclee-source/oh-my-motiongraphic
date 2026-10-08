@@ -102,10 +102,12 @@ def main():
         s = p.read_text()
         o0, n0 = f["old"][0], f["new"][0]
         old_d, new_d = f["old"][-1] - o0, f["new"][-1] - n0
-        s, k = re.subn(rf'(<div id="stage" data-composition-id="{f["src"]}"[^>]*data-duration=")[\d.]+(")', rf"\g<1>{new_d:.3f}\g<2>", s)
+        # Studio may insert attributes (data-hf-id) before id="stage" — don't anchor on attribute order
+        s, k = re.subn(rf'(<div\b[^>]*\bid="stage" data-composition-id="{f["src"]}"[^>]*data-duration=")[\d.]+(")',
+                       rf"\g<1>{new_d:.3f}\g<2>", s)
         if k != 1:
             sys.exit(f"✗ {p.name}: could not set #stage data-duration")
-        m = re.search(rf'[ \t]*window\.__timelines\["{f["src"]}"\] = (\w+);', s)
+        m = re.search(rf'[ \t]*window\.__timelines\[(?:"{f["src"]}"|[A-Z_]+)\] = (\w+);', s)   # ["01-f1"] or [FID]
         if not m:
             sys.exit(f"✗ {p.name}: timeline registration not found")
         mp = [[round(nn - n0, 4), round(oo - o0, 4)] for oo, nn in zip(f["old"], f["new"])]

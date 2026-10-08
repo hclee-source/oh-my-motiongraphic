@@ -36,7 +36,9 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
-      "electronic"
+      "electronic",
+      "energetic",
+      "sports"
     ]
   },
   "464": {
@@ -116,7 +118,9 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
-      "electronic"
+      "electronic",
+      "energetic",
+      "sports"
     ]
   },
   "114": {
@@ -1230,7 +1234,9 @@
     "artist": "Michael Ramir C.",
     "url": "https://assets.mixkit.co/music/1077/1077.mp3",
     "tags": [
-      "funk"
+      "energetic",
+      "funk",
+      "sports"
     ]
   },
   "989": {
@@ -1248,7 +1254,9 @@
     "artist": "Michael Ramir C.",
     "url": "https://assets.mixkit.co/music/989/989.mp3",
     "tags": [
-      "funk"
+      "energetic",
+      "funk",
+      "sports"
     ]
   },
   "1131": {
@@ -1265,7 +1273,8 @@
     "artist": "Michael Ramir C.",
     "url": "https://assets.mixkit.co/music/1131/1131.mp3",
     "tags": [
-      "pop"
+      "pop",
+      "sports"
     ]
   },
   "158": {
@@ -1282,7 +1291,8 @@
     "artist": "Alejandro Magaña (A. M.)",
     "url": "https://assets.mixkit.co/music/158/158.mp3",
     "tags": [
-      "pop"
+      "pop",
+      "sports"
     ]
   },
   "839": {
@@ -2111,6 +2121,7 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
+      "energetic",
       "funk"
     ]
   },
@@ -2197,13 +2208,18 @@
     "title": "Bob",
     "genre": "Funk",
     "artist": "Michael Ramir C.",
-    "duration": 122,
+    "duration": 121.89,
     "url": "https://assets.mixkit.co/music/824/824.mp3",
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
       "funk"
-    ]
+    ],
+    "file": "shared\\bgm\\824.mp3",
+    "bpm": 80.7,
+    "pulse": 0.082,
+    "energy5s": "-*###%#%%%#@%%####%%###- ",
+    "vocal_words": 0
   },
   "757": {
     "id": "757",
@@ -2366,13 +2382,18 @@
     "title": "Are U Ready For This?",
     "genre": "Funk",
     "artist": "Michael Ramir C.",
-    "duration": 97,
+    "duration": 96.59,
     "url": "https://assets.mixkit.co/music/1127/1127.mp3",
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
       "funk"
-    ]
+    ],
+    "file": "shared\\bgm\\1127.mp3",
+    "bpm": 112.3,
+    "pulse": 0.056,
+    "energy5s": "***##%%#######+*#%@-",
+    "vocal_words": 0
   },
   "1027": {
     "id": "1027",
@@ -2502,7 +2523,10 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
-      "pop"
+      "energetic",
+      "pop",
+      "rock",
+      "sports"
     ]
   },
   "854": {
@@ -2554,7 +2578,8 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
-      "pop"
+      "pop",
+      "sports"
     ]
   },
   "1030": {
@@ -3037,13 +3062,19 @@
     "title": "I Do!",
     "genre": "EDM",
     "artist": "Michael Ramir C.",
-    "duration": 128,
+    "duration": 127.5,
     "url": "https://assets.mixkit.co/music/1001/1001.mp3",
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
-      "piano"
-    ]
+      "piano",
+      "sports"
+    ],
+    "file": "shared\\bgm\\1001.mp3",
+    "bpm": 86.1,
+    "pulse": 0.126,
+    "energy5s": ".::----+***##%%%+::-#%@-  ",
+    "vocal_words": 0
   },
   "13": {
     "id": "13",
@@ -3164,7 +3195,8 @@
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
-      "piano"
+      "piano",
+      "sports"
     ]
   },
   "168": {
@@ -3586,6 +3618,843 @@
     "license": "Mixkit Stock Music Free License",
     "tags": [
       "ambient"
+    ]
+  },
+  "623": {
+    "id": "623",
+    "title": "Deep Urban",
+    "genre": "House",
+    "artist": "Eugenio Mininni",
+    "duration": 289,
+    "url": "https://assets.mixkit.co/music/623/623.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "sports"
+    ]
+  },
+  "51": {
+    "id": "51",
+    "title": "Sports Highlights",
+    "genre": "Rock",
+    "artist": "Ahjay Stelino",
+    "duration": 96,
+    "url": "https://assets.mixkit.co/music/51/51.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "rock",
+      "sports"
+    ]
+  },
+  "471": {
+    "id": "471",
+    "title": "Rising Forest",
+    "genre": "House",
+    "artist": "Diego Nava",
+    "duration": 99,
+    "url": "https://assets.mixkit.co/music/471/471.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "sports"
+    ]
+  },
+  "1091": {
+    "id": "1091",
+    "title": "Carry On",
+    "genre": "Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 95,
+    "url": "https://assets.mixkit.co/music/1091/1091.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "rock",
+      "sports"
+    ]
+  },
+  "33": {
+    "id": "33",
+    "title": "Motivating Mornings",
+    "genre": "Corporate Music",
+    "artist": "Ahjay Stelino",
+    "duration": 96.2,
+    "url": "https://assets.mixkit.co/music/33/33.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "sports"
+    ],
+    "file": "shared\\bgm\\33.mp3",
+    "bpm": 123.0,
+    "pulse": 0.05,
+    "energy5s": ":-+***%%@%%%##%**%+ ",
+    "vocal_words": 0
+  },
+  "1068": {
+    "id": "1068",
+    "title": "K.O.",
+    "genre": "Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 101,
+    "url": "https://assets.mixkit.co/music/1068/1068.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "rock",
+      "sports"
+    ]
+  },
+  "706": {
+    "id": "706",
+    "title": "Games Music",
+    "genre": "Trailer Music",
+    "artist": "Grigoriy Nuzhny",
+    "duration": 118,
+    "url": "https://assets.mixkit.co/music/706/706.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "sports"
+    ]
+  },
+  "124": {
+    "id": "124",
+    "title": "Techno Fest Vibes",
+    "genre": "EDM",
+    "artist": "Alejandro Magaña (A. M.)",
+    "duration": 134,
+    "url": "https://assets.mixkit.co/music/124/124.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "sports"
+    ]
+  },
+  "162": {
+    "id": "162",
+    "title": "Minimal Techno 01",
+    "genre": "Tech House",
+    "artist": "Alejandro Magaña (A. M.)",
+    "duration": 124,
+    "url": "https://assets.mixkit.co/music/162/162.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "sports"
+    ]
+  },
+  "80": {
+    "id": "80",
+    "title": "Daredevil",
+    "genre": "Metal",
+    "artist": "Ahjay Stelino",
+    "duration": 104,
+    "url": "https://assets.mixkit.co/music/80/80.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "sports"
+    ]
+  },
+  "157": {
+    "id": "157",
+    "title": "Infected Vibes",
+    "genre": "Trance",
+    "artist": "Alejandro Magaña (A. M.)",
+    "duration": 91,
+    "url": "https://assets.mixkit.co/music/157/157.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "sports"
+    ]
+  },
+  "777": {
+    "id": "777",
+    "title": "A Game",
+    "genre": "EDM",
+    "artist": "Michael Ramir C",
+    "duration": 112.92,
+    "url": "https://assets.mixkit.co/music/777/777.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "sports"
+    ],
+    "file": "shared\\bgm\\777.mp3",
+    "bpm": 129.2,
+    "pulse": 0.074,
+    "energy5s": "####%%%%%%%%##%=*%@*-  ",
+    "vocal_words": 0
+  },
+  "113": {
+    "id": "113",
+    "title": "House Fest",
+    "genre": "EDM",
+    "artist": "Alejandro Magaña (A. M.)",
+    "duration": 136,
+    "url": "https://assets.mixkit.co/music/113/113.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "sports"
+    ]
+  },
+  "47": {
+    "id": "47",
+    "title": "Punked Up Fun",
+    "genre": "Rock",
+    "artist": "Ahjay Stelino",
+    "duration": 100,
+    "url": "https://assets.mixkit.co/music/47/47.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "rock",
+      "sports"
+    ]
+  },
+  "473": {
+    "id": "473",
+    "title": "Talent in the Air",
+    "genre": "House",
+    "artist": "Diego Nava",
+    "duration": 114,
+    "url": "https://assets.mixkit.co/music/473/473.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "sports"
+    ]
+  },
+  "160": {
+    "id": "160",
+    "title": "Minimal Emotion",
+    "genre": "Techno",
+    "artist": "Alejandro Magaña (A. M.)",
+    "duration": 120,
+    "url": "https://assets.mixkit.co/music/160/160.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "sports"
+    ]
+  },
+  "78": {
+    "id": "78",
+    "title": "Sports Rock",
+    "genre": "Rock",
+    "artist": "Ahjay Stelino",
+    "duration": 102,
+    "url": "https://assets.mixkit.co/music/78/78.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "rock",
+      "sports"
+    ]
+  },
+  "50": {
+    "id": "50",
+    "title": "Rought and Ready",
+    "genre": "Metal",
+    "artist": "Ahjay Stelino",
+    "duration": 110,
+    "url": "https://assets.mixkit.co/music/50/50.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "rock",
+      "sports"
+    ]
+  },
+  "137": {
+    "id": "137",
+    "title": "Goa Trance Mantra",
+    "genre": "Trance",
+    "artist": "Alejandro Magaña (A. M.)",
+    "duration": 104,
+    "url": "https://assets.mixkit.co/music/137/137.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "sports"
+    ]
+  },
+  "628": {
+    "id": "628",
+    "title": "Summer Dream",
+    "genre": "EDM",
+    "artist": "Eugenio Mininni",
+    "duration": 176,
+    "url": "https://assets.mixkit.co/music/628/628.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "sports"
+    ]
+  },
+  "620": {
+    "id": "620",
+    "title": "B.O.R.N",
+    "genre": "Trance",
+    "artist": "Eugenio Mininni",
+    "duration": 218,
+    "url": "https://assets.mixkit.co/music/620/620.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "sports"
+    ]
+  },
+  "664": {
+    "id": "664",
+    "title": "Pop One",
+    "genre": "Lounge",
+    "artist": "Francisco Alvear",
+    "duration": 130,
+    "url": "https://assets.mixkit.co/music/664/664.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "sports"
+    ]
+  },
+  "629": {
+    "id": "629",
+    "title": "Skeeomaver Sound",
+    "genre": "EDM",
+    "artist": "Eugenio Mininni",
+    "duration": 234,
+    "url": "https://assets.mixkit.co/music/629/629.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "sports"
+    ]
+  },
+  "1151": {
+    "id": "1151",
+    "title": "Oh My Joe",
+    "genre": "Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 99,
+    "url": "https://assets.mixkit.co/music/1151/1151.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "rock",
+      "sports"
+    ]
+  },
+  "707": {
+    "id": "707",
+    "title": "Hiding Under",
+    "genre": "EDM",
+    "artist": "House",
+    "duration": 106,
+    "url": "https://assets.mixkit.co/music/707/707.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "sports"
+    ]
+  },
+  "166": {
+    "id": "166",
+    "title": "Trance Party",
+    "genre": "Trance",
+    "artist": "Alejandro Magaña (A. M.)",
+    "duration": 108,
+    "url": "https://assets.mixkit.co/music/166/166.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "sports"
+    ]
+  },
+  "998": {
+    "id": "998",
+    "title": "Hooligans",
+    "genre": "Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 101,
+    "url": "https://assets.mixkit.co/music/998/998.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "rock"
+    ]
+  },
+  "1133": {
+    "id": "1133",
+    "title": "Caught on Tape",
+    "genre": "Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 98,
+    "url": "https://assets.mixkit.co/music/1133/1133.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "rock"
+    ]
+  },
+  "1157": {
+    "id": "1157",
+    "title": "The Root",
+    "genre": "Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 103,
+    "url": "https://assets.mixkit.co/music/1157/1157.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "rock"
+    ]
+  },
+  "1085": {
+    "id": "1085",
+    "title": "I'm All Heart",
+    "genre": "Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 109,
+    "url": "https://assets.mixkit.co/music/1085/1085.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "rock"
+    ]
+  },
+  "1092": {
+    "id": "1092",
+    "title": "Cold Coffee",
+    "genre": "Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 131,
+    "url": "https://assets.mixkit.co/music/1092/1092.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "rock"
+    ]
+  },
+  "1135": {
+    "id": "1135",
+    "title": "Dare Me",
+    "genre": "Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 92,
+    "url": "https://assets.mixkit.co/music/1135/1135.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "rock"
+    ]
+  },
+  "1116": {
+    "id": "1116",
+    "title": "Pick it Up",
+    "genre": "Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 125,
+    "url": "https://assets.mixkit.co/music/1116/1116.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "rock"
+    ]
+  },
+  "1004": {
+    "id": "1004",
+    "title": "Lets Paint the Town Red!",
+    "genre": "Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 122,
+    "url": "https://assets.mixkit.co/music/1004/1004.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "rock"
+    ]
+  },
+  "1082": {
+    "id": "1082",
+    "title": "Whoop Yo' A$$ Boy",
+    "genre": "Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 123,
+    "url": "https://assets.mixkit.co/music/1082/1082.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "rock"
+    ]
+  },
+  "519": {
+    "id": "519",
+    "title": "Motivation Gets in the Way",
+    "genre": "Rock",
+    "artist": "Diego Nava",
+    "duration": 183,
+    "url": "https://assets.mixkit.co/music/519/519.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "rock"
+    ]
+  },
+  "954": {
+    "id": "954",
+    "title": "How Does it Feel",
+    "genre": "Classic Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 158,
+    "url": "https://assets.mixkit.co/music/954/954.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "rock"
+    ]
+  },
+  "1173": {
+    "id": "1173",
+    "title": "Free Us",
+    "genre": "Blues Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 142,
+    "url": "https://assets.mixkit.co/music/1173/1173.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic"
+    ]
+  },
+  "1103": {
+    "id": "1103",
+    "title": "K.O. Games",
+    "genre": "Breakbeat",
+    "artist": "Michael Ramir C.",
+    "duration": 92.97,
+    "url": "https://assets.mixkit.co/music/1103/1103.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic"
+    ],
+    "file": "shared\\bgm\\1103.mp3",
+    "bpm": 112.3,
+    "pulse": 0.072,
+    "energy5s": "--=*+#***++*@%%%%. ",
+    "vocal_words": 0
+  },
+  "1064": {
+    "id": "1064",
+    "title": "Goup the Wall",
+    "genre": "Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 98,
+    "url": "https://assets.mixkit.co/music/1064/1064.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic",
+      "rock"
+    ]
+  },
+  "1139": {
+    "id": "1139",
+    "title": "For Larry",
+    "genre": "Country Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 146,
+    "url": "https://assets.mixkit.co/music/1139/1139.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic"
+    ]
+  },
+  "1177": {
+    "id": "1177",
+    "title": "I Still Believe",
+    "genre": "Folk",
+    "artist": "Michael Ramir C.",
+    "duration": 100,
+    "url": "https://assets.mixkit.co/music/1177/1177.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic"
+    ]
+  },
+  "1178": {
+    "id": "1178",
+    "title": "I'm a Rebel",
+    "genre": "Folk",
+    "artist": "Michael Ramir C.",
+    "duration": 100,
+    "url": "https://assets.mixkit.co/music/1178/1178.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic"
+    ]
+  },
+  "511": {
+    "id": "511",
+    "title": "Holiday / Seasonal 4",
+    "genre": "Jazz Rock",
+    "artist": "Diego Nava",
+    "duration": 130,
+    "url": "https://assets.mixkit.co/music/511/511.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic"
+    ]
+  },
+  "537": {
+    "id": "537",
+    "title": "Christmas Night",
+    "genre": "Jazz Rock",
+    "artist": "Diego Nava",
+    "duration": 130,
+    "url": "https://assets.mixkit.co/music/537/537.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "energetic"
+    ]
+  },
+  "52": {
+    "id": "52",
+    "title": "The Long Road",
+    "genre": "Rock",
+    "artist": "Ahjay Stelino",
+    "duration": 97,
+    "url": "https://assets.mixkit.co/music/52/52.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "rock"
+    ]
+  },
+  "817": {
+    "id": "817",
+    "title": "The Duel",
+    "genre": "Country Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 103,
+    "url": "https://assets.mixkit.co/music/817/817.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "rock"
+    ]
+  },
+  "1117": {
+    "id": "1117",
+    "title": "Proud of You",
+    "genre": "Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 104,
+    "url": "https://assets.mixkit.co/music/1117/1117.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "rock"
+    ]
+  },
+  "591": {
+    "id": "591",
+    "title": "Kroks",
+    "genre": "Rock",
+    "artist": "Eugenio Mininni",
+    "duration": 228,
+    "url": "https://assets.mixkit.co/music/591/591.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "rock"
+    ]
+  },
+  "1105": {
+    "id": "1105",
+    "title": "Life Goes On",
+    "genre": "Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 106,
+    "url": "https://assets.mixkit.co/music/1105/1105.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "rock"
+    ]
+  },
+  "1155": {
+    "id": "1155",
+    "title": "Siren Song",
+    "genre": "Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 110,
+    "url": "https://assets.mixkit.co/music/1155/1155.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "rock"
+    ]
+  },
+  "49": {
+    "id": "49",
+    "title": "Rock the Game",
+    "genre": "Rock",
+    "artist": "Ahjay Stelino",
+    "duration": 102,
+    "url": "https://assets.mixkit.co/music/49/49.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "rock"
+    ]
+  },
+  "608": {
+    "id": "608",
+    "title": "Mada",
+    "genre": "Rock",
+    "artist": "Eugenio Mininni",
+    "duration": 148,
+    "url": "https://assets.mixkit.co/music/608/608.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "rock"
+    ]
+  },
+  "788": {
+    "id": "788",
+    "title": "A Man with a Broken Heart",
+    "genre": "Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 202,
+    "url": "https://assets.mixkit.co/music/788/788.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "rock"
+    ]
+  },
+  "63": {
+    "id": "63",
+    "title": "Classique",
+    "genre": "Rock",
+    "artist": "Ahjay Stelino",
+    "duration": 134,
+    "url": "https://assets.mixkit.co/music/63/63.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "rock"
+    ]
+  },
+  "48": {
+    "id": "48",
+    "title": "Ride the Waves",
+    "genre": "Rock",
+    "artist": "Ahjay Stelino",
+    "duration": 114,
+    "url": "https://assets.mixkit.co/music/48/48.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "rock"
+    ]
+  },
+  "1188": {
+    "id": "1188",
+    "title": "On Parole",
+    "genre": "Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 94,
+    "url": "https://assets.mixkit.co/music/1188/1188.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "rock"
+    ]
+  },
+  "1111": {
+    "id": "1111",
+    "title": "Nice Try",
+    "genre": "Rock",
+    "artist": "Michael Ramir C.",
+    "duration": 92,
+    "url": "https://assets.mixkit.co/music/1111/1111.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "rock"
+    ]
+  },
+  "1137": {
+    "id": "1137",
+    "title": "Don't Fall Again",
+    "genre": "Pop",
+    "artist": "Michael Ramir C.",
+    "duration": 139,
+    "url": "https://assets.mixkit.co/music/1137/1137.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "rock"
+    ]
+  },
+  "60": {
+    "id": "60",
+    "title": "Rock Chic",
+    "genre": "Rock",
+    "artist": "Ahjay Stelino",
+    "duration": 99,
+    "url": "https://assets.mixkit.co/music/60/60.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "rock"
+    ]
+  },
+  "794": {
+    "id": "794",
+    "title": "Don't Let Go",
+    "genre": "Country",
+    "artist": "Michael Ramir C.",
+    "duration": 155,
+    "url": "https://assets.mixkit.co/music/794/794.mp3",
+    "source": "mixkit",
+    "license": "Mixkit Stock Music Free License",
+    "tags": [
+      "rock"
     ]
   }
 }

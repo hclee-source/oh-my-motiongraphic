@@ -55,6 +55,10 @@ def main():
     if spec.get("hud", True) and not no_hud:
         subprocess.run([sys.executable, str(HERE / "make_hud.py"), str(proj)], check=True)
         print(f"✓ HUD {inject_overlay(proj, 'hud', 2)}")
+    # character/KV reaction layer (full-length, track time): below the transition wipes so they cover it too
+    if (proj / "compositions" / "characters.html").exists():
+        on_hud = spec.get("hud", True) and not no_hud
+        print(f"✓ characters overlay {inject_overlay(proj, 'characters', 4 if on_hud else 2)}")
     sb = (proj / "STORYBOARD.md").read_text()
     if re.search(r"^- transition_out: (?!none)", sb, re.M):
         subprocess.run([sys.executable, str(HERE / "make_transitions.py"), str(proj)], check=True)
