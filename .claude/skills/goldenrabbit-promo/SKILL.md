@@ -23,12 +23,15 @@ full rebuild; the same feedback at a checkpoint costs one message. So every new 
 | ① 방향 | before any scaffold (§1) | style, aspect, which selling points to push (options built from the book's real facts), music mood + length — **one** round | AskUserQuestion |
 | ② 음악 | after §3 analysis | 2–3 candidate windows cut to ~30 s previews with fades, folder opened; user picks by ear | files + explorer |
 | ③ 계획 | after §5 plan validates | a plain-Korean scene table (구간 · 배경 · 장면 · 화면 문구), the do-not list, and open questions (e.g. unverified facts such as a store name) — **wait for approval** | text, end the turn |
+| ③b 스틸 | after §7 assemble + check, **before** QA polish and the delivery render | 4 stills at the key moments (hook · reveal · one selling point · finale) as one contact sheet — "is this the look?" — **wait** | `hyperframes snapshot --at …` + Read |
 | ④ 피드백 | after §8 render | open the MP4, summarise scene by scene, ask what to change (by scene or second) | text |
 
 - Recommend, don't survey: put the house default first with "(추천)".
 - Verify facts that appear on screen before ③ when you can (store availability, page counts, counts of mock exams);
   list the ones you couldn't verify as open questions instead of silently dropping or keeping them.
-- Small revisions to an existing video (one scene, one fix) skip ①–③: fix, re-render, then ④.
+- ③b exists because a text plan can't show a *look*: the launch-keynote cut passed ③ and was rejected only after the
+  full render ("이 감성은 아니다"). Stills are cheap (~1 min); a rejected render costs the whole build.
+- Small revisions to an existing video (one scene, one fix) skip ①–③b: fix, re-render, then ④.
 - Only skip a checkpoint when the user says so in this request ("알아서 끝까지", "묻지 말고").
 
 ## 0. Setup (once per machine)
@@ -56,6 +59,9 @@ Earlier videos all felt the same: one track, one font, flat 2D, hard cuts, and t
 - **House taste (what the user said fits us):** `bold-beat` with the 2025–26 clean grammar of `videos/adsp-169-clean-1`
   (one held ground per frame, stacked mid-size type, ≤12 readable chars per screen, UI mockups as the viewer's inner
   voice, blur/spring entrances, energetic beat-synced music). Offer it first ("(추천)") unless the request says otherwise.
+- **Transition candidate to offer:** `MORPH-CHAIN` (one UI element morphs state to state, cursor-driven, never cuts) —
+  keeps the house look but changes the transition axis. Spec in `references/scene-patterns.md`; source prompts in
+  `research/x-motion-prompts-2026/PROMPTS.md`.
 - **Every video gets:** at least one ≥1.5s hold, at least one non-hard-cut transition (`transition_out:`), and SFX cues (`- sfx:`).
 
 ## 1. Intake → a variant spec  (checkpoint ①)
@@ -172,6 +178,18 @@ findings). Then it runs `assemble-index.mjs` and adds whichever of these apply:
 - `sfx.py`: root `<audio>` clips from each frame's `- sfx: name@track_seconds` cues, plus an automatic whoosh before
   every transition
 
+**SFX cue = when the sound should HIT.** New variants carry `sfx_align: peak`: `sfx.py` starts each clip early by the
+file's measured loudest moment (`sfx_peaks.py` → `shared/sfx/peaks.json`; e.g. whoosh-cinematic 2.54 s, impact-bass-2
+2.06 s, chime 0.42 s, ping 0.32 s), and uses `data-media-start` to skip the lead-in when there's no room before the cue.
+`typing` and `riser` stay start-aligned (they begin on the cue); override any cue with `name@t:start` / `name@t:peak`.
+Projects without `sfx_align` keep the old file-start behaviour. New file in `shared/sfx/` → re-run `sfx_peaks.py`.
+
+**Checkpoint ③b — stills before polish.** Right after the first clean `check`, capture the look and wait:
+```bash
+(cd videos/<name> && npx hyperframes snapshot --at <hook>,<reveal>,<point>,<finale> --no-end -o snapshots/look --describe false)
+```
+Show `snapshots/look/contact-sheet.jpg`, ask "이 느낌으로 계속 갈까요?", and end the turn. Only after a yes: QA (§8) and render.
+
 Frames in a transition style must start on their `scene_color` ground and keep essential reads out of the first ~0.37s and
 the last ~0.29s.
 
@@ -189,9 +207,16 @@ python3 SKILL/scripts/review.py videos/<name>        # snapshots at every frame 
 Fix with the cheapest safe edit in the frame file, re-check, re-review. Triage layout-checker findings
 with `references/pitfalls.md` §7. Then:
 ```bash
-bash SKILL/scripts/finalize.sh videos/<name>         # delivery render, ffprobe check, contact sheet, logs output in variants/<name>.json
+bash SKILL/scripts/finalize.sh videos/<name>         # delivery render, loudness, glitch scan, ffprobe check, contact sheet, logs output in variants/<name>.json
 ```
-Report the MP4 path, its duration, and whether audio is present, and show the contact sheet.
+`finalize.sh` now also:
+- **normalizes loudness** to -14 LUFS / -1.5 dBTP (two-pass loudnorm, video copied untouched; earlier cuts ranged
+  -18.4 to -12.0 LUFS). `GR_LOUDNORM=0` skips it.
+- runs **`pop_scan.py`** on the delivered MP4: `✗ POP` = a frame unlike both neighbours (one-frame flash — grab the 3
+  frames and fix it; a deliberate 1-frame shake can show as a low-Δ pop), `⚠ SPIKE` = an isolated hard change mid-scene
+  (often an intended 0 ms swap — glance at it). Run alone: `python3 SKILL/scripts/pop_scan.py videos/<name>`.
+
+Report the MP4 path, its duration, whether audio is present, the loudness line and any POP, and show the contact sheet.
 Verify in the **rendered MP4** (ffmpeg frame grabs), not only in snapshots: H.264 chroma subsampling can turn fine
 stripes next to saturated cover colors into moiré that the browser snapshot never shows.
 

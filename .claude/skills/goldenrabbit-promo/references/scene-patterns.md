@@ -62,6 +62,25 @@ A single-book promo tiles **one `series[]` entry per selling point** (or hand-wr
 | **TAPE-BACK** | climax | strongest chorus | Callback to the cold-open board: fallen faces are slapped back with masking tape in beat waves (붙다 = stick/pass), mega pun line, ≥1.5 s hold. |
 | **SEARCH-CTA** | finale | stop-time ending hits | Book + vertical slogan (縦書き) → generic search bar typed on the stop hits → cursor click → logo on the final hit, hold. |
 
+## House patterns from the bold-beat clean cut (`videos/adsp-169-clean-1`, the look the user called "ours")
+| id | role | music fit | what happens | reference |
+|---|---|---|---|---|
+| **SEARCH-AUTOCOMPLETE** | intro | quiet bars → accel-roll into the drop | An original (unbranded) search bar types the reader's worry; autocomplete rows stack one per beat; a cursor clicks "…책 추천"; the result card springs in with the real cover; camera pushes into the cover on the roll. One held ground. | clean-1 f1 |
+| **DEVICE-SYNC** | point | steady groove | Desktop monitor + phone (original flat drawings) run the same CBT; the same answer fills on both on the beat; counts line replaces the copy. Use whenever a feature works on PC *and* mobile — never phone-only. | clean-1 f4 |
+
+## Candidate: MORPH-CHAIN (offer at checkpoint ① or ③; not built yet)
+Source: public X prompt (twoclipping, 2026-09-24, "one shape, never cut"). Fits the clean cut's UI-mockup grammar, so it
+changes the *transition* axis without changing the look.
+- **What:** one UI element never cuts — it morphs size / radius / colour into the next state while its content swaps
+  with a short blur, and a cursor drives every change with a real click or drag. Camera zooms so each state fills the
+  frame. Example chain for a 수험서: 검색창 → 결과 카드(실제 표지) → CBT 문제 화면 → 답 체크 → "저장 완료" 토스트 →
+  일정 카드(Live 특강) → 로고 락업.
+- **How (HyperFrames):** one container per chain, its box animated with GSAP (`width/height` are layout props → animate
+  `scaleX/scaleY` on an outer box and counter-scale the content, or tween `clip-path: inset(... round r)` on a fixed
+  box); each state's content is its own layer with its own enter/exit (text inside a morphing box overlaps otherwise).
+- **Rules kept:** readable lines still hold ≥ 1.5 s; one beat-synced change per beat at most; real cover never warped
+  (it appears as a card *inside* the chain, not as the morphing shape).
+
 ## Timing rules every pattern obeys
 - Hard hits are 0ms `tl.set`. Eased entrances run 0.3–0.5s; macro builds run 0.8–2s across a roll.
 - Lead the anchor: a move that must land on a beat starts 40–190ms early.

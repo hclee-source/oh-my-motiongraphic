@@ -41,6 +41,8 @@ Sources:
 | Transitions | iris / blinds / stripes / wipe that hide every hard cut | `transition_out:` + `make_transitions.py` (overlay, track 3) |
 | | velocity-matched exits/entries (power2.in out, power2.out in, same direction) | frame-worker instruction |
 | | match cut on a shape (the book becomes the next window) | plan it across two frames' `intent` |
+| | **MORPH-CHAIN**: one UI element morphs state → state, cursor-driven, never cuts (candidate) | `references/scene-patterns.md` § Candidate |
+| | flood: a shape grows past every corner, then contracts into the next scene — overscale ≥ 1.15× the diagonal and take ~0.3 s, or half the screen changes in one frame | frame `intent` |
 | Texture | paper grain jittered at 12 fps (seek-safe) | automatic in soft-studio (`texture: grain`) |
 | | static seamless washi/paper-fibre overlay | automatic in paper-pop (`texture: paper`) |
 | Character | user's avatars regenerated as layered paper-cut faces with expressions (worry/happy/fired) | `shared/characters/` (OpenAI image edit, base → expression) |
@@ -50,6 +52,8 @@ Sources:
 | | depth-sorted type (a huge word BEHIND the book) | z-order, `data-layout-allow-overlap` |
 | | light/bold contrast pairs (300 vs 700) instead of scale slams | soft-studio type ramp |
 | | hand-drawn scribble / underline / circle | SVG path + stroke-dashoffset |
+| | stretchy indicator: a highlight bar / tab underline whose leading edge moves ahead of its trailing edge (two tweens with different durations on `left`-edge and `right`-edge wrappers, both via transforms) — reads as elastic without any overshoot ease | frame `intent` |
+| | text swapping inside a morphing box gets its own exit/enter (and mask), never just a content change | frame `intent` |
 | Layout/info | original chat-window mockup, code-editor mockup | `CHAT-UI`, `CODE-UI` (never copy real product UIs) |
 | | dotted stat ring + count-up ("82가지 실습", "45개 실습") | `STAT-RING` |
 | Pacing | hold and release (≥ 1.5 s still), speed ramp after a hold | storyboard `intent` |
@@ -67,3 +71,5 @@ Sources:
 - **Variable-font animation:** our Korean fonts are static weights.
 - **`split-flap-board`:** has no Hangul.
 - **HeyGen SFX:** needs a login, so only the 19 bundled files are available.
+- **Motion blur by subframes** (render N subframes per frame, blend with `ffmpeg tmix`): from a public X prompt, not
+  adopted — ~4× render time and our Windows renders already hit memory limits. Revisit only for a short hero shot.

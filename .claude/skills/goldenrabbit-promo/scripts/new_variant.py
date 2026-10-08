@@ -417,6 +417,7 @@ def main():
             "## Notes", "", f"- {spec.get('notes','')}", ""]))
     rec = dict(spec)
     rec.setdefault("hud", spec.get("hud", style.get("hud", {}).get("default", True)))
+    rec.setdefault("sfx_align", "peak")   # sfx.py lines each cue up with the file's measured hit (older projects: start)
     rec["resolved"] = {"duration": D, "bounds": bounds, "patterns": pats, "registers": regs, "project": str(proj.relative_to(ROOT)),
                        "treatment": card, "scene_colors": scene_colors, "transitions": trans}
     (proj / "variant.json").write_text(json.dumps(rec, ensure_ascii=False, indent=2))
