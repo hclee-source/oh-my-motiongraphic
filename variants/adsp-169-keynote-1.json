@@ -1,0 +1,114 @@
+{
+  "name": "adsp-169-keynote-1",
+  "style": "launch-keynote",
+  "palette": {
+    "night": "#0A0A0C",
+    "white": "#F5F5F7",
+    "accent": "#D92741"
+  },
+  "aspect": "16:9",
+  "fps": 30,
+  "seed": 11,
+  "intensity": "calm",
+  "hud": false,
+  "storyboard": "yes",
+  "message": "통계를 처음 해도, 이 책 한 권으로 ADsP를 빠르게 딴다",
+  "destination": "youtube",
+  "bgm": {
+    "id": "31",
+    "start": 62.09,
+    "duration": 31.82,
+    "fade": 1.0,
+    "license": "Mixkit Stock Music Free License",
+    "notes": "Dreaming Big (Ahjay Stelino), film-score piano build, 136 BPM. User picked it from 3 previews (2026-10-08)."
+  },
+  "series": [
+    {
+      "label": "REVEAL",
+      "name": "2026 빠르게 따는 ADsP",
+      "books": [
+        "9791194383697"
+      ]
+    },
+    {
+      "label": "POINT 01",
+      "name": "노베이스부터",
+      "books": [
+        "9791194383697"
+      ]
+    },
+    {
+      "label": "POINT 02",
+      "name": "PC·모바일 CBT",
+      "books": [
+        "9791194383697"
+      ]
+    },
+    {
+      "label": "POINT 03",
+      "name": "Live 마무리 특강",
+      "books": [
+        "9791194383697"
+      ]
+    }
+  ],
+  "extra_assets": [
+    {
+      "src": "shared/books/extras/9791194383697/yes24_BACK_XL.jpg",
+      "dest": "assets/book/back.jpg",
+      "role": "real back cover (877×1200): 학습법 3종 — 비전공자&노베이스 / 빠르게 따는 / 책과 함께하면 더 좋은. Use whole, never crop/tint/overlay text; camera may push in."
+    },
+    {
+      "src": "shared/books/extras/9791194383697/yes24_SIDE_XL.jpg",
+      "dest": "assets/book/spine.jpg",
+      "role": "real spine (88×1200) for the CSS-3D book"
+    }
+  ],
+  "copy": {
+    "hook": [
+      "통계, 처음이어도."
+    ],
+    "reveal": [
+      "2026 빠르게 따는 ADsP"
+    ],
+    "points": {
+      "노베이스": [
+        "노베이스부터."
+      ],
+      "CBT": [
+        "PC에서도. 폰에서도.",
+        "모의고사 5회 + 기출 5회"
+      ],
+      "Live": [
+        "시험 직전,",
+        "Live 마무리 특강."
+      ]
+    },
+    "finale": {
+      "line": "2026 빠르게 따는 ADsP",
+      "where": "예스24 · 교보문고 · 알라딘",
+      "cta": "goldenrabbit.co.kr"
+    }
+  },
+  "facts": {
+    "exam": "ADsP(데이터분석 준전문가, 한국데이터산업진흥원): 50문항 객관식 90분, 총점 60점 이상·과목별 40% 미만 과락 (2024~ 전 문항 객관식).",
+    "book": "496쪽, 1권 기본이론+연습/실전문제, 2권 빈출 족보(테마 80개)+2025 최신 기출변형 4회분(44~47회)+LEVEL 모의고사 3회분+빈출 XO. 웹 CBT(PC/모바일, 모의고사 5회+기출 5회, 중간 저장·일시 정지·힌트). 회차별 시험 직전 Live 마무리 특강, 네이버 카페(합격왕), 카톡 단톡방, 유튜브 무료 강의. '완독만 해도 이론 2회독·기출 2회독 효과' (출판사 리뷰·뒤표지). 저자 임한울·조영훈·이유성.",
+    "sources": "goldenrabbit.co.kr/books/9791194383697, yes24.com/product/goods/172535658 (책소개·출판사 리뷰·목차·표지/뒤표지)",
+    "avoid": "'1위·최단기·최다'·'N주 합격' 류 근거 없는 수치 금지 (공정위 제재 사례). 합격률·후기 수치 사용 안 함."
+  },
+  "treatment": {
+    "camera": "3d-product",
+    "hero": "product-turn + light-sweep",
+    "transition": "dip-to-black (in-frame)",
+    "type": "one-sentence"
+  },
+  "notes": "v3 direction after the user watched a 'Claude conquered motion graphics' video (2026-10-08): ask first, show the plan, then build; Apple-launch grammar. User picks: launch style, 16:9, points = 노베이스 / CBT(PC+모바일) / Live 특강, piano/film-score ~30s (track 31). 알라딘 availability verified 2026-10-08 (구매 가능).",
+  "outputs": [
+    {
+      "file": "videos\\adsp-169-keynote-1\\renders\\adsp-169-keynote-1.mp4",
+      "duration": 31.833333,
+      "quality": "delivery",
+      "rendered": "2026-10-08T09:43:53"
+    }
+  ]
+}

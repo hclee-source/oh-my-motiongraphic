@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>04-f4 · PC·모바일 CBT</title>
+    <!-- Source metadata only. The runtime clones the <template> contents; everything renderable lives there. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        /* Root: plain #stage (the compiler scopes CSS and moves data-composition-id to the host). */
+        #stage {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #0A0A0C;
+          font-family: "Paperlogy", sans-serif;
+        }
+        #f4_bg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          background: #0A0A0C;
+        }
+        /* g1 spans the whole frame: it is the t=0 state (content inside starts at opacity 0 = NIGHT) */
+        .f4-group {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        #f4_g1 { visibility: inherit; opacity: 1; }
+        /* camera drift layer (scale only) */
+        #f4_cam {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          transform-origin: 50% 50%;
+        }
+        /* frame-out dip layer (opacity only) */
+        #f4_fade {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+
+        /* ================= laptop (original, no brand) ================= */
+        #f4_laptop {
+          position: absolute;
+          left: 360px;
+          top: 210px;
+          width: 920px;
+          height: 520px;
+          opacity: 0;
+        }
+        .f4-lid {
+          position: absolute;
+          left: 68px;
+          top: 0;
+          width: 784px;
+          height: 499px;
+          border-radius: 20px;
+          background: #2C2C2E;
+          box-shadow: 0 40px 90px rgba(0, 0, 0, 0.35);
+        }
+        .f4-lscreen {
+          position: absolute;
+          left: 12px;
+          top: 12px;
+          width: 760px;
+          height: 475px;
+          border-radius: 8px;
+          background: #F5F5F7;
+          overflow: hidden;
+          color: #1D1D1F;
+        }
+        .f4-base {
+          position: absolute;
+          left: 0;
+          top: 499px;
+          width: 920px;
+          height: 16px;
+          border-radius: 2px 2px 14px 14px;
+          background: #3A3A3C;
+          box-shadow: 0 40px 90px rgba(0, 0, 0, 0.35);
+        }
+        .f4-notch {
+          position: absolute;
+          left: 395px;
+          top: 0;
+          width: 130px;
+          height: 6px;
+          border-radius: 0 0 6px 6px;
+          background: #232325;
+        }
+        /* laptop UI */
+        .f4-lhead {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 760px;
+          height: 56px;
+          border-bottom: 1px solid #E5E5EA;
+        }
+        .f4-ltitle {
+          position: absolute;
+          left: 24px;
+          top: 15px;
+          font-weight: 800;
+          font-size: 20px;
+          line-height: 26px;
+          letter-spacing: -0.01em;
+          white-space: nowrap;
+        }
+        .f4-ltimer {
+          position: absolute;
+          right: 24px;
+          top: 15px;
+          height: 26px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .f4-ltimer svg { display: block; width: 18px; height: 18px; }
+        .f4-tnum {
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 500;
+          font-size: 20px;
+          line-height: 26px;
+          white-space: nowrap;
+        }
+        /* answer sheet column (left) */
+        .f4-sheet {
+          position: absolute;
+          left: 24px;
+          top: 80px;
+          width: 200px;
+          height: 371px;
+          border: 1px solid #D2D2D7;
+          border-radius: 12px;
+        }
+        .f4-sheethd {
+          position: absolute;
+          left: 0;
+          top: 14px;
+          width: 198px;
+          text-align: center;
+          font-weight: 800;
+          font-size: 15px;
+          line-height: 20px;
+          white-space: nowrap;
+        }
+        .f4-srow {
+          position: absolute;
+          left: 0;
+          width: 198px;
+          height: 30px;
+        }
+        .f4-snum {
+          position: absolute;
+          left: 18px;
+          top: 0;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 500;
+          font-size: 15px;
+          line-height: 30px;
+          color: #86868B;
+        }
+        .f4-sb,
+        .f4-sm {
+          position: absolute;
+          width: 22px;
+          height: 22px;
+          border-radius: 50%;
+        }
+        .f4-sb { border: 1.5px solid #C7C7CC; }
+        .f4-sm { background: #1D1D1F; }
+        .f4-sm.f4-live { opacity: 0; }
+        /* question panels (right of the sheet) */
+        .f4-lq {
+          position: absolute;
+          left: 256px;
+          top: 80px;
+          width: 480px;
+          height: 350px;
+        }
+        .f4-lqn {
+          position: absolute;
+          left: 0;
+          top: 0;
+          font-weight: 800;
+          font-size: 24px;
+          line-height: 32px;
+        }
+        .f4-bar {
+          position: absolute;
+          border-radius: 6px;
+          background: #E3E3E8;
+        }
+        .f4-lq .f4-bar { height: 12px; }
+        .f4-lopt,
+        .f4-lmark {
+          position: absolute;
+          left: 0;
+          width: 34px;
+          height: 34px;
+          border-radius: 50%;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 500;
+          font-size: 16px;
+          text-align: center;
+        }
+        .f4-lopt { border: 1.5px solid #AEAEB2; line-height: 31px; color: #1D1D1F; }
+        .f4-lmark { background: #1D1D1F; color: #F5F5F7; line-height: 34px; opacity: 0; }
+        .f4-ltrack {
+          position: absolute;
+          left: 256px;
+          top: 440px;
+          width: 480px;
+          height: 4px;
+          border-radius: 2px;
+          background: #E5E5EA;
+          overflow: hidden;
+        }
+
+        /* ================= phone (original, no brand) ================= */
+        #f4_phone {
+          position: absolute;
+          left: 1195px;
+          top: 255px;
+          width: 230px;
+          height: 470px;
+          border-radius: 38px;
+          background: #2C2C2E;
+          box-shadow: 0 40px 90px rgba(0, 0, 0, 0.35);
+          opacity: 0;
+        }
+        .f4-pscreen {
+          position: absolute;
+          left: 8px;
+          top: 8px;
+          width: 214px;
+          height: 454px;
+          border-radius: 30px;
+          background: #F5F5F7;
+          overflow: hidden;
+          color: #1D1D1F;
+        }
+        .f4-island {
+          position: absolute;
+          left: 79px;
+          top: 10px;
+          width: 56px;
+          height: 16px;
+          border-radius: 8px;
+          background: #1D1D1F;
+        }
+        .f4-phead {
+          position: absolute;
+          left: 0;
+          top: 36px;
+          width: 214px;
+          height: 30px;
+          border-bottom: 1px solid #E5E5EA;
+        }
+        .f4-ptitle {
+          position: absolute;
+          left: 16px;
+          top: 4px;
+          font-weight: 800;
+          font-size: 13px;
+          line-height: 18px;
+          white-space: nowrap;
+        }
+        .f4-ptimer {
+          position: absolute;
+          right: 16px;
+          top: 4px;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 500;
+          font-size: 13px;
+          line-height: 18px;
+          white-space: nowrap;
+        }
+        .f4-pq {
+          position: absolute;
+          left: 16px;
+          top: 82px;
+          width: 182px;
+          height: 260px;
+        }
+        .f4-pqn {
+          position: absolute;
+          left: 0;
+          top: 0;
+          font-weight: 800;
+          font-size: 16px;
+          line-height: 22px;
+        }
+        .f4-pq .f4-bar { height: 8px; border-radius: 4px; }
+        .f4-popt,
+        .f4-pmark {
+          position: absolute;
+          left: 0;
+          width: 26px;
+          height: 26px;
+          border-radius: 50%;
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 500;
+          font-size: 12px;
+          text-align: center;
+        }
+        .f4-popt { border: 1.5px solid #AEAEB2; line-height: 23px; color: #1D1D1F; }
+        .f4-pmark { background: #1D1D1F; color: #F5F5F7; line-height: 26px; opacity: 0; }
+        .f4-ptrack {
+          position: absolute;
+          left: 16px;
+          top: 372px;
+          width: 182px;
+          height: 4px;
+          border-radius: 2px;
+          background: #E5E5EA;
+          overflow: hidden;
+        }
+        .f4-fill {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 4px;
+          display: block;
+          background: #1D1D1F;
+          transform-origin: 0% 50%;
+          transform: scaleX(0.4);
+        }
+        .f4-home {
+          position: absolute;
+          left: 57px;
+          top: 438px;
+          width: 100px;
+          height: 4px;
+          border-radius: 2px;
+          background: #C7C7CC;
+        }
+        /* hidden question panels (Q4 / Q5) */
+        .f4-later { visibility: hidden; opacity: 0; }
+
+        /* ================= copy (centred under the devices, y ≈ 900) ================= */
+        .f4-line {
+          position: absolute;
+          left: 0;
+          top: 866px;
+          width: 1920px;
+          text-align: center;
+          font-size: 56px;
+          line-height: 1.2;
+          letter-spacing: -0.02em;
+          color: #F5F5F7;
+          white-space: nowrap;
+          opacity: 0;
+        }
+        .f4-w8 { font-weight: 800; }
+        .f4-w4 { font-weight: 400; }
+        .f4-num { font-weight: 800; color: #D92741; }
+        .f4-plus { font-weight: 400; color: #86868B; }
+      </style>
+
+      <div id="stage" data-composition-id="04-f4" data-width="1920" data-height="1080" data-duration="5.34">
+        <div id="f4_bg"></div>
+
+        <!-- ============ g1 (15.74–21.08): laptop + phone, same CBT, synced marks ============ -->
+        <div id="f4_g1" class="f4-group">
+          <div id="f4_cam">
+            <div id="f4_fade">
+
+              <!-- laptop -->
+              <div id="f4_laptop">
+                <div class="f4-lid">
+                  <div class="f4-lscreen">
+                    <div class="f4-lhead">
+                      <div class="f4-ltitle">ADsP 모의고사 1회</div>
+                      <div class="f4-ltimer">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8" /><path d="M12 9 V13 L15 15" /><path d="M10 3 H14" /></svg>
+                        <div id="f4_ltimer" class="f4-tnum">89:59</div>
+                      </div>
+                    </div>
+
+                    <!-- answer sheet: 5 rows x 4 bubbles; rows 1-2 already answered -->
+                    <div class="f4-sheet">
+                      <div class="f4-sheethd">답안 표기란</div>
+                      <div class="f4-srow" style="top: 54px"><div class="f4-snum">1</div><div class="f4-sb" style="left: 48px; top: 4px"></div><div class="f4-sb" style="left: 84px; top: 4px"></div><div class="f4-sb" style="left: 120px; top: 4px"></div><div class="f4-sb" style="left: 156px; top: 4px"></div><div class="f4-sm" data-layout-allow-overlap style="left: 120px; top: 4px"></div></div>
+                      <div class="f4-srow" style="top: 114px"><div class="f4-snum">2</div><div class="f4-sb" style="left: 48px; top: 4px"></div><div class="f4-sb" style="left: 84px; top: 4px"></div><div class="f4-sb" style="left: 120px; top: 4px"></div><div class="f4-sb" style="left: 156px; top: 4px"></div><div class="f4-sm" data-layout-allow-overlap style="left: 48px; top: 4px"></div></div>
+                      <div class="f4-srow" style="top: 174px"><div class="f4-snum">3</div><div class="f4-sb" style="left: 48px; top: 4px"></div><div class="f4-sb" style="left: 84px; top: 4px"></div><div class="f4-sb" style="left: 120px; top: 4px"></div><div class="f4-sb" style="left: 156px; top: 4px"></div><div id="f4_s3" class="f4-sm f4-live" data-layout-allow-overlap style="left: 84px; top: 4px"></div></div>
+                      <div class="f4-srow" style="top: 234px"><div class="f4-snum">4</div><div class="f4-sb" style="left: 48px; top: 4px"></div><div class="f4-sb" style="left: 84px; top: 4px"></div><div class="f4-sb" style="left: 120px; top: 4px"></div><div class="f4-sb" style="left: 156px; top: 4px"></div><div id="f4_s4" class="f4-sm f4-live" data-layout-allow-overlap style="left: 156px; top: 4px"></div></div>
+                      <div class="f4-srow" style="top: 294px"><div class="f4-snum">5</div><div class="f4-sb" style="left: 48px; top: 4px"></div><div class="f4-sb" style="left: 84px; top: 4px"></div><div class="f4-sb" style="left: 120px; top: 4px"></div><div class="f4-sb" style="left: 156px; top: 4px"></div><div id="f4_s5" class="f4-sm f4-live" data-layout-allow-overlap style="left: 48px; top: 4px"></div></div>
+                    </div>
+
+                    <!-- Q3 (answer 2) -->
+                    <div id="f4_lq3" class="f4-lq" data-layout-allow-overlap>
+                      <div class="f4-lqn">Q3.</div>
+                      <div class="f4-bar" style="left: 56px; top: 10px; width: 300px"></div>
+                      <div class="f4-bar" style="left: 0; top: 48px; width: 420px"></div>
+                      <div class="f4-bar" style="left: 0; top: 76px; width: 230px"></div>
+                      <div class="f4-lopt" style="top: 130px">1</div><div class="f4-bar" style="left: 50px; top: 141px; width: 210px"></div>
+                      <div class="f4-lopt" style="top: 186px">2</div><div class="f4-bar" style="left: 50px; top: 197px; width: 260px"></div>
+                      <div class="f4-lopt" style="top: 242px">3</div><div class="f4-bar" style="left: 50px; top: 253px; width: 180px"></div>
+                      <div class="f4-lopt" style="top: 298px">4</div><div class="f4-bar" style="left: 50px; top: 309px; width: 240px"></div>
+                      <div id="f4_lm3" class="f4-lmark" data-layout-allow-overlap style="top: 186px">2</div>
+                    </div>
+                    <!-- Q4 (answer 4) -->
+                    <div id="f4_lq4" class="f4-lq f4-later" data-layout-allow-overlap>
+                      <div class="f4-lqn">Q4.</div>
+                      <div class="f4-bar" style="left: 56px; top: 10px; width: 260px"></div>
+                      <div class="f4-bar" style="left: 0; top: 48px; width: 400px"></div>
+                      <div class="f4-bar" style="left: 0; top: 76px; width: 180px"></div>
+                      <div class="f4-lopt" style="top: 130px">1</div><div class="f4-bar" style="left: 50px; top: 141px; width: 240px"></div>
+                      <div class="f4-lopt" style="top: 186px">2</div><div class="f4-bar" style="left: 50px; top: 197px; width: 190px"></div>
+                      <div class="f4-lopt" style="top: 242px">3</div><div class="f4-bar" style="left: 50px; top: 253px; width: 270px"></div>
+                      <div class="f4-lopt" style="top: 298px">4</div><div class="f4-bar" style="left: 50px; top: 309px; width: 160px"></div>
+                      <div id="f4_lm4" class="f4-lmark" data-layout-allow-overlap style="top: 298px">4</div>
+                    </div>
+                    <!-- Q5 (answer 1) -->
+                    <div id="f4_lq5" class="f4-lq f4-later" data-layout-allow-overlap>
+                      <div class="f4-lqn">Q5.</div>
+                      <div class="f4-bar" style="left: 56px; top: 10px; width: 320px"></div>
+                      <div class="f4-bar" style="left: 0; top: 48px; width: 340px"></div>
+                      <div class="f4-bar" style="left: 0; top: 76px; width: 250px"></div>
+                      <div class="f4-lopt" style="top: 130px">1</div><div class="f4-bar" style="left: 50px; top: 141px; width: 180px"></div>
+                      <div class="f4-lopt" style="top: 186px">2</div><div class="f4-bar" style="left: 50px; top: 197px; width: 250px"></div>
+                      <div class="f4-lopt" style="top: 242px">3</div><div class="f4-bar" style="left: 50px; top: 253px; width: 220px"></div>
+                      <div class="f4-lopt" style="top: 298px">4</div><div class="f4-bar" style="left: 50px; top: 309px; width: 280px"></div>
+                      <div id="f4_lm5" class="f4-lmark" data-layout-allow-overlap style="top: 130px">1</div>
+                    </div>
+
+                    <div class="f4-ltrack"><div id="f4_lfill" class="f4-fill"></div></div>
+                  </div>
+                </div>
+                <div class="f4-base"><div class="f4-notch"></div></div>
+              </div>
+
+              <!-- phone (stands in front of the laptop's right edge) -->
+              <div id="f4_phone" data-layout-allow-overlap data-layout-allow-occlusion>
+                <div class="f4-pscreen">
+                  <div class="f4-island"></div>
+                  <div class="f4-phead">
+                    <div class="f4-ptitle">ADsP 모의고사 1회</div>
+                    <div id="f4_ptimer" class="f4-ptimer">89:59</div>
+                  </div>
+
+                  <!-- Q3 (answer 2) -->
+                  <div id="f4_pq3" class="f4-pq" data-layout-allow-overlap>
+                    <div class="f4-pqn">Q3.</div>
+                    <div class="f4-bar" style="left: 36px; top: 7px; width: 130px"></div>
+                    <div class="f4-bar" style="left: 0; top: 32px; width: 178px"></div>
+                    <div class="f4-bar" style="left: 0; top: 50px; width: 110px"></div>
+                    <div class="f4-popt" style="top: 88px">1</div><div class="f4-bar" style="left: 36px; top: 97px; width: 110px"></div>
+                    <div class="f4-popt" style="top: 132px">2</div><div class="f4-bar" style="left: 36px; top: 141px; width: 136px"></div>
+                    <div class="f4-popt" style="top: 176px">3</div><div class="f4-bar" style="left: 36px; top: 185px; width: 96px"></div>
+                    <div class="f4-popt" style="top: 220px">4</div><div class="f4-bar" style="left: 36px; top: 229px; width: 124px"></div>
+                    <div id="f4_pm3" class="f4-pmark" data-layout-allow-overlap style="top: 132px">2</div>
+                  </div>
+                  <!-- Q4 (answer 4) -->
+                  <div id="f4_pq4" class="f4-pq f4-later" data-layout-allow-overlap>
+                    <div class="f4-pqn">Q4.</div>
+                    <div class="f4-bar" style="left: 36px; top: 7px; width: 112px"></div>
+                    <div class="f4-bar" style="left: 0; top: 32px; width: 170px"></div>
+                    <div class="f4-bar" style="left: 0; top: 50px; width: 90px"></div>
+                    <div class="f4-popt" style="top: 88px">1</div><div class="f4-bar" style="left: 36px; top: 97px; width: 126px"></div>
+                    <div class="f4-popt" style="top: 132px">2</div><div class="f4-bar" style="left: 36px; top: 141px; width: 100px"></div>
+                    <div class="f4-popt" style="top: 176px">3</div><div class="f4-bar" style="left: 36px; top: 185px; width: 140px"></div>
+                    <div class="f4-popt" style="top: 220px">4</div><div class="f4-bar" style="left: 36px; top: 229px; width: 86px"></div>
+                    <div id="f4_pm4" class="f4-pmark" data-layout-allow-overlap style="top: 220px">4</div>
+                  </div>
+                  <!-- Q5 (answer 1) -->
+                  <div id="f4_pq5" class="f4-pq f4-later" data-layout-allow-overlap>
+                    <div class="f4-pqn">Q5.</div>
+                    <div class="f4-bar" style="left: 36px; top: 7px; width: 140px"></div>
+                    <div class="f4-bar" style="left: 0; top: 32px; width: 150px"></div>
+                    <div class="f4-bar" style="left: 0; top: 50px; width: 120px"></div>
+                    <div class="f4-popt" style="top: 88px">1</div><div class="f4-bar" style="left: 36px; top: 97px; width: 96px"></div>
+                    <div class="f4-popt" style="top: 132px">2</div><div class="f4-bar" style="left: 36px; top: 141px; width: 130px"></div>
+                    <div class="f4-popt" style="top: 176px">3</div><div class="f4-bar" style="left: 36px; top: 185px; width: 116px"></div>
+                    <div class="f4-popt" style="top: 220px">4</div><div class="f4-bar" style="left: 36px; top: 229px; width: 140px"></div>
+                    <div id="f4_pm5" class="f4-pmark" data-layout-allow-overlap style="top: 88px">1</div>
+                  </div>
+
+                  <div class="f4-ptrack"><div id="f4_pfill" class="f4-fill"></div></div>
+                  <div class="f4-home"></div>
+                </div>
+              </div>
+
+              <!-- copy a / b share one centred slot (never both fully visible) -->
+              <div id="f4_ta" class="f4-line" data-layout-allow-overlap><span class="f4-w8">PC에서도.</span> <span class="f4-w4">폰에서도.</span></div>
+              <div id="f4_tb" class="f4-line f4-w8" data-layout-allow-overlap>모의고사 <span id="f4_n1" class="f4-num">0</span>회 <span class="f4-plus">+</span> 기출 <span id="f4_n2" class="f4-num">0</span>회</div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var FID = "04-f4";
+          var DUR = 5.34;            // 15.74 → 21.08
+          // frame-local anchors (track seconds − 15.74)
+          var M1 = 0.70;             // 16.44 click — Q3 marked
+          var M2 = 1.56;             // 17.30 click — Q4 marked
+          var M3 = 2.26;             // 18.00 click — Q5 marked
+          var SWAP = 2.91;           // 18.65 downbeat (tick) — 'a' → 'b'
+          var OUT = 4.91;            // 20.65 — fade to NIGHT
+          var BEATS = [0.70, 1.56, 2.26, 2.91, 3.56, 4.11, 4.67];
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ===== g1 (0.00–5.34) — visible by CSS default; devices/text start at opacity 0 =====
+
+          // 0.00: laptop rises 40 px + blur→sharp (1.2 s power3.out); phone 0.15 s later
+          tl.fromTo("#f4_laptop",
+            { y: 40, filter: "blur(14px)" },
+            { y: 0, filter: "blur(0px)", duration: 1.2, ease: "power3.out", immediateRender: false },
+            0);
+          tl.fromTo("#f4_laptop",
+            { opacity: 0 },
+            { opacity: 1, duration: 0.6, ease: "power2.out", immediateRender: false },
+            0);
+          tl.fromTo("#f4_phone",
+            { y: 40, filter: "blur(14px)" },
+            { y: 0, filter: "blur(0px)", duration: 1.2, ease: "power3.out", immediateRender: false },
+            0.15);
+          tl.fromTo("#f4_phone",
+            { opacity: 0 },
+            { opacity: 1, duration: 0.6, ease: "power2.out", immediateRender: false },
+            0.15);
+
+          // whole frame: slow camera drift 1 → 1.03
+          tl.fromTo("#f4_cam",
+            { scale: 1 },
+            { scale: 1.03, duration: DUR, ease: "power1.inOut", immediateRender: false },
+            0);
+
+          // 0.16 (15.90): 'a' resolves — blur 14→0, y 24→0, opacity 0→1
+          tl.fromTo("#f4_ta",
+            { opacity: 0, y: 24, filter: "blur(14px)" },
+            { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.0, ease: "power3.out", immediateRender: false },
+            0.16);
+
+          // timer ticks down on both screens, one second per beat (0 ms swaps)
+          BEATS.forEach(function (t, j) {
+            var txt = "89:" + String(58 - j);
+            tl.set(["#f4_ltimer", "#f4_ptimer"], { textContent: txt }, t);
+          });
+
+          // answer marks: same option fills on phone, laptop question and laptop sheet at once
+          function mark(n, t) {
+            ["#f4_lm" + n, "#f4_pm" + n].forEach(function (id) {
+              tl.fromTo(id,
+                { opacity: 0, scale: 0.6 },
+                { opacity: 1, scale: 1, duration: 0.25, ease: "power2.out", immediateRender: false },
+                t);
+            });
+            tl.fromTo("#f4_s" + n,
+              { opacity: 0, scale: 0.6 },
+              { opacity: 1, scale: 1, duration: 0.25, ease: "power2.out", immediateRender: false },
+              t);
+          }
+          // progress bars (2/5 → 5/5) follow each mark
+          function progress(from, to, t) {
+            tl.fromTo(["#f4_lfill", "#f4_pfill"],
+              { scaleX: from },
+              { scaleX: to, duration: 0.25, ease: "power2.out", immediateRender: false },
+              t);
+          }
+          // calm next-question swap (soft 0.18 s crossfade)
+          function nextQ(a, b, t) {
+            ["#f4_l", "#f4_p"].forEach(function (p) {
+              tl.fromTo(p + "q" + a,
+                { autoAlpha: 1 },
+                { autoAlpha: 0, duration: 0.18, ease: "power2.out", immediateRender: false },
+                t);
+              tl.fromTo(p + "q" + b,
+                { autoAlpha: 0 },
+                { autoAlpha: 1, duration: 0.18, ease: "power2.out", immediateRender: false },
+                t);
+            });
+          }
+
+          mark(3, M1);
+          progress(0.4, 0.6, M1);
+          nextQ(3, 4, M1 + 0.42);
+
+          mark(4, M2);
+          progress(0.6, 0.8, M2);
+          nextQ(4, 5, M2 + 0.40);
+
+          mark(5, M3);
+          progress(0.8, 1.0, M3);
+
+          // 18.65: 'a' fades up and out; 'b' resolves in its place
+          tl.fromTo("#f4_ta",
+            { opacity: 1, y: 0, filter: "blur(0px)" },
+            { opacity: 0, y: -20, filter: "blur(8px)", duration: 0.35, ease: "power2.in", immediateRender: false },
+            SWAP - 0.2);
+          tl.fromTo("#f4_tb",
+            { opacity: 0, y: 24, filter: "blur(14px)" },
+            { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.0, ease: "power3.out", immediateRender: false },
+            SWAP);
+          // counting 0 → 5 on both numerals with 0 ms text swaps over 0.4 s (no punch, no overshoot)
+          for (var k = 1; k <= 5; k++) {
+            tl.set(["#f4_n1", "#f4_n2"], { textContent: String(k) }, SWAP + k * 0.08);
+          }
+
+          // 20.65 → 21.08: dip everything to NIGHT; the line also defocuses
+          tl.fromTo("#f4_tb",
+            { filter: "blur(0px)" },
+            { filter: "blur(8px)", duration: DUR - OUT, ease: "power2.in", immediateRender: false },
+            OUT);
+          tl.fromTo("#f4_fade",
+            { opacity: 1 },
+            { opacity: 0, duration: DUR - OUT, ease: "power2.in", immediateRender: false },
+            OUT);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines[FID] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

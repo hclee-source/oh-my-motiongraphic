@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <!-- Frame 2 — f2 · track 4.41–10.19 (5.78s) · phrase_flow · DARK-REVEAL + PRODUCT-TURN. Head is source metadata only. -->
+  </head>
+  <body>
+    <template id="02-f2-template">
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        /* ---------- root (plain #stage); NIGHT ground for the whole frame ---------- */
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #0A0A0C;
+          color: #F5F5F7;
+          font-family: "Paperlogy", sans-serif;
+        }
+        .f2-layer {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        #f2_g1 { visibility: hidden; opacity: 0; }
+
+        /* ---------- 3D book (recipes/book3d.md, fN → f2; 430×588, T = 44; real back + spine; SOLID page block) ---------- */
+        .f2-bk-scene { position: absolute; left: 960px; top: 470px; width: 0; height: 0; perspective: 2200px; }
+        .f2-bk-shadow { position: absolute; left: -250px; top: 262px; width: 500px; height: 64px; border-radius: 50%;
+          background: rgba(0, 0, 0, 0.45); filter: blur(22px); }
+        .f2-bk-book { position: absolute; left: -215px; top: -294px; width: 430px; height: 588px; transform-style: preserve-3d; }
+        .f2-bk-book > div, .f2-bk-hinge > div { position: absolute; }
+        .f2-bk-back   { inset: 0; background: #1D1D1F; transform: rotateY(180deg) translateZ(22px); }
+        .f2-bk-back img, .f2-bk-spine img { display: block; width: 100%; height: 100%; }
+        .f2-bk-spine  { left: 193px; top: 0; width: 44px; height: 588px; background: #1D1D1F; transform: rotateY(-90deg) translateZ(215px); }
+        .f2-bk-edge   { left: 193px; top: 0; width: 44px; height: 588px; transform: rotateY(90deg) translateZ(215px); background: #F4EFE6; }
+        .f2-bk-top    { left: 0; top: 272px; width: 430px; height: 44px; transform: rotateX(90deg) translateZ(294px); background: #F4EFE6; }
+        .f2-bk-bottom { left: 0; top: 272px; width: 430px; height: 44px; transform: rotateX(-90deg) translateZ(294px); background: #E9E1D2; }
+        .f2-bk-page   { inset: 0; background: #F4EFE6; transform: translateZ(21px); }
+        .f2-bk-hinge  { inset: 0; transform-origin: 0% 50%; transform: translateZ(22px); transform-style: preserve-3d; }
+        .f2-bk-front  { position: absolute; inset: 0; width: 430px; height: 588px; object-fit: cover; backface-visibility: hidden; }
+        .f2-bk-inside { inset: 0; background: #F4EFE6; transform: rotateY(180deg); backface-visibility: hidden; }
+
+        /* light sweep: a flat leaf face on the cover plane (clips the band to the cover rectangle);
+           the overflow sits on this leaf only, never on the book / hinge chain */
+        .f2-bk-sheen  { inset: 0; overflow: hidden; transform: translateZ(1px); backface-visibility: hidden; pointer-events: none; }
+        #f2_band {
+          position: absolute;
+          left: -360px;
+          top: -160px;
+          width: 220px;
+          height: 908px;
+          transform-origin: 50% 50%;
+          background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.08) 28%,
+            rgba(255, 255, 255, 0.22) 50%,
+            rgba(255, 255, 255, 0.08) 72%,
+            rgba(255, 255, 255, 0) 100%);
+        }
+
+        /* darkness plate in front of the whole book layer (not a filter on the 3D chain) */
+        #f2_plate {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          background: #0A0A0C;
+        }
+
+        /* title under the book */
+        #f2_title {
+          position: absolute;
+          left: 0;
+          top: 866px;
+          width: 1920px;
+          text-align: center;
+          font-weight: 800;
+          font-size: 56px;
+          line-height: 1.2;
+          letter-spacing: -0.02em;
+          color: #F5F5F7;
+          white-space: nowrap;
+          opacity: 0;
+        }
+        .f2-accent { color: #D92741; }
+      </style>
+
+      <div id="stage" data-composition-id="02-f2" data-width="1920" data-height="1080" data-duration="5.78">
+
+        <!-- g1 · free_design · track 4.41–10.19 · the book emerges from darkness, turns, one light sweep, then its name -->
+        <div id="f2_g1" class="f2-layer">
+
+          <div id="f2_booklayer" class="f2-layer">
+            <div class="f2-bk-scene" id="f2_bkscene" data-layout-ignore="">
+              <div class="f2-bk-shadow" id="f2_bk_shadow"></div>
+              <div class="f2-bk-book" id="f2_book">
+                <div class="f2-bk-back"><img src="assets/book/back.jpg" alt=""></div>
+                <div class="f2-bk-spine"><img src="assets/book/spine.jpg" alt=""></div>
+                <div class="f2-bk-edge"></div>
+                <div class="f2-bk-top"></div>
+                <div class="f2-bk-bottom"></div>
+                <div class="f2-bk-page"></div>
+                <div class="f2-bk-hinge" id="f2_bk_hinge">
+                  <img class="f2-bk-front" src="assets/covers/9791194383697.jpg" alt="2026 빠르게 따는 ADsP">
+                  <div class="f2-bk-sheen"><div id="f2_band"></div></div>
+                  <div class="f2-bk-inside"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="f2_plate" data-layout-ignore=""></div>
+
+          <div id="f2_title">2026 빠르게 따는 <span class="f2-accent">ADsP</span></div>
+        </div>
+
+      </div>
+
+      <script>
+        (function () {
+          var D = 5.78;   // frame span length (track 4.41 → 10.19)
+          var T0 = 4.41;  // span_sec[0]
+          function L(trackT) { return Math.round((trackT - T0) * 1000) / 1000; }
+
+          // anchors (frame-local)
+          var A_IN = L(4.41);     // 0     — book in near-darkness, plate lifts
+          var A_TURN_END = L(10.0); // 5.59 — continuous turn ends
+          var A_HIT = L(7.31);    // 2.90  — downbeat: light sweep + title resolve
+          var A_OUT = L(9.75);    // 5.34  — fade to NIGHT
+          // (5.78 / 8.64 are carried by the continuous turn + title hold; 10.19 = frame end)
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ---- group span ----
+          tl.set("#f2_g1", { autoAlpha: 1 }, 0);
+
+          // ---- start states ----
+          tl.set("#f2_book", { x: 0, y: 0, rotationY: -38, rotationX: 6, scale: 0.95 }, 0);
+          tl.set("#f2_bk_hinge", { rotationY: 0 }, 0);
+          tl.set("#f2_bk_shadow", { scaleX: 0.92, opacity: 1, y: 0 }, 0);
+          tl.set("#f2_plate", { opacity: 0.92 }, 0);
+          tl.set("#f2_band", { x: 0, rotation: 18 }, 0);
+          tl.set("#f2_title", { opacity: 0, y: 24, filter: "blur(14px)" }, 0);
+
+          // 4.41 — darkness lifts (plate 0.92 → 0 over 2.2 s)
+          tl.to("#f2_plate", { opacity: 0, duration: 2.2, ease: "power2.out" }, A_IN);
+
+          // 4.41 → 10.0 — continuous product turn -38° → -10°, drift up 20 px, a whisper of push-in
+          tl.to("#f2_book", { rotationY: -10, rotationX: 6, y: -20, scale: 0.97, duration: A_TURN_END - A_IN, ease: "power2.inOut" }, A_IN);
+          tl.to("#f2_bk_shadow", { scaleX: 1.02, y: -6, duration: A_TURN_END - A_IN, ease: "power2.inOut" }, A_IN);
+
+          // 7.31 — ONE light sweep across the cover face, left → right, 1.5 s
+          tl.to("#f2_band", { x: 920, duration: 1.5, ease: "power2.inOut" }, A_HIT);
+
+          // 7.31 — title resolves under the book (blur → sharp 1.0 s), holds to 9.75
+          tl.to("#f2_title", { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.0, ease: "power3.out" }, A_HIT);
+
+          // 9.75 → 10.19 — everything fades to NIGHT
+          tl.to("#f2_title", { opacity: 0, filter: "blur(8px)", duration: 0.44, ease: "power2.in" }, A_OUT);
+          tl.to("#f2_plate", { opacity: 1, duration: 0.44, ease: "power2.in" }, A_OUT);
+
+          // frame end: group off (content is already at NIGHT); pins the timeline length to the span
+          tl.set("#f2_g1", { autoAlpha: 0 }, D);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["02-f2"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

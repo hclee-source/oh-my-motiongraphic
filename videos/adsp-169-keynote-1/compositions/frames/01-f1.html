@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>01-f1 · COLD-LINE — 통계, 처음이어도.</title>
+    <!-- Source metadata only. The runtime clones the <template> contents; everything renderable lives there. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        /* Root: plain #stage (the compiler scopes CSS and moves data-composition-id to the host). */
+        #stage {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #0A0A0C;
+          font-family: "Paperlogy", sans-serif;
+          color: #F5F5F7;
+        }
+        .f1-group {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        /* g1 is the t=0 state (a tl.set at exactly 0 does not fire on seek 0); its text starts invisible = pure black */
+        #f1_g1 { visibility: inherit; opacity: 1; }
+
+        /* camera drift layer (scale only) */
+        #f1_g1_cam {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transform-origin: 50% 50%;
+        }
+        /* the single centred line (fade-out layer: opacity + blur) */
+        .f1-line {
+          display: block;
+          white-space: nowrap;
+          font-size: 120px;
+          line-height: 1.1;
+          letter-spacing: -0.03em;
+          /* optical centring: nudge up a touch so the Hangul x-height sits on y≈540 */
+          transform: translateY(-6px);
+        }
+        .f1-half {
+          display: inline-block;
+          white-space: nowrap;
+          filter: blur(14px);
+          transform: translateY(24px);
+        }
+        #f1_g1_a {
+          font-weight: 800;
+          color: #F5F5F7;
+        }
+        #f1_g1_b {
+          font-weight: 400;
+          letter-spacing: -0.025em;
+          color: #86868B;
+          margin-left: 0.26em;
+        }
+        .f1-ch {
+          display: inline-block;
+          opacity: 0;
+        }
+      </style>
+
+      <div id="stage" data-composition-id="01-f1" data-width="1920" data-height="1080" data-duration="4.41">
+        <div id="f1_g1" class="f1-group">
+          <div id="f1_g1_cam">
+            <div id="f1_g1_line" class="f1-line"><span id="f1_g1_a" class="f1-half"><span class="f1-ch f1-cha">통</span><span class="f1-ch f1-cha">계</span><span class="f1-ch f1-cha">,</span></span><span id="f1_g1_b" class="f1-half"><span class="f1-ch f1-chb">처</span><span class="f1-ch f1-chb">음</span><span class="f1-ch f1-chb">이</span><span class="f1-ch f1-chb">어</span><span class="f1-ch f1-chb">도</span><span class="f1-ch f1-chb">.</span></span></div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var FID = "01-f1";
+          var DUR = 4.41;
+          // frame-local anchors (span starts at 0.0, so local == track seconds)
+          var A1 = 1.53;   // downbeat: piano/strings enter → 'a'
+          var A2 = 2.23;   // next beat → 'b'
+          var OUT = 4.15;  // fade-out start (ends on DUR = next downbeat)
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ===== g1 (0.00–4.41) — visible by CSS default; 0–1.53 is pure black =====
+
+          // 1.53: 'a' — blur-resolve on the half (blur 14→0, y 24→0) + letter-in opacity (0.03 s stagger)
+          tl.fromTo("#f1_g1_a",
+            { filter: "blur(14px)", y: 24 },
+            { filter: "blur(0px)", y: 0, duration: 1.0, ease: "power3.out", immediateRender: false },
+            A1);
+          tl.fromTo(".f1-cha",
+            { opacity: 0 },
+            { opacity: 1, duration: 0.6, ease: "power2.out", stagger: 0.03, immediateRender: false },
+            A1);
+
+          // 2.23: 'b' — same resolve, quiet weight; mid gray settles to white over 0.8 s
+          tl.fromTo("#f1_g1_b",
+            { filter: "blur(14px)", y: 24 },
+            { filter: "blur(0px)", y: 0, duration: 0.7, ease: "power3.out", immediateRender: false },
+            A2);
+          tl.fromTo(".f1-chb",
+            { opacity: 0 },
+            { opacity: 1, duration: 0.6, ease: "power2.out", stagger: 0.03, immediateRender: false },
+            A2);
+          tl.fromTo("#f1_g1_b",
+            { color: "#86868B" },
+            { color: "#F5F5F7", duration: 0.8, ease: "power2.out", immediateRender: false },
+            A2);
+
+          // 1.53→4.0: very slow camera drift on the whole line
+          tl.fromTo("#f1_g1_cam",
+            { scale: 1 },
+            { scale: 1.04, duration: 4.0 - A1, ease: "power1.inOut", immediateRender: false },
+            A1);
+
+          // 3.95→4.41: line dissolves to NIGHT (opacity → 0, blur 0→8px)
+          tl.fromTo("#f1_g1_line",
+            { opacity: 1, filter: "blur(0px)" },
+            { opacity: 0, filter: "blur(8px)", duration: DUR - OUT, ease: "power2.in", immediateRender: false },
+            OUT);
+
+          // group window ends at the frame end (last frame = pure black ground)
+          tl.set("#f1_g1", { autoAlpha: 0 }, DUR);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines[FID] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

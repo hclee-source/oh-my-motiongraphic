@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <!-- Frame 6 — f6 · track 26.00–31.82 (5.82s) · phrase_flow · finale PRODUCT-LOCKUP: 3D book left, title / where / logo lockup right. Head is source metadata only. -->
+  </head>
+  <body>
+    <template id="06-f6-template">
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        /* ---------- root (plain #stage); NIGHT ground for the whole frame ---------- */
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #0A0A0C;
+          color: #F5F5F7;
+          font-family: "Paperlogy", sans-serif;
+        }
+        .f6-layer {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        #f6_g1 { visibility: hidden; opacity: 0; }
+
+        /* ---------- CSS-3D book (recipes/book3d.md, fN → f6; 430×588, T = 44; real back + spine images;
+                       page block + top face SOLID #F4EFE6 per build_notes) ---------- */
+        .f6-bk-scene { position: absolute; left: 640px; top: 520px; width: 0; height: 0; perspective: 2200px; }
+        .f6-bk-shadow { position: absolute; left: -250px; top: 268px; width: 500px; height: 66px; border-radius: 50%;
+          background: rgba(0, 0, 0, 0.45); filter: blur(22px); }
+        .f6-bk-book { position: absolute; left: -215px; top: -294px; width: 430px; height: 588px; transform-style: preserve-3d; }
+        .f6-bk-book > div, .f6-bk-hinge > div { position: absolute; }
+        .f6-bk-back   { inset: 0; background: #A8364F; transform: rotateY(180deg) translateZ(22px); }
+        .f6-bk-back img, .f6-bk-spine img { display: block; width: 100%; height: 100%; }
+        .f6-bk-spine  { left: 193px; top: 0; width: 44px; height: 588px; background: #A8364F; transform: rotateY(-90deg) translateZ(215px); }
+        .f6-bk-edge   { left: 193px; top: 0; width: 44px; height: 588px; transform: rotateY(90deg) translateZ(215px); background: #F4EFE6; }
+        .f6-bk-top    { left: 0; top: 272px; width: 430px; height: 44px; transform: rotateX(90deg) translateZ(294px); background: #F4EFE6; }
+        .f6-bk-bottom { left: 0; top: 272px; width: 430px; height: 44px; transform: rotateX(-90deg) translateZ(294px); background: #E9E1D2; }
+        .f6-bk-page   { inset: 0; background: #F4EFE6; transform: translateZ(21px); }
+        .f6-bk-hinge  { inset: 0; transform-origin: 0% 50%; transform: translateZ(22px); transform-style: preserve-3d; }
+        .f6-bk-front  { position: absolute; inset: 0; width: 430px; height: 588px; object-fit: cover; backface-visibility: hidden; }
+        .f6-bk-inside { inset: 0; background: #F4EFE6; transform: rotateY(180deg); backface-visibility: hidden; }
+
+        /* light sweep: a leaf clip on the cover plane (inside the hinge, in front of the cover) —
+           overflow:hidden sits on this leaf only, never on an ancestor of the 3D chain */
+        .f6-bk-sweep  { inset: 0; overflow: hidden; transform: translateZ(1px); backface-visibility: hidden; pointer-events: none; }
+        #f6_sweepband {
+          position: absolute;
+          left: 0;
+          top: -120px;
+          width: 230px;
+          height: 828px;
+          background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.22) 50%, rgba(255, 255, 255, 0) 100%);
+        }
+
+        /* NIGHT plate in front of the book layer (darkness without touching the 3D chain) */
+        #f6_plate {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          background: #0A0A0C;
+          opacity: 0.9;
+        }
+
+        /* ---------- right column (x 1120–1760, left edge, block centred on y 540) ---------- */
+        #f6_title {
+          position: absolute;
+          left: 1120px;
+          top: 318px;
+          margin: 0;
+          font-weight: 800;
+          font-size: 84px;
+          line-height: 1.1;
+          letter-spacing: -0.03em;
+          color: #F5F5F7;
+          white-space: nowrap;
+        }
+        .f6-tl { display: block; visibility: hidden; opacity: 0; }
+        .f6-acc { color: #D92741; }
+        #f6_where {
+          position: absolute;
+          left: 1122px;
+          top: 539px;
+          font-weight: 500;
+          font-size: 34px;
+          line-height: 1.4;
+          letter-spacing: -0.01em;
+          color: #86868B;
+          white-space: nowrap;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f6_lockup {
+          position: absolute;
+          left: 1122px;
+          top: 706px;
+          height: 56px;
+          display: flex;
+          align-items: center;
+          gap: 18px;
+        }
+        #f6_mark {
+          display: block;
+          width: 58px;
+          height: 56px;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f6_brand {
+          display: block;
+          font-weight: 800;
+          font-size: 34px;
+          line-height: 1;
+          letter-spacing: -0.02em;
+          color: #F5F5F7;
+          white-space: nowrap;
+          visibility: hidden;
+          opacity: 0;
+        }
+      </style>
+
+      <div id="stage" data-composition-id="06-f6" data-width="1920" data-height="1080" data-duration="5.82">
+
+        <!-- g1 · free_design · track 26.00–31.82 · hero product shot + name + logo lockup -->
+        <div id="f6_g1" class="f6-layer">
+
+          <!-- LEFT: the product -->
+          <div id="f6_bookwrap" class="f6-layer">
+            <div class="f6-bk-scene" id="f6_bkscene" data-layout-ignore="">
+              <div class="f6-bk-shadow" id="f6_bk_shadow"></div>
+              <div class="f6-bk-book" id="f6_book">
+                <div class="f6-bk-back"><img src="assets/book/back.jpg" alt=""></div>
+                <div class="f6-bk-spine"><img src="assets/book/spine.jpg" alt=""></div>
+                <div class="f6-bk-edge"></div>
+                <div class="f6-bk-top"></div>
+                <div class="f6-bk-bottom"></div>
+                <div class="f6-bk-page"></div>
+                <div class="f6-bk-hinge" id="f6_bk_hinge">
+                  <img class="f6-bk-front" src="assets/covers/9791194383697.jpg" alt="2026 빠르게 따는 ADsP">
+                  <div class="f6-bk-sweep"><div id="f6_sweepband"></div></div>
+                  <div class="f6-bk-inside"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="f6_plate" data-layout-ignore=""></div>
+
+          <!-- RIGHT: name, where, lockup -->
+          <h1 id="f6_title"><span class="f6-tl" id="f6_t1">2026 빠르게 따는</span><span class="f6-tl" id="f6_t2"><span class="f6-acc">ADsP</span></span></h1>
+          <div id="f6_where">예스24 · 교보문고 · 알라딘</div>
+          <div id="f6_lockup">
+            <img id="f6_mark" src="assets/brand/icon.png" alt="">
+            <span id="f6_brand">골든래빗</span>
+          </div>
+        </div>
+
+      </div>
+
+      <script>
+        (function () {
+          var D = 5.82;   // frame span length (track 26.00 → 31.82)
+          var T0 = 26.0;  // span_sec[0]
+          function L(trackT) { return Math.round((trackT - T0) * 1000) / 1000; }
+          function R(t) { return Math.round(t * 1000) / 1000; }
+
+          var A_IN = L(26.0);     // 0    — drop: book rises out of the night plate
+          var A_SURGE = L(27.03); // 1.03 — light sweep + title
+          var A_WHERE = L(29.0);  // 2.98→3.0 — where-to-buy
+          var A_LOGO = L(30.02);  // 4.02 — logo lockup
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ---- group span (single group covers the whole frame; no fade out — ends on the lockup) ----
+          tl.set("#f6_g1", { autoAlpha: 1 }, 0);
+
+          // ---- start states (t = 0) ----
+          tl.set("#f6_book", { x: 0, y: 30, rotationY: -14, rotationX: 5, scale: 1 }, 0);
+          tl.set("#f6_bk_hinge", { rotationY: 0 }, 0);
+          tl.set("#f6_bk_shadow", { scaleX: 0.9, opacity: 0.6 }, 0);
+          tl.set("#f6_plate", { opacity: 0.9 }, 0);
+          tl.set("#f6_sweepband", { x: -330, rotation: 16 }, 0);
+          tl.set(["#f6_t1", "#f6_t2", "#f6_where", "#f6_mark", "#f6_brand"], { autoAlpha: 0, y: 24, filter: "blur(14px)" }, 0);
+
+          // ---- the product: continuous slow turn over the whole frame, never stops, no overshoot ----
+          tl.to("#f6_book", { rotationY: -6, duration: D, ease: "power2.inOut" }, 0);
+          // 26.00 — rises 30 px while the NIGHT plate lifts (0.9 → 0, 1.0 s)
+          tl.to("#f6_book", { y: 0, duration: 1.0, ease: "power3.out" }, A_IN);
+          tl.to("#f6_bk_shadow", { scaleX: 1, opacity: 1, duration: 1.0, ease: "power3.out" }, A_IN);
+          tl.to("#f6_plate", { opacity: 0, duration: 1.0, ease: "power2.out" }, A_IN);
+
+          // 27.03 (SURGE) — one light sweep across the cover, 1.4 s, then gone off the far edge
+          tl.to("#f6_sweepband", { x: 560, duration: 1.4, ease: "power2.inOut" }, A_SURGE);
+
+          // 27.03 — title resolves (blur 14 → 0, y 24 → 0), second line a breath later
+          tl.to("#f6_t1", { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 1.0, ease: "power3.out" }, A_SURGE);
+          tl.to("#f6_t2", { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 1.0, ease: "power3.out" }, R(A_SURGE + 0.14));
+
+          // 29.00 — where-to-buy under it
+          tl.to("#f6_where", { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.9, ease: "power3.out" }, A_WHERE);
+
+          // 30.02 — logo lockup (gold mark + wordmark) at the bottom of the column
+          tl.to("#f6_mark", { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.8, ease: "power3.out" }, A_LOGO);
+          tl.to("#f6_brand", { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.8, ease: "power3.out" }, R(A_LOGO + 0.08));
+
+          // calm hold to the end; marker pins the timeline length to the span
+          tl.set("#f6_g1", { autoAlpha: 1 }, D);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["06-f6"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

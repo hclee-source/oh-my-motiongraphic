@@ -35,6 +35,12 @@ STYLE_PATTERNS = {  # each style owns its own vocabulary, so styles never conver
         "climax": ["SLOGAN-WEIGHT"],
         "finale": ["SPINE-STACK", "SHELF-LOCKUP"],
     },
+    "launch-keynote": {   # product-launch grammar: one sentence, one object, slow light
+        "intro": ["COLD-LINE", "DARK-REVEAL"],
+        "series": ["PRODUCT-TURN", "MACRO-PUSH", "DEVICE-PAIR", "LIVE-DOT", "QUIET-STAT"],
+        "climax": ["HERO-LINE"],
+        "finale": ["PRODUCT-LOCKUP"],
+    },
     "paper-pop": {   # Japanese qualification-ad grammar in paper (references/scene-patterns.md § Paper-pop)
         "intro": ["COLD-OPEN-GRID", "TARGET-CALL", "BAT-CRACK"],
         "series": ["RED-SHEET", "PROGRESS-WALK", "TRI-PANEL", "SCORE-CARD", "BUBBLE-POP", "STEP-PILLS", "CHAT-BUBBLES"],
@@ -44,7 +50,7 @@ STYLE_PATTERNS = {  # each style owns its own vocabulary, so styles never conver
 }
 PATTERNS = _FLAT
 REGISTERS = {"bold-beat": ["yellow", "ink", "paper"], "editorial-gold": ["ink", "gold"], "soft-studio": ["cream", "scene-tint", "ink"],
-             "paper-pop": ["paper", "yellow", "navy"]}
+             "paper-pop": ["paper", "yellow", "navy"], "launch-keynote": ["night", "white"]}
 TRANSITIONS = ["iris", "blinds", "wipe", "stripes"]
 STYLE_TRANSITIONS = {"paper-pop": ["rings", "tear", "paper"]}
 TREATMENT_AXES = ["style", "music", "palette", "transition", "camera", "hero", "hud"]

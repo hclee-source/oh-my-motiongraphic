@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Frame 5 — f5 · LIVE-DOT · track 21.08–26.00 s (local 0–4.92 s). Runtime ignores <head>. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #f5f5f7;
+          font-family: "Paperlogy", sans-serif;
+        }
+        #f5_g1 {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          box-sizing: border-box;
+          /* strict left edge at x 192; padding-bottom offsets the dot so the two lines centre on y 540 */
+          padding: 0 0 62px 192px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f5_drift {
+          display: block;
+          will-change: transform;
+        }
+        #f5_block {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          will-change: opacity, filter;
+        }
+        #f5_dot {
+          display: block;
+          width: 22px;
+          height: 22px;
+          border-radius: 50%;
+          background: #d92741;
+          margin: 0 0 40px 6px;
+          opacity: 0;
+          will-change: opacity;
+        }
+        .f5-line {
+          display: block;
+          font-size: 104px;
+          line-height: 1.1;
+          white-space: nowrap;
+          will-change: transform, opacity, filter;
+        }
+        #f5_lineA {
+          font-weight: 400;
+          letter-spacing: -0.025em;
+          color: #86868b;
+          opacity: 0;
+        }
+        #f5_lineB {
+          font-weight: 800;
+          letter-spacing: -0.03em;
+          color: #1d1d1f;
+        }
+        .f5-word {
+          display: inline-block;
+        }
+        .f5-char {
+          display: inline-block;
+          opacity: 0;
+          will-change: transform, opacity;
+        }
+        .f5-accent {
+          color: #d92741;
+        }
+      </style>
+
+      <div id="stage" data-composition-id="05-f5" data-width="1920" data-height="1080" data-duration="4.92">
+        <div id="f5_g1">
+          <div id="f5_drift">
+            <div id="f5_block">
+              <div id="f5_dot"></div>
+              <div id="f5_lineA" class="f5-line">시험 직전,</div>
+              <div id="f5_lineB" class="f5-line"><span class="f5-word f5-accent"><span class="f5-char">L</span><span class="f5-char">i</span><span class="f5-char">v</span><span class="f5-char">e</span></span> <span class="f5-word"><span class="f5-char">마</span><span class="f5-char">무</span><span class="f5-char">리</span></span> <span class="f5-word"><span class="f5-char">특</span><span class="f5-char">강</span><span class="f5-char">.</span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // Frame-local time = track time − 21.08
+          var SPAN = 4.92;            // 26.00 − 21.08
+          var T_A = 0.70;             // 21.78 line a
+          var T_B = 1.37;             // 22.45 line b
+          var HOLD_END = 4.47;        // 25.55 start fade to WHITE
+          // Dot pulses on every beat: 21.78 22.45 23.08 23.75 24.40 25.08
+          var BEATS = [0.70, 1.37, 2.00, 2.67, 3.32, 4.00];
+
+          var tl = gsap.timeline({ paused: true });
+
+          // Group 1 spans the whole frame (0 ms swaps).
+          tl.set("#f5_g1", { autoAlpha: 1 }, 0);
+
+          // Slow drift: block x 0 → +16 px across the frame.
+          tl.fromTo("#f5_drift", { x: 0 }, { x: 16, duration: SPAN, ease: "none", immediateRender: true }, 0);
+
+          // 21.08: live dot fades in at the left edge above line a.
+          tl.fromTo("#f5_dot", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out", immediateRender: true }, 0);
+
+          // Pulses 1 ↔ 0.35: each beat dips to 0.35, then recovers to 1 before the next beat.
+          for (var i = 0; i < BEATS.length; i++) {
+            var b = BEATS[i];
+            var next = i + 1 < BEATS.length ? BEATS[i + 1] : HOLD_END;
+            var gap = next - b;
+            tl.fromTo("#f5_dot", { opacity: 1 }, { opacity: 0.35, duration: 0.12, ease: "power2.out", immediateRender: false }, b);
+            tl.fromTo("#f5_dot", { opacity: 0.35 }, { opacity: 1, duration: Math.max(0.2, gap - 0.2), ease: "power2.inOut", immediateRender: false }, b + 0.12);
+          }
+
+          // 21.78: line a resolves — blur 14→0, y 24→0, opacity 0→1; mid gray settles to ink.
+          tl.fromTo("#f5_lineA",
+            { opacity: 0, y: 24, filter: "blur(14px)" },
+            { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.0, ease: "power3.out", immediateRender: true }, T_A);
+          tl.fromTo("#f5_lineA",
+            { color: "#86868b" },
+            { color: "#1d1d1f", duration: 1.2, ease: "power2.out", immediateRender: false }, T_A + 0.2);
+
+          // 22.45: line b resolves letter by letter (0.03 s stagger) under a line-level blur resolve.
+          tl.fromTo("#f5_lineB",
+            { filter: "blur(14px)" },
+            { filter: "blur(0px)", duration: 1.0, ease: "power3.out", immediateRender: true }, T_B);
+          tl.fromTo("#f5_lineB .f5-char",
+            { opacity: 0, y: 24 },
+            { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", stagger: 0.03, immediateRender: true }, T_B);
+
+          // 25.55 → 26.00: fade content to WHITE with a light defocus.
+          tl.fromTo("#f5_block",
+            { opacity: 1, filter: "blur(0px)" },
+            { opacity: 0, filter: "blur(8px)", duration: SPAN - HOLD_END, ease: "power2.in", immediateRender: false }, HOLD_END);
+
+          // End of frame: hide the group (timeline length == span).
+          tl.set("#f5_g1", { autoAlpha: 0 }, SPAN);
+
+          window.__timelines["05-f5"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js" integrity="sha384-sG0Hv1tP1lZCk9KQmrIbY/XNwi+OY84GQqhMscbnsoBFqAz8KNCil1kvfL3Hbbk2" crossorigin="anonymous"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+      .frame { position: absolute; inset: 0; width: 100%; height: 100%; }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="31.82"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div
+        id="el-01-f1"
+        class="frame"
+        data-composition-id="01-f1"
+        data-composition-src="compositions/frames/01-f1.html"
+        data-start="0"
+        data-duration="4.41"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-02-f2"
+        class="frame"
+        data-composition-id="02-f2"
+        data-composition-src="compositions/frames/02-f2.html"
+        data-start="4.41"
+        data-duration="5.78"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-03-f3"
+        class="frame"
+        data-composition-id="03-f3"
+        data-composition-src="compositions/frames/03-f3.html"
+        data-start="10.19"
+        data-duration="5.55"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-04-f4"
+        class="frame"
+        data-composition-id="04-f4"
+        data-composition-src="compositions/frames/04-f4.html"
+        data-start="15.74"
+        data-duration="5.34"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-05-f5"
+        class="frame"
+        data-composition-id="05-f5"
+        data-composition-src="compositions/frames/05-f5.html"
+        data-start="21.08"
+        data-duration="4.92"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-06-f6"
+        class="frame"
+        data-composition-id="06-f6"
+        data-composition-src="compositions/frames/06-f6.html"
+        data-start="26"
+        data-duration="5.82"
+        data-track-index="1"
+      ></div>
+
+      <!-- BGM -->
+      <audio id="el-bgm" src="assets/bgm.mp3" data-start="0" data-duration="31.82"
+        data-track-index="11" data-volume="0.9"></audio>
+      <audio id="sfx-01" class="gr-sfx" src="assets/sfx/whoosh-cinematic.mp3" data-start="1.300" data-duration="5.544" data-track-index="21" data-volume="0.35"></audio>
+      <audio id="sfx-02" class="gr-sfx" src="assets/sfx/whoosh-cinematic.mp3" data-start="4.350" data-duration="5.544" data-track-index="22" data-volume="0.35"></audio>
+      <audio id="sfx-03" class="gr-sfx" src="assets/sfx/sparkle.mp3" data-start="7.310" data-duration="1.802" data-track-index="21" data-volume="0.4"></audio>
+      <audio id="sfx-04" class="gr-sfx" src="assets/sfx/whoosh-short.mp3" data-start="10.150" data-duration="0.575" data-track-index="21" data-volume="0.4"></audio>
+      <audio id="sfx-05" class="gr-sfx" src="assets/sfx/click-soft.mp3" data-start="16.440" data-duration="0.366" data-track-index="21" data-volume="0.4"></audio>
+      <audio id="sfx-06" class="gr-sfx" src="assets/sfx/click-soft.mp3" data-start="17.300" data-duration="0.366" data-track-index="21" data-volume="0.4"></audio>
+      <audio id="sfx-07" class="gr-sfx" src="assets/sfx/click-soft.mp3" data-start="18.000" data-duration="0.366" data-track-index="21" data-volume="0.4"></audio>
+      <audio id="sfx-08" class="gr-sfx" src="assets/sfx/tick.mp3" data-start="18.650" data-duration="0.090" data-track-index="21" data-volume="0.55"></audio>
+      <audio id="sfx-09" class="gr-sfx" src="assets/sfx/ping.mp3" data-start="21.780" data-duration="1.320" data-track-index="21" data-volume="0.35"></audio>
+      <audio id="sfx-10" class="gr-sfx" src="assets/sfx/whoosh-cinematic.mp3" data-start="25.950" data-duration="5.544" data-track-index="21" data-volume="0.35"></audio>
+      <audio id="sfx-11" class="gr-sfx" src="assets/sfx/chime.mp3" data-start="29.000" data-duration="2.500" data-track-index="22" data-volume="0.45"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <title>03-f3 — 노베이스부터.</title>
+    <!-- Frame 3 (track 10.19–15.74 s, 5.55 s). Frame-local t = track_t − 10.19.
+         Anchors (local): 0.00 cover fades in + camera push starts · 1.33 '노베이스부터.' blur-resolves ·
+         2.70 accent underline draws under '노베이스' · 4.88 (beat, hold) · 5.31 push lands ·
+         5.11–5.55 content dips to WHITE.
+         Push focus = the cover's real hashtag block (#노베이스 #비전공자 #독학 / #쉬운 설명 #친절한 해설),
+         measured at x 605–1035, y 1142–1242 of the 1080×1476 JPG → centre (0.759, 0.808).
+         Silent; the host owns audio and gsap. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #F5F5F7;
+          color: #1D1D1F;
+          font-family: "Paperlogy", sans-serif;
+        }
+        .f3-group {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        /* ---------- RIGHT half: fixed window, camera push into the real cover ---------- */
+        #f3_win {
+          position: absolute;
+          left: 900px;
+          top: 96px;
+          width: 924px;
+          height: 888px;
+          overflow: hidden;
+          opacity: 0;
+        }
+        #f3_cam {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 924px;
+          height: 888px;
+          /* = hashtag-block centre in window coords: cover at (140, 88.5) + (0.759·520, 0.808·711) */
+          transform-origin: 534.8px 662.8px;
+          will-change: transform;
+        }
+        #f3_cover {
+          position: absolute;
+          display: block;
+          left: 140px;     /* canvas x 1040–1560, centre 1300 */
+          top: 88.5px;     /* canvas y 184.5–895.5, centre 540 */
+          width: 520px;
+          height: 711px;
+          box-shadow: 0 40px 90px rgba(0, 0, 0, 0.18);
+        }
+
+        /* ---------- LEFT half: the sentence ---------- */
+        #f3_textbox {
+          position: absolute;
+          left: 192px;
+          top: 96px;
+          width: 628px;
+          height: 888px;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+        }
+        #f3_line {
+          display: block;
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 800;
+          font-size: 104px;
+          line-height: 1.1;
+          letter-spacing: -0.03em;
+          color: #1D1D1F;
+          white-space: nowrap;
+          opacity: 0;
+          will-change: filter, transform, opacity;
+        }
+        #f3_word {
+          position: relative;
+          display: inline-block;
+        }
+        #f3_ul {
+          position: absolute;
+          display: block;
+          left: 0;
+          right: 0.03em;
+          bottom: -10px;
+          height: 6px;
+          background: #D92741;
+          transform-origin: 0% 50%;
+          transform: scaleX(0);
+        }
+      </style>
+
+      <div id="stage" data-composition-id="03-f3" data-width="1920" data-height="1080" data-duration="5.55">
+        <div id="f3_g1" class="f3-group">
+          <div id="f3_win">
+            <div id="f3_cam" data-layout-allow-overlap>
+              <img id="f3_cover" src="assets/covers/9791194383697.jpg" alt="2026 빠르게 따는 ADsP 표지">
+            </div>
+          </div>
+          <div id="f3_textbox">
+            <div id="f3_line"><span id="f3_word">노베이스<span id="f3_ul"></span></span>부터.</div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({ paused: true });
+
+          // Frame-local anchors (track − 10.19)
+          const T0 = 0.0;      // 10.19 downbeat — cover in, push starts
+          const T_LINE = 1.33; // 11.52 — sentence resolves
+          const T_UL = 2.70;   // 12.89 downbeat — accent underline
+          const T_PUSH_END = 5.31; // 15.50 — push lands
+          const T_OUT = 5.11;  // 15.30 — dip to white
+          const END = 5.55;    // 15.74
+
+          // Camera push target: move the hashtag-block centre (534.8, 662.8) to the window centre (462, 444)
+          const PUSH_SCALE = 3.0;
+          const PUSH_X = 462 - 534.8;
+          const PUSH_Y = 444 - 662.8;
+
+          // ---- g1 span ----
+          tl.set("#f3_g1", { autoAlpha: 1 }, T0);
+
+          // ---- cover: fade in over the first 0.4 s (soft focus settles a little longer) ----
+          tl.fromTo("#f3_win", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, T0);
+          tl.fromTo("#f3_win", { filter: "blur(12px)" }, { filter: "blur(0px)", duration: 0.9, ease: "power2.out" }, T0);
+
+          // ---- dolly push: one slow continuous camera move into the real hashtags ----
+          tl.fromTo(
+            "#f3_cam",
+            { x: 0, y: 0, scale: 1 },
+            { x: PUSH_X, y: PUSH_Y, scale: PUSH_SCALE, duration: T_PUSH_END - T0, ease: "power2.out" },
+            T0
+          );
+
+          // ---- sentence: blur-resolve (blur 14 → 0, y 24 → 0, opacity 0 → 1) ----
+          tl.fromTo(
+            "#f3_line",
+            { opacity: 0, y: 24, filter: "blur(14px)" },
+            { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.0, ease: "power2.out" },
+            T_LINE
+          );
+          // dolly counter-drift: the line eases gently opposite to the push
+          tl.fromTo("#f3_textbox", { x: 0 }, { x: -12, duration: T_PUSH_END - T_LINE, ease: "power2.inOut" }, T_LINE);
+
+          // ---- the only accent: underline under '노베이스' ----
+          tl.fromTo("#f3_ul", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: "expo.out" }, T_UL);
+
+          // ---- 15.30 → 15.74: content dips to the WHITE ground ----
+          tl.fromTo("#f3_line", { opacity: 1, filter: "blur(0px)" },
+            { opacity: 0, filter: "blur(8px)", duration: END - T_OUT, ease: "power2.inOut", immediateRender: false }, T_OUT);
+          tl.fromTo("#f3_win", { opacity: 1 },
+            { opacity: 0, duration: END - T_OUT, ease: "power2.inOut", immediateRender: false }, T_OUT);
+
+          tl.set("#f3_g1", { autoAlpha: 0 }, END);
+
+          window.__timelines["03-f3"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>
