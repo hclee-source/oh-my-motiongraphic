@@ -1,11 +1,37 @@
 {
   "name": "launch-keynote",
   "summary": "Product-launch keynote look: near-black and off-white grounds alternating per scene, one short sentence per screen in large Paperlogy, the book treated as a hero product (slow CSS-3D turns, specular light sweep, macro push-ins on the real cover), minimal device mockups, generous negative space. Motion is slow and eased (power2/expo, 0.8–1.6 s), entrances by blur-to-sharp and soft rise, scene changes by dip-to-black / cross-dissolve inside frames. One accent color taken from the cover, used on one word or dot at most.",
-  "tokens": { "night": "#0A0A0C", "white": "#F5F5F7", "ink": "#1D1D1F", "mid": "#86868B", "accent": "#D92741", "logo": "#CEAE73" },
-  "palette_keys": ["night", "white", "ink", "mid", "accent"],
+  "tokens": {
+    "night": "#0A0A0C",
+    "white": "#F5F5F7",
+    "ink": "#1D1D1F",
+    "mid": "#86868B",
+    "accent": "#D92741",
+    "logo": "#CEAE73"
+  },
+  "palette_keys": [
+    "night",
+    "white",
+    "ink",
+    "mid",
+    "accent"
+  ],
   "font_line": "Paperlogy 800/500/400 (embedded, Korean) / IBM Plex Mono 500 (numerals in UI only)",
-  "hud": { "box": "ink", "text": "white", "accent": "accent", "default": false },
-  "registers": ["night", "white"],
-  "accent_alternatives": ["#D92741 cover red", "#1D2B76 cover navy", "#D2C34E cover yellow"],
-  "reference_build": "videos/adsp-169-keynote-1"
+  "hud": {
+    "box": "ink",
+    "text": "white",
+    "accent": "accent",
+    "default": false
+  },
+  "registers": [
+    "night",
+    "white"
+  ],
+  "accent_alternatives": [
+    "#D92741 cover red",
+    "#1D2B76 cover navy",
+    "#D2C34E cover yellow"
+  ],
+  "reference_build": "videos/adsp-169-keynote-1",
+  "verdict": "REJECTED by the user on ADsP (2026-10-08): '이 감성은 아니다' — the earlier bold-beat clean cut fits the house better. Keep for explicit requests only."
 }

@@ -406,7 +406,7 @@ def main():
     br = proj / "BRIEF.md"
     if a.force or not br.exists() or "goldenrabbit-promo" not in br.read_text():
         br.write_text("\n".join([
-            "---", "workflow: music-to-video", "flow: automation", f"storyboard: {spec.get('storyboard','no')}",
+            "---", "workflow: music-to-video", "flow: automation", f"storyboard: {spec.get('storyboard','yes')}",
             f'message: "{spec.get("message", "골든래빗 — 시리즈별 대표 도서")}"',
             f"destination: {spec.get('destination','youtube')}", f"aspect: {asp['w']}x{asp['h']}", "language: ko",
             f"length: {D}s", "angle: kinetic-promo", "---", "",

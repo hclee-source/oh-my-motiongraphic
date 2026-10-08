@@ -7,6 +7,7 @@
   "seed": 1,
   "intensity": "standard",
   "hud": true,
+  "storyboard": "yes",
   "message": "<the ONE thing this cut must say>",
   "destination": "youtube",
   "bgm": {
