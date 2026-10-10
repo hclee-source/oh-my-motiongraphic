@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>05-f5 · 패키지 스티커 → Live 빠따 특강</title>
+    <!-- Source metadata only. The runtime clones the <template> contents; everything renderable lives there. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        /* Root: plain #stage (the compiler scopes CSS and moves data-composition-id to the host). */
+        #stage {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #F2F0EA;
+          font-family: "Paperlogy", sans-serif;
+        }
+        .f5-full {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        .f5-hide {
+          visibility: hidden;
+          opacity: 0;
+        }
+
+        /* ================= g1 — comic stickers → Live ticket (PAPER held) ================= */
+        #f5_g1 {
+          background: #F2F0EA;
+        }
+
+        /* comic panel: 1640×480, x 140–1780, y 100–580 */
+        #f5_panel {
+          position: absolute;
+          left: 140px;
+          top: 100px;
+          width: 1640px;
+          height: 480px;
+          box-sizing: border-box;
+          border: 8px solid #222685;
+          background: #F2F0EA;
+          box-shadow: 14px 14px 0 #222685;
+          transform-origin: 50% 50%;
+        }
+        #f5_halftone {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        #f5_row {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 14px;
+        }
+        .f5-stk {
+          position: relative;
+          flex: none;
+          display: block;
+          padding: 0.1em 0.24em;
+          border: 6px solid #FFFFFF;
+          border-radius: 22px;
+          box-shadow: 0 0 0 3px #222685, 9px 9px 0 3px #222685;
+          font-weight: 800;
+          font-size: 104px;
+          line-height: 1;
+          letter-spacing: -0.04em;
+          white-space: nowrap;
+          transform-origin: 50% 50%;
+        }
+        .f5-fill-green {
+          background: #008D41;
+          color: #F2F0EA;
+        }
+        .f5-fill-accent {
+          background: #FEF21C;
+          color: #222685;
+        }
+        .f5-fill-ink {
+          background: #222685;
+          color: #FEF21C;
+        }
+        .f5-plus {
+          position: relative;
+          flex: none;
+          width: 56px;
+          height: 56px;
+          border-radius: 50%;
+          background: #222685;
+          transform-origin: 50% 50%;
+        }
+        .f5-plus::before,
+        .f5-plus::after {
+          content: "";
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          background: #FEF21C;
+        }
+        .f5-plus::before {
+          width: 28px;
+          height: 8px;
+          margin: -4px 0 0 -14px;
+        }
+        .f5-plus::after {
+          width: 8px;
+          height: 28px;
+          margin: -14px 0 0 -4px;
+        }
+
+        /* Live ticket: under the panel, left-aligned, y 676–832, clear of the batter (x ≥ 1450) */
+        #f5_ticketpos {
+          position: absolute;
+          left: 180px;
+          top: 676px;
+          width: 1180px;
+          height: 156px;
+        }
+        #f5_ticket {
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 156px;
+          display: flex;
+          align-items: center;
+          background: #FEF21C;
+          box-shadow: 12px 12px 0 #222685;
+          transform-origin: 50% 100%;
+        }
+        #f5_stub {
+          position: relative;
+          flex: none;
+          width: 140px;
+          height: 156px;
+          box-sizing: border-box;
+          border-right: 5px dashed #222685;
+        }
+        .f5-notch {
+          position: absolute;
+          left: 117px;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: #F2F0EA;
+        }
+        #f5_notch1 {
+          top: -20px;
+        }
+        #f5_notch2 {
+          bottom: -20px;
+        }
+        #f5_dot,
+        #f5_ring {
+          position: absolute;
+          left: 46px;
+          top: 56px;
+          width: 44px;
+          height: 44px;
+          box-sizing: border-box;
+          border-radius: 50%;
+          transform-origin: 50% 50%;
+        }
+        #f5_dot {
+          background: #E8213F;
+        }
+        #f5_ring {
+          border: 4px solid #E8213F;
+        }
+        #f5_tix {
+          padding: 0 56px 0 44px;
+          font-weight: 800;
+          font-size: 62px;
+          line-height: 1;
+          letter-spacing: -0.03em;
+          color: #222685;
+          white-space: nowrap;
+        }
+        .f5-live {
+          font-family: "Archivo Black", sans-serif;
+          font-weight: 400;
+          letter-spacing: 0;
+        }
+
+        /* the user's batter (stance.png 360×475 → 379×500), feet on y 1040, centre x ≈ 1640 */
+        #f5_bat {
+          position: absolute;
+          left: 1450px;
+          top: 540px;
+          width: 379px;
+          height: 500px;
+          display: block;
+          transform-origin: 50% 100%;
+        }
+      </style>
+
+      <div id="stage" data-composition-id="05-f5" data-width="1920" data-height="1080" data-duration="5.80">
+        <!-- ============ g1: five comic stickers on a halftone panel → Live ticket → batter (26.15–31.95) ============ -->
+        <div id="f5_g1" class="f5-full">
+          <div id="f5_gshake" class="f5-full">
+            <div id="f5_pshake" class="f5-full">
+              <div id="f5_panel">
+                <svg id="f5_halftone" viewBox="0 0 1624 464" preserveAspectRatio="none" data-layout-ignore="">
+                  <defs>
+                    <pattern id="f5_htdots" x="0" y="0" width="26" height="26" patternUnits="userSpaceOnUse">
+                      <circle cx="13" cy="13" r="5" fill="#008D41" />
+                    </pattern>
+                  </defs>
+                  <rect x="0" y="0" width="1624" height="464" fill="url(#f5_htdots)" opacity="0.16" />
+                </svg>
+                <div id="f5_row">
+                  <div id="f5_stk0" class="f5-stk f5-fill-green f5-hide">책</div>
+                  <div id="f5_plus1" class="f5-plus f5-hide"></div>
+                  <div id="f5_stk1" class="f5-stk f5-fill-accent f5-hide">특강</div>
+                  <div id="f5_plus2" class="f5-plus f5-hide"></div>
+                  <div id="f5_stk2" class="f5-stk f5-fill-ink f5-hide">CBT</div>
+                  <div id="f5_plus3" class="f5-plus f5-hide"></div>
+                  <div id="f5_stk3" class="f5-stk f5-fill-green f5-hide">카페</div>
+                  <div id="f5_plus4" class="f5-plus f5-hide"></div>
+                  <div id="f5_stk4" class="f5-stk f5-fill-accent f5-hide">단톡</div>
+                </div>
+              </div>
+            </div>
+
+            <div id="f5_ticketpos" class="f5-hide">
+              <div id="f5_ticket">
+                <div id="f5_stub">
+                  <span id="f5_ring" class="f5-hide"></span>
+                  <span id="f5_dot"></span>
+                  <span id="f5_notch1" class="f5-notch"></span>
+                  <span id="f5_notch2" class="f5-notch"></span>
+                </div>
+                <div id="f5_tix">시험 직전 <span class="f5-live">Live</span> 빠따 특강</div>
+              </div>
+            </div>
+          </div>
+
+          <img id="f5_bat" class="f5-hide" src="assets/characters/stance.png" alt="" data-layout-allow-overlap="">
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var FID = "05-f5";
+          function $(id) {
+            return document.getElementById(id);
+          }
+
+          // Frame-local anchors (track seconds − 26.15)
+          var T = {
+            stk: [0.48, 0.95, 1.44, 1.92, 2.41], // 26.63 27.10 27.59 28.07 28.56 — one sticker per beat
+            wave: 2.85, //   29.00 whoosh — the sticker row bumps left→right
+            ticket: 3.39, // 29.54 — Live ticket tears in from below
+            pulse: [3.87, 4.36, 4.83], // 30.02 30.51 30.98 — red LIVE dot pulses
+            bat: 3.87, //    30.02 — batter steps in at the far right
+            end: 5.8,
+          };
+          // '+' discs pop on the off-beats between stickers
+          var PLUS_T = [null];
+          for (var p = 1; p < 5; p++) PLUS_T.push(Math.round(((T.stk[p - 1] + T.stk[p]) / 2) * 1000) / 1000);
+
+          // index-derived sticker tilts in −6°..+6°
+          function rot(i) {
+            return ((i * 7 + 3) % 13) - 6; // -3, 4, -2, 5, -1
+          }
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ============================ g1 ============================
+          tl.set("#f5_g1", { autoAlpha: 1 }, 0);
+
+          // panel settles in from the hard cut (visible at t=0)
+          tl.fromTo("#f5_panel", { scale: 0.94 }, { scale: 1, duration: 0.34, ease: "back.out(1.6)", immediateRender: true }, 0);
+
+          var stks = [$("f5_stk0"), $("f5_stk1"), $("f5_stk2"), $("f5_stk3"), $("f5_stk4")];
+          var pluses = [null, $("f5_plus1"), $("f5_plus2"), $("f5_plus3"), $("f5_plus4")];
+
+          stks.forEach(function (el, i) {
+            var t = T.stk[i];
+            var r = rot(i);
+
+            // '+' disc on the preceding off-beat
+            if (pluses[i]) {
+              var tp = PLUS_T[i];
+              tl.set(pluses[i], { autoAlpha: 1 }, tp);
+              tl.fromTo(pluses[i], { scale: 0, rotation: -90 }, { scale: 1, rotation: 0, duration: 0.22, ease: "back.out(2.2)", immediateRender: false }, tp);
+            }
+
+            // sticker slap: scale 1.4 → 1, power3.out 0.14 s
+            tl.set(el, { autoAlpha: 1 }, t);
+            tl.fromTo(el, { scale: 1.4, rotation: r + (i % 2 ? -4 : 4) }, { scale: 1, rotation: r, duration: 0.14, ease: "power3.out", immediateRender: false }, t);
+
+            // 2-frame mini shake of the panel on landing
+            var ts = t + 0.14;
+            tl.to("#f5_pshake", { x: 7, y: -3, duration: 0.033, ease: "steps(1)" }, ts);
+            tl.to("#f5_pshake", { x: -5, y: 2, duration: 0.033, ease: "steps(1)" }, ts + 0.033);
+            tl.to("#f5_pshake", { x: 0, y: 0, duration: 0.05, ease: "power2.out" }, ts + 0.066);
+          });
+
+          // 29.00 whoosh: a left→right bump wave across the finished row
+          stks.forEach(function (el, i) {
+            tl.fromTo(el, { scale: 1.1, y: -14 }, { scale: 1, y: 0, duration: 0.26, ease: "back.out(2)", immediateRender: false }, T.wave + i * 0.035);
+          });
+
+          // 29.54: Live ticket tears in from the bottom under the panel
+          tl.set("#f5_ticketpos", { autoAlpha: 1 }, T.ticket);
+          tl.fromTo("#f5_ticket", { y: 420, rotation: 3 }, { y: 0, rotation: -1.5, duration: 0.3, ease: "power3.out", immediateRender: false }, T.ticket);
+          var tLand = T.ticket + 0.3;
+          var SAMP = [6, -5, 4, -2];
+          SAMP.forEach(function (a, j) {
+            tl.to("#f5_gshake", { x: a, y: a * 0.5 * (j % 2 ? 1 : -1), duration: 0.03, ease: "steps(1)" }, tLand + j * 0.03);
+          });
+          tl.to("#f5_gshake", { x: 0, y: 0, duration: 0.06, ease: "power2.out" }, tLand + SAMP.length * 0.03);
+
+          // red LIVE dot pulses on 30.02 / 30.51 / 30.98
+          T.pulse.forEach(function (tp) {
+            tl.fromTo("#f5_dot", { scale: 1.5 }, { scale: 1, duration: 0.2, ease: "power3.out", immediateRender: false }, tp);
+            tl.fromTo("#f5_ring", { scale: 1, autoAlpha: 1 }, { scale: 2.2, autoAlpha: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, tp);
+          });
+
+          // 30.02: the batter steps in from the right (spring), waiting for the climax
+          tl.set("#f5_bat", { autoAlpha: 1 }, T.bat);
+          tl.fromTo("#f5_bat", { x: 400 }, { x: 0, duration: 0.55, ease: "back.out(1.5)", immediateRender: false }, T.bat);
+          // small bat waggle on the 30.98 hat — then hold to the hard cut
+          tl.fromTo("#f5_bat", { rotation: 0 }, { rotation: -2, duration: 0.12, ease: "power2.out", immediateRender: false }, T.pulse[2]);
+          tl.to("#f5_bat", { rotation: 0, duration: 0.3, ease: "back.out(2)" }, T.pulse[2] + 0.12);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines[FID] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

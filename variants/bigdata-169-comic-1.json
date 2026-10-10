@@ -1,0 +1,164 @@
+{
+  "name": "bigdata-169-comic-1",
+  "style": "bold-beat",
+  "palette": {
+    "accent": "#FEF21C",
+    "ink": "#222685",
+    "paper": "#F2F0EA",
+    "green": "#008D41"
+  },
+  "aspect": "16:9",
+  "fps": 30,
+  "seed": 21,
+  "intensity": "standard",
+  "hud": false,
+  "storyboard": "yes",
+  "sfx_align": "peak",
+  "message": "비전공자·노베이스도 빅데이터분석기사 필기, 빠르게 따는 책 한 권으로 한방에",
+  "destination": "youtube",
+  "bgm": {
+    "id": "113",
+    "start": 11.42,
+    "duration": 42.71,
+    "fade": 0.8,
+    "license": "Mixkit Stock Music Free License",
+    "notes": "House Fest (Alejandro Magaña), house 123 BPM, pulse 0.130 — user picked A of 4 previews ('가장 임팩트가 있네')."
+  },
+  "series": [
+    {
+      "label": "REVEAL",
+      "name": "2027 빠르게 따는 빅데이터분석기사 필기",
+      "books": [
+        "9791124516317"
+      ]
+    },
+    {
+      "label": "POINT 01",
+      "name": "완독 = 2회독 (다이아몬드)",
+      "books": [
+        "9791124516317"
+      ]
+    },
+    {
+      "label": "POINT 02",
+      "name": "CBT & 용어 학습",
+      "books": [
+        "9791124516317"
+      ]
+    },
+    {
+      "label": "POINT 03",
+      "name": "Live 빠따 특강·카페·단톡",
+      "books": [
+        "9791124516317"
+      ]
+    }
+  ],
+  "extra_assets": [
+    {
+      "src": "shared/books/extras/9791124516317/yes24_BACK_XL.jpg",
+      "dest": "assets/book/back.jpg",
+      "role": "real back cover (877×1200): '비전공자, 노베이스라 걱정되나요?' / 고민 NO! / 학습법 3종 (4단계 1회독·2회독 표기) + QR. Use whole, never crop/tint/overlay text."
+    },
+    {
+      "src": "shared/books/extras/9791124516317/yes24_SIDE_XL.jpg",
+      "dest": "assets/book/spine.jpg",
+      "role": "real spine (126×1200) for the CSS-3D book"
+    },
+    {
+      "src": "shared/characters/baseball/cheer.png",
+      "dest": "assets/characters/cheer.png",
+      "role": "user's baseball character (cut from shared/keyvisuals/adsp-baseball-sheet-01.png) — place, never redraw"
+    },
+    {
+      "src": "shared/characters/baseball/determined.png",
+      "dest": "assets/characters/determined.png",
+      "role": "user's baseball character (cut from shared/keyvisuals/adsp-baseball-sheet-01.png) — place, never redraw"
+    },
+    {
+      "src": "shared/characters/baseball/run.png",
+      "dest": "assets/characters/run.png",
+      "role": "user's baseball character (cut from shared/keyvisuals/adsp-baseball-sheet-01.png) — place, never redraw"
+    },
+    {
+      "src": "shared/characters/baseball/slide.png",
+      "dest": "assets/characters/slide.png",
+      "role": "user's baseball character (cut from shared/keyvisuals/adsp-baseball-sheet-01.png) — place, never redraw"
+    },
+    {
+      "src": "shared/characters/baseball/stance.png",
+      "dest": "assets/characters/stance.png",
+      "role": "user's baseball character (cut from shared/keyvisuals/adsp-baseball-sheet-01.png) — place, never redraw"
+    },
+    {
+      "src": "shared/characters/baseball/swing.png",
+      "dest": "assets/characters/swing.png",
+      "role": "user's baseball character (cut from shared/keyvisuals/adsp-baseball-sheet-01.png) — place, never redraw"
+    },
+    {
+      "src": "shared/characters/baseball/think.png",
+      "dest": "assets/characters/think.png",
+      "role": "user's baseball character (cut from shared/keyvisuals/adsp-baseball-sheet-01.png) — place, never redraw"
+    },
+    {
+      "src": "shared/characters/baseball/thumbs.png",
+      "dest": "assets/characters/thumbs.png",
+      "role": "user's baseball character (cut from shared/keyvisuals/adsp-baseball-sheet-01.png) — place, never redraw"
+    }
+  ],
+  "copy": {
+    "hook": [
+      "비전공자, 노베이스라 걱정되나요?",
+      "고민 NO!"
+    ],
+    "reveal": [
+      "2027 빠르게 따는",
+      "빅데이터분석기사 필기"
+    ],
+    "points": {
+      "2회독": [
+        "완독 = 2회독",
+        "1권 이론",
+        "2권 빈출 족보",
+        "기출 + 모의고사",
+        "빈출 XO"
+      ],
+      "CBT": [
+        "PC도 폰도 실전처럼",
+        "기출변형 4회 + 모의고사 3회",
+        "CBT & 용어 학습"
+      ],
+      "package": [
+        "책 + 특강 + CBT + 카페 + 단톡",
+        "시험 직전 Live 빠따 특강"
+      ]
+    },
+    "climax": "노베이스도 한방에!",
+    "finale": {
+      "line": "2027 빠르게 따는 빅데이터분석기사 필기",
+      "where": "예스24 · 교보문고 · 알라딘",
+      "cta": "goldenrabbit.co.kr"
+    }
+  },
+  "facts": {
+    "exam": "빅데이터분석기사 필기: 4과목(빅데이터 분석 기획·탐색·모델링·결과 해석) 객관식.",
+    "book": "712쪽, 2권 분권 — 1권 기본이론+연습/실전문제, 2권 빈출 족보+기출변형 4회(제9~12회, 2024~2026)+수준별 LEVEL 모의고사 3회+빈출 XO. 웹 CBT(PC/모바일): 기출변형 4회+모의고사 3회, 중간 저장·일시 정지·힌트, 용어 학습. 회차별 시험 직전 Live 마무리(빠따) 특강, 네이버 카페(합격왕), 카톡 단톡방, 유튜브 무료 강의. 뒤표지: '처음부터 끝까지 완독만 해도 이론 2회독, 기출 2회독 효과'. 저자 이유성·조영훈. 판매: 예스24·교보문고·알라딘 모두 판매 확인(2026-10-10).",
+    "sources": "yes24.com/product/goods/193350992 (책소개·출판사 리뷰·목차·앞/뒤표지), aladin·kyobo 검색 2026-10-10",
+    "avoid": "'4주 합격 패스'(책 소개에 있으나 N주 합격 류 금지), '+10점'(효과 수치 주장), '85개 테마'(독자 리뷰에만 등장, 미확인), 1위·합격률."
+  },
+  "treatment": {
+    "camera": "2.5d-comic",
+    "hero": "baseball-diamond",
+    "transition": "comic-burst",
+    "type": "comic-speech-bubbles"
+  },
+  "notes": "2026-10-08~10 기획: 사용자가 'ADsP와 비슷한 결로, 빅분기 도서 톤앤매너 맞춰 새롭게' 요청. 표지 톤 = 초록/남색/노랑 + 만화 폭발 도형·번개·배트 스파크. 다이아몬드 4베이스 = 뒤표지 학습 4단계 → 완독 = 2회독. 캐릭터는 3·4·5·6번 장면만(ADsP 4차 피드백: 인트로·단계 목록엔 넣지 말 것, 넣는 곳은 임팩트 있게).",
+  "outputs": [
+    {
+      "file": "videos\\bigdata-169-comic-1\\renders\\bigdata-169-comic-1.mp4",
+      "duration": 42.8,
+      "quality": "delivery",
+      "rendered": "2026-10-10T13:31:47"
+    }
+  ]
+}

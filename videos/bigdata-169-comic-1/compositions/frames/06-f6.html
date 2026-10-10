@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>06-f6 · 타석 대기 → 노베이스도 한방에!</title>
+    <!-- Source metadata only. The runtime clones the <template> contents; everything renderable lives there.
+         Frame-local 0 = track 31.95. Forked from adsp-169-baseball-1 05-f5 (at bat + mega slam) and
+         characters.html (swing impact: whip-in + afterimages, 1-frame flash, wedge burst lines, home-run ball).
+         31.95 at bat (PAPER) · 32.44/32.93/33.41 quiet beats (highlighter, bat waggle) · 33.80 whip-in ·
+         33.90 SURGE = contact + 0ms flip to GREEN · 34.39 label box + shake · 34.88 freeze to 35.83. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        /* Root: plain #stage (the compiler scopes CSS and moves data-composition-id to the host). */
+        #stage {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #F2F0EA;
+          font-family: "Paperlogy", sans-serif;
+        }
+        .f6-full {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        .f6-anchor {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 0;
+          height: 0;
+        }
+        .f6-hide {
+          visibility: hidden;
+          opacity: 0;
+        }
+
+        /* ================= g1 — at bat, the silent bar (PAPER) ================= */
+        #f6_g1 {
+          background: #F2F0EA;
+        }
+        #f6_a1 {
+          position: absolute;
+          left: 150px;
+          top: 420px;
+          font-weight: 800;
+          font-size: 170px;
+          line-height: 1;
+          letter-spacing: -0.04em;
+          color: #222685;
+          white-space: nowrap;
+        }
+        /* marker highlighter: accent band behind the lower part of the word */
+        #f6_a1hl {
+          position: absolute;
+          left: -0.08em;
+          right: -0.08em;
+          top: 0.56em;
+          height: 0.36em;
+          background: #FEF21C;
+          transform-origin: 0% 50%;
+          transform: scaleX(0);
+        }
+        #f6_a1txt {
+          position: relative;
+        }
+        /* real character art (user's key visual) — placed, never redrawn/filtered. Feet on the floor line y = 1040. */
+        #f6_stancepos {
+          left: 1450px;
+          top: 1040px;
+        }
+        #f6_stance {
+          position: absolute;
+          left: -306px;
+          top: -808px;
+          width: 612px;
+          height: 808px;
+          display: block;
+          transform-origin: 50% 100%;
+        }
+
+        /* ================= g2 — the impact (GREEN) ================= */
+        #f6_g2 {
+          background: #008D41;
+        }
+        /* impact point = the bat's sweet spot (sprite 325,205 × 1.838 from the sprite's top-left 1270,405) */
+        #f6_impact {
+          left: 1867px;
+          top: 782px;
+        }
+        .f6-ray {
+          position: absolute;
+          left: 0;
+          top: -11px;
+          width: 900px;
+          height: 22px;
+          background: #222685;
+          clip-path: polygon(0 50%, 100% 0, 100% 100%);
+          transform-origin: 0% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f6_burst {
+          left: 740px;
+          top: 645px;
+        }
+        .f6-ring {
+          position: absolute;
+          box-sizing: border-box;
+          border-radius: 50%;
+          border: 6px solid #FEF21C;
+          transform-origin: 50% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f6_ring0 {
+          left: -380px;
+          top: -380px;
+          width: 760px;
+          height: 760px;
+        }
+        #f6_ring1 {
+          left: -530px;
+          top: -530px;
+          width: 1060px;
+          height: 1060px;
+        }
+        .f6-cf {
+          position: absolute;
+          transform: scale(0);
+        }
+        .f6-cf svg {
+          display: block;
+          width: 100%;
+          height: 100%;
+          overflow: visible;
+        }
+        #f6_c1 {
+          position: absolute;
+          left: 120px;
+          top: 128px;
+          font-weight: 400;
+          font-size: 150px;
+          line-height: 1;
+          letter-spacing: -0.03em;
+          color: #F2F0EA;
+          white-space: nowrap;
+          transform-origin: 0% 50%;
+        }
+        #f6_c2pos {
+          position: absolute;
+          left: 740px;
+          top: 470px;
+          transform: translateX(-50%);
+          white-space: nowrap;
+        }
+        #f6_c2 {
+          position: relative;
+          padding: 0.08em 0.18em;
+          font-weight: 800;
+          font-size: 330px;
+          line-height: 0.9;
+          letter-spacing: -0.05em;
+          color: #FEF21C;
+          white-space: nowrap;
+          transform-origin: 50% 50%;
+        }
+        #f6_c2box {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          display: block;
+          background: #FEF21C;
+          transform-origin: 0% 50%;
+          transform: scaleX(0);
+        }
+        #f6_c2txt {
+          position: relative;
+        }
+
+        /* ================= the bat layer (whip-in starts 0.1 s before contact, over both grounds) ================= */
+        #f6_flash {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          background: #FFFFFF;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f6-ball {
+          position: absolute;
+          left: -36px;
+          top: -36px;
+          width: 72px;
+          height: 72px;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f6-ball svg {
+          display: block;
+          width: 100%;
+          height: 100%;
+          overflow: visible;
+        }
+        /* the swing (art cut flat at the hips) hangs from the bottom edge, so the crop reads as the frame edge */
+        #f6_swingpos {
+          left: 1600px;
+          top: 1080px;
+        }
+        .f6-swing {
+          position: absolute;
+          left: -330px;
+          top: -675px;
+          width: 660px;
+          height: 675px;
+          display: block;
+          transform-origin: 40% 100%;
+        }
+      </style>
+
+      <div id="stage" data-composition-id="06-f6" data-width="1920" data-height="1080" data-duration="3.88">
+        <!-- ============ g1: at bat (31.95–33.90) ============ -->
+        <div id="f6_g1" class="f6-full">
+          <div id="f6_a1" class="f6-hide"><span id="f6_a1hl" data-layout-ignore=""></span><span id="f6_a1txt">노베이스도</span></div>
+          <div id="f6_stancepos" class="f6-anchor" data-layout-ignore="">
+            <img id="f6_stance" class="f6-hide" src="assets/characters/stance.png" alt="">
+          </div>
+        </div>
+
+        <!-- ============ g2: the impact (33.90–35.83) ============ -->
+        <div id="f6_g2" class="f6-full f6-hide">
+          <div id="f6_g2shake" class="f6-anchor">
+            <div id="f6_burst" class="f6-anchor" data-layout-ignore=""><div id="f6_ring0" class="f6-ring"></div><div id="f6_ring1" class="f6-ring"></div></div>
+            <div id="f6_conf" class="f6-anchor" data-layout-ignore=""></div>
+            <div id="f6_c1" class="f6-hide">노베이스도</div>
+            <div id="f6_c2pos">
+              <div id="f6_c2" class="f6-hide"><span id="f6_c2box"></span><span id="f6_c2txt">한방에!</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ bat layer (characters.html order): flash under the burst lines, ball and swing ============ -->
+        <div id="f6_bat" class="f6-anchor" data-layout-ignore="">
+          <div id="f6_flash"></div>
+          <div id="f6_impact" class="f6-anchor"></div>
+          <div id="f6_balls" class="f6-anchor"></div>
+          <div id="f6_swingpos" class="f6-anchor">
+            <img id="f6_ghost2" class="f6-swing f6-hide" src="assets/characters/swing.png" alt="">
+            <img id="f6_ghost1" class="f6-swing f6-hide" src="assets/characters/swing.png" alt="">
+            <img id="f6_ghost0" class="f6-swing f6-hide" src="assets/characters/swing.png" alt="">
+            <img id="f6_swing" class="f6-swing f6-hide" src="assets/characters/swing.png" alt="">
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var FID = "06-f6";
+          function $(id) {
+            return document.getElementById(id);
+          }
+          var INK = "#222685";
+          var ACC = "#FEF21C";
+          var PAP = "#F2F0EA";
+
+          // Frame-local anchors (track seconds − 31.95)
+          var T = {
+            a1: 0.08, //   32.03 — '노베이스도' resolves in the low bar
+            hl: 0.49, //   32.44 — accent highlighter
+            bob: [0.49, 0.98, 1.46], // 32.44 32.93 33.41 — bat waggle on the quiet beats
+            whip: 1.85, // 33.80 — whoosh: the swing whips in
+            hit: 1.95, //  33.90 SURGE — contact, 0ms flip to GREEN, '한방에!'
+            box: 2.44, //  34.39 — label box + shake + sparkle
+            freeze: 2.93, // 34.88 — everything still to the end
+            end: 3.88,
+          };
+
+          var SHAPES = [
+            '<circle cx="50" cy="50" r="50" fill="currentColor"/>',
+            '<rect x="6" y="6" width="88" height="88" fill="currentColor"/>',
+            '<polygon points="50,4 98,92 2,92" fill="currentColor"/>',
+            '<circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="18"/>',
+            '<path d="M16 0 L50 34 L84 0 L100 16 L66 50 L100 84 L84 100 L50 66 L16 100 L0 84 L34 50 L0 16Z" fill="currentColor"/>',
+            '<polygon points="50,0 100,50 50,100 0,50" fill="currentColor"/>',
+          ];
+          function makeShape(cls, shape, size, color) {
+            var d = document.createElement("div");
+            d.className = cls;
+            d.style.width = size + "px";
+            d.style.height = size + "px";
+            d.style.color = color;
+            d.innerHTML = '<svg viewBox="0 0 100 100">' + SHAPES[shape] + "</svg>";
+            return d;
+          }
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ============================ g1 — at bat ============================
+          // the batter slides in from the right on a soft spring (art is never filtered), then waits
+          tl.set("#f6_stance", { autoAlpha: 1 }, 0);
+          tl.fromTo("#f6_stance", { x: 520 }, { x: 0, duration: 0.42, ease: "back.out(1.4)", immediateRender: false }, 0);
+          T.bob.forEach(function (t, j) {
+            tl.fromTo("#f6_stance", { rotation: 0 }, { rotation: j % 2 ? 1.6 : -1.6, duration: 0.12, ease: "power2.out", immediateRender: false }, t);
+            tl.to("#f6_stance", { rotation: 0, duration: 0.3, ease: "power2.inOut" }, t + 0.12);
+          });
+          tl.set("#f6_stance", { autoAlpha: 0 }, T.whip);
+
+          // '노베이스도' blur-resolves on the left, the highlighter swipes in on the first quiet beat
+          tl.set("#f6_a1", { autoAlpha: 1 }, T.a1);
+          tl.fromTo("#f6_a1", { y: 40, filter: "blur(12px)" }, { y: 0, filter: "blur(0px)", duration: 0.34, ease: "power3.out", immediateRender: false }, T.a1);
+          tl.fromTo("#f6_a1hl", { scaleX: 0 }, { scaleX: 1, duration: 0.32, ease: "expo.out", immediateRender: false }, T.hl);
+
+          // ============================ the swing (whip-in → contact on the SURGE) ============================
+          var IN = T.hit - T.whip;
+          tl.set("#f6_swing", { autoAlpha: 1 }, T.whip);
+          tl.fromTo("#f6_swing", { x: 460, rotation: 14 }, { x: 0, rotation: 0, duration: IN, ease: "power3.in", immediateRender: false }, T.whip);
+          tl.fromTo("#f6_swing", { scale: 1.12 }, { scale: 1, duration: 0.3, ease: "power3.out", immediateRender: false }, T.hit);
+          // afterimages at .35/.2/.1, each a little behind, gone ~0.2 s after contact
+          [0.35, 0.2, 0.1].forEach(function (op, j) {
+            var g = "#f6_ghost" + j;
+            var lag = 0.03 * (j + 1);
+            tl.set(g, { autoAlpha: op }, T.whip + lag);
+            tl.fromTo(g, { x: 460, rotation: 14 }, { x: 0, rotation: 0, duration: IN, ease: "power3.in", immediateRender: false }, T.whip + lag);
+            tl.to(g, { opacity: 0, duration: 0.12, ease: "power1.out" }, T.hit + 0.06 + j * 0.03);
+            tl.set(g, { autoAlpha: 0 }, T.hit + 0.3);
+          });
+          // follow-through, settled before the freeze
+          tl.to("#f6_swing", { x: 24, rotation: -3, duration: 0.6, ease: "power1.out" }, T.hit + 0.3);
+
+          // ============================ g1 → g2 (0ms cut, flip to GREEN) ============================
+          tl.set("#f6_g1", { autoAlpha: 0 }, T.hit);
+          tl.set("#f6_g2", { autoAlpha: 1 }, T.hit);
+
+          // impact flash: one white frame, then a fast fade
+          tl.set("#f6_flash", { autoAlpha: 0.85 }, T.hit);
+          tl.to("#f6_flash", { opacity: 0, duration: 0.16, ease: "power2.out" }, T.hit + 1 / 30);
+          tl.set("#f6_flash", { autoAlpha: 0 }, T.hit + 0.22);
+
+          // ink wedge burst lines from the bat's sweet spot, fanned away from the batter; rays that point
+          // flatter than -150° (toward the copy) are shortened so their far ends stay right of x ≈ 1340
+          var IX = 1867;
+          var imp = $("f6_impact");
+          imp.innerHTML = "";
+          var NR = 14;
+          for (var k = 0; k < NR; k++) {
+            var r = document.createElement("div");
+            r.className = "f6-ray";
+            imp.appendChild(r);
+            var ang = -170 + k * (270 / (NR - 1)) + ((k * 7) % 5) - 2;
+            var len = 0.7 + ((k * 5) % 4) * 0.12;
+            var cx = Math.cos((ang * Math.PI) / 180);
+            if (ang < -150) {
+              var maxEnd = (IX - 1340) / -cx;
+              len = Math.min(len, Math.max(0.2, (maxEnd - 170) / 900));
+            }
+            tl.set(r, { autoAlpha: 1, rotation: ang }, T.hit);
+            tl.fromTo(r, { x: 50, scaleX: 0.25 * len }, { x: 170, scaleX: len, duration: 0.45, ease: "power3.out", immediateRender: false }, T.hit);
+            tl.fromTo(r, { opacity: 1 }, { opacity: 0, duration: 0.45, ease: "power2.in", immediateRender: false }, T.hit);
+            tl.set(r, { autoAlpha: 0 }, T.hit + 0.47);
+          }
+
+          // the home-run ball: leaves the sweet spot up and out over the top, right of the copy, 4-ball trail
+          var balls = $("f6_balls");
+          balls.innerHTML = "";
+          var BALL = '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#F2F0EA" stroke="#222685" stroke-width="4"/>' +
+            '<path d="M22 18 C38 34 38 66 22 82" fill="none" stroke="#E8213F" stroke-width="5" stroke-dasharray="6 6"/>' +
+            '<path d="M78 18 C62 34 62 66 78 82" fill="none" stroke="#E8213F" stroke-width="5" stroke-dasharray="6 6"/></svg>';
+          var P0 = { x: IX, y: 782 }, P1 = { x: 1770, y: 300 }, P2 = { x: 1690, y: -170 };
+          for (var b = 0; b < 5; b++) {
+            var el = document.createElement("div");
+            el.className = "f6-ball";
+            el.innerHTML = BALL;
+            balls.appendChild(el);
+            var t0 = T.hit + 0.02 + b * 0.03;
+            var s0 = 1.1 - b * 0.12;
+            tl.set(el, { autoAlpha: b === 0 ? 1 : 0.5 - b * 0.1 }, t0);
+            tl.fromTo(el, { x: P0.x, y: P0.y, scale: s0, rotation: 0 },
+              { x: P1.x, y: P1.y, scale: s0 * 0.72, rotation: 360, duration: 0.3, ease: "power1.out", immediateRender: false }, t0);
+            tl.fromTo(el, { x: P1.x, y: P1.y, scale: s0 * 0.72, rotation: 360 },
+              { x: P2.x, y: P2.y, scale: s0 * 0.45, rotation: 720, duration: 0.3, ease: "power1.in", immediateRender: false }, t0 + 0.3);
+            tl.set(el, { autoAlpha: 0 }, t0 + 0.62);
+          }
+
+          // 'c1' slams in upper-left, '한방에!' MEGA slam centred-left
+          tl.set("#f6_c1", { autoAlpha: 1 }, T.hit);
+          tl.fromTo("#f6_c1", { x: -60, scale: 1.18 }, { x: 0, scale: 1, duration: 0.16, ease: "power4.out", immediateRender: false }, T.hit);
+          tl.set("#f6_c2", { autoAlpha: 1 }, T.hit + 0.04);
+          tl.fromTo("#f6_c2", { scale: 1.42 }, { scale: 1, duration: 0.16, ease: "power4.out", immediateRender: false }, T.hit + 0.04);
+
+          // 2 accent rings off the word
+          ["#f6_ring0", "#f6_ring1"].forEach(function (rg, j) {
+            var t0 = T.hit + 0.04 + j * 0.12;
+            tl.set(rg, { autoAlpha: 1 }, t0);
+            tl.fromTo(rg, { scale: 0.7, opacity: 1 }, { scale: 1.5, opacity: 0, duration: 0.75, ease: "power2.out", immediateRender: false }, t0);
+            tl.set(rg, { autoAlpha: 0 }, t0 + 0.76);
+          });
+
+          // 8 flat confetti in the open green around the copy — none in the batter's corner, none on a word
+          // (even pieces on the contact, odd on the 34.39 hit); settle and drift end before the freeze
+          var CF = [
+            { x: 1010, y: 205, s: 46 },
+            { x: 1190, y: 120, s: 30 },
+            { x: 560, y: 390, s: 34 },
+            { x: 140, y: 430, s: 40 },
+            { x: 1200, y: 360, s: 38 },
+            { x: 150, y: 905, s: 44 },
+            { x: 560, y: 930, s: 32 },
+            { x: 1000, y: 925, s: 42 },
+          ];
+          var CX = 740;
+          var CY = 645;
+          var conf = $("f6_conf");
+          conf.innerHTML = "";
+          var CCOL = [ACC, PAP, INK];
+          CF.forEach(function (p, k) {
+            var el2 = makeShape("f6-cf", k % 6, p.s, CCOL[k % 3]);
+            el2.style.left = Math.round(p.x - p.s / 2) + "px";
+            el2.style.top = Math.round(p.y - p.s / 2) + "px";
+            conf.appendChild(el2);
+            var t1 = (k % 2 ? T.box + 0.02 : T.hit + 0.06) + (k % 4) * 0.012;
+            var dx2 = p.x - CX;
+            var dy2 = p.y - CY;
+            var dd = Math.sqrt(dx2 * dx2 + dy2 * dy2) || 1;
+            var rot0 = (k * 53) % 360;
+            var spin2 = (k % 2 ? -1 : 1) * (30 + (k % 3) * 15);
+            tl.fromTo(el2, { x: (-dx2 / dd) * 200, y: (-dy2 / dd) * 200, scale: 0, rotation: rot0 - spin2 },
+              { x: 0, y: 0, scale: 1, rotation: rot0, duration: 0.4, ease: "back.out(1.8)", immediateRender: false }, t1);
+            var td = t1 + 0.4;
+            if (td < T.freeze - 0.1) {
+              tl.fromTo(el2, { y: 0, rotation: rot0 },
+                { y: 6 + (k % 3) * 4, rotation: rot0 + (k % 2 ? 1 : -1) * (12 + (k % 4) * 6), duration: T.freeze - td, ease: "power1.out", immediateRender: false }, td);
+            }
+          });
+
+          // 34.39: accent label box snaps behind '한방에!' (text → ink), pulse + one 7-step screen shake
+          tl.set("#f6_c2txt", { color: INK }, T.box);
+          tl.fromTo("#f6_c2box", { scaleX: 0 }, { scaleX: 1, duration: 0.1, ease: "expo.out", immediateRender: false }, T.box);
+          tl.fromTo("#f6_c2", { scale: 1.08 }, { scale: 1, duration: 0.26, ease: "power3.out", immediateRender: false }, T.box);
+          var AMP = [10, -8, 8, -6, 5, -3, 2];
+          AMP.forEach(function (am, j) {
+            tl.to(["#f6_g2shake", "#f6_bat"], { x: am, y: am * 0.6 * (j % 2 ? 1 : -1), duration: 0.03, ease: "steps(1)" }, T.box + j * 0.03);
+          });
+          tl.to(["#f6_g2shake", "#f6_bat"], { x: 0, y: 0, duration: 0.08, ease: "power2.out" }, T.box + AMP.length * 0.03);
+
+          // freeze from 34.88; hard cut into the finale at 35.83
+          tl.set({}, {}, T.end);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines[FID] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

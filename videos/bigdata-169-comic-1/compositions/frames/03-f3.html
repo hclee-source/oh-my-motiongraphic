@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <title>03-f3 — 완독 = 2회독 (baseball diamond)</title>
+    <!-- Frame 3 (track 12.59–20.34s, 7.75s). Frame-local t = track_t − 12.59.
+         Local anchors: 0.00–0.45 diamond chalk draws · 0.48 1st '1권 이론' · 1.95 2nd '2권 빈출 족보' ·
+         3.87 3rd '기출 + 모의고사' · 5.82 HOME '빈출 XO' + slide.png slides in (kick 5.87) ·
+         6.77 '완독 = 2회독' lands on the right (the only mega moment) · hold to 7.75 (wipe out).
+         Silent; the host owns audio and gsap. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #008D41;
+          color: #F2F0EA;
+          font-family: "Paperlogy", sans-serif;
+        }
+        .f3-group {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          opacity: 0;
+          visibility: hidden;
+        }
+        .f3-layer {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+
+        /* ---------- field (green ground held, darker infield, chalk diamond) ---------- */
+        #f3_field {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: visible;
+        }
+        #f3_infield { fill: #0B6652; }
+        #f3_chalk {
+          fill: none;
+          stroke: #F2F0EA;
+          stroke-width: 8;
+          stroke-linejoin: miter;
+          stroke-dasharray: 1000;
+          stroke-dashoffset: 1000;
+        }
+        .f3-leg-ink {
+          stroke: #222685;
+          stroke-width: 17;
+          stroke-dasharray: 24 18;
+          stroke-linecap: butt;
+        }
+        .f3-leg-acc {
+          stroke: #FEF21C;
+          stroke-width: 9;
+          stroke-dasharray: 24 18;
+          stroke-linecap: butt;
+        }
+
+        /* runner token: rides the tip of each leg, slips under the base it reaches */
+        #f3_token {
+          position: absolute;
+          left: 603px;
+          top: 931px;
+          width: 34px;
+          height: 34px;
+          box-sizing: border-box;
+          border-radius: 50%;
+          background: #222685;
+          border: 6px solid #FEF21C;
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        /* ---------- bases: 60 px paper squares (ink 4 px), home = pentagon ---------- */
+        .f3-base {
+          position: absolute;
+          width: 60px;
+          height: 60px;
+        }
+        #f3_base1 { left: 990px; top: 518px; }   /* 1st  (1020,548) */
+        #f3_base2 { left: 590px; top: 118px; }   /* 2nd  (620,148)  */
+        #f3_base3 { left: 190px; top: 518px; }   /* 3rd  (220,548)  */
+        #f3_base4 { left: 588px; top: 916px; width: 64px; height: 64px; } /* home (620,948) */
+        .f3-sq {
+          position: absolute;
+          inset: 0;
+          box-sizing: border-box;
+          border: 4px solid #222685;
+          background: #F2F0EA;
+          transform: rotate(45deg);
+        }
+        .f3-sq-hit {
+          background: #FEF21C;
+          opacity: 0;
+          visibility: hidden;
+        }
+        .f3-home-svg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 64px;
+          height: 64px;
+          overflow: visible;
+        }
+        #f3_home_hit {
+          opacity: 0;
+          visibility: hidden;
+        }
+        .f3-ring {
+          position: absolute;
+          width: 110px;
+          height: 110px;
+          box-sizing: border-box;
+          border-radius: 50%;
+          border: 6px solid #FEF21C;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f3_ring1 { left: 965px; top: 493px; }
+        #f3_ring2 { left: 565px; top: 93px; }
+        #f3_ring3 { left: 165px; top: 493px; }
+        #f3_ring4 { left: 565px; top: 893px; }
+
+        /* ---------- step labels: ink box + paper text, Paperlogy 800 40 px ---------- */
+        .f3-label {
+          position: absolute;
+          top: 514px;
+          padding: 10px 18px;
+          font-weight: 800;
+          font-size: 40px;
+          line-height: 1.2;
+          letter-spacing: -0.02em;
+          white-space: nowrap;
+          color: #F2F0EA;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f3_lb1 { right: 965px; transform-origin: 100% 50%; }            /* inside the field, left of 1st */
+        #f3_lb2 { left: 690px; top: 114px; transform-origin: 0 50%; }    /* right of 2nd */
+        #f3_lb3 { left: 287px; transform-origin: 0 50%; }                /* inside the field, right of 3rd */
+        #f3_lb4 { left: 960px; top: 902px; transform-origin: 0 50%; }    /* right of home, clear of the runner */
+        .f3-label-box {
+          position: absolute;
+          inset: 0;
+          background: #222685;
+          box-shadow: 5px 5px 0 #0E0C33;
+          transform-origin: 0 50%;
+        }
+        .f3-label-txt {
+          position: relative;
+          display: block;
+        }
+        .f3-ch {
+          opacity: 0;
+        }
+
+        /* ---------- the slide (user's art, placed as-is) ---------- */
+        #f3_slide_pos {
+          position: absolute;
+          left: 413px;
+          top: 666px;
+          width: 520px;
+          height: 310px;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f3_slide {
+          display: block;
+          width: 520px;
+          height: 310px;
+        }
+        .f3-speed {
+          position: absolute;
+          left: 150px;
+          width: 230px;
+          height: 7px;
+          border-radius: 4px;
+          background: #F2F0EA;
+          transform-origin: 100% 50%;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f3_speed1 { top: 742px; }
+        #f3_speed2 { top: 818px; left: 100px; width: 270px; }
+        #f3_speed3 { top: 894px; left: 190px; width: 190px; }
+        .f3-dust {
+          position: absolute;
+          border-radius: 50%;
+          background: #F2F0EA;
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        /* ---------- equation (right column x 1180–1820) ---------- */
+        #f3_eq {
+          position: absolute;
+          left: 1180px;
+          top: 250px;
+          width: 640px;
+          height: 580px;
+        }
+        #f3_eq_shake {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+        }
+        .f3-eqw {
+          flex: none;
+          position: relative;
+          font-weight: 800;
+          white-space: nowrap;
+          color: #F2F0EA;
+          transform-origin: 50% 50%;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f3_e1 {
+          font-size: 140px;
+          line-height: 1;
+          letter-spacing: -0.04em;
+        }
+        #f3_e2 {
+          font-family: "IBM Plex Mono", monospace;
+          font-weight: 700;
+          font-size: 120px;
+          line-height: 0.85;
+        }
+        #f3_e3 {
+          font-size: 170px;
+          line-height: 0.92;
+          letter-spacing: -0.045em;
+          padding: 0.08em 0.18em;
+          color: #222685;
+        }
+        #f3_e3_box {
+          position: absolute;
+          inset: 0;
+          background: #FEF21C;
+          box-shadow: 10px 10px 0 #222685;
+          transform-origin: 0 50%;
+        }
+        #f3_e3_txt {
+          position: relative;
+          display: block;
+        }
+      </style>
+
+      <div id="stage" data-composition-id="03-f3" data-width="1920" data-height="1080" data-duration="7.75">
+        <div id="f3_g1" class="f3-group">
+          <div id="f3_shake" class="f3-layer">
+            <!-- the field -->
+            <svg id="f3_field" viewBox="0 0 1920 1080" data-layout-ignore="">
+              <path id="f3_infield" d="M620 948 L1020 548 L620 148 L220 548 Z" />
+              <path id="f3_chalk" pathLength="1000" d="M620 948 L1020 548 L620 148 L220 548 Z" />
+              <!-- runner path legs: home→1st→2nd→3rd→home (tips tweened via attr) -->
+              <line id="f3_leg1_ink" class="f3-leg-ink" x1="620" y1="948" x2="620" y2="948" />
+              <line id="f3_leg1_acc" class="f3-leg-acc" x1="620" y1="948" x2="620" y2="948" />
+              <line id="f3_leg2_ink" class="f3-leg-ink" x1="1020" y1="548" x2="1020" y2="548" />
+              <line id="f3_leg2_acc" class="f3-leg-acc" x1="1020" y1="548" x2="1020" y2="548" />
+              <line id="f3_leg3_ink" class="f3-leg-ink" x1="620" y1="148" x2="620" y2="148" />
+              <line id="f3_leg3_acc" class="f3-leg-acc" x1="620" y1="148" x2="620" y2="148" />
+              <line id="f3_leg4_ink" class="f3-leg-ink" x1="220" y1="548" x2="220" y2="548" />
+              <line id="f3_leg4_acc" class="f3-leg-acc" x1="220" y1="548" x2="220" y2="548" />
+            </svg>
+
+            <div id="f3_token" data-layout-ignore=""></div>
+
+            <!-- the slide: user's character, below the home pentagon in z so the plate stays on top -->
+            <div id="f3_speed1" class="f3-speed" data-layout-ignore=""></div>
+            <div id="f3_speed2" class="f3-speed" data-layout-ignore=""></div>
+            <div id="f3_speed3" class="f3-speed" data-layout-ignore=""></div>
+            <div id="f3_slide_pos" data-layout-allow-overlap="">
+              <img id="f3_slide" src="assets/characters/slide.png" alt="">
+            </div>
+
+            <!-- bases -->
+            <div id="f3_ring1" class="f3-ring" data-layout-ignore=""></div>
+            <div id="f3_ring2" class="f3-ring" data-layout-ignore=""></div>
+            <div id="f3_ring3" class="f3-ring" data-layout-ignore=""></div>
+            <div id="f3_ring4" class="f3-ring" data-layout-ignore=""></div>
+            <div id="f3_base1" class="f3-base" data-layout-allow-overlap=""><div class="f3-sq"></div><div id="f3_hit1" class="f3-sq f3-sq-hit"></div></div>
+            <div id="f3_base2" class="f3-base" data-layout-allow-overlap=""><div class="f3-sq"></div><div id="f3_hit2" class="f3-sq f3-sq-hit"></div></div>
+            <div id="f3_base3" class="f3-base" data-layout-allow-overlap=""><div class="f3-sq"></div><div id="f3_hit3" class="f3-sq f3-sq-hit"></div></div>
+            <div id="f3_base4" class="f3-base" data-layout-allow-overlap="">
+              <svg class="f3-home-svg" viewBox="0 0 64 64">
+                <polygon points="4,4 60,4 60,32 32,60 4,32" fill="#F2F0EA" stroke="#222685" stroke-width="4" stroke-linejoin="miter" />
+                <polygon id="f3_home_hit" points="4,4 60,4 60,32 32,60 4,32" fill="#FEF21C" stroke="#222685" stroke-width="4" stroke-linejoin="miter" />
+              </svg>
+            </div>
+
+            <!-- dust puffs (in front of the runner) -->
+            <div id="f3_dust0" class="f3-dust" data-layout-ignore="" style="left:513px;top:958px;width:34px;height:34px;"></div>
+            <div id="f3_dust1" class="f3-dust" data-layout-ignore="" style="left:557px;top:974px;width:26px;height:26px;"></div>
+            <div id="f3_dust2" class="f3-dust" data-layout-ignore="" style="left:620px;top:964px;width:40px;height:40px;"></div>
+            <div id="f3_dust3" class="f3-dust" data-layout-ignore="" style="left:668px;top:956px;width:24px;height:24px;"></div>
+            <div id="f3_dust4" class="f3-dust" data-layout-ignore="" style="left:478px;top:944px;width:20px;height:20px;"></div>
+            <div id="f3_dust5" class="f3-dust" data-layout-ignore="" style="left:700px;top:972px;width:28px;height:28px;"></div>
+
+            <!-- step labels -->
+            <div id="f3_lb1" class="f3-label"><div class="f3-label-box"></div><span class="f3-label-txt"><span class="f3-ch">1</span><span class="f3-ch">권</span> <span class="f3-ch">이</span><span class="f3-ch">론</span></span></div>
+            <div id="f3_lb2" class="f3-label"><div class="f3-label-box"></div><span class="f3-label-txt"><span class="f3-ch">2</span><span class="f3-ch">권</span> <span class="f3-ch">빈</span><span class="f3-ch">출</span> <span class="f3-ch">족</span><span class="f3-ch">보</span></span></div>
+            <div id="f3_lb3" class="f3-label"><div class="f3-label-box"></div><span class="f3-label-txt"><span class="f3-ch">기</span><span class="f3-ch">출</span> <span class="f3-ch">+</span> <span class="f3-ch">모</span><span class="f3-ch">의</span><span class="f3-ch">고</span><span class="f3-ch">사</span></span></div>
+            <div id="f3_lb4" class="f3-label"><div class="f3-label-box"></div><span class="f3-label-txt"><span class="f3-ch">빈</span><span class="f3-ch">출</span> <span class="f3-ch">X</span><span class="f3-ch">O</span></span></div>
+          </div>
+
+          <!-- equation: 완독 = 2회독 -->
+          <div id="f3_eq">
+            <div id="f3_eq_shake">
+              <div id="f3_e1" class="f3-eqw">완독</div>
+              <div id="f3_e2" class="f3-eqw">=</div>
+              <div id="f3_e3" class="f3-eqw"><div id="f3_e3_box"></div><span id="f3_e3_txt">2회독</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({ paused: true });
+
+          // Frame-local anchors (track_t − 12.59)
+          const T_B1 = 0.48;   // 13.07 1st base
+          const T_B2 = 1.95;   // 14.54 2nd base
+          const T_B3 = 3.87;   // 16.46 3rd base
+          const T_HOME = 5.82; // 18.41 home + the slide
+          const T_KICK = 5.87; // 18.46 bat-crack / kick
+          const T_EQ = 6.77;   // 19.36 equation lands
+          const END = 7.75;
+
+          // Diamond geometry (track coords): home, 1st, 2nd, 3rd
+          const P = [[620, 948], [1020, 548], [620, 148], [220, 548]];
+
+          // ---- group window ----
+          tl.set("#f3_g1", { autoAlpha: 1 }, 0);
+          tl.set("#f3_g1", { autoAlpha: 0 }, END);
+
+          // ---- 0.00–0.45 field draws in ----
+          tl.fromTo("#f3_infield", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out" }, 0);
+          tl.fromTo("#f3_chalk", { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.45, ease: "power2.inOut" }, 0);
+          // bases pop in running order (home, 1st, 2nd, 3rd)
+          const BASES = ["#f3_base4", "#f3_base1", "#f3_base2", "#f3_base3"];
+          BASES.forEach(function (b, i) {
+            tl.fromTo(b, { scale: 0 }, { scale: 1, duration: 0.22, ease: "back.out(2)" }, 0.06 + i * 0.07);
+          });
+
+          // ---- runner path: one leg per bar, each finishing on its base's bar line ----
+          const LEGS = [
+            { id: 1, a: P[0], b: P[1], t0: 0.16, t1: T_B1 },
+            { id: 2, a: P[1], b: P[2], t0: 1.25, t1: T_B2 },
+            { id: 3, a: P[2], b: P[3], t0: 3.17, t1: T_B3 },
+            { id: 4, a: P[3], b: P[0], t0: 5.22, t1: T_HOME }
+          ];
+          tl.set("#f3_token", { autoAlpha: 1 }, LEGS[0].t0);
+          LEGS.forEach(function (L) {
+            const dur = L.t1 - L.t0;
+            tl.fromTo(
+              ["#f3_leg" + L.id + "_ink", "#f3_leg" + L.id + "_acc"],
+              { attr: { x2: L.a[0], y2: L.a[1] } },
+              { attr: { x2: L.b[0], y2: L.b[1] }, duration: dur, ease: "power2.inOut" },
+              L.t0
+            );
+            tl.fromTo(
+              "#f3_token",
+              { x: L.a[0] - P[0][0], y: L.a[1] - P[0][1] },
+              { x: L.b[0] - P[0][0], y: L.b[1] - P[0][1], duration: dur, ease: "power2.inOut", immediateRender: false },
+              L.t0
+            );
+          });
+          tl.set("#f3_token", { autoAlpha: 0 }, T_HOME);
+
+          // ---- base hits: accent fill + scale punch 1.25→1 + ring ----
+          function hit(n, face, t) {
+            tl.set(face, { autoAlpha: 1 }, t);
+            tl.fromTo("#f3_base" + n, { scale: 1.25 }, { scale: 1, duration: 0.3, ease: "power3.out", immediateRender: false }, t);
+            tl.set("#f3_ring" + n, { autoAlpha: 1 }, t);
+            tl.fromTo("#f3_ring" + n, { scale: 0.5, opacity: 1 }, { scale: 1.8, opacity: 0, duration: 0.42, ease: "power2.out", immediateRender: false }, t);
+          }
+          hit(1, "#f3_hit1", T_B1);
+          hit(2, "#f3_hit2", T_B2);
+          hit(3, "#f3_hit3", T_B3);
+          hit(4, "#f3_home_hit", T_HOME);
+
+          // ---- labels: overlay-pop box + typewriter text ----
+          function label(n, t) {
+            const lb = "#f3_lb" + n;
+            tl.fromTo(lb, { autoAlpha: 0, scale: 0.7 }, { autoAlpha: 1, scale: 1, duration: 0.28, ease: "back.out(1.8)" }, t + 0.04);
+            tl.fromTo(lb + " .f3-label-box", { scaleX: 0 }, { scaleX: 1, duration: 0.14, ease: "power3.out" }, t + 0.04);
+            gsap.utils.toArray(lb + " .f3-ch").forEach(function (ch, k) {
+              tl.set(ch, { opacity: 1 }, t + 0.1 + k * 0.035);
+            });
+          }
+          label(1, T_B1);
+          label(2, T_B2);
+          tl.to("#f3_lb1", { opacity: 0.7, duration: 0.2, ease: "power1.out" }, T_B2);
+          label(3, T_B3);
+          tl.to("#f3_lb2", { opacity: 0.7, duration: 0.2, ease: "power1.out" }, T_B3);
+          label(4, T_HOME);
+          tl.to("#f3_lb3", { opacity: 0.7, duration: 0.2, ease: "power1.out" }, T_HOME);
+
+          // ---- 5.82 the slide: character slides in from the left onto home ----
+          tl.set("#f3_slide_pos", { autoAlpha: 1 }, T_HOME);
+          tl.fromTo("#f3_slide_pos", { x: -700 }, { x: 0, duration: 0.35, ease: "power3.out", immediateRender: false }, T_HOME);
+          ["#f3_speed1", "#f3_speed2", "#f3_speed3"].forEach(function (s, i) {
+            const t = T_HOME + 0.04 + i * 0.03;
+            tl.set(s, { autoAlpha: 1 }, t);
+            tl.fromTo(s, { scaleX: 0, x: 0 }, { scaleX: 1, duration: 0.12, ease: "power2.out", immediateRender: false }, t);
+            tl.to(s, { x: -120, opacity: 0, duration: 0.3, ease: "power1.in" }, t + 0.14);
+          });
+          // dust puffs pop as the slide lands, then drift out and fade
+          const DUST = [[-46, -26], [-18, -34], [16, -40], [44, -28], [-70, -14], [66, -18]];
+          DUST.forEach(function (d, i) {
+            const id = "#f3_dust" + i;
+            const t = T_HOME + 0.2 + i * 0.02;
+            tl.set(id, { autoAlpha: 1 }, t);
+            tl.fromTo(id, { scale: 0 }, { scale: 1, duration: 0.18, ease: "back.out(2)", immediateRender: false }, t);
+            tl.to(id, { x: d[0], y: d[1], scale: 1.25, opacity: 0, duration: 0.5, ease: "power1.out" }, t + 0.18);
+          });
+          // kick: one short field jolt
+          tl.to("#f3_shake", { x: 8, y: -4, duration: 0.03, ease: "none" }, T_KICK + 0.28);
+          tl.to("#f3_shake", { x: -6, y: 3, duration: 0.03, ease: "none" }, T_KICK + 0.31);
+          tl.to("#f3_shake", { x: 0, y: 0, duration: 0.07, ease: "power2.out" }, T_KICK + 0.34);
+
+          // ---- 6.77 equation: blur-in + spring, '2회독' accent box sweeps from the left ----
+          tl.to(["#f3_lb1", "#f3_lb2", "#f3_lb3", "#f3_lb4"], { opacity: 0.6, duration: 0.25, ease: "power1.out" }, T_EQ);
+          function eqIn(sel, t) {
+            tl.fromTo(sel,
+              { autoAlpha: 0, y: 24, scale: 0.86, filter: "blur(12px)" },
+              { autoAlpha: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.34, ease: "back.out(1.7)" },
+              t);
+          }
+          eqIn("#f3_e1", T_EQ);
+          eqIn("#f3_e2", T_EQ + 0.08);
+          eqIn("#f3_e3", T_EQ + 0.14);
+          tl.fromTo("#f3_e3_box", { scaleX: 0 }, { scaleX: 1, duration: 0.18, ease: "power3.out" }, T_EQ + 0.14);
+          // one micro shake as '2회독' settles
+          tl.to("#f3_eq_shake", { x: 7, duration: 0.03, ease: "none" }, T_EQ + 0.4);
+          tl.to("#f3_eq_shake", { x: 0, duration: 0.07, ease: "power2.out" }, T_EQ + 0.43);
+
+          // 7.2–7.75 calm hold for the wipe
+          tl.set({}, {}, END);
+
+          window.__timelines["03-f3"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

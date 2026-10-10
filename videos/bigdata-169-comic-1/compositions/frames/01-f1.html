@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <title>01-f1 · HOOK — comic speech bubbles + NO stamp</title>
+    <!-- Source metadata only. The runtime clones the <template> contents; everything renderable lives there. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        /* Root: plain #stage (the compiler scopes CSS and moves data-composition-id to the host). */
+        #stage {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #008D41;
+          font-family: "Paperlogy", sans-serif;
+          color: #222685;
+        }
+        #f1_bg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          background: #008D41;
+        }
+        #f1_bg svg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          display: block;
+        }
+        #f1_cam {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        .f1-group {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        /* g1 spans the whole frame: visible by CSS default (t=0 state) */
+        #f1_g1 { visibility: inherit; opacity: 1; }
+
+        /* ---------- intro: three 'typing' dots (hats before the first balloon) ---------- */
+        .f1-dot {
+          position: absolute;
+          top: 242px;
+          width: 26px;
+          height: 26px;
+          border-radius: 50%;
+          background: #F2F0EA;
+          visibility: hidden;
+          opacity: 0;
+        }
+
+        /* ---------- comic balloons ---------- */
+        .f1-balloon {
+          position: absolute;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f1-balloon > svg.f1-shape {
+          position: absolute;
+          left: 0;
+          top: 0;
+          display: block;
+          overflow: visible;
+        }
+        .f1-btext {
+          position: absolute;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          white-space: nowrap;
+          font-weight: 800;
+          letter-spacing: -0.03em;
+          line-height: 1;
+          color: #222685;
+        }
+        .f1-tick {
+          position: absolute;
+          display: block;
+          overflow: visible;
+          transform: scale(0);
+        }
+
+        #f1_b1 {
+          left: 150px;
+          top: 130px;
+          width: 540px;
+          height: 300px;
+          transform-origin: 95px 285px;
+        }
+        #f1_b1_txt {
+          left: 25px;
+          top: 20px;
+          width: 490px;
+          height: 210px;
+          font-size: 92px;
+        }
+        #f1_b1_tk {
+          left: 480px;
+          top: 0;
+          width: 100px;
+          height: 90px;
+          transform-origin: 0% 100%;
+        }
+
+        #f1_b2 {
+          left: 1220px;
+          top: 690px;
+          width: 540px;
+          height: 290px;
+          transform-origin: 455px 270px;
+        }
+        #f1_b2_txt {
+          left: 25px;
+          top: 15px;
+          width: 490px;
+          height: 200px;
+          font-size: 92px;
+        }
+        #f1_b2_tk {
+          left: -24px;
+          top: -10px;
+          width: 80px;
+          height: 80px;
+          transform-origin: 100% 100%;
+        }
+
+        #f1_q {
+          left: 390px;
+          top: 390px;
+          width: 860px;
+          height: 360px;
+          transform-origin: 130px 335px;
+        }
+        #f1_q_txt {
+          left: 20px;
+          top: 40px;
+          width: 820px;
+          height: 240px;
+          font-size: 110px;
+        }
+        .f1-qch {
+          display: inline-block;
+          opacity: 0;
+        }
+        .f1-hlwrap {
+          position: relative;
+          display: inline-block;
+          isolation: isolate;
+        }
+        .f1-hl {
+          position: absolute;
+          left: -8px;
+          right: -8px;
+          top: 52px;
+          height: 50px;
+          display: block;
+          background: #FEF21C;
+          z-index: -1;
+          transform-origin: 0% 50%;
+          transform: scaleX(0);
+        }
+
+        /* ---------- stamp ---------- */
+        #f1_stamp {
+          position: absolute;
+          left: 1270px;
+          top: 140px;
+          width: 440px;
+          height: 440px;
+          visibility: hidden;
+          opacity: 0;
+          transform: rotate(-12deg);
+          transform-origin: 50% 50%;
+        }
+        .f1-disc {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 440px;
+          height: 440px;
+          box-sizing: border-box;
+          border-radius: 50%;
+          background: #222685;
+          border: 6px solid #F2F0EA;
+          box-shadow: 10px 10px 0px #222685;
+        }
+        .f1-ringin {
+          position: absolute;
+          left: 26px;
+          top: 26px;
+          width: 388px;
+          height: 388px;
+          box-sizing: border-box;
+          border-radius: 50%;
+          border: 10px solid #FEF21C;
+        }
+        .f1-stamptext {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 440px;
+          height: 440px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          color: #FEF21C;
+          white-space: nowrap;
+        }
+        .f1-st1 {
+          font-family: "Paperlogy", sans-serif;
+          font-weight: 800;
+          font-size: 84px;
+          line-height: 1;
+          letter-spacing: -0.03em;
+        }
+        .f1-st2 {
+          margin-top: 10px;
+          font-family: "Archivo Black", sans-serif;
+          font-weight: 400;
+          font-size: 116px;
+          line-height: 0.95;
+          letter-spacing: 0.01em;
+        }
+        #f1_ring {
+          position: absolute;
+          left: 1270px;
+          top: 140px;
+          width: 440px;
+          height: 440px;
+          box-sizing: border-box;
+          border-radius: 50%;
+          border: 8px solid #F2F0EA;
+          visibility: hidden;
+          opacity: 0;
+          transform-origin: 50% 50%;
+        }
+
+        /* ---------- whip-off speed lines ---------- */
+        #f1_lines {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        .f1-sl {
+          position: absolute;
+          height: 8px;
+          display: block;
+          border-radius: 4px;
+          background: #F2F0EA;
+          transform-origin: 100% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+      </style>
+
+      <div id="stage" data-composition-id="01-f1" data-width="1920" data-height="1080" data-duration="6.78">
+        <!-- held GREEN ground + flat paper dot halftone (6%) -->
+        <div id="f1_bg">
+          <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <pattern id="f1_dots" x="0" y="0" width="36" height="36" patternUnits="userSpaceOnUse">
+                <circle cx="18" cy="18" r="3" fill="#F2F0EA"></circle>
+              </pattern>
+            </defs>
+            <rect x="0" y="0" width="1920" height="1080" fill="url(#f1_dots)" opacity="0.06"></rect>
+          </svg>
+        </div>
+
+        <div id="f1_cam">
+          <!-- ============ g1: balloons accumulate → stamp answers (0.00–6.78) ============ -->
+          <div id="f1_g1" class="f1-group">
+            <!-- intro typing dots where balloon 1 will open -->
+            <div id="f1_dot0" class="f1-dot" style="left: 360px;" data-layout-ignore></div>
+            <div id="f1_dot1" class="f1-dot" style="left: 407px;" data-layout-ignore></div>
+            <div id="f1_dot2" class="f1-dot" style="left: 454px;" data-layout-ignore></div>
+
+            <!-- whip-off speed lines (behind the balloons, trailing their right edges) -->
+            <div id="f1_lines" data-layout-ignore>
+              <div id="f1_sl0" class="f1-sl" style="left: 600px; top: 205px; width: 420px;"></div>
+              <div id="f1_sl1" class="f1-sl" style="left: 640px; top: 262px; width: 520px;"></div>
+              <div id="f1_sl2" class="f1-sl" style="left: 580px; top: 318px; width: 360px;"></div>
+              <div id="f1_sl3" class="f1-sl" style="left: 1100px; top: 480px; width: 300px;"></div>
+              <div id="f1_sl4" class="f1-sl" style="left: 1060px; top: 545px; width: 380px;"></div>
+              <div id="f1_sl5" class="f1-sl" style="left: 1120px; top: 612px; width: 260px;"></div>
+              <div id="f1_sl6" class="f1-sl" style="left: 1600px; top: 760px; width: 260px;"></div>
+              <div id="f1_sl7" class="f1-sl" style="left: 1560px; top: 828px; width: 320px;"></div>
+              <div id="f1_sl8" class="f1-sl" style="left: 1620px; top: 900px; width: 240px;"></div>
+            </div>
+
+            <!-- balloon 1 (upper-left) -->
+            <div id="f1_b1" class="f1-balloon">
+              <svg class="f1-shape" width="540" height="300" viewBox="0 0 540 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <g transform="translate(6 6)" fill="#222685">
+                  <ellipse cx="270" cy="125" rx="245" ry="105"></ellipse>
+                  <polygon points="165,200 235,220 95,285"></polygon>
+                </g>
+                <g fill="#222685" stroke="#222685" stroke-width="12" stroke-linejoin="round">
+                  <ellipse cx="270" cy="125" rx="245" ry="105"></ellipse>
+                  <polygon points="165,200 235,220 95,285"></polygon>
+                </g>
+                <g fill="#F2F0EA">
+                  <ellipse cx="270" cy="125" rx="245" ry="105"></ellipse>
+                  <polygon points="165,200 235,220 95,285"></polygon>
+                </g>
+              </svg>
+              <svg id="f1_b1_tk" class="f1-tick" viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-layout-ignore>
+                <line x1="20" y1="40" x2="55" y2="8" stroke="#F2F0EA" stroke-width="8" stroke-linecap="round"></line>
+                <line x1="45" y1="72" x2="92" y2="56" stroke="#F2F0EA" stroke-width="8" stroke-linecap="round"></line>
+              </svg>
+              <div id="f1_b1_txt" class="f1-btext">비전공자</div>
+            </div>
+
+            <!-- balloon 3: the question (centre) -->
+            <div id="f1_q" class="f1-balloon">
+              <svg class="f1-shape" width="860" height="360" viewBox="0 0 860 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <g transform="translate(6 6)" fill="#222685">
+                  <rect x="20" y="40" width="820" height="240" rx="90" ry="90"></rect>
+                  <polygon points="190,270 280,275 130,335"></polygon>
+                </g>
+                <g fill="#222685" stroke="#222685" stroke-width="12" stroke-linejoin="round">
+                  <rect x="20" y="40" width="820" height="240" rx="90" ry="90"></rect>
+                  <polygon points="190,270 280,275 130,335"></polygon>
+                </g>
+                <g fill="#F2F0EA">
+                  <rect x="20" y="40" width="820" height="240" rx="90" ry="90"></rect>
+                  <polygon points="190,270 280,275 130,335"></polygon>
+                </g>
+              </svg>
+              <div id="f1_q_txt" class="f1-btext"><span class="f1-hlwrap"><span id="f1_q_hl" class="f1-hl"></span><span id="f1_qc0" class="f1-qch">걱</span><span id="f1_qc1" class="f1-qch">정</span></span><span id="f1_qc2" class="f1-qch">되</span><span id="f1_qc3" class="f1-qch">나</span><span id="f1_qc4" class="f1-qch">요</span><span id="f1_qc5" class="f1-qch">?</span></div>
+            </div>
+
+            <!-- balloon 2 (lower-right) -->
+            <div id="f1_b2" class="f1-balloon">
+              <svg class="f1-shape" width="540" height="290" viewBox="0 0 540 290" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <g transform="translate(6 6)" fill="#222685">
+                  <ellipse cx="270" cy="115" rx="245" ry="100"></ellipse>
+                  <polygon points="300,205 375,190 455,270"></polygon>
+                </g>
+                <g fill="#222685" stroke="#222685" stroke-width="12" stroke-linejoin="round">
+                  <ellipse cx="270" cy="115" rx="245" ry="100"></ellipse>
+                  <polygon points="300,205 375,190 455,270"></polygon>
+                </g>
+                <g fill="#F2F0EA">
+                  <ellipse cx="270" cy="115" rx="245" ry="100"></ellipse>
+                  <polygon points="300,205 375,190 455,270"></polygon>
+                </g>
+              </svg>
+              <svg id="f1_b2_tk" class="f1-tick" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-layout-ignore>
+                <line x1="60" y1="32" x2="32" y2="4" stroke="#F2F0EA" stroke-width="8" stroke-linecap="round"></line>
+                <line x1="40" y1="64" x2="6" y2="52" stroke="#F2F0EA" stroke-width="8" stroke-linecap="round"></line>
+              </svg>
+              <div id="f1_b2_txt" class="f1-btext">노베이스</div>
+            </div>
+
+            <!-- stamp landing ring + the round rubber stamp -->
+            <div id="f1_ring" data-layout-ignore></div>
+            <div id="f1_stamp">
+              <div class="f1-disc"></div>
+              <div class="f1-ringin"></div>
+              <div class="f1-stamptext">
+                <div class="f1-st1">고민</div>
+                <div class="f1-st2">NO!</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var FID = "01-f1";
+          var DUR = 6.78;
+          var F = 1 / 30;
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ---------- 0.49 / 0.61 / 0.73: three typing dots pop on the hats ----------
+          [0.49, 0.61, 0.73].forEach(function (t, i) {
+            tl.fromTo("#f1_dot" + i,
+              { autoAlpha: 0, scale: 0 },
+              { autoAlpha: 1, scale: 1, duration: 0.16, ease: "back.out(2.4)", immediateRender: false },
+              t);
+          });
+          tl.set(["#f1_dot0", "#f1_dot1", "#f1_dot2"], { autoAlpha: 0 }, 0.97);
+
+          // ---------- balloon pop recipe (overlay-pop): scale 0.6→1 spring 0.3 s + blur-in text + tick ----------
+          function popBalloon(sel, txtSel, tickSel, t) {
+            tl.fromTo(sel, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.06, ease: "none", immediateRender: false }, t);
+            tl.fromTo(sel, { scale: 0.6 }, { scale: 1, duration: 0.3, ease: "back.out(1.6)", immediateRender: false }, t);
+            if (txtSel) {
+              tl.fromTo(txtSel,
+                { y: 14, filter: "blur(8px)" },
+                { y: 0, filter: "blur(0px)", duration: 0.26, ease: "power3.out", immediateRender: false },
+                t + 0.02);
+              tl.set(txtSel, { filter: "none" }, t + 0.3);
+            }
+            if (tickSel) {
+              tl.fromTo(tickSel, { scale: 0 }, { scale: 1, duration: 0.22, ease: "back.out(2.2)", immediateRender: false }, t + 0.08);
+            }
+          }
+
+          // 0.97: balloon 1 '비전공자'
+          popBalloon("#f1_b1", "#f1_b1_txt", "#f1_b1_tk", 0.97);
+          // 1.95: balloon 2 '노베이스'
+          popBalloon("#f1_b2", "#f1_b2_txt", "#f1_b2_tk", 1.95);
+
+          // 2.93: the question balloon lands centre; letters kinetic-in, '걱정' highlighter sweep
+          popBalloon("#f1_q", null, null, 2.93);
+          tl.fromTo(["#f1_qc0", "#f1_qc1", "#f1_qc2", "#f1_qc3", "#f1_qc4", "#f1_qc5"],
+            { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: 0.4, ease: "back.out(2)", stagger: 0.045, immediateRender: false },
+            2.97);
+          tl.fromTo("#f1_q_hl", { scaleX: 0 }, { scaleX: 1, duration: 0.22, ease: "power3.out", immediateRender: false }, 3.16);
+
+          // 3.90: the three balloons wobble once (±2°, alternating direction by index)
+          ["#f1_b1", "#f1_q", "#f1_b2"].forEach(function (sel, i) {
+            var d = i % 2 === 0 ? 1 : -1;
+            var t0 = 3.90 + i * 0.03;
+            tl.to(sel, { rotation: 2 * d, duration: 0.1, ease: "power2.out" }, t0);
+            tl.to(sel, { rotation: -2 * d, duration: 0.14, ease: "sine.inOut" }, t0 + 0.1);
+            tl.to(sel, { rotation: 0, duration: 0.14, ease: "power2.out" }, t0 + 0.24);
+          });
+
+          // 4.73→4.85: the round stamp slams in (lands ON the 4.85 impact beat)
+          tl.set("#f1_stamp", { autoAlpha: 1 }, 4.73);
+          tl.fromTo("#f1_stamp",
+            { scale: 1.6, rotation: -12 },
+            { scale: 1, rotation: -12, duration: 0.12, ease: "power3.in", immediateRender: false },
+            4.73);
+          // landing ring
+          tl.fromTo("#f1_ring",
+            { autoAlpha: 0.9, scale: 1 },
+            { autoAlpha: 0, scale: 1.45, duration: 0.4, ease: "power2.out", immediateRender: false },
+            4.85);
+          // balloons 1–2 deflate slightly
+          tl.to(["#f1_b1", "#f1_b2"], { scale: 0.94, duration: 0.2, ease: "power2.out" }, 4.85);
+          // 4-frame screen shake (0 ms steps)
+          var shake = [[14, -9], [-12, 8], [8, -5], [-4, 3]];
+          shake.forEach(function (p, i) {
+            tl.set("#f1_cam", { x: p[0], y: p[1] }, 4.85 + i * F);
+          });
+          tl.set("#f1_cam", { x: 0, y: 0 }, 4.85 + shake.length * F);
+
+          // 5.83: a small stamp re-punch on the beat, then hold
+          tl.to("#f1_stamp", { scale: 1.05, duration: 0.08, ease: "power2.out" }, 5.83);
+          tl.to("#f1_stamp", { scale: 1, duration: 0.18, ease: "power2.out" }, 5.91);
+
+          // 6.50→6.77: speed lines streak, balloons whip off left → stamp alone on green
+          for (var s = 0; s < 9; s++) {
+            var ts = 6.50 + (s % 3) * 0.012 + Math.floor(s / 3) * 0.015;
+            tl.fromTo("#f1_sl" + s,
+              { autoAlpha: 1, scaleX: 0, x: 0 },
+              { autoAlpha: 1, scaleX: 1, duration: 0.07, ease: "power2.out", immediateRender: false },
+              ts);
+            tl.to("#f1_sl" + s, { x: -520, autoAlpha: 0, duration: 0.12, ease: "power2.in" }, ts + 0.07);
+          }
+          tl.to("#f1_b1", { x: -1500, duration: 0.18, ease: "power3.in" }, 6.55);
+          tl.to("#f1_q", { x: -1800, duration: 0.18, ease: "power3.in" }, 6.565);
+          tl.to("#f1_b2", { x: -2300, duration: 0.18, ease: "power3.in" }, 6.58);
+          tl.set(["#f1_b1", "#f1_q", "#f1_b2"], { autoAlpha: 0 }, 6.77);
+
+          // hold the stamp alone into the hard cut
+          tl.set({}, {}, DUR);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines[FID] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

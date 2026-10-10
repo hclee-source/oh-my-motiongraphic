@@ -1263,8 +1263,8 @@
     "id": "1131",
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
-    "file": "shared/bgm/1131.mp3",
-    "duration": 112,
+    "file": "shared\\bgm\\1131.mp3",
+    "duration": 111.45,
     "bpm": 143.6,
     "pulse": 0.075,
     "energy5s": "-=***##+**#%**=@%%%%%# ",
@@ -1275,7 +1275,8 @@
     "tags": [
       "pop",
       "sports"
-    ]
+    ],
+    "vocal_words": 0
   },
   "158": {
     "id": "158",
@@ -2613,13 +2614,18 @@
     "title": "Take this Higher",
     "genre": "EDM",
     "artist": "Michael Ramir C.",
-    "duration": 99,
+    "duration": 98.71,
     "url": "https://assets.mixkit.co/music/1012/1012.mp3",
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
       "pop"
-    ]
+    ],
+    "file": "shared\\bgm\\1012.mp3",
+    "bpm": 123.0,
+    "pulse": 0.092,
+    "energy5s": ".-**#+%%%=*#%%%@%%: ",
+    "vocal_words": 0
   },
   "927": {
     "id": "927",
@@ -3190,14 +3196,19 @@
     "title": "Karma",
     "genre": "EDM",
     "artist": "Michael Ramir C.",
-    "duration": 135,
+    "duration": 135.23,
     "url": "https://assets.mixkit.co/music/1183/1183.mp3",
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
       "piano",
       "sports"
-    ]
+    ],
+    "file": "shared\\bgm\\1183.mp3",
+    "bpm": 129.2,
+    "pulse": 0.063,
+    "energy5s": "-=+%%%####%%#*++##%%%%%@.  ",
+    "vocal_words": 0
   },
   "168": {
     "id": "168",
@@ -3727,13 +3738,18 @@
     "title": "Techno Fest Vibes",
     "genre": "EDM",
     "artist": "Alejandro Magaña (A. M.)",
-    "duration": 134,
+    "duration": 133.8,
     "url": "https://assets.mixkit.co/music/124/124.mp3",
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
       "sports"
-    ]
+    ],
+    "file": "shared\\bgm\\124.mp3",
+    "bpm": 123.0,
+    "pulse": 0.107,
+    "energy5s": "*#*##%%%%%##@%%%##%%%%##*  ",
+    "vocal_words": 0
   },
   "162": {
     "id": "162",
@@ -3799,13 +3815,18 @@
     "title": "House Fest",
     "genre": "EDM",
     "artist": "Alejandro Magaña (A. M.)",
-    "duration": 136,
+    "duration": 135.55,
     "url": "https://assets.mixkit.co/music/113/113.mp3",
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
       "sports"
-    ]
+    ],
+    "file": "shared\\bgm\\113.mp3",
+    "bpm": 123.0,
+    "pulse": 0.13,
+    "energy5s": "***%%%%#%%@%%%#%%%%#%#**+  ",
+    "vocal_words": 0
   },
   "47": {
     "id": "47",
@@ -4130,27 +4151,37 @@
     "title": "How Does it Feel",
     "genre": "Classic Rock",
     "artist": "Michael Ramir C.",
-    "duration": 158,
+    "duration": 157.46,
     "url": "https://assets.mixkit.co/music/954/954.mp3",
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
       "energetic",
       "rock"
-    ]
+    ],
+    "file": "shared\\bgm\\954.mp3",
+    "bpm": 117.5,
+    "pulse": 0.1,
+    "energy5s": "-==##%*+**%%#**+*+*#@%#*==#%%#= ",
+    "vocal_words": 0
   },
   "1173": {
     "id": "1173",
     "title": "Free Us",
     "genre": "Blues Rock",
     "artist": "Michael Ramir C.",
-    "duration": 142,
+    "duration": 142.0,
     "url": "https://assets.mixkit.co/music/1173/1173.mp3",
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
       "energetic"
-    ]
+    ],
+    "file": "shared\\bgm\\1173.mp3",
+    "bpm": 80.7,
+    "pulse": 0.094,
+    "energy5s": "**#%%**%%%%%****##%%#*#%%%@* ",
+    "vocal_words": 0
   },
   "1103": {
     "id": "1103",
@@ -4267,13 +4298,18 @@
     "title": "The Duel",
     "genre": "Country Rock",
     "artist": "Michael Ramir C.",
-    "duration": 103,
+    "duration": 102.95,
     "url": "https://assets.mixkit.co/music/817/817.mp3",
     "source": "mixkit",
     "license": "Mixkit Stock Music Free License",
     "tags": [
       "rock"
-    ]
+    ],
+    "file": "shared\\bgm\\817.mp3",
+    "bpm": 184.6,
+    "pulse": 0.075,
+    "energy5s": "--*#**%##+#%@%%%***+ ",
+    "vocal_words": 0
   },
   "1117": {
     "id": "1117",

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <!-- Frame 7 — f7 · track 35.83–42.71 (6.88s) · beat_cut · finale: 3D book (real back + spine) + title stack + stores + logo lockup. Forked from adsp-169-clean-1 f6 g2, recoloured. Head is source metadata only. -->
+  </head>
+  <body>
+    <template id="07-f7-template">
+      <style>
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+        @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+
+        /* ---------- root (plain #stage); INK ground from t=0 ---------- */
+        #stage {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #222685;
+          color: #F2F0EA;
+          font-family: "Paperlogy", sans-serif;
+        }
+        .f7-layer {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        #f7_g1 { visibility: hidden; opacity: 0; }
+
+        /* ---------- final-hit starburst, behind the book's top-right corner ---------- */
+        #f7_burst {
+          position: absolute;
+          left: 744px;
+          top: 128px;
+          width: 220px;
+          height: 220px;
+          transform-origin: 50% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f7_burst svg { display: block; width: 220px; height: 220px; overflow: visible; }
+
+        /* ---------- 3D book (recipes/book3d.md, fN → f7; 430×588, T = 62 from the 126×1200 spine; real back + spine) ---------- */
+        .f7-bk-scene { position: absolute; left: 620px; top: 540px; width: 0; height: 0; perspective: 2200px; }
+        .f7-bk-shadow { position: absolute; left: -265px; top: 262px; width: 530px; height: 72px; border-radius: 50%;
+          background: rgba(8, 10, 46, 0.55); filter: blur(22px); opacity: 0; }
+        .f7-bk-book { position: absolute; left: -215px; top: -294px; width: 430px; height: 588px; transform-style: preserve-3d; }
+        .f7-bk-book > div, .f7-bk-hinge > div { position: absolute; }
+        .f7-bk-back   { inset: 0; background: #008D41; transform: rotateY(180deg) translateZ(31px); }
+        .f7-bk-back img, .f7-bk-spine img { display: block; width: 100%; height: 100%; }
+        .f7-bk-spine  { left: 184px; top: 0; width: 62px; height: 588px; background: #008D41; transform: rotateY(-90deg) translateZ(215px); }
+        .f7-bk-edge   { left: 184px; top: 0; width: 62px; height: 588px; background: #F4EFE6; transform: rotateY(90deg) translateZ(215px); }
+        .f7-bk-top    { left: 0; top: 263px; width: 430px; height: 62px; background: #F4EFE6; transform: rotateX(90deg) translateZ(294px); }
+        .f7-bk-bottom { left: 0; top: 263px; width: 430px; height: 62px; background: #E9E1D2; transform: rotateX(-90deg) translateZ(294px); }
+        .f7-bk-page   { inset: 0; background: #F4EFE6; transform: translateZ(30px); }
+        .f7-bk-hinge  { inset: 0; transform-origin: 0% 50%; transform: translateZ(31px); transform-style: preserve-3d; }
+        .f7-bk-front  { position: absolute; inset: 0; width: 430px; height: 588px; object-fit: cover; backface-visibility: hidden; }
+        .f7-bk-inside { inset: 0; background: #F2F0EA; transform: rotateY(180deg); backface-visibility: hidden; }
+
+        /* ---------- lockup (right column x 1000–1824, block y 252–824) ---------- */
+        #f7_t1m {
+          position: absolute;
+          left: 1000px;
+          top: 252px;
+          height: 76px;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+        #f7_t1 {
+          display: block;
+          font-weight: 800;
+          font-size: 64px;
+          line-height: 1.18;
+          letter-spacing: -0.02em;
+          color: #F2F0EA;
+        }
+        .f7-t2row {
+          position: absolute;
+          left: 1000px;
+          display: flex;
+          align-items: center;
+          white-space: nowrap;
+        }
+        #f7_t2a { top: 336px; }
+        #f7_t2b { top: 466px; }
+        .f7-t2 {
+          display: block;
+          font-weight: 800;
+          font-size: 128px;
+          line-height: 1.04;
+          letter-spacing: -0.03em;
+          color: #FEF21C;
+        }
+        .f7-ch { display: inline-block; }
+        #f7_t3 {
+          position: relative;
+          display: block;
+          margin-left: 30px;
+          margin-top: 18px;
+          padding: 0.08em 0.2em;
+          font-weight: 800;
+          font-size: 64px;
+          line-height: 1.12;
+          letter-spacing: -0.01em;
+        }
+        #f7_t3bg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background: #008D41;
+          transform-origin: 0% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f7_t3tx {
+          position: relative;
+          display: block;
+          color: #F2F0EA;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f7_rule {
+          position: absolute;
+          left: 1004px;
+          top: 636px;
+          width: 120px;
+          height: 6px;
+          background: #FEF21C;
+          transform-origin: 0% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f7_where {
+          position: absolute;
+          left: 1004px;
+          top: 660px;
+          font-weight: 500;
+          font-size: 34px;
+          line-height: 1.25;
+          color: rgba(242, 240, 234, 0.8);
+          white-space: nowrap;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f7_mark {
+          position: absolute;
+          left: 1004px;
+          top: 760px;
+          width: 67px;
+          height: 64px;
+          display: block;
+          transform-origin: 50% 50%;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f7_brand {
+          position: absolute;
+          left: 1090px;
+          top: 768px;
+          font-weight: 800;
+          font-size: 40px;
+          line-height: 1.2;
+          letter-spacing: -0.02em;
+          color: #F2F0EA;
+          white-space: nowrap;
+          visibility: hidden;
+          opacity: 0;
+        }
+      </style>
+
+      <div id="stage" data-composition-id="07-f7" data-width="1920" data-height="1080" data-duration="6.88">
+
+        <!-- g1 · free_design · track 35.83–42.71 · book + title stack + stores + logo, held still from 41.9 -->
+        <div id="f7_g1" class="f7-layer">
+
+          <!-- final hit: flat accent starburst behind the book's corner (painted before the book) -->
+          <div id="f7_burst" data-layout-ignore="">
+            <svg viewBox="-110 -110 220 220"><polygon fill="#FEF21C" stroke="#222685" stroke-width="8" stroke-linejoin="round" points="0.0,-104.0 14.7,-64.3 40.6,-84.3 41.2,-51.6 81.3,-64.8 59.5,-28.6 91.3,-20.8 66.0,0.0 101.4,23.1 59.5,28.6 73.2,58.4 41.2,51.6 45.1,93.7 14.7,64.3 0.0,93.6 -14.7,64.3 -45.1,93.7 -41.2,51.6 -73.2,58.4 -59.5,28.6 -101.4,23.1 -66.0,0.0 -91.3,-20.8 -59.5,-28.6 -81.3,-64.8 -41.2,-51.6 -40.6,-84.3 -14.7,-64.3" /></svg>
+          </div>
+
+          <!-- 3D book: real front / back / spine -->
+          <div class="f7-bk-scene" id="f7_bkscene" data-layout-ignore="">
+            <div class="f7-bk-shadow" id="f7_bk_shadow"></div>
+            <div class="f7-bk-book" id="f7_book">
+              <div class="f7-bk-back"><img src="assets/book/back.jpg" alt=""></div>
+              <div class="f7-bk-spine"><img src="assets/book/spine.jpg" alt=""></div>
+              <div class="f7-bk-edge"></div>
+              <div class="f7-bk-top"></div>
+              <div class="f7-bk-bottom"></div>
+              <div class="f7-bk-page"></div>
+              <div class="f7-bk-hinge" id="f7_bk_hinge">
+                <img class="f7-bk-front" src="assets/covers/9791124516317.jpg" alt="2027 빠르게 따는 빅데이터분석기사 필기">
+                <div class="f7-bk-inside"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- title stack -->
+          <div id="f7_t1m"><span id="f7_t1">2027 빠르게 따는</span></div>
+          <div class="f7-t2row" id="f7_t2a">
+            <span class="f7-t2"><span class="f7-ch" id="f7_c0">빅</span><span class="f7-ch" id="f7_c1">데</span><span class="f7-ch" id="f7_c2">이</span><span class="f7-ch" id="f7_c3">터</span></span>
+          </div>
+          <div class="f7-t2row" id="f7_t2b">
+            <span class="f7-t2"><span class="f7-ch" id="f7_c4">분</span><span class="f7-ch" id="f7_c5">석</span><span class="f7-ch" id="f7_c6">기</span><span class="f7-ch" id="f7_c7">사</span></span>
+            <span id="f7_t3"><span id="f7_t3bg"></span><span id="f7_t3tx">필기</span></span>
+          </div>
+
+          <!-- stores + logo lockup -->
+          <div id="f7_rule"></div>
+          <div id="f7_where">예스24 · 교보문고 · 알라딘</div>
+          <img id="f7_mark" src="assets/brand/icon.png" alt="">
+          <div id="f7_brand">골든래빗</div>
+        </div>
+
+      </div>
+
+      <script>
+        (function () {
+          var T0 = 35.83; // span_sec[0]; frame span 35.83 → 42.71 (6.88 s)
+          function L(trackT) { return Math.round((trackT - T0) * 1000) / 1000; }
+          function R(t) { return Math.round(t * 1000) / 1000; }
+
+          var A_IN = L(35.83);    // 0     — book turns in
+          var A_T1 = L(36.78);    // 0.95  — title1
+          var A_T2 = L(37.76);    // 1.93  — SURGE: title2 letters + title3 label box
+          var A_WH = L(38.73);    // 2.90  — where-to-buy
+          var A_LG = L(39.68);    // 3.85  — logo lockup
+          var A_HIT = L(41.63);   // 5.80  — starburst sparkle, final hit
+          var A_STILL = L(41.9);  // 6.07  — everything settled; held still to the end
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ---- group span (single group covers the whole frame) ----
+          tl.set("#f7_g1", { autoAlpha: 1 }, 0);
+
+          // ---- start states ----
+          // book starts off-left, back + spine toward camera; it swings through the spine to the front
+          tl.set("#f7_book", { x: -820, y: 0, z: -600, rotationY: 150, rotationX: 14, scale: 1.08 }, 0);
+          tl.set("#f7_bk_hinge", { rotationY: 0 }, 0);
+          tl.set("#f7_bk_shadow", { scaleX: 0.3, opacity: 0, x: -820 }, 0);
+          tl.set("#f7_t1", { yPercent: 105 }, 0);
+          for (var i = 0; i < 8; i++) tl.set("#f7_c" + i, { autoAlpha: 0, y: 80 }, 0);
+          tl.set("#f7_t3bg", { autoAlpha: 0, scaleX: 0 }, 0);
+          tl.set("#f7_t3tx", { autoAlpha: 0 }, 0);
+          tl.set("#f7_t3", { y: 0 }, 0);
+          tl.set("#f7_rule", { autoAlpha: 0, scaleX: 0 }, 0);
+          tl.set("#f7_where", { autoAlpha: 0, y: 26 }, 0);
+          tl.set("#f7_mark", { autoAlpha: 0, scale: 0, rotation: -24 }, 0);
+          tl.set("#f7_brand", { autoAlpha: 0, x: -24 }, 0);
+          tl.set("#f7_burst", { autoAlpha: 0, scale: 0, rotation: -30 }, 0);
+
+          // ---- 35.83 · book ENTER: slides in from the left, turning back → spine → front, finishing the −40° → −12° turn ----
+          tl.to("#f7_book", { x: 0, z: 0, rotationY: -12, rotationX: 6, duration: 0.95, ease: "power3.out" }, A_IN);
+          tl.to("#f7_bk_shadow", { x: 0, scaleX: 1.08, opacity: 1, duration: 0.95, ease: "power3.out" }, A_IN);
+
+          // idle sway (explicit tweens, 2 beats each), returns to the rest pose on the final hit
+          var SW = [
+            [A_T1, A_T2, -16, -5],
+            [A_T2, A_WH, -9, 0],
+            [A_WH, A_LG, -15, -5],
+            [A_LG, R(A_LG + 0.97), -10, 0],
+            [R(A_LG + 0.97), A_HIT, -12, 0]
+          ];
+          for (var w = 0; w < SW.length; w++) {
+            tl.to("#f7_book", { rotationY: SW[w][2], y: SW[w][3], duration: R(SW[w][1] - SW[w][0]), ease: "sine.inOut" }, SW[w][0]);
+          }
+
+          // ---- 36.78 · title1 mask reveal ----
+          tl.to("#f7_t1", { yPercent: 0, duration: 0.5, ease: "expo.out" }, R(A_T1 - 0.04));
+
+          // ---- 37.76 · SURGE · title2 kinetic-letter-in (y 80 → 0, back.out(2), 0.045 s stagger) ----
+          for (i = 0; i < 8; i++) {
+            var tc = R(A_T2 - 0.06 + i * 0.045);
+            tl.to("#f7_c" + i, { autoAlpha: 1, y: 0, duration: 0.55, ease: "back.out(2)" }, tc);
+          }
+          // title3 label box snaps open from the left after the second line lands
+          var A_T3 = R(A_T2 + 0.4);
+          tl.set("#f7_t3bg", { autoAlpha: 1 }, A_T3);
+          tl.to("#f7_t3bg", { scaleX: 1, duration: 0.12, ease: "power2.out" }, A_T3);
+          tl.set("#f7_t3tx", { autoAlpha: 1 }, R(A_T3 + 0.06));
+          tl.fromTo("#f7_t3", { y: 10 }, { y: 0, duration: 0.3, ease: "back.out(2)", immediateRender: false }, A_T3);
+
+          // ---- 38.73 · where-to-buy with the accent rule ----
+          tl.set("#f7_rule", { autoAlpha: 1 }, R(A_WH - 0.04));
+          tl.to("#f7_rule", { scaleX: 1, duration: 0.24, ease: "power3.out" }, R(A_WH - 0.04));
+          tl.to("#f7_where", { autoAlpha: 1, y: 0, duration: 0.32, ease: "power3.out" }, A_WH);
+
+          // ---- 39.68 · gold mark pops, wordmark slides in beside it ----
+          tl.set("#f7_mark", { autoAlpha: 1 }, A_LG);
+          tl.to("#f7_mark", { scale: 1, rotation: 0, duration: 0.42, ease: "back.out(2.2)" }, A_LG);
+          tl.to("#f7_brand", { autoAlpha: 1, x: 0, duration: 0.32, ease: "power3.out" }, R(A_LG + 0.08));
+
+          // ---- 41.63 · final hit: starburst pops behind the book's corner, book punches ----
+          tl.set("#f7_burst", { autoAlpha: 1 }, A_HIT);
+          tl.to("#f7_burst", { scale: 1, rotation: 0, duration: R(A_STILL - A_HIT), ease: "back.out(1.8)" }, A_HIT);
+          tl.to("#f7_book", { scale: 1.12, duration: 0.07, ease: "power2.out" }, A_HIT);
+          tl.to("#f7_book", { scale: 1.08, duration: R(A_STILL - A_HIT - 0.07), ease: "power3.out" }, R(A_HIT + 0.07));
+
+          // final pose composed and held still from 41.9 (local 6.07) to the end — no tweens after this point;
+          // the host slot's data-duration (6.88) holds the last frame; the marker below makes the timeline span it too.
+          tl.set({}, {}, 6.88);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["07-f7"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>
