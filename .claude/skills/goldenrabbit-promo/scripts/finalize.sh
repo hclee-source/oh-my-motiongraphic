@@ -39,4 +39,6 @@ if p.exists():
                                         "rendered": datetime.datetime.now().isoformat(timespec="seconds")})
     p.write_text(json.dumps(d, ensure_ascii=False, indent=2))
 EOF
+# Collect delivery renders in 완성본/<YYYY-MM>/ (dated copy; the original stays in renders/)
+if [ "$Q" = "delivery" ]; then "$PY" "$ROOT/tools/save_final.py" "$PROJ/$OUT" || true; fi
 echo "✓ $PROJ/$OUT · ${DUR}s (expected ${EXP}s) · audio=${AUD:-MISSING} · sheet renders/contact-sheet.jpg"

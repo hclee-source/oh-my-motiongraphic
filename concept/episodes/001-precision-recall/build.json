@@ -1,0 +1,33 @@
+{
+  "_설명": "장면 순서(장 번호와 연결), 장면 끝에서 사라질지(exit: 다음 장면이 이어받으면 false), 효과음 위치([이름, 문장 순번(장 안에서 0부터), 그 문장 시작 뒤 초]).",
+  "scenes": [
+    { "id": "s00", "file": "s00-title.html" },
+    { "id": "s01", "file": "s01-hook.html", "chapter": 1 },
+    { "id": "s02", "file": "s02-matrix.html", "chapter": 2 },
+    { "id": "s03", "file": "s03-dots.html", "chapter": 3 },
+    { "id": "s04", "file": "s04-precision.html", "chapter": 4, "exit": false },
+    { "id": "s05", "file": "s05-recall.html", "chapter": 5, "exit": false },
+    { "id": "s06", "file": "s06-calc.html", "chapter": 6 },
+    { "id": "s07", "file": "s07-tradeoff.html", "chapter": 7, "exit": false },
+    { "id": "s08", "file": "s08-f1.html", "chapter": 8 },
+    { "id": "s09", "file": "s09-check.html", "chapter": 9 },
+    { "id": "s10", "file": "s10-summary.html", "chapter": 10, "exit": false,
+      "extra": { "r2": { "sentence": 73, "at": "재현율" } } }
+  ],
+  "sfx": {
+    "s00": [["chime", null, 0.15], ["whoosh-short", null, 3.0]],
+    "s01": [["pop", 0, 0.1], ["pop", 1, 0.1], ["pop", 1, 1.3], ["click-soft", 3, 1.6], ["click-soft", 3, 2.3]],
+    "s02": [["pop", 0, 0.5], ["click-soft", 1, 0.3], ["click-soft", 1, 1.6], ["pop", 4, 0.6], ["pop", 5, 0.6], ["pop", 6, 0.6], ["pop", 7, 0.6],
+            ["pop", 8, 0.4], ["click-soft", 9, 0.3], ["click-soft", 10, 0.3]],
+    "s03": [["pop", 1, 2.2], ["click-soft", 2, 0.6], ["click-soft", 3, 2.2], ["pop", 4, 1.2]],
+    "s04": [["click-soft", 1, 1.0], ["click-soft", 3, 0.6], ["click-soft", 3, 2.4]],
+    "s05": [["whoosh-short", 0, 0.4], ["click-soft", 1, 0.6], ["pop", 3, 0.1], ["click-soft", 6, 0.8], ["click-soft", 6, 2.2]],
+    "s06": [["whoosh-short", 0, 0.2], ["click-soft", 1, 1.6], ["pop", 3, 0.9], ["pop", 3, 1.9], ["pop", 4, 2.6], ["pop", 4, 3.6],
+            ["click-soft", 5, 0.1], ["pop", 5, 1.8], ["click-soft", 6, 0.1], ["pop", 6, 1.8], ["click-soft", 7, 0.1], ["pop", 7, 2.4]],
+    "s07": [["pop", 1, 0.2], ["pop", 1, 0.5], ["click-soft", 3, 2.2], ["click-soft", 5, 1.8], ["whoosh-short", 6, 0.1],
+            ["click-soft", 7, 0.6], ["click-soft", 8, 0.6]],
+    "s08": [["whoosh-short", 1, 0.3], ["click-soft", 4, 0.6], ["click-soft", 5, 2.4], ["click-soft", 6, 0.6], ["pop", 7, 0.8], ["pop", 9, 0.3]],
+    "s09": [["pop", 1, 0.2], ["pop", 3, 0.2], ["pop", 5, 0.2], ["pop", 7, 0.3]],
+    "s10": [["pop", 1, 0.1]]
+  }
+}

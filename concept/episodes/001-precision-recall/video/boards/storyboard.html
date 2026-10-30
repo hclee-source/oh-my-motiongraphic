@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>001 정밀도·재현율 정지 컷</title>
+<style>
+  :root { --bg: #EFEDE8; --card: #FFFFFF; --ink: #18181B; --ink2: #71717A; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Pretendard", "Malgun Gothic", system-ui, sans-serif; padding: 48px 16px 80px; }
+  main { max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 28px; margin: 0 0 6px; letter-spacing: -0.02em; }
+  .lead { color: var(--ink2); margin: 0 0 32px; line-height: 1.6; }
+  .act { font-size: 15px; font-weight: 700; color: var(--ink2); margin: 0 0 12px; }
+  .frame { background: var(--card); border-radius: 16px; padding: 16px; margin-bottom: 24px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.05); }
+  .frame img { width: 100%; display: block; border-radius: 10px; }
+  .title { font-weight: 700; font-size: 18px; margin-top: 14px; }
+  .time { color: var(--ink2); font-size: 14px; margin-top: 2px; }
+  .words { margin: 8px 0 0; line-height: 1.6; }
+</style>
+</head>
+<body>
+<main>
+  <h1>001 정밀도와 재현율 — 정지 컷 확인</h1>
+  <p class="lead">연회색 배경·바이올렛 강조·페이퍼로지 글꼴로 다시 찍은 대표 장면 3장입니다. 실제 영상에서는 내레이션 문장에 맞춰 하나씩 등장하고, 이 그림은 그 장면이 다 채워졌을 때의 모습입니다.</p>
+
+  <section class="act">2장 · 네 칸짜리 표</section>
+  <div class="frame">
+    <img src="stills/frame-00-at-7.5s.png" alt="" />
+    <div class="title">01: 혼동행렬과 이름 읽는 요령</div>
+    <div class="time">문장 15~16</div>
+    <p class="words">네 칸이 차례로 찍히고, ‘뒤 글자는 예측’이라고 말할 때 P·N만 보라로 바뀝니다.</p>
+  </div>
+
+  <section class="act">3장 · 정확도의 함정</section>
+  <div class="frame">
+    <img src="stills/frame-01-at-15.5s.png" alt="" />
+    <div class="title">02: 1000명 중 환자 10명</div>
+    <div class="time">문장 18~21</div>
+    <p class="words">점 1000개가 줄줄이 찍히고 환자 10명이 튀어나옵니다. 정확도는 0에서 99%까지 올라가고, 마지막에 ‘찾은 환자 0명’이 찍힙니다.</p>
+  </div>
+
+  <section class="act">6장 · 숫자로 계산해 보기</section>
+  <div class="frame">
+    <img src="stills/frame-02-at-23.5s.png" alt="" />
+    <div class="title">03: 정밀도 계산</div>
+    <div class="time">문장 39~41</div>
+    <p class="words">‘예측 스팸’ 줄만 남고 나머지는 흐려집니다. 오른쪽 어두운 카드에 식 → 대입 → 0.6 순서로 나오고, 이어지는 문장에서 재현율 0.75와 정확도 0.85가 아래 빈자리에 채워집니다.</p>
+  </div>
+</main>
+</body>
+</html>

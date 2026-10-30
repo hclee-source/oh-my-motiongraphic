@@ -1,0 +1,46 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 540px; text-align: center; overflow: visible;
+      font-size: 54px; font-weight: 700; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 940px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cap-01a" class="cap clip" data-start="0.000" data-duration="1.682"><span>정확도 99%인데,</span></div>
+    <div id="cap-01b" class="cap clip" data-start="1.682" data-duration="1.682"><span>환자는 한 명도 못 찾는</span></div>
+    <div id="cap-01c" class="cap clip" data-start="3.363" data-duration="1.645"><span>모델이 있습니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="5.058" data-duration="2.631"><span>1000명 중 환자가 10명뿐이면,</span></div>
+    <div id="cap-02b" class="cap clip" data-start="7.689" data-duration="1.809"><span>모두 정상이라고만 답해도</span></div>
+    <div id="cap-02c" class="cap clip" data-start="9.497" data-duration="1.959"><span>정확도가 99%거든요.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="11.506" data-duration="2.422"><span>그래서 양성만 따로 보는 두 숫자,</span></div>
+    <div id="cap-03b" class="cap clip" data-start="13.928" data-duration="2.672"><span>정밀도와 재현율이 필요합니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="16.800" data-duration="2.820"><span>실제와 예측을 양성, 음성으로 나누면</span></div>
+    <div id="cap-04b" class="cap clip" data-start="19.620" data-duration="1.912"><span>네 칸짜리 표가 됩니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="21.582" data-duration="2.164"><span>진짜 양성을 맞히면 TP,</span></div>
+    <div id="cap-05b" class="cap clip" data-start="23.746" data-duration="2.950"><span>음성을 양성으로 잘못 잡으면 FP,</span></div>
+    <div id="cap-05c" class="cap clip" data-start="26.696" data-duration="2.610"><span>양성을 놓치면 FN입니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="29.506" data-duration="1.129"><span>정밀도는 모델이</span></div>
+    <div id="cap-06b" class="cap clip" data-start="30.635" data-duration="1.452"><span>양성이라고 한 것 중에</span></div>
+    <div id="cap-06c" class="cap clip" data-start="32.087" data-duration="1.924"><span>진짜 양성의 비율입니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="34.061" data-duration="1.950"><span>분모는 예측 양성의 합,</span></div>
+    <div id="cap-07b" class="cap clip" data-start="36.011" data-duration="2.395"><span>TP 더하기 FP입니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="38.606" data-duration="1.572"><span>재현율은 실제 양성 중에</span></div>
+    <div id="cap-08b" class="cap clip" data-start="40.178" data-duration="2.036"><span>모델이 찾아낸 비율입니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="42.264" data-duration="1.972"><span>분모는 실제 양성의 합,</span></div>
+    <div id="cap-09b" class="cap clip" data-start="44.236" data-duration="2.420"><span>TP 더하기 FN입니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="46.856" data-duration="1.769"><span>정상 메일을 버리면 곤란한</span></div>
+    <div id="cap-10b" class="cap clip" data-start="48.625" data-duration="1.126"><span>스팸 필터에서는</span></div>
+    <div id="cap-10c" class="cap clip" data-start="49.751" data-duration="1.758"><span>정밀도가 중요합니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="51.559" data-duration="1.388"><span>환자를 놓치면 안 되는</span></div>
+    <div id="cap-11b" class="cap clip" data-start="52.947" data-duration="0.925"><span>암 검진에서는</span></div>
+    <div id="cap-11c" class="cap clip" data-start="53.872" data-duration="1.792"><span>재현율이 중요합니다.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="55.864" data-duration="1.447"><span>한 줄로 정리하면,</span></div>
+    <div id="cap-12b" class="cap clip" data-start="57.311" data-duration="1.628"><span>정밀도는 예측 기준,</span></div>
+    <div id="cap-12c" class="cap clip" data-start="58.940" data-duration="2.321"><span>재현율은 실제 기준입니다.</span></div>
+    <div id="cap-13a" class="cap clip" data-start="61.311" data-duration="0.895"><span>분모만 찾으면</span></div>
+    <div id="cap-13b" class="cap clip" data-start="62.206" data-duration="1.742"><span>헷갈릴 일이 없습니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

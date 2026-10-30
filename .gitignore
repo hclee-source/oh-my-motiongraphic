@@ -4,15 +4,36 @@
 __pycache__/
 *.pyc
 
-# 렌더 결과물·검수 스냅샷 (재생성 가능)
-videos/*/renders/
-videos/*/snapshots/
+# 완성본 모음 (각 renders/의 날짜 붙인 복사본, tools/save_final.py)
+완성본/
+
+# 렌더 결과물·검수 스냅샷 (재생성 가능) — 포스터·쇼츠 하위 프로젝트와 개념 영상 포함
+videos/**/renders/
+videos/**/snapshots/
+videos/*/shots/
+concept/**/renders/
+concept/**/snapshots/
+concept/**/boards/review/
+videos/**/boards/review/
 
 # HyperFrames 로컬 캐시
-videos/*/.hyperframes/
-videos/*/.waveform-cache/
-videos/*/.thumbnails/
-videos/*/.backup/
+videos/**/.hyperframes/
+videos/**/.waveform-cache/
+videos/**/.thumbnails/
+videos/**/.backup/
+concept/**/.hyperframes/
+concept/**/.waveform-cache/
+concept/**/.thumbnails/
+concept/**/.backup/
+
+# 개념 영상 음성: 대본에서 다시 만든다(concept/tools/tts_episode.py)
+concept/**/assets/vo/
+concept/**/voice-samples/
+
+# 3D 시험(보류) 중간 결과·비교 렌더: 스크립트로 다시 만든다. 참고 그림만 남긴다
+videos/*/proj3d/out/
+videos/lucas-agent-film/blender/*.png
+!videos/lucas-agent-film/blender/ref_lucas.png
 
 # 작업 중간 산출물: 스크립트·JSON·메모는 남기고 대용량 바이너리만 제외
 videos/*/.work/demucs/

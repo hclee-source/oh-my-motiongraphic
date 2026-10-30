@@ -1,0 +1,52 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h3-card { position: absolute; left: 80px; width: 920px; height: 390px; padding: 48px 56px; }
+    #h3-s { top: 360px; }
+    #h3-c { top: 790px; }
+    .h3-t { font-size: 64px; font-weight: 900; letter-spacing: -0.01em; }
+    .h3-d { margin-top: 14px; font-size: 42px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    .h3-r { position: absolute; left: 56px; bottom: 44px; font-size: 80px; font-weight: 900; color: var(--color-accent, #6B3FE6); }
+    .h3-ring { position: absolute; inset: -2px; border-radius: 32px; border: 5px solid var(--color-accent, #6B3FE6); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="h3" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,5.15]"},{"id":"dur","type":"number","label":"장면 길이","default":9.45},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h3-all">
+      <div id="h3-s" class="h3-card x-card x-hide">
+        <div class="h3-ring" id="h3-sring"></div>
+        <div class="h3-t">스팸 필터</div>
+        <div class="h3-d">정상 메일을 버리면 곤란</div>
+        <div class="h3-r x-hide" id="h3-sr">→ 정밀도</div>
+      </div>
+      <div id="h3-c" class="h3-card x-card x-hide">
+        <div class="h3-ring" id="h3-cring"></div>
+        <div class="h3-t">암 검진</div>
+        <div class="h3-d">환자를 놓치면 안 됨</div>
+        <div class="h3-r x-hide" id="h3-cr">→ 재현율</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 9.45;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, ease: "back.out(1.6)" }, t);
+
+    // 10 스팸 필터는 정밀도
+    stamp("#h3-s", at(0, 0));
+    ft("#h3-sring", { opacity: 0 }, { opacity: 1 }, at(0, 0.2));
+    ft("#h3-sr", { opacity: 0, x: -16 }, { opacity: 1, x: 0 }, at(0, 3.0));
+    // 11 암 검진은 재현율 — 초점이 아래 카드로
+    ft("#h3-sring", { opacity: 1 }, { opacity: 0 }, at(1, 0));
+    stamp("#h3-c", at(1, 0));
+    ft("#h3-cring", { opacity: 0 }, { opacity: 1 }, at(1, 0.2));
+    ft("#h3-cr", { opacity: 0, x: -16 }, { opacity: 1, x: 0 }, at(1, 2.5));
+    if (String(V.exit) !== "false") ft("#h3-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["h3"] = tl;
+  </script>
+</template>

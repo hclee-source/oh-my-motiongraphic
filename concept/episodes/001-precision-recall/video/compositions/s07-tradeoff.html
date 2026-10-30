@@ -1,0 +1,106 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s07-card { position: absolute; top: 262px; width: 740px; height: 420px; padding: 40px 48px; box-sizing: border-box; }
+    #s07-c1 { left: 192px; }
+    #s07-c2 { left: 988px; }
+    .s07-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    .s07-t { font-size: 52px; font-weight: 900; letter-spacing: -0.01em; }
+    .s07-code { position: absolute; right: 48px; top: 40px; font-size: 64px; font-weight: 900; color: var(--color-ink2, #71717A); }
+    .s07-k { margin-top: 28px; font-size: 30px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    .s07-d { margin-top: 6px; font-size: 42px; font-weight: 800; }
+    .s07-pick { position: absolute; left: 48px; bottom: 36px; font-size: 60px; font-weight: 900; color: var(--color-accent, #6B3FE6); }
+    /* 시소: 막대 두 개 + 판정 기준 손잡이 */
+    .s07-lab { position: absolute; left: 192px; font-size: 44px; font-weight: 800; }
+    #s07-lp { top: 386px; }
+    #s07-lr { top: 546px; }
+    .s07-track { position: absolute; left: 420px; width: 620px; height: 56px; border-radius: 28px; background: var(--color-line, #E3E5EA); overflow: hidden; }
+    #s07-tp { top: 380px; }
+    #s07-tr { top: 540px; }
+    .s07-fill { position: absolute; inset: 0; border-radius: 28px; background: var(--color-ink, #18181B); transform-origin: left center; transform: scaleX(0); }
+    .s07-acc { position: absolute; inset: 0; border-radius: 28px; background: var(--color-accent, #6B3FE6); transform-origin: left center; transform: scaleX(0); opacity: 0; }
+    #s07-slider { position: absolute; left: 1360px; top: 262px; width: 368px; height: 584px; }
+    #s07-stitle { font-size: 40px; font-weight: 800; }
+    #s07-rail { position: absolute; left: 60px; top: 110px; width: 8px; height: 400px; border-radius: 4px; background: var(--color-hair, #D3D6DD); }
+    #s07-knob { position: absolute; left: 40px; top: 186px; width: 48px; height: 48px; border-radius: 50%; background: var(--color-accent, #6B3FE6); }
+    .s07-end { position: absolute; left: 110px; font-size: 30px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    #s07-hi { top: 102px; }
+    #s07-lo { top: 482px; }
+  </style>
+  <div id="root" data-composition-id="s07" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,3,5,9,12,16,19,22,27]"},{"id":"dur","type":"number","label":"장면 길이","default":34},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s07-all">
+      <div id="s07-head" class="x-head">무엇을 더 챙길까</div>
+      <div id="s07-cards">
+        <div id="s07-c1" class="s07-card x-card x-hide"><div class="s07-ring" id="s07-r1"></div>
+          <div class="s07-t">스팸 필터</div><div class="s07-code">FP</div>
+          <div class="x-hide" id="s07-c1b"><div class="s07-k">치명적인 실수</div><div class="s07-d">업무 메일을 스팸함으로</div></div>
+          <div class="s07-pick x-hide" id="s07-p1">→ 정밀도</div>
+        </div>
+        <div id="s07-c2" class="s07-card x-card x-hide"><div class="s07-ring" id="s07-r2"></div>
+          <div class="s07-t">암 검진</div><div class="s07-code">FN</div>
+          <div class="x-hide" id="s07-c2b"><div class="s07-k">치명적인 실수</div><div class="s07-d">환자를 놓침</div></div>
+          <div class="s07-pick x-hide" id="s07-p2">→ 재현율</div>
+        </div>
+      </div>
+      <div id="s07-bars" class="x-hide">
+        <div class="s07-lab" id="s07-lp">정밀도</div>
+        <div class="s07-lab" id="s07-lr">재현율</div>
+        <div class="s07-track" id="s07-tp"><div class="s07-fill" id="s07-fp"></div><div class="s07-acc" id="s07-ap"></div></div>
+        <div class="s07-track" id="s07-tr"><div class="s07-fill" id="s07-fr"></div><div class="s07-acc" id="s07-ar"></div></div>
+      </div>
+      <div id="s07-slider" class="x-hide">
+        <div id="s07-stitle">판정 기준</div>
+        <div id="s07-rail"></div>
+        <div class="s07-end" id="s07-hi">높게</div>
+        <div class="s07-end" id="s07-lo">낮게</div>
+        <div id="s07-knob"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 34;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, ease: "back.out(1.6)" }, t);
+    const bar = (sel, t, a, b, d = 0.7) => tl.fromTo(sel, { scaleX: a }, { scaleX: b, duration: d * S, ease: "power2.inOut", immediateRender: false }, t);
+
+    // 45 무엇이 더 중요할까
+    ft("#s07-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    // 46 상황에 따라 — 두 상황 카드
+    stamp("#s07-c1", at(1, 0.2));
+    stamp("#s07-c2", at(1, 0.5));
+    // 47~48 스팸 필터: FP가 치명적 → 정밀도
+    fade("#s07-c1b", at(2, 0.6), 0, 1);
+    fade("#s07-r1", at(2, 0.6), 0, 1);
+    ft("#s07-p1", { opacity: 0, x: -16 }, { opacity: 1, x: 0 }, at(3, 2.2));
+    // 49~50 암 검진: FN이 치명적 → 재현율
+    fade("#s07-r1", at(4, 0.2), 1, 0);
+    fade("#s07-c2b", at(4, 0.8), 0, 1);
+    fade("#s07-r2", at(4, 0.8), 0, 1);
+    ft("#s07-p2", { opacity: 0, x: -16 }, { opacity: 1, x: 0 }, at(5, 1.8));
+    // 51 시소처럼 — 카드가 걷히고 막대 두 개와 판정 기준 손잡이
+    ft("#s07-cards", { opacity: 1, y: 0 }, { opacity: 0, y: -30, ease: "power2.in" }, at(6, 0.1));
+    fade("#s07-bars, #s07-slider", at(6, 0.6), 0, 1);
+    bar("#s07-fp", at(6, 0.8), 0, 0.75);
+    bar("#s07-fr", at(6, 1.0), 0, 0.6);
+    // 52 기준을 낮추면 재현율이 오른다
+    ft("#s07-knob", { y: 0 }, { y: 250, duration: 0.8 * S, ease: "power2.inOut" }, at(7, 0.6));
+    fade("#s07-ar", at(7, 1.2), 0, 1);
+    bar("#s07-ar", at(7, 1.2), 0.6, 0.9);
+    bar("#s07-fr", at(7, 1.2), 0.6, 0.9);
+    // 53 정밀도는 떨어진다
+    fade("#s07-ar", at(8, 0.2), 1, 0);
+    fade("#s07-ap", at(8, 0.6), 0, 1);
+    bar("#s07-ap", at(8, 0.6), 0.75, 0.45);
+    bar("#s07-fp", at(8, 0.6), 0.75, 0.45);
+    if (String(V.exit) !== "false") ft("#s07-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s07"] = tl;
+  </script>
+</template>

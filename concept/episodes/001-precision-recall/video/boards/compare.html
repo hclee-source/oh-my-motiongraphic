@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>색·글꼴 비교</title>
+<style>
+  :root { --bg: #EFEDE8; --card: #FFFFFF; --ink: #18181B; --ink2: #71717A; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Pretendard", "Malgun Gothic", system-ui, sans-serif; padding: 48px 16px 80px; }
+  main { max-width: 1240px; margin: 0 auto; }
+  h1 { font-size: 28px; margin: 0 0 6px; letter-spacing: -0.02em; }
+  h2 { font-size: 22px; margin: 48px 0 6px; }
+  .lead { color: var(--ink2); margin: 0 0 20px; line-height: 1.6; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(520px, 1fr)); gap: 20px; }
+  .frame { background: var(--card); border-radius: 16px; padding: 14px; box-shadow: 0 4px 18px rgba(0,0,0,0.05); }
+  .frame img { width: 100%; display: block; border-radius: 10px; }
+  .title { font-weight: 700; font-size: 18px; margin-top: 12px; display: flex; align-items: center; gap: 10px; }
+  .sw { width: 18px; height: 18px; border-radius: 5px; display: inline-block; }
+  .words { margin: 6px 0 0; color: var(--ink2); line-height: 1.6; font-size: 15px; }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>색·글꼴 비교 — 6장 계산 장면</h1>
+  <p class="lead">같은 장면에서 강조색과 글꼴만 바꿨습니다. 색은 표의 강조 칸, ‘스팸’ 머리글, 결과 숫자 0.6에 들어갑니다. 배경(아이보리)과 글자색은 그대로 두었습니다.</p>
+
+  <h2>강조색 4가지 (글꼴은 프리텐다드)</h2>
+  <div class="grid">
+    <div class="frame"><img src="compare/c1-blue/frame-00-at-17.5s.png" alt="" />
+      <div class="title"><span class="sw" style="background:#2456E8"></span>A. 코발트 블루</div>
+      <p class="words">차분하고 믿음직한 느낌. 공부 채널에서 가장 무난한 선택입니다.</p></div>
+    <div class="frame"><img src="compare/c2-green/frame-00-at-17.5s.png" alt="" />
+      <div class="title"><span class="sw" style="background:#0B8A5E"></span>B. 에메랄드 그린</div>
+      <p class="words">‘정답·합격’ 느낌이 나고 눈이 편합니다. 자격증 채널과 잘 어울립니다.</p></div>
+    <div class="frame"><img src="compare/c3-violet/frame-00-at-17.5s.png" alt="" />
+      <div class="title"><span class="sw" style="background:#6B3FE6"></span>C. 바이올렛</div>
+      <p class="words">개성이 뚜렷합니다. 다만 어두운 수식 카드 위에서는 조금 덜 또렷합니다.</p></div>
+    <div class="frame"><img src="compare/c4-berry/frame-00-at-17.5s.png" alt="" />
+      <div class="title"><span class="sw" style="background:#D61F69"></span>D. 라즈베리</div>
+      <p class="words">가장 눈에 띕니다. 썸네일에서 힘이 세지만 오래 보면 다소 강할 수 있습니다.</p></div>
+  </div>
+
+  <h2>글꼴 4가지 (강조색은 코발트 블루로 고정)</h2>
+  <div class="grid">
+    <div class="frame"><img src="compare/f1-pretendard/frame-00-at-17.5s.png" alt="" />
+      <div class="title">1. 프리텐다드 (지금)</div>
+      <p class="words">반듯하고 중립적입니다. 어디에나 무난하지만 개성은 약합니다. 무료(OFL).</p></div>
+    <div class="frame"><img src="compare/f2-paperlogy/frame-00-at-17.5s.png" alt="" />
+      <div class="title">2. 페이퍼로지</div>
+      <p class="words">기하학적이고 세련됐습니다. 숫자가 둥글고 크게 보이고, 굵기가 9단계라 쓰기 편합니다. 무료(OFL).</p></div>
+    <div class="frame"><img src="compare/f3-gmarket/frame-00-at-17.5s.png" alt="" />
+      <div class="title">3. G마켓 산스</div>
+      <p class="words">굵고 단단해서 유튜브 썸네일에 자주 쓰입니다. 굵기가 3단계뿐이라 자막까지 굵게 나옵니다. 무료 배포.</p></div>
+    <div class="frame"><img src="compare/f4-nanumround/frame-00-at-17.5s.png" alt="" />
+      <div class="title">4. 나눔스퀘어 라운드</div>
+      <p class="words">글자 끝이 둥글어 부드럽고 친근합니다. 굵기 단계가 적어 자막이 가늘게 보입니다. 무료(OFL).</p></div>
+  </div>
+</main>
+</body>
+</html>

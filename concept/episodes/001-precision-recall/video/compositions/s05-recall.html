@@ -1,0 +1,114 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s05-pcard { top: 262px; height: 584px; padding: 48px 52px; }
+    #s05-rcard { top: 262px; height: 420px; padding: 40px 52px; }
+    #s05-small { top: 702px; height: 144px; padding: 24px 40px; }
+    .s05-frac { margin-top: 22px; display: inline-block; }
+    .s05-num, .s05-den { font-size: 56px; font-weight: 800; text-align: center; white-space: nowrap; }
+    .s05-line { height: 5px; border-radius: 3px; background: #FFFFFF; margin: 8px 0; transform: scaleX(0); transform-origin: left center; }
+    .s05-sname { font-size: 32px; font-weight: 800; }
+    .s05-sdef { margin-top: 10px; font-size: 34px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    .s05-base { font-size: 28px; font-weight: 700; color: var(--color-accent, #6B3FE6); margin-left: 14px; }
+    .s05-ex { margin-top: 14px; font-size: 28px; font-weight: 600; color: #A1A1AA; }
+    /* 4장 끝 모습 그대로 시작한다(4장 카드와 같은 규칙) */
+    .s05p-frac { margin-top: 34px; display: grid; grid-template-columns: auto auto; column-gap: 28px; align-items: center; justify-content: start; }
+    .s05p-num, .s05p-den { font-size: 64px; font-weight: 800; text-align: center; white-space: nowrap; }
+    .s05p-line { height: 5px; border-radius: 3px; background: #FFFFFF; margin: 10px 0; }
+    .s05p-tag { font-size: 28px; font-weight: 700; color: #A1A1AA; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="s05" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,3,6,9,12,15,19]"},{"id":"dur","type":"number","label":"장면 길이","default":27},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s05-all">
+      <div id="s05-head1" class="x-head" style="opacity: 1">정밀도</div>
+      <div id="s05-head2" class="x-head">재현율</div>
+      <div class="x-mx">
+        <div></div>
+        <div class="x-lab x-pred">예측</div>
+        <div class="x-lab x-act">실제</div>
+        <div class="x-h x-ch"><span class="x-wrap">양성<span class="x-ov" id="s05-colacc" style="opacity: 1">양성</span></span></div>
+        <div class="x-h x-ch">음성</div>
+        <div class="x-h x-rh"><span class="x-wrap">양성<span class="x-ov" id="s05-rowacc">양성</span></span></div>
+        <div class="x-cell x-card" id="s05-tp"><div class="x-hl" style="opacity: 1"></div><div class="x-code">TP</div><div class="x-kn">참 양성</div></div>
+        <div class="x-cell x-card" id="s05-fn" style="opacity: 0.38"><div class="x-hl" id="s05-fn-hl"></div><div class="x-code">FN</div><div class="x-kn">거짓 음성</div></div>
+        <div class="x-h x-rh">음성</div>
+        <div class="x-cell x-card" id="s05-fp"><div class="x-hl" id="s05-fp-hl" style="opacity: 1"></div><div class="x-code">FP</div><div class="x-kn">거짓 양성</div></div>
+        <div class="x-cell x-card" id="s05-tn" style="opacity: 0.38"><div class="x-hl"></div><div class="x-code">TN</div><div class="x-kn">참 음성</div></div>
+      </div>
+
+      <!-- 4장의 정밀도 카드(그대로 이어받음) -->
+      <div id="s05-pcard" class="x-side x-dark">
+        <div class="x-fname">정밀도</div>
+        <div class="s05p-frac">
+          <div>
+            <div class="s05p-num">TP</div>
+            <div class="s05p-line"></div>
+            <div class="s05p-den">TP + FP</div>
+          </div>
+          <div>
+            <div class="s05p-tag">분자</div>
+            <div style="height: 34px"></div>
+            <div class="s05p-tag">분모</div>
+          </div>
+        </div>
+        <div class="x-fmean">‘양성’ 판정을 얼마나 믿을까</div>
+      </div>
+
+      <!-- 재현율 카드 -->
+      <div id="s05-rcard" class="x-side x-dark x-hide">
+        <div class="x-fname">재현율<span class="s05-base x-accd x-hide" id="s05-rbase">실제 기준 · 행</span></div>
+        <div class="s05-frac">
+          <div class="s05-num x-hide" id="s05-num">TP</div>
+          <div class="s05-line" id="s05-line" style="width: 300px"></div>
+          <div class="s05-den x-hide" id="s05-den">TP + FN</div>
+        </div>
+        <div class="x-fmean x-hide" id="s05-mean" style="margin-top: 14px">진짜 양성을 빠짐없이 찾았나</div>
+        <div class="s05-ex x-hide" id="s05-ex">모두 ‘정상’ 모델 → 0 ÷ 10 = 0</div>
+      </div>
+
+      <!-- 정밀도는 작은 카드로 내려앉는다 -->
+      <div id="s05-small" class="x-side x-card x-hide">
+        <div class="s05-sname">정밀도<span class="s05-base x-hide" id="s05-pbase">예측 기준 · 열</span></div>
+        <div class="s05-sdef">TP ÷ (TP + FP)</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 27;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+
+    // 29 두 번째는 재현율 — 제목이 바뀌고 정밀도 카드는 아래로 접힌다
+    fade("#s05-head1", at(0, 0), 1, 0);
+    ft("#s05-head2", { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, at(0, 0.15));
+    ft("#s05-pcard", { opacity: 1, y: 0, scale: 1 }, { opacity: 0, y: 120, scale: 0.9, duration: 0.5 * S, ease: "power2.inOut" }, at(0, 0.4));
+    ft("#s05-small", { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, at(0, 0.8));
+    // 30 실제 양성 가운데 — 강조가 열에서 행으로 옮겨 간다
+    fade("#s05-fp-hl, #s05-colacc", at(1, 0.6), 1, 0);
+    fade("#s05-fp", at(1, 0.6), 1, 0.38);
+    fade("#s05-fn", at(1, 0.6), 0.38, 1);
+    fade("#s05-fn-hl, #s05-rowacc", at(1, 0.6), 0, 1);
+    // 31 그 행만 본다
+    ft("#s05-tp, #s05-fn", { scale: 1 }, { scale: 1.04, duration: 0.25 * S, ease: "power2.out", yoyo: true, repeat: 1 }, at(2, 0.5));
+    // 32 분모 TP+FN, 분자 TP
+    ft("#s05-rcard", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(3, 0.1));
+    tl.fromTo("#s05-line", { scaleX: 0 }, { scaleX: 1, duration: 0.4 * S, ease: "power3.inOut", immediateRender: false }, at(3, 0.3));
+    fade("#s05-den", at(3, 0.5), 0, 1);
+    fade("#s05-num", at(3, 2.0), 0, 1);
+    // 33 빠짐없이 찾았나
+    ft("#s05-mean", { opacity: 0, y: 10 }, { opacity: 1, y: 0 }, at(4, 0.4));
+    // 34 모두 정상 모델은 재현율 0
+    ft("#s05-ex", { opacity: 0, y: 10 }, { opacity: 1, y: 0 }, at(5, 1.0));
+    // 35 정밀도는 예측 기준, 재현율은 실제 기준
+    fade("#s05-pbase", at(6, 0.8), 0, 1);
+    fade("#s05-rbase", at(6, 2.2), 0, 1);
+    if (String(V.exit) !== "false") ft("#s05-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s05"] = tl;
+  </script>
+</template>

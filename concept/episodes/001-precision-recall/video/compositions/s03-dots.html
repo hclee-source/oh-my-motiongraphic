@@ -1,0 +1,94 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s03-board { position: absolute; left: 192px; top: 262px; width: 912px; height: 582px; }
+    #s03-grid { position: absolute; left: 20px; top: 20px; width: 872px; height: 542px;
+      display: grid; grid-template-columns: repeat(40, 14px); grid-auto-rows: 14px; gap: 8px; }
+    .s03-row { display: contents; }
+    .s03-d { width: 14px; height: 14px; border-radius: 50%; background: var(--color-dot, #CDD0D8); opacity: 0; }
+    .s03-d.s03-p { background: var(--color-accent, #6B3FE6); }
+    #s03-l-norm { position: absolute; left: 192px; top: 210px; font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    #s03-l-pat { position: absolute; left: 820px; top: 210px; font-size: 32px; font-weight: 800; color: var(--color-accent, #6B3FE6); }
+    #s03-side { position: absolute; left: 1188px; top: 262px; width: 540px; }
+    .s03-cap { font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    #s03-ans { margin-top: 6px; font-size: 56px; font-weight: 800; letter-spacing: -0.01em; }
+    #s03-acc-wrap { margin-top: 44px; }
+    #s03-acc { font-size: 216px; font-weight: 900; letter-spacing: -0.02em; line-height: 0.95; }
+    #s03-found { margin-top: 18px; display: flex; align-items: baseline; gap: 22px; }
+    #s03-zero { font-size: 104px; font-weight: 900; letter-spacing: -0.015em; color: var(--color-accent, #6B3FE6); line-height: 1; }
+  </style>
+  <div id="root" data-composition-id="s03" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0,3,6,9,12,15,18]"},{"id":"dur","type":"number","label":"장면 길이","default":31},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s03-all">
+      <div id="s03-head" class="x-head">정확도의 함정</div>
+      <div id="s03-l-norm" class="x-hide">정상 990명</div>
+      <div id="s03-l-pat" class="x-hide">실제 환자 10명</div>
+      <div id="s03-board" class="x-card x-hide"><div id="s03-grid"></div></div>
+      <div id="s03-side">
+        <div id="s03-model" class="x-hide">
+          <div class="s03-cap">모델의 답</div>
+          <div id="s03-ans">전부 ‘정상’</div>
+        </div>
+        <div id="s03-acc-wrap" class="x-hide">
+          <div class="s03-cap">정확도</div>
+          <div id="s03-acc">0%</div>
+        </div>
+        <div id="s03-found" class="x-hide">
+          <div class="s03-cap">찾은 환자</div>
+          <div id="s03-zero">0명</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // 1000명 = 40열 x 25행. 환자 10명의 자리는 고정(재현 가능).
+    const PAT = [37, 118, 205, 291, 386, 452, 539, 627, 714, 868];
+    const grid = document.getElementById("s03-grid");
+    for (let r = 0; r < 25; r++) {
+      const row = document.createElement("div");
+      row.className = "s03-row";
+      for (let c = 0; c < 40; c++) {
+        const i = r * 40 + c;
+        const d = document.createElement("div");
+        d.className = "s03-d s03-r" + r + (PAT.includes(i) ? " s03-p" : " s03-n");
+        row.appendChild(d);
+      }
+      grid.appendChild(row);
+    }
+
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 31;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const count = (el, t, a, b, d, fmt) => { const o = { v: a }; tl.fromTo(o, { v: a }, { v: b, duration: d * S, ease: "power2.out", immediateRender: false, onUpdate: () => { el.textContent = fmt(o.v); } }, t); };
+
+    // 17 처음 질문으로
+    ft("#s03-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    fade("#s03-board", at(0, 0.6), 0, 1);
+    // 18 1000명 중 환자 10명 — 점이 줄줄이 깔리고 환자 10명이 튀어나온다
+    for (let r = 0; r < 25; r++) {
+      ft(".s03-r" + r, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.25 * S }, at(1, 0.2 + r * 0.035));
+    }
+    fade("#s03-l-norm", at(1, 0.9), 0, 1);
+    ft(".s03-p", { scale: 1 }, { scale: 1.7, duration: 0.2 * S, ease: "power2.out", yoyo: true, repeat: 1 }, at(1, 2.2));
+    ft("#s03-l-pat", { opacity: 0, y: 8 }, { opacity: 1, y: 0 }, at(1, 2.2));
+    // 19 모두 정상이라고 답하면
+    ft("#s03-model", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(2, 0.6));
+    // 20 정확도 99%
+    fade("#s03-acc-wrap", at(3, 0.3), 0, 1);
+    count(document.getElementById("s03-acc"), at(3, 2.2), 0, 99, 0.8, v => Math.round(v) + "%");
+    // 21 환자는 하나도 못 찾았다
+    ft("#s03-found", { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, ease: "back.out(1.6)" }, at(4, 1.2));
+    // 22 한쪽이 압도적으로 많으면 속는다 — 정상 쪽이 물러나고 환자만 남는다
+    fade(".s03-n", at(5, 1.0), 1, 0.35);
+    // 23 양성 쪽만 따로 보는 숫자
+    ft(".s03-p", { scale: 1 }, { scale: 1.45, duration: 0.4 * S, ease: "back.out(1.6)" }, at(6, 0.4));
+    if (String(V.exit) !== "false") ft("#s03-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s03"] = tl;
+  </script>
+</template>

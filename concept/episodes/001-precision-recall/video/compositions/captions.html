@@ -1,0 +1,124 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 108px; text-align: center; overflow: visible;
+      font-size: 46px; font-weight: 600; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 1536px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-01a" class="cap clip" data-start="3.600" data-duration="3.762"><span>정확도 99%인 질병 진단 모델이 있습니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="7.462" data-duration="1.586"><span>그런데 이 모델은 환자를</span></div>
+    <div id="cap-02b" class="cap clip" data-start="9.048" data-duration="2.153"><span>한 명도 찾아내지 못합니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="11.301" data-duration="2.026"><span>어떻게 이런 일이 생길까요?</span></div>
+    <div id="cap-04a" class="cap clip" data-start="13.427" data-duration="2.759"><span>오늘은 이 함정을 피하게 해 주는 두 숫자,</span></div>
+    <div id="cap-04b" class="cap clip" data-start="16.186" data-duration="2.847"><span>정밀도와 재현율을 알아보겠습니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="19.133" data-duration="3.271"><span>시험에서도 계산 문제로 자주 나오는 개념입니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="23.054" data-duration="2.279"><span>먼저 표 하나를 그려 보겠습니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="25.433" data-duration="1.802"><span>왼쪽에는 실제 정답을,</span></div>
+    <div id="cap-07b" class="cap clip" data-start="27.235" data-duration="2.954"><span>위쪽에는 모델의 예측을 적습니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="30.288" data-duration="1.721"><span>양성과 음성 두 가지씩이니</span></div>
+    <div id="cap-08b" class="cap clip" data-start="32.009" data-duration="1.971"><span>칸은 모두 네 개가 됩니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="34.080" data-duration="2.460"><span>이 표를 혼동행렬이라고 부릅니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="36.640" data-duration="4.349"><span>실제 양성을 양성으로 맞히면 TP, 참 양성입니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="41.089" data-duration="2.423"><span>실제 음성을 양성이라고 잘못</span></div>
+    <div id="cap-11b" class="cap clip" data-start="43.512" data-duration="3.077"><span>말하면 FP, 거짓 양성입니다.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="46.689" data-duration="3.082"><span>실제 양성을 음성이라고 놓치면 FN,</span></div>
+    <div id="cap-12b" class="cap clip" data-start="49.771" data-duration="1.791"><span>거짓 음성입니다.</span></div>
+    <div id="cap-13a" class="cap clip" data-start="51.662" data-duration="4.199"><span>실제 음성을 음성으로 맞히면 TN, 참 음성입니다.</span></div>
+    <div id="cap-14a" class="cap clip" data-start="55.961" data-duration="2.279"><span>이름 읽는 요령은 간단합니다.</span></div>
+    <div id="cap-15a" class="cap clip" data-start="58.340" data-duration="1.610"><span>뒤 글자 P와 N은 모델이</span></div>
+    <div id="cap-15b" class="cap clip" data-start="59.950" data-duration="2.825"><span>무엇이라고 예측했는지를 뜻합니다.</span></div>
+    <div id="cap-16a" class="cap clip" data-start="62.875" data-duration="4.017"><span>앞 글자 T와 F는 그 예측이 맞았는지를 뜻합니다.</span></div>
+    <div id="cap-17a" class="cap clip" data-start="67.542" data-duration="2.310"><span>이제 처음 질문으로 돌아가 보죠.</span></div>
+    <div id="cap-18a" class="cap clip" data-start="69.952" data-duration="1.746"><span>1000명 가운데 실제 환자가</span></div>
+    <div id="cap-18b" class="cap clip" data-start="71.698" data-duration="1.996"><span>10명이라고 해 보겠습니다.</span></div>
+    <div id="cap-19a" class="cap clip" data-start="73.794" data-duration="2.265"><span>모델이 아무것도 따지지 않고 모두</span></div>
+    <div id="cap-19b" class="cap clip" data-start="76.059" data-duration="2.677"><span>정상이라고 답하면 어떻게 될까요?</span></div>
+    <div id="cap-20a" class="cap clip" data-start="78.836" data-duration="1.976"><span>정상인 990명은 전부</span></div>
+    <div id="cap-20b" class="cap clip" data-start="80.812" data-duration="3.215"><span>맞혔으니 정확도는 99%입니다.</span></div>
+    <div id="cap-21a" class="cap clip" data-start="84.127" data-duration="1.743"><span>하지만 정작 찾아야 할 환자</span></div>
+    <div id="cap-21b" class="cap clip" data-start="85.870" data-duration="2.626"><span>10명은 하나도 찾지 못했습니다.</span></div>
+    <div id="cap-22a" class="cap clip" data-start="88.597" data-duration="2.385"><span>정확도는 전체에서 맞힌 비율이라,</span></div>
+    <div id="cap-22b" class="cap clip" data-start="90.982" data-duration="3.590"><span>한쪽이 압도적으로 많으면 이렇게 쉽게 속습니다.</span></div>
+    <div id="cap-23a" class="cap clip" data-start="94.672" data-duration="1.407"><span>그래서 양성 쪽만 따로</span></div>
+    <div id="cap-23b" class="cap clip" data-start="96.079" data-duration="2.439"><span>들여다보는 숫자가 필요합니다.</span></div>
+    <div id="cap-24a" class="cap clip" data-start="99.169" data-duration="2.017"><span>첫 번째는 정밀도입니다.</span></div>
+    <div id="cap-25a" class="cap clip" data-start="101.286" data-duration="2.296"><span>정밀도는 모델이 양성이라고 말한</span></div>
+    <div id="cap-25b" class="cap clip" data-start="103.582" data-duration="2.709"><span>것 가운데 진짜 양성의 비율입니다.</span></div>
+    <div id="cap-26a" class="cap clip" data-start="106.391" data-duration="2.829"><span>표에서는 예측이 양성인 열만 봅니다.</span></div>
+    <div id="cap-27a" class="cap clip" data-start="109.321" data-duration="1.855"><span>그 열의 합, TP 더하기</span></div>
+    <div id="cap-27b" class="cap clip" data-start="111.176" data-duration="3.218"><span>FP가 분모이고 TP가 분자입니다.</span></div>
+    <div id="cap-28a" class="cap clip" data-start="114.494" data-duration="2.318"><span>한마디로 ‘양성이라고 했을 때 얼마나</span></div>
+    <div id="cap-28b" class="cap clip" data-start="116.812" data-duration="2.424"><span>믿을 만한가’를 묻는 숫자입니다.</span></div>
+    <div id="cap-29a" class="cap clip" data-start="119.886" data-duration="1.982"><span>두 번째는 재현율입니다.</span></div>
+    <div id="cap-30a" class="cap clip" data-start="121.968" data-duration="1.729"><span>재현율은 실제 양성 가운데</span></div>
+    <div id="cap-30b" class="cap clip" data-start="123.697" data-duration="2.136"><span>모델이 찾아낸 비율입니다.</span></div>
+    <div id="cap-31a" class="cap clip" data-start="125.934" data-duration="2.772"><span>이번에는 실제가 양성인 행만 봅니다.</span></div>
+    <div id="cap-32a" class="cap clip" data-start="128.806" data-duration="3.634"><span>TP 더하기 FN이 분모이고 TP가 분자입니다.</span></div>
+    <div id="cap-33a" class="cap clip" data-start="132.540" data-duration="1.908"><span>‘진짜 양성을 얼마나 빠짐없이</span></div>
+    <div id="cap-33b" class="cap clip" data-start="134.448" data-duration="2.011"><span>찾았는가’를 묻는 숫자죠.</span></div>
+    <div id="cap-34a" class="cap clip" data-start="136.559" data-duration="2.385"><span>아까 모두 정상이라고 답한 모델은</span></div>
+    <div id="cap-34b" class="cap clip" data-start="138.944" data-duration="2.805"><span>TP가 0이니 재현율도 0입니다.</span></div>
+    <div id="cap-35a" class="cap clip" data-start="141.850" data-duration="2.553"><span>정리하면 정밀도는 예측을 기준으로,</span></div>
+    <div id="cap-35b" class="cap clip" data-start="144.403" data-duration="2.644"><span>재현율은 실제를 기준으로 봅니다.</span></div>
+    <div id="cap-36a" class="cap clip" data-start="147.697" data-duration="2.441"><span>숫자로 직접 계산해 보겠습니다.</span></div>
+    <div id="cap-37a" class="cap clip" data-start="150.238" data-duration="3.202"><span>메일 100통 가운데 실제 스팸은 20통,</span></div>
+    <div id="cap-37b" class="cap clip" data-start="153.440" data-duration="2.384"><span>정상 메일은 80통입니다.</span></div>
+    <div id="cap-38a" class="cap clip" data-start="155.925" data-duration="3.871"><span>스팸 필터가 스팸이라고 걸러 낸 메일은 25통이고,</span></div>
+    <div id="cap-38b" class="cap clip" data-start="159.796" data-duration="3.066"><span>그중 진짜 스팸은 15통이었습니다.</span></div>
+    <div id="cap-39a" class="cap clip" data-start="162.961" data-duration="3.644"><span>표를 채우면 TP는 15, FP는 10입니다.</span></div>
+    <div id="cap-40a" class="cap clip" data-start="166.705" data-duration="3.344"><span>놓친 스팸은 20에서 15를 뺀 5통이니</span></div>
+    <div id="cap-40b" class="cap clip" data-start="170.049" data-duration="3.594"><span>FN은 5, 나머지 TN은 70입니다.</span></div>
+    <div id="cap-41a" class="cap clip" data-start="173.741" data-duration="3.937"><span>정밀도는 15 나누기 25, 0.6입니다.</span></div>
+    <div id="cap-42a" class="cap clip" data-start="177.779" data-duration="4.044"><span>재현율은 15 나누기 20, 0.75입니다.</span></div>
+    <div id="cap-43a" class="cap clip" data-start="181.923" data-duration="1.709"><span>정확도는 15 더하기 70을</span></div>
+    <div id="cap-43b" class="cap clip" data-start="183.632" data-duration="2.243"><span>100으로 나눈 0.85고요.</span></div>
+    <div id="cap-44a" class="cap clip" data-start="185.976" data-duration="1.926"><span>같은 모델이라도 어떤 숫자로</span></div>
+    <div id="cap-44b" class="cap clip" data-start="187.902" data-duration="2.817"><span>보느냐에 따라 평가가 꽤 달라집니다.</span></div>
+    <div id="cap-45a" class="cap clip" data-start="191.369" data-duration="2.557"><span>그럼 둘 중 무엇이 더 중요할까요?</span></div>
+    <div id="cap-46a" class="cap clip" data-start="194.025" data-duration="1.682"><span>상황에 따라 다릅니다.</span></div>
+    <div id="cap-47a" class="cap clip" data-start="195.808" data-duration="1.855"><span>스팸 필터가 중요한 업무 메일을</span></div>
+    <div id="cap-47b" class="cap clip" data-start="197.663" data-duration="2.390"><span>스팸함에 넣어 버리면 곤란하겠죠.</span></div>
+    <div id="cap-48a" class="cap clip" data-start="200.153" data-duration="1.892"><span>이렇게 잘못 걸러 내는 FP가</span></div>
+    <div id="cap-48b" class="cap clip" data-start="202.045" data-duration="2.614"><span>치명적일 때는 정밀도를 챙깁니다.</span></div>
+    <div id="cap-49a" class="cap clip" data-start="204.758" data-duration="1.683"><span>반대로 암 검진에서 환자를</span></div>
+    <div id="cap-49b" class="cap clip" data-start="206.441" data-duration="2.085"><span>놓치면 돌이킬 수 없습니다.</span></div>
+    <div id="cap-50a" class="cap clip" data-start="208.626" data-duration="3.473"><span>놓치는 FN이 치명적일 때는 재현율을 챙깁니다.</span></div>
+    <div id="cap-51a" class="cap clip" data-start="212.199" data-duration="3.587"><span>그리고 두 숫자는 시소처럼 움직일 때가 많습니다.</span></div>
+    <div id="cap-52a" class="cap clip" data-start="215.887" data-duration="2.246"><span>양성으로 판정하는 기준을 낮추면</span></div>
+    <div id="cap-52b" class="cap clip" data-start="218.133" data-duration="2.817"><span>더 많이 찾아내니 재현율은 오릅니다.</span></div>
+    <div id="cap-53a" class="cap clip" data-start="221.049" data-duration="1.906"><span>대신 엉뚱한 것도 섞여 들어와</span></div>
+    <div id="cap-53b" class="cap clip" data-start="222.955" data-duration="2.314"><span>정밀도는 떨어지기 쉽습니다.</span></div>
+    <div id="cap-54a" class="cap clip" data-start="225.920" data-duration="3.472"><span>두 숫자를 하나로 합친 지표가 F1 점수입니다.</span></div>
+    <div id="cap-55a" class="cap clip" data-start="229.492" data-duration="3.516"><span>F1 점수는 정밀도와 재현율의 조화평균입니다.</span></div>
+    <div id="cap-56a" class="cap clip" data-start="233.107" data-duration="3.116"><span>식으로는 2 곱하기 정밀도 곱하기 재현율을,</span></div>
+    <div id="cap-56b" class="cap clip" data-start="236.223" data-duration="2.710"><span>정밀도 더하기 재현율로 나눕니다.</span></div>
+    <div id="cap-57a" class="cap clip" data-start="239.033" data-duration="2.305"><span>왜 그냥 평균을 쓰지 않을까요?</span></div>
+    <div id="cap-58a" class="cap clip" data-start="241.438" data-duration="1.912"><span>확실한 것 딱 하나만 양성이라고</span></div>
+    <div id="cap-58b" class="cap clip" data-start="243.350" data-duration="2.162"><span>말하는 모델을 생각해 보세요.</span></div>
+    <div id="cap-59a" class="cap clip" data-start="245.612" data-duration="2.407"><span>정밀도는 1이지만, 실제 양성이</span></div>
+    <div id="cap-59b" class="cap clip" data-start="248.019" data-duration="3.516"><span>10개라면 재현율은 0.1밖에 안 됩니다.</span></div>
+    <div id="cap-60a" class="cap clip" data-start="251.635" data-duration="3.602"><span>산술평균을 내면 0.55로 그럴듯해 보입니다.</span></div>
+    <div id="cap-61a" class="cap clip" data-start="255.337" data-duration="4.026"><span>하지만 F1 점수는 약 0.18로 뚝 떨어집니다.</span></div>
+    <div id="cap-62a" class="cap clip" data-start="259.463" data-duration="3.869"><span>조화평균은 둘 중 하나라도 낮으면 크게 깎이기 때문에,</span></div>
+    <div id="cap-62b" class="cap clip" data-start="263.332" data-duration="2.605"><span>한쪽만 좋은 모델을 걸러 냅니다.</span></div>
+    <div id="cap-63a" class="cap clip" data-start="266.037" data-duration="4.213"><span>앞의 스팸 필터라면 F1 점수는 약 0.67입니다.</span></div>
+    <div id="cap-64a" class="cap clip" data-start="270.899" data-duration="3.215"><span>마지막으로 시험장에서 챙길 것 세 가지입니다.</span></div>
+    <div id="cap-65a" class="cap clip" data-start="274.215" data-duration="3.742"><span>첫째, 표의 행과 열이 바뀌어 나올 수 있습니다.</span></div>
+    <div id="cap-66a" class="cap clip" data-start="278.057" data-duration="2.516"><span>계산하기 전에 어느 쪽이 실제이고 어느</span></div>
+    <div id="cap-66b" class="cap clip" data-start="280.573" data-duration="2.923"><span>쪽이 예측인지 이름표부터 확인하세요.</span></div>
+    <div id="cap-67a" class="cap clip" data-start="283.596" data-duration="2.919"><span>둘째, 분모만 찾으면 됩니다.</span></div>
+    <div id="cap-68a" class="cap clip" data-start="286.615" data-duration="1.951"><span>정밀도는 예측 양성의 합,</span></div>
+    <div id="cap-68b" class="cap clip" data-start="288.566" data-duration="3.264"><span>재현율은 실제 양성의 합이 분모입니다.</span></div>
+    <div id="cap-69a" class="cap clip" data-start="291.930" data-duration="3.507"><span>셋째, 재현율은 민감도라고도 부릅니다.</span></div>
+    <div id="cap-70a" class="cap clip" data-start="295.536" data-duration="2.477"><span>같은 개념이니 이름에 속지 마세요.</span></div>
+    <div id="cap-71a" class="cap clip" data-start="298.114" data-duration="2.514"><span>덧붙여, 실제 음성 가운데 음성으로</span></div>
+    <div id="cap-71b" class="cap clip" data-start="300.628" data-duration="2.597"><span>맞힌 비율은 특이도라고 합니다.</span></div>
+    <div id="cap-72a" class="cap clip" data-start="303.875" data-duration="2.894"><span>오늘 내용을 한 줄로 정리하면 이렇습니다.</span></div>
+    <div id="cap-73a" class="cap clip" data-start="306.868" data-duration="2.820"><span>정밀도는 양성이라고 한 것 중의 진짜,</span></div>
+    <div id="cap-73b" class="cap clip" data-start="309.688" data-duration="2.893"><span>재현율은 진짜 양성 중에 찾아낸 것.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

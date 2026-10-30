@@ -1,0 +1,36 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s10-row { position: absolute; left: 192px; width: 1536px; height: 200px; padding: 0 56px; box-sizing: border-box;
+      display: grid; grid-template-columns: 300px 1fr; align-items: center; }
+    #s10-r1 { top: 300px; }
+    #s10-r2 { top: 532px; }
+    .s10-k { font-size: 80px; font-weight: 900; letter-spacing: -0.01em; color: var(--color-accent, #6B3FE6); }
+    .s10-v { font-size: 56px; font-weight: 800; }
+    .s10-v span { color: var(--color-ink2, #71717A); font-weight: 700; font-size: 40px; margin-left: 18px; }
+  </style>
+  <div id="root" data-composition-id="s10" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,3]"},{"id":"dur","type":"number","label":"장면 길이","default":10},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"r2","type":"number","label":"둘째 줄 등장 시각","default":0},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s10-all">
+      <div id="s10-head" class="x-head">한 줄 정리</div>
+      <div class="s10-row x-card x-hide" id="s10-r1"><div class="s10-k">정밀도</div><div class="s10-v">‘양성’이라고 한 것 중의 진짜<span>예측 기준</span></div></div>
+      <div class="s10-row x-card x-hide" id="s10-r2"><div class="s10-k">재현율</div><div class="s10-v">진짜 양성 중에 찾아낸 것<span>실제 기준</span></div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+
+    // 72 한 줄로 정리하면
+    ft("#s10-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    // 73 정밀도는 …, 재현율은 …
+    ft("#s10-r1", { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, at(1, 0.1));
+    ft("#s10-r2", { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, Number(V.r2) || at(1, 2.6));
+    window.__timelines["s10"] = tl;
+  </script>
+</template>

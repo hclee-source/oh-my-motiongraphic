@@ -1,0 +1,117 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    /* 7장 끝 모습 그대로: 막대 두 개 + 판정 기준 손잡이(내려간 상태) */
+    .s08-lab { position: absolute; left: 192px; font-size: 44px; font-weight: 800; }
+    #s08-lp { top: 386px; }
+    #s08-lr { top: 546px; }
+    .s08-track { position: absolute; left: 420px; width: 620px; height: 56px; border-radius: 28px; background: var(--color-line, #E3E5EA); overflow: hidden; }
+    #s08-tp { top: 380px; }
+    #s08-tr { top: 540px; }
+    .s08-fill { position: absolute; inset: 0; border-radius: 28px; background: var(--color-ink, #18181B); transform-origin: left center; }
+    #s08-fp { transform: scaleX(0.45); }
+    #s08-fr { transform: scaleX(0.9); }
+    #s08-ap { position: absolute; inset: 0; border-radius: 28px; background: var(--color-accent, #6B3FE6); transform-origin: left center; transform: scaleX(0.45); }
+    .s08-val { position: absolute; left: 1060px; font-size: 40px; font-weight: 800; opacity: 0; }
+    #s08-vp { top: 384px; }
+    #s08-vr { top: 544px; }
+    #s08-slider { position: absolute; left: 1360px; top: 262px; width: 368px; height: 584px; }
+    #s08-stitle { font-size: 40px; font-weight: 800; }
+    #s08-rail { position: absolute; left: 60px; top: 110px; width: 8px; height: 400px; border-radius: 4px; background: var(--color-hair, #D3D6DD); }
+    #s08-knob { position: absolute; left: 40px; top: 436px; width: 48px; height: 48px; border-radius: 50%; background: var(--color-accent, #6B3FE6); }
+    .s08-end { position: absolute; left: 110px; font-size: 30px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    /* 평균 표시선 */
+    .s08-mark { position: absolute; top: 340px; width: 0; height: 290px; opacity: 0; }
+    #s08-mavg { left: 759px; border-left: 4px dashed var(--color-ink2, #71717A); }
+    #s08-mf1 { left: 530px; border-left: 5px solid var(--color-accent, #6B3FE6); }
+    .s08-mlab { position: absolute; font-size: 32px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    #s08-lavg { left: 739px; top: 290px; color: var(--color-ink2, #71717A); }
+    #s08-lf1 { left: 510px; top: 642px; color: var(--color-accent, #6B3FE6); }
+    /* F1 카드 */
+    #s08-card { top: 262px; height: 584px; padding: 44px 52px; }
+    #s08-csub { margin-top: 10px; font-size: 32px; font-weight: 700; color: #A1A1AA; }
+    .s08-frac { margin-top: 40px; display: inline-block; }
+    .s08-fn { font-size: 60px; font-weight: 800; text-align: center; padding: 0 12px; }
+    .s08-fl { height: 5px; border-radius: 3px; background: #FFFFFF; margin: 10px 0; transform: scaleX(0); transform-origin: left center; }
+    #s08-spam { position: absolute; left: 192px; top: 712px; width: 908px; height: 130px; padding: 0 40px; box-sizing: border-box;
+      display: flex; align-items: center; gap: 22px; font-size: 34px; font-weight: 700; }
+    #s08-spam b { font-weight: 900; color: var(--color-accent, #6B3FE6); font-size: 48px; }
+  </style>
+  <div id="root" data-composition-id="s08" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,3,6,10,12,15,19,22,25,30]"},{"id":"dur","type":"number","label":"장면 길이","default":44},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s08-all">
+      <div id="s08-head1" class="x-head" style="opacity: 1">무엇을 더 챙길까</div>
+      <div id="s08-head2" class="x-head">F1 점수</div>
+      <div class="s08-lab" id="s08-lp">정밀도</div>
+      <div class="s08-lab" id="s08-lr">재현율</div>
+      <div class="s08-track" id="s08-tp"><div class="s08-fill" id="s08-fp"></div><div id="s08-ap"></div></div>
+      <div class="s08-track" id="s08-tr"><div class="s08-fill" id="s08-fr"></div></div>
+      <div class="s08-val" id="s08-vp">1.0</div>
+      <div class="s08-val" id="s08-vr">0.1</div>
+      <div class="s08-mark" id="s08-mavg"></div>
+      <div class="s08-mark" id="s08-mf1"></div>
+      <div class="s08-mlab" id="s08-lavg">산술평균 0.55</div>
+      <div class="s08-mlab" id="s08-lf1">F1 0.18</div>
+      <div id="s08-slider">
+        <div id="s08-stitle">판정 기준</div>
+        <div id="s08-rail"></div>
+        <div class="s08-end" style="top: 102px">높게</div>
+        <div class="s08-end" style="top: 482px">낮게</div>
+        <div id="s08-knob"></div>
+      </div>
+      <div id="s08-card" class="x-side x-dark x-hide">
+        <div class="x-fname">F1 점수</div>
+        <div id="s08-csub">정밀도와 재현율의 조화평균</div>
+        <div class="s08-frac x-hide" id="s08-frac">
+          <div class="s08-fn">2 × P × R</div>
+          <div class="s08-fl" id="s08-fl"></div>
+          <div class="s08-fn">P + R</div>
+        </div>
+        <div class="x-fmean x-hide" id="s08-mean" style="margin-top: 36px">한쪽만 낮아도 크게 깎인다</div>
+      </div>
+      <div id="s08-spam" class="x-card x-hide">스팸 필터 · 정밀도 0.6 · 재현율 0.75 → F1 약 <b>0.67</b></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 44;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power2.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b }, t);
+    const bar = (sel, t, a, b, d = 0.7) => tl.fromTo(sel, { scaleX: a }, { scaleX: b, duration: d * S, ease: "power2.inOut", immediateRender: false }, t);
+
+    // 54 두 숫자를 하나로 — 제목이 바뀌고 손잡이는 물러난다, 막대는 예시가 나올 때까지 흐리게
+    fade("#s08-head1", at(0, 0), 1, 0);
+    ft("#s08-head2", { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, at(0, 0.15));
+    fade("#s08-slider", at(0, 0.2), 1, 0);
+    fade("#s08-ap", at(0, 0.2), 1, 0);
+    fade(".s08-lab, .s08-track", at(0, 0.4), 1, 0.25);
+    fade(".s08-lab, .s08-track", at(4, 0.1), 0.25, 1);
+    // 55 조화평균
+    ft("#s08-card", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(1, 0.3));
+    // 56 식
+    fade("#s08-frac", at(2, 0.3), 0, 1);
+    tl.fromTo("#s08-fl", { scaleX: 0 }, { scaleX: 1, duration: 0.4 * S, ease: "power3.inOut", immediateRender: false }, at(2, 0.3));
+    // 58 확실한 것 하나만 양성 — 정밀도 1
+    bar("#s08-fp", at(4, 0.6), 0.45, 1.0);
+    // 59 재현율 0.1
+    bar("#s08-fr", at(5, 2.4), 0.9, 0.1);
+    fade("#s08-vp", at(5, 0.4), 0, 1);
+    fade("#s08-vr", at(5, 3.0), 0, 1);
+    // 60 산술평균 0.55
+    fade("#s08-mavg, #s08-lavg", at(6, 0.6), 0, 1);
+    // 61 F1 0.18
+    fade("#s08-mf1, #s08-lf1", at(7, 0.8), 0, 1);
+    ft("#s08-mf1", { scaleY: 1 }, { scaleY: 1.06, duration: 0.2 * S, yoyo: true, repeat: 1 }, at(7, 1.2));
+    // 62 한쪽만 좋은 모델을 걸러 낸다
+    ft("#s08-mean", { opacity: 0, y: 10 }, { opacity: 1, y: 0 }, at(8, 1.0));
+    // 63 스팸 필터라면 0.67
+    ft("#s08-spam", { opacity: 0, y: 16 }, { opacity: 1, y: 0, ease: "power3.out" }, at(9, 0.3));
+    if (String(V.exit) !== "false") ft("#s08-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s08"] = tl;
+  </script>
+</template>

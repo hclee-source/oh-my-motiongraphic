@@ -1,0 +1,29 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #hd-t { position: absolute; left: 0; right: 0; top: 168px; text-align: center; font-size: 64px; font-weight: 900;
+      letter-spacing: -0.01em; white-space: nowrap; }
+    .hd-vs { margin: 0 22px; font-size: 44px; font-weight: 800; color: var(--color-ink2, #71717A); }
+  </style>
+  <div id="root" data-composition-id="hd" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"dur","type":"number","label":"장면 길이","default":64.7},{"id":"pulse","type":"number","label":"두 낱말을 말하는 시각","default":13.9},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <!-- 영상 내내 위에 떠 있는 주제 이름. 내레이션이 두 낱말을 말할 때 잠깐 강조색으로 바뀐다. -->
+    <div id="hd-t">
+      <span class="x-wrap">정밀도<span class="x-ov" id="hd-p">정밀도</span></span><span class="hd-vs">vs</span><span class="x-wrap">재현율<span class="x-ov" id="hd-r">재현율</span></span>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const P = Number(V.pulse) || 13.9;
+    const tl = gsap.timeline({ paused: true });
+    const fade = (sel, t, a, b) => tl.fromTo(sel, { opacity: a }, { opacity: b, duration: 0.3 * S, ease: "power2.out", immediateRender: false }, t);
+
+    // 3번 문장 ‘정밀도와 재현율’에 맞춰 두 낱말이 차례로 강조색이 됐다가 돌아온다
+    fade("#hd-p", P, 0, 1);
+    fade("#hd-r", P + 0.6, 0, 1);
+    fade("#hd-p, #hd-r", P + 2.6, 1, 0);
+    window.__timelines["hd"] = tl;
+  </script>
+</template>
