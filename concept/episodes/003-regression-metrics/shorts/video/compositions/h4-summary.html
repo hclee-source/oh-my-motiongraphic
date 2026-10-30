@@ -1,0 +1,35 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h4-row { position: absolute; left: 80px; width: 920px; height: 200px; padding: 0 56px;
+      display: grid; grid-template-columns: 300px 1fr; align-items: center; }
+    #h4-r1 { top: 380px; }
+    #h4-r2 { top: 620px; }
+    #h4-r3 { top: 860px; }
+    .h4-k { font-size: 44px; font-weight: 800; color: var(--color-ink2, #71717A); }
+    .h4-v { font-size: 68px; font-weight: 900; letter-spacing: -0.01em; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="h4" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.3,5]"},{"id":"dur","type":"number","label":"장면 길이","default":9},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h4-all">
+      <div class="h4-row x-card x-hide" id="h4-r1"><div class="h4-k">이상값에 민감</div><div class="h4-v x-acc">MSE · RMSE</div></div>
+      <div class="h4-row x-card x-hide" id="h4-r2"><div class="h4-k">덜 민감</div><div class="h4-v">MAE</div></div>
+      <div class="h4-row x-card x-hide" id="h4-r3"><div class="h4-k">네 지표 모두</div><div class="h4-v">작을수록 좋다</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const stamp = (sel, t) => tl.fromTo(sel, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.4 * S, ease: "back.out(1.6)", immediateRender: false }, t);
+
+    // 8 민감한 건 MSE·RMSE, 덜 민감한 건 MAE / 9 모두 작을수록 좋다
+    stamp("#h4-r1", at(0, 0.2));
+    stamp("#h4-r2", at(0, 2.4));
+    stamp("#h4-r3", at(1, 0.2));
+    window.__timelines["h4"] = tl;
+  </script>
+</template>

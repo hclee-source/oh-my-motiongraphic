@@ -1,0 +1,38 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s09-row { position: absolute; left: 192px; width: 1536px; height: 150px; padding: 0 56px; box-sizing: border-box;
+      display: grid; grid-template-columns: 440px 1fr; align-items: center; }
+    #s09-r1 { top: 262px; }
+    #s09-r2 { top: 436px; }
+    #s09-r3 { top: 610px; }
+    .s09-k { font-size: 64px; font-weight: 900; letter-spacing: -0.01em; color: var(--color-accent, #6B3FE6); }
+    .s09-v { font-size: 48px; font-weight: 800; }
+  </style>
+  <div id="root" data-composition-id="s09" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,3]"},{"id":"dur","type":"number","label":"장면 길이","default":12},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"r2","type":"number","label":"둘째 줄 시각","default":0},{"id":"r3","type":"number","label":"셋째 줄 시각","default":0},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s09-all">
+      <div id="s09-head" class="x-head">한 줄 정리</div>
+      <div class="s09-row x-card x-hide" id="s09-r1"><div class="s09-k">홀드아웃</div><div class="s09-v">한 번 나눈다</div></div>
+      <div class="s09-row x-card x-hide" id="s09-r2"><div class="s09-k">교차 검증</div><div class="s09-v">k번 돌아가며 나눈다</div></div>
+      <div class="s09-row x-card x-hide" id="s09-r3"><div class="s09-k">부트스트랩</div><div class="s09-v">다시 넣으며 뽑는다</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+
+    // 46 한 줄로 정리하면
+    ft("#s09-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    // 47 홀드아웃, 교차 검증, 부트스트랩 — 말하는 순서대로
+    ft("#s09-r1", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(1, 0.1));
+    ft("#s09-r2", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, Number(V.r2) || at(1, 2.2));
+    ft("#s09-r3", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, Number(V.r3) || at(1, 4.6));
+    window.__timelines["s09"] = tl;
+  </script>
+</template>

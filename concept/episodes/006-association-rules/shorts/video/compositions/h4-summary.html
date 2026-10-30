@@ -1,0 +1,35 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h4-row { position: absolute; left: 80px; width: 920px; height: 200px; padding: 0 52px;
+      display: flex; flex-direction: column; justify-content: center; }
+    #h4-r1 { top: 380px; }
+    #h4-r2 { top: 620px; }
+    #h4-r3 { top: 860px; }
+    .h4-k { font-size: 64px; font-weight: 900; color: var(--color-accent, #6B3FE6); }
+    .h4-v { margin-top: 6px; font-size: 44px; font-weight: 800; }
+  </style>
+  <div id="root" data-composition-id="h4" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.3]"},{"id":"dur","type":"number","label":"장면 길이","default":8},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h4-all">
+      <div class="h4-row x-card x-hide" id="h4-r1"><div class="h4-k">지지도</div><div class="h4-v">얼마나 자주</div></div>
+      <div class="h4-row x-card x-hide" id="h4-r2"><div class="h4-k">신뢰도</div><div class="h4-v">조건부 비율</div></div>
+      <div class="h4-row x-card x-hide" id="h4-r3"><div class="h4-k">향상도</div><div class="h4-v">평소의 몇 배인지</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const stamp = (sel, t) => tl.fromTo(sel, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.4 * S, ease: "back.out(1.6)", immediateRender: false }, t);
+
+    // 8 지지도, 신뢰도, 향상도 — 말하는 순서대로
+    stamp("#h4-r1", at(0, 0.1));
+    stamp("#h4-r2", at(0, 1.8));
+    stamp("#h4-r3", at(0, 3.6));
+    window.__timelines["h4"] = tl;
+  </script>
+</template>

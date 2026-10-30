@@ -1,0 +1,75 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s07-tb { position: absolute; left: 192px; top: 262px; width: 820px; height: 536px; padding: 24px 40px; box-sizing: border-box;
+      display: grid; grid-template-columns: 200px 200px 1fr; grid-template-rows: 56px repeat(6, 72px); align-items: center; }
+    .s07-h { font-size: 30px; font-weight: 700; color: var(--color-ink2, #71717A); text-align: center; }
+    .s07-v { font-size: 44px; font-weight: 800; text-align: center; }
+    .s07-p { opacity: 0; }
+    .s07-sum { border-top: 2px solid var(--color-hair, #D3D6DD); height: 72px; display: flex; align-items: center; justify-content: center; }
+    .s07-sl { font-size: 30px; font-weight: 700; color: var(--color-ink2, #71717A); opacity: 0; }
+    #s07-avg { font-size: 48px; font-weight: 900; color: var(--color-accent, #6B3FE6); opacity: 0; }
+    #s07-card { position: absolute; left: 1100px; top: 262px; width: 628px; height: 250px; padding: 36px 44px; box-sizing: border-box; }
+    #s07-name { font-size: 44px; font-weight: 900; }
+    #s07-def { margin-top: 10px; font-size: 32px; font-weight: 700; color: #A1A1AA; }
+    #s07-unit { margin-top: 18px; font-size: 32px; font-weight: 700; color: var(--color-accent-dark, #A68CFF); opacity: 0; }
+    #s07-warn { position: absolute; left: 1100px; top: 548px; width: 628px; height: 250px; padding: 36px 44px; box-sizing: border-box; }
+    #s07-wring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    #s07-w1 { font-size: 40px; font-weight: 900; }
+    #s07-w2 { margin-top: 12px; font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s07" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,4,8,16,20,27,31]"},{"id":"dur","type":"number","label":"장면 길이","default":36},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s07-all">
+      <div id="s07-head" class="x-head">MAPE · 평균 절대 백분율 오차</div>
+      <div id="s07-tb" class="x-card x-hide">
+        <div class="s07-h">실제</div><div class="s07-h">|오차|</div><div class="s07-h">|오차| ÷ 실제</div>
+        <div class="s07-v">20</div><div class="s07-v">2</div><div class="s07-v s07-p">10%</div>
+        <div class="s07-v">20</div><div class="s07-v">2</div><div class="s07-v s07-p">10%</div>
+        <div class="s07-v">40</div><div class="s07-v">2</div><div class="s07-v s07-p">5%</div>
+        <div class="s07-v">40</div><div class="s07-v">2</div><div class="s07-v s07-p">5%</div>
+        <div class="s07-v">40</div><div class="s07-v">8</div><div class="s07-v s07-p">20%</div>
+        <div class="s07-sum"><span class="s07-sl" id="s07-sl">평균</span></div><div class="s07-sum"></div><div class="s07-sum"><span id="s07-avg">10%</span></div>
+      </div>
+      <div id="s07-card" class="x-dark x-hide">
+        <div id="s07-name">MAPE = 10%</div>
+        <div id="s07-def">오차를 실제값으로 나눈 비율의 평균</div>
+        <div id="s07-unit">단위 없음 → 다른 대상끼리 비교</div>
+      </div>
+      <div id="s07-warn" class="x-card x-hide">
+        <div id="s07-wring"></div>
+        <div id="s07-w1">실제값 0 → ÷ 0</div>
+        <div id="s07-w2">계산 불가 · 실제값이 작아도 비율이 부푼다</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 36;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+
+    // 33 MAPE
+    ft("#s07-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s07-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.5));
+    // 34 실제값으로 나눠 비율로 / 35 10%, 10%, 5%, 5%, 20%
+    gsap.utils.toArray(".s07-p").forEach((p, k) => ft(p, { opacity: 0, y: 8 }, { opacity: 1, y: 0 }, at(2, 0.4 + [0, 0.5, 3.0, 3.5, 6.0][k])));
+    // 36 평균 10%
+    fade("#s07-sl", at(3, 0.2), 0, 1);
+    ft("#s07-avg", { opacity: 0, scale: 1.2 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, at(3, 0.8));
+    ft("#s07-card", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(3, 1.2));
+    // 37 단위 없는 퍼센트
+    fade("#s07-unit", at(4, 0.6), 0, 1);
+    // 38 실제값 0이면 계산 불가 / 39 작을 때도 조심
+    ft("#s07-warn", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(5, 0.2));
+    fade("#s07-wring", at(5, 0.6), 0, 1);
+    fade("#s07-w2", at(6, 0.4), 0, 1);
+    if (String(V.exit) !== "false") ft("#s07-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s07"] = tl;
+  </script>
+</template>

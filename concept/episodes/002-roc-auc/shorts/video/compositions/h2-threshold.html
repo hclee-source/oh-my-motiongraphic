@@ -1,0 +1,98 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    /* 점수 자: 1.0 = y 380, 0 = y 1020 (640 px) */
+    #h2-ruler { position: absolute; left: 196px; top: 380px; width: 6px; height: 640px; border-radius: 3px; background: var(--color-ink, #18181B);
+      transform-origin: center bottom; transform: scaleY(0); }
+    .h2-tk { position: absolute; left: 90px; width: 90px; text-align: right; font-size: 36px; font-weight: 700; color: var(--color-ink2, #71717A); opacity: 0; }
+    .h2-col { position: absolute; top: 300px; font-size: 40px; font-weight: 900; opacity: 0; }
+    .h2-dot { position: absolute; width: 36px; height: 36px; margin: -18px 0 0 -18px; border-radius: 50%; opacity: 0; }
+    .h2-p { background: var(--color-accent, #6B3FE6); }
+    .h2-n { background: var(--color-dot, #CDD0D8); }
+    #h2-tint { position: absolute; left: 202px; top: 380px; width: 420px; height: 192px; transform-origin: center top;
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 9%, transparent); opacity: 0; }
+    #h2-line { position: absolute; left: 202px; top: 569px; width: 420px; height: 6px; border-radius: 3px; background: var(--color-accent, #6B3FE6); opacity: 0; }
+    /* 막대: 바닥 y 1020, 값 1 = 500 px */
+    .h2-bar { position: absolute; top: 520px; width: 110px; height: 500px; border-radius: 16px 16px 4px 4px; transform-origin: center bottom; }
+    #h2-bs { left: 640px; background: var(--color-accent, #6B3FE6); }
+    #h2-bp { left: 800px; background: var(--color-ink2, #71717A); }
+    .h2-bl { position: absolute; top: 1040px; width: 170px; text-align: center; font-size: 40px; font-weight: 900; opacity: 0; }
+    .h2-bv { position: absolute; top: 440px; width: 170px; text-align: center; font-size: 56px; font-weight: 900; opacity: 0; }
+    #h2-low { position: absolute; left: 90px; top: 1110px; font-size: 44px; font-weight: 900; opacity: 0; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="h2" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.3,5]"},{"id":"dur","type":"number","label":"장면 길이","default":11},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h2-all">
+      <div class="h2-tk" style="top: 358px">1</div>
+      <div class="h2-tk" style="top: 998px">0</div>
+      <div id="h2-ruler"></div>
+      <div id="h2-tint"></div>
+      <div class="h2-col x-acc" style="left: 290px">환자</div>
+      <div class="h2-col x-ink2" style="left: 450px">정상인</div>
+      <!-- y = 1020 − 점수 × 640 -->
+      <div class="h2-dot h2-p" style="left: 330px; top: 431.2px"></div>
+      <div class="h2-dot h2-p" style="left: 330px; top: 501.6px"></div>
+      <div class="h2-dot h2-p" style="left: 330px; top: 610.4px"></div>
+      <div class="h2-dot h2-p" style="left: 330px; top: 738.4px"></div>
+      <div class="h2-dot h2-p" style="left: 330px; top: 924px"></div>
+      <div class="h2-dot h2-n" style="left: 510px; top: 527.2px"></div>
+      <div class="h2-dot h2-n" style="left: 510px; top: 648.8px"></div>
+      <div class="h2-dot h2-n" style="left: 510px; top: 776.8px"></div>
+      <div class="h2-dot h2-n" style="left: 510px; top: 879.2px"></div>
+      <div class="h2-dot h2-n" style="left: 510px; top: 975.2px"></div>
+      <div id="h2-line"></div>
+      <div class="h2-bar" id="h2-bs"></div>
+      <div class="h2-bar" id="h2-bp"></div>
+      <div class="h2-bl x-acc" style="left: 610px">민감도</div>
+      <div class="h2-bl x-ink2" style="left: 770px">특이도</div>
+      <div class="h2-bv x-acc" style="left: 610px" id="h2-vs">0.4</div>
+      <div class="h2-bv x-ink2" style="left: 770px" id="h2-vp">0.8</div>
+      <div id="h2-low">기준 ↓ → 민감도 <span class="x-acc">↑</span> · 특이도 <span class="x-ink2">↓</span></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 11;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const vs = document.getElementById("h2-vs"), vp = document.getElementById("h2-vp");
+    // 처음 모습: 막대는 접혀 있고, 숫자는 기준 0.7일 때 막대 끝 자리
+    gsap.set("#h2-bs, #h2-bp", { scaleY: 0 });
+    gsap.set("#h2-vs", { y: 300 });
+    gsap.set("#h2-vp", { y: 100 });
+    // 기준값 하나로 선·칠한 영역·막대·숫자를 함께 옮긴다
+    const state = { th: 0.7, s: 0.4, p: 0.8 };
+    const apply = () => {
+      const y = 1020 - state.th * 640;
+      gsap.set("#h2-line", { y: y - 572 });
+      gsap.set("#h2-tint", { scaleY: (y - 380) / 192 });
+      gsap.set("#h2-bs", { scaleY: state.s });
+      gsap.set("#h2-bp", { scaleY: state.p });
+      gsap.set("#h2-vs", { y: (1 - state.s) * 500 });
+      gsap.set("#h2-vp", { y: (1 - state.p) * 500 });
+      vs.textContent = state.s.toFixed(1);
+      vp.textContent = state.p.toFixed(1);
+    };
+
+    // 4 점수를 내고, 기준값을 넘으면 양성
+    tl.fromTo("#h2-ruler", { scaleY: 0 }, { scaleY: 1, duration: 0.5 * S, ease: "power3.inOut", immediateRender: false }, at(0, 0));
+    fade(".h2-tk, .h2-col", at(0, 0.3), 0, 1);
+    gsap.utils.toArray(".h2-dot").forEach((d, k) => ft(d, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, at(0, 0.5 + k * 0.07)));
+    // 처음 자리(기준 0.7)는 CSS에 그대로 적혀 있다
+    fade("#h2-line, #h2-tint", at(0, 2.0), 0, 1);
+    fade(".h2-bl, .h2-bv", at(0, 2.4), 0, 1);
+    tl.fromTo("#h2-bs", { scaleY: 0 }, { scaleY: 0.4, duration: 0.4 * S, ease: "power3.out", immediateRender: false }, at(0, 2.4));
+    tl.fromTo("#h2-bp", { scaleY: 0 }, { scaleY: 0.8, duration: 0.4 * S, ease: "power3.out", immediateRender: false }, at(0, 2.4));
+    // 5 기준을 낮추면 민감도 ↑ 특이도 ↓ — 0.7 → 0.5 → 0.3
+    tl.fromTo(state, { th: 0.7, s: 0.4, p: 0.8 }, { th: 0.5, s: 0.6, p: 0.6, duration: 0.8 * S, ease: "power2.inOut", immediateRender: false, onUpdate: apply }, at(1, 0.3));
+    tl.fromTo(state, { th: 0.5, s: 0.6, p: 0.6 }, { th: 0.3, s: 0.8, p: 0.4, duration: 0.8 * S, ease: "power2.inOut", immediateRender: false, onUpdate: apply }, at(1, 1.6));
+    ft("#h2-low", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(1, 2.8));
+    if (String(V.exit) !== "false") ft("#h2-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.35);
+    window.__timelines["h2"] = tl;
+  </script>
+</template>

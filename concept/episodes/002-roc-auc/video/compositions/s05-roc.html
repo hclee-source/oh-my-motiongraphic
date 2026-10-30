@@ -1,0 +1,170 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    /* 그래프: 왼쪽 위 (340, 236), 한 변 520 px. 가로 = 거짓 양성률, 세로 = 민감도 */
+    #s05-svg { position: absolute; left: 340px; top: 236px; width: 520px; height: 520px; overflow: visible; }
+    .s05-yt { position: absolute; left: 270px; width: 52px; text-align: right; font-size: 28px; font-weight: 700; color: var(--color-ink2, #71717A); opacity: 0; }
+    .s05-xt { position: absolute; top: 766px; font-size: 28px; font-weight: 700; color: var(--color-ink2, #71717A); opacity: 0; }
+    #s05-ylab { position: absolute; left: 192px; top: 300px; font-size: 34px; font-weight: 800; opacity: 0; }
+    #s05-xlab { position: absolute; left: 400px; top: 806px; font-size: 34px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    .s05-pl { position: absolute; font-size: 28px; font-weight: 800; color: var(--color-accent, #6B3FE6); opacity: 0; }
+    #s05-name { position: absolute; left: 884px; top: 222px; font-size: 34px; font-weight: 900; color: var(--color-accent, #6B3FE6); opacity: 0; white-space: nowrap; }
+    #s05-dlab { position: absolute; left: 632px; top: 556px; font-size: 28px; font-weight: 800; color: var(--color-ink2, #71717A); opacity: 0; white-space: nowrap; }
+    /* 오른쪽 판: 장마다 바뀐다 */
+    #s05-card { position: absolute; left: 1060px; top: 236px; width: 668px; height: 560px; }
+    .s05-pg { position: absolute; inset: 0; padding: 40px 44px; box-sizing: border-box; opacity: 0; }
+    .s05-cap { font-size: 30px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    .s05-row { display: grid; grid-template-columns: 150px 1fr; align-items: baseline; margin-top: 18px; opacity: 0; }
+    .s05-rk { font-size: 40px; font-weight: 800; color: var(--color-ink2, #71717A); }
+    .s05-rv { font-size: 52px; font-weight: 900; letter-spacing: -0.01em; }
+    .s05-ends { margin-top: 34px; font-size: 32px; font-weight: 700; line-height: 1.6; opacity: 0; }
+    .s05-b { display: grid; grid-template-columns: 96px 1fr; align-items: center; margin-top: 30px; opacity: 0; }
+    .s05-b:first-child { margin-top: 0; }
+    .s05-sw { width: 72px; height: 0; border-top: 6px dashed #A1A1AA; }
+    .s05-sw2 { width: 40px; height: 40px; border-left: 5px solid var(--color-ink2, #71717A); border-top: 5px solid var(--color-ink2, #71717A); box-sizing: border-box; margin-left: 16px; }
+    .s05-sw3 { width: 72px; height: 6px; border-radius: 3px; background: var(--color-accent, #6B3FE6); }
+    .s05-bt { font-size: 38px; font-weight: 800; }
+    .s05-bd { margin-top: 4px; font-size: 30px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    #s05-auc-t { font-size: 38px; font-weight: 800; }
+    .s05-sr { display: grid; grid-template-columns: 220px 1fr; align-items: baseline; margin-top: 12px; opacity: 0; }
+    .s05-sk { font-size: 34px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    .s05-sv { font-size: 52px; font-weight: 900; }
+    #s05-hr { margin: 26px 0 18px; height: 2px; background: var(--color-hair, #D3D6DD); opacity: 0; }
+    .s05-pr { font-size: 32px; font-weight: 700; margin-top: 8px; opacity: 0; white-space: nowrap; }
+    #s05-pr3 { font-size: 44px; font-weight: 900; color: var(--color-accent, #6B3FE6); }
+  </style>
+  <div id="root" data-composition-id="s05" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,4,8,11,20,25,28,36,40,45,49,53,57,62,66,70,74,79,83,86,92,97]"},{"id":"dur","type":"number","label":"장면 길이","default":101},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s05-all">
+      <div id="s05-h1" class="x-head">ROC 곡선 그리기</div>
+      <div id="s05-h2" class="x-head">좋은 곡선, 나쁜 곡선</div>
+      <div id="s05-h3" class="x-head">AUC, 곡선 아래 넓이</div>
+      <svg id="s05-svg" viewBox="0 0 520 520">
+        <path d="M104 0V520M208 0V520M312 0V520M416 0V520M0 104H520M0 208H520M0 312H520M0 416H520" stroke="#E3E5EA" stroke-width="2" fill="none" id="s05-grid" opacity="0" />
+        <path id="s05-fill" d="M0 520 L0 312 L104 312 L104 208 L208 208 L208 104 L416 104 L416 0 L520 0 L520 520 Z"
+          fill="#6B3FE6" fill-opacity="0.16" opacity="0" />
+        <path id="s05-diag" d="M0 520 L520 0" stroke="#A1A1AA" stroke-width="5" stroke-dasharray="16 12" fill="none" opacity="0" />
+        <path id="s05-perf" d="M0 520 L0 0 L520 0" stroke="#71717A" stroke-width="5" fill="none" opacity="0" />
+        <path id="s05-axes" d="M0 0 L0 520 L520 520" stroke="#18181B" stroke-width="4" fill="none" stroke-dasharray="1040" stroke-dashoffset="1040" />
+        <path id="s05-curve" d="M0 520 L0 416 L0 312 L104 312 L104 208 L208 208 L208 104 L312 104 L416 104 L416 0 L520 0"
+          stroke="#6B3FE6" stroke-width="7" stroke-linejoin="round" fill="none" stroke-dasharray="1040" stroke-dashoffset="1040" />
+        <circle class="s05-pt" cx="104" cy="312" r="12" fill="#6B3FE6" opacity="0" />
+        <circle class="s05-pt" cx="208" cy="208" r="12" fill="#6B3FE6" opacity="0" />
+        <circle class="s05-pt" cx="312" cy="104" r="12" fill="#6B3FE6" opacity="0" />
+        <circle id="s05-o" cx="0" cy="520" r="13" fill="#18181B" opacity="0" />
+        <circle id="s05-e" cx="520" cy="0" r="13" fill="#18181B" opacity="0" />
+      </svg>
+      <div class="s05-yt" style="top: 219px">1</div>
+      <div class="s05-yt" style="top: 739px">0</div>
+      <div class="s05-xt" style="left: 332px">0</div>
+      <div class="s05-xt" style="left: 852px">1</div>
+      <div id="s05-ylab">민감도</div>
+      <div id="s05-xlab">거짓 양성률 (1 − 특이도)</div>
+      <div class="s05-pl" id="s05-p7" style="left: 458px; top: 494px">0.7</div>
+      <div class="s05-pl" id="s05-p5" style="left: 562px; top: 390px">0.5</div>
+      <div class="s05-pl" id="s05-p3" style="left: 666px; top: 286px">0.3</div>
+      <div id="s05-name">ROC 곡선</div>
+      <div id="s05-dlab">무작위</div>
+      <div id="s05-card" class="x-card x-hide">
+        <div class="s05-pg" id="s05-pa">
+          <div class="s05-cap">기준값 → (거짓 양성률, 민감도)</div>
+          <div class="s05-row" id="s05-a7"><div class="s05-rk">0.7</div><div class="s05-rv">(0.2, 0.4)</div></div>
+          <div class="s05-row" id="s05-a5"><div class="s05-rk">0.5</div><div class="s05-rv">(0.4, 0.6)</div></div>
+          <div class="s05-row" id="s05-a3"><div class="s05-rk">0.3</div><div class="s05-rv">(0.6, 0.8)</div></div>
+          <div class="s05-ends" id="s05-ends">가장 높게 → (0, 0) 모두 음성<br />가장 낮게 → (1, 1) 모두 양성</div>
+        </div>
+        <div class="s05-pg" id="s05-pb">
+          <div class="s05-b" id="s05-b1"><div class="s05-sw"></div><div><div class="s05-bt">대각선 = 무작위</div><div class="s05-bd">동전 던지기 수준</div></div></div>
+          <div class="s05-b" id="s05-b2"><div class="s05-sw2"></div><div><div class="s05-bt">왼쪽 위 모서리 = 완벽</div><div class="s05-bd">환자 점수가 모두 더 높다</div></div></div>
+          <div class="s05-b" id="s05-b3"><div class="s05-sw3"></div><div><div class="s05-bt x-acc">왼쪽 위로 불룩할수록</div><div class="s05-bd">좋은 모델</div></div></div>
+        </div>
+        <div class="s05-pg" id="s05-pc">
+          <div id="s05-auc-t">AUC = 곡선 아래 넓이</div>
+          <div class="s05-sr" id="s05-c1"><div class="s05-sk">완벽</div><div class="s05-sv">1.0</div></div>
+          <div class="s05-sr" id="s05-c2"><div class="s05-sk">우리 모델</div><div class="s05-sv x-acc" id="s05-auc">0.00</div></div>
+          <div class="s05-sr" id="s05-c3"><div class="s05-sk">무작위</div><div class="s05-sv">0.5</div></div>
+          <div id="s05-hr"></div>
+          <div class="s05-pr" id="s05-pr1">환자·정상인 짝 25쌍 중</div>
+          <div class="s05-pr" id="s05-pr2">환자 점수가 더 높은 쌍 18</div>
+          <div class="s05-pr" id="s05-pr3">18 ÷ 25 = 0.72</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 101;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const draw = (sel, t, d) => tl.fromTo(sel, { strokeDashoffset: 1040 }, { strokeDashoffset: 0, duration: d * S, ease: "power2.inOut", immediateRender: false }, t);
+    const pop = (sel, t) => ft(sel, { opacity: 0, scale: 0.3, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+    const count = (el, t, a, b, d, fmt) => { const o = { v: a }; tl.fromTo(o, { v: a }, { v: b, duration: d * S, ease: "power2.out", immediateRender: false, onUpdate: () => { el.textContent = fmt(o.v); } }, t); };
+    const head = (k, t) => { if (k > 1) fade(`#s05-h${k - 1}`, t, 1, 0); ft(`#s05-h${k}`, { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, t + (k > 1 ? 0.2 : 0)); };
+
+    // 32 모든 기준값을 한 그림에 — 좌표축
+    head(1, at(0, 0));
+    draw("#s05-axes", at(0, 0.5), 0.7);
+    fade("#s05-grid, .s05-yt, .s05-xt", at(0, 1.2), 0, 1);
+    // 33 가로축 = 거짓 양성률 / 34 세로축 = 민감도
+    ft("#s05-xlab", { opacity: 0, y: 10 }, { opacity: 1, y: 0 }, at(1, 0.3));
+    ft("#s05-ylab", { opacity: 0, x: -10 }, { opacity: 1, x: 0 }, at(2, 0.2));
+    // 35 세 기준값의 점 — 문장이 길어 하나씩
+    ft("#s05-card", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(3, 0.1));
+    fade("#s05-pa", at(3, 0.1), 0, 1);
+    const pts = gsap.utils.toArray(".s05-pt");
+    [["#s05-a7", "#s05-p7"], ["#s05-a5", "#s05-p5"], ["#s05-a3", "#s05-p3"]].forEach(([row, lab], k) => {
+      fade(row, at(3, 0.6 + k * 2.6), 0, 1);
+      pop(pts[k], at(3, 0.9 + k * 2.6));
+      fade(lab, at(3, 1.1 + k * 2.6), 0, 1);
+    });
+    // 36 점들을 이으면
+    draw("#s05-curve", at(4, 0.6), 1.6);
+    // 37 ROC 곡선
+    ft("#s05-name", { opacity: 0, x: -12 }, { opacity: 1, x: 0 }, at(5, 0.2));
+    // 38 왼쪽 아래에서 시작, 오른쪽 위에서 끝
+    pop("#s05-o", at(6, 0.4));
+    fade("#s05-ends", at(6, 0.4), 0, 1);
+    pop("#s05-e", at(6, 3.4));
+
+    // 39 어떤 곡선이 좋은 곡선?
+    head(2, at(7, 0));
+    fade("#s05-pa", at(7, 0.1), 1, 0);
+    fade("#s05-o, #s05-e, .s05-pl", at(7, 0.1), 1, 0);
+    fade("#s05-pb", at(7, 0.4), 0, 1);
+    // 40 아무렇게나 매기면 대각선
+    fade("#s05-diag", at(8, 0.3), 0, 1);
+    fade("#s05-dlab", at(8, 0.8), 0, 1);
+    fade("#s05-b1", at(8, 0.5), 0, 1);
+    // 42~43 완벽한 모델은 왼쪽 위 모서리
+    fade("#s05-perf", at(11, 0.3), 0, 1);
+    fade("#s05-b2", at(11, 0.5), 0, 1);
+    // 44 불룩할수록 좋다
+    fade("#s05-b3", at(12, 0.3), 0, 1);
+
+    // 45 AUC
+    head(3, at(13, 0));
+    fade("#s05-pb", at(13, 0.1), 1, 0);
+    fade("#s05-pc", at(13, 0.4), 0, 1);
+    fade("#s05-perf", at(13, 0.1), 1, 0.25);
+    // 46 곡선 아래 넓이
+    fade("#s05-fill", at(14, 0.3), 0, 1);
+    // 48 완벽 1, 무작위 0.5
+    fade("#s05-c1", at(16, 0.3), 0, 1);
+    fade("#s05-c3", at(16, 2.4), 0, 1);
+    // 49 우리 예 0.72
+    fade("#s05-c2", at(17, 0.3), 0, 1);
+    count(document.getElementById("s05-auc"), at(17, 0.5), 0, 0.72, 0.9, v => v.toFixed(2));
+    // 51~53 무작위로 뽑은 환자와 정상인 — 25쌍 중 18쌍 — 0.72
+    fade("#s05-hr", at(19, 0.2), 0, 1);
+    fade("#s05-pr1", at(20, 0.2), 0, 1);
+    fade("#s05-pr2", at(20, 1.8), 0, 1);
+    ft("#s05-pr3", { opacity: 0, y: 10 }, { opacity: 1, y: 0 }, at(21, 0.4));
+    if (String(V.exit) !== "false") ft("#s05-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s05"] = tl;
+  </script>
+</template>

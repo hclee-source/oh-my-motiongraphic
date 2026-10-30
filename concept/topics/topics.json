@@ -1,136 +1,2239 @@
 {
-  "_설명": "개념 목록(한 개념 = 한 편). adsp·bigdata는 blueprint.json의 출제기준 번호, 둘 다 있으면 공통. order는 만들 순서, calc는 계산 문제로 만들기 좋은 개념, cover는 다룰 핵심, prereq는 먼저 나와야 할 개념 id. 상태: 대기 → 대본 → 검수 통과 → 영상 완성 → 업로드 완료. 직접 고치지 말고 tools/topics.py로 바꾼다(순서·내용 추가는 직접 고쳐도 됨, 고친 뒤 check).",
-  "topics": [
-    {"order": 1, "id": "precision-recall", "title": "정밀도와 재현율", "group": "모델 평가", "adsp": ["3.3.2"], "bigdata": ["4.1.1.1"], "calc": true, "prereq": [], "cover": "혼동행렬 네 칸, 정밀도·재현율의 분모, 정확도의 함정, F1, 특이도", "status": "영상 완성", "folder": "episodes/001-precision-recall"},
-    {"order": 2, "id": "roc-auc", "title": "민감도·특이도와 ROC 곡선", "group": "모델 평가", "adsp": ["3.3.2"], "bigdata": ["4.1.1.1"], "calc": true, "prereq": ["precision-recall"], "cover": "민감도(=재현율)·특이도, 기준값에 따라 움직이는 점, ROC 곡선, AUC 0.5와 1의 뜻", "status": "대기"},
-    {"order": 3, "id": "regression-metrics", "title": "회귀 모델 평가 지표 MAE·MSE·RMSE·MAPE", "group": "모델 평가", "adsp": ["3.2.2"], "bigdata": ["4.1.1.1"], "calc": true, "prereq": [], "cover": "오차를 재는 네 방법, 제곱의 효과, 단위가 같아지는 RMSE, 비율로 보는 MAPE", "status": "대기"},
-    {"order": 4, "id": "overfitting", "title": "과대적합과 과소적합", "group": "모델 평가", "adsp": ["3.3.1"], "bigdata": ["4.1.2.1"], "calc": false, "prereq": [], "cover": "훈련 성능과 검증 성능의 차이, 편향과 분산, 모델 복잡도 곡선", "status": "대기"},
-    {"order": 5, "id": "data-split-cv", "title": "데이터 분할과 교차 검증", "group": "모델 평가", "adsp": ["3.3.1"], "bigdata": ["3.1.2.2", "4.1.1.3"], "calc": true, "prereq": ["overfitting"], "cover": "훈련·검증·테스트, 홀드아웃, k-겹 교차 검증, LOOCV, 부트스트랩(뽑히지 않을 확률 약 36.8%)", "status": "대기"},
-    {"order": 6, "id": "association-rules", "title": "연관규칙: 지지도·신뢰도·향상도", "group": "연관분석", "adsp": ["3.3.4"], "bigdata": ["3.2.1.6"], "calc": true, "prereq": [], "cover": "장바구니 예시로 세 지표 계산, 향상도 1의 뜻(독립), 신뢰도만 보면 생기는 착각", "status": "대기"},
-    {"order": 7, "id": "apriori", "title": "아프리오리 알고리즘", "group": "연관분석", "adsp": ["3.3.4"], "bigdata": ["3.2.1.6"], "calc": true, "prereq": ["association-rules"], "cover": "최소 지지도, 빈발 항목집합, 부분집합이 드물면 상위 집합도 드물다, 순차 패턴과 FP-Growth 언급", "status": "대기"},
-    {"order": 8, "id": "distance-measures", "title": "거리 척도: 유클리드·맨해튼·마할라노비스", "group": "군집분석", "adsp": ["3.3.3"], "bigdata": ["3.2.1.7"], "calc": true, "prereq": [], "cover": "두 점 사이 거리 계산, 민코프스키로 묶기, 단위 차이와 표준화, 마할라노비스, 범주형의 자카드", "status": "대기"},
-    {"order": 9, "id": "kmeans", "title": "k-평균 군집", "group": "군집분석", "adsp": ["3.3.3"], "bigdata": ["3.2.1.7"], "calc": true, "prereq": ["distance-measures"], "cover": "중심 정하기 → 배정 → 중심 다시 계산 반복, k 정하기, 이상값과 초기값에 약한 점", "status": "대기"},
-    {"order": 10, "id": "hierarchical-clustering", "title": "계층적 군집과 연결법", "group": "군집분석", "adsp": ["3.3.3"], "bigdata": ["3.2.1.7"], "calc": true, "prereq": ["distance-measures"], "cover": "병합 순서, 단일·완전·평균·중심·와드 연결, 덴드로그램 자르기", "status": "대기"},
-    {"order": 11, "id": "cluster-evaluation", "title": "군집 평가: 실루엣 계수와 엘보우", "group": "군집분석", "adsp": ["3.3.3"], "bigdata": ["3.2.1.7", "4.1.1.1"], "calc": true, "prereq": ["kmeans"], "cover": "응집도와 분리도, 실루엣 -1~1의 뜻, 엘보우 그래프로 k 고르기", "status": "대기"},
-    {"order": 12, "id": "dbscan-gmm", "title": "밀도 기반 군집과 혼합분포 군집", "group": "군집분석", "adsp": ["3.3.3"], "bigdata": ["3.2.1.7"], "calc": false, "prereq": ["kmeans"], "cover": "DBSCAN의 반경·최소 점 수와 잡음점, 혼합분포 군집과 EM 알고리즘", "status": "대기"},
-    {"order": 13, "id": "som", "title": "자기조직화지도(SOM)", "group": "군집분석", "adsp": ["3.3.3"], "bigdata": ["3.2.1.7", "3.2.1.4"], "calc": false, "prereq": ["kmeans"], "cover": "입력층과 경쟁층, 승자 노드, 고차원을 2차원 지도로", "status": "대기"},
-    {"order": 14, "id": "measurement-scales", "title": "측정 척도: 명목·순서·구간·비율", "group": "기술통계", "adsp": ["3.2.1"], "bigdata": ["1.3.1.2"], "calc": false, "prereq": [], "cover": "네 척도 구분법(순서가 있나, 0이 진짜 없음인가), 척도별 쓸 수 있는 통계", "status": "대기"},
-    {"order": 15, "id": "central-tendency", "title": "대푯값: 평균·중앙값·최빈값", "group": "기술통계", "adsp": ["3.2.2"], "bigdata": ["2.2.1.3", "2.3.1.1"], "calc": true, "prereq": [], "cover": "세 값 계산, 이상값에 흔들리는 평균, 분포 모양과 세 값의 위치, 절사평균", "status": "대기"},
-    {"order": 16, "id": "dispersion", "title": "퍼짐: 분산·표준편차·변동계수", "group": "기술통계", "adsp": ["3.2.2"], "bigdata": ["2.2.1.3", "2.3.1.1"], "calc": true, "prereq": ["central-tendency"], "cover": "편차 제곱의 평균, 표본분산의 n-1, 범위·사분위범위, 단위가 다를 때 변동계수", "status": "대기"},
-    {"order": 17, "id": "skew-kurtosis", "title": "왜도와 첨도", "group": "기술통계", "adsp": ["3.2.2"], "bigdata": ["2.2.1.3"], "calc": false, "prereq": ["central-tendency"], "cover": "꼬리 방향으로 읽는 왜도 부호, 평균·중앙값·최빈값 순서, 첨도의 기준(0 또는 3)", "status": "대기"},
-    {"order": 18, "id": "boxplot-iqr", "title": "상자그림 읽기와 IQR", "group": "기술통계", "adsp": ["3.1.3"], "bigdata": ["2.1.1.3", "2.2.1.4"], "calc": true, "prereq": ["dispersion"], "cover": "사분위수, 상자와 수염, Q1-1.5×IQR·Q3+1.5×IQR 밖은 이상값 후보", "status": "대기"},
-    {"order": 19, "id": "sampling-methods", "title": "표본추출: 단순무작위·계통·층화·군집", "group": "확률과 분포", "adsp": ["3.2.1"], "bigdata": ["2.3.1.2"], "calc": false, "prereq": [], "cover": "모집단과 표본, 네 방법의 차이(층 안에서 뽑나, 묶음째 뽑나), 복원·비복원", "status": "대기"},
-    {"order": 20, "id": "probability-basics", "title": "확률 기초: 조건부확률과 독립", "group": "확률과 분포", "adsp": ["3.2.1"], "bigdata": ["2.3.1.3"], "calc": true, "prereq": [], "cover": "합사건·곱사건, 조건부확률 식, 독립과 배반의 차이", "status": "대기"},
-    {"order": 21, "id": "bayes-theorem", "title": "베이즈 정리", "group": "확률과 분포", "adsp": ["3.2.1"], "bigdata": ["2.3.1.3", "3.2.2.4"], "calc": true, "prereq": ["probability-basics"], "cover": "검사 양성일 때 진짜 환자일 확률, 사전확률과 사후확률, 전확률", "status": "대기"},
-    {"order": 22, "id": "expectation-variance", "title": "확률변수의 기댓값과 분산", "group": "확률과 분포", "adsp": ["3.2.1"], "bigdata": ["2.3.1.3"], "calc": true, "prereq": ["probability-basics"], "cover": "이산확률변수 기댓값 계산, E(aX+b)·V(aX+b), 분산 = E(X²) - E(X)²", "status": "대기"},
-    {"order": 23, "id": "discrete-distributions", "title": "이산확률분포: 베르누이·이항·포아송", "group": "확률과 분포", "adsp": ["3.2.1"], "bigdata": ["2.3.1.3"], "calc": true, "prereq": ["expectation-variance"], "cover": "이항분포의 평균 np·분산 np(1-p), 포아송의 평균=분산=λ, 기하·초기하 언급", "status": "대기"},
-    {"order": 24, "id": "normal-distribution", "title": "정규분포와 표준화", "group": "확률과 분포", "adsp": ["3.2.1"], "bigdata": ["2.3.1.3"], "calc": true, "prereq": ["dispersion"], "cover": "종 모양과 68-95-99.7, Z = (X-μ)/σ, 표준정규분포로 확률 구하기", "status": "대기"},
-    {"order": 25, "id": "t-chi-f", "title": "t분포·카이제곱분포·F분포", "group": "확률과 분포", "adsp": ["3.2.1"], "bigdata": ["2.3.1.3", "2.3.1.4"], "calc": false, "prereq": ["normal-distribution"], "cover": "세 분포가 쓰이는 곳(평균, 분산·범주, 분산비), 자유도, 모양 비교", "status": "대기"},
-    {"order": 26, "id": "clt", "title": "표본분포와 중심극한정리", "group": "확률과 분포", "adsp": ["3.2.1"], "bigdata": ["2.3.1.4"], "calc": true, "prereq": ["normal-distribution"], "cover": "표본평균의 분포, 표준오차 σ/√n, 표본이 크면 정규분포에 가까워진다", "status": "대기"},
-    {"order": 27, "id": "estimation", "title": "점추정과 구간추정", "group": "추정과 검정", "adsp": ["3.2.1"], "bigdata": ["2.3.2.1", "2.3.2.2"], "calc": true, "prereq": ["clt"], "cover": "추정량의 조건(불편성·효율성·일치성), 95% 신뢰구간 계산과 바른 해석, 표본이 커지면 좁아짐", "status": "대기"},
-    {"order": 28, "id": "hypothesis-testing", "title": "가설검정: 귀무가설과 p-값", "group": "추정과 검정", "adsp": ["3.2.1"], "bigdata": ["2.3.2.3"], "calc": false, "prereq": ["estimation"], "cover": "귀무·대립가설 세우기, 유의수준과 기각역, p-값으로 판단, 양측·단측", "status": "대기"},
-    {"order": 29, "id": "type1-type2", "title": "1종 오류·2종 오류와 검정력", "group": "추정과 검정", "adsp": ["3.2.1"], "bigdata": ["2.3.2.3"], "calc": false, "prereq": ["hypothesis-testing"], "cover": "네 칸 표로 보는 두 오류, α와 β, 검정력 1-β, 혼동행렬과의 연결", "status": "대기"},
-    {"order": 30, "id": "t-tests", "title": "t검정 세 가지: 단일·독립·대응표본", "group": "추정과 검정", "adsp": ["3.2.2"], "bigdata": ["2.3.2.3"], "calc": true, "prereq": ["hypothesis-testing"], "cover": "상황별 고르는 법(같은 사람 전후는 대응), 등분산 가정, 자유도", "status": "대기"},
-    {"order": 31, "id": "anova", "title": "분산분석(ANOVA)", "group": "추정과 검정", "adsp": ["3.2.2"], "bigdata": ["2.3.2.3"], "calc": true, "prereq": ["t-tests"], "cover": "셋 이상 평균 비교, 집단 간·집단 내 변동, F = MSB/MSW, 자유도 채우기, 사후검정", "status": "대기"},
-    {"order": 32, "id": "chi-square-tests", "title": "카이제곱 검정: 적합도·독립성", "group": "추정과 검정", "adsp": ["3.2.2"], "bigdata": ["2.3.2.3", "3.2.2.1", "4.1.1.5"], "calc": true, "prereq": ["hypothesis-testing"], "cover": "관측도수와 기대도수, 기대도수 계산, 자유도 (r-1)(c-1), 동질성 검정", "status": "대기"},
-    {"order": 33, "id": "nonparametric", "title": "비모수 검정", "group": "추정과 검정", "adsp": ["3.2.1"], "bigdata": ["3.2.2.8"], "calc": false, "prereq": ["t-tests"], "cover": "정규성을 못 믿을 때, 부호·윌콕슨 부호순위·만-위트니·크루스칼-왈리스, 짝지은 모수 검정", "status": "대기"},
-    {"order": 34, "id": "normality-tests", "title": "정규성 확인: Q-Q 플롯과 샤피로-윌크", "group": "추정과 검정", "adsp": ["3.2.2"], "bigdata": ["4.1.1.2", "2.2.1.4"], "calc": false, "prereq": ["normal-distribution"], "cover": "Q-Q 플롯 직선 읽기, 샤피로-윌크·콜모고로프-스미르노프의 귀무가설", "status": "대기"},
-    {"order": 35, "id": "covariance-correlation", "title": "공분산과 상관계수", "group": "상관과 회귀", "adsp": ["3.2.3"], "bigdata": ["2.2.1.2"], "calc": true, "prereq": ["dispersion"], "cover": "공분산 부호의 뜻, 단위를 없앤 상관계수 -1~1, 상관은 인과가 아니다", "status": "대기"},
-    {"order": 36, "id": "pearson-spearman", "title": "피어슨과 스피어만 상관", "group": "상관과 회귀", "adsp": ["3.2.3"], "bigdata": ["2.2.1.2"], "calc": true, "prereq": ["covariance-correlation"], "cover": "직선 관계 vs 순위 관계, 서열 척도와 이상값에는 스피어만, 상관계수 검정", "status": "대기"},
-    {"order": 37, "id": "simple-regression", "title": "단순선형회귀와 최소제곱법", "group": "상관과 회귀", "adsp": ["3.2.2"], "bigdata": ["3.2.1.1"], "calc": true, "prereq": ["covariance-correlation"], "cover": "잔차 제곱합을 최소로, 기울기 = 공분산/분산, 회귀식으로 예측", "status": "대기"},
-    {"order": 38, "id": "r-squared", "title": "결정계수와 수정 결정계수", "group": "상관과 회귀", "adsp": ["3.2.2"], "bigdata": ["3.2.1.1", "4.1.1.1"], "calc": true, "prereq": ["simple-regression"], "cover": "SST = SSR + SSE, R² = SSR/SST, 변수를 넣기만 해도 오르는 R², 수정 R²", "status": "대기"},
-    {"order": 39, "id": "regression-significance", "title": "회귀계수 t검정과 모형 F검정", "group": "상관과 회귀", "adsp": ["3.2.2"], "bigdata": ["4.1.1.4"], "calc": true, "prereq": ["r-squared", "t-tests"], "cover": "회귀 결과표 읽기(추정값·표준오차·t값·p값), 모형 전체 F검정", "status": "대기"},
-    {"order": 40, "id": "regression-assumptions", "title": "회귀분석의 가정과 잔차 진단", "group": "상관과 회귀", "adsp": ["3.2.2"], "bigdata": ["4.1.1.2"], "calc": false, "prereq": ["simple-regression"], "cover": "선형성·독립성·등분산성·정규성, 잔차 그림 읽기, 더빈-왓슨", "status": "대기"},
-    {"order": 41, "id": "multicollinearity", "title": "다중공선성과 VIF", "group": "상관과 회귀", "adsp": ["3.2.2"], "bigdata": ["4.1.1.2", "2.1.2.1"], "calc": true, "prereq": ["r-squared"], "cover": "설명변수끼리 닮으면 생기는 일, VIF = 1/(1-R²), 10 이상이면 의심, 해결법", "status": "대기"},
-    {"order": 42, "id": "variable-selection", "title": "변수 선택: 전진·후진·단계적", "group": "상관과 회귀", "adsp": ["3.2.2"], "bigdata": ["2.1.2.1"], "calc": false, "prereq": ["regression-significance"], "cover": "세 방법의 진행 방향, 필터·래퍼·임베디드 구분", "status": "대기"},
-    {"order": 43, "id": "aic-bic", "title": "AIC와 BIC", "group": "상관과 회귀", "adsp": ["3.2.2"], "bigdata": ["2.1.2.1", "4.1.2.4"], "calc": false, "prereq": ["variable-selection"], "cover": "작을수록 좋은 기준, 변수 수에 주는 벌점, BIC가 더 엄격한 이유", "status": "대기"},
-    {"order": 44, "id": "regularization", "title": "릿지·라쏘·엘라스틱넷", "group": "상관과 회귀", "adsp": ["3.2.2"], "bigdata": ["4.1.2.1", "3.2.1.1"], "calc": false, "prereq": ["multicollinearity", "overfitting"], "cover": "벌점 항 L2·L1, 라쏘는 계수를 0으로 만들어 변수 선택, λ의 역할", "status": "대기"},
-    {"order": 45, "id": "logistic-regression", "title": "로지스틱 회귀와 오즈비", "group": "분류 모델", "adsp": ["3.3.2"], "bigdata": ["3.2.1.2"], "calc": true, "prereq": ["simple-regression"], "cover": "확률을 0~1로 묶는 시그모이드, 오즈와 로짓, 계수를 exp로 바꾼 오즈비 해석", "status": "대기"},
-    {"order": 46, "id": "tree-split", "title": "의사결정나무의 분리 기준: 지니와 엔트로피", "group": "분류 모델", "adsp": ["3.3.2"], "bigdata": ["3.2.1.3"], "calc": true, "prereq": [], "cover": "불순도 계산, 정보 이득, 카이제곱 통계량, 회귀나무의 분산 감소", "status": "대기"},
-    {"order": 47, "id": "tree-pruning", "title": "의사결정나무: 정지 규칙과 가지치기", "group": "분류 모델", "adsp": ["3.3.2"], "bigdata": ["3.2.1.3"], "calc": false, "prereq": ["tree-split", "overfitting"], "cover": "나무 깊이와 과대적합, 정지 규칙, 가지치기, CART·C4.5·CHAID 구분", "status": "대기"},
-    {"order": 48, "id": "ensemble", "title": "앙상블: 배깅·부스팅·랜덤 포레스트", "group": "분류 모델", "adsp": ["3.3.2"], "bigdata": ["3.2.2.7", "4.1.2.3"], "calc": false, "prereq": ["tree-pruning", "data-split-cv"], "cover": "여러 모델 합치기, 배깅(병렬·분산 감소), 부스팅(순차·오답 가중), 랜덤 포레스트의 변수 무작위 선택", "status": "대기"},
-    {"order": 49, "id": "neural-network", "title": "인공신경망: 퍼셉트론과 활성화 함수", "group": "분류 모델", "adsp": ["3.3.2"], "bigdata": ["3.2.1.4"], "calc": true, "prereq": [], "cover": "가중합과 활성화, 계단·시그모이드·ReLU·소프트맥스, XOR과 은닉층", "status": "대기"},
-    {"order": 50, "id": "backpropagation", "title": "역전파와 기울기 소실", "group": "분류 모델", "adsp": ["3.3.2"], "bigdata": ["3.2.1.4", "3.2.2.5"], "calc": false, "prereq": ["neural-network"], "cover": "오차를 거꾸로 나눠 주는 역전파, 시그모이드에서 생기는 기울기 소실, ReLU로 해결", "status": "대기"},
-    {"order": 51, "id": "svm", "title": "서포트벡터머신", "group": "분류 모델", "adsp": ["3.3.2"], "bigdata": ["3.2.1.5"], "calc": false, "prereq": [], "cover": "마진 최대화, 서포트 벡터, 소프트 마진 C, 커널로 휘어진 경계", "status": "대기"},
-    {"order": 52, "id": "knn", "title": "k-최근접 이웃", "group": "분류 모델", "adsp": ["3.3.2"], "bigdata": ["3.2.1"], "calc": true, "prereq": ["distance-measures"], "cover": "가까운 k개의 다수결, k가 작을 때·클 때, 표준화가 필요한 이유, 게으른 학습", "status": "대기"},
-    {"order": 53, "id": "naive-bayes", "title": "나이브 베이즈 분류", "group": "분류 모델", "adsp": ["3.3.2"], "bigdata": ["3.2.2.4"], "calc": true, "prereq": ["bayes-theorem"], "cover": "베이즈 정리로 분류, 변수끼리 독립이라는 가정, 스팸 분류 예시 계산", "status": "대기"},
-    {"order": 54, "id": "lift-gain", "title": "향상도 곡선과 이익 도표", "group": "모델 평가", "adsp": ["3.3.2"], "bigdata": ["4.1.1.1"], "calc": true, "prereq": ["roc-auc"], "cover": "점수 순으로 줄 세운 10개 구간, 반응률과 향상도 계산, 좋은 모델의 곡선 모양", "status": "대기"},
-    {"order": 55, "id": "data-mining-overview", "title": "데이터 마이닝 개요: 지도학습과 비지도학습", "group": "분류 모델", "adsp": ["3.3.1"], "bigdata": ["1.1.2.2", "3.1.1.1"], "calc": false, "prereq": [], "cover": "정답이 있나 없나, 분류·예측·군집·연관, 분석 목적에 따른 기법 고르기", "status": "대기"},
-    {"order": 56, "id": "missing-types", "title": "결측값의 종류: MCAR·MAR·MNAR", "group": "전처리", "adsp": ["3.1.3"], "bigdata": ["2.1.1.2"], "calc": false, "prereq": [], "cover": "왜 비었는지로 나누는 세 종류, 예시로 구분하기", "status": "대기"},
-    {"order": 57, "id": "missing-imputation", "title": "결측값 처리: 삭제와 대치", "group": "전처리", "adsp": ["3.1.3"], "bigdata": ["2.1.1.2"], "calc": true, "prereq": ["missing-types"], "cover": "완전 분석(삭제), 평균·중앙값 대치, 단순 확률 대치, 다중 대치 3단계", "status": "대기"},
-    {"order": 58, "id": "outlier-handling", "title": "이상값 판단과 처리", "group": "전처리", "adsp": ["3.1.3"], "bigdata": ["2.1.1.3"], "calc": true, "prereq": ["boxplot-iqr", "normal-distribution"], "cover": "ESD(평균±3표준편차), 사분위수 기준, 삭제·대체·변환·상하한 고정", "status": "대기"},
-    {"order": 59, "id": "derived-variables", "title": "파생변수와 요약변수", "group": "전처리", "adsp": ["3.1.2"], "bigdata": ["2.1.2.3"], "calc": false, "prereq": [], "cover": "데이터 마트에서 만드는 두 변수의 차이, 예시로 구분하기", "status": "대기"},
-    {"order": 60, "id": "pca", "title": "주성분 분석", "group": "차원 축소", "adsp": ["3.2.3"], "bigdata": ["2.1.2.2", "3.2.2.2"], "calc": false, "prereq": ["covariance-correlation"], "cover": "분산을 가장 많이 담는 새 축, 서로 직교, 표준화 후 분석", "status": "대기"},
-    {"order": 61, "id": "pca-components", "title": "주성분 개수 정하기: 기여율과 스크리 플롯", "group": "차원 축소", "adsp": ["3.2.3"], "bigdata": ["2.1.2.2"], "calc": true, "prereq": ["pca"], "cover": "고윳값과 설명 분산 비율, 누적 기여율 80% 기준, 스크리 플롯 꺾이는 곳", "status": "대기"},
-    {"order": 62, "id": "mds", "title": "다차원 척도법", "group": "차원 축소", "adsp": ["3.2.3"], "bigdata": ["3.2.2.2", "2.2.2.2"], "calc": false, "prereq": ["distance-measures"], "cover": "거리만 보고 지도 그리기, 스트레스 값으로 적합도 판단, 계량·비계량", "status": "대기"},
-    {"order": 63, "id": "stationarity", "title": "시계열의 정상성과 차분", "group": "시계열", "adsp": ["3.2.4"], "bigdata": ["3.2.2.3"], "calc": false, "prereq": [], "cover": "평균·분산이 일정한 시계열, 차분과 변환으로 정상화", "status": "대기"},
-    {"order": 64, "id": "ts-decomposition", "title": "시계열 분해: 추세·계절·순환·불규칙", "group": "시계열", "adsp": ["3.2.4"], "bigdata": ["3.2.2.3"], "calc": false, "prereq": ["stationarity"], "cover": "네 요인 구분하기, 덧셈 모형과 곱셈 모형", "status": "대기"},
-    {"order": 65, "id": "smoothing", "title": "이동평균과 지수평활", "group": "시계열", "adsp": ["3.2.4"], "bigdata": ["3.2.2.3"], "calc": true, "prereq": ["ts-decomposition"], "cover": "구간 평균으로 들쭉날쭉 줄이기, 최근 값에 가중치 α, 계산 예시", "status": "대기"},
-    {"order": 66, "id": "arima", "title": "AR·MA·ARIMA와 ACF·PACF", "group": "시계열", "adsp": ["3.2.4"], "bigdata": ["3.2.2.3"], "calc": false, "prereq": ["stationarity"], "cover": "과거 값과 과거 오차로 예측, ARIMA(p,d,q)의 뜻, ACF·PACF가 끊기는 모양으로 차수 정하기", "status": "대기"},
-    {"order": 67, "id": "dikw", "title": "데이터·정보·지식·지혜(DIKW)", "group": "데이터 이해", "adsp": ["1.1.1"], "bigdata": ["1.1.1.1"], "calc": false, "prereq": [], "cover": "네 단계 구분 예시, 정량·정성 데이터", "status": "대기"},
-    {"order": 68, "id": "data-structure-types", "title": "정형·반정형·비정형 데이터", "group": "데이터 이해", "adsp": ["1.1.1"], "bigdata": ["1.3.1.2"], "calc": false, "prereq": [], "cover": "구조가 있나로 나누기, 예시(표, JSON·XML·로그, 이미지·글)", "status": "대기"},
-    {"order": 69, "id": "tacit-explicit", "title": "암묵지와 형식지", "group": "데이터 이해", "adsp": ["1.1.1"], "bigdata": ["1.1.1.1"], "calc": false, "prereq": ["dikw"], "cover": "두 지식의 차이, 공통화·표출화·연결화·내면화 네 단계", "status": "대기"},
-    {"order": 70, "id": "big-data-v", "title": "빅데이터의 특징: 3V에서 5V로", "group": "데이터 이해", "adsp": ["1.2.1"], "bigdata": ["1.1.1.1"], "calc": false, "prereq": [], "cover": "규모·다양성·속도, 정확성·가치, 빅데이터를 보는 세 관점", "status": "대기"},
-    {"order": 71, "id": "big-data-shifts", "title": "빅데이터가 바꾼 네 가지", "group": "데이터 이해", "adsp": ["1.2.1"], "bigdata": ["1.1.1.2"], "calc": false, "prereq": ["big-data-v"], "cover": "사전처리→사후처리, 표본조사→전수조사, 질→양, 인과관계→상관관계", "status": "대기"},
-    {"order": 72, "id": "big-data-value", "title": "빅데이터의 가치와 가치 산정이 어려운 이유", "group": "데이터 이해", "adsp": ["1.2.2"], "bigdata": ["1.1.1.2"], "calc": false, "prereq": ["big-data-v"], "cover": "기업·정부·개인에 주는 가치, 재사용·재조합, 다목적 활용, 새로운 가치 창출", "status": "대기"},
-    {"order": 73, "id": "data-scientist", "title": "데이터 사이언티스트의 역량", "group": "데이터 이해", "adsp": ["1.3.2"], "bigdata": ["1.1.1.4"], "calc": false, "prereq": [], "cover": "하드 스킬과 소프트 스킬, 데이터 사이언스의 범위", "status": "대기"},
-    {"order": 74, "id": "analytics-org", "title": "분석 조직 구조: 집중형·기능형·분산형", "group": "분석 기획", "adsp": ["2.2.2"], "bigdata": ["1.1.1.4"], "calc": false, "prereq": [], "cover": "세 구조 그림으로 구분, 장단점, 업무 중복과 이원화", "status": "대기"},
-    {"order": 75, "id": "ai-ml-dl", "title": "인공지능·머신러닝·딥러닝의 관계", "group": "데이터 이해", "adsp": ["3.3.1"], "bigdata": ["1.1.2.2"], "calc": false, "prereq": ["data-mining-overview"], "cover": "포함 관계, 지도·비지도·준지도·강화 학습", "status": "대기"},
-    {"order": 76, "id": "analysis-types", "title": "분석 기획의 네 유형: 최적화·솔루션·통찰·발견", "group": "분석 기획", "adsp": ["2.1.1"], "bigdata": ["1.2.1.2"], "calc": false, "prereq": [], "cover": "분석 대상(앎·모름)과 방법(앎·모름)의 2×2 표", "status": "대기"},
-    {"order": 77, "id": "planning-considerations", "title": "분석 기획 고려사항과 장애 요소", "group": "분석 기획", "adsp": ["2.1.1"], "bigdata": ["1.2.1.3"], "calc": false, "prereq": ["analysis-types"], "cover": "가용 데이터, 적절한 활용 사례, 장애 요소, 목표 시점별 접근(과제 단위·마스터 플랜 단위)", "status": "대기"},
-    {"order": 78, "id": "methodology-models", "title": "분석 방법론 모델: 폭포수·프로토타입·나선형", "group": "분석 기획", "adsp": ["2.1.2"], "bigdata": ["1.2.2.2"], "calc": false, "prereq": [], "cover": "세 모델의 진행 모양과 쓰임, 방법론의 구성(단계·태스크·스텝)", "status": "대기"},
-    {"order": 79, "id": "kdd", "title": "KDD 분석 방법론", "group": "분석 기획", "adsp": ["2.1.2"], "bigdata": ["1.2.2.2"], "calc": false, "prereq": ["methodology-models"], "cover": "선택·전처리·변환·마이닝·해석과 평가 다섯 단계", "status": "대기"},
-    {"order": 80, "id": "crisp-dm", "title": "CRISP-DM", "group": "분석 기획", "adsp": ["2.1.2"], "bigdata": ["1.2.2.2"], "calc": false, "prereq": ["kdd"], "cover": "업무 이해부터 전개까지 여섯 단계, KDD와 짝짓기, 단계 사이 되돌아가기", "status": "대기"},
-    {"order": 81, "id": "bigdata-methodology", "title": "빅데이터 분석 방법론 5단계", "group": "분석 기획", "adsp": ["2.1.2"], "bigdata": ["1.2.2.2"], "calc": false, "prereq": ["crisp-dm"], "cover": "분석 기획→데이터 준비→데이터 분석→시스템 구현→평가 및 전개, 단계별 산출물", "status": "대기"},
-    {"order": 82, "id": "top-down-bottom-up", "title": "분석 과제 발굴: 하향식과 상향식", "group": "분석 기획", "adsp": ["2.1.3"], "bigdata": ["1.2.1.2"], "calc": false, "prereq": ["analysis-types"], "cover": "문제 탐색→정의→해결 방안→타당성 검토, 상향식의 비지도 탐색, 섞어 쓰기", "status": "대기"},
-    {"order": 83, "id": "business-model-canvas", "title": "비즈니스 모델 캔버스로 분석 기회 찾기", "group": "분석 기획", "adsp": ["2.1.3"], "bigdata": ["1.2.1.2"], "calc": false, "prereq": ["top-down-bottom-up"], "cover": "업무·제품·고객·규제와 감사·지원 인프라 다섯 영역, 거시적 관점(STEEP)", "status": "대기"},
-    {"order": 84, "id": "design-thinking", "title": "디자인 사고와 프로토타이핑", "group": "분석 기획", "adsp": ["2.1.3"], "bigdata": ["1.2.1.2"], "calc": false, "prereq": ["top-down-bottom-up"], "cover": "발산과 수렴, 시행착오로 문제를 구체화하는 프로토타이핑 접근", "status": "대기"},
-    {"order": 85, "id": "project-management", "title": "분석 프로젝트의 특성과 관리", "group": "분석 기획", "adsp": ["2.1.4"], "bigdata": ["1.2.2.2"], "calc": false, "prereq": [], "cover": "데이터 크기·복잡도·속도·정확도와 정밀도·분석 모형 복잡도, 관리 영역", "status": "대기"},
-    {"order": 86, "id": "priority-matrix", "title": "분석 과제 우선순위: 시급성과 난이도", "group": "분석 기획", "adsp": ["2.2.1"], "bigdata": ["1.2.1.1"], "calc": false, "prereq": [], "cover": "사분면 네 칸 읽기, 무엇부터 할지(시급성 기준·난이도 기준)", "status": "대기"},
-    {"order": 87, "id": "roi-4v", "title": "ROI 관점의 4V", "group": "분석 기획", "adsp": ["2.2.1"], "bigdata": ["1.2.1.1"], "calc": false, "prereq": ["priority-matrix"], "cover": "투자 비용(규모·다양성·속도)과 비즈니스 효과(가치), 전략적 중요도·실행 용이성", "status": "대기"},
-    {"order": 88, "id": "roadmap", "title": "분석 로드맵과 단계적 구현", "group": "분석 기획", "adsp": ["2.2.1"], "bigdata": ["1.2.1.1"], "calc": false, "prereq": ["priority-matrix"], "cover": "단계별 목표와 추진 과제, 마스터 플랜 수립 절차", "status": "대기"},
-    {"order": 89, "id": "maturity-readiness", "title": "분석 성숙도와 준비도", "group": "분석 기획", "adsp": ["2.2.2"], "bigdata": ["1.2.1.1"], "calc": false, "prereq": [], "cover": "도입·활용·확산·최적화, 준비형·정착형·도입형·확산형 사분면", "status": "대기"},
-    {"order": 90, "id": "database-basics", "title": "데이터베이스의 정의와 특징", "group": "데이터 이해", "adsp": ["1.1.2"], "bigdata": [], "calc": false, "prereq": [], "cover": "통합·저장·공용·변화하는 데이터, 데이터베이스의 구성 요소", "status": "대기"},
-    {"order": 91, "id": "oltp-olap", "title": "OLTP와 OLAP, 데이터 웨어하우스", "group": "데이터 이해", "adsp": ["1.1.3"], "bigdata": ["1.3.2.2"], "calc": false, "prereq": ["database-basics"], "cover": "거래 처리와 분석 처리, 데이터 웨어하우스의 특징, 데이터 마트", "status": "대기"},
-    {"order": 92, "id": "enterprise-systems", "title": "기업 정보 시스템: ERP·CRM·SCM·BI", "group": "데이터 이해", "adsp": ["1.1.3"], "bigdata": [], "calc": false, "prereq": [], "cover": "네 시스템이 하는 일 구분, 분야별 데이터베이스 활용", "status": "대기"},
-    {"order": 93, "id": "big-data-techniques", "title": "빅데이터 활용 기본 테크닉 7가지", "group": "데이터 이해", "adsp": ["1.2.3"], "bigdata": [], "calc": false, "prereq": [], "cover": "연관규칙·유형분석·유전 알고리즘·기계학습·회귀분석·감정분석·소셜네트워크분석 예시 짝짓기", "status": "대기"},
-    {"order": 94, "id": "big-data-risks", "title": "빅데이터의 위기 요인과 통제 방안", "group": "데이터 이해", "adsp": ["1.2.4"], "bigdata": [], "calc": false, "prereq": [], "cover": "사생활 침해·책임 원칙 훼손·데이터 오용, 동의에서 책임으로, 결과 기반 책임, 알고리즈미스트", "status": "대기"},
-    {"order": 95, "id": "big-data-future", "title": "미래의 빅데이터와 데이터 사이언스", "group": "데이터 이해", "adsp": ["1.2.5", "1.3.3"], "bigdata": [], "calc": false, "prereq": [], "cover": "데이터화·인공지능·데이터 사이언티스트, 데이터 사이언스의 한계와 인문학", "status": "대기"},
-    {"order": 96, "id": "strategic-insight", "title": "빅데이터 분석과 전략 인사이트", "group": "데이터 이해", "adsp": ["1.3.1"], "bigdata": [], "calc": false, "prereq": [], "cover": "일차적 분석과 전략 도출 가치 기반 분석, 빅데이터 열풍과 회의론", "status": "대기"},
-    {"order": 97, "id": "governance", "title": "분석 거버넌스 체계와 데이터 거버넌스", "group": "분석 기획", "adsp": ["2.2.2"], "bigdata": [], "calc": false, "prereq": ["analytics-org"], "cover": "조직·과제 관리 프로세스·시스템·데이터·교육과 변화 관리, 데이터 표준화와 메타데이터", "status": "대기"},
-    {"order": 98, "id": "r-data-structures", "title": "R 데이터 구조: 벡터·행렬·데이터프레임·리스트", "group": "R 기초", "adsp": ["3.1.1"], "bigdata": [], "calc": true, "prereq": [], "cover": "구조별 만드는 법과 차이, 인덱싱 결과 맞히기", "status": "대기"},
-    {"order": 99, "id": "r-basic-functions", "title": "R 기초 함수와 결과 읽기", "group": "R 기초", "adsp": ["3.1.1"], "bigdata": [], "calc": true, "prereq": ["r-data-structures"], "cover": "summary·str·apply 계열, 결측값 확인 is.na, 출력 결과 해석", "status": "대기"},
-    {"order": 100, "id": "r-data-mart", "title": "R로 데이터 마트 만들기", "group": "R 기초", "adsp": ["3.1.2"], "bigdata": [], "calc": false, "prereq": ["r-basic-functions"], "cover": "reshape(melt·cast), sqldf, plyr로 요약 테이블 만들기", "status": "대기"},
-    {"order": 101, "id": "data-industry", "title": "데이터 산업의 이해", "group": "데이터 이해", "adsp": [], "bigdata": ["1.1.1.3"], "calc": false, "prereq": [], "cover": "데이터 처리·통합·분석·연결·권리 시대로 이어진 흐름, 데이터 산업 구조", "status": "대기"},
-    {"order": 102, "id": "hadoop-spark", "title": "빅데이터 플랫폼: 하둡과 스파크", "group": "수집과 저장", "adsp": [], "bigdata": ["1.1.2.1"], "calc": false, "prereq": [], "cover": "분산 저장 HDFS와 분산 처리 맵리듀스, 메모리 기반 스파크, 하둡 생태계", "status": "대기"},
-    {"order": 103, "id": "privacy-law", "title": "데이터 3법과 가명정보·익명정보", "group": "수집과 저장", "adsp": [], "bigdata": ["1.1.2.3", "1.1.2.4"], "calc": false, "prereq": [], "cover": "개인정보·가명정보·익명정보 구분, 가명정보를 쓸 수 있는 목적, 마이데이터", "status": "대기"},
-    {"order": 104, "id": "de-identification", "title": "비식별화 기법과 k-익명성", "group": "수집과 저장", "adsp": [], "bigdata": ["1.3.1.4"], "calc": false, "prereq": ["privacy-law"], "cover": "가명처리·총계처리·데이터 삭제·범주화·마스킹, k-익명성·l-다양성·t-근접성", "status": "대기"},
-    {"order": 105, "id": "data-collection", "title": "데이터 수집 기술", "group": "수집과 저장", "adsp": [], "bigdata": ["1.3.1.1"], "calc": false, "prereq": [], "cover": "ETL, 크롤링, Open API, 로그 수집(플럼), 스쿱, 메시지 큐(카프카)", "status": "대기"},
-    {"order": 106, "id": "data-transformation", "title": "데이터 변환: 평활화·집계·일반화·정규화", "group": "수집과 저장", "adsp": [], "bigdata": ["1.3.1.3"], "calc": true, "prereq": [], "cover": "네 변환의 차이, 최소-최대 정규화와 Z-점수 계산", "status": "대기"},
-    {"order": 107, "id": "data-quality", "title": "데이터 품질 검증", "group": "수집과 저장", "adsp": [], "bigdata": ["1.3.1.5"], "calc": false, "prereq": [], "cover": "정확성·완전성·일관성·유효성·적시성, 정형·비정형 품질 기준", "status": "대기"},
-    {"order": 108, "id": "data-storage", "title": "데이터 적재와 저장: 웨어하우스·레이크·NoSQL", "group": "수집과 저장", "adsp": [], "bigdata": ["1.3.2.1", "1.3.2.2"], "calc": false, "prereq": ["oltp-olap"], "cover": "관계형과 NoSQL 네 종류(키-값·문서·컬럼·그래프), 데이터 레이크, CAP", "status": "대기"},
-    {"order": 109, "id": "analysis-plan", "title": "데이터 확보 계획과 분석 작업 계획", "group": "분석 기획", "adsp": [], "bigdata": ["1.2.2.1", "1.2.2.2"], "calc": false, "prereq": ["bigdata-methodology"], "cover": "내부·외부 데이터 확보 절차, WBS로 작업 쪼개기", "status": "대기"},
-    {"order": 110, "id": "data-cleaning", "title": "데이터 정제: 잡음과 불일치", "group": "전처리", "adsp": [], "bigdata": ["2.1.1.1"], "calc": false, "prereq": [], "cover": "정제 절차, 잡음·불일치·중복 처리, 변환·파싱·보강", "status": "대기"},
-    {"order": 111, "id": "scaling", "title": "변수 변환: 정규화·표준화·로그 변환·구간화", "group": "전처리", "adsp": [], "bigdata": ["2.1.2.4"], "calc": true, "prereq": ["normal-distribution"], "cover": "스케일 맞추기, 치우친 분포 펴기, 연속값을 구간으로, 박스-콕스", "status": "대기"},
-    {"order": 112, "id": "imbalanced-data", "title": "불균형 데이터 처리", "group": "전처리", "adsp": [], "bigdata": ["2.1.2.5"], "calc": false, "prereq": ["precision-recall"], "cover": "정확도가 속는 이유, 언더샘플링·오버샘플링·SMOTE, 임곗값 조정", "status": "대기"},
-    {"order": 113, "id": "eda-overview", "title": "탐색적 데이터 분석(EDA)", "group": "탐색", "adsp": [], "bigdata": ["2.2.1.1", "2.2.1.4"], "calc": false, "prereq": ["boxplot-iqr"], "cover": "저항성·잔차·재표현·현시성 네 주제, 히스토그램·산점도로 먼저 보기", "status": "대기"},
-    {"order": 114, "id": "spatiotemporal-eda", "title": "시공간 데이터 탐색과 시각화", "group": "탐색", "adsp": [], "bigdata": ["2.2.2.1", "4.2.2.1"], "calc": false, "prereq": [], "cover": "좌표와 시간이 붙은 데이터, 등치지역도·카토그램·버블 지도", "status": "대기"},
-    {"order": 115, "id": "factor-analysis", "title": "요인분석과 다변량 탐색", "group": "차원 축소", "adsp": [], "bigdata": ["3.2.2.2", "2.2.2.2"], "calc": false, "prereq": ["pca"], "cover": "숨은 요인 찾기, 주성분 분석과의 차이, 산점도 행렬·상관행렬", "status": "대기"},
-    {"order": 116, "id": "text-mining", "title": "텍스트 마이닝: 토큰화와 TF-IDF", "group": "고급 분석", "adsp": [], "bigdata": ["2.2.2.3", "3.2.2.6"], "calc": true, "prereq": [], "cover": "말뭉치·불용어·어간 추출, 문서-단어 행렬, TF-IDF 계산, 감성 분석", "status": "대기"},
-    {"order": 117, "id": "sna", "title": "사회연결망 분석과 중심성", "group": "고급 분석", "adsp": [], "bigdata": ["3.2.2.6"], "calc": true, "prereq": [], "cover": "노드와 링크, 연결·근접·매개·위세 중심성 계산", "status": "대기"},
-    {"order": 118, "id": "categorical-analysis", "title": "범주형 자료 분석: 상대위험도와 오즈비", "group": "고급 분석", "adsp": [], "bigdata": ["3.2.2.1"], "calc": true, "prereq": ["chi-square-tests"], "cover": "분할표에서 상대위험도·오즈비 계산, 검정 고르기", "status": "대기"},
-    {"order": 119, "id": "cnn", "title": "합성곱 신경망(CNN)", "group": "고급 분석", "adsp": [], "bigdata": ["3.2.2.5"], "calc": true, "prereq": ["neural-network"], "cover": "필터·스트라이드·패딩, 출력 크기 계산, 풀링", "status": "대기"},
-    {"order": 120, "id": "rnn-lstm", "title": "순환 신경망(RNN)과 LSTM", "group": "고급 분석", "adsp": [], "bigdata": ["3.2.2.5"], "calc": false, "prereq": ["backpropagation"], "cover": "순서가 있는 데이터, 장기 의존성 문제, LSTM의 게이트", "status": "대기"},
-    {"order": 121, "id": "autoencoder-gan", "title": "오토인코더와 GAN", "group": "고급 분석", "adsp": [], "bigdata": ["3.2.2.5"], "calc": false, "prereq": ["neural-network"], "cover": "압축했다 되살리는 오토인코더, 생성자와 판별자의 경쟁", "status": "대기"},
-    {"order": 122, "id": "hyperparameter-tuning", "title": "하이퍼파라미터 최적화", "group": "모형 개선", "adsp": [], "bigdata": ["4.1.2.2"], "calc": false, "prereq": ["data-split-cv"], "cover": "파라미터와 하이퍼파라미터 구분, 그리드·랜덤·베이지안 탐색", "status": "대기"},
-    {"order": 123, "id": "optimizers", "title": "경사하강법과 최적화 알고리즘", "group": "모형 개선", "adsp": [], "bigdata": ["4.1.2.2"], "calc": true, "prereq": ["backpropagation"], "cover": "기울기 반대로 한 걸음, 학습률, 배치·확률적·미니배치, 모멘텀·AdaGrad·RMSProp·Adam", "status": "대기"},
-    {"order": 124, "id": "overfitting-prevention", "title": "과대적합 방지 기법", "group": "모형 개선", "adsp": [], "bigdata": ["4.1.2.1"], "calc": false, "prereq": ["overfitting", "regularization"], "cover": "데이터 늘리기, 모델 단순화, 가중치 규제, 드롭아웃, 조기 종료", "status": "대기"},
-    {"order": 125, "id": "model-fusion", "title": "분석모형 융합: 보팅과 스태킹", "group": "모형 개선", "adsp": [], "bigdata": ["4.1.2.3"], "calc": false, "prereq": ["ensemble"], "cover": "하드·소프트 보팅, 스태킹, 앙상블과의 관계", "status": "대기"},
-    {"order": 126, "id": "final-model", "title": "최종 모형 선정과 해석", "group": "모형 개선", "adsp": [], "bigdata": ["4.1.2.4", "4.2.1.1"], "calc": false, "prereq": ["data-split-cv"], "cover": "평가 기준 정하기, 변수 중요도, 부분 의존도, 설명 가능한 AI", "status": "대기"},
-    {"order": 127, "id": "business-contribution", "title": "비즈니스 기여도 평가: ROI·NPV·IRR", "group": "결과 활용", "adsp": [], "bigdata": ["4.2.1.2"], "calc": true, "prereq": [], "cover": "투자 대비 효과 계산, 순현재가치, 내부수익률, 투자회수기간, 총소유비용", "status": "대기"},
-    {"order": 128, "id": "visualization-types", "title": "시각화 유형: 시간·분포·관계·비교·공간", "group": "결과 활용", "adsp": [], "bigdata": ["4.2.2.1", "4.2.2.2", "4.2.2.3"], "calc": false, "prereq": [], "cover": "목적별 그래프 고르기(막대·히스토그램·산점도·버블·히트맵·평행좌표·스타 차트)", "status": "대기"},
-    {"order": 129, "id": "infographics", "title": "인포그래픽", "group": "결과 활용", "adsp": [], "bigdata": ["4.2.2.4"], "calc": false, "prereq": ["visualization-types"], "cover": "인포그래픽의 유형과 만드는 절차", "status": "대기"},
-    {"order": 130, "id": "model-deployment", "title": "분석모형 전개·모니터링·리모델링", "group": "결과 활용", "adsp": [], "bigdata": ["4.2.3.1", "4.2.3.2", "4.2.3.3", "4.2.3.4"], "calc": false, "prereq": [], "cover": "운영 시스템에 넣기, 성능 저하 감시, 다시 학습하는 주기, 활용 시나리오", "status": "대기"},
-    {"order": 131, "id": "model-design", "title": "분석모형 설계: 선정·정의·구축 절차와 분석 도구", "group": "결과 활용", "adsp": [], "bigdata": ["3.1.1.1", "3.1.1.2", "3.1.1.3", "3.1.2.1"], "calc": false, "prereq": ["data-mining-overview"], "cover": "목적에 맞는 모형 고르기, 요건 정의→모델링→검증→적용, R·파이썬 등 도구 고르기", "status": "대기"}
-  ]
+ "_설명": "개념 목록(한 개념 = 한 편). adsp·bigdata는 blueprint.json의 출제기준 번호, 둘 다 있으면 공통. order는 만들 순서, calc는 계산 문제로 만들기 좋은 개념, cover는 다룰 핵심, prereq는 먼저 나와야 할 개념 id. 상태: 대기 → 대본 → 검수 통과 → 영상 완성 → 업로드 완료. 직접 고치지 말고 tools/topics.py로 바꾼다(순서·내용 추가는 직접 고쳐도 됨, 고친 뒤 check).",
+ "topics": [
+  {
+   "order": 1,
+   "id": "precision-recall",
+   "title": "정밀도와 재현율",
+   "group": "모델 평가",
+   "adsp": [
+    "3.3.2"
+   ],
+   "bigdata": [
+    "4.1.1.1"
+   ],
+   "calc": true,
+   "prereq": [],
+   "cover": "혼동행렬 네 칸, 정밀도·재현율의 분모, 정확도의 함정, F1, 특이도",
+   "status": "영상 완성",
+   "folder": "episodes/001-precision-recall"
+  },
+  {
+   "order": 2,
+   "id": "roc-auc",
+   "title": "민감도·특이도와 ROC 곡선",
+   "group": "모델 평가",
+   "adsp": [
+    "3.3.2"
+   ],
+   "bigdata": [
+    "4.1.1.1"
+   ],
+   "calc": true,
+   "prereq": [
+    "precision-recall"
+   ],
+   "cover": "민감도(=재현율)·특이도, 기준값에 따라 움직이는 점, ROC 곡선, AUC 0.5와 1의 뜻",
+   "status": "영상 완성",
+   "folder": "episodes/002-roc-auc"
+  },
+  {
+   "order": 3,
+   "id": "regression-metrics",
+   "title": "회귀 모델 평가 지표 MAE·MSE·RMSE·MAPE",
+   "group": "모델 평가",
+   "adsp": [
+    "3.2.2"
+   ],
+   "bigdata": [
+    "4.1.1.1"
+   ],
+   "calc": true,
+   "prereq": [],
+   "cover": "오차를 재는 네 방법, 제곱의 효과, 단위가 같아지는 RMSE, 비율로 보는 MAPE",
+   "status": "영상 완성",
+   "folder": "episodes/003-regression-metrics"
+  },
+  {
+   "order": 4,
+   "id": "overfitting",
+   "title": "과대적합과 과소적합",
+   "group": "모델 평가",
+   "adsp": [
+    "3.3.1"
+   ],
+   "bigdata": [
+    "4.1.2.1"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "훈련 성능과 검증 성능의 차이, 편향과 분산, 모델 복잡도 곡선",
+   "status": "영상 완성",
+   "folder": "episodes/004-overfitting"
+  },
+  {
+   "order": 5,
+   "id": "data-split-cv",
+   "title": "데이터 분할과 교차 검증",
+   "group": "모델 평가",
+   "adsp": [
+    "3.3.1"
+   ],
+   "bigdata": [
+    "3.1.2.2",
+    "4.1.1.3"
+   ],
+   "calc": true,
+   "prereq": [
+    "overfitting"
+   ],
+   "cover": "훈련·검증·테스트, 홀드아웃, k-겹 교차 검증, LOOCV, 부트스트랩(뽑히지 않을 확률 약 36.8%)",
+   "status": "영상 완성",
+   "folder": "episodes/005-data-split-cv"
+  },
+  {
+   "order": 6,
+   "id": "association-rules",
+   "title": "연관규칙: 지지도·신뢰도·향상도",
+   "group": "연관분석",
+   "adsp": [
+    "3.3.4"
+   ],
+   "bigdata": [
+    "3.2.1.6"
+   ],
+   "calc": true,
+   "prereq": [],
+   "cover": "장바구니 예시로 세 지표 계산, 향상도 1의 뜻(독립), 신뢰도만 보면 생기는 착각",
+   "status": "영상 완성",
+   "folder": "episodes/006-association-rules"
+  },
+  {
+   "order": 7,
+   "id": "apriori",
+   "title": "아프리오리 알고리즘",
+   "group": "연관분석",
+   "adsp": [
+    "3.3.4"
+   ],
+   "bigdata": [
+    "3.2.1.6"
+   ],
+   "calc": true,
+   "prereq": [
+    "association-rules"
+   ],
+   "cover": "최소 지지도, 빈발 항목집합, 부분집합이 드물면 상위 집합도 드물다, 순차 패턴과 FP-Growth 언급",
+   "status": "대기"
+  },
+  {
+   "order": 8,
+   "id": "distance-measures",
+   "title": "거리 척도: 유클리드·맨해튼·마할라노비스",
+   "group": "군집분석",
+   "adsp": [
+    "3.3.3"
+   ],
+   "bigdata": [
+    "3.2.1.7"
+   ],
+   "calc": true,
+   "prereq": [],
+   "cover": "두 점 사이 거리 계산, 민코프스키로 묶기, 단위 차이와 표준화, 마할라노비스, 범주형의 자카드",
+   "status": "대기"
+  },
+  {
+   "order": 9,
+   "id": "kmeans",
+   "title": "k-평균 군집",
+   "group": "군집분석",
+   "adsp": [
+    "3.3.3"
+   ],
+   "bigdata": [
+    "3.2.1.7"
+   ],
+   "calc": true,
+   "prereq": [
+    "distance-measures"
+   ],
+   "cover": "중심 정하기 → 배정 → 중심 다시 계산 반복, k 정하기, 이상값과 초기값에 약한 점",
+   "status": "대기"
+  },
+  {
+   "order": 10,
+   "id": "hierarchical-clustering",
+   "title": "계층적 군집과 연결법",
+   "group": "군집분석",
+   "adsp": [
+    "3.3.3"
+   ],
+   "bigdata": [
+    "3.2.1.7"
+   ],
+   "calc": true,
+   "prereq": [
+    "distance-measures"
+   ],
+   "cover": "병합 순서, 단일·완전·평균·중심·와드 연결, 덴드로그램 자르기",
+   "status": "대기"
+  },
+  {
+   "order": 11,
+   "id": "cluster-evaluation",
+   "title": "군집 평가: 실루엣 계수와 엘보우",
+   "group": "군집분석",
+   "adsp": [
+    "3.3.3"
+   ],
+   "bigdata": [
+    "3.2.1.7",
+    "4.1.1.1"
+   ],
+   "calc": true,
+   "prereq": [
+    "kmeans"
+   ],
+   "cover": "응집도와 분리도, 실루엣 -1~1의 뜻, 엘보우 그래프로 k 고르기",
+   "status": "대기"
+  },
+  {
+   "order": 12,
+   "id": "dbscan-gmm",
+   "title": "밀도 기반 군집과 혼합분포 군집",
+   "group": "군집분석",
+   "adsp": [
+    "3.3.3"
+   ],
+   "bigdata": [
+    "3.2.1.7"
+   ],
+   "calc": false,
+   "prereq": [
+    "kmeans"
+   ],
+   "cover": "DBSCAN의 반경·최소 점 수와 잡음점, 혼합분포 군집과 EM 알고리즘",
+   "status": "대기"
+  },
+  {
+   "order": 13,
+   "id": "som",
+   "title": "자기조직화지도(SOM)",
+   "group": "군집분석",
+   "adsp": [
+    "3.3.3"
+   ],
+   "bigdata": [
+    "3.2.1.7",
+    "3.2.1.4"
+   ],
+   "calc": false,
+   "prereq": [
+    "kmeans"
+   ],
+   "cover": "입력층과 경쟁층, 승자 노드, 고차원을 2차원 지도로",
+   "status": "대기"
+  },
+  {
+   "order": 14,
+   "id": "measurement-scales",
+   "title": "측정 척도: 명목·순서·구간·비율",
+   "group": "기술통계",
+   "adsp": [
+    "3.2.1"
+   ],
+   "bigdata": [
+    "1.3.1.2"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "네 척도 구분법(순서가 있나, 0이 진짜 없음인가), 척도별 쓸 수 있는 통계",
+   "status": "대기"
+  },
+  {
+   "order": 15,
+   "id": "central-tendency",
+   "title": "대푯값: 평균·중앙값·최빈값",
+   "group": "기술통계",
+   "adsp": [
+    "3.2.2"
+   ],
+   "bigdata": [
+    "2.2.1.3",
+    "2.3.1.1"
+   ],
+   "calc": true,
+   "prereq": [],
+   "cover": "세 값 계산, 이상값에 흔들리는 평균, 분포 모양과 세 값의 위치, 절사평균",
+   "status": "대기"
+  },
+  {
+   "order": 16,
+   "id": "dispersion",
+   "title": "퍼짐: 분산·표준편차·변동계수",
+   "group": "기술통계",
+   "adsp": [
+    "3.2.2"
+   ],
+   "bigdata": [
+    "2.2.1.3",
+    "2.3.1.1"
+   ],
+   "calc": true,
+   "prereq": [
+    "central-tendency"
+   ],
+   "cover": "편차 제곱의 평균, 표본분산의 n-1, 범위·사분위범위, 단위가 다를 때 변동계수",
+   "status": "대기"
+  },
+  {
+   "order": 17,
+   "id": "skew-kurtosis",
+   "title": "왜도와 첨도",
+   "group": "기술통계",
+   "adsp": [
+    "3.2.2"
+   ],
+   "bigdata": [
+    "2.2.1.3"
+   ],
+   "calc": false,
+   "prereq": [
+    "central-tendency"
+   ],
+   "cover": "꼬리 방향으로 읽는 왜도 부호, 평균·중앙값·최빈값 순서, 첨도의 기준(0 또는 3)",
+   "status": "대기"
+  },
+  {
+   "order": 18,
+   "id": "boxplot-iqr",
+   "title": "상자그림 읽기와 IQR",
+   "group": "기술통계",
+   "adsp": [
+    "3.1.3"
+   ],
+   "bigdata": [
+    "2.1.1.3",
+    "2.2.1.4"
+   ],
+   "calc": true,
+   "prereq": [
+    "dispersion"
+   ],
+   "cover": "사분위수, 상자와 수염, Q1-1.5×IQR·Q3+1.5×IQR 밖은 이상값 후보",
+   "status": "대기"
+  },
+  {
+   "order": 19,
+   "id": "sampling-methods",
+   "title": "표본추출: 단순무작위·계통·층화·군집",
+   "group": "확률과 분포",
+   "adsp": [
+    "3.2.1"
+   ],
+   "bigdata": [
+    "2.3.1.2"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "모집단과 표본, 네 방법의 차이(층 안에서 뽑나, 묶음째 뽑나), 복원·비복원",
+   "status": "대기"
+  },
+  {
+   "order": 20,
+   "id": "probability-basics",
+   "title": "확률 기초: 조건부확률과 독립",
+   "group": "확률과 분포",
+   "adsp": [
+    "3.2.1"
+   ],
+   "bigdata": [
+    "2.3.1.3"
+   ],
+   "calc": true,
+   "prereq": [],
+   "cover": "합사건·곱사건, 조건부확률 식, 독립과 배반의 차이",
+   "status": "대기"
+  },
+  {
+   "order": 21,
+   "id": "bayes-theorem",
+   "title": "베이즈 정리",
+   "group": "확률과 분포",
+   "adsp": [
+    "3.2.1"
+   ],
+   "bigdata": [
+    "2.3.1.3",
+    "3.2.2.4"
+   ],
+   "calc": true,
+   "prereq": [
+    "probability-basics"
+   ],
+   "cover": "검사 양성일 때 진짜 환자일 확률, 사전확률과 사후확률, 전확률",
+   "status": "대기"
+  },
+  {
+   "order": 22,
+   "id": "expectation-variance",
+   "title": "확률변수의 기댓값과 분산",
+   "group": "확률과 분포",
+   "adsp": [
+    "3.2.1"
+   ],
+   "bigdata": [
+    "2.3.1.3"
+   ],
+   "calc": true,
+   "prereq": [
+    "probability-basics"
+   ],
+   "cover": "이산확률변수 기댓값 계산, E(aX+b)·V(aX+b), 분산 = E(X²) - E(X)²",
+   "status": "대기"
+  },
+  {
+   "order": 23,
+   "id": "discrete-distributions",
+   "title": "이산확률분포: 베르누이·이항·포아송",
+   "group": "확률과 분포",
+   "adsp": [
+    "3.2.1"
+   ],
+   "bigdata": [
+    "2.3.1.3"
+   ],
+   "calc": true,
+   "prereq": [
+    "expectation-variance"
+   ],
+   "cover": "이항분포의 평균 np·분산 np(1-p), 포아송의 평균=분산=λ, 기하·초기하 언급",
+   "status": "대기"
+  },
+  {
+   "order": 24,
+   "id": "normal-distribution",
+   "title": "정규분포와 표준화",
+   "group": "확률과 분포",
+   "adsp": [
+    "3.2.1"
+   ],
+   "bigdata": [
+    "2.3.1.3"
+   ],
+   "calc": true,
+   "prereq": [
+    "dispersion"
+   ],
+   "cover": "종 모양과 68-95-99.7, Z = (X-μ)/σ, 표준정규분포로 확률 구하기",
+   "status": "대기"
+  },
+  {
+   "order": 25,
+   "id": "t-chi-f",
+   "title": "t분포·카이제곱분포·F분포",
+   "group": "확률과 분포",
+   "adsp": [
+    "3.2.1"
+   ],
+   "bigdata": [
+    "2.3.1.3",
+    "2.3.1.4"
+   ],
+   "calc": false,
+   "prereq": [
+    "normal-distribution"
+   ],
+   "cover": "세 분포가 쓰이는 곳(평균, 분산·범주, 분산비), 자유도, 모양 비교",
+   "status": "대기"
+  },
+  {
+   "order": 26,
+   "id": "clt",
+   "title": "표본분포와 중심극한정리",
+   "group": "확률과 분포",
+   "adsp": [
+    "3.2.1"
+   ],
+   "bigdata": [
+    "2.3.1.4"
+   ],
+   "calc": true,
+   "prereq": [
+    "normal-distribution"
+   ],
+   "cover": "표본평균의 분포, 표준오차 σ/√n, 표본이 크면 정규분포에 가까워진다",
+   "status": "대기"
+  },
+  {
+   "order": 27,
+   "id": "estimation",
+   "title": "점추정과 구간추정",
+   "group": "추정과 검정",
+   "adsp": [
+    "3.2.1"
+   ],
+   "bigdata": [
+    "2.3.2.1",
+    "2.3.2.2"
+   ],
+   "calc": true,
+   "prereq": [
+    "clt"
+   ],
+   "cover": "추정량의 조건(불편성·효율성·일치성), 95% 신뢰구간 계산과 바른 해석, 표본이 커지면 좁아짐",
+   "status": "대기"
+  },
+  {
+   "order": 28,
+   "id": "hypothesis-testing",
+   "title": "가설검정: 귀무가설과 p-값",
+   "group": "추정과 검정",
+   "adsp": [
+    "3.2.1"
+   ],
+   "bigdata": [
+    "2.3.2.3"
+   ],
+   "calc": false,
+   "prereq": [
+    "estimation"
+   ],
+   "cover": "귀무·대립가설 세우기, 유의수준과 기각역, p-값으로 판단, 양측·단측",
+   "status": "대기"
+  },
+  {
+   "order": 29,
+   "id": "type1-type2",
+   "title": "1종 오류·2종 오류와 검정력",
+   "group": "추정과 검정",
+   "adsp": [
+    "3.2.1"
+   ],
+   "bigdata": [
+    "2.3.2.3"
+   ],
+   "calc": false,
+   "prereq": [
+    "hypothesis-testing"
+   ],
+   "cover": "네 칸 표로 보는 두 오류, α와 β, 검정력 1-β, 혼동행렬과의 연결",
+   "status": "대기"
+  },
+  {
+   "order": 30,
+   "id": "t-tests",
+   "title": "t검정 세 가지: 단일·독립·대응표본",
+   "group": "추정과 검정",
+   "adsp": [
+    "3.2.2"
+   ],
+   "bigdata": [
+    "2.3.2.3"
+   ],
+   "calc": true,
+   "prereq": [
+    "hypothesis-testing"
+   ],
+   "cover": "상황별 고르는 법(같은 사람 전후는 대응), 등분산 가정, 자유도",
+   "status": "대기"
+  },
+  {
+   "order": 31,
+   "id": "anova",
+   "title": "분산분석(ANOVA)",
+   "group": "추정과 검정",
+   "adsp": [
+    "3.2.2"
+   ],
+   "bigdata": [
+    "2.3.2.3"
+   ],
+   "calc": true,
+   "prereq": [
+    "t-tests"
+   ],
+   "cover": "셋 이상 평균 비교, 집단 간·집단 내 변동, F = MSB/MSW, 자유도 채우기, 사후검정",
+   "status": "대기"
+  },
+  {
+   "order": 32,
+   "id": "chi-square-tests",
+   "title": "카이제곱 검정: 적합도·독립성",
+   "group": "추정과 검정",
+   "adsp": [
+    "3.2.2"
+   ],
+   "bigdata": [
+    "2.3.2.3",
+    "3.2.2.1",
+    "4.1.1.5"
+   ],
+   "calc": true,
+   "prereq": [
+    "hypothesis-testing"
+   ],
+   "cover": "관측도수와 기대도수, 기대도수 계산, 자유도 (r-1)(c-1), 동질성 검정",
+   "status": "대기"
+  },
+  {
+   "order": 33,
+   "id": "nonparametric",
+   "title": "비모수 검정",
+   "group": "추정과 검정",
+   "adsp": [
+    "3.2.1"
+   ],
+   "bigdata": [
+    "3.2.2.8"
+   ],
+   "calc": false,
+   "prereq": [
+    "t-tests"
+   ],
+   "cover": "정규성을 못 믿을 때, 부호·윌콕슨 부호순위·만-위트니·크루스칼-왈리스, 짝지은 모수 검정",
+   "status": "대기"
+  },
+  {
+   "order": 34,
+   "id": "normality-tests",
+   "title": "정규성 확인: Q-Q 플롯과 샤피로-윌크",
+   "group": "추정과 검정",
+   "adsp": [
+    "3.2.2"
+   ],
+   "bigdata": [
+    "4.1.1.2",
+    "2.2.1.4"
+   ],
+   "calc": false,
+   "prereq": [
+    "normal-distribution"
+   ],
+   "cover": "Q-Q 플롯 직선 읽기, 샤피로-윌크·콜모고로프-스미르노프의 귀무가설",
+   "status": "대기"
+  },
+  {
+   "order": 35,
+   "id": "covariance-correlation",
+   "title": "공분산과 상관계수",
+   "group": "상관과 회귀",
+   "adsp": [
+    "3.2.3"
+   ],
+   "bigdata": [
+    "2.2.1.2"
+   ],
+   "calc": true,
+   "prereq": [
+    "dispersion"
+   ],
+   "cover": "공분산 부호의 뜻, 단위를 없앤 상관계수 -1~1, 상관은 인과가 아니다",
+   "status": "대기"
+  },
+  {
+   "order": 36,
+   "id": "pearson-spearman",
+   "title": "피어슨과 스피어만 상관",
+   "group": "상관과 회귀",
+   "adsp": [
+    "3.2.3"
+   ],
+   "bigdata": [
+    "2.2.1.2"
+   ],
+   "calc": true,
+   "prereq": [
+    "covariance-correlation"
+   ],
+   "cover": "직선 관계 vs 순위 관계, 서열 척도와 이상값에는 스피어만, 상관계수 검정",
+   "status": "대기"
+  },
+  {
+   "order": 37,
+   "id": "simple-regression",
+   "title": "단순선형회귀와 최소제곱법",
+   "group": "상관과 회귀",
+   "adsp": [
+    "3.2.2"
+   ],
+   "bigdata": [
+    "3.2.1.1"
+   ],
+   "calc": true,
+   "prereq": [
+    "covariance-correlation"
+   ],
+   "cover": "잔차 제곱합을 최소로, 기울기 = 공분산/분산, 회귀식으로 예측",
+   "status": "대기"
+  },
+  {
+   "order": 38,
+   "id": "r-squared",
+   "title": "결정계수와 수정 결정계수",
+   "group": "상관과 회귀",
+   "adsp": [
+    "3.2.2"
+   ],
+   "bigdata": [
+    "3.2.1.1",
+    "4.1.1.1"
+   ],
+   "calc": true,
+   "prereq": [
+    "simple-regression"
+   ],
+   "cover": "SST = SSR + SSE, R² = SSR/SST, 변수를 넣기만 해도 오르는 R², 수정 R²",
+   "status": "대기"
+  },
+  {
+   "order": 39,
+   "id": "regression-significance",
+   "title": "회귀계수 t검정과 모형 F검정",
+   "group": "상관과 회귀",
+   "adsp": [
+    "3.2.2"
+   ],
+   "bigdata": [
+    "4.1.1.4"
+   ],
+   "calc": true,
+   "prereq": [
+    "r-squared",
+    "t-tests"
+   ],
+   "cover": "회귀 결과표 읽기(추정값·표준오차·t값·p값), 모형 전체 F검정",
+   "status": "대기"
+  },
+  {
+   "order": 40,
+   "id": "regression-assumptions",
+   "title": "회귀분석의 가정과 잔차 진단",
+   "group": "상관과 회귀",
+   "adsp": [
+    "3.2.2"
+   ],
+   "bigdata": [
+    "4.1.1.2"
+   ],
+   "calc": false,
+   "prereq": [
+    "simple-regression"
+   ],
+   "cover": "선형성·독립성·등분산성·정규성, 잔차 그림 읽기, 더빈-왓슨",
+   "status": "대기"
+  },
+  {
+   "order": 41,
+   "id": "multicollinearity",
+   "title": "다중공선성과 VIF",
+   "group": "상관과 회귀",
+   "adsp": [
+    "3.2.2"
+   ],
+   "bigdata": [
+    "4.1.1.2",
+    "2.1.2.1"
+   ],
+   "calc": true,
+   "prereq": [
+    "r-squared"
+   ],
+   "cover": "설명변수끼리 닮으면 생기는 일, VIF = 1/(1-R²), 10 이상이면 의심, 해결법",
+   "status": "대기"
+  },
+  {
+   "order": 42,
+   "id": "variable-selection",
+   "title": "변수 선택: 전진·후진·단계적",
+   "group": "상관과 회귀",
+   "adsp": [
+    "3.2.2"
+   ],
+   "bigdata": [
+    "2.1.2.1"
+   ],
+   "calc": false,
+   "prereq": [
+    "regression-significance"
+   ],
+   "cover": "세 방법의 진행 방향, 필터·래퍼·임베디드 구분",
+   "status": "대기"
+  },
+  {
+   "order": 43,
+   "id": "aic-bic",
+   "title": "AIC와 BIC",
+   "group": "상관과 회귀",
+   "adsp": [
+    "3.2.2"
+   ],
+   "bigdata": [
+    "2.1.2.1",
+    "4.1.2.4"
+   ],
+   "calc": false,
+   "prereq": [
+    "variable-selection"
+   ],
+   "cover": "작을수록 좋은 기준, 변수 수에 주는 벌점, BIC가 더 엄격한 이유",
+   "status": "대기"
+  },
+  {
+   "order": 44,
+   "id": "regularization",
+   "title": "릿지·라쏘·엘라스틱넷",
+   "group": "상관과 회귀",
+   "adsp": [
+    "3.2.2"
+   ],
+   "bigdata": [
+    "4.1.2.1",
+    "3.2.1.1"
+   ],
+   "calc": false,
+   "prereq": [
+    "multicollinearity",
+    "overfitting"
+   ],
+   "cover": "벌점 항 L2·L1, 라쏘는 계수를 0으로 만들어 변수 선택, λ의 역할",
+   "status": "대기"
+  },
+  {
+   "order": 45,
+   "id": "logistic-regression",
+   "title": "로지스틱 회귀와 오즈비",
+   "group": "분류 모델",
+   "adsp": [
+    "3.3.2"
+   ],
+   "bigdata": [
+    "3.2.1.2"
+   ],
+   "calc": true,
+   "prereq": [
+    "simple-regression"
+   ],
+   "cover": "확률을 0~1로 묶는 시그모이드, 오즈와 로짓, 계수를 exp로 바꾼 오즈비 해석",
+   "status": "대기"
+  },
+  {
+   "order": 46,
+   "id": "tree-split",
+   "title": "의사결정나무의 분리 기준: 지니와 엔트로피",
+   "group": "분류 모델",
+   "adsp": [
+    "3.3.2"
+   ],
+   "bigdata": [
+    "3.2.1.3"
+   ],
+   "calc": true,
+   "prereq": [],
+   "cover": "불순도 계산, 정보 이득, 카이제곱 통계량, 회귀나무의 분산 감소",
+   "status": "대기"
+  },
+  {
+   "order": 47,
+   "id": "tree-pruning",
+   "title": "의사결정나무: 정지 규칙과 가지치기",
+   "group": "분류 모델",
+   "adsp": [
+    "3.3.2"
+   ],
+   "bigdata": [
+    "3.2.1.3"
+   ],
+   "calc": false,
+   "prereq": [
+    "tree-split",
+    "overfitting"
+   ],
+   "cover": "나무 깊이와 과대적합, 정지 규칙, 가지치기, CART·C4.5·CHAID 구분",
+   "status": "대기"
+  },
+  {
+   "order": 48,
+   "id": "ensemble",
+   "title": "앙상블: 배깅·부스팅·랜덤 포레스트",
+   "group": "분류 모델",
+   "adsp": [
+    "3.3.2"
+   ],
+   "bigdata": [
+    "3.2.2.7",
+    "4.1.2.3"
+   ],
+   "calc": false,
+   "prereq": [
+    "tree-pruning",
+    "data-split-cv"
+   ],
+   "cover": "여러 모델 합치기, 배깅(병렬·분산 감소), 부스팅(순차·오답 가중), 랜덤 포레스트의 변수 무작위 선택",
+   "status": "대기"
+  },
+  {
+   "order": 49,
+   "id": "neural-network",
+   "title": "인공신경망: 퍼셉트론과 활성화 함수",
+   "group": "분류 모델",
+   "adsp": [
+    "3.3.2"
+   ],
+   "bigdata": [
+    "3.2.1.4"
+   ],
+   "calc": true,
+   "prereq": [],
+   "cover": "가중합과 활성화, 계단·시그모이드·ReLU·소프트맥스, XOR과 은닉층",
+   "status": "대기"
+  },
+  {
+   "order": 50,
+   "id": "backpropagation",
+   "title": "역전파와 기울기 소실",
+   "group": "분류 모델",
+   "adsp": [
+    "3.3.2"
+   ],
+   "bigdata": [
+    "3.2.1.4",
+    "3.2.2.5"
+   ],
+   "calc": false,
+   "prereq": [
+    "neural-network"
+   ],
+   "cover": "오차를 거꾸로 나눠 주는 역전파, 시그모이드에서 생기는 기울기 소실, ReLU로 해결",
+   "status": "대기"
+  },
+  {
+   "order": 51,
+   "id": "svm",
+   "title": "서포트벡터머신",
+   "group": "분류 모델",
+   "adsp": [
+    "3.3.2"
+   ],
+   "bigdata": [
+    "3.2.1.5"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "마진 최대화, 서포트 벡터, 소프트 마진 C, 커널로 휘어진 경계",
+   "status": "대기"
+  },
+  {
+   "order": 52,
+   "id": "knn",
+   "title": "k-최근접 이웃",
+   "group": "분류 모델",
+   "adsp": [
+    "3.3.2"
+   ],
+   "bigdata": [
+    "3.2.1"
+   ],
+   "calc": true,
+   "prereq": [
+    "distance-measures"
+   ],
+   "cover": "가까운 k개의 다수결, k가 작을 때·클 때, 표준화가 필요한 이유, 게으른 학습",
+   "status": "대기"
+  },
+  {
+   "order": 53,
+   "id": "naive-bayes",
+   "title": "나이브 베이즈 분류",
+   "group": "분류 모델",
+   "adsp": [
+    "3.3.2"
+   ],
+   "bigdata": [
+    "3.2.2.4"
+   ],
+   "calc": true,
+   "prereq": [
+    "bayes-theorem"
+   ],
+   "cover": "베이즈 정리로 분류, 변수끼리 독립이라는 가정, 스팸 분류 예시 계산",
+   "status": "대기"
+  },
+  {
+   "order": 54,
+   "id": "lift-gain",
+   "title": "향상도 곡선과 이익 도표",
+   "group": "모델 평가",
+   "adsp": [
+    "3.3.2"
+   ],
+   "bigdata": [
+    "4.1.1.1"
+   ],
+   "calc": true,
+   "prereq": [
+    "roc-auc"
+   ],
+   "cover": "점수 순으로 줄 세운 10개 구간, 반응률과 향상도 계산, 좋은 모델의 곡선 모양",
+   "status": "대기"
+  },
+  {
+   "order": 55,
+   "id": "data-mining-overview",
+   "title": "데이터 마이닝 개요: 지도학습과 비지도학습",
+   "group": "분류 모델",
+   "adsp": [
+    "3.3.1"
+   ],
+   "bigdata": [
+    "1.1.2.2",
+    "3.1.1.1"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "정답이 있나 없나, 분류·예측·군집·연관, 분석 목적에 따른 기법 고르기",
+   "status": "대기"
+  },
+  {
+   "order": 56,
+   "id": "missing-types",
+   "title": "결측값의 종류: MCAR·MAR·MNAR",
+   "group": "전처리",
+   "adsp": [
+    "3.1.3"
+   ],
+   "bigdata": [
+    "2.1.1.2"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "왜 비었는지로 나누는 세 종류, 예시로 구분하기",
+   "status": "대기"
+  },
+  {
+   "order": 57,
+   "id": "missing-imputation",
+   "title": "결측값 처리: 삭제와 대치",
+   "group": "전처리",
+   "adsp": [
+    "3.1.3"
+   ],
+   "bigdata": [
+    "2.1.1.2"
+   ],
+   "calc": true,
+   "prereq": [
+    "missing-types"
+   ],
+   "cover": "완전 분석(삭제), 평균·중앙값 대치, 단순 확률 대치, 다중 대치 3단계",
+   "status": "대기"
+  },
+  {
+   "order": 58,
+   "id": "outlier-handling",
+   "title": "이상값 판단과 처리",
+   "group": "전처리",
+   "adsp": [
+    "3.1.3"
+   ],
+   "bigdata": [
+    "2.1.1.3"
+   ],
+   "calc": true,
+   "prereq": [
+    "boxplot-iqr",
+    "normal-distribution"
+   ],
+   "cover": "ESD(평균±3표준편차), 사분위수 기준, 삭제·대체·변환·상하한 고정",
+   "status": "대기"
+  },
+  {
+   "order": 59,
+   "id": "derived-variables",
+   "title": "파생변수와 요약변수",
+   "group": "전처리",
+   "adsp": [
+    "3.1.2"
+   ],
+   "bigdata": [
+    "2.1.2.3"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "데이터 마트에서 만드는 두 변수의 차이, 예시로 구분하기",
+   "status": "대기"
+  },
+  {
+   "order": 60,
+   "id": "pca",
+   "title": "주성분 분석",
+   "group": "차원 축소",
+   "adsp": [
+    "3.2.3"
+   ],
+   "bigdata": [
+    "2.1.2.2",
+    "3.2.2.2"
+   ],
+   "calc": false,
+   "prereq": [
+    "covariance-correlation"
+   ],
+   "cover": "분산을 가장 많이 담는 새 축, 서로 직교, 표준화 후 분석",
+   "status": "대기"
+  },
+  {
+   "order": 61,
+   "id": "pca-components",
+   "title": "주성분 개수 정하기: 기여율과 스크리 플롯",
+   "group": "차원 축소",
+   "adsp": [
+    "3.2.3"
+   ],
+   "bigdata": [
+    "2.1.2.2"
+   ],
+   "calc": true,
+   "prereq": [
+    "pca"
+   ],
+   "cover": "고윳값과 설명 분산 비율, 누적 기여율 80% 기준, 스크리 플롯 꺾이는 곳",
+   "status": "대기"
+  },
+  {
+   "order": 62,
+   "id": "mds",
+   "title": "다차원 척도법",
+   "group": "차원 축소",
+   "adsp": [
+    "3.2.3"
+   ],
+   "bigdata": [
+    "3.2.2.2",
+    "2.2.2.2"
+   ],
+   "calc": false,
+   "prereq": [
+    "distance-measures"
+   ],
+   "cover": "거리만 보고 지도 그리기, 스트레스 값으로 적합도 판단, 계량·비계량",
+   "status": "대기"
+  },
+  {
+   "order": 63,
+   "id": "stationarity",
+   "title": "시계열의 정상성과 차분",
+   "group": "시계열",
+   "adsp": [
+    "3.2.4"
+   ],
+   "bigdata": [
+    "3.2.2.3"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "평균·분산이 일정한 시계열, 차분과 변환으로 정상화",
+   "status": "대기"
+  },
+  {
+   "order": 64,
+   "id": "ts-decomposition",
+   "title": "시계열 분해: 추세·계절·순환·불규칙",
+   "group": "시계열",
+   "adsp": [
+    "3.2.4"
+   ],
+   "bigdata": [
+    "3.2.2.3"
+   ],
+   "calc": false,
+   "prereq": [
+    "stationarity"
+   ],
+   "cover": "네 요인 구분하기, 덧셈 모형과 곱셈 모형",
+   "status": "대기"
+  },
+  {
+   "order": 65,
+   "id": "smoothing",
+   "title": "이동평균과 지수평활",
+   "group": "시계열",
+   "adsp": [
+    "3.2.4"
+   ],
+   "bigdata": [
+    "3.2.2.3"
+   ],
+   "calc": true,
+   "prereq": [
+    "ts-decomposition"
+   ],
+   "cover": "구간 평균으로 들쭉날쭉 줄이기, 최근 값에 가중치 α, 계산 예시",
+   "status": "대기"
+  },
+  {
+   "order": 66,
+   "id": "arima",
+   "title": "AR·MA·ARIMA와 ACF·PACF",
+   "group": "시계열",
+   "adsp": [
+    "3.2.4"
+   ],
+   "bigdata": [
+    "3.2.2.3"
+   ],
+   "calc": false,
+   "prereq": [
+    "stationarity"
+   ],
+   "cover": "과거 값과 과거 오차로 예측, ARIMA(p,d,q)의 뜻, ACF·PACF가 끊기는 모양으로 차수 정하기",
+   "status": "대기"
+  },
+  {
+   "order": 67,
+   "id": "dikw",
+   "title": "데이터·정보·지식·지혜(DIKW)",
+   "group": "데이터 이해",
+   "adsp": [
+    "1.1.1"
+   ],
+   "bigdata": [
+    "1.1.1.1"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "네 단계 구분 예시, 정량·정성 데이터",
+   "status": "대기"
+  },
+  {
+   "order": 68,
+   "id": "data-structure-types",
+   "title": "정형·반정형·비정형 데이터",
+   "group": "데이터 이해",
+   "adsp": [
+    "1.1.1"
+   ],
+   "bigdata": [
+    "1.3.1.2"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "구조가 있나로 나누기, 예시(표, JSON·XML·로그, 이미지·글)",
+   "status": "대기"
+  },
+  {
+   "order": 69,
+   "id": "tacit-explicit",
+   "title": "암묵지와 형식지",
+   "group": "데이터 이해",
+   "adsp": [
+    "1.1.1"
+   ],
+   "bigdata": [
+    "1.1.1.1"
+   ],
+   "calc": false,
+   "prereq": [
+    "dikw"
+   ],
+   "cover": "두 지식의 차이, 공통화·표출화·연결화·내면화 네 단계",
+   "status": "대기"
+  },
+  {
+   "order": 70,
+   "id": "big-data-v",
+   "title": "빅데이터의 특징: 3V에서 5V로",
+   "group": "데이터 이해",
+   "adsp": [
+    "1.2.1"
+   ],
+   "bigdata": [
+    "1.1.1.1"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "규모·다양성·속도, 정확성·가치, 빅데이터를 보는 세 관점",
+   "status": "대기"
+  },
+  {
+   "order": 71,
+   "id": "big-data-shifts",
+   "title": "빅데이터가 바꾼 네 가지",
+   "group": "데이터 이해",
+   "adsp": [
+    "1.2.1"
+   ],
+   "bigdata": [
+    "1.1.1.2"
+   ],
+   "calc": false,
+   "prereq": [
+    "big-data-v"
+   ],
+   "cover": "사전처리→사후처리, 표본조사→전수조사, 질→양, 인과관계→상관관계",
+   "status": "대기"
+  },
+  {
+   "order": 72,
+   "id": "big-data-value",
+   "title": "빅데이터의 가치와 가치 산정이 어려운 이유",
+   "group": "데이터 이해",
+   "adsp": [
+    "1.2.2"
+   ],
+   "bigdata": [
+    "1.1.1.2"
+   ],
+   "calc": false,
+   "prereq": [
+    "big-data-v"
+   ],
+   "cover": "기업·정부·개인에 주는 가치, 재사용·재조합, 다목적 활용, 새로운 가치 창출",
+   "status": "대기"
+  },
+  {
+   "order": 73,
+   "id": "data-scientist",
+   "title": "데이터 사이언티스트의 역량",
+   "group": "데이터 이해",
+   "adsp": [
+    "1.3.2"
+   ],
+   "bigdata": [
+    "1.1.1.4"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "하드 스킬과 소프트 스킬, 데이터 사이언스의 범위",
+   "status": "대기"
+  },
+  {
+   "order": 74,
+   "id": "analytics-org",
+   "title": "분석 조직 구조: 집중형·기능형·분산형",
+   "group": "분석 기획",
+   "adsp": [
+    "2.2.2"
+   ],
+   "bigdata": [
+    "1.1.1.4"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "세 구조 그림으로 구분, 장단점, 업무 중복과 이원화",
+   "status": "대기"
+  },
+  {
+   "order": 75,
+   "id": "ai-ml-dl",
+   "title": "인공지능·머신러닝·딥러닝의 관계",
+   "group": "데이터 이해",
+   "adsp": [
+    "3.3.1"
+   ],
+   "bigdata": [
+    "1.1.2.2"
+   ],
+   "calc": false,
+   "prereq": [
+    "data-mining-overview"
+   ],
+   "cover": "포함 관계, 지도·비지도·준지도·강화 학습",
+   "status": "대기"
+  },
+  {
+   "order": 76,
+   "id": "analysis-types",
+   "title": "분석 기획의 네 유형: 최적화·솔루션·통찰·발견",
+   "group": "분석 기획",
+   "adsp": [
+    "2.1.1"
+   ],
+   "bigdata": [
+    "1.2.1.2"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "분석 대상(앎·모름)과 방법(앎·모름)의 2×2 표",
+   "status": "대기"
+  },
+  {
+   "order": 77,
+   "id": "planning-considerations",
+   "title": "분석 기획 고려사항과 장애 요소",
+   "group": "분석 기획",
+   "adsp": [
+    "2.1.1"
+   ],
+   "bigdata": [
+    "1.2.1.3"
+   ],
+   "calc": false,
+   "prereq": [
+    "analysis-types"
+   ],
+   "cover": "가용 데이터, 적절한 활용 사례, 장애 요소, 목표 시점별 접근(과제 단위·마스터 플랜 단위)",
+   "status": "대기"
+  },
+  {
+   "order": 78,
+   "id": "methodology-models",
+   "title": "분석 방법론 모델: 폭포수·프로토타입·나선형",
+   "group": "분석 기획",
+   "adsp": [
+    "2.1.2"
+   ],
+   "bigdata": [
+    "1.2.2.2"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "세 모델의 진행 모양과 쓰임, 방법론의 구성(단계·태스크·스텝)",
+   "status": "대기"
+  },
+  {
+   "order": 79,
+   "id": "kdd",
+   "title": "KDD 분석 방법론",
+   "group": "분석 기획",
+   "adsp": [
+    "2.1.2"
+   ],
+   "bigdata": [
+    "1.2.2.2"
+   ],
+   "calc": false,
+   "prereq": [
+    "methodology-models"
+   ],
+   "cover": "선택·전처리·변환·마이닝·해석과 평가 다섯 단계",
+   "status": "대기"
+  },
+  {
+   "order": 80,
+   "id": "crisp-dm",
+   "title": "CRISP-DM",
+   "group": "분석 기획",
+   "adsp": [
+    "2.1.2"
+   ],
+   "bigdata": [
+    "1.2.2.2"
+   ],
+   "calc": false,
+   "prereq": [
+    "kdd"
+   ],
+   "cover": "업무 이해부터 전개까지 여섯 단계, KDD와 짝짓기, 단계 사이 되돌아가기",
+   "status": "대기"
+  },
+  {
+   "order": 81,
+   "id": "bigdata-methodology",
+   "title": "빅데이터 분석 방법론 5단계",
+   "group": "분석 기획",
+   "adsp": [
+    "2.1.2"
+   ],
+   "bigdata": [
+    "1.2.2.2"
+   ],
+   "calc": false,
+   "prereq": [
+    "crisp-dm"
+   ],
+   "cover": "분석 기획→데이터 준비→데이터 분석→시스템 구현→평가 및 전개, 단계별 산출물",
+   "status": "대기"
+  },
+  {
+   "order": 82,
+   "id": "top-down-bottom-up",
+   "title": "분석 과제 발굴: 하향식과 상향식",
+   "group": "분석 기획",
+   "adsp": [
+    "2.1.3"
+   ],
+   "bigdata": [
+    "1.2.1.2"
+   ],
+   "calc": false,
+   "prereq": [
+    "analysis-types"
+   ],
+   "cover": "문제 탐색→정의→해결 방안→타당성 검토, 상향식의 비지도 탐색, 섞어 쓰기",
+   "status": "대기"
+  },
+  {
+   "order": 83,
+   "id": "business-model-canvas",
+   "title": "비즈니스 모델 캔버스로 분석 기회 찾기",
+   "group": "분석 기획",
+   "adsp": [
+    "2.1.3"
+   ],
+   "bigdata": [
+    "1.2.1.2"
+   ],
+   "calc": false,
+   "prereq": [
+    "top-down-bottom-up"
+   ],
+   "cover": "업무·제품·고객·규제와 감사·지원 인프라 다섯 영역, 거시적 관점(STEEP)",
+   "status": "대기"
+  },
+  {
+   "order": 84,
+   "id": "design-thinking",
+   "title": "디자인 사고와 프로토타이핑",
+   "group": "분석 기획",
+   "adsp": [
+    "2.1.3"
+   ],
+   "bigdata": [
+    "1.2.1.2"
+   ],
+   "calc": false,
+   "prereq": [
+    "top-down-bottom-up"
+   ],
+   "cover": "발산과 수렴, 시행착오로 문제를 구체화하는 프로토타이핑 접근",
+   "status": "대기"
+  },
+  {
+   "order": 85,
+   "id": "project-management",
+   "title": "분석 프로젝트의 특성과 관리",
+   "group": "분석 기획",
+   "adsp": [
+    "2.1.4"
+   ],
+   "bigdata": [
+    "1.2.2.2"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "데이터 크기·복잡도·속도·정확도와 정밀도·분석 모형 복잡도, 관리 영역",
+   "status": "대기"
+  },
+  {
+   "order": 86,
+   "id": "priority-matrix",
+   "title": "분석 과제 우선순위: 시급성과 난이도",
+   "group": "분석 기획",
+   "adsp": [
+    "2.2.1"
+   ],
+   "bigdata": [
+    "1.2.1.1"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "사분면 네 칸 읽기, 무엇부터 할지(시급성 기준·난이도 기준)",
+   "status": "대기"
+  },
+  {
+   "order": 87,
+   "id": "roi-4v",
+   "title": "ROI 관점의 4V",
+   "group": "분석 기획",
+   "adsp": [
+    "2.2.1"
+   ],
+   "bigdata": [
+    "1.2.1.1"
+   ],
+   "calc": false,
+   "prereq": [
+    "priority-matrix"
+   ],
+   "cover": "투자 비용(규모·다양성·속도)과 비즈니스 효과(가치), 전략적 중요도·실행 용이성",
+   "status": "대기"
+  },
+  {
+   "order": 88,
+   "id": "roadmap",
+   "title": "분석 로드맵과 단계적 구현",
+   "group": "분석 기획",
+   "adsp": [
+    "2.2.1"
+   ],
+   "bigdata": [
+    "1.2.1.1"
+   ],
+   "calc": false,
+   "prereq": [
+    "priority-matrix"
+   ],
+   "cover": "단계별 목표와 추진 과제, 마스터 플랜 수립 절차",
+   "status": "대기"
+  },
+  {
+   "order": 89,
+   "id": "maturity-readiness",
+   "title": "분석 성숙도와 준비도",
+   "group": "분석 기획",
+   "adsp": [
+    "2.2.2"
+   ],
+   "bigdata": [
+    "1.2.1.1"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "도입·활용·확산·최적화, 준비형·정착형·도입형·확산형 사분면",
+   "status": "대기"
+  },
+  {
+   "order": 90,
+   "id": "database-basics",
+   "title": "데이터베이스의 정의와 특징",
+   "group": "데이터 이해",
+   "adsp": [
+    "1.1.2"
+   ],
+   "bigdata": [],
+   "calc": false,
+   "prereq": [],
+   "cover": "통합·저장·공용·변화하는 데이터, 데이터베이스의 구성 요소",
+   "status": "대기"
+  },
+  {
+   "order": 91,
+   "id": "oltp-olap",
+   "title": "OLTP와 OLAP, 데이터 웨어하우스",
+   "group": "데이터 이해",
+   "adsp": [
+    "1.1.3"
+   ],
+   "bigdata": [
+    "1.3.2.2"
+   ],
+   "calc": false,
+   "prereq": [
+    "database-basics"
+   ],
+   "cover": "거래 처리와 분석 처리, 데이터 웨어하우스의 특징, 데이터 마트",
+   "status": "대기"
+  },
+  {
+   "order": 92,
+   "id": "enterprise-systems",
+   "title": "기업 정보 시스템: ERP·CRM·SCM·BI",
+   "group": "데이터 이해",
+   "adsp": [
+    "1.1.3"
+   ],
+   "bigdata": [],
+   "calc": false,
+   "prereq": [],
+   "cover": "네 시스템이 하는 일 구분, 분야별 데이터베이스 활용",
+   "status": "대기"
+  },
+  {
+   "order": 93,
+   "id": "big-data-techniques",
+   "title": "빅데이터 활용 기본 테크닉 7가지",
+   "group": "데이터 이해",
+   "adsp": [
+    "1.2.3"
+   ],
+   "bigdata": [],
+   "calc": false,
+   "prereq": [],
+   "cover": "연관규칙·유형분석·유전 알고리즘·기계학습·회귀분석·감정분석·소셜네트워크분석 예시 짝짓기",
+   "status": "대기"
+  },
+  {
+   "order": 94,
+   "id": "big-data-risks",
+   "title": "빅데이터의 위기 요인과 통제 방안",
+   "group": "데이터 이해",
+   "adsp": [
+    "1.2.4"
+   ],
+   "bigdata": [],
+   "calc": false,
+   "prereq": [],
+   "cover": "사생활 침해·책임 원칙 훼손·데이터 오용, 동의에서 책임으로, 결과 기반 책임, 알고리즈미스트",
+   "status": "대기"
+  },
+  {
+   "order": 95,
+   "id": "big-data-future",
+   "title": "미래의 빅데이터와 데이터 사이언스",
+   "group": "데이터 이해",
+   "adsp": [
+    "1.2.5",
+    "1.3.3"
+   ],
+   "bigdata": [],
+   "calc": false,
+   "prereq": [],
+   "cover": "데이터화·인공지능·데이터 사이언티스트, 데이터 사이언스의 한계와 인문학",
+   "status": "대기"
+  },
+  {
+   "order": 96,
+   "id": "strategic-insight",
+   "title": "빅데이터 분석과 전략 인사이트",
+   "group": "데이터 이해",
+   "adsp": [
+    "1.3.1"
+   ],
+   "bigdata": [],
+   "calc": false,
+   "prereq": [],
+   "cover": "일차적 분석과 전략 도출 가치 기반 분석, 빅데이터 열풍과 회의론",
+   "status": "대기"
+  },
+  {
+   "order": 97,
+   "id": "governance",
+   "title": "분석 거버넌스 체계와 데이터 거버넌스",
+   "group": "분석 기획",
+   "adsp": [
+    "2.2.2"
+   ],
+   "bigdata": [],
+   "calc": false,
+   "prereq": [
+    "analytics-org"
+   ],
+   "cover": "조직·과제 관리 프로세스·시스템·데이터·교육과 변화 관리, 데이터 표준화와 메타데이터",
+   "status": "대기"
+  },
+  {
+   "order": 98,
+   "id": "r-data-structures",
+   "title": "R 데이터 구조: 벡터·행렬·데이터프레임·리스트",
+   "group": "R 기초",
+   "adsp": [
+    "3.1.1"
+   ],
+   "bigdata": [],
+   "calc": true,
+   "prereq": [],
+   "cover": "구조별 만드는 법과 차이, 인덱싱 결과 맞히기",
+   "status": "대기"
+  },
+  {
+   "order": 99,
+   "id": "r-basic-functions",
+   "title": "R 기초 함수와 결과 읽기",
+   "group": "R 기초",
+   "adsp": [
+    "3.1.1"
+   ],
+   "bigdata": [],
+   "calc": true,
+   "prereq": [
+    "r-data-structures"
+   ],
+   "cover": "summary·str·apply 계열, 결측값 확인 is.na, 출력 결과 해석",
+   "status": "대기"
+  },
+  {
+   "order": 100,
+   "id": "r-data-mart",
+   "title": "R로 데이터 마트 만들기",
+   "group": "R 기초",
+   "adsp": [
+    "3.1.2"
+   ],
+   "bigdata": [],
+   "calc": false,
+   "prereq": [
+    "r-basic-functions"
+   ],
+   "cover": "reshape(melt·cast), sqldf, plyr로 요약 테이블 만들기",
+   "status": "대기"
+  },
+  {
+   "order": 101,
+   "id": "data-industry",
+   "title": "데이터 산업의 이해",
+   "group": "데이터 이해",
+   "adsp": [],
+   "bigdata": [
+    "1.1.1.3"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "데이터 처리·통합·분석·연결·권리 시대로 이어진 흐름, 데이터 산업 구조",
+   "status": "대기"
+  },
+  {
+   "order": 102,
+   "id": "hadoop-spark",
+   "title": "빅데이터 플랫폼: 하둡과 스파크",
+   "group": "수집과 저장",
+   "adsp": [],
+   "bigdata": [
+    "1.1.2.1"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "분산 저장 HDFS와 분산 처리 맵리듀스, 메모리 기반 스파크, 하둡 생태계",
+   "status": "대기"
+  },
+  {
+   "order": 103,
+   "id": "privacy-law",
+   "title": "데이터 3법과 가명정보·익명정보",
+   "group": "수집과 저장",
+   "adsp": [],
+   "bigdata": [
+    "1.1.2.3",
+    "1.1.2.4"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "개인정보·가명정보·익명정보 구분, 가명정보를 쓸 수 있는 목적, 마이데이터",
+   "status": "대기"
+  },
+  {
+   "order": 104,
+   "id": "de-identification",
+   "title": "비식별화 기법과 k-익명성",
+   "group": "수집과 저장",
+   "adsp": [],
+   "bigdata": [
+    "1.3.1.4"
+   ],
+   "calc": false,
+   "prereq": [
+    "privacy-law"
+   ],
+   "cover": "가명처리·총계처리·데이터 삭제·범주화·마스킹, k-익명성·l-다양성·t-근접성",
+   "status": "대기"
+  },
+  {
+   "order": 105,
+   "id": "data-collection",
+   "title": "데이터 수집 기술",
+   "group": "수집과 저장",
+   "adsp": [],
+   "bigdata": [
+    "1.3.1.1"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "ETL, 크롤링, Open API, 로그 수집(플럼), 스쿱, 메시지 큐(카프카)",
+   "status": "대기"
+  },
+  {
+   "order": 106,
+   "id": "data-transformation",
+   "title": "데이터 변환: 평활화·집계·일반화·정규화",
+   "group": "수집과 저장",
+   "adsp": [],
+   "bigdata": [
+    "1.3.1.3"
+   ],
+   "calc": true,
+   "prereq": [],
+   "cover": "네 변환의 차이, 최소-최대 정규화와 Z-점수 계산",
+   "status": "대기"
+  },
+  {
+   "order": 107,
+   "id": "data-quality",
+   "title": "데이터 품질 검증",
+   "group": "수집과 저장",
+   "adsp": [],
+   "bigdata": [
+    "1.3.1.5"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "정확성·완전성·일관성·유효성·적시성, 정형·비정형 품질 기준",
+   "status": "대기"
+  },
+  {
+   "order": 108,
+   "id": "data-storage",
+   "title": "데이터 적재와 저장: 웨어하우스·레이크·NoSQL",
+   "group": "수집과 저장",
+   "adsp": [],
+   "bigdata": [
+    "1.3.2.1",
+    "1.3.2.2"
+   ],
+   "calc": false,
+   "prereq": [
+    "oltp-olap"
+   ],
+   "cover": "관계형과 NoSQL 네 종류(키-값·문서·컬럼·그래프), 데이터 레이크, CAP",
+   "status": "대기"
+  },
+  {
+   "order": 109,
+   "id": "analysis-plan",
+   "title": "데이터 확보 계획과 분석 작업 계획",
+   "group": "분석 기획",
+   "adsp": [],
+   "bigdata": [
+    "1.2.2.1",
+    "1.2.2.2"
+   ],
+   "calc": false,
+   "prereq": [
+    "bigdata-methodology"
+   ],
+   "cover": "내부·외부 데이터 확보 절차, WBS로 작업 쪼개기",
+   "status": "대기"
+  },
+  {
+   "order": 110,
+   "id": "data-cleaning",
+   "title": "데이터 정제: 잡음과 불일치",
+   "group": "전처리",
+   "adsp": [],
+   "bigdata": [
+    "2.1.1.1"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "정제 절차, 잡음·불일치·중복 처리, 변환·파싱·보강",
+   "status": "대기"
+  },
+  {
+   "order": 111,
+   "id": "scaling",
+   "title": "변수 변환: 정규화·표준화·로그 변환·구간화",
+   "group": "전처리",
+   "adsp": [],
+   "bigdata": [
+    "2.1.2.4"
+   ],
+   "calc": true,
+   "prereq": [
+    "normal-distribution"
+   ],
+   "cover": "스케일 맞추기, 치우친 분포 펴기, 연속값을 구간으로, 박스-콕스",
+   "status": "대기"
+  },
+  {
+   "order": 112,
+   "id": "imbalanced-data",
+   "title": "불균형 데이터 처리",
+   "group": "전처리",
+   "adsp": [],
+   "bigdata": [
+    "2.1.2.5"
+   ],
+   "calc": false,
+   "prereq": [
+    "precision-recall"
+   ],
+   "cover": "정확도가 속는 이유, 언더샘플링·오버샘플링·SMOTE, 임곗값 조정",
+   "status": "대기"
+  },
+  {
+   "order": 113,
+   "id": "eda-overview",
+   "title": "탐색적 데이터 분석(EDA)",
+   "group": "탐색",
+   "adsp": [],
+   "bigdata": [
+    "2.2.1.1",
+    "2.2.1.4"
+   ],
+   "calc": false,
+   "prereq": [
+    "boxplot-iqr"
+   ],
+   "cover": "저항성·잔차·재표현·현시성 네 주제, 히스토그램·산점도로 먼저 보기",
+   "status": "대기"
+  },
+  {
+   "order": 114,
+   "id": "spatiotemporal-eda",
+   "title": "시공간 데이터 탐색과 시각화",
+   "group": "탐색",
+   "adsp": [],
+   "bigdata": [
+    "2.2.2.1",
+    "4.2.2.1"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "좌표와 시간이 붙은 데이터, 등치지역도·카토그램·버블 지도",
+   "status": "대기"
+  },
+  {
+   "order": 115,
+   "id": "factor-analysis",
+   "title": "요인분석과 다변량 탐색",
+   "group": "차원 축소",
+   "adsp": [],
+   "bigdata": [
+    "3.2.2.2",
+    "2.2.2.2"
+   ],
+   "calc": false,
+   "prereq": [
+    "pca"
+   ],
+   "cover": "숨은 요인 찾기, 주성분 분석과의 차이, 산점도 행렬·상관행렬",
+   "status": "대기"
+  },
+  {
+   "order": 116,
+   "id": "text-mining",
+   "title": "텍스트 마이닝: 토큰화와 TF-IDF",
+   "group": "고급 분석",
+   "adsp": [],
+   "bigdata": [
+    "2.2.2.3",
+    "3.2.2.6"
+   ],
+   "calc": true,
+   "prereq": [],
+   "cover": "말뭉치·불용어·어간 추출, 문서-단어 행렬, TF-IDF 계산, 감성 분석",
+   "status": "대기"
+  },
+  {
+   "order": 117,
+   "id": "sna",
+   "title": "사회연결망 분석과 중심성",
+   "group": "고급 분석",
+   "adsp": [],
+   "bigdata": [
+    "3.2.2.6"
+   ],
+   "calc": true,
+   "prereq": [],
+   "cover": "노드와 링크, 연결·근접·매개·위세 중심성 계산",
+   "status": "대기"
+  },
+  {
+   "order": 118,
+   "id": "categorical-analysis",
+   "title": "범주형 자료 분석: 상대위험도와 오즈비",
+   "group": "고급 분석",
+   "adsp": [],
+   "bigdata": [
+    "3.2.2.1"
+   ],
+   "calc": true,
+   "prereq": [
+    "chi-square-tests"
+   ],
+   "cover": "분할표에서 상대위험도·오즈비 계산, 검정 고르기",
+   "status": "대기"
+  },
+  {
+   "order": 119,
+   "id": "cnn",
+   "title": "합성곱 신경망(CNN)",
+   "group": "고급 분석",
+   "adsp": [],
+   "bigdata": [
+    "3.2.2.5"
+   ],
+   "calc": true,
+   "prereq": [
+    "neural-network"
+   ],
+   "cover": "필터·스트라이드·패딩, 출력 크기 계산, 풀링",
+   "status": "대기"
+  },
+  {
+   "order": 120,
+   "id": "rnn-lstm",
+   "title": "순환 신경망(RNN)과 LSTM",
+   "group": "고급 분석",
+   "adsp": [],
+   "bigdata": [
+    "3.2.2.5"
+   ],
+   "calc": false,
+   "prereq": [
+    "backpropagation"
+   ],
+   "cover": "순서가 있는 데이터, 장기 의존성 문제, LSTM의 게이트",
+   "status": "대기"
+  },
+  {
+   "order": 121,
+   "id": "autoencoder-gan",
+   "title": "오토인코더와 GAN",
+   "group": "고급 분석",
+   "adsp": [],
+   "bigdata": [
+    "3.2.2.5"
+   ],
+   "calc": false,
+   "prereq": [
+    "neural-network"
+   ],
+   "cover": "압축했다 되살리는 오토인코더, 생성자와 판별자의 경쟁",
+   "status": "대기"
+  },
+  {
+   "order": 122,
+   "id": "hyperparameter-tuning",
+   "title": "하이퍼파라미터 최적화",
+   "group": "모형 개선",
+   "adsp": [],
+   "bigdata": [
+    "4.1.2.2"
+   ],
+   "calc": false,
+   "prereq": [
+    "data-split-cv"
+   ],
+   "cover": "파라미터와 하이퍼파라미터 구분, 그리드·랜덤·베이지안 탐색",
+   "status": "대기"
+  },
+  {
+   "order": 123,
+   "id": "optimizers",
+   "title": "경사하강법과 최적화 알고리즘",
+   "group": "모형 개선",
+   "adsp": [],
+   "bigdata": [
+    "4.1.2.2"
+   ],
+   "calc": true,
+   "prereq": [
+    "backpropagation"
+   ],
+   "cover": "기울기 반대로 한 걸음, 학습률, 배치·확률적·미니배치, 모멘텀·AdaGrad·RMSProp·Adam",
+   "status": "대기"
+  },
+  {
+   "order": 124,
+   "id": "overfitting-prevention",
+   "title": "과대적합 방지 기법",
+   "group": "모형 개선",
+   "adsp": [],
+   "bigdata": [
+    "4.1.2.1"
+   ],
+   "calc": false,
+   "prereq": [
+    "overfitting",
+    "regularization"
+   ],
+   "cover": "데이터 늘리기, 모델 단순화, 가중치 규제, 드롭아웃, 조기 종료",
+   "status": "대기"
+  },
+  {
+   "order": 125,
+   "id": "model-fusion",
+   "title": "분석모형 융합: 보팅과 스태킹",
+   "group": "모형 개선",
+   "adsp": [],
+   "bigdata": [
+    "4.1.2.3"
+   ],
+   "calc": false,
+   "prereq": [
+    "ensemble"
+   ],
+   "cover": "하드·소프트 보팅, 스태킹, 앙상블과의 관계",
+   "status": "대기"
+  },
+  {
+   "order": 126,
+   "id": "final-model",
+   "title": "최종 모형 선정과 해석",
+   "group": "모형 개선",
+   "adsp": [],
+   "bigdata": [
+    "4.1.2.4",
+    "4.2.1.1"
+   ],
+   "calc": false,
+   "prereq": [
+    "data-split-cv"
+   ],
+   "cover": "평가 기준 정하기, 변수 중요도, 부분 의존도, 설명 가능한 AI",
+   "status": "대기"
+  },
+  {
+   "order": 127,
+   "id": "business-contribution",
+   "title": "비즈니스 기여도 평가: ROI·NPV·IRR",
+   "group": "결과 활용",
+   "adsp": [],
+   "bigdata": [
+    "4.2.1.2"
+   ],
+   "calc": true,
+   "prereq": [],
+   "cover": "투자 대비 효과 계산, 순현재가치, 내부수익률, 투자회수기간, 총소유비용",
+   "status": "대기"
+  },
+  {
+   "order": 128,
+   "id": "visualization-types",
+   "title": "시각화 유형: 시간·분포·관계·비교·공간",
+   "group": "결과 활용",
+   "adsp": [],
+   "bigdata": [
+    "4.2.2.1",
+    "4.2.2.2",
+    "4.2.2.3"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "목적별 그래프 고르기(막대·히스토그램·산점도·버블·히트맵·평행좌표·스타 차트)",
+   "status": "대기"
+  },
+  {
+   "order": 129,
+   "id": "infographics",
+   "title": "인포그래픽",
+   "group": "결과 활용",
+   "adsp": [],
+   "bigdata": [
+    "4.2.2.4"
+   ],
+   "calc": false,
+   "prereq": [
+    "visualization-types"
+   ],
+   "cover": "인포그래픽의 유형과 만드는 절차",
+   "status": "대기"
+  },
+  {
+   "order": 130,
+   "id": "model-deployment",
+   "title": "분석모형 전개·모니터링·리모델링",
+   "group": "결과 활용",
+   "adsp": [],
+   "bigdata": [
+    "4.2.3.1",
+    "4.2.3.2",
+    "4.2.3.3",
+    "4.2.3.4"
+   ],
+   "calc": false,
+   "prereq": [],
+   "cover": "운영 시스템에 넣기, 성능 저하 감시, 다시 학습하는 주기, 활용 시나리오",
+   "status": "대기"
+  },
+  {
+   "order": 131,
+   "id": "model-design",
+   "title": "분석모형 설계: 선정·정의·구축 절차와 분석 도구",
+   "group": "결과 활용",
+   "adsp": [],
+   "bigdata": [
+    "3.1.1.1",
+    "3.1.1.2",
+    "3.1.1.3",
+    "3.1.2.1"
+   ],
+   "calc": false,
+   "prereq": [
+    "data-mining-overview"
+   ],
+   "cover": "목적에 맞는 모형 고르기, 요건 정의→모델링→검증→적용, R·파이썬 등 도구 고르기",
+   "status": "대기"
+  }
+ ]
 }

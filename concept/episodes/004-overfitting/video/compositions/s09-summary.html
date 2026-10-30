@@ -1,0 +1,39 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s09-row { position: absolute; left: 192px; width: 1536px; height: 170px; padding: 0 56px; box-sizing: border-box;
+      display: grid; grid-template-columns: 400px 1fr; align-items: center; }
+    #s09-r1 { top: 262px; }
+    #s09-r2 { top: 462px; }
+    .s09-k { font-size: 72px; font-weight: 900; letter-spacing: -0.01em; }
+    .s09-v { font-size: 48px; font-weight: 800; }
+    .s09-v span { display: block; margin-top: 8px; color: var(--color-ink2, #71717A); font-weight: 700; font-size: 34px; }
+    #s09-base { position: absolute; left: 192px; top: 690px; font-size: 44px; font-weight: 900; opacity: 0; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="s09" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,3]"},{"id":"dur","type":"number","label":"장면 길이","default":12},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"r2","type":"number","label":"둘째 줄 시각","default":0},{"id":"r3","type":"number","label":"기준 줄 시각","default":0},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s09-all">
+      <div id="s09-head" class="x-head">한 줄 정리</div>
+      <div class="s09-row x-card x-hide" id="s09-r1"><div class="s09-k x-acc">과대적합</div><div class="s09-v">연습 문제만 잘 푼다<span>훈련 ↑ · 검증 ↓</span></div></div>
+      <div class="s09-row x-card x-hide" id="s09-r2"><div class="s09-k x-ink2">과소적합</div><div class="s09-v">둘 다 못 푼다<span>훈련 ↓ · 검증 ↓</span></div></div>
+      <div id="s09-base">판단 기준 = <span class="x-acc">처음 보는 데이터의 성적</span></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+
+    // 45 한 줄로 정리하면
+    ft("#s09-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    // 46 과대적합 …, 과소적합 …, 판단 기준 …
+    ft("#s09-r1", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(1, 0.1));
+    ft("#s09-r2", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, Number(V.r2) || at(1, 2.6));
+    ft("#s09-base", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, Number(V.r3) || at(1, 5.0));
+    window.__timelines["s09"] = tl;
+  </script>
+</template>

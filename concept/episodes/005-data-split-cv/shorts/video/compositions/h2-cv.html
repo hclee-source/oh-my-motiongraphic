@@ -1,0 +1,54 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h2-t { position: absolute; left: 80px; font-size: 48px; font-weight: 900; opacity: 0; white-space: nowrap; }
+    .h2-row { position: absolute; left: 80px; width: 920px; height: 70px; opacity: 0; }
+    .h2-b { position: absolute; top: 0; width: 172px; height: 70px; border-radius: 14px; background: var(--color-ink, #18181B); }
+    .h2-b.v { background: var(--color-accent, #6B3FE6); }
+    #h2-loo { position: absolute; left: 80px; top: 1060px; width: 920px; height: 170px; padding: 32px 44px; opacity: 0; }
+    #h2-l1 { font-size: 48px; font-weight: 900; }
+    #h2-l2 { margin-top: 8px; font-size: 38px; font-weight: 800; color: #A1A1AA; }
+  </style>
+  <div id="root" data-composition-id="h2" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.3,5,10,14]"},{"id":"dur","type":"number","label":"장면 길이","default":19},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h2-all">
+      <div class="h2-t" id="h2-t1" style="top: 320px">홀드아웃 <span class="x-ink2" style="font-size: 38px">한 번 나눈다</span></div>
+      <div class="h2-row" id="h2-h" style="top: 400px"><div class="h2-b" style="left: 0; width: 700px"></div><div class="h2-b v" style="left: 712px; width: 208px"></div></div>
+      <div class="h2-t" id="h2-t2" style="top: 530px">k-겹 교차 검증 <span class="x-ink2" style="font-size: 38px">k = 5</span></div>
+      <div class="h2-row h2-k" style="top: 610px"></div><div class="h2-row h2-k" style="top: 690px"></div><div class="h2-row h2-k" style="top: 770px"></div>
+      <div class="h2-row h2-k" style="top: 850px"></div><div class="h2-row h2-k" style="top: 930px"></div>
+      <div id="h2-loo" class="x-dark"><div id="h2-l1">LOOCV</div><div id="h2-l2">하나씩 빼서 검증 · 데이터 수만큼 학습</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 19;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    // k-겹 다섯 줄: 줄마다 다른 조각이 검증
+    gsap.utils.toArray(".h2-k").forEach((row, k) => {
+      for (let j = 0; j < 5; j++) {
+        const b = document.createElement("div");
+        b.className = "h2-b" + (j === k ? " v" : "");
+        b.style.left = j * 187 + "px";
+        row.appendChild(b);
+      }
+    });
+
+    // 3 한 번만 나누면 홀드아웃
+    fade("#h2-t1", at(0, 0.1), 0, 1);
+    ft("#h2-h", { opacity: 0, x: -16 }, { opacity: 1, x: 0 }, at(0, 0.5));
+    // 4 k조각으로 나눠 돌아가며 / 5 k번 학습
+    fade("#h2-t2", at(1, 0.1), 0, 1);
+    gsap.utils.toArray(".h2-k").forEach((row, k) => ft(row, { opacity: 0, x: -16 }, { opacity: 1, x: 0 }, at(1, 0.8 + k * 0.6)));
+    // 6 하나씩 빼면 LOOCV
+    ft("#h2-loo", { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, at(3, 0.2));
+    if (String(V.exit) !== "false") ft("#h2-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.35);
+    window.__timelines["h2"] = tl;
+  </script>
+</template>

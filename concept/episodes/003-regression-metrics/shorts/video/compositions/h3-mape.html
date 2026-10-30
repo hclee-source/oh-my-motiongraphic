@@ -1,0 +1,48 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h3-a { position: absolute; left: 80px; top: 360px; width: 920px; height: 380px; padding: 50px 56px; }
+    #h3-n { font-size: 96px; font-weight: 900; }
+    #h3-f { margin-top: 18px; font-size: 56px; font-weight: 800; color: #A1A1AA; white-space: nowrap; }
+    #h3-p { margin-top: 18px; font-size: 48px; font-weight: 800; color: var(--color-accent-dark, #A68CFF); opacity: 0; }
+    #h3-b { position: absolute; left: 80px; top: 800px; width: 920px; height: 300px; padding: 46px 56px; }
+    #h3-ring { position: absolute; inset: -2px; border-radius: 32px; border: 5px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    #h3-b1 { font-size: 64px; font-weight: 900; }
+    #h3-b2 { margin-top: 14px; font-size: 44px; font-weight: 800; color: var(--color-ink2, #71717A); }
+  </style>
+  <div id="root" data-composition-id="h3" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.3,5]"},{"id":"dur","type":"number","label":"장면 길이","default":11},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h3-all">
+      <div id="h3-a" class="x-dark x-hide">
+        <div id="h3-n">MAPE</div>
+        <div id="h3-f">|오차| ÷ 실제 → %</div>
+        <div id="h3-p">단위가 달라도 비교</div>
+      </div>
+      <div id="h3-b" class="x-card x-hide">
+        <div id="h3-ring"></div>
+        <div id="h3-b1">실제값 0 → ÷ 0</div>
+        <div id="h3-b2">계산할 수 없다</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 11;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+
+    // 6 MAPE = 오차 ÷ 실제의 평균
+    ft("#h3-a", { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, at(0, 0.1));
+    // 7 단위가 달라도 비교, 실제값 0이면 못 쓴다
+    fade("#h3-p", at(1, 0.2), 0, 1);
+    ft("#h3-b", { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, at(1, 2.2));
+    fade("#h3-ring", at(1, 2.6), 0, 1);
+    if (String(V.exit) !== "false") ft("#h3-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.35);
+    window.__timelines["h3"] = tl;
+  </script>
+</template>

@@ -1,0 +1,61 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s01-box { position: absolute; top: 262px; width: 700px; height: 420px; padding: 44px 52px; box-sizing: border-box; }
+    #s01-a { left: 192px; }
+    #s01-b { left: 1028px; }
+    .s01-cap { font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    .s01-lab { margin-top: 8px; font-size: 44px; font-weight: 800; }
+    .s01-big { margin-top: 18px; font-size: 180px; font-weight: 900; letter-spacing: -0.02em; line-height: 1; }
+    #s01-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    .s01-word { position: absolute; top: 730px; font-size: 96px; font-weight: 900; letter-spacing: -0.015em; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s01" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0,4,7,11,16]"},{"id":"dur","type":"number","label":"장면 길이","default":22},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s01-all">
+      <div id="s01-a" class="s01-box x-card x-hide">
+        <div class="s01-cap">기출 답을 통째로 외운 수험생</div>
+        <div class="s01-lab">기출 다시 풀기</div>
+        <div class="s01-big" id="s01-n1">0점</div>
+      </div>
+      <div id="s01-b" class="s01-box x-card x-hide">
+        <div id="s01-ring"></div>
+        <div class="s01-cap">같은 수험생이</div>
+        <div class="s01-lab">처음 보는 문제</div>
+        <div class="s01-big x-acc" id="s01-n2">100점</div>
+      </div>
+      <div class="s01-word" id="s01-w1" style="left: 192px">과대적합</div>
+      <div class="s01-word x-ink2" id="s01-w2" style="left: 1028px">과소적합</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 22;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, ease: "back.out(1.6)" }, t);
+    const count = (el, t, a, b, d) => { const o = { v: a }; tl.fromTo(o, { v: a }, { v: b, duration: d * S, ease: "power2.out", immediateRender: false, onUpdate: () => { el.textContent = Math.round(o.v) + "점"; } }, t); };
+
+    // 1 기출 답을 외운 수험생
+    stamp("#s01-a", at(0, 0.2));
+    // 2 다시 풀면 100점
+    count(document.getElementById("s01-n1"), at(1, 0.3), 0, 100, 0.8);
+    // 3 처음 보는 문제에서 뚝
+    stamp("#s01-b", at(2, 0.2));
+    count(document.getElementById("s01-n2"), at(2, 1.4), 100, 48, 1.0);
+    fade("#s01-ring", at(2, 2.6), 0, 1);
+    // 4 이것이 과대적합
+    ft("#s01-w1", { opacity: 0, y: 24 }, { opacity: 1, y: 0 }, at(3, 2.0));
+    // 5 과대적합과 과소적합
+    ft("#s01-a, #s01-b", { opacity: 1 }, { opacity: 0.35, duration: 0.5 * S, ease: "power2.inOut" }, at(4, 0.2));
+    fade("#s01-ring", at(4, 0.2), 1, 0);
+    ft("#s01-w2", { opacity: 0, y: 24 }, { opacity: 1, y: 0 }, at(4, 1.4));
+    if (String(V.exit) !== "false") ft("#s01-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s01"] = tl;
+  </script>
+</template>

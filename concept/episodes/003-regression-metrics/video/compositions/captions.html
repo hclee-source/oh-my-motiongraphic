@@ -1,0 +1,95 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 108px; text-align: center; overflow: visible;
+      font-size: 46px; font-weight: 600; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 1536px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-01a" class="cap clip" data-start="3.600" data-duration="1.608"><span>배달 앱이 예상 도착 시간을</span></div>
+    <div id="cap-01b" class="cap clip" data-start="5.208" data-duration="2.005"><span>알려 준다고 해 보겠습니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="7.313" data-duration="3.095"><span>네 번 주문했는데, 두 번은 예상보다 2분</span></div>
+    <div id="cap-02b" class="cap clip" data-start="10.408" data-duration="3.162"><span>일찍 왔고 두 번은 2분 늦게 왔습니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="13.670" data-duration="1.912"><span>오차를 그냥 더하면 플러스 2와</span></div>
+    <div id="cap-03b" class="cap clip" data-start="15.582" data-duration="2.750"><span>마이너스 2가 서로 지워져 0이 됩니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="18.432" data-duration="4.022"><span>네 번 모두 틀렸는데 오차가 0이라니, 이상하죠.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="22.554" data-duration="1.722"><span>그래서 회귀 모델은 오차를</span></div>
+    <div id="cap-05b" class="cap clip" data-start="24.276" data-duration="1.973"><span>재는 방법을 따로 씁니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="26.349" data-duration="4.233"><span>오늘은 MAE, MSE, RMSE, MAPE,</span></div>
+    <div id="cap-06b" class="cap clip" data-start="30.582" data-duration="4.282"><span>네 가지를 같은 숫자로 직접 계산해 보겠습니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="35.514" data-duration="2.088"><span>주문 다섯 건의 실제 배달 시간과</span></div>
+    <div id="cap-07b" class="cap clip" data-start="37.603" data-duration="2.338"><span>예측을 표로 놓아 보겠습니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="40.040" data-duration="2.637"><span>실제는 20분, 20분,</span></div>
+    <div id="cap-08b" class="cap clip" data-start="42.677" data-duration="4.325"><span>40분, 40분, 40분이었습니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="47.102" data-duration="3.503"><span>모델의 예측은 22분, 18분,</span></div>
+    <div id="cap-09b" class="cap clip" data-start="50.605" data-duration="4.254"><span>42분, 38분, 48분이었고요.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="54.959" data-duration="5.504"><span>예측에서 실제를 빼면 오차는 플러스 2, 마이너스 2,</span></div>
+    <div id="cap-10b" class="cap clip" data-start="60.463" data-duration="5.514"><span>플러스 2, 마이너스 2, 그리고 플러스 8입니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="66.077" data-duration="2.119"><span>실제에서 예측을 빼도 되는데,</span></div>
+    <div id="cap-11b" class="cap clip" data-start="68.196" data-duration="3.183"><span>어차피 부호를 없앨 거라 결과는 같습니다.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="71.479" data-duration="2.188"><span>부호를 없애는 방법은 두 가지,</span></div>
+    <div id="cap-12b" class="cap clip" data-start="73.667" data-duration="3.111"><span>절댓값을 씌우거나 제곱하는 것입니다.</span></div>
+    <div id="cap-13a" class="cap clip" data-start="77.428" data-duration="3.875"><span>첫 번째는 MAE, 평균 절대 오차입니다.</span></div>
+    <div id="cap-14a" class="cap clip" data-start="81.403" data-duration="2.967"><span>오차에 절댓값을 씌우면 2,</span></div>
+    <div id="cap-14b" class="cap clip" data-start="84.371" data-duration="3.218"><span>2, 2, 2, 8이 됩니다.</span></div>
+    <div id="cap-15a" class="cap clip" data-start="87.688" data-duration="4.437"><span>다 더하면 16, 다섯 건으로 나누면 3.2입니다.</span></div>
+    <div id="cap-16a" class="cap clip" data-start="92.225" data-duration="3.072"><span>평균적으로 3.2분쯤 틀린다는 뜻이니,</span></div>
+    <div id="cap-16b" class="cap clip" data-start="95.297" data-duration="1.956"><span>해석이 가장 쉽습니다.</span></div>
+    <div id="cap-17a" class="cap clip" data-start="97.903" data-duration="3.973"><span>두 번째는 MSE, 평균 제곱 오차입니다.</span></div>
+    <div id="cap-18a" class="cap clip" data-start="101.976" data-duration="3.005"><span>오차를 제곱하면 4, 4,</span></div>
+    <div id="cap-18b" class="cap clip" data-start="104.981" data-duration="4.074"><span>4, 4, 그리고 64가 됩니다.</span></div>
+    <div id="cap-19a" class="cap clip" data-start="109.154" data-duration="3.966"><span>다 더하면 80, 다섯으로 나누면 16입니다.</span></div>
+    <div id="cap-20a" class="cap clip" data-start="113.220" data-duration="1.741"><span>그런데 80 가운데 64가</span></div>
+    <div id="cap-20b" class="cap clip" data-start="114.961" data-duration="2.782"><span>8분짜리 오차 하나에서 나왔습니다.</span></div>
+    <div id="cap-21a" class="cap clip" data-start="117.843" data-duration="3.904"><span>제곱을 하면 큰 오차는 훨씬 더 크게 부풀려집니다.</span></div>
+    <div id="cap-22a" class="cap clip" data-start="121.847" data-duration="1.492"><span>그리고 단위도 분이 아니라</span></div>
+    <div id="cap-22b" class="cap clip" data-start="123.339" data-duration="1.742"><span>분의 제곱이 되어 버리죠.</span></div>
+    <div id="cap-23a" class="cap clip" data-start="125.731" data-duration="2.038"><span>세 번째 RMSE는 MSE에</span></div>
+    <div id="cap-23b" class="cap clip" data-start="127.769" data-duration="2.119"><span>제곱근을 씌운 값입니다.</span></div>
+    <div id="cap-24a" class="cap clip" data-start="129.988" data-duration="1.588"><span>16의 제곱근은 4,</span></div>
+    <div id="cap-24b" class="cap clip" data-start="131.576" data-duration="2.719"><span>단위는 다시 분으로 돌아옵니다.</span></div>
+    <div id="cap-25a" class="cap clip" data-start="134.395" data-duration="2.647"><span>큰 오차에 민감한 성질은 그대로 두고,</span></div>
+    <div id="cap-25b" class="cap clip" data-start="137.042" data-duration="2.897"><span>읽기 쉽게 단위만 되돌린 지표입니다.</span></div>
+    <div id="cap-26a" class="cap clip" data-start="140.589" data-duration="1.812"><span>큰 오차 하나가 얼마나 영향을</span></div>
+    <div id="cap-26b" class="cap clip" data-start="142.401" data-duration="2.062"><span>주는지 비교해 보겠습니다.</span></div>
+    <div id="cap-27a" class="cap clip" data-start="144.563" data-duration="2.320"><span>다섯 건 모두 2분씩 틀렸다면</span></div>
+    <div id="cap-27b" class="cap clip" data-start="146.883" data-duration="3.344"><span>MAE도 2, RMSE도 2입니다.</span></div>
+    <div id="cap-28a" class="cap clip" data-start="150.327" data-duration="3.418"><span>8분짜리 하나가 섞이자 MAE는 3.2가 되고,</span></div>
+    <div id="cap-28b" class="cap clip" data-start="153.745" data-duration="2.203"><span>RMSE는 4가 됐습니다.</span></div>
+    <div id="cap-29a" class="cap clip" data-start="156.048" data-duration="3.114"><span>RMSE가 큰 오차에 더 크게 반응한 거죠.</span></div>
+    <div id="cap-30a" class="cap clip" data-start="159.261" data-duration="2.316"><span>그래서 가끔 크게 틀리는 것이 특히</span></div>
+    <div id="cap-30b" class="cap clip" data-start="161.577" data-duration="3.227"><span>곤란할 때는 MSE나 RMSE를 봅니다.</span></div>
+    <div id="cap-31a" class="cap clip" data-start="164.904" data-duration="1.988"><span>반대로 이상값 몇 개에 휘둘리고</span></div>
+    <div id="cap-31b" class="cap clip" data-start="166.892" data-duration="2.391"><span>싶지 않다면 MAE가 낫습니다.</span></div>
+    <div id="cap-32a" class="cap clip" data-start="169.383" data-duration="3.524"><span>참고로 RMSE는 언제나 MAE보다 크거나 같고,</span></div>
+    <div id="cap-32b" class="cap clip" data-start="172.907" data-duration="3.453"><span>오차의 크기가 모두 같을 때만 둘이 같아집니다.</span></div>
+    <div id="cap-33a" class="cap clip" data-start="177.010" data-duration="3.829"><span>마지막 MAPE는 평균 절대 백분율 오차입니다.</span></div>
+    <div id="cap-34a" class="cap clip" data-start="180.939" data-duration="1.566"><span>오차를 실제값으로 나눠</span></div>
+    <div id="cap-34b" class="cap clip" data-start="182.505" data-duration="2.286"><span>비율로 바꾼 뒤 평균을 냅니다.</span></div>
+    <div id="cap-35a" class="cap clip" data-start="184.891" data-duration="4.896"><span>20분짜리 두 건은 각각 10퍼센트, 2분 틀린 40분짜리</span></div>
+    <div id="cap-35b" class="cap clip" data-start="189.787" data-duration="4.755"><span>두 건은 5퍼센트, 8분 틀린 건은 20퍼센트입니다.</span></div>
+    <div id="cap-36a" class="cap clip" data-start="194.642" data-duration="3.070"><span>다섯 개를 평균하면 10퍼센트가 나옵니다.</span></div>
+    <div id="cap-37a" class="cap clip" data-start="197.813" data-duration="3.360"><span>단위가 없는 퍼센트라서, 배달 시간과 집값처럼</span></div>
+    <div id="cap-37b" class="cap clip" data-start="201.173" data-duration="3.106"><span>단위가 다른 예측도 비교할 수 있습니다.</span></div>
+    <div id="cap-38a" class="cap clip" data-start="204.379" data-duration="1.872"><span>대신 실제값이 0이면 나눌</span></div>
+    <div id="cap-38b" class="cap clip" data-start="206.251" data-duration="2.122"><span>수 없어 계산이 안 됩니다.</span></div>
+    <div id="cap-39a" class="cap clip" data-start="208.473" data-duration="2.001"><span>실제값이 아주 작을 때도 비율이</span></div>
+    <div id="cap-39b" class="cap clip" data-start="210.474" data-duration="2.558"><span>지나치게 커지니 조심해야 합니다.</span></div>
+    <div id="cap-40a" class="cap clip" data-start="213.682" data-duration="2.582"><span>시험장에서 챙길 것 세 가지입니다.</span></div>
+    <div id="cap-41a" class="cap clip" data-start="216.363" data-duration="2.781"><span>첫째, MSE와 RMSE는 오차를</span></div>
+    <div id="cap-41b" class="cap clip" data-start="219.144" data-duration="3.031"><span>제곱하므로 이상값에 민감합니다.</span></div>
+    <div id="cap-42a" class="cap clip" data-start="222.275" data-duration="3.342"><span>이상값에 덜 민감한 쪽은 MAE입니다.</span></div>
+    <div id="cap-43a" class="cap clip" data-start="225.718" data-duration="3.401"><span>둘째, MAE와 RMSE는 원래 단위,</span></div>
+    <div id="cap-43b" class="cap clip" data-start="229.119" data-duration="4.451"><span>MSE는 제곱 단위, MAPE는 퍼센트입니다.</span></div>
+    <div id="cap-44a" class="cap clip" data-start="233.670" data-duration="2.210"><span>셋째, MAPE는 실제값이</span></div>
+    <div id="cap-44b" class="cap clip" data-start="235.880" data-duration="2.644"><span>0인 자료에는 쓸 수 없습니다.</span></div>
+    <div id="cap-45a" class="cap clip" data-start="238.624" data-duration="1.914"><span>덧붙여, 네 지표 모두 0에</span></div>
+    <div id="cap-45b" class="cap clip" data-start="240.538" data-duration="2.512"><span>가까울수록 좋은 모델입니다.</span></div>
+    <div id="cap-46a" class="cap clip" data-start="243.700" data-duration="2.894"><span>오늘 내용을 한 줄로 정리하면 이렇습니다.</span></div>
+    <div id="cap-47a" class="cap clip" data-start="246.694" data-duration="4.200"><span>절댓값의 평균은 MAE, 제곱의 평균은 MSE,</span></div>
+    <div id="cap-47b" class="cap clip" data-start="250.894" data-duration="5.049"><span>그 제곱근은 RMSE, 비율의 평균은 MAPE입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

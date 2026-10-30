@@ -1,0 +1,22 @@
+{
+  "_설명": "쇼츠(세로) 조립 설정. 장면 순서(장 번호, 여러 장을 한 장면으로 묶을 수 있음), 영상 내내 떠 있는 위쪽 제목, 효과음 위치([이름, 장면 안 문장 순번(0부터), 그 문장 시작 뒤 초]).",
+  "format": {
+    "width": 1080, "height": 1920, "resolution": "portrait",
+    "caption": { "max": 17, "deep": true, "bottom": 540, "size": 54, "weight": 700, "width": 940 }
+  },
+  "overlays": [
+    { "id": "hd", "file": "header.html" }
+  ],
+  "scenes": [
+    { "id": "h1", "file": "h1-zero.html", "chapter": 1 },
+    { "id": "h2", "file": "h2-square.html", "chapter": 2 },
+    { "id": "h3", "file": "h3-mape.html", "chapter": 3 },
+    { "id": "h4", "file": "h4-summary.html", "chapter": 4, "exit": false }
+  ],
+  "sfx": {
+    "h1": [["pop", 0, 0.1], ["pop", 0, 0.45], ["pop", 0, 0.8], ["pop", 0, 1.15], ["pop", 0, 3.0], ["click-soft", 1, 0.8]],
+    "h2": [["pop", 0, 0.1], ["pop", 0, 2.0], ["pop", 1, 0.4], ["click-soft", 2, 0.3], ["whoosh-short", 2, 1.2]],
+    "h3": [["whoosh-short", 0, 0.1], ["click-soft", 1, 0.2], ["pop", 1, 2.2]],
+    "h4": [["pop", 0, 0.2], ["pop", 0, 2.4], ["pop", 1, 0.2]]
+  }
+}

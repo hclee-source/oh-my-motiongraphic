@@ -1,0 +1,38 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h1-c { position: absolute; left: 80px; width: 920px; height: 260px; padding: 40px 52px; }
+    .h1-cap { font-size: 40px; font-weight: 800; color: var(--color-ink2, #71717A); }
+    .h1-big { margin-top: 10px; font-size: 130px; font-weight: 900; line-height: 1; letter-spacing: -0.02em; }
+    #h1-word { position: absolute; left: 80px; top: 1000px; font-size: 120px; font-weight: 900; color: var(--color-accent, #6B3FE6); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="h1" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.3,6]"},{"id":"dur","type":"number","label":"장면 길이","default":9},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h1-all">
+      <div class="h1-c x-card x-hide" id="h1-a" style="top: 360px"><div class="h1-cap">기출 다시 풀기</div><div class="h1-big">100점</div></div>
+      <div class="h1-c x-card x-hide" id="h1-b" style="top: 660px"><div class="h1-cap">처음 보는 문제</div><div class="h1-big x-acc" id="h1-n">100점</div></div>
+      <div id="h1-word">과대적합</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 9;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, ease: "back.out(1.6)" }, t);
+    const el = document.getElementById("h1-n"), o = { v: 100 };
+
+    // 1 기출은 100점, 새 문제는 못 푼다
+    stamp("#h1-a", at(0, 0.2));
+    stamp("#h1-b", at(0, 2.4));
+    tl.fromTo(o, { v: 100 }, { v: 48, duration: 0.8 * S, ease: "power2.out", immediateRender: false, onUpdate: () => { el.textContent = Math.round(o.v) + "점"; } }, at(0, 3.2));
+    // 2 과대적합
+    ft("#h1-word", { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, at(1, 0.3));
+    if (String(V.exit) !== "false") ft("#h1-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.35);
+    window.__timelines["h1"] = tl;
+  </script>
+</template>

@@ -1,0 +1,27 @@
+/* 쇼츠(세로 1080×1920) 장면이 함께 쓰는 틀. 색·글꼴 값은 index.html 변수에서 온다.
+   안전 구역: 위 0~140은 쇼츠 상단 메뉴, 아래 1450~는 채널 이름·설명, 오른쪽 960~(1000 아래)는 좋아요 버튼이 덮는다.
+   그림은 y 300~1250, x 80~1000 안에, 자막은 y 1300~1380에 둔다. */
+.x-card { background: var(--color-card, #FFFFFF); border: 2px solid var(--color-line, #E3E5EA); border-radius: 32px;
+  box-shadow: 0 10px 30px var(--color-shadow, rgba(20,24,40,0.06)); box-sizing: border-box; }
+.x-dark { background: var(--color-anchor, #18181B); border-radius: 32px; color: #FFFFFF; box-sizing: border-box; }
+.x-hide { opacity: 0; }
+.x-acc { color: var(--color-accent, #6B3FE6); }
+.x-accd { color: var(--color-accent-dark, #A68CFF); }
+.x-ink2 { color: var(--color-ink2, #71717A); }
+.x-wrap { position: relative; display: inline-block; }
+.x-ov { position: absolute; left: 0; top: 0; white-space: nowrap; color: var(--color-accent, #6B3FE6); opacity: 0; }
+
+/* 혼동행렬(세로용) */
+.x-mx { position: absolute; left: 109px; top: 330px; display: grid;
+  grid-template-columns: 150px 340px 340px; grid-template-rows: 60px 56px 196px 196px; gap: 16px; }
+.x-lab { font-size: 40px; font-weight: 800; display: flex; align-items: center; }
+.x-pred { grid-column: 2 / 4; justify-content: center; border-bottom: 3px solid var(--color-hair, #D3D6DD); }
+.x-act { justify-content: flex-end; padding-right: 18px; }
+.x-h { font-size: 38px; font-weight: 700; color: var(--color-ink2, #71717A); display: flex; align-items: center; }
+.x-ch { justify-content: center; }
+.x-rh { justify-content: flex-end; padding-right: 18px; }
+.x-cell { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+.x-hl { position: absolute; inset: -2px; border-radius: 32px; border: 3px solid var(--color-accent, #6B3FE6);
+  background: color-mix(in srgb, var(--color-accent, #6B3FE6) 14%, var(--color-card, #FFFFFF)); opacity: 0; }
+.x-code { position: relative; font-size: 96px; font-weight: 800; line-height: 1; letter-spacing: -0.01em; }
+.x-kn { position: relative; font-size: 36px; font-weight: 700; color: var(--color-ink2, #71717A); }

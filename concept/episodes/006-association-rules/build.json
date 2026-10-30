@@ -1,0 +1,25 @@
+{
+  "_설명": "장면 순서(장 번호와 연결, 여러 장을 한 장면으로 묶을 수 있음), 장면 끝에서 사라질지(exit), 효과음 위치([이름, 장면 안 문장 순번(0부터), 그 문장 시작 뒤 초]).",
+  "scenes": [
+    { "id": "s00", "file": "s00-title.html" },
+    { "id": "s01", "file": "s01-hook.html", "chapter": 1 },
+    { "id": "s02", "file": "s02-venn.html", "chapter": [2, 3, 4] },
+    { "id": "s05", "file": "s05-lift.html", "chapter": 5 },
+    { "id": "s06", "file": "s06-water.html", "chapter": 6 },
+    { "id": "s07", "file": "s07-formula.html", "chapter": 7 },
+    { "id": "s08", "file": "s08-check.html", "chapter": 8 },
+    { "id": "s09", "file": "s09-summary.html", "chapter": 9, "exit": false,
+      "extra": { "r2": { "sentence": 47, "at": "신뢰도는" }, "r3": { "sentence": 47, "at": "향상도는" } } }
+  ],
+  "sfx": {
+    "s00": [["chime", null, 0.15], ["whoosh-short", null, 3.0]],
+    "s01": [["pop", 0, 0.2], ["click-soft", 0, 2.2], ["pop", 1, 1.4], ["pop", 1, 2.4], ["pop", 2, 2.2], ["click-soft", 3, 2.2], ["click-soft", 3, 2.9], ["click-soft", 3, 3.6]],
+    "s02": [["pop", 0, 0.6], ["whoosh-short", 2, 0.3], ["click-soft", 3, 0.3], ["click-soft", 3, 2.0], ["pop", 3, 4.0], ["whoosh-short", 4, 0.1],
+            ["click-soft", 5, 0.6], ["pop", 6, 0.2], ["whoosh-short", 9, 0.1], ["click-soft", 10, 0.6], ["pop", 11, 0.2], ["click-soft", 14, 0.4], ["pop", 14, 1.2]],
+    "s05": [["click-soft", 2, 0.6], ["click-soft", 3, 0.6], ["pop", 4, 0.4], ["click-soft", 5, 0.6], ["pop", 6, 0.2], ["click-soft", 7, 0.4]],
+    "s06": [["whoosh-short", 1, 0.2], ["click-soft", 1, 2.2], ["click-soft", 2, 0.4], ["pop", 3, 0.3], ["pop", 4, 0.3], ["pop", 5, 0.3], ["click-soft", 6, 0.4]],
+    "s07": [["whoosh-short", 0, 0.6], ["click-soft", 1, 0.3], ["click-soft", 2, 0.3], ["click-soft", 3, 0.3], ["pop", 4, 0.6]],
+    "s08": [["pop", 1, 0.2], ["pop", 2, 0.2], ["pop", 3, 0.2], ["pop", 4, 0.3]],
+    "s09": [["pop", 1, 0.1]]
+  }
+}

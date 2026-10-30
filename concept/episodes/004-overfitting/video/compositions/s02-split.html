@@ -1,0 +1,55 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s02-bar { position: absolute; left: 192px; top: 300px; width: 1536px; height: 120px; display: flex; gap: 12px; }
+    .s02-seg { height: 120px; border-radius: 20px; display: flex; align-items: center; padding-left: 36px; box-sizing: border-box;
+      font-size: 44px; font-weight: 900; transform-origin: left center; transform: scaleX(0); }
+    #s02-tr { width: 1068px; background: var(--color-ink, #18181B); color: #FFFFFF; }
+    #s02-va { width: 456px; background: var(--color-accent, #6B3FE6); color: #FFFFFF; }
+    .s02-tag { position: absolute; top: 440px; font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); opacity: 0; white-space: nowrap; }
+    .s02-c { position: absolute; top: 540px; width: 740px; height: 250px; padding: 40px 48px; box-sizing: border-box; opacity: 0; }
+    .s02-ct { font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    .s02-cv { margin-top: 12px; font-size: 64px; font-weight: 900; }
+    #s02-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s02" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,6,10,16,19]"},{"id":"dur","type":"number","label":"장면 길이","default":24},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s02-all">
+      <div id="s02-head" class="x-head">훈련 점수와 검증 점수</div>
+      <div id="s02-bar">
+        <div class="s02-seg" id="s02-tr">훈련 데이터</div>
+        <div class="s02-seg" id="s02-va">검증 데이터</div>
+      </div>
+      <div class="s02-tag" id="s02-t1" style="left: 192px">배우는 데 쓴다</div>
+      <div class="s02-tag" id="s02-t2" style="left: 1272px">학습에 한 번도 안 쓴다</div>
+      <div class="s02-c x-card" id="s02-c1" style="left: 192px"><div class="s02-ct">연습 문제 점수</div><div class="s02-cv">훈련 점수</div></div>
+      <div class="s02-c x-card" id="s02-c2" style="left: 988px"><div id="s02-ring"></div><div class="s02-ct">실전을 미리 보는 점수</div><div class="s02-cv x-acc">검증 점수</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 24;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const grow = (sel, t) => tl.fromTo(sel, { scaleX: 0 }, { scaleX: 1, duration: 0.5 * S, ease: "power3.out", immediateRender: false }, t);
+
+    // 6 훈련 데이터로 배우고, 검증 데이터로 확인
+    ft("#s02-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    grow("#s02-tr", at(0, 0.6)); fade("#s02-t1", at(0, 1.2), 0, 1);
+    grow("#s02-va", at(0, 2.6));
+    // 7 학습에 한 번도 쓰지 않은 데이터
+    fade("#s02-t2", at(1, 0.6), 0, 1);
+    // 8 연습 문제 점수 / 실전을 미리 보는 점수
+    ft("#s02-c1", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(2, 0.3));
+    ft("#s02-c2", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(2, 2.6));
+    // 9 정말 원하는 건 실전 점수
+    fade("#s02-ring", at(3, 0.3), 0, 1);
+    if (String(V.exit) !== "false") ft("#s02-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s02"] = tl;
+  </script>
+</template>

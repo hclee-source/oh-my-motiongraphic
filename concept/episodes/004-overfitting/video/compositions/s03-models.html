@@ -1,0 +1,99 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    /* 점 그래프: 왼쪽 위 (192, 262), 800 × 540 */
+    #s03-svg { position: absolute; left: 192px; top: 262px; width: 800px; height: 540px; overflow: visible; }
+    .s03-line { fill: none; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
+    #s03-legend { position: absolute; left: 1100px; top: 262px; font-size: 30px; font-weight: 700; color: var(--color-ink2, #71717A); opacity: 0; white-space: nowrap; }
+    .s03-lg { display: inline-block; width: 18px; height: 18px; border-radius: 50%; margin-right: 10px; vertical-align: 2px; }
+    .s03-r { position: absolute; left: 1100px; width: 628px; height: 152px; padding: 24px 36px; box-sizing: border-box; opacity: 0; }
+    #s03-r1 { top: 316px; }
+    #s03-r2 { top: 484px; }
+    #s03-r3 { top: 652px; }
+    .s03-n { font-size: 36px; font-weight: 800; }
+    .s03-s { margin-top: 10px; font-size: 30px; font-weight: 700; color: var(--color-ink2, #71717A); white-space: nowrap; }
+    .s03-s span { opacity: 0; }
+    .s03-v { position: absolute; right: 36px; top: 24px; font-size: 40px; font-weight: 900; opacity: 0; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="s03" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,4,8,11,16,20,23,28,33,37]"},{"id":"dur","type":"number","label":"장면 길이","default":42},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s03-all">
+      <div id="s03-head" class="x-head">세 가지 모델</div>
+      <svg id="s03-svg" viewBox="0 0 800 540">
+        <path id="s03-axes" d="M0 0 L0 540 L800 540" stroke="#18181B" stroke-width="4" fill="none" opacity="0" />
+        <path id="s03-l1" class="s03-line" d="M40 340 L770 210" stroke="#71717A" stroke-width="7" />
+        <path id="s03-l2" class="s03-line" d="M40 450 Q400 20 770 330" stroke="#18181B" stroke-width="7" />
+        <path id="s03-l3" class="s03-line" stroke="#6B3FE6" stroke-width="7"
+          d="M76 400 C101 340 125 255 150 315 C173 375 197 360 220 300 C244 240 269 162 293 222 C317 282 342 290 366 230 C390 170 415 122 439 182 C463 242 488 282 512 222 C537 162 561 145 586 205 C610 265 635 332 659 272 C683 212 708 220 733 280" />
+        <g id="s03-train" opacity="0" fill="#18181B">
+          <circle cx="76" cy="400" r="11" /><circle cx="150" cy="315" r="11" /><circle cx="220" cy="300" r="11" /><circle cx="293" cy="222" r="11" />
+          <circle cx="366" cy="230" r="11" /><circle cx="439" cy="182" r="11" /><circle cx="512" cy="222" r="11" /><circle cx="586" cy="205" r="11" />
+          <circle cx="659" cy="272" r="11" /><circle cx="733" cy="280" r="11" />
+        </g>
+        <g id="s03-val" opacity="0" fill="#FFFFFF" stroke="#6B3FE6" stroke-width="5">
+          <circle cx="112" cy="375" r="12" /><circle cx="257" cy="255" r="12" /><circle cx="402" cy="200" r="12" /><circle cx="549" cy="214" r="12" /><circle cx="696" cy="280" r="12" />
+        </g>
+        <g id="s03-miss" opacity="0" fill="none" stroke="#6B3FE6" stroke-width="4">
+          <circle cx="112" cy="375" r="26" /><circle cx="402" cy="200" r="26" /><circle cx="549" cy="214" r="26" />
+        </g>
+      </svg>
+      <div id="s03-legend" data-layout-allow-overlap><span class="s03-lg" style="background: #18181B"></span>훈련 데이터　<span class="s03-lg" style="border: 4px solid #6B3FE6; box-sizing: border-box"></span>검증 데이터</div>
+      <div class="s03-r x-card" id="s03-r1"><div class="s03-n">① 직선</div>
+        <div class="s03-s"><span id="s03-a1">훈련 낮음</span> · <span id="s03-b1">검증 낮음</span></div><div class="s03-v x-ink2" id="s03-v1">과소적합</div></div>
+      <div class="s03-r x-card" id="s03-r2"><div class="s03-n">② 완만한 곡선</div>
+        <div class="s03-s"><span id="s03-a2">훈련 좋음 · 검증 좋음</span></div><div class="s03-v" id="s03-v2">알맞음</div></div>
+      <div class="s03-r x-card" id="s03-r3"><div class="s03-n">③ 구불구불한 선</div>
+        <div class="s03-s"><span id="s03-a3">훈련 오차 0</span> · <span id="s03-b3">검증 낮음</span></div><div class="s03-v x-acc" id="s03-v3">과대적합</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 42;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    // 선 길이는 그려 보고 잰다(pathLength 대신)
+    const draw = (id, t, d) => {
+      const el = document.getElementById(id), L = el.getTotalLength();
+      el.style.strokeDasharray = L;
+      tl.fromTo(el, { strokeDashoffset: L, opacity: 1 }, { strokeDashoffset: 0, opacity: 1, duration: d * S, ease: "power2.inOut", immediateRender: false }, t);
+    };
+
+    // 11 점들이 완만한 곡선을 그리며
+    ft("#s03-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    fade("#s03-axes", at(0, 0.3), 0, 1);
+    fade("#s03-train", at(0, 0.8), 0, 1);
+    fade("#s03-val", at(0, 1.8), 0, 1);
+    fade("#s03-legend", at(0, 1.8), 0, 1);
+    // 12 직선 하나로
+    draw("s03-l1", at(1, 0.4), 0.8);
+    ft("#s03-r1", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(1, 0.4));
+    // 13 훈련 데이터도 못 맞힌다 / 14 둘 다 낮다 = 과소적합
+    fade("#s03-a1", at(2, 0.5), 0, 1);
+    fade("#s03-b1", at(3, 0.5), 0, 1);
+    ft("#s03-v1", { opacity: 0, scale: 1.2 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, at(3, 2.4));
+    // 15 완만한 곡선 / 16 둘 다 괜찮다
+    fade("#s03-l1", at(4, 0.1), 1, 0.2);
+    draw("s03-l2", at(4, 0.4), 0.9);
+    ft("#s03-r2", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(4, 0.4));
+    fade("#s03-a2", at(5, 0.4), 0, 1);
+    fade("#s03-v2", at(5, 1.6), 0, 1);
+    // 17 모든 훈련 점을 지나는 구불구불한 선
+    fade("#s03-l2", at(6, 0.1), 1, 0.2);
+    draw("s03-l3", at(6, 0.6), 1.4);
+    ft("#s03-r3", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(6, 0.4));
+    // 18 훈련 오차 0
+    fade("#s03-a3", at(7, 0.4), 0, 1);
+    // 19 새로운 검증 점에서 크게 빗나간다
+    fade("#s03-miss", at(8, 0.6), 0, 1);
+    fade("#s03-b3", at(8, 1.2), 0, 1);
+    // 20 과대적합
+    ft("#s03-v3", { opacity: 0, scale: 1.2 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, at(9, 2.6));
+    if (String(V.exit) !== "false") ft("#s03-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s03"] = tl;
+  </script>
+</template>

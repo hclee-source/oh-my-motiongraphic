@@ -1,0 +1,63 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    /* 그래프: 왼쪽 위 (200, 360), 한 변 680 px — h1과 같은 자리 */
+    #h3-svg { position: absolute; left: 200px; top: 360px; width: 680px; height: 680px; overflow: visible; }
+    #h3-ylab { position: absolute; left: 200px; top: 290px; font-size: 48px; font-weight: 900; white-space: nowrap; }
+    #h3-xlab { position: absolute; left: 200px; top: 1070px; font-size: 48px; font-weight: 900; white-space: nowrap; }
+    #h3-name { position: absolute; left: 680px; top: 292px; font-size: 48px; font-weight: 900; color: var(--color-accent, #6B3FE6); opacity: 0; white-space: nowrap; }
+    #h3-auc { position: absolute; left: 600px; top: 900px; font-size: 72px; font-weight: 900; color: var(--color-accent, #6B3FE6); opacity: 0; }
+    #h3-rand { position: absolute; left: 640px; top: 770px; font-size: 40px; font-weight: 800; color: var(--color-ink2, #71717A); opacity: 0; white-space: nowrap; }
+    #h3-perf { position: absolute; left: 236px; top: 384px; font-size: 44px; font-weight: 900; opacity: 0; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="h3" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.3,4.5,6.5,9,13]"},{"id":"dur","type":"number","label":"장면 길이","default":17},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h3-all">
+      <svg id="h3-svg" viewBox="0 0 680 680">
+        <path id="h3-fill" d="M0 680 L0 408 L136 408 L136 272 L272 272 L272 136 L544 136 L544 0 L680 0 L680 680 Z" fill="#6B3FE6" fill-opacity="0.16" opacity="0" />
+        <path id="h3-diag" d="M0 680 L680 0" stroke="#A1A1AA" stroke-width="6" stroke-dasharray="18 14" fill="none" opacity="0" />
+        <path id="h3-pf" d="M0 680 L0 0 L680 0" stroke="#71717A" stroke-width="6" fill="none" opacity="0" />
+        <path d="M0 0 L0 680 L680 680" stroke="#18181B" stroke-width="6" fill="none" />
+        <path id="h3-curve" d="M0 680 L0 544 L0 408 L136 408 L136 272 L272 272 L272 136 L408 136 L544 136 L544 0 L680 0"
+          stroke="#6B3FE6" stroke-width="9" stroke-linejoin="round" fill="none" stroke-dasharray="1360" stroke-dashoffset="1360" />
+        <circle class="h3-pt" cx="136" cy="408" r="15" fill="#6B3FE6" opacity="0" />
+        <circle class="h3-pt" cx="272" cy="272" r="15" fill="#6B3FE6" opacity="0" />
+        <circle class="h3-pt" cx="408" cy="136" r="15" fill="#6B3FE6" opacity="0" />
+      </svg>
+      <div id="h3-ylab">민감도</div>
+      <div id="h3-xlab">1 − 특이도</div>
+      <div id="h3-name">ROC 곡선</div>
+      <div id="h3-auc">AUC</div>
+      <div id="h3-rand">0.5 = 무작위</div>
+      <div id="h3-perf">1 = 완벽</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 17;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+
+    // 6 기준값마다 점을 찍어 — 축은 h1에서 이어진다
+    gsap.utils.toArray(".h3-pt").forEach((p, k) => ft(p, { opacity: 0, scale: 0.3, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, ease: "back.out(2)" }, at(0, 0.6 + k * 0.7)));
+    // 7 이으면 ROC 곡선
+    tl.fromTo("#h3-curve", { strokeDashoffset: 1360 }, { strokeDashoffset: 0, duration: 1.0 * S, ease: "power2.inOut", immediateRender: false }, at(1, 0));
+    ft("#h3-name", { opacity: 0, x: -12 }, { opacity: 1, x: 0 }, at(1, 0.9));
+    // 8 곡선 아래 넓이 = AUC
+    fade("#h3-fill", at(2, 0.2), 0, 1);
+    ft("#h3-auc", { opacity: 0, scale: 1.2 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, at(2, 0.6));
+    // 9 대각선 0.5 무작위
+    fade("#h3-diag", at(3, 0.2), 0, 1);
+    fade("#h3-rand", at(3, 0.6), 0, 1);
+    // 10 왼쪽 위로 불룩할수록 1에 가까운 좋은 모델
+    fade("#h3-pf", at(4, 0.3), 0, 1);
+    fade("#h3-perf", at(4, 0.6), 0, 1);
+    if (String(V.exit) !== "false") ft("#h3-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.35);
+    window.__timelines["h3"] = tl;
+  </script>
+</template>

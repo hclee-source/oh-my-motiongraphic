@@ -1,0 +1,40 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h3-z { position: absolute; left: 80px; width: 920px; height: 170px; padding: 0 52px;
+      display: grid; grid-template-columns: 220px 1fr; align-items: center; opacity: 0; }
+    .h3-k { font-size: 72px; font-weight: 900; }
+    .h3-v { font-size: 52px; font-weight: 900; }
+    #h3-warn { position: absolute; left: 80px; top: 960px; width: 920px; height: 250px; padding: 40px 52px; opacity: 0; }
+    #h3-w1 { font-size: 44px; font-weight: 800; color: #A1A1AA; }
+    #h3-w2 { margin-top: 10px; font-size: 56px; font-weight: 900; color: var(--color-accent-dark, #A68CFF); white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="h3" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.3,6]"},{"id":"dur","type":"number","label":"장면 길이","default":11},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h3-all">
+      <div class="h3-z x-card" id="h3-z1" style="top: 360px"><div class="h3-k x-acc">&gt; 1</div><div class="h3-v">양의 관계</div></div>
+      <div class="h3-z x-card" id="h3-z2" style="top: 560px"><div class="h3-k">= 1</div><div class="h3-v">독립</div></div>
+      <div class="h3-z x-card" id="h3-z3" style="top: 760px"><div class="h3-k x-ink2">&lt; 1</div><div class="h3-v">음의 관계</div></div>
+      <div id="h3-warn" class="x-dark"><div id="h3-w1">신뢰도가 높아 보여도</div><div id="h3-w2">향상도 1 → 관련 없음</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 11;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+
+    // 6 1보다 크면 양의 관계, 1이면 독립, 작으면 음의 관계
+    ft("#h3-z1", { opacity: 0, x: -20 }, { opacity: 1, x: 0 }, at(0, 0.1));
+    ft("#h3-z2", { opacity: 0, x: -20 }, { opacity: 1, x: 0 }, at(0, 1.9));
+    ft("#h3-z3", { opacity: 0, x: -20 }, { opacity: 1, x: 0 }, at(0, 3.0));
+    // 7 신뢰도가 높아도 향상도 1이면 관련 없는 규칙
+    ft("#h3-warn", { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, at(1, 0.2));
+    if (String(V.exit) !== "false") ft("#h3-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.35);
+    window.__timelines["h3"] = tl;
+  </script>
+</template>

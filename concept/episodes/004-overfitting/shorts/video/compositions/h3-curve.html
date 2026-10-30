@@ -1,0 +1,59 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    /* 그래프: 왼쪽 위 (80, 400), 900 × 560 (본편 곡선을 세로 화면에 맞춰 늘림) */
+    #h3-svg { position: absolute; left: 80px; top: 400px; width: 900px; height: 560px; overflow: visible; }
+    #h3-y { position: absolute; left: 80px; top: 330px; font-size: 40px; font-weight: 900; }
+    #h3-x { position: absolute; left: 760px; top: 980px; font-size: 40px; font-weight: 900; white-space: nowrap; }
+    .h3-lg { position: absolute; left: 80px; font-size: 40px; font-weight: 900; opacity: 0; white-space: nowrap; }
+    #h3-best { position: absolute; left: 410px; top: 350px; width: 260px; text-align: center; font-size: 36px; font-weight: 900; color: var(--color-accent, #6B3FE6); opacity: 0; }
+    .h3-bv { position: absolute; top: 1150px; font-size: 44px; font-weight: 900; opacity: 0; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="h3" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.3,5.5,9]"},{"id":"dur","type":"number","label":"장면 길이","default":14},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h3-all">
+      <div id="h3-y">오차 ↑</div>
+      <div id="h3-x">복잡도 →</div>
+      <svg id="h3-svg" viewBox="0 0 900 560">
+        <path d="M0 0 L0 560 L900 560" stroke="#18181B" stroke-width="6" fill="none" />
+        <path id="h3-opt" d="M460 20 L460 560" stroke="#6B3FE6" stroke-width="4" stroke-dasharray="12 12" fill="none" opacity="0" />
+        <path id="h3-tr" d="M40 100 C200 450 450 540 860 550" stroke="#18181B" stroke-width="9" fill="none" stroke-linecap="round" />
+        <path id="h3-va" d="M40 80 C180 360 330 420 450 415 C570 410 720 320 860 160" stroke="#6B3FE6" stroke-width="9" fill="none" stroke-linecap="round" />
+        <circle id="h3-dot" cx="460" cy="415" r="16" fill="#6B3FE6" opacity="0" />
+      </svg>
+      <div class="h3-lg" id="h3-l1" style="top: 1030px">훈련 오차</div>
+      <div class="h3-lg x-acc" id="h3-l2" style="top: 1030px; left: 400px">검증 오차</div>
+      <div id="h3-best">알맞은 복잡도</div>
+      <div class="h3-bv x-ink2" id="h3-b1" style="left: 80px; top: 1170px">← 과소적합: 편향 ↑</div>
+      <div class="h3-bv x-acc" id="h3-b2" style="left: 80px; top: 1100px">과대적합: 분산 ↑ →</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 14;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const draw = (id, t, d) => {
+      const el = document.getElementById(id), L = el.getTotalLength();
+      el.style.strokeDasharray = L; el.style.strokeDashoffset = L;
+      tl.fromTo(el, { strokeDashoffset: L }, { strokeDashoffset: 0, duration: d * S, ease: "power2.inOut", immediateRender: false }, t);
+    };
+
+    // 5 훈련 오차는 계속 줄고, 검증 오차는 U자
+    draw("h3-tr", at(0, 0.6), 1.0); fade("#h3-l1", at(0, 0.6), 0, 1);
+    draw("h3-va", at(0, 2.6), 1.2); fade("#h3-l2", at(0, 2.6), 0, 1);
+    // 6 가장 낮은 곳이 알맞은 복잡도
+    ft("#h3-dot", { opacity: 0, scale: 0.3, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, ease: "back.out(2)" }, at(1, 0.3));
+    fade("#h3-opt, #h3-best", at(1, 0.6), 0, 1);
+    // 7 과대적합은 분산, 과소적합은 편향
+    fade("#h3-b2", at(2, 0.3), 0, 1);
+    fade("#h3-b1", at(2, 1.8), 0, 1);
+    if (String(V.exit) !== "false") ft("#h3-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.35);
+    window.__timelines["h3"] = tl;
+  </script>
+</template>

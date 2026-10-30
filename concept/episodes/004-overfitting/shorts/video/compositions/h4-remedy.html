@@ -1,0 +1,42 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h4-k { position: absolute; left: 80px; top: 330px; font-size: 44px; font-weight: 900; opacity: 0; }
+    .h4-c { position: absolute; left: 80px; width: 920px; height: 130px; padding: 0 48px;
+      display: flex; align-items: center; font-size: 56px; font-weight: 900; opacity: 0; }
+    #h4-base { position: absolute; left: 80px; top: 1010px; width: 920px; height: 200px; padding: 36px 48px; opacity: 0; }
+    #h4-b1 { font-size: 40px; font-weight: 800; color: #A1A1AA; }
+    #h4-b2 { margin-top: 8px; font-size: 60px; font-weight: 900; color: var(--color-accent-dark, #A68CFF); white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="h4" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.3,5,8]"},{"id":"dur","type":"number","label":"장면 길이","default":12},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h4-all">
+      <div id="h4-k">과대적합을 줄이려면</div>
+      <div class="h4-c x-card" style="top: 400px">데이터 늘리기</div>
+      <div class="h4-c x-card" style="top: 550px">모델 단순하게</div>
+      <div class="h4-c x-card" style="top: 700px">규제</div>
+      <div class="h4-c x-card" style="top: 850px">드롭아웃</div>
+      <div id="h4-base" class="x-dark"><div id="h4-b1">판단 기준은 언제나</div><div id="h4-b2">처음 보는 데이터의 성적</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const cards = gsap.utils.toArray(".h4-c");
+
+    // 8 데이터 늘리고, 단순하게 / 9 규제나 드롭아웃
+    ft("#h4-k", { opacity: 0, x: -16 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft(cards[0], { opacity: 0, x: -20 }, { opacity: 1, x: 0 }, at(0, 1.4));
+    ft(cards[1], { opacity: 0, x: -20 }, { opacity: 1, x: 0 }, at(0, 2.8));
+    ft(cards[2], { opacity: 0, x: -20 }, { opacity: 1, x: 0 }, at(1, 0.1));
+    ft(cards[3], { opacity: 0, x: -20 }, { opacity: 1, x: 0 }, at(1, 0.9));
+    // 10 판단 기준
+    ft("#h4-base", { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, at(2, 0.3));
+    window.__timelines["h4"] = tl;
+  </script>
+</template>

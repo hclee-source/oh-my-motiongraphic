@@ -1,0 +1,94 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s02-card { top: 262px; height: 584px; padding: 40px 48px; }
+    .s02-b { opacity: 0; }
+    .s02-b + .s02-b { margin-top: 20px; }
+    .s02-n { font-size: 38px; font-weight: 800; }
+    .s02-d { margin-top: 8px; font-size: 34px; font-weight: 700; color: #A1A1AA; white-space: nowrap; }
+    .s02-t { margin-top: 6px; font-size: 28px; font-weight: 700; color: var(--color-accent-dark, #A68CFF); white-space: nowrap; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s02" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,4,8,12,15,18,24,27,32]"},{"id":"dur","type":"number","label":"장면 길이","default":36},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s02-all">
+      <div id="s02-head" class="x-head">민감도와 특이도</div>
+      <div class="x-mx x-hide" id="s02-mx">
+        <div></div>
+        <div class="x-lab x-pred">예측</div>
+        <div class="x-lab x-act">실제</div>
+        <div class="x-h x-ch">양성</div>
+        <div class="x-h x-ch">음성</div>
+        <div class="x-h x-rh"><span class="x-wrap">양성<span class="x-ov" id="s02-rp">양성</span></span></div>
+        <div class="x-cell x-card" id="s02-tp"><div class="x-hl" id="s02-tp-hl"></div><div class="x-code">TP</div><div class="x-kn">참 양성</div></div>
+        <div class="x-cell x-card" id="s02-fn"><div class="x-hl" id="s02-fn-hl"></div><div class="x-code">FN</div><div class="x-kn">거짓 음성</div></div>
+        <div class="x-h x-rh"><span class="x-wrap">음성<span class="x-ov" id="s02-rn">음성</span></span></div>
+        <div class="x-cell x-card" id="s02-fp"><div class="x-hl" id="s02-fp-hl"></div><div class="x-code">FP</div><div class="x-kn">거짓 양성</div></div>
+        <div class="x-cell x-card" id="s02-tn"><div class="x-hl" id="s02-tn-hl"></div><div class="x-code">TN</div><div class="x-kn">참 음성</div></div>
+      </div>
+      <div id="s02-card" class="x-side x-dark x-hide">
+        <div class="s02-b" id="s02-b1">
+          <div class="s02-n">민감도</div>
+          <div class="s02-d x-hide" id="s02-d1">TP ÷ (TP + FN)</div>
+          <div class="s02-t" id="s02-t1">= 재현율 · 놓치지 않기</div>
+        </div>
+        <div class="s02-b" id="s02-b2">
+          <div class="s02-n">특이도</div>
+          <div class="s02-d x-hide" id="s02-d2">TN ÷ (TN + FP)</div>
+          <div class="s02-t" id="s02-t2">괜히 의심하지 않기</div>
+        </div>
+        <div class="s02-b" id="s02-b3">
+          <div class="s02-n">거짓 양성률</div>
+          <div class="s02-d">= 1 − 특이도</div>
+          <div class="s02-d x-hide" id="s02-d3">= FP ÷ (FP + TN)</div>
+          <div class="s02-t" id="s02-t3">→ ROC 곡선의 가로축</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 36;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, ease: "back.out(1.6)" }, t);
+
+    // 7 네 칸짜리 표
+    ft("#s02-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    fade("#s02-mx", at(0, 0.3), 0, 1);
+    ["#s02-tp", "#s02-fn", "#s02-fp", "#s02-tn"].forEach((c, k) => stamp(c, at(0, 0.5 + k * 0.13)));
+    // 8 민감도: 실제 양성 행
+    ft("#s02-card", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(1, 0.2));
+    fade("#s02-b1", at(1, 0.3), 0, 1);
+    fade("#s02-tp-hl, #s02-fn-hl, #s02-rp", at(1, 1.0), 0, 1);
+    fade("#s02-fp, #s02-tn", at(1, 1.0), 1, 0.38);
+    // 9 TP ÷ (TP + FN) = 재현율
+    fade("#s02-d1", at(2, 0.3), 0, 1);
+    fade("#s02-t1", at(2, 2.4), 0, 1);
+    // 10 특이도: 실제 음성 행으로 강조가 옮겨 간다
+    fade("#s02-tp-hl, #s02-fn-hl, #s02-rp", at(3, 0.2), 1, 0);
+    fade("#s02-fp, #s02-tn", at(3, 0.2), 0.38, 1);
+    fade("#s02-tp, #s02-fn", at(3, 0.2), 1, 0.38);
+    fade("#s02-fp-hl, #s02-tn-hl, #s02-rn", at(3, 0.5), 0, 1);
+    fade("#s02-b1", at(3, 0.2), 1, 0.45);
+    fade("#s02-b2", at(3, 0.3), 0, 1);
+    // 11 TN ÷ (TN + FP)
+    fade("#s02-d2", at(4, 0.3), 0, 1);
+    // 12 놓치지 않기 / 의심하지 않기
+    fade("#s02-t2", at(5, 2.2), 0, 1);
+    // 13 1 − 특이도 = 거짓 양성률
+    fade("#s02-b2", at(6, 0.2), 1, 0.45);
+    fade("#s02-b3", at(6, 0.3), 0, 1);
+    // 14 FP ÷ (FP + TN): 실제 음성 행 그대로, 이번엔 FP 칸에 초점
+    fade("#s02-d3", at(7, 1.6), 0, 1);
+    fade("#s02-tn-hl", at(7, 1.6), 1, 0);
+    // 15 ROC 곡선의 가로축
+    ft("#s02-t3", { opacity: 0, x: -12 }, { opacity: 1, x: 0 }, at(8, 0.6));
+    if (String(V.exit) !== "false") ft("#s02-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s02"] = tl;
+  </script>
+</template>

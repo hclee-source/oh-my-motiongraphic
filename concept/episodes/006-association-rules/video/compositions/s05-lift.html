@@ -1,0 +1,69 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s05-l { position: absolute; left: 192px; font-size: 32px; font-weight: 800; color: var(--color-ink2, #71717A); opacity: 0; white-space: nowrap; }
+    /* 막대: 비율 1 = 1000 px */
+    .s05-bar { position: absolute; left: 192px; height: 64px; border-radius: 12px; transform-origin: left center; transform: scaleX(0); }
+    .s05-v { position: absolute; font-size: 52px; font-weight: 900; opacity: 0; }
+    #s05-calc { position: absolute; left: 192px; top: 590px; font-size: 64px; font-weight: 900; opacity: 0; white-space: nowrap; }
+    #s05-times { position: absolute; left: 760px; top: 604px; font-size: 40px; font-weight: 800; color: var(--color-accent, #6B3FE6); opacity: 0; white-space: nowrap; }
+    /* 수직선: 1 = x 1320, 0.5당 220 px */
+    #s05-line { position: absolute; left: 1100px; top: 330px; width: 628px; height: 440px; padding: 36px 40px; box-sizing: border-box; opacity: 0; }
+    .s05-z { display: grid; grid-template-columns: 150px 1fr; align-items: center; height: 104px; }
+    .s05-zk { font-size: 44px; font-weight: 900; }
+    .s05-zv { font-size: 30px; font-weight: 800; line-height: 1.3; }
+    .s05-zr { position: absolute; left: 20px; right: 20px; height: 104px; border-radius: 18px; border: 4px solid var(--color-accent, #6B3FE6); box-sizing: border-box; opacity: 0; }
+    #s05-rev { position: absolute; left: 192px; top: 720px; font-size: 32px; font-weight: 800; opacity: 0; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="s05" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,3,8,12,16,20,25,33]"},{"id":"dur","type":"number","label":"장면 길이","default":37},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s05-all">
+      <div id="s05-head" class="x-head">향상도</div>
+      <div class="s05-l" id="s05-l1" style="top: 290px">평소 우유를 사는 비율 · 100장 중 40장</div>
+      <div class="s05-bar" id="s05-b1" style="top: 336px; width: 400px; background: var(--color-ink2, #71717A)"></div>
+      <div class="s05-v" id="s05-v1" style="left: 620px; top: 334px">0.4</div>
+      <div class="s05-l" id="s05-l2" style="top: 440px">빵을 산 손님이 우유도 사는 비율 · 신뢰도</div>
+      <div class="s05-bar" id="s05-b2" style="top: 486px; width: 600px; background: var(--color-accent, #6B3FE6)"></div>
+      <div class="s05-v x-acc" id="s05-v2" style="left: 820px; top: 484px">0.6</div>
+      <div id="s05-calc">0.6 ÷ 0.4 = <span class="x-acc">1.5</span></div>
+      <div id="s05-times">평소의 1.5배</div>
+      <div id="s05-rev">방향을 바꿔도: 0.75 ÷ 0.5 = <span class="x-acc">1.5</span> 같다</div>
+      <div id="s05-line" class="x-card">
+        <div class="s05-zr" id="s05-zr" style="top: 36px"></div>
+        <div class="s05-z"><div class="s05-zk x-acc">&gt; 1</div><div class="s05-zv">양의 관계 · 함께 잘 팔림</div></div>
+        <div class="s05-z"><div class="s05-zk">= 1</div><div class="s05-zv">독립 · 서로 관계없음</div></div>
+        <div class="s05-z"><div class="s05-zk x-ink2">&lt; 1</div><div class="s05-zv">음의 관계 · 한쪽을 사면 덜 삼</div></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 37;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const grow = (sel, t) => tl.fromTo(sel, { scaleX: 0 }, { scaleX: 1, duration: 0.6 * S, ease: "power3.out", immediateRender: false }, t);
+
+    // 21 향상도 / 22 신뢰도를 결과 B의 원래 비율로 나눈다
+    ft("#s05-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    // 23 원래 우유를 사는 비율 0.4
+    fade("#s05-l1", at(2, 0.2), 0, 1); grow("#s05-b1", at(2, 0.6)); fade("#s05-v1", at(2, 1.4), 0, 1);
+    // 24 빵을 산 손님은 0.6
+    fade("#s05-l2", at(3, 0.2), 0, 1); grow("#s05-b2", at(3, 0.6)); fade("#s05-v2", at(3, 1.4), 0, 1);
+    // 25 0.6 ÷ 0.4 = 1.5
+    ft("#s05-calc", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(4, 0.4));
+    // 26 평소보다 1.5배
+    fade("#s05-times", at(5, 0.6), 0, 1);
+    // 27 1보다 크면 / 1이면 / 작으면
+    ft("#s05-line", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(6, 0.2));
+    fade("#s05-zr", at(6, 1.4), 0, 1);
+    // 28 방향을 바꿔도 같다
+    fade("#s05-rev", at(7, 0.4), 0, 1);
+    if (String(V.exit) !== "false") ft("#s05-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s05"] = tl;
+  </script>
+</template>

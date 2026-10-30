@@ -1,0 +1,43 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 540px; text-align: center; overflow: visible;
+      font-size: 54px; font-weight: 700; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 940px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cap-01a" class="cap clip" data-start="0.000" data-duration="1.805"><span>ROC 곡선의 가로축,</span></div>
+    <div id="cap-01b" class="cap clip" data-start="1.805" data-duration="1.775"><span>바로 답할 수 있나요?</span></div>
+    <div id="cap-02a" class="cap clip" data-start="3.630" data-duration="1.161"><span>특이도가 아니라</span></div>
+    <div id="cap-02b" class="cap clip" data-start="4.791" data-duration="1.161"><span>1 빼기 특이도,</span></div>
+    <div id="cap-02c" class="cap clip" data-start="5.952" data-duration="1.643"><span>거짓 양성률입니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="7.645" data-duration="1.493"><span>세로축은 민감도,</span></div>
+    <div id="cap-03b" class="cap clip" data-start="9.138" data-duration="1.743"><span>즉 재현율이고요.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="11.081" data-duration="1.495"><span>모델은 점수를 내고,</span></div>
+    <div id="cap-04b" class="cap clip" data-start="12.576" data-duration="1.163"><span>기준값을 넘으면</span></div>
+    <div id="cap-04c" class="cap clip" data-start="13.738" data-duration="1.977"><span>양성이라고 판정합니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="15.765" data-duration="0.975"><span>기준을 낮추면</span></div>
+    <div id="cap-05b" class="cap clip" data-start="16.740" data-duration="2.436"><span>환자를 더 찾아 민감도는 오르지만,</span></div>
+    <div id="cap-05c" class="cap clip" data-start="19.176" data-duration="1.874"><span>특이도는 떨어집니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="21.250" data-duration="0.790"><span>기준값마다</span></div>
+    <div id="cap-06b" class="cap clip" data-start="22.040" data-duration="1.580"><span>거짓 양성률과 민감도를</span></div>
+    <div id="cap-06c" class="cap clip" data-start="23.619" data-duration="1.572"><span>점으로 찍어 이으면,</span></div>
+    <div id="cap-07a" class="cap clip" data-start="25.241" data-duration="2.171"><span>그게 바로 ROC 곡선입니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="27.462" data-duration="1.042"><span>곡선 아래 넓이가</span></div>
+    <div id="cap-08b" class="cap clip" data-start="28.503" data-duration="1.292"><span>AUC입니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="29.995" data-duration="1.562"><span>대각선을 따라가면</span></div>
+    <div id="cap-09b" class="cap clip" data-start="31.557" data-duration="1.367"><span>AUC 0.5,</span></div>
+    <div id="cap-09c" class="cap clip" data-start="32.924" data-duration="2.103"><span>동전 던지기 수준이고,</span></div>
+    <div id="cap-10a" class="cap clip" data-start="35.077" data-duration="1.366"><span>왼쪽 위로 불룩할수록</span></div>
+    <div id="cap-10b" class="cap clip" data-start="36.443" data-duration="0.759"><span>1에 가까운</span></div>
+    <div id="cap-10c" class="cap clip" data-start="37.202" data-duration="1.465"><span>좋은 모델입니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="38.867" data-duration="2.176"><span>가로축은 1 빼기 특이도,</span></div>
+    <div id="cap-11b" class="cap clip" data-start="41.043" data-duration="1.583"><span>세로축은 민감도,</span></div>
+    <div id="cap-11c" class="cap clip" data-start="42.626" data-duration="2.129"><span>그 아래 넓이가 AUC.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="44.805" data-duration="1.388"><span>ROC 문제의 핵심은</span></div>
+    <div id="cap-12b" class="cap clip" data-start="46.193" data-duration="1.175"><span>이것입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

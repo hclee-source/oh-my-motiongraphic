@@ -1,0 +1,76 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s05-t { position: absolute; top: 280px; width: 360px; height: 360px; overflow: visible; opacity: 0; }
+    .s05-tl { position: absolute; top: 668px; width: 420px; text-align: center; opacity: 0; }
+    .s05-tn { font-size: 40px; font-weight: 900; }
+    .s05-td { margin-top: 6px; font-size: 30px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    #s05-card { position: absolute; left: 1150px; top: 280px; width: 578px; height: 500px; padding: 40px 44px; box-sizing: border-box; }
+    .s05-r { display: grid; grid-template-columns: 200px 1fr; align-items: center; height: 90px; opacity: 0; }
+    .s05-k { font-size: 36px; font-weight: 800; }
+    .s05-v { font-size: 40px; font-weight: 900; white-space: nowrap; }
+    #s05-hr { margin: 18px 0 24px; height: 2px; background: var(--color-hair, #D3D6DD); opacity: 0; }
+    #s05-tr { font-size: 32px; font-weight: 800; line-height: 1.5; opacity: 0; white-space: nowrap; }
+    #s05-name { margin-top: 10px; font-size: 40px; font-weight: 900; color: var(--color-accent, #6B3FE6); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s05" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,4,9,14,18,24]"},{"id":"dur","type":"number","label":"장면 길이","default":28},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s05-all">
+      <div id="s05-head" class="x-head">편향과 분산</div>
+      <!-- 과녁: 가운데가 정답. 편향 = 한쪽으로 몰림, 분산 = 넓게 흩어짐 -->
+      <svg class="s05-t" id="s05-t1" style="left: 222px" viewBox="-180 -180 360 360">
+        <circle r="176" fill="#FFFFFF" stroke="#E3E5EA" stroke-width="4" /><circle r="120" fill="none" stroke="#E3E5EA" stroke-width="4" />
+        <circle r="64" fill="none" stroke="#E3E5EA" stroke-width="4" /><circle r="16" fill="#18181B" />
+        <g fill="#6B3FE6"><circle cx="92" cy="-78" r="11" /><circle cx="108" cy="-62" r="11" /><circle cx="80" cy="-56" r="11" />
+          <circle cx="100" cy="-96" r="11" /><circle cx="118" cy="-84" r="11" /><circle cx="88" cy="-104" r="11" /></g>
+      </svg>
+      <svg class="s05-t" id="s05-t2" style="left: 702px" viewBox="-180 -180 360 360">
+        <circle r="176" fill="#FFFFFF" stroke="#E3E5EA" stroke-width="4" /><circle r="120" fill="none" stroke="#E3E5EA" stroke-width="4" />
+        <circle r="64" fill="none" stroke="#E3E5EA" stroke-width="4" /><circle r="16" fill="#18181B" />
+        <g fill="#6B3FE6"><circle cx="-118" cy="-40" r="11" /><circle cx="96" cy="-112" r="11" /><circle cx="20" cy="130" r="11" />
+          <circle cx="132" cy="58" r="11" /><circle cx="-60" cy="104" r="11" /><circle cx="-36" cy="-140" r="11" /></g>
+      </svg>
+      <div class="s05-tl" id="s05-l1" style="left: 192px"><div class="s05-tn">편향이 크다</div><div class="s05-td">늘 한쪽으로 치우친다</div></div>
+      <div class="s05-tl" id="s05-l2" style="left: 672px"><div class="s05-tn">분산이 크다</div><div class="s05-td">데이터 따라 크게 흔들린다</div></div>
+      <div id="s05-card" class="x-card x-hide">
+        <div class="s05-r" id="s05-r1"><div class="s05-k x-ink2">과소적합</div><div class="s05-v">편향 ↑</div></div>
+        <div class="s05-r" id="s05-r2"><div class="s05-k x-acc">과대적합</div><div class="s05-v">분산 ↑</div></div>
+        <div id="s05-hr"></div>
+        <div id="s05-tr">복잡도 ↑ → 편향 ↓ · 분산 ↑</div>
+        <div id="s05-name">편향-분산 트레이드오프</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 28;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, ease: "back.out(1.6)" }, t);
+
+    // 27 편향과 분산
+    ft("#s05-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    // 28 편향: 한쪽으로 치우친 오차
+    stamp("#s05-t1", at(1, 0.3));
+    fade("#s05-l1", at(1, 1.2), 0, 1);
+    // 29 분산: 데이터가 바뀌면 크게 달라짐
+    stamp("#s05-t2", at(2, 0.3));
+    fade("#s05-l2", at(2, 1.2), 0, 1);
+    // 30 과소적합 = 편향, 과대적합 = 분산
+    ft("#s05-card", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(3, 0.2));
+    fade("#s05-r1", at(3, 0.4), 0, 1);
+    fade("#s05-r2", at(3, 2.2), 0, 1);
+    // 31 복잡도를 올리면 편향 ↓ 분산 ↑
+    fade("#s05-hr", at(4, 0.3), 0, 1);
+    fade("#s05-tr", at(4, 0.5), 0, 1);
+    // 32 트레이드오프
+    ft("#s05-name", { opacity: 0, y: 10 }, { opacity: 1, y: 0 }, at(5, 0.6));
+    if (String(V.exit) !== "false") ft("#s05-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s05"] = tl;
+  </script>
+</template>

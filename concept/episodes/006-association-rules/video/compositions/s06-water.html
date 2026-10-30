@@ -1,0 +1,78 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s06-box { position: absolute; left: 192px; top: 262px; width: 808px; height: 538px; }
+    #s06-btag { position: absolute; left: 28px; top: 18px; font-size: 30px; font-weight: 800; color: var(--color-ink2, #71717A); opacity: 0; }
+    #s06-svg { position: absolute; left: 0; top: 0; width: 808px; height: 538px; overflow: visible; }
+    #s06-c2 span { color: var(--color-ink, #18181B); }
+    .s06-n { position: absolute; font-size: 36px; font-weight: 900; opacity: 0; white-space: nowrap; }
+    .s06-c { position: absolute; font-size: 44px; font-weight: 900; opacity: 0; text-align: center; width: 160px; }
+    .s06-c span { display: block; font-size: 26px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    .s06-k { position: absolute; left: 1100px; width: 628px; padding: 30px 40px; box-sizing: border-box; opacity: 0; }
+    .s06-kt { font-size: 28px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    .s06-kv { margin-top: 6px; font-size: 48px; font-weight: 900; white-space: nowrap; }
+    #s06-k1 { top: 262px; height: 170px; }
+    #s06-k2 { top: 452px; height: 140px; }
+    #s06-k3 { top: 612px; height: 188px; }
+    #s06-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    #s06-kd { margin-top: 6px; font-size: 30px; font-weight: 800; color: var(--color-accent-dark, #A68CFF); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s06" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,4,9,12,17,21,26]"},{"id":"dur","type":"number","label":"장면 길이","default":31},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s06-all">
+      <div id="s06-head" class="x-head">신뢰도의 착각</div>
+      <!-- 벤 그림과 숫자는 모두 영수증 상자 안(상자 기준 좌표) -->
+      <div id="s06-box" class="x-card x-hide">
+      <div id="s06-btag">같은 영수증 100장</div>
+      <!-- 빵 50(작은 원), 생수 80(큰 원), 둘 다 40 -->
+      <svg id="s06-svg" viewBox="0 0 808 538">
+        <defs><clipPath id="s06-cp"><circle cx="250" cy="290" r="150" /></clipPath></defs>
+        <circle id="s06-fi" cx="520" cy="285" r="235" fill="#6B3FE6" fill-opacity="0.3" clip-path="url(#s06-cp)" opacity="0" />
+        <circle id="s06-ca" cx="250" cy="290" r="150" fill="none" stroke="#18181B" stroke-width="5" opacity="0" />
+        <circle id="s06-cb" cx="520" cy="285" r="235" fill="none" stroke="#18181B" stroke-width="5" opacity="0" />
+      </svg>
+      <div class="s06-n" id="s06-na" style="left: 138px; top: 98px">빵 50</div>
+      <div class="s06-n" id="s06-nb" style="left: 658px; top: 24px">생수 80</div>
+      <div class="s06-c" id="s06-c1" style="left: 113px; top: 258px">10<span>빵만</span></div>
+      <div class="s06-c" id="s06-c2" style="left: 263px; top: 258px">40<span>둘 다</span></div>
+      <div class="s06-c" id="s06-c3" style="left: 508px; top: 258px">40<span>생수만</span></div>
+      <div class="s06-c" id="s06-c4" style="left: 8px; top: 442px; width: 170px">10<span>둘 다 없음</span></div>
+      </div>
+      <div class="s06-k x-card" id="s06-k1"><div class="s06-kt">신뢰도(빵 → 생수) · 둘 다 / 빵</div><div class="s06-kv">40 ÷ 50 = <span class="x-acc">0.8</span></div></div>
+      <div class="s06-k x-card" id="s06-k2"><div class="s06-kt">원래 생수를 사는 비율</div><div class="s06-kv">80 ÷ 100 = 0.8</div></div>
+      <div class="s06-k x-dark" id="s06-k3"><div id="s06-ring"></div><div class="s06-kt" style="color: #A1A1AA">향상도</div><div class="s06-kv">0.8 ÷ 0.8 = <span class="x-accd">1</span></div><div id="s06-kd">빵과 생수는 아무 관계 없음</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 31;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+
+    // 29 신뢰도만 보면 착각
+    ft("#s06-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    // 30 생수 80장
+    fade("#s06-box, #s06-btag", at(1, 0.2), 0, 1);
+    fade("#s06-ca, #s06-na", at(1, 0.6), 0, 1);
+    fade("#s06-cb, #s06-nb", at(1, 2.2), 0, 1);
+    // 31 빵과 생수 40장
+    fade("#s06-fi, #s06-c2", at(2, 0.4), 0, 1);
+    fade("#s06-c1, #s06-c3, #s06-c4", at(2, 1.6), 0, 1);
+    // 32 신뢰도 0.8, 꽤 높아 보인다
+    ft("#s06-k1", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(3, 0.3));
+    // 33 원래 80%가 사는 물건
+    ft("#s06-k2", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(4, 0.3));
+    // 34 0.8 ÷ 0.8 = 1, 관계없음
+    ft("#s06-k3", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(5, 0.3));
+    fade("#s06-kd", at(5, 2.4), 0, 1);
+    // 35 신뢰도와 함께 향상도를 꼭 확인
+    fade("#s06-ring", at(6, 0.4), 0, 1);
+    if (String(V.exit) !== "false") ft("#s06-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s06"] = tl;
+  </script>
+</template>

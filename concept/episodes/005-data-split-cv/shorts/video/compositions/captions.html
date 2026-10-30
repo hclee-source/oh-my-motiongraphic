@@ -1,0 +1,36 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 540px; text-align: center; overflow: visible;
+      font-size: 54px; font-weight: 700; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 940px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cap-01a" class="cap clip" data-start="0.000" data-duration="1.773"><span>공부한 문제로 시험을 보면</span></div>
+    <div id="cap-01b" class="cap clip" data-start="1.773" data-duration="1.439"><span>실력을 알 수 없죠.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="3.262" data-duration="1.387"><span>그래서 데이터를</span></div>
+    <div id="cap-02b" class="cap clip" data-start="4.649" data-duration="3.223"><span>훈련, 검증, 테스트로 나눕니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="8.072" data-duration="1.785"><span>한 번만 나누면 홀드아웃,</span></div>
+    <div id="cap-03b" class="cap clip" data-start="9.857" data-duration="0.812"><span>간단하지만</span></div>
+    <div id="cap-03c" class="cap clip" data-start="10.669" data-duration="2.259"><span>나누는 운에 따라 흔들립니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="12.978" data-duration="1.175"><span>k-겹 교차 검증은</span></div>
+    <div id="cap-04b" class="cap clip" data-start="14.153" data-duration="1.616"><span>데이터를 k조각으로 나눠</span></div>
+    <div id="cap-04c" class="cap clip" data-start="15.770" data-duration="1.619"><span>돌아가며 검증합니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="17.439" data-duration="1.272"><span>k번 학습하고,</span></div>
+    <div id="cap-05b" class="cap clip" data-start="18.711" data-duration="1.635"><span>모든 데이터가 한 번씩</span></div>
+    <div id="cap-05c" class="cap clip" data-start="20.346" data-duration="1.423"><span>검증에 쓰이죠.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="21.819" data-duration="2.442"><span>하나씩 빼서 검증하면 LOOCV,</span></div>
+    <div id="cap-06b" class="cap clip" data-start="24.261" data-duration="2.367"><span>데이터 개수만큼 학습합니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="26.828" data-duration="0.941"><span>부트스트랩은</span></div>
+    <div id="cap-07b" class="cap clip" data-start="27.769" data-duration="1.098"><span>다시 넣으며 뽑는</span></div>
+    <div id="cap-07c" class="cap clip" data-start="28.867" data-duration="1.405"><span>복원 추출입니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="30.322" data-duration="1.698"><span>한 번도 안 뽑힐 확률은</span></div>
+    <div id="cap-08b" class="cap clip" data-start="32.020" data-duration="2.513"><span>약 36.8퍼센트입니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="34.733" data-duration="1.774"><span>한 번 나누면 홀드아웃,</span></div>
+    <div id="cap-09b" class="cap clip" data-start="36.507" data-duration="2.129"><span>돌아가며 나누면 교차 검증,</span></div>
+    <div id="cap-09c" class="cap clip" data-start="38.637" data-duration="2.734"><span>다시 넣으며 뽑으면 부트스트랩.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

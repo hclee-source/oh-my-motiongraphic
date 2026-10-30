@@ -1,0 +1,28 @@
+{
+  "_설명": "장면 순서(장 번호와 연결, 여러 장을 한 장면으로 묶을 수 있음), 장면 끝에서 사라질지(exit), 효과음 위치([이름, 장면 안 문장 순번(0부터), 그 문장 시작 뒤 초]).",
+  "scenes": [
+    { "id": "s00", "file": "s00-title.html" },
+    { "id": "s01", "file": "s01-hook.html", "chapter": 1 },
+    { "id": "s02", "file": "s02-split.html", "chapter": 2 },
+    { "id": "s03", "file": "s03-holdout.html", "chapter": 3 },
+    { "id": "s04", "file": "s04-kfold.html", "chapter": 4 },
+    { "id": "s05", "file": "s05-loocv.html", "chapter": 5 },
+    { "id": "s06", "file": "s06-bootstrap.html", "chapter": 6 },
+    { "id": "s08", "file": "s08-check.html", "chapter": 7 },
+    { "id": "s09", "file": "s09-summary.html", "chapter": 8, "exit": false,
+      "extra": { "r2": { "sentence": 47, "at": "k번" }, "r3": { "sentence": 47, "at": "다시 넣으며" } } }
+  ],
+  "sfx": {
+    "s00": [["chime", null, 0.15], ["whoosh-short", null, 3.0]],
+    "s01": [["pop", 0, 0.2], ["pop", 0, 2.4], ["click-soft", 1, 0.2], ["pop", 1, 2.2], ["click-soft", 3, 2.0], ["click-soft", 3, 2.7], ["click-soft", 3, 3.6], ["pop", 4, 1.4]],
+    "s02": [["whoosh-short", 1, 0.2], ["whoosh-short", 2, 0.2], ["whoosh-short", 3, 0.2], ["click-soft", 4, 0.6], ["pop", 5, 0.3]],
+    "s03": [["whoosh-short", 0, 1.0], ["click-soft", 0, 1.8], ["whoosh-short", 2, 0.4], ["click-soft", 2, 1.0], ["whoosh-short", 2, 1.8], ["click-soft", 2, 2.4], ["click-soft", 4, 0.4]],
+    "s04": [["whoosh-short", 1, 0.3], ["click-soft", 3, 0.4], ["click-soft", 4, 0.6], ["click-soft", 4, 1.4], ["click-soft", 4, 2.2], ["click-soft", 4, 3.0],
+            ["pop", 5, 4.8], ["click-soft", 6, 0.4], ["click-soft", 7, 0.4]],
+    "s05": [["whoosh-short", 1, 0.3], ["whoosh-short", 1, 1.6], ["whoosh-short", 1, 3.0], ["pop", 3, 0.3], ["click-soft", 4, 0.3]],
+    "s06": [["pop", 0, 0.6], ["pop", 1, 0.8], ["pop", 1, 1.7], ["pop", 1, 2.6], ["pop", 1, 3.5], ["pop", 1, 4.4], ["click-soft", 3, 2.6],
+            ["click-soft", 4, 0.3], ["whoosh-short", 5, 0.3], ["click-soft", 6, 0.4], ["click-soft", 7, 0.4], ["click-soft", 8, 0.4], ["pop", 9, 0.4], ["pop", 10, 0.4]],
+    "s08": [["pop", 1, 0.2], ["pop", 2, 0.2], ["pop", 3, 0.2], ["pop", 4, 0.3]],
+    "s09": [["pop", 1, 0.1]]
+  }
+}

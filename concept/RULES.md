@@ -19,7 +19,10 @@
 
 역할별 스킬(맨 위 `.claude/skills/`): 1번 소재 목록 = `cert-topics`(목록 `concept/topics/topics.json`, 진행표 `concept/topics/진행표.md`).
 
-4번 화면·편집 명령(맨 위 폴더에서):
+4번 화면·편집 명령(맨 위 폴더에서, 2026-10-30 002~006 다섯 편을 만들며 정리):
+- 새 편 뼈대: `.venv/Scripts/python.exe concept/tools/new_episode.py <번호>-<id> "<제목>"` (본편·쇼츠 프로젝트 설정·글꼴·효과음·공용 틀 복사)
+- 한 번에: 조립+검사 `bash concept/tools/check_episode.sh concept/episodes/<편>` → 장마다 한 장 `concept/tools/sheet.py concept/episodes/<편> [--shorts]`(boards/review/sheet.jpg를 눈으로 확인) → 렌더·소리 크기·완성본 `concept/tools/render_episode.py concept/episodes/<편> "<제목>"` → 업로드 정보 `concept/tools/youtube_info.py <정보 JSON>`
+- 렌더 중에는 배치 검사(브라우저를 띄움)를 같이 돌리지 않는다(메모리 부족으로 렌더가 죽은 적 있음).
 - 음성: `.venv/Scripts/python.exe concept/tools/tts_episode.py concept/episodes/<편>`
 - 조립: `.venv/Scripts/python.exe concept/tools/build_video.py concept/episodes/<편>`
 - 배치 검사: `node tools/check_layout.mjs concept/episodes/<편>`

@@ -1,0 +1,90 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 108px; text-align: center; overflow: visible;
+      font-size: 46px; font-weight: 600; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 1536px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-01a" class="cap clip" data-start="3.600" data-duration="1.761"><span>빵을 산 손님 가운데 우유도</span></div>
+    <div id="cap-01b" class="cap clip" data-start="5.361" data-duration="2.331"><span>함께 산 사람은 얼마나 될까요?</span></div>
+    <div id="cap-02a" class="cap clip" data-start="7.792" data-duration="1.970"><span>마트는 이런 규칙을 찾아 진열</span></div>
+    <div id="cap-02b" class="cap clip" data-start="9.762" data-duration="2.384"><span>위치나 묶음 할인을 정합니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="12.246" data-duration="1.771"><span>이렇게 함께 일어나는 패턴을</span></div>
+    <div id="cap-03b" class="cap clip" data-start="14.017" data-duration="2.612"><span>찾는 분석을 연관규칙이라고 합니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="16.729" data-duration="3.362"><span>오늘은 규칙을 평가하는 세 숫자, 지지도,</span></div>
+    <div id="cap-04b" class="cap clip" data-start="20.091" data-duration="3.425"><span>신뢰도, 향상도를 계산해 보겠습니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="23.616" data-duration="3.365"><span>세 숫자 모두 시험에 계산 문제로 나오곤 합니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="27.631" data-duration="3.099"><span>연관규칙은 빵을 사면 우유도 산다처럼,</span></div>
+    <div id="cap-06b" class="cap clip" data-start="30.730" data-duration="2.255"><span>A면 B라는 모양입니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="33.085" data-duration="3.936"><span>앞쪽 A를 조건, 뒤쪽 B를 결과라고 부릅니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="37.121" data-duration="2.790"><span>예로 영수증 100장을 살펴보겠습니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="40.010" data-duration="4.417"><span>빵이 든 영수증은 50장, 우유가 든 영수증은 40장,</span></div>
+    <div id="cap-09b" class="cap clip" data-start="44.427" data-duration="3.899"><span>빵과 우유가 함께 든 영수증은 30장입니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="48.976" data-duration="1.920"><span>첫 번째는 지지도입니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="50.996" data-duration="2.196"><span>지지도는 전체 거래 가운데 A와</span></div>
+    <div id="cap-11b" class="cap clip" data-start="53.192" data-duration="2.614"><span>B가 함께 들어 있는 비율입니다.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="55.906" data-duration="3.424"><span>100장 중 30장이니 지지도는 0.3입니다.</span></div>
+    <div id="cap-13a" class="cap clip" data-start="59.430" data-duration="1.379"><span>이 조합이 얼마나 자주</span></div>
+    <div id="cap-13b" class="cap clip" data-start="60.809" data-duration="2.242"><span>나오는지를 보여 주는 숫자죠.</span></div>
+    <div id="cap-14a" class="cap clip" data-start="63.151" data-duration="1.738"><span>지지도가 너무 낮은 규칙은</span></div>
+    <div id="cap-14b" class="cap clip" data-start="64.889" data-duration="2.463"><span>맞더라도 쓸 데가 별로 없습니다.</span></div>
+    <div id="cap-15a" class="cap clip" data-start="68.002" data-duration="2.017"><span>두 번째는 신뢰도입니다.</span></div>
+    <div id="cap-16a" class="cap clip" data-start="70.119" data-duration="3.698"><span>신뢰도는 A가 든 거래 가운데 B도 든 비율입니다.</span></div>
+    <div id="cap-17a" class="cap clip" data-start="73.917" data-duration="2.269"><span>빵을 산 50장 중 우유도 산 것이</span></div>
+    <div id="cap-17b" class="cap clip" data-start="76.186" data-duration="3.042"><span>30장이니 신뢰도는 0.6입니다.</span></div>
+    <div id="cap-18a" class="cap clip" data-start="79.329" data-duration="1.946"><span>빵을 산 손님의 60퍼센트가</span></div>
+    <div id="cap-18b" class="cap clip" data-start="81.275" data-duration="2.033"><span>우유도 샀다는 뜻입니다.</span></div>
+    <div id="cap-19a" class="cap clip" data-start="83.408" data-duration="2.531"><span>방향을 바꾸면 값이 달라집니다.</span></div>
+    <div id="cap-20a" class="cap clip" data-start="86.039" data-duration="2.999"><span>우유를 산 40장 중 빵도 산 것은 30장,</span></div>
+    <div id="cap-20b" class="cap clip" data-start="89.038" data-duration="4.484"><span>그러니 우유에서 빵으로 가는 신뢰도는 0.75입니다.</span></div>
+    <div id="cap-21a" class="cap clip" data-start="94.172" data-duration="2.079"><span>세 번째는 향상도입니다.</span></div>
+    <div id="cap-22a" class="cap clip" data-start="96.351" data-duration="1.529"><span>향상도는 신뢰도를,</span></div>
+    <div id="cap-22b" class="cap clip" data-start="97.880" data-duration="3.477"><span>결과 B가 원래 나오는 비율로 나눈 값입니다.</span></div>
+    <div id="cap-23a" class="cap clip" data-start="101.457" data-duration="1.773"><span>원래 우유를 사는 비율은</span></div>
+    <div id="cap-23b" class="cap clip" data-start="103.230" data-duration="3.087"><span>100장 중 40장, 0.4입니다.</span></div>
+    <div id="cap-24a" class="cap clip" data-start="106.417" data-duration="1.476"><span>그런데 빵을 산 손님은</span></div>
+    <div id="cap-24b" class="cap clip" data-start="107.893" data-duration="2.709"><span>0.6의 비율로 우유를 샀습니다.</span></div>
+    <div id="cap-25a" class="cap clip" data-start="110.703" data-duration="4.193"><span>0.6을 0.4로 나누면 향상도는 1.5입니다.</span></div>
+    <div id="cap-26a" class="cap clip" data-start="114.996" data-duration="2.029"><span>빵을 사면 우유를 살 가능성이</span></div>
+    <div id="cap-26b" class="cap clip" data-start="117.025" data-duration="2.956"><span>평소보다 1.5배 높다는 뜻입니다.</span></div>
+    <div id="cap-27a" class="cap clip" data-start="120.081" data-duration="5.316"><span>향상도가 1보다 크면 양의 관계로 함께 잘 팔리고, 1이면 서로 독립,</span></div>
+    <div id="cap-27b" class="cap clip" data-start="125.397" data-duration="4.832"><span>1보다 작으면 음의 관계로 한쪽을 사면 다른 쪽을 덜 삽니다.</span></div>
+    <div id="cap-28a" class="cap clip" data-start="130.329" data-duration="3.310"><span>그리고 향상도는 방향을 바꿔도 값이 같습니다.</span></div>
+    <div id="cap-29a" class="cap clip" data-start="134.290" data-duration="3.628"><span>그런데 신뢰도만 보고 판단하면 착각하기 쉽습니다.</span></div>
+    <div id="cap-30a" class="cap clip" data-start="138.017" data-duration="2.255"><span>같은 영수증 100장 가운데 생수는</span></div>
+    <div id="cap-30b" class="cap clip" data-start="140.272" data-duration="2.805"><span>80장에 들어 있었다고 해 보겠습니다.</span></div>
+    <div id="cap-31a" class="cap clip" data-start="143.177" data-duration="3.324"><span>빵과 생수가 함께 든 영수증은 40장입니다.</span></div>
+    <div id="cap-32a" class="cap clip" data-start="146.602" data-duration="2.546"><span>빵을 산 50장 중 40장에 생수가</span></div>
+    <div id="cap-32b" class="cap clip" data-start="149.148" data-duration="3.705"><span>있으니 신뢰도는 0.8, 꽤 높아 보입니다.</span></div>
+    <div id="cap-33a" class="cap clip" data-start="152.953" data-duration="1.713"><span>하지만 생수는 원래 손님의</span></div>
+    <div id="cap-33b" class="cap clip" data-start="154.666" data-duration="2.431"><span>80퍼센트가 사는 물건입니다.</span></div>
+    <div id="cap-34a" class="cap clip" data-start="157.197" data-duration="3.090"><span>0.8을 0.8로 나누면 향상도는 1,</span></div>
+    <div id="cap-34b" class="cap clip" data-start="160.287" data-duration="2.977"><span>빵과 생수는 아무 관계가 없습니다.</span></div>
+    <div id="cap-35a" class="cap clip" data-start="163.365" data-duration="2.161"><span>그래서 규칙을 고를 때는 신뢰도와</span></div>
+    <div id="cap-35b" class="cap clip" data-start="165.526" data-duration="2.256"><span>함께 향상도를 꼭 확인합니다.</span></div>
+    <div id="cap-36a" class="cap clip" data-start="168.431" data-duration="2.599"><span>세 지표를 식으로 정리해 보겠습니다.</span></div>
+    <div id="cap-37a" class="cap clip" data-start="171.130" data-duration="1.930"><span>지지도는 A와 B가 함께 나온</span></div>
+    <div id="cap-37b" class="cap clip" data-start="173.060" data-duration="2.663"><span>거래 수를 전체 거래 수로 나눕니다.</span></div>
+    <div id="cap-38a" class="cap clip" data-start="175.823" data-duration="2.179"><span>신뢰도는 A와 B가 함께 나온 거래</span></div>
+    <div id="cap-38b" class="cap clip" data-start="178.002" data-duration="2.585"><span>수를 A가 나온 거래 수로 나눕니다.</span></div>
+    <div id="cap-39a" class="cap clip" data-start="180.687" data-duration="3.498"><span>향상도는 신뢰도를 결과 B의 지지도로 나눕니다.</span></div>
+    <div id="cap-40a" class="cap clip" data-start="184.285" data-duration="3.344"><span>확률로 쓰면, A와 B가 함께 일어날 확률을 A의</span></div>
+    <div id="cap-40b" class="cap clip" data-start="187.629" data-duration="3.594"><span>확률과 B의 확률을 곱한 값으로 나눈 것입니다.</span></div>
+    <div id="cap-41a" class="cap clip" data-start="191.873" data-duration="2.582"><span>시험장에서 챙길 것 세 가지입니다.</span></div>
+    <div id="cap-42a" class="cap clip" data-start="194.555" data-duration="2.296"><span>첫째, 신뢰도의 분모는 전체가</span></div>
+    <div id="cap-42b" class="cap clip" data-start="196.851" data-duration="3.075"><span>아니라 조건 A가 나온 거래 수입니다.</span></div>
+    <div id="cap-43a" class="cap clip" data-start="200.026" data-duration="1.746"><span>둘째, 향상도 1은 서로</span></div>
+    <div id="cap-43b" class="cap clip" data-start="201.772" data-duration="2.694"><span>관계없는 독립이라는 뜻입니다.</span></div>
+    <div id="cap-44a" class="cap clip" data-start="204.566" data-duration="2.492"><span>셋째, 지지도와 향상도는 방향을</span></div>
+    <div id="cap-44b" class="cap clip" data-start="207.058" data-duration="3.276"><span>바꿔도 같지만, 신뢰도는 달라집니다.</span></div>
+    <div id="cap-45a" class="cap clip" data-start="210.434" data-duration="2.236"><span>덧붙여, 연관규칙은 정답 없이</span></div>
+    <div id="cap-45b" class="cap clip" data-start="212.670" data-duration="3.003"><span>패턴을 찾는 비지도 학습에 속합니다.</span></div>
+    <div id="cap-46a" class="cap clip" data-start="216.324" data-duration="2.894"><span>오늘 내용을 한 줄로 정리하면 이렇습니다.</span></div>
+    <div id="cap-47a" class="cap clip" data-start="219.317" data-duration="4.732"><span>지지도는 얼마나 자주, 신뢰도는 A가 있을 때 B도 있는 비율,</span></div>
+    <div id="cap-47b" class="cap clip" data-start="224.049" data-duration="3.708"><span>향상도는 그 비율이 평소의 몇 배인지입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

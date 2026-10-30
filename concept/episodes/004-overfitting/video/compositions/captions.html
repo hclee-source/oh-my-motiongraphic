@@ -1,0 +1,90 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 108px; text-align: center; overflow: visible;
+      font-size: 46px; font-weight: 600; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 1536px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-01a" class="cap clip" data-start="3.600" data-duration="3.327"><span>기출문제 답을 통째로 외운 수험생이 있습니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="7.027" data-duration="3.042"><span>기출문제를 다시 풀면 100점이 나옵니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="10.169" data-duration="1.629"><span>그런데 처음 보는 문제가</span></div>
+    <div id="cap-03b" class="cap clip" data-start="11.798" data-duration="2.530"><span>나오자 점수가 뚝 떨어졌습니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="14.429" data-duration="2.347"><span>모델에서도 똑같은 일이 생기는데,</span></div>
+    <div id="cap-04b" class="cap clip" data-start="16.776" data-duration="2.441"><span>이것을 과대적합이라고 합니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="19.317" data-duration="2.969"><span>오늘은 과대적합과 과소적합, 그리고 둘을</span></div>
+    <div id="cap-05b" class="cap clip" data-start="22.286" data-duration="3.548"><span>알아보는 법과 줄이는 법을 정리해 보겠습니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="26.484" data-duration="2.059"><span>모델은 훈련 데이터로 배우고,</span></div>
+    <div id="cap-06b" class="cap clip" data-start="28.543" data-duration="3.260"><span>처음 보는 검증 데이터로 실력을 확인합니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="31.903" data-duration="1.752"><span>검증 데이터는 학습에 한 번도</span></div>
+    <div id="cap-07b" class="cap clip" data-start="33.655" data-duration="2.149"><span>쓰지 않은 데이터여야 합니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="35.904" data-duration="2.687"><span>훈련 데이터 점수는 연습 문제 점수,</span></div>
+    <div id="cap-08b" class="cap clip" data-start="38.591" data-duration="4.192"><span>검증 데이터 점수는 실전을 미리 보는 점수인 셈이죠.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="42.883" data-duration="2.927"><span>우리가 정말 원하는 건 실전 점수입니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="45.910" data-duration="1.520"><span>그래서 두 점수를 나란히</span></div>
+    <div id="cap-10b" class="cap clip" data-start="47.430" data-duration="2.225"><span>놓고 보는 것이 출발점입니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="50.305" data-duration="1.760"><span>점들이 완만한 곡선을 그리며</span></div>
+    <div id="cap-11b" class="cap clip" data-start="52.066" data-duration="2.011"><span>놓여 있다고 해 보겠습니다.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="54.176" data-duration="3.147"><span>첫 번째 모델은 직선 하나로 설명하려고 합니다.</span></div>
+    <div id="cap-13a" class="cap clip" data-start="57.423" data-duration="1.815"><span>너무 단순해서 훈련 데이터도</span></div>
+    <div id="cap-13b" class="cap clip" data-start="59.238" data-duration="1.913"><span>제대로 맞히지 못합니다.</span></div>
+    <div id="cap-14a" class="cap clip" data-start="61.251" data-duration="3.072"><span>훈련 점수도 낮고 검증 점수도 낮은 상태,</span></div>
+    <div id="cap-14b" class="cap clip" data-start="64.323" data-duration="2.238"><span>이것이 과소적합입니다.</span></div>
+    <div id="cap-15a" class="cap clip" data-start="66.661" data-duration="3.574"><span>두 번째 모델은 완만한 곡선으로 흐름을 따라갑니다.</span></div>
+    <div id="cap-16a" class="cap clip" data-start="70.335" data-duration="3.404"><span>훈련 점수와 검증 점수가 둘 다 괜찮습니다.</span></div>
+    <div id="cap-17a" class="cap clip" data-start="73.839" data-duration="1.895"><span>세 번째 모델은 모든 훈련 점을</span></div>
+    <div id="cap-17b" class="cap clip" data-start="75.734" data-duration="2.935"><span>빠짐없이 지나는 구불구불한 선입니다.</span></div>
+    <div id="cap-18a" class="cap clip" data-start="78.768" data-duration="2.181"><span>훈련 데이터의 오차는 0이지만,</span></div>
+    <div id="cap-18b" class="cap clip" data-start="80.949" data-duration="3.210"><span>점들의 우연한 흔들림까지 외워 버렸습니다.</span></div>
+    <div id="cap-19a" class="cap clip" data-start="84.260" data-duration="3.344"><span>그래서 새로운 검증 점에서는 크게 빗나갑니다.</span></div>
+    <div id="cap-20a" class="cap clip" data-start="87.703" data-duration="2.346"><span>훈련 점수는 높은데 검증 점수가</span></div>
+    <div id="cap-20b" class="cap clip" data-start="90.049" data-duration="3.137"><span>낮은 상태, 이것이 과대적합입니다.</span></div>
+    <div id="cap-21a" class="cap clip" data-start="93.837" data-duration="2.005"><span>모델을 점점 복잡하게 만들면</span></div>
+    <div id="cap-21b" class="cap clip" data-start="95.842" data-duration="2.087"><span>오차는 어떻게 변할까요?</span></div>
+    <div id="cap-22a" class="cap clip" data-start="98.029" data-duration="3.268"><span>훈련 오차는 복잡해질수록 계속 줄어듭니다.</span></div>
+    <div id="cap-23a" class="cap clip" data-start="101.397" data-duration="2.370"><span>검증 오차는 처음엔 같이 줄다가,</span></div>
+    <div id="cap-23b" class="cap clip" data-start="103.768" data-duration="2.620"><span>어느 지점부터 다시 늘어납니다.</span></div>
+    <div id="cap-24a" class="cap clip" data-start="106.489" data-duration="3.883"><span>검증 오차가 가장 낮은 곳이 알맞은 복잡도입니다.</span></div>
+    <div id="cap-25a" class="cap clip" data-start="110.471" data-duration="2.021"><span>그보다 왼쪽은 과소적합,</span></div>
+    <div id="cap-25b" class="cap clip" data-start="112.492" data-duration="2.823"><span>오른쪽은 과대적합 구간입니다.</span></div>
+    <div id="cap-26a" class="cap clip" data-start="115.415" data-duration="1.904"><span>두 오차 사이의 틈이 벌어지기</span></div>
+    <div id="cap-26b" class="cap clip" data-start="117.319" data-duration="2.948"><span>시작하면 과대적합을 의심하면 됩니다.</span></div>
+    <div id="cap-27a" class="cap clip" data-start="120.917" data-duration="3.498"><span>이 현상은 편향과 분산이라는 말로도 설명합니다.</span></div>
+    <div id="cap-28a" class="cap clip" data-start="124.515" data-duration="2.652"><span>편향은 모델이 너무 단순해서 생기는,</span></div>
+    <div id="cap-28b" class="cap clip" data-start="127.167" data-duration="2.571"><span>늘 한쪽으로 치우친 오차입니다.</span></div>
+    <div id="cap-29a" class="cap clip" data-start="129.839" data-duration="2.458"><span>분산은 훈련 데이터가 조금만 바뀌어도</span></div>
+    <div id="cap-29b" class="cap clip" data-start="132.297" data-duration="2.554"><span>모델이 크게 달라지는 정도입니다.</span></div>
+    <div id="cap-30a" class="cap clip" data-start="134.950" data-duration="1.928"><span>과소적합은 편향이 크고,</span></div>
+    <div id="cap-30b" class="cap clip" data-start="136.878" data-duration="2.878"><span>과대적합은 분산이 큰 상태입니다.</span></div>
+    <div id="cap-31a" class="cap clip" data-start="139.857" data-duration="3.077"><span>복잡도를 올리면 편향은 줄고 분산은 늘어서,</span></div>
+    <div id="cap-31b" class="cap clip" data-start="142.934" data-duration="2.841"><span>둘을 한꺼번에 줄이기는 어렵습니다.</span></div>
+    <div id="cap-32a" class="cap clip" data-start="145.875" data-duration="3.380"><span>이것을 편향과 분산의 트레이드오프라고 부릅니다.</span></div>
+    <div id="cap-33a" class="cap clip" data-start="149.905" data-duration="1.381"><span>시험에 자주 나오는 건</span></div>
+    <div id="cap-33b" class="cap clip" data-start="151.286" data-duration="2.397"><span>과대적합을 줄이는 방법입니다.</span></div>
+    <div id="cap-34a" class="cap clip" data-start="153.783" data-duration="3.519"><span>첫째, 훈련 데이터를 더 많이 모읍니다.</span></div>
+    <div id="cap-35a" class="cap clip" data-start="157.402" data-duration="2.984"><span>둘째, 변수를 줄이거나 의사결정나무의</span></div>
+    <div id="cap-35b" class="cap clip" data-start="160.386" data-duration="3.234"><span>가지를 쳐서 모델을 단순하게 만듭니다.</span></div>
+    <div id="cap-36a" class="cap clip" data-start="163.720" data-duration="2.153"><span>셋째, 릿지나 라쏘 같은 규제로</span></div>
+    <div id="cap-36b" class="cap clip" data-start="165.873" data-duration="2.734"><span>계수가 너무 커지지 않게 막습니다.</span></div>
+    <div id="cap-37a" class="cap clip" data-start="168.707" data-duration="1.517"><span>넷째, 신경망이라면</span></div>
+    <div id="cap-37b" class="cap clip" data-start="170.224" data-duration="2.778"><span>드롭아웃이나 조기 종료를 씁니다.</span></div>
+    <div id="cap-38a" class="cap clip" data-start="173.101" data-duration="3.328"><span>다섯째, 교차 검증으로 처음 보는 데이터에서의</span></div>
+    <div id="cap-38b" class="cap clip" data-start="176.429" data-duration="3.910"><span>성능을 확인하며 알맞은 복잡도의 모델을 고릅니다.</span></div>
+    <div id="cap-39a" class="cap clip" data-start="180.439" data-duration="2.599"><span>반대로 과소적합이라면 더 복잡한 모델을</span></div>
+    <div id="cap-39b" class="cap clip" data-start="183.037" data-duration="2.849"><span>쓰거나 쓸모 있는 변수를 더해야 합니다.</span></div>
+    <div id="cap-40a" class="cap clip" data-start="186.536" data-duration="2.582"><span>시험장에서 챙길 것 세 가지입니다.</span></div>
+    <div id="cap-41a" class="cap clip" data-start="189.218" data-duration="3.117"><span>첫째, 훈련 성능은 높은데 검증 성능이</span></div>
+    <div id="cap-41b" class="cap clip" data-start="192.335" data-duration="4.341"><span>낮으면 과대적합, 둘 다 낮으면 과소적합입니다.</span></div>
+    <div id="cap-42a" class="cap clip" data-start="196.776" data-duration="2.756"><span>둘째, 과대적합은 분산이 크고,</span></div>
+    <div id="cap-42b" class="cap clip" data-start="199.532" data-duration="2.612"><span>과소적합은 편향이 큽니다.</span></div>
+    <div id="cap-43a" class="cap clip" data-start="202.244" data-duration="4.471"><span>셋째, 데이터를 늘리거나 규제를 더하면 과대적합이 줄지만,</span></div>
+    <div id="cap-43b" class="cap clip" data-start="206.715" data-duration="3.517"><span>모델을 더 복잡하게 하면 오히려 심해집니다.</span></div>
+    <div id="cap-44a" class="cap clip" data-start="210.332" data-duration="3.885"><span>덧붙여, 과대적합은 과적합이라고도 부릅니다.</span></div>
+    <div id="cap-45a" class="cap clip" data-start="214.867" data-duration="2.894"><span>오늘 내용을 한 줄로 정리하면 이렇습니다.</span></div>
+    <div id="cap-46a" class="cap clip" data-start="217.861" data-duration="4.440"><span>연습 문제만 잘 풀면 과대적합, 둘 다 못 풀면 과소적합,</span></div>
+    <div id="cap-46b" class="cap clip" data-start="222.301" data-duration="3.917"><span>판단 기준은 처음 보는 데이터의 성적입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

@@ -1,0 +1,81 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    /* 그래프: 왼쪽 위 (192, 262), 900 × 520. 위로 갈수록 오차가 크다 */
+    #s04-svg { position: absolute; left: 192px; top: 262px; width: 900px; height: 520px; overflow: visible; }
+    #s04-ylab { position: absolute; left: 192px; top: 214px; font-size: 32px; font-weight: 800; opacity: 0; }
+    #s04-xlab { position: absolute; left: 852px; top: 796px; font-size: 32px; font-weight: 800; opacity: 0; white-space: nowrap; }
+    .s04-zone { position: absolute; top: 282px; font-size: 34px; font-weight: 900; opacity: 0; white-space: nowrap; }
+    #s04-best { position: absolute; left: 542px; top: 230px; width: 220px; text-align: center; font-size: 30px; font-weight: 800;
+      color: var(--color-accent, #6B3FE6); opacity: 0; white-space: nowrap; }
+    #s04-gap { position: absolute; left: 962px; top: 600px; font-size: 32px; font-weight: 900; color: var(--color-accent, #6B3FE6); opacity: 0; }
+    #s04-card { position: absolute; left: 1180px; top: 262px; width: 548px; height: 520px; padding: 40px 44px; box-sizing: border-box; }
+    .s04-lg { display: grid; grid-template-columns: 72px 1fr; align-items: center; margin-bottom: 26px; opacity: 0; }
+    .s04-sw { width: 56px; height: 7px; border-radius: 4px; }
+    .s04-lt { font-size: 36px; font-weight: 800; }
+    .s04-ld { margin-top: 12px; font-size: 28px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    #s04-note { margin-top: 40px; font-size: 32px; font-weight: 800; line-height: 1.5; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s04" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,4,8,13,17,21]"},{"id":"dur","type":"number","label":"장면 길이","default":26},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s04-all">
+      <div id="s04-head" class="x-head">복잡도와 오차</div>
+      <div id="s04-ylab">오차 ↑</div>
+      <div id="s04-xlab">복잡도 →</div>
+      <svg id="s04-svg" viewBox="0 0 900 520">
+        <path d="M0 0 L0 520 L900 520" stroke="#18181B" stroke-width="4" fill="none" />
+        <path id="s04-opt" d="M460 30 L460 520" stroke="#6B3FE6" stroke-width="3" stroke-dasharray="10 10" fill="none" opacity="0" />
+        <path id="s04-tr" d="M40 90 C200 420 450 500 860 510" stroke="#18181B" stroke-width="7" fill="none" stroke-linecap="round" />
+        <path id="s04-va" d="M40 70 C180 330 330 390 450 385 C570 380 720 300 860 150" stroke="#6B3FE6" stroke-width="7" fill="none" stroke-linecap="round" />
+        <circle id="s04-dot" cx="460" cy="385" r="13" fill="#6B3FE6" opacity="0" />
+        <path id="s04-br" d="M755 258 L755 500" stroke="#6B3FE6" stroke-width="5" fill="none" stroke-linecap="round" opacity="0" />
+      </svg>
+      <div class="s04-zone x-ink2" id="s04-z1" style="left: 232px">← 과소적합</div>
+      <div class="s04-zone x-acc" id="s04-z2" style="left: 880px">과대적합 →</div>
+      <div id="s04-best">알맞은 복잡도</div>
+      <div id="s04-gap">틈</div>
+      <div id="s04-card" class="x-card x-hide">
+        <div class="s04-lg" id="s04-g1"><div class="s04-sw" style="background: #18181B"></div><div><div class="s04-lt">훈련 오차</div><div class="s04-ld">복잡할수록 계속 준다</div></div></div>
+        <div class="s04-lg" id="s04-g2"><div class="s04-sw" style="background: #6B3FE6"></div><div><div class="s04-lt x-acc">검증 오차</div><div class="s04-ld">줄다가 다시 는다</div></div></div>
+        <div id="s04-note">두 오차의 틈이 벌어지면<br /><span class="x-acc">과대적합 의심</span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 26;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const prep = id => { const el = document.getElementById(id), L = el.getTotalLength(); el.style.strokeDasharray = L; el.style.strokeDashoffset = L; return [el, L]; };
+    const draw = (id, t, d) => { const [el, L] = prep(id); tl.fromTo(el, { strokeDashoffset: L }, { strokeDashoffset: 0, duration: d * S, ease: "power2.inOut", immediateRender: false }, t); };
+
+    // 21 복잡하게 만들면 오차는?
+    ft("#s04-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    fade("#s04-ylab, #s04-xlab", at(0, 0.5), 0, 1);
+    ft("#s04-card", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(0, 0.8));
+    // 22 훈련 오차는 계속 준다
+    draw("s04-tr", at(1, 0.3), 1.4);
+    fade("#s04-g1", at(1, 0.3), 0, 1);
+    // 23 검증 오차는 줄다가 다시 는다
+    draw("s04-va", at(2, 0.3), 1.8);
+    fade("#s04-g2", at(2, 0.3), 0, 1);
+    // 24 가장 낮은 곳 = 알맞은 복잡도
+    ft("#s04-dot", { opacity: 0, scale: 0.3, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, ease: "back.out(2)" }, at(3, 0.6));
+    fade("#s04-opt", at(3, 0.9), 0, 1);
+    fade("#s04-best", at(3, 1.1), 0, 1);
+    // 25 왼쪽 과소적합, 오른쪽 과대적합
+    fade("#s04-z1", at(4, 0.4), 0, 1);
+    fade("#s04-z2", at(4, 2.0), 0, 1);
+    // 26 두 오차의 틈
+    fade("#s04-br", at(5, 0.6), 0, 1);
+    fade("#s04-gap", at(5, 0.8), 0, 1);
+    fade("#s04-note", at(5, 1.2), 0, 1);
+    if (String(V.exit) !== "false") ft("#s04-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s04"] = tl;
+  </script>
+</template>

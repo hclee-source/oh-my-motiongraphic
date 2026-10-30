@@ -1,0 +1,51 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h2-r { position: absolute; left: 80px; width: 920px; height: 150px; padding: 0 44px;
+      display: grid; grid-template-columns: 330px 1fr; align-items: center; }
+    .h2-a { font-size: 44px; font-weight: 800; color: var(--color-ink2, #71717A); white-space: nowrap; }
+    .h2-b { font-size: 72px; font-weight: 900; }
+    /* 오차 2와 8을 한 변으로 하는 정사각형 — 제곱하면 넓이가 4와 64 */
+    .h2-sq { position: absolute; top: 1170px; transform-origin: left bottom; transform: scale(0); }
+    #h2-s2 { left: 120px; width: 60px; height: 60px; margin-top: -60px; background: var(--color-ink2, #71717A); }
+    #h2-s8 { left: 380px; width: 240px; height: 240px; margin-top: -240px; background: var(--color-accent, #6B3FE6); }
+    .h2-l { position: absolute; top: 1180px; font-size: 44px; font-weight: 900; opacity: 0; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="h2" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.3,4.5,8.5]"},{"id":"dur","type":"number","label":"장면 길이","default":13},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h2-all">
+      <div class="h2-r x-card x-hide" id="h2-r1" style="top: 330px"><div class="h2-a">|오차|의 평균</div><div class="h2-b">MAE</div></div>
+      <div class="h2-r x-card x-hide" id="h2-r2" style="top: 500px"><div class="h2-a">오차²의 평균</div><div class="h2-b">MSE</div></div>
+      <div class="h2-r x-card x-hide" id="h2-r3" style="top: 670px"><div class="h2-a">√MSE</div><div class="h2-b x-acc">RMSE</div></div>
+      <div class="h2-sq" id="h2-s2"></div>
+      <div class="h2-sq" id="h2-s8"></div>
+      <div class="h2-l x-ink2" id="h2-l2" style="left: 90px">2² = 4</div>
+      <div class="h2-l x-acc" id="h2-l8" style="left: 640px">8² = 64</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 13;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, ease: "back.out(1.6)" }, t);
+
+    // 3 절댓값 평균 MAE, 제곱 평균 MSE
+    stamp("#h2-r1", at(0, 0.1));
+    stamp("#h2-r2", at(0, 2.0));
+    // 4 제곱근 → RMSE
+    stamp("#h2-r3", at(1, 0.4));
+    // 5 제곱 때문에 큰 오차에 민감 — 넓이로 본다
+    ft("#h2-s2", { scale: 0 }, { scale: 1, ease: "back.out(1.6)" }, at(2, 0.3));
+    fade("#h2-l2", at(2, 0.6), 0, 1);
+    ft("#h2-s8", { scale: 0 }, { scale: 1, duration: 0.7 * S, ease: "back.out(1.4)" }, at(2, 1.2));
+    fade("#h2-l8", at(2, 1.8), 0, 1);
+    if (String(V.exit) !== "false") ft("#h2-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.35);
+    window.__timelines["h2"] = tl;
+  </script>
+</template>

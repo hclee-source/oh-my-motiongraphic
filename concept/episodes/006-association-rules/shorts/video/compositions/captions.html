@@ -1,0 +1,34 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 540px; text-align: center; overflow: visible;
+      font-size: 54px; font-weight: 700; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 940px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cap-01a" class="cap clip" data-start="0.000" data-duration="1.011"><span>빵을 산 손님 중</span></div>
+    <div id="cap-01b" class="cap clip" data-start="1.011" data-duration="1.853"><span>우유도 산 사람이 많다면,</span></div>
+    <div id="cap-01c" class="cap clip" data-start="2.864" data-duration="2.003"><span>이 규칙은 쓸모 있을까요?</span></div>
+    <div id="cap-02a" class="cap clip" data-start="4.917" data-duration="0.799"><span>연관규칙은</span></div>
+    <div id="cap-02b" class="cap clip" data-start="5.716" data-duration="1.848"><span>세 숫자로 평가합니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="7.764" data-duration="0.638"><span>지지도는</span></div>
+    <div id="cap-03b" class="cap clip" data-start="8.402" data-duration="1.905"><span>둘을 함께 산 거래의 비율.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="10.357" data-duration="1.669"><span>신뢰도는 빵을 산 거래 중</span></div>
+    <div id="cap-04b" class="cap clip" data-start="12.026" data-duration="1.319"><span>우유도 산 비율.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="13.395" data-duration="1.448"><span>향상도는 그 신뢰도가</span></div>
+    <div id="cap-05b" class="cap clip" data-start="14.843" data-duration="1.609"><span>우유를 원래 사는 비율의</span></div>
+    <div id="cap-05c" class="cap clip" data-start="16.452" data-duration="1.537"><span>몇 배인지입니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="18.189" data-duration="2.745"><span>향상도가 1보다 크면 양의 관계,</span></div>
+    <div id="cap-06b" class="cap clip" data-start="20.934" data-duration="1.177"><span>1이면 독립,</span></div>
+    <div id="cap-06c" class="cap clip" data-start="22.111" data-duration="2.307"><span>1보다 작으면 음의 관계.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="24.468" data-duration="1.866"><span>그래서 신뢰도가 높아 보여도</span></div>
+    <div id="cap-07b" class="cap clip" data-start="26.334" data-duration="1.088"><span>향상도가 1이면</span></div>
+    <div id="cap-07c" class="cap clip" data-start="27.422" data-duration="1.805"><span>관련 없는 규칙입니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="29.427" data-duration="1.842"><span>지지도는 얼마나 자주,</span></div>
+    <div id="cap-08b" class="cap clip" data-start="31.269" data-duration="1.842"><span>신뢰도는 조건부 비율,</span></div>
+    <div id="cap-08c" class="cap clip" data-start="33.111" data-duration="2.460"><span>향상도는 평소의 몇 배인지.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

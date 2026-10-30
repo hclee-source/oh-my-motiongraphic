@@ -1,0 +1,45 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s07-card { position: absolute; left: 192px; top: 262px; width: 1536px; height: 540px; padding: 48px 64px; box-sizing: border-box; }
+    .s07-r { display: grid; grid-template-columns: 240px 1fr; align-items: center; height: 104px; opacity: 0; }
+    .s07-k { font-size: 48px; font-weight: 900; }
+    .s07-v { font-size: 46px; font-weight: 800; color: #A1A1AA; white-space: nowrap; }
+    .s07-v b { color: #FFFFFF; font-weight: 900; }
+    #s07-p { margin-top: 26px; padding-top: 30px; border-top: 2px solid #3F3F46; font-size: 44px; font-weight: 800; color: var(--color-accent-dark, #A68CFF); opacity: 0; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="s07" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,3,8,13,17]"},{"id":"dur","type":"number","label":"장면 길이","default":24},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s07-all">
+      <div id="s07-head" class="x-head">식으로 정리</div>
+      <div id="s07-card" class="x-dark x-hide">
+        <div class="s07-r" id="s07-r1"><div class="s07-k">지지도</div><div class="s07-v"><b>A와 B 함께</b> ÷ 전체 거래</div></div>
+        <div class="s07-r" id="s07-r2"><div class="s07-k">신뢰도</div><div class="s07-v"><b>A와 B 함께</b> ÷ A가 나온 거래</div></div>
+        <div class="s07-r" id="s07-r3"><div class="s07-k x-accd">향상도</div><div class="s07-v"><b>신뢰도</b> ÷ B의 지지도</div></div>
+        <div id="s07-p">= P(A∩B) ÷ ( P(A) × P(B) )</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 24;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+
+    // 36 식으로
+    ft("#s07-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s07-card", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.6));
+    // 37 지지도 / 38 신뢰도 / 39 향상도 / 40 확률로
+    fade("#s07-r1", at(1, 0.3), 0, 1);
+    fade("#s07-r2", at(2, 0.3), 0, 1);
+    fade("#s07-r3", at(3, 0.3), 0, 1);
+    fade("#s07-p", at(4, 0.6), 0, 1);
+    if (String(V.exit) !== "false") ft("#s07-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s07"] = tl;
+  </script>
+</template>

@@ -1,0 +1,36 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 540px; text-align: center; overflow: visible;
+      font-size: 54px; font-weight: 700; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 940px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cap-01a" class="cap clip" data-start="0.000" data-duration="1.752"><span>기출 답만 외운 수험생,</span></div>
+    <div id="cap-01b" class="cap clip" data-start="1.752" data-duration="1.577"><span>기출은 100점인데</span></div>
+    <div id="cap-01c" class="cap clip" data-start="3.330" data-duration="1.727"><span>새 문제는 못 풉니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="5.107" data-duration="0.920"><span>모델이 이러면</span></div>
+    <div id="cap-02b" class="cap clip" data-start="6.027" data-duration="1.476"><span>과대적합입니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="7.703" data-duration="1.322"><span>훈련 점수는 높은데</span></div>
+    <div id="cap-03b" class="cap clip" data-start="9.025" data-duration="1.322"><span>검증 점수가 낮으면</span></div>
+    <div id="cap-03c" class="cap clip" data-start="10.348" data-duration="0.975"><span>과대적합,</span></div>
+    <div id="cap-04a" class="cap clip" data-start="11.373" data-duration="0.824"><span>둘 다 낮으면</span></div>
+    <div id="cap-04b" class="cap clip" data-start="12.197" data-duration="1.569"><span>과소적합입니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="13.966" data-duration="1.531"><span>모델이 복잡해질수록</span></div>
+    <div id="cap-05b" class="cap clip" data-start="15.497" data-duration="1.871"><span>훈련 오차는 계속 줄지만,</span></div>
+    <div id="cap-05c" class="cap clip" data-start="17.368" data-duration="2.362"><span>검증 오차는 U자를 그립니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="19.780" data-duration="1.903"><span>검증 오차가 가장 낮은 곳이</span></div>
+    <div id="cap-06b" class="cap clip" data-start="21.683" data-duration="1.880"><span>알맞은 복잡도입니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="23.613" data-duration="2.210"><span>과대적합은 분산이 큰 상태,</span></div>
+    <div id="cap-07b" class="cap clip" data-start="25.823" data-duration="2.829"><span>과소적합은 편향이 큰 상태고요.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="28.851" data-duration="1.411"><span>과대적합을 줄이려면</span></div>
+    <div id="cap-08b" class="cap clip" data-start="30.262" data-duration="1.254"><span>데이터를 늘리고,</span></div>
+    <div id="cap-08c" class="cap clip" data-start="31.516" data-duration="1.717"><span>모델을 단순하게 하고,</span></div>
+    <div id="cap-09a" class="cap clip" data-start="33.283" data-duration="1.940"><span>규제나 드롭아웃을 씁니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="35.423" data-duration="1.202"><span>판단 기준은 언제나</span></div>
+    <div id="cap-10b" class="cap clip" data-start="36.625" data-duration="2.354"><span>처음 보는 데이터의 성적입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

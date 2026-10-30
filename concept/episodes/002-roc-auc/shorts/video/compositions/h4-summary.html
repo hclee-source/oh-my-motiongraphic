@@ -1,0 +1,35 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h4-row { position: absolute; left: 80px; width: 920px; height: 200px; padding: 0 56px; box-sizing: border-box;
+      display: grid; grid-template-columns: 250px 1fr; align-items: center; }
+    #h4-r1 { top: 380px; }
+    #h4-r2 { top: 620px; }
+    #h4-r3 { top: 860px; }
+    .h4-k { font-size: 48px; font-weight: 800; color: var(--color-ink2, #71717A); }
+    .h4-v { font-size: 72px; font-weight: 900; letter-spacing: -0.01em; }
+  </style>
+  <div id="root" data-composition-id="h4" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.3,6]"},{"id":"dur","type":"number","label":"장면 길이","default":9},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h4-all">
+      <div class="h4-row x-card x-hide" id="h4-r1"><div class="h4-k">가로축</div><div class="h4-v x-acc">1 − 특이도</div></div>
+      <div class="h4-row x-card x-hide" id="h4-r2"><div class="h4-k">세로축</div><div class="h4-v">민감도</div></div>
+      <div class="h4-row x-card x-hide" id="h4-r3"><div class="h4-k">아래 넓이</div><div class="h4-v">AUC</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const stamp = (sel, t) => tl.fromTo(sel, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.4 * S, ease: "back.out(1.6)", immediateRender: false }, t);
+
+    // 11 가로축, 세로축, 넓이 — 말하는 순서대로
+    stamp("#h4-r1", at(0, 0.1));
+    stamp("#h4-r2", at(0, 1.9));
+    stamp("#h4-r3", at(0, 3.4));
+    window.__timelines["h4"] = tl;
+  </script>
+</template>

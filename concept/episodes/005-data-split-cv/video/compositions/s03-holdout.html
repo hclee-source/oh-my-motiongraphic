@@ -1,0 +1,54 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s03-row { position: absolute; left: 192px; width: 1536px; height: 110px; opacity: 0; }
+    .s03-k { position: absolute; left: 0; top: 30px; font-size: 34px; font-weight: 800; color: var(--color-ink2, #71717A); }
+    .s03-strip { position: absolute; left: 170px; top: 20px; width: 1000px; height: 70px; border-radius: 14px; background: var(--color-ink, #18181B); overflow: hidden; }
+    .s03-v { position: absolute; top: 0; width: 250px; height: 70px; background: var(--color-accent, #6B3FE6); }
+    .s03-s { position: absolute; left: 1220px; top: 18px; font-size: 56px; font-weight: 900; opacity: 0; }
+    #s03-lg { position: absolute; left: 362px; top: 248px; font-size: 30px; font-weight: 700; color: var(--color-ink2, #71717A); opacity: 0; white-space: nowrap; }
+    .s03-sw { display: inline-block; width: 22px; height: 22px; border-radius: 6px; margin: 0 10px 0 0; vertical-align: -3px; }
+    #s03-pro { position: absolute; left: 192px; top: 690px; font-size: 36px; font-weight: 800; opacity: 0; white-space: nowrap; }
+    #s03-con { position: absolute; left: 192px; top: 750px; font-size: 36px; font-weight: 800; opacity: 0; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="s03" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,4,7,11,15]"},{"id":"dur","type":"number","label":"장면 길이","default":20},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s03-all">
+      <div id="s03-head" class="x-head">홀드아웃</div>
+      <div id="s03-lg" data-layout-allow-overlap><span class="s03-sw" style="background: #18181B"></span>학습　<span class="s03-sw" style="background: #6B3FE6"></span>검증</div>
+      <div class="s03-row" id="s03-r1" style="top: 300px"><div class="s03-k">나누기 1</div><div class="s03-strip"><div class="s03-v" style="left: 750px"></div></div><div class="s03-s" id="s03-s1">0.88</div></div>
+      <div class="s03-row" id="s03-r2" style="top: 420px"><div class="s03-k">나누기 2</div><div class="s03-strip"><div class="s03-v" style="left: 120px"></div></div><div class="s03-s" id="s03-s2">0.79</div></div>
+      <div class="s03-row" id="s03-r3" style="top: 540px"><div class="s03-k">나누기 3</div><div class="s03-strip"><div class="s03-v" style="left: 430px"></div></div><div class="s03-s" id="s03-s3">0.83</div></div>
+      <div id="s03-pro">+ 간단하고 빠르다</div>
+      <div id="s03-con"><span class="x-acc">− 나누는 운에 따라 들쭉날쭉</span> · 검증 몫은 학습에 못 쓴다</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 20;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+
+    // 12 한 번 나눠 평가 = 홀드아웃
+    ft("#s03-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    fade("#s03-lg", at(0, 0.6), 0, 1);
+    ft("#s03-r1", { opacity: 0, x: -16 }, { opacity: 1, x: 0 }, at(0, 1.0));
+    fade("#s03-s1", at(0, 1.8), 0, 1);
+    // 13 간단하고 빠르다
+    fade("#s03-pro", at(1, 0.4), 0, 1);
+    // 14 나뉜 방식에 따라 들쭉날쭉 — 다르게 나누면 점수도 다르다
+    ft("#s03-r2", { opacity: 0, x: -16 }, { opacity: 1, x: 0 }, at(2, 0.4));
+    fade("#s03-s2", at(2, 1.0), 0, 1);
+    ft("#s03-r3", { opacity: 0, x: -16 }, { opacity: 1, x: 0 }, at(2, 1.8));
+    fade("#s03-s3", at(2, 2.4), 0, 1);
+    // 16 검증 몫은 학습에 못 쓴다
+    fade("#s03-con", at(4, 0.4), 0, 1);
+    if (String(V.exit) !== "false") ft("#s03-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s03"] = tl;
+  </script>
+</template>

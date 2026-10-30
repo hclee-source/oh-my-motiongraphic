@@ -1,0 +1,25 @@
+{
+  "_설명": "장면 순서(장 번호와 연결, 여러 장을 한 장면으로 묶을 수 있음), 장면 끝에서 사라질지(exit), 효과음 위치([이름, 장면 안 문장 순번(0부터), 그 문장 시작 뒤 초]).",
+  "scenes": [
+    { "id": "s00", "file": "s00-title.html" },
+    { "id": "s01", "file": "s01-hook.html", "chapter": 1 },
+    { "id": "s02", "file": "s02-matrix.html", "chapter": 2 },
+    { "id": "s03", "file": "s03-scores.html", "chapter": [3, 4] },
+    { "id": "s05", "file": "s05-roc.html", "chapter": [5, 6, 7] },
+    { "id": "s08", "file": "s08-check.html", "chapter": 8 },
+    { "id": "s09", "file": "s09-summary.html", "chapter": 9, "exit": false,
+      "extra": { "r2": { "sentence": 61, "at": "AUC는" } } }
+  ],
+  "sfx": {
+    "s00": [["chime", null, 0.15], ["whoosh-short", null, 3.0]],
+    "s01": [["pop", 0, 0.1], ["click-soft", 1, 0.4], ["pop", 1, 1.6], ["pop", 2, 0.3], ["whoosh-short", 3, 0.1], ["click-soft", 3, 0.6], ["pop", 3, 2.4]],
+    "s02": [["pop", 0, 0.5], ["click-soft", 1, 1.0], ["click-soft", 2, 0.3], ["click-soft", 3, 0.5], ["click-soft", 4, 0.3], ["click-soft", 6, 0.3], ["pop", 8, 0.6]],
+    "s03": [["pop", 1, 0.8], ["click-soft", 4, 0.3], ["click-soft", 4, 2.2], ["whoosh-short", 5, 0.3], ["pop", 6, 0.1], ["click-soft", 7, 0.4],
+            ["whoosh-short", 8, 0.6], ["click-soft", 10, 0.4], ["whoosh-short", 11, 0.6], ["click-soft", 13, 0.4], ["pop", 14, 0.3]],
+    "s05": [["whoosh-short", 0, 0.5], ["pop", 3, 0.9], ["pop", 3, 3.5], ["pop", 3, 6.1], ["whoosh-short", 4, 0.6], ["pop", 5, 0.2],
+            ["click-soft", 8, 0.3], ["click-soft", 11, 0.3], ["pop", 12, 0.3], ["whoosh-short", 14, 0.3], ["click-soft", 16, 0.3],
+            ["pop", 17, 0.5], ["click-soft", 20, 0.2], ["pop", 21, 0.4]],
+    "s08": [["pop", 1, 0.2], ["pop", 3, 0.2], ["pop", 4, 0.2], ["pop", 5, 0.3]],
+    "s09": [["pop", 1, 0.1]]
+  }
+}

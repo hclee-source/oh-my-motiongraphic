@@ -1,0 +1,99 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    /* 영수증 100장 상자: (192, 262) ~ (1000, 800) */
+    #s02-box { position: absolute; left: 192px; top: 262px; width: 808px; height: 538px; }
+    #s02-btag { position: absolute; left: 28px; top: 18px; font-size: 30px; font-weight: 800; color: var(--color-ink2, #71717A); opacity: 0; }
+    #s02-svg { position: absolute; left: 0; top: 0; width: 808px; height: 538px; overflow: visible; }
+    #s02-c2 span { color: var(--color-ink, #18181B); }
+    .s02-n { position: absolute; font-size: 36px; font-weight: 900; opacity: 0; white-space: nowrap; }
+    .s02-c { position: absolute; font-size: 44px; font-weight: 900; opacity: 0; text-align: center; width: 160px; }
+    .s02-c span { display: block; font-size: 26px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    .s02-k { position: absolute; left: 1100px; width: 628px; padding: 30px 40px; box-sizing: border-box; opacity: 0; }
+    .s02-kt { font-size: 28px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    .s02-kv { margin-top: 6px; font-size: 48px; font-weight: 900; white-space: nowrap; }
+    .s02-kd { margin-top: 6px; font-size: 30px; font-weight: 700; color: var(--color-accent, #6B3FE6); opacity: 0; white-space: nowrap; }
+    #s02-rule { top: 262px; height: 190px; }
+    #s02-ab { font-size: 64px; font-weight: 900; }
+    #s02-ab span { font-size: 28px; font-weight: 700; color: var(--color-ink2, #71717A); margin: 0 8px; }
+    #s02-sup { top: 262px; height: 190px; }
+    #s02-conf { top: 472px; height: 190px; }
+    #s02-rev { top: 682px; height: 118px; padding-top: 24px; }
+    #s02-rev .s02-kv { font-size: 40px; }
+  </style>
+  <div id="root" data-composition-id="s02" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,5,8,11,20,23,26,30,33,38,41,44,49,53,56]"},{"id":"dur","type":"number","label":"장면 길이","default":62},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s02-all">
+      <div id="s02-h1" class="x-head">규칙의 모양</div>
+      <div id="s02-h2" class="x-head">지지도</div>
+      <div id="s02-h3" class="x-head">신뢰도</div>
+      <!-- 벤 그림과 숫자는 모두 영수증 상자 안(상자 기준 좌표) -->
+      <div id="s02-box" class="x-card x-hide">
+      <div id="s02-btag">영수증 100장</div>
+      <svg id="s02-svg" viewBox="0 0 808 538">
+        <defs><clipPath id="s02-cp"><circle cx="300" cy="290" r="190" /></clipPath></defs>
+        <circle id="s02-fa" cx="300" cy="290" r="190" fill="#6B3FE6" fill-opacity="0.12" opacity="0" />
+        <circle id="s02-fb" cx="510" cy="290" r="170" fill="#6B3FE6" fill-opacity="0.12" opacity="0" />
+        <circle id="s02-fi" cx="510" cy="290" r="170" fill="#6B3FE6" fill-opacity="0.3" clip-path="url(#s02-cp)" opacity="0" />
+        <circle id="s02-ca" cx="300" cy="290" r="190" fill="none" stroke="#18181B" stroke-width="5" opacity="0" />
+        <circle id="s02-cb" cx="510" cy="290" r="170" fill="none" stroke="#18181B" stroke-width="5" opacity="0" />
+      </svg>
+      <div class="s02-n" id="s02-na" style="left: 228px; top: 54px">빵 50</div>
+      <div class="s02-n" id="s02-nb" style="left: 568px; top: 98px">우유 40</div>
+      <div class="s02-c" id="s02-c1" style="left: 108px; top: 268px">20<span>빵만</span></div>
+      <div class="s02-c" id="s02-c2" style="left: 324px; top: 268px">30<span>둘 다</span></div>
+      <div class="s02-c" id="s02-c3" style="left: 528px; top: 268px">10<span>우유만</span></div>
+      <div class="s02-c" id="s02-c4" style="left: 628px; top: 438px; width: 170px">40<span>둘 다 없음</span></div>
+      </div>
+      <div class="s02-k x-card" id="s02-rule"><div class="s02-kt">연관규칙의 모양</div><div id="s02-ab">A<span>조건</span>→ B<span>결과</span></div></div>
+      <div class="s02-k x-card" id="s02-sup"><div class="s02-kt">지지도 · 둘 다 / 전체</div><div class="s02-kv">30 ÷ 100 = <span class="x-acc">0.3</span></div><div class="s02-kd" id="s02-sd">얼마나 자주 나오나</div></div>
+      <div class="s02-k x-card" id="s02-conf"><div class="s02-kt">신뢰도(빵 → 우유) · 둘 다 / 빵</div><div class="s02-kv">30 ÷ 50 = <span class="x-acc">0.6</span></div><div class="s02-kd" id="s02-cd">빵 산 손님의 60%가 우유도</div></div>
+      <div class="s02-k x-card" id="s02-rev"><div class="s02-kv">우유 → 빵 : 30 ÷ 40 = <span class="x-acc">0.75</span></div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 62;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const head = (k, t) => { if (k > 1) fade(`#s02-h${k - 1}`, t, 1, 0); ft(`#s02-h${k}`, { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, t + (k > 1 ? 0.2 : 0)); };
+
+    // 6~7 A면 B, 조건과 결과
+    head(1, at(0, 0));
+    ft("#s02-rule", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(0, 0.6));
+    // 8 영수증 100장
+    fade("#s02-box, #s02-btag", at(2, 0.3), 0, 1);
+    // 9 빵 50, 우유 40, 둘 다 30
+    fade("#s02-ca", at(3, 0.3), 0, 1); fade("#s02-na", at(3, 0.5), 0, 1);
+    fade("#s02-cb", at(3, 2.0), 0, 1); fade("#s02-nb", at(3, 2.2), 0, 1);
+    fade("#s02-c2", at(3, 4.0), 0, 1);
+    fade("#s02-c1, #s02-c3, #s02-c4", at(3, 5.2), 0, 1);
+    // 10~12 지지도: 둘 다 든 비율 30 ÷ 100
+    head(2, at(4, 0));
+    fade("#s02-rule", at(4, 0.1), 1, 0);
+    fade("#s02-fi", at(5, 0.6), 0, 1);
+    ft("#s02-sup", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(6, 0.2));
+    // 13 얼마나 자주
+    fade("#s02-sd", at(7, 0.4), 0, 1);
+    // 15~17 신뢰도: 빵이 든 거래가 분모
+    head(3, at(9, 0));
+    fade("#s02-fa", at(10, 0.6), 0, 1);
+    fade("#s02-c3, #s02-c4, #s02-nb", at(10, 0.6), 1, 0.35);
+    ft("#s02-conf", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(11, 0.2));
+    // 18 60%
+    fade("#s02-cd", at(12, 0.4), 0, 1);
+    // 20 방향을 바꾸면 우유가 분모
+    fade("#s02-fa", at(14, 0.2), 1, 0);
+    fade("#s02-fb", at(14, 0.4), 0, 1);
+    fade("#s02-c3, #s02-nb", at(14, 0.4), 0.35, 1);
+    fade("#s02-c1, #s02-na", at(14, 0.4), 1, 0.35);
+    ft("#s02-rev", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(14, 1.2));
+    if (String(V.exit) !== "false") ft("#s02-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s02"] = tl;
+  </script>
+</template>

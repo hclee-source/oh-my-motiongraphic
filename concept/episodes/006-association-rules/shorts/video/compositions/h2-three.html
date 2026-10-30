@@ -1,0 +1,39 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h2-c { position: absolute; left: 80px; width: 920px; height: 240px; padding: 40px 52px; opacity: 0; }
+    #h2-c1 { top: 360px; }
+    #h2-c2 { top: 630px; }
+    #h2-c3 { top: 900px; }
+    .h2-n { font-size: 60px; font-weight: 900; }
+    .h2-f { margin-top: 14px; font-size: 44px; font-weight: 800; color: var(--color-ink2, #71717A); white-space: nowrap; }
+    .h2-f b { color: var(--color-ink, #18181B); font-weight: 900; }
+    #h2-c3 .h2-f { color: #A1A1AA; }
+    #h2-c3 .h2-f b { color: #FFFFFF; }
+  </style>
+  <div id="root" data-composition-id="h2" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.3,3.5,7.5]"},{"id":"dur","type":"number","label":"장면 길이","default":13},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h2-all">
+      <div class="h2-c x-card" id="h2-c1"><div class="h2-n">지지도</div><div class="h2-f"><b>둘 다 산 거래</b> ÷ 전체</div></div>
+      <div class="h2-c x-card" id="h2-c2"><div class="h2-n">신뢰도</div><div class="h2-f"><b>둘 다 산 거래</b> ÷ 빵 산 거래</div></div>
+      <div class="h2-c x-dark" id="h2-c3"><div class="h2-n x-accd">향상도</div><div class="h2-f"><b>신뢰도</b> ÷ 우유 원래 비율</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 13;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const stamp = (sel, t) => tl.fromTo(sel, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.4 * S, ease: "back.out(1.6)", immediateRender: false }, t);
+
+    // 3 지지도 / 4 신뢰도 / 5 향상도
+    stamp("#h2-c1", at(0, 0.1));
+    stamp("#h2-c2", at(1, 0.1));
+    stamp("#h2-c3", at(2, 0.1));
+    if (String(V.exit) !== "false") tl.fromTo("#h2-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in", immediateRender: false }, D - 0.35);
+    window.__timelines["h2"] = tl;
+  </script>
+</template>

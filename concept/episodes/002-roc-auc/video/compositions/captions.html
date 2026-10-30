@@ -1,0 +1,115 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 108px; text-align: center; overflow: visible;
+      font-size: 46px; font-weight: 600; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 1536px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-01a" class="cap clip" data-start="3.600" data-duration="2.594"><span>질병 진단 모델은 보통 환자일 가능성을</span></div>
+    <div id="cap-01b" class="cap clip" data-start="6.194" data-duration="2.682"><span>0에서 1 사이 점수로 내놓습니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="8.976" data-duration="4.003"><span>그리고 점수가 0.5보다 높으면 환자라고 판정하죠.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="13.079" data-duration="2.745"><span>그런데 이 0.5는 누가 정했을까요?</span></div>
+    <div id="cap-04a" class="cap clip" data-start="15.923" data-duration="2.527"><span>기준을 0.3으로 내리기만 해도,</span></div>
+    <div id="cap-04b" class="cap clip" data-start="18.450" data-duration="4.125"><span>같은 모델의 재현율이 0.6에서 0.8로 오릅니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="22.676" data-duration="3.408"><span>오늘은 기준값에 따라 달라지는 성적을 그림 한 장으로</span></div>
+    <div id="cap-05b" class="cap clip" data-start="26.084" data-duration="3.658"><span>보는 법, ROC 곡선과 AUC를 알아보겠습니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="29.842" data-duration="2.271"><span>ROC 곡선의 가로축이 무엇인지</span></div>
+    <div id="cap-06b" class="cap clip" data-start="32.113" data-duration="2.683"><span>묻는 문제가 시험에 나오곤 합니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="35.446" data-duration="2.774"><span>먼저 실제와 예측을 나눈 네 칸짜리 표,</span></div>
+    <div id="cap-07b" class="cap clip" data-start="38.220" data-duration="2.504"><span>혼동행렬을 다시 보겠습니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="40.824" data-duration="1.903"><span>민감도는 실제 양성 가운데</span></div>
+    <div id="cap-08b" class="cap clip" data-start="42.727" data-duration="2.325"><span>양성으로 맞힌 비율입니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="45.151" data-duration="2.478"><span>TP를 TP 더하기 FN으로 나누니,</span></div>
+    <div id="cap-09b" class="cap clip" data-start="47.629" data-duration="2.109"><span>재현율과 같은 숫자입니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="49.838" data-duration="1.726"><span>특이도는 실제 음성 가운데</span></div>
+    <div id="cap-10b" class="cap clip" data-start="51.564" data-duration="2.132"><span>음성으로 맞힌 비율입니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="53.795" data-duration="2.969"><span>이번에는 TN을 TN 더하기 FP로 나눕니다.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="56.864" data-duration="3.510"><span>민감도는 환자를 놓치지 않는 힘, 특이도는 건강한</span></div>
+    <div id="cap-12b" class="cap clip" data-start="60.374" data-duration="4.095"><span>사람을 괜히 의심하지 않는 힘이라고 생각하면 됩니다.</span></div>
+    <div id="cap-13a" class="cap clip" data-start="64.569" data-duration="1.686"><span>그리고 1에서 특이도를 뺀</span></div>
+    <div id="cap-13b" class="cap clip" data-start="66.255" data-duration="2.550"><span>값을 거짓 양성률이라고 부릅니다.</span></div>
+    <div id="cap-14a" class="cap clip" data-start="68.906" data-duration="3.427"><span>실제 음성 가운데 양성이라고 잘못 판정한 비율,</span></div>
+    <div id="cap-14b" class="cap clip" data-start="72.333" data-duration="3.334"><span>FP를 FP 더하기 TN으로 나눈 값이죠.</span></div>
+    <div id="cap-15a" class="cap clip" data-start="75.767" data-duration="3.693"><span>이 거짓 양성률이 ROC 곡선의 가로축이 됩니다.</span></div>
+    <div id="cap-16a" class="cap clip" data-start="80.110" data-duration="1.945"><span>예를 하나 들어 보겠습니다.</span></div>
+    <div id="cap-17a" class="cap clip" data-start="82.154" data-duration="2.070"><span>환자 5명과 정상인 5명,</span></div>
+    <div id="cap-17b" class="cap clip" data-start="84.224" data-duration="3.825"><span>모두 10명에게 모델이 점수를 매겼습니다.</span></div>
+    <div id="cap-18a" class="cap clip" data-start="88.150" data-duration="3.642"><span>점수가 높을수록 환자일 가능성이 크다는 뜻입니다.</span></div>
+    <div id="cap-19a" class="cap clip" data-start="91.891" data-duration="3.406"><span>하지만 환자라고 늘 점수가 높지는 않습니다.</span></div>
+    <div id="cap-20a" class="cap clip" data-start="95.398" data-duration="2.325"><span>0.15점을 받은 환자도 있고,</span></div>
+    <div id="cap-20b" class="cap clip" data-start="97.723" data-duration="2.742"><span>0.77점을 받은 정상인도 있죠.</span></div>
+    <div id="cap-21a" class="cap clip" data-start="100.564" data-duration="3.198"><span>이제 기준선을 0.5에 그어 보겠습니다.</span></div>
+    <div id="cap-22a" class="cap clip" data-start="103.863" data-duration="2.769"><span>선 위의 5명이 양성 판정을 받았고,</span></div>
+    <div id="cap-22b" class="cap clip" data-start="106.632" data-duration="2.649"><span>그중 진짜 환자는 3명입니다.</span></div>
+    <div id="cap-23a" class="cap clip" data-start="109.381" data-duration="3.844"><span>환자 5명 중 3명을 찾았으니 민감도는 0.6,</span></div>
+    <div id="cap-23b" class="cap clip" data-start="113.225" data-duration="4.863"><span>정상인 5명 중 3명을 맞혔으니 특이도도 0.6입니다.</span></div>
+    <div id="cap-24a" class="cap clip" data-start="118.738" data-duration="3.116"><span>기준선을 0.7로 올리면 어떻게 될까요?</span></div>
+    <div id="cap-25a" class="cap clip" data-start="121.954" data-duration="2.164"><span>양성 판정은 3명으로 줄고,</span></div>
+    <div id="cap-25b" class="cap clip" data-start="124.118" data-duration="2.233"><span>그중 환자는 2명입니다.</span></div>
+    <div id="cap-26a" class="cap clip" data-start="126.451" data-duration="2.265"><span>민감도는 0.4로 떨어지고,</span></div>
+    <div id="cap-26b" class="cap clip" data-start="128.716" data-duration="2.516"><span>특이도는 0.8로 오릅니다.</span></div>
+    <div id="cap-27a" class="cap clip" data-start="131.331" data-duration="2.847"><span>이번에는 0.3으로 내려 보겠습니다.</span></div>
+    <div id="cap-28a" class="cap clip" data-start="134.278" data-duration="2.192"><span>양성 판정이 7명으로 늘고,</span></div>
+    <div id="cap-28b" class="cap clip" data-start="136.470" data-duration="2.260"><span>환자 4명을 찾아냅니다.</span></div>
+    <div id="cap-29a" class="cap clip" data-start="138.831" data-duration="2.215"><span>민감도는 0.8로 오르지만,</span></div>
+    <div id="cap-29b" class="cap clip" data-start="141.046" data-duration="2.636"><span>특이도는 0.4로 떨어집니다.</span></div>
+    <div id="cap-30a" class="cap clip" data-start="143.781" data-duration="1.708"><span>기준을 낮출수록 민감도는</span></div>
+    <div id="cap-30b" class="cap clip" data-start="145.489" data-duration="2.268"><span>오르고 특이도는 떨어집니다.</span></div>
+    <div id="cap-31a" class="cap clip" data-start="147.858" data-duration="1.892"><span>기준값 하나만 봐서는 모델이</span></div>
+    <div id="cap-31b" class="cap clip" data-start="149.750" data-duration="2.615"><span>좋은지 판단하기 어렵다는 뜻이죠.</span></div>
+    <div id="cap-32a" class="cap clip" data-start="153.014" data-duration="1.319"><span>그래서 모든 기준값을</span></div>
+    <div id="cap-32b" class="cap clip" data-start="154.333" data-duration="2.302"><span>한꺼번에 보는 그림을 그립니다.</span></div>
+    <div id="cap-33a" class="cap clip" data-start="156.736" data-duration="1.872"><span>가로축은 거짓 양성률,</span></div>
+    <div id="cap-33b" class="cap clip" data-start="158.608" data-duration="2.871"><span>즉 1에서 특이도를 뺀 값입니다.</span></div>
+    <div id="cap-34a" class="cap clip" data-start="161.579" data-duration="1.977"><span>세로축은 민감도입니다.</span></div>
+    <div id="cap-35a" class="cap clip" data-start="163.655" data-duration="5.799"><span>기준값 0.7은 0.2와 0.4, 0.5는 0.4와 0.6,</span></div>
+    <div id="cap-35b" class="cap clip" data-start="169.454" data-duration="4.330"><span>0.3은 0.6과 0.8 자리에 찍힙니다.</span></div>
+    <div id="cap-36a" class="cap clip" data-start="173.884" data-duration="2.156"><span>기준값을 1에서 0까지 내려가며</span></div>
+    <div id="cap-36b" class="cap clip" data-start="176.040" data-duration="2.715"><span>찍은 점들을 이으면 이런 선이 됩니다.</span></div>
+    <div id="cap-37a" class="cap clip" data-start="178.855" data-duration="2.098"><span>이것이 ROC 곡선입니다.</span></div>
+    <div id="cap-38a" class="cap clip" data-start="181.053" data-duration="4.599"><span>기준을 가장 높이면 아무도 양성이 아니니 왼쪽 아래에서 시작하고,</span></div>
+    <div id="cap-38b" class="cap clip" data-start="185.652" data-duration="3.863"><span>가장 낮추면 모두 양성이니 오른쪽 위에서 끝납니다.</span></div>
+    <div id="cap-39a" class="cap clip" data-start="190.165" data-duration="2.638"><span>그럼 어떤 곡선이 좋은 곡선일까요?</span></div>
+    <div id="cap-40a" class="cap clip" data-start="192.903" data-duration="1.660"><span>점수를 아무렇게나 매기는</span></div>
+    <div id="cap-40b" class="cap clip" data-start="194.563" data-duration="2.514"><span>모델은 대각선 근처를 지나갑니다.</span></div>
+    <div id="cap-41a" class="cap clip" data-start="197.176" data-duration="3.810"><span>민감도가 오르는 만큼 거짓 양성률도 똑같이 오르니,</span></div>
+    <div id="cap-41b" class="cap clip" data-start="200.986" data-duration="2.328"><span>동전 던지기와 다를 바 없죠.</span></div>
+    <div id="cap-42a" class="cap clip" data-start="203.415" data-duration="1.993"><span>반대로 완벽한 모델은 환자의</span></div>
+    <div id="cap-42b" class="cap clip" data-start="205.408" data-duration="2.742"><span>점수가 모두 정상인보다 높습니다.</span></div>
+    <div id="cap-43a" class="cap clip" data-start="208.250" data-duration="2.165"><span>그러면 선이 왼쪽 위 모서리까지</span></div>
+    <div id="cap-43b" class="cap clip" data-start="210.415" data-duration="2.914"><span>곧장 올라갔다가 오른쪽으로 갑니다.</span></div>
+    <div id="cap-44a" class="cap clip" data-start="213.429" data-duration="3.345"><span>곡선이 왼쪽 위로 불룩할수록 좋은 모델입니다.</span></div>
+    <div id="cap-45a" class="cap clip" data-start="217.425" data-duration="1.642"><span>이 불룩한 정도를 숫자 하나로</span></div>
+    <div id="cap-45b" class="cap clip" data-start="219.067" data-duration="1.892"><span>나타낸 것이 AUC입니다.</span></div>
+    <div id="cap-46a" class="cap clip" data-start="221.058" data-duration="3.255"><span>AUC는 ROC 곡선 아래의 넓이입니다.</span></div>
+    <div id="cap-47a" class="cap clip" data-start="224.414" data-duration="2.029"><span>가로세로가 1인 정사각형 안이니</span></div>
+    <div id="cap-47b" class="cap clip" data-start="226.443" data-duration="2.134"><span>AUC는 1을 넘지 않습니다.</span></div>
+    <div id="cap-48a" class="cap clip" data-start="228.677" data-duration="1.424"><span>완벽한 모델은 1,</span></div>
+    <div id="cap-48b" class="cap clip" data-start="230.101" data-duration="3.987"><span>대각선을 따라가는 무작위 모델은 0.5입니다.</span></div>
+    <div id="cap-49a" class="cap clip" data-start="234.188" data-duration="1.895"><span>우리 예에서 곡선 아래 넓이를</span></div>
+    <div id="cap-49b" class="cap clip" data-start="236.083" data-duration="2.145"><span>재면 0.72가 나옵니다.</span></div>
+    <div id="cap-50a" class="cap clip" data-start="238.327" data-duration="2.009"><span>AUC에는 다른 뜻도 있습니다.</span></div>
+    <div id="cap-51a" class="cap clip" data-start="240.437" data-duration="3.424"><span>환자 한 명과 정상인 한 명을 무작위로 뽑았을 때,</span></div>
+    <div id="cap-51b" class="cap clip" data-start="243.861" data-duration="2.647"><span>환자 점수가 더 높을 확률입니다.</span></div>
+    <div id="cap-52a" class="cap clip" data-start="246.608" data-duration="2.475"><span>우리 예에서 환자와 정상인을 짝지은</span></div>
+    <div id="cap-52b" class="cap clip" data-start="249.083" data-duration="2.889"><span>25쌍 가운데 18쌍이 그렇습니다.</span></div>
+    <div id="cap-53a" class="cap clip" data-start="252.072" data-duration="3.277"><span>18을 25로 나누면 역시 0.72죠.</span></div>
+    <div id="cap-54a" class="cap clip" data-start="255.999" data-duration="2.582"><span>시험장에서 챙길 것 세 가지입니다.</span></div>
+    <div id="cap-55a" class="cap clip" data-start="258.680" data-duration="2.483"><span>첫째, 가로축은 특이도가 아니라</span></div>
+    <div id="cap-55b" class="cap clip" data-start="261.163" data-duration="3.265"><span>1에서 특이도를 뺀 거짓 양성률입니다.</span></div>
+    <div id="cap-56a" class="cap clip" data-start="264.528" data-duration="3.721"><span>보기에 가로축이 특이도라고 나오면 틀린 문장입니다.</span></div>
+    <div id="cap-57a" class="cap clip" data-start="268.349" data-duration="3.274"><span>둘째, AUC는 0.5면 무작위 수준이고,</span></div>
+    <div id="cap-57b" class="cap clip" data-start="271.623" data-duration="2.835"><span>1에 가까울수록 좋은 모델입니다.</span></div>
+    <div id="cap-58a" class="cap clip" data-start="274.558" data-duration="2.423"><span>셋째, 기준값을 낮추면 민감도는</span></div>
+    <div id="cap-58b" class="cap clip" data-start="276.981" data-duration="2.500"><span>오르고 특이도는 떨어집니다.</span></div>
+    <div id="cap-59a" class="cap clip" data-start="279.581" data-duration="2.324"><span>덧붙여, 민감도는 재현율,</span></div>
+    <div id="cap-59b" class="cap clip" data-start="281.905" data-duration="2.768"><span>참 양성률이라고도 부릅니다.</span></div>
+    <div id="cap-60a" class="cap clip" data-start="285.323" data-duration="2.894"><span>오늘 내용을 한 줄로 정리하면 이렇습니다.</span></div>
+    <div id="cap-61a" class="cap clip" data-start="288.317" data-duration="3.560"><span>ROC 곡선은 기준값을 바꿔 가며 거짓 양성률과</span></div>
+    <div id="cap-61b" class="cap clip" data-start="291.877" data-duration="3.989"><span>민감도를 찍은 선, AUC는 그 아래 넓이입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

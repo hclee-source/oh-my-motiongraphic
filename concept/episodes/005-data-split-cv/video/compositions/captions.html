@@ -1,0 +1,98 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 108px; text-align: center; overflow: visible;
+      font-size: 46px; font-weight: 600; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 1536px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-01a" class="cap clip" data-start="3.600" data-duration="2.042"><span>모의고사 문제로 공부하고,</span></div>
+    <div id="cap-01b" class="cap clip" data-start="5.642" data-duration="3.143"><span>같은 문제로 실력을 재면 어떻게 될까요?</span></div>
+    <div id="cap-02a" class="cap clip" data-start="8.885" data-duration="1.806"><span>점수는 좋게 나오겠지만,</span></div>
+    <div id="cap-02b" class="cap clip" data-start="10.691" data-duration="2.713"><span>진짜 실력이라고 할 수는 없습니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="13.503" data-duration="1.671"><span>모델도 마찬가지라서,</span></div>
+    <div id="cap-03b" class="cap clip" data-start="15.174" data-duration="3.092"><span>배울 때 쓴 데이터로 평가하면 안 됩니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="18.366" data-duration="3.752"><span>오늘은 데이터를 나누는 법, 홀드아웃과 교차 검증,</span></div>
+    <div id="cap-04b" class="cap clip" data-start="22.118" data-duration="3.149"><span>그리고 부트스트랩을 알아보겠습니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="25.367" data-duration="2.951"><span>부트스트랩에 나오는 36.8퍼센트라는</span></div>
+    <div id="cap-05b" class="cap clip" data-start="28.318" data-duration="2.545"><span>숫자도 직접 계산해 보겠습니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="31.513" data-duration="2.683"><span>데이터는 보통 세 덩어리로 나눕니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="34.296" data-duration="2.518"><span>훈련 데이터로 모델을 학습시킵니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="36.914" data-duration="1.706"><span>검증 데이터로 여러 모델이나</span></div>
+    <div id="cap-08b" class="cap clip" data-start="38.620" data-duration="2.382"><span>설정을 비교해서 하나를 고릅니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="41.102" data-duration="2.485"><span>테스트 데이터는 마지막에 딱 한 번,</span></div>
+    <div id="cap-09b" class="cap clip" data-start="43.587" data-duration="3.067"><span>고른 모델의 최종 성능을 잴 때만 씁니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="46.753" data-duration="2.635"><span>예를 들어 1000개라면 600개,</span></div>
+    <div id="cap-10b" class="cap clip" data-start="49.388" data-duration="3.379"><span>200개, 200개처럼 나누는 식입니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="52.868" data-duration="3.044"><span>테스트 데이터를 보고 모델을 고치기 시작하면,</span></div>
+    <div id="cap-11b" class="cap clip" data-start="55.912" data-duration="2.838"><span>테스트 점수도 더는 믿을 수 없게 됩니다.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="59.400" data-duration="1.609"><span>데이터를 한 번 나눠 평가하는</span></div>
+    <div id="cap-12b" class="cap clip" data-start="61.009" data-duration="2.127"><span>방법을 홀드아웃이라고 합니다.</span></div>
+    <div id="cap-13a" class="cap clip" data-start="63.236" data-duration="2.593"><span>간단하고 빠르다는 것이 장점입니다.</span></div>
+    <div id="cap-14a" class="cap clip" data-start="65.929" data-duration="1.906"><span>하지만 어떻게 나뉘었느냐에</span></div>
+    <div id="cap-14b" class="cap clip" data-start="67.835" data-duration="2.315"><span>따라 결과가 들쭉날쭉합니다.</span></div>
+    <div id="cap-15a" class="cap clip" data-start="70.249" data-duration="1.955"><span>우연히 쉬운 데이터만 검증 쪽에</span></div>
+    <div id="cap-15b" class="cap clip" data-start="72.204" data-duration="2.505"><span>들어가면 점수가 좋게 나오니까요.</span></div>
+    <div id="cap-16a" class="cap clip" data-start="74.809" data-duration="2.145"><span>그리고 검증 데이터만큼은 학습에</span></div>
+    <div id="cap-16b" class="cap clip" data-start="76.954" data-duration="2.548"><span>쓰지 못한다는 아쉬움도 있습니다.</span></div>
+    <div id="cap-17a" class="cap clip" data-start="80.153" data-duration="3.502"><span>이 문제를 줄이는 방법이 k-겹 교차 검증입니다.</span></div>
+    <div id="cap-18a" class="cap clip" data-start="83.755" data-duration="3.034"><span>데이터를 k개의 조각으로 똑같이 나눕니다.</span></div>
+    <div id="cap-19a" class="cap clip" data-start="86.889" data-duration="1.754"><span>k가 5라면, 1000개를</span></div>
+    <div id="cap-19b" class="cap clip" data-start="88.643" data-duration="2.736"><span>200개씩 다섯 조각으로 나누는 거죠.</span></div>
+    <div id="cap-20a" class="cap clip" data-start="91.478" data-duration="1.971"><span>첫 번째 조각으로 검증하고,</span></div>
+    <div id="cap-20b" class="cap clip" data-start="93.449" data-duration="2.550"><span>나머지 네 조각으로 학습합니다.</span></div>
+    <div id="cap-21a" class="cap clip" data-start="96.099" data-duration="2.572"><span>다음에는 두 번째 조각으로 검증하고,</span></div>
+    <div id="cap-21b" class="cap clip" data-start="98.671" data-duration="2.339"><span>이렇게 다섯 번 되풀이합니다.</span></div>
+    <div id="cap-22a" class="cap clip" data-start="101.110" data-duration="4.755"><span>다섯 번의 점수가 0.82, 0.85, 0.80,</span></div>
+    <div id="cap-22b" class="cap clip" data-start="105.865" data-duration="6.301"><span>0.84, 0.84였다면, 평균 0.83이 최종 점수입니다.</span></div>
+    <div id="cap-23a" class="cap clip" data-start="112.267" data-duration="2.858"><span>모든 데이터가 한 번씩은 검증에 쓰이니,</span></div>
+    <div id="cap-23b" class="cap clip" data-start="115.125" data-duration="2.268"><span>나누는 운에 덜 흔들립니다.</span></div>
+    <div id="cap-24a" class="cap clip" data-start="117.493" data-duration="1.764"><span>대신 모델을 k번 학습해야</span></div>
+    <div id="cap-24b" class="cap clip" data-start="119.257" data-duration="2.334"><span>하니 시간이 그만큼 더 듭니다.</span></div>
+    <div id="cap-25a" class="cap clip" data-start="122.241" data-duration="3.278"><span>k를 데이터 개수만큼 키우면 어떻게 될까요?</span></div>
+    <div id="cap-26a" class="cap clip" data-start="125.619" data-duration="2.207"><span>매번 딱 하나만 빼서 검증하고,</span></div>
+    <div id="cap-26b" class="cap clip" data-start="127.826" data-duration="2.287"><span>나머지 전부로 학습합니다.</span></div>
+    <div id="cap-27a" class="cap clip" data-start="130.213" data-duration="1.465"><span>이것을 LOOCV,</span></div>
+    <div id="cap-27b" class="cap clip" data-start="131.678" data-duration="2.855"><span>하나씩 빼는 교차 검증이라고 합니다.</span></div>
+    <div id="cap-28a" class="cap clip" data-start="134.633" data-duration="1.502"><span>데이터가 1000개면 모델을</span></div>
+    <div id="cap-28b" class="cap clip" data-start="136.135" data-duration="1.636"><span>1000번 학습해야 하죠.</span></div>
+    <div id="cap-29a" class="cap clip" data-start="137.871" data-duration="2.514"><span>데이터를 거의 다 학습에 쓰는 대신,</span></div>
+    <div id="cap-29b" class="cap clip" data-start="140.385" data-duration="2.094"><span>계산이 아주 많이 듭니다.</span></div>
+    <div id="cap-30a" class="cap clip" data-start="143.129" data-duration="2.101"><span>마지막은 부트스트랩입니다.</span></div>
+    <div id="cap-31a" class="cap clip" data-start="145.330" data-duration="2.499"><span>데이터에서 하나를 뽑아 기록하고,</span></div>
+    <div id="cap-31b" class="cap clip" data-start="147.829" data-duration="2.083"><span>다시 넣은 뒤 또 뽑습니다.</span></div>
+    <div id="cap-32a" class="cap clip" data-start="150.012" data-duration="1.752"><span>이렇게 데이터 개수만큼 뽑는</span></div>
+    <div id="cap-32b" class="cap clip" data-start="151.764" data-duration="2.149"><span>것을 복원 추출이라고 합니다.</span></div>
+    <div id="cap-33a" class="cap clip" data-start="154.013" data-duration="3.299"><span>다시 넣으니 같은 데이터가 여러 번 뽑히기도 하고,</span></div>
+    <div id="cap-33b" class="cap clip" data-start="157.312" data-duration="2.763"><span>한 번도 안 뽑히는 데이터도 생깁니다.</span></div>
+    <div id="cap-34a" class="cap clip" data-start="160.175" data-duration="1.598"><span>한 번도 안 뽑힌 데이터는</span></div>
+    <div id="cap-34b" class="cap clip" data-start="161.773" data-duration="2.007"><span>따로 모아 검증에 씁니다.</span></div>
+    <div id="cap-35a" class="cap clip" data-start="163.880" data-duration="1.696"><span>그럼 어떤 데이터가 한 번도</span></div>
+    <div id="cap-35b" class="cap clip" data-start="165.576" data-duration="2.101"><span>안 뽑힐 확률은 얼마일까요?</span></div>
+    <div id="cap-36a" class="cap clip" data-start="167.777" data-duration="2.031"><span>한 번 뽑을 때 그 데이터가 아닐</span></div>
+    <div id="cap-36b" class="cap clip" data-start="169.808" data-duration="2.620"><span>확률은 1 빼기 n분의 1입니다.</span></div>
+    <div id="cap-37a" class="cap clip" data-start="172.528" data-duration="2.581"><span>n번 뽑는 동안 계속 아니어야 하니,</span></div>
+    <div id="cap-37b" class="cap clip" data-start="175.109" data-duration="1.970"><span>이것을 n번 곱합니다.</span></div>
+    <div id="cap-38a" class="cap clip" data-start="177.179" data-duration="2.211"><span>데이터가 5개면 5분의 4를</span></div>
+    <div id="cap-38b" class="cap clip" data-start="179.390" data-duration="2.830"><span>다섯 번 곱해 약 0.33입니다.</span></div>
+    <div id="cap-39a" class="cap clip" data-start="182.320" data-duration="3.647"><span>데이터가 많아질수록 이 값은 약 0.368,</span></div>
+    <div id="cap-39b" class="cap clip" data-start="185.967" data-duration="3.129"><span>36.8퍼센트에 가까워집니다.</span></div>
+    <div id="cap-40a" class="cap clip" data-start="189.196" data-duration="4.800"><span>그래서 부트스트랩에서는 원래 데이터의 약 63.2퍼센트가 한</span></div>
+    <div id="cap-40b" class="cap clip" data-start="193.996" data-duration="5.227"><span>번 이상 뽑혀 학습에 쓰이고, 36.8퍼센트가 검증에 남습니다.</span></div>
+    <div id="cap-41a" class="cap clip" data-start="199.873" data-duration="2.582"><span>시험장에서 챙길 것 세 가지입니다.</span></div>
+    <div id="cap-42a" class="cap clip" data-start="202.555" data-duration="2.734"><span>첫째, 테스트 데이터는 모델을 고를</span></div>
+    <div id="cap-42b" class="cap clip" data-start="205.289" data-duration="3.348"><span>때 쓰지 않고, 마지막 평가에만 씁니다.</span></div>
+    <div id="cap-43a" class="cap clip" data-start="208.736" data-duration="3.346"><span>둘째, k-겹 교차 검증은 k번 학습하고,</span></div>
+    <div id="cap-43b" class="cap clip" data-start="212.082" data-duration="3.410"><span>모든 데이터가 한 번씩 검증에 쓰입니다.</span></div>
+    <div id="cap-44a" class="cap clip" data-start="215.592" data-duration="3.114"><span>셋째, 부트스트랩은 복원 추출이고,</span></div>
+    <div id="cap-44b" class="cap clip" data-start="218.706" data-duration="4.338"><span>한 번도 안 뽑힐 확률은 약 36.8퍼센트입니다.</span></div>
+    <div id="cap-45a" class="cap clip" data-start="223.144" data-duration="3.248"><span>덧붙여, 분류 문제에서는 조각마다 범주 비율을</span></div>
+    <div id="cap-45b" class="cap clip" data-start="226.392" data-duration="3.985"><span>똑같이 맞추는 층화 k-겹 교차 검증을 쓰기도 합니다.</span></div>
+    <div id="cap-46a" class="cap clip" data-start="231.027" data-duration="2.894"><span>오늘 내용을 한 줄로 정리하면 이렇습니다.</span></div>
+    <div id="cap-47a" class="cap clip" data-start="234.021" data-duration="3.422"><span>한 번 나누면 홀드아웃, k번 돌아가며 나누면</span></div>
+    <div id="cap-47b" class="cap clip" data-start="237.443" data-duration="4.212"><span>교차 검증, 다시 넣으며 뽑으면 부트스트랩입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>
