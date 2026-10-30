@@ -38,8 +38,10 @@ $toast = [Windows.UI.Notifications.ToastNotification]::new($xml)
         f.write(ps)
         script = f.name
     try:
+        # 창 없이 실행(작업 스케줄러에서 pythonw로 돌 때 검은 창이 번쩍이지 않게)
         r = subprocess.run(["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", script],
-                           capture_output=True, text=True, timeout=60)
+                           capture_output=True, text=True, timeout=60,
+                           creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         if r.returncode != 0:
             raise RuntimeError(r.stderr.strip() or r.stdout.strip())
     finally:
