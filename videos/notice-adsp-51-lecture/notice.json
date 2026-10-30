@@ -1,0 +1,16 @@
+{
+  "_설명": "공지 쇼츠 입력. 이 파일만 바꾸고 python notices/build_notice.py notices/data/<이름>.json. 요일은 날짜에서 자동 계산(적지 말 것). 화면 한 줄은 12자 안팎.",
+  "name": "adsp-51-lecture",
+  "type": "lecture-event",
+  "exam": "ADsP",
+  "book": "9791194383697",
+  "hook": ["ADsP 시험 직전,", "마무리 됐나요?"],
+  "hook_box": "마무리",
+  "title": ["시험 직전 마무리", "LIVE 특강"],
+  "lecture": { "date": "2026-10-30", "time": "20:00" },
+  "targets": ["개념 정리가 아직 부족", "CBT 점수가 애매", "벼락치기 중"],
+  "targets_long": ["개념 정리가 아직 부족한 분", "CBT 응시 점수가 애매한 분", "벼락치기로 학습 중인 분"],
+  "join": { "comment": "참여" },
+  "guide": { "date": "2026-10-30", "time": "15:00", "where": "고정 댓글" },
+  "source": "합격빠따 쇼츠 QQ8MoFe4FuE 포스터(2026-10 게시) 문구 그대로"
+}

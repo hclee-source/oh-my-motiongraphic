@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ko" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <style>
+      @font-face { font-family: "Paperlogy"; src: url("assets/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #FAFAF6; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+      #three-layer { position: absolute; inset: 0; width: 1920px; height: 1080px; display: block; }
+      /* 종이 질감: 고정된 잡음(시간과 무관) */
+      #grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.16; mix-blend-mode: multiply; }
+      #vignette { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at center, rgba(0,0,0,0) 55%, rgba(30,25,20,0.18) 100%); }
+      #clock { position: absolute; right: 56px; top: 44px; padding: 8px 22px; border: 4px solid #1B1B1F; background: #FFFFFF; font-family: "Paperlogy", sans-serif; font-weight: 800; font-size: 46px; color: #1B1B1F; letter-spacing: 0.02em; }
+    </style>
+  </head>
+  <body>
+    <!-- 선화 사무실 복도 시험(6초): 흑백 선화 세계 + 색이 있는 빠따 캐릭터 두 명. Three.js, HyperFrames 시간(hf-seek)으로만 그린다. -->
+    <div id="root" data-composition-id="main" data-no-timeline data-start="0" data-duration="6" data-width="1920" data-height="1080">
+      <canvas id="three-layer" width="1920" height="1080"></canvas>
+      <svg id="grain" width="1920" height="1080"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" /><feColorMatrix type="saturate" values="0" /></filter><rect width="1920" height="1080" filter="url(#n)" /></svg>
+      <div id="vignette"></div>
+      <div id="clock">09:00</div>
+    </div>
+    <script type="module">
+      import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.181.2/+esm";
+
+      const INK = 0x1b1b1f;
+      const canvas = document.getElementById("three-layer");
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+      renderer.setSize(1920, 1080, false);
+      renderer.setPixelRatio(1);
+      renderer.setClearColor(0xfafaf6);
+      const scene = new THREE.Scene();
+      scene.fog = new THREE.Fog(0xfafaf6, 18, 46);
+      const camera = new THREE.PerspectiveCamera(48, 1920 / 1080, 0.1, 120);
+
+      // ── 선 무늬 재질(캔버스로 그린 격자) ──
+      function lineTex(w, h, stepX, stepY, lw, bg = "#ffffff", ink = "#26262b") {
+        const c = document.createElement("canvas"); c.width = w; c.height = h;
+        const g = c.getContext("2d"); g.fillStyle = bg; g.fillRect(0, 0, w, h);
+        g.strokeStyle = ink; g.lineWidth = lw;
+        if (stepX) for (let x = 0; x <= w; x += stepX) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, h); g.stroke(); }
+        if (stepY) for (let y = 0; y <= h; y += stepY) { g.beginPath(); g.moveTo(0, y); g.lineTo(w, y); g.stroke(); }
+        const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = 8; t.colorSpace = THREE.SRGBColorSpace;
+        return t;
+      }
+      const flat = (opts) => new THREE.MeshBasicMaterial(opts);
+      const edgeMat = new THREE.LineBasicMaterial({ color: INK });
+      function boxWithEdges(w, h, d, mat) {
+        const geo = new THREE.BoxGeometry(w, h, d);
+        const m = new THREE.Mesh(geo, mat);
+        m.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo), edgeMat));
+        return m;
+      }
+      const gridMat = (rx, ry, sx = 16, sy = 16) => { const t = lineTex(256, 256, sx, sy, 2); t.repeat.set(rx, ry); return flat({ map: t }); };
+
+      // ── 바닥·천장 ──
+      const floorTex = lineTex(512, 512, 0, 128, 3); floorTex.repeat.set(1, 30);
+      const floor = new THREE.Mesh(new THREE.PlaneGeometry(9, 70), flat({ map: floorTex }));
+      floor.rotation.x = -Math.PI / 2; floor.position.set(0, 0, -25); scene.add(floor);
+      const ceilTex = lineTex(256, 256, 64, 64, 3); ceilTex.repeat.set(5, 60);
+      const ceil = new THREE.Mesh(new THREE.PlaneGeometry(9, 70), flat({ map: ceilTex, side: THREE.DoubleSide }));
+      ceil.rotation.x = Math.PI / 2; ceil.position.set(0, 3.3, -25); scene.add(ceil);
+      // 바닥 가운데 줄 두 개(소실점으로 모이는 선)
+      [-0.9, 0.9].forEach((x) => {
+        const g = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x, 0.002, 8), new THREE.Vector3(x, 0.002, -60)]);
+        scene.add(new THREE.Line(g, edgeMat));
+      });
+
+      // ── 칸막이 줄·모니터·동료·기둥 ──
+      const cubeMat = gridMat(3, 2, 14, 14), sideMat = gridMat(2, 2, 14, 14);
+      const monMat = flat({ color: 0x141418 }), grayMat = flat({ color: 0xd2d2d2 });
+      const pillarTex = lineTex(128, 512, 0, 10, 2); pillarTex.repeat.set(1, 2);
+      const pillarMat = flat({ map: pillarTex });
+      function coworker(x, z) {
+        const g = new THREE.Group();
+        const body = new THREE.Mesh(new THREE.CapsuleGeometry(0.2, 0.35, 6, 16), grayMat);
+        body.position.y = 1.15;
+        const head = new THREE.Mesh(new THREE.SphereGeometry(0.17, 24, 16), grayMat);
+        head.position.y = 1.62;
+        [body, head].forEach((m) => { g.add(m); g.add(outline(m, 0.025)); });
+        g.position.set(x, 0, z); return g;
+      }
+      for (let i = 0; i < 18; i++) {
+        const z = 2 - i * 2.6;
+        [-1, 1].forEach((side) => {
+          const x = side * 2.35;
+          const cub = boxWithEdges(1.5, 1.15, 1.7, [sideMat, sideMat, flat({ color: 0xffffff }), flat({ color: 0xffffff }), cubeMat, cubeMat]);
+          cub.position.set(x, 0.575, z); scene.add(cub);
+          const mon = boxWithEdges(0.75, 0.48, 0.06, monMat);
+          mon.position.set(x - side * 0.25, 1.42, z - 0.2); mon.rotation.y = side * 0.5; scene.add(mon);
+          if ((i + (side > 0 ? 1 : 0)) % 2 === 0) scene.add(coworker(x + side * 0.15, z - 0.5));
+        });
+        if (i % 3 === 1) [-1, 1].forEach((side) => {
+          const p = boxWithEdges(0.5, 3.3, 0.5, pillarMat); p.position.set(side * 3.5, 1.65, z - 1.3); scene.add(p);
+        });
+      }
+
+      // ── 외곽선(뒷면을 키운 검은 껍데기) ──
+      function outline(mesh, s = 0.03) {
+        const o = new THREE.Mesh(mesh.geometry, new THREE.MeshBasicMaterial({ color: INK, side: THREE.BackSide }));
+        o.position.copy(mesh.position); o.rotation.copy(mesh.rotation);
+        o.scale.copy(mesh.scale).multiplyScalar(1 + s / Math.max(0.05, mesh.geometry.boundingSphere ? mesh.geometry.boundingSphere.radius : 0.3));
+        return o;
+      }
+      function part(geo, color, pos, parent, outl = 0.025, scale) {
+        geo.computeBoundingSphere();
+        const m = new THREE.Mesh(geo, flat({ color }));
+        m.position.set(...pos); if (scale) m.scale.set(...scale);
+        parent.add(m); parent.add(outline(m, outl));
+        return m;
+      }
+      // 팔다리는 관절(그룹)째로 돌린다
+      function limb(parent, at, geo, color, offY, endGeo, endColor) {
+        const j = new THREE.Group(); j.position.set(...at); parent.add(j);
+        part(geo, color, [0, offY, 0], j);
+        if (endGeo) part(endGeo, endColor, [0, offY * 2, 0], j);
+        return j;
+      }
+
+      // ── 수험생: 갈색 머리, 남색 후드, 회색 바지, 흰 운동화 ──
+      function student() {
+        const root = new THREE.Group(), body = new THREE.Group(); root.add(body);
+        const legL = limb(body, [-0.11, 0.5, 0], new THREE.CylinderGeometry(0.075, 0.07, 0.42, 16), 0x4b4f5e, -0.2, new THREE.BoxGeometry(0.16, 0.08, 0.24), 0xf5f5f5);
+        const legR = limb(body, [0.11, 0.5, 0], new THREE.CylinderGeometry(0.075, 0.07, 0.42, 16), 0x4b4f5e, -0.2, new THREE.BoxGeometry(0.16, 0.08, 0.24), 0xf5f5f5);
+        part(new THREE.CapsuleGeometry(0.22, 0.28, 6, 20), 0x2f3f92, [0, 0.78, 0], body, 0.025, [1.05, 1, 0.78]);
+        part(new THREE.TorusGeometry(0.15, 0.05, 10, 24), 0x3b50a6, [0, 1.02, 0.02], body, 0.02, [1, 1, 1]).rotation.x = Math.PI / 2;
+        const armL = limb(body, [-0.27, 0.95, 0], new THREE.CylinderGeometry(0.065, 0.07, 0.34, 14), 0x2f3f92, -0.17, new THREE.SphereGeometry(0.07, 16, 12), 0xfce3cf);
+        const armR = limb(body, [0.27, 0.95, 0], new THREE.CylinderGeometry(0.065, 0.07, 0.34, 14), 0x2f3f92, -0.17, new THREE.SphereGeometry(0.07, 16, 12), 0xfce3cf);
+        const head = new THREE.Group(); head.position.set(0, 1.32, 0); body.add(head);
+        part(new THREE.SphereGeometry(0.3, 32, 24), 0xfce3cf, [0, 0, 0], head, 0.03, [1, 0.95, 0.95]);
+        part(new THREE.SphereGeometry(0.315, 32, 24, 0, Math.PI * 2, 0, 1.55), 0xa25a30, [0, 0.035, -0.02], head, 0.03, [1.02, 1, 1]);
+        [-0.12, -0.04, 0.05, 0.13].forEach((x, i) => part(new THREE.SphereGeometry(0.075, 16, 12), 0xa25a30, [x, 0.12 - (i % 2) * 0.03, 0.235], head, 0.02));
+        part(new THREE.ConeGeometry(0.04, 0.14, 10), 0xa25a30, [0.03, 0.34, 0], head, 0.015).rotation.z = -0.5;
+        [-0.3, 0.3].forEach((x) => part(new THREE.SphereGeometry(0.06, 12, 10), 0xfce3cf, [x, -0.01, 0], head, 0.015));
+        [-0.1, 0.1].forEach((x) => { const e = new THREE.Mesh(new THREE.SphereGeometry(0.035, 12, 10), flat({ color: INK })); e.position.set(x, -0.02, 0.27); e.scale.set(0.8, 1.2, 0.5); head.add(e); });
+        [-0.17, 0.17].forEach((x) => { const c = new THREE.Mesh(new THREE.CircleGeometry(0.045, 16), flat({ color: 0xf6a7a7 })); c.position.set(x, -0.09, 0.262); c.rotation.y = x > 0 ? 0.55 : -0.55; head.add(c); });
+        const mouth = new THREE.Mesh(new THREE.CircleGeometry(0.035, 16, 0, Math.PI), flat({ color: 0x5b2a33 })); mouth.rotation.z = Math.PI; mouth.position.set(0, -0.1, 0.283); head.add(mouth);
+        return { root, body, head, legL, legR, armL, armR };
+      }
+      // ── 민트 토끼 ──
+      function rabbit() {
+        const root = new THREE.Group(), body = new THREE.Group(); root.add(body);
+        const legL = limb(body, [-0.11, 0.42, 0], new THREE.CylinderGeometry(0.085, 0.09, 0.36, 16), 0x8fd4c4, -0.17);
+        const legR = limb(body, [0.11, 0.42, 0], new THREE.CylinderGeometry(0.085, 0.09, 0.36, 16), 0x8fd4c4, -0.17);
+        part(new THREE.CapsuleGeometry(0.23, 0.22, 6, 20), 0x8fd4c4, [0, 0.66, 0], body, 0.025, [1.05, 1, 0.85]);
+        const armL = limb(body, [-0.27, 0.82, 0], new THREE.CylinderGeometry(0.06, 0.065, 0.3, 14), 0x8fd4c4, -0.15, new THREE.SphereGeometry(0.075, 16, 12), 0xffffff);
+        const armR = limb(body, [0.27, 0.82, 0], new THREE.CylinderGeometry(0.06, 0.065, 0.3, 14), 0x8fd4c4, -0.15, new THREE.SphereGeometry(0.075, 16, 12), 0xffffff);
+        const head = new THREE.Group(); head.position.set(0, 1.18, 0); body.add(head);
+        part(new THREE.SphereGeometry(0.34, 32, 24), 0x8fd4c4, [0, 0, 0], head, 0.03);
+        part(new THREE.SphereGeometry(0.26, 32, 24), 0xffffff, [0, -0.03, 0.2], head, 0.02, [1, 0.92, 0.6]);
+        const ears = [];
+        [-0.13, 0.13].forEach((x) => { const e = new THREE.Group(); e.position.set(x, 0.24, -0.02); head.add(e); part(new THREE.CapsuleGeometry(0.075, 0.32, 6, 14), 0x8fd4c4, [0, 0.2, 0], e, 0.02); e.rotation.z = -x * 1.2; ears.push(e); });
+        [-0.08, 0.08].forEach((x) => { const e = new THREE.Mesh(new THREE.SphereGeometry(0.03, 12, 10), flat({ color: INK })); e.position.set(x, 0.0, 0.352); e.scale.set(0.8, 1.2, 0.5); head.add(e); });
+        [-0.15, 0.15].forEach((x) => { const c = new THREE.Mesh(new THREE.CircleGeometry(0.05, 16), flat({ color: 0xf7b3c4 })); c.position.set(x, -0.07, 0.335); c.rotation.y = x > 0 ? 0.5 : -0.5; head.add(c); });
+        const mouth = new THREE.Mesh(new THREE.CircleGeometry(0.04, 16, 0, Math.PI), flat({ color: 0x5b2a33 })); mouth.rotation.z = Math.PI; mouth.position.set(0, -0.08, 0.357); head.add(mouth);
+        return { root, body, head, legL, legR, armL, armR, ears };
+      }
+      const stu = student(), rab = rabbit();
+      scene.add(stu.root, rab.root);
+
+      // ── 시간으로만 움직인다 ──
+      function walkPose(c, t, phase, speed = 9) {
+        const s = Math.sin(t * speed + phase);
+        c.legL.rotation.x = s * 0.45; c.legR.rotation.x = -s * 0.45;
+        c.armL.rotation.x = -s * 0.4; c.armR.rotation.x = s * 0.4;
+        c.body.position.y = Math.abs(Math.cos(t * speed + phase)) * 0.035;
+        c.head.rotation.z = s * 0.04;
+        if (c.ears) { c.ears[0].rotation.x = s * 0.15; c.ears[1].rotation.x = -s * 0.15; }
+      }
+      const ease = (x) => x * x * (3 - 2 * x);
+      function renderAt(time) {
+        const t = Math.max(0, Math.min(6, time));
+        // 두 캐릭터가 복도 안쪽에서 카메라 쪽으로 걸어온다
+        const z = -5.5 + t * 1.05;
+        stu.root.position.set(-0.42, 0, z);
+        rab.root.position.set(0.42, 0, z + 0.15);
+        walkPose(stu, t, 0); walkPose(rab, t, 1.6);
+        // 카메라: 뒤로 천천히 물러나며 살짝 내려다본다
+        const k = ease(t / 6);
+        camera.position.set(0.15 * Math.sin(t * 0.5), 1.55 - 0.15 * k, 4.2 + 1.6 * k);
+        camera.lookAt(0, 1.05, z - 6);
+        renderer.render(scene, camera);
+      }
+      window.addEventListener("hf-seek", (e) => renderAt(e.detail.time));
+      renderAt(window.__hfThreeTime || 0);
+    </script>
+  </body>
+</html>

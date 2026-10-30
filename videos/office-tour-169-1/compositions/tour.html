@@ -1,0 +1,581 @@
+<template>
+  <!-- 빠따 캐릭터 사무실 투어(가로 1920×1080, 42초). build.py가 // 빠따 만화 캐릭터 두 명(수험생, 민트 토끼)을 코드로 다시 그린 인형.
+// 원본: shared/keyvisuals/ppatta-comic-sqld-01.png (상반신만 있어 전신은 그림체를 따라 새로 그림).
+// 쓰는 법: <svg viewBox="0 0 400 600">${PPATTA.student("id")}</svg> → 부위별 g에 id-legL, id-armR, id-head 등이 붙는다.
+// 관절 기준점(GSAP svgOrigin): 다리 위쪽, 어깨, 목. PPATTA.pivots 참고. 발끝 기준선 y=562.
+(function () {
+  const INK = "#2B2B3A", SW = 7;
+  const S = `stroke="${INK}" stroke-width="${SW}" stroke-linejoin="round" stroke-linecap="round"`;
+  const C = {
+    skin: "#FCE3CF", cheek: "#F6A7A7", hair: "#A25A30", hairHi: "#C47A47",
+    hoodie: "#2F3F92", hoodieDark: "#26357E", hood: "#3B50A6", string: "#F4F4F4",
+    pants: "#4B4F5E", shoe: "#F5F5F5", sole: "#C9CCD3",
+    mint: "#8FD4C4", mintDark: "#77C2B1", face: "#FFFFFF", rCheek: "#F7B3C4", mouth: "#5B2A33", tongue: "#F08FA0",
+  };
+
+  function student(id) {
+    return `
+<g id="${id}">
+  <g id="${id}-legL">
+    <path d="M152,416 L192,416 L190,536 L154,536 Z" fill="${C.pants}" ${S}/>
+    <path d="M146,532 Q144,562 166,563 L200,563 Q208,548 192,532 Z" fill="${C.shoe}" ${S}/>
+  </g>
+  <g id="${id}-legR">
+    <path d="M208,416 L248,416 L246,536 L210,536 Z" fill="${C.pants}" ${S}/>
+    <path d="M208,532 Q192,548 200,563 L234,563 Q256,562 254,532 Z" fill="${C.shoe}" ${S}/>
+  </g>
+  <g id="${id}-body">
+    <path d="M128,302 Q130,258 166,250 L234,250 Q270,258 272,302 L280,418 Q280,432 266,432 L134,432 Q120,432 120,418 Z" fill="${C.hoodie}" ${S}/>
+    <path d="M156,372 Q200,364 244,372 L249,414 L151,414 Z" fill="${C.hoodieDark}" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M140,262 Q200,304 260,262 Q262,246 250,240 L150,240 Q138,246 140,262 Z" fill="${C.hood}" ${S}/>
+    <path d="M184,272 L181,312 M216,272 L219,312" stroke="${C.string}" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="181" cy="316" r="5" fill="${C.string}" stroke="${INK}" stroke-width="3"/>
+    <circle cx="219" cy="316" r="5" fill="${C.string}" stroke="${INK}" stroke-width="3"/>
+  </g>
+  <g id="${id}-armL">
+    <path d="M140,268 Q108,276 104,326 L98,392 Q98,406 112,406 L132,404 Q134,352 146,300 Z" fill="${C.hoodie}" ${S}/>
+    <circle cx="114" cy="411" r="18" fill="${C.skin}" ${S}/>
+  </g>
+  <g id="${id}-armR">
+    <path d="M260,268 Q292,276 296,326 L302,392 Q302,406 288,406 L268,404 Q266,352 254,300 Z" fill="${C.hoodie}" ${S}/>
+    <circle cx="286" cy="411" r="18" fill="${C.skin}" ${S}/>
+  </g>
+  <g id="${id}-head">
+    <circle cx="104" cy="194" r="17" fill="${C.skin}" ${S}/>
+    <circle cx="296" cy="194" r="17" fill="${C.skin}" ${S}/>
+    <ellipse cx="200" cy="164" rx="98" ry="92" fill="${C.skin}" ${S}/>
+    <path d="M100,182 Q82,72 200,54 Q318,72 300,182 Q298,198 290,204 Q292,172 282,152 Q274,170 260,162 Q262,138 244,130 Q238,152 220,154 Q216,128 196,124 Q190,150 172,152 Q166,128 150,132 Q150,156 132,160 Q124,150 118,152 Q110,174 112,204 Q102,196 100,182 Z" fill="${C.hair}" ${S}/>
+    <path d="M196,58 Q204,26 228,38 Q210,44 208,60" fill="${C.hair}" ${S}/>
+    <path d="M138,90 Q168,72 202,72" fill="none" stroke="${C.hairHi}" stroke-width="7" stroke-linecap="round"/>
+    <g id="${id}-face">
+      <ellipse cx="166" cy="186" rx="8" ry="11" fill="${INK}"/>
+      <ellipse cx="234" cy="186" rx="8" ry="11" fill="${INK}"/>
+      <circle cx="169" cy="182" r="3" fill="#FFF"/>
+      <circle cx="237" cy="182" r="3" fill="#FFF"/>
+      <ellipse cx="146" cy="210" rx="15" ry="9" fill="${C.cheek}" opacity="0.55"/>
+      <ellipse cx="254" cy="210" rx="15" ry="9" fill="${C.cheek}" opacity="0.55"/>
+      <path id="${id}-mouth" d="M186,214 Q200,230 214,214 Z" fill="${C.mouth}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+    </g>
+  </g>
+</g>`;
+  }
+
+  function rabbit(id) {
+    return `
+<g id="${id}">
+  <g id="${id}-legL">
+    <path d="M150,452 L192,452 L190,540 Q190,563 168,563 Q146,563 146,540 Z" fill="${C.mint}" ${S}/>
+  </g>
+  <g id="${id}-legR">
+    <path d="M208,452 L250,452 L254,540 Q254,563 232,563 Q210,563 210,540 Z" fill="${C.mint}" ${S}/>
+  </g>
+  <g id="${id}-body">
+    <path d="M132,322 Q200,300 268,322 L284,446 Q284,468 262,468 L138,468 Q116,468 116,446 Z" fill="${C.mint}" ${S}/>
+    <path d="M168,330 Q200,322 232,330" fill="none" stroke="${C.mintDark}" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <g id="${id}-armL">
+    <path d="M142,334 Q106,352 102,410 Q102,424 118,424 Q134,424 136,410 L154,358 Z" fill="${C.mint}" ${S}/>
+    <circle cx="119" cy="426" r="19" fill="#FFFFFF" ${S}/>
+  </g>
+  <g id="${id}-armR">
+    <path d="M258,334 Q294,352 298,410 Q298,424 282,424 Q266,424 264,410 L246,358 Z" fill="${C.mint}" ${S}/>
+    <circle cx="281" cy="426" r="19" fill="#FFFFFF" ${S}/>
+  </g>
+  <g id="${id}-head">
+    <g id="${id}-earL"><path d="M138,160 Q104,46 148,22 Q186,28 184,150 Z" fill="${C.mint}" ${S}/></g>
+    <g id="${id}-earR"><path d="M262,160 Q296,46 252,22 Q214,28 216,150 Z" fill="${C.mint}" ${S}/></g>
+    <circle cx="200" cy="232" r="112" fill="${C.mint}" ${S}/>
+    <ellipse cx="200" cy="246" rx="80" ry="72" fill="${C.face}" stroke="${INK}" stroke-width="5"/>
+    <g id="${id}-face">
+      <ellipse cx="176" cy="238" rx="7" ry="10" fill="${INK}"/>
+      <ellipse cx="224" cy="238" rx="7" ry="10" fill="${INK}"/>
+      <ellipse cx="152" cy="264" rx="16" ry="11" fill="${C.rCheek}" opacity="0.85"/>
+      <ellipse cx="248" cy="264" rx="16" ry="11" fill="${C.rCheek}" opacity="0.85"/>
+      <path id="${id}-mouth" d="M186,262 Q200,288 214,262 Z" fill="${C.mouth}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M192,274 Q200,282 208,274" fill="${C.tongue}"/>
+    </g>
+  </g>
+</g>`;
+  }
+
+  window.PPATTA = {
+    student, rabbit, colors: C,
+    pivots: {
+      student: { legL: "172 418", legR: "228 418", armL: "138 280", armR: "262 280", head: "200 252", body: "200 432" },
+      rabbit: { legL: "170 454", legR: "230 454", armL: "142 340", armR: "258 340", head: "200 330", body: "200 468", earL: "160 150", earR: "240 150" },
+    },
+  };
+})();
+ 자리에 shared/characters/puppets/ppatta-duo.js를 넣어 tour.html을 만든다.
+       옆에서 본 긴 사무실(world)을 카메라가 따라간다. 천장 조명(bg)은 0.75배로 움직여 깊이감을 준다. -->
+  <style>
+    @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; }
+    @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; }
+    #root { position: absolute; inset: 0; overflow: hidden; background: #FFF1C8; font-family: "Paperlogy", sans-serif; color: #2B2B3A; }
+    .o { border: 6px solid #2B2B3A; box-sizing: border-box; }
+    .abs { position: absolute; }
+    /* 카메라: 1.25배 당겨 찍는다(왼쪽 아래 기준). 세계 좌표 1px = 화면 1.25px */
+    #cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 100%; transform: scale(1.25); }
+    #bg, #world { position: absolute; left: 0; top: 0; height: 1080px; }
+    .clock { width: 120px; height: 120px; border-radius: 50%; background: #FFFFFF; }
+    .hand { position: absolute; left: 51px; width: 6px; background: #2B2B3A; border-radius: 3px; transform-origin: 50% 100%; }
+    .board { background: #D9A066; border-radius: 10px; }
+    .note { position: absolute; width: 56px; height: 56px; border: 4px solid #2B2B3A; box-sizing: border-box; }
+    .plate { background: #2B2B3A; color: #FFFFFF; font-size: 30px; font-weight: 800; border-radius: 10px; padding: 6px 18px; white-space: nowrap; }
+    #bg { width: 6400px; }
+    #world { width: 7200px; }
+    /* 벽·바닥 */
+    .wall { left: 0; top: 0; width: 7200px; height: 940px; background: #FFF1C8; }
+    .ceil { left: 0; top: 0; width: 7200px; height: 70px; background: #F6DE9E; border-bottom: 6px solid #2B2B3A; }
+    .floor { left: 0; top: 940px; width: 7200px; height: 140px; border-top: 6px solid #2B2B3A;
+      background: repeating-linear-gradient(90deg, #EBB77A 0 238px, #D9A066 238px 244px), #EBB77A; }
+    .base { left: 0; top: 926px; width: 7200px; height: 16px; background: #C98B52; }
+    /* 천장 조명(bg) */
+    .lamp { top: 64px; width: 120px; }
+    .lamp .cord { margin: 0 auto; width: 5px; height: 70px; background: #2B2B3A; }
+    .lamp .shade { width: 120px; height: 60px; background: #F07AA0; border: 6px solid #2B2B3A; border-radius: 60px 60px 10px 10px; box-sizing: border-box; }
+    /* 엘리베이터 */
+    .ev-frame { left: 330px; top: 470px; width: 340px; height: 470px; background: #8E96A8; }
+    .ev-in { left: 350px; top: 490px; width: 300px; height: 450px; background: #DCE2EC; }
+    .ev-clip { left: 350px; top: 490px; width: 300px; height: 450px; overflow: hidden; z-index: 30; }
+    .ev-door { top: 0; width: 150px; height: 450px; background: #C3CAD6; border: 6px solid #2B2B3A; box-sizing: border-box; }
+    #doorL { left: 0; } #doorR { left: 150px; }
+    .ev-sign { left: 445px; top: 396px; width: 110px; height: 56px; background: #2B2B3A; border-radius: 12px; color: #FFD34D; font-size: 34px; font-weight: 800; text-align: center; line-height: 56px; }
+    /* 책상 구역 */
+    .part { top: 680px; height: 160px; background: #8FD4C4; border-radius: 16px 16px 0 0; }
+    .desk { top: 810px; height: 28px; background: #D98B4E; border-radius: 8px; }
+    .leg { top: 832px; width: 18px; height: 110px; background: #B86E36; border: 5px solid #2B2B3A; box-sizing: border-box; }
+    .mon { top: 710px; width: 150px; height: 100px; background: #A9DBF5; border-radius: 12px; }
+    .mon-s { top: 800px; width: 20px; height: 14px; background: #2B2B3A; }
+    .pot { width: 90px; height: 90px; background: #F07AA0; border-radius: 0 0 22px 22px; }
+    .leaf { width: 70px; height: 110px; background: #6CC28F; border-radius: 70px 0 70px 0; }
+    /* 탕비실 */
+    .counter { left: 2620px; top: 800px; width: 620px; height: 140px; background: #F7B6C8; }
+    .counter-top { left: 2600px; top: 784px; width: 660px; height: 30px; background: #D98B4E; border-radius: 6px; }
+    .cab { top: 480px; width: 190px; height: 170px; background: #F7B6C8; border-radius: 10px; }
+    .mach { left: 2905px; top: 620px; width: 150px; height: 170px; background: #5A6072; border-radius: 16px 16px 6px 6px; }
+    .mach-spout { left: 2958px; top: 720px; width: 44px; height: 26px; background: #2B2B3A; border-radius: 0 0 8px 8px; }
+    .mach-led { left: 2925px; top: 645px; width: 22px; height: 22px; border-radius: 50%; background: #FF5A5A; border: 4px solid #2B2B3A; }
+    .mach-cup { left: 2950px; top: 742px; width: 60px; height: 42px; background: #FFFFFF; border-radius: 0 0 14px 14px; opacity: 0; }
+    .fridge { left: 3270px; top: 550px; width: 170px; height: 392px; background: #F3F5F8; border-radius: 16px 16px 4px 4px; }
+    .steam { left: 0; top: 0; width: 34px; height: 34px; border-radius: 50%; background: #FFFFFF; border: 5px solid #2B2B3A; opacity: 0; }
+    /* 회의실 */
+    .glass { left: 3560px; top: 260px; width: 720px; height: 680px; background: rgba(169, 219, 245, 0.55); }
+    .mullion { top: 260px; width: 10px; height: 680px; background: #2B2B3A; }
+    .wb { left: 3620px; top: 290px; width: 610px; height: 240px; background: #FFFFFF; border-radius: 10px; }
+    .wb-t { left: 3650px; font-size: 38px; font-weight: 800; white-space: nowrap; }
+    .wb-hl { left: 3640px; top: 444px; width: 290px; height: 52px; background: #FFE36A; opacity: 0.8; border-radius: 6px; }
+    /* 책장 */
+    .shelf { left: 4560px; top: 440px; width: 640px; height: 500px; background: #C98B52; }
+    .shelf-b { left: 4580px; width: 600px; height: 18px; background: #8E5A2E; }
+    .spine { width: 34px; border: 4px solid #2B2B3A; box-sizing: border-box; border-radius: 4px; }
+    .cover { width: 92px; height: 126px; object-fit: cover; border: 4px solid #2B2B3A; box-sizing: border-box; border-radius: 4px; }
+    /* 창가 */
+    .win { left: 5420px; top: 150px; width: 1500px; height: 620px; background: linear-gradient(#8FD0F2, #CFEFFF); border-radius: 18px; overflow: hidden; }
+    .cloud { width: 220px; height: 80px; background: #FFFFFF; border-radius: 60px; border: 6px solid #2B2B3A; box-sizing: border-box; }
+    .city { bottom: 0; width: 120px; background: #7FA3C8; border: 6px solid #2B2B3A; border-bottom: 0; box-sizing: border-box; }
+    .win-bar { top: 150px; width: 14px; height: 620px; background: #2B2B3A; }
+    /* 캐릭터 */
+    .pupW { position: absolute; left: 0; top: 538px; width: 300px; height: 450px; }
+    .pupW svg { width: 300px; height: 450px; overflow: visible; }
+    .qm { position: absolute; left: 0; top: 0; width: 90px; height: 90px; border-radius: 50%; background: #FFFFFF; font-size: 64px; font-weight: 800; text-align: center; line-height: 78px; opacity: 0; z-index: 60; }
+    .spark { position: absolute; left: 0; top: 0; width: 0; height: 0; z-index: 60; }
+    .spark i { position: absolute; left: -10px; top: -10px; width: 20px; height: 20px; background: #FFD34D; border: 4px solid #2B2B3A; transform: rotate(45deg); opacity: 0; }
+    /* 끝 카드(화면 고정) */
+    #endcard { position: absolute; left: 0; right: 0; top: 90px; text-align: center; opacity: 0; z-index: 90; }
+    #endcard .logo { display: inline-flex; align-items: center; gap: 26px; padding: 26px 56px; background: #FFFFFF; border: 7px solid #2B2B3A; border-radius: 30px; box-shadow: 10px 10px 0 #2B2B3A; }
+    #endcard img { width: 110px; height: 110px; }
+    #endcard .nm { font-size: 104px; font-weight: 800; letter-spacing: -0.03em; }
+    #endcard .sub { display: inline-block; margin-top: 22px; padding: 8px 26px; background: #FFFFFF; border: 5px solid #2B2B3A; border-radius: 999px; font-size: 38px; font-weight: 800; }
+  </style>
+  <div id="root" data-composition-id="tour" data-width="1920" data-height="1080">
+    <div id="cam">
+    <div id="bg">
+      <div class="abs ceil" style="width: 6400px"></div>
+    </div>
+    <div id="world">
+      <div class="abs wall"></div>
+      <div class="abs ceil"></div>
+      <div class="abs base"></div>
+      <div class="abs floor"></div>
+
+      <!-- 벽 꾸미기 -->
+      <div class="abs clock o" style="left: 760px; top: 300px"><div class="hand" style="top: 20px; height: 40px"></div><div class="hand" style="top: 30px; height: 30px; transform: rotate(-90deg)"></div></div>
+      <div class="abs board o" style="left: 1240px; top: 380px; width: 300px; height: 190px">
+        <div class="note" style="left: 24px; top: 26px; background: #FFE36A; transform: rotate(-6deg)"></div>
+        <div class="note" style="left: 104px; top: 40px; background: #A9DBF5; transform: rotate(4deg)"></div>
+        <div class="note" style="left: 190px; top: 22px; background: #F7B6C8; transform: rotate(-3deg)"></div>
+        <div class="note" style="left: 66px; top: 106px; background: #8FD4C4; transform: rotate(5deg)"></div>
+        <div class="note" style="left: 160px; top: 110px; background: #FFFFFF; transform: rotate(-5deg)"></div>
+      </div>
+      <div class="abs plate" style="left: 2800px; top: 400px">☕ 탕비실</div>
+      <div class="abs plate" style="left: 4290px; top: 300px">회의실</div>
+      <div class="abs plate" style="left: 4570px; top: 380px">📚 자료실</div>
+
+      <!-- 엘리베이터 -->
+      <div class="abs ev-sign o">▲ 3F</div>
+      <div class="abs ev-frame o"></div>
+      <div class="abs ev-in"></div>
+
+      <!-- 책상 구역 -->
+      <div id="desks"></div>
+
+      <!-- 탕비실 -->
+      <div class="abs cab o" style="left: 2640px"></div>
+      <div class="abs cab o" style="left: 2850px"></div>
+      <div class="abs cab o" style="left: 3060px"></div>
+      <div class="abs counter o"></div>
+      <div class="abs counter-top o"></div>
+      <div class="abs mach o"></div>
+      <div class="abs mach-led"></div>
+      <div class="abs mach-spout"></div>
+      <div class="abs mach-cup o" id="machCup"></div>
+      <div class="abs fridge o"></div>
+      <div id="steams"></div>
+
+      <!-- 회의실 -->
+      <div class="abs glass o"></div>
+      <div class="abs mullion" style="left: 3800px"></div>
+      <div class="abs mullion" style="left: 4040px"></div>
+      <div class="abs wb o"></div>
+      <div class="abs wb-hl"></div>
+      <div class="abs wb-t" style="top: 312px">SELECT COUNT(*)</div>
+      <div class="abs wb-t" style="top: 380px; color: #3B6FD8">COUNT(*) = 4</div>
+      <div class="abs wb-t" style="top: 448px; color: #E0475F">COUNT(COMM) = 3 ← NULL!</div>
+
+      <!-- 책장 -->
+      <div class="abs shelf o"></div>
+      <div id="books"></div>
+
+      <!-- 창가 -->
+      <div class="abs win o">
+        <div class="abs cloud" style="left: 120px; top: 90px"></div>
+        <div class="abs cloud" style="left: 760px; top: 60px; width: 180px"></div>
+        <div class="abs cloud" style="left: 1150px; top: 150px; width: 160px"></div>
+        <div id="city"></div>
+      </div>
+      <div class="abs win-bar" style="left: 5920px"></div>
+      <div class="abs win-bar" style="left: 6420px"></div>
+      <div class="abs pot o" style="left: 6960px; top: 852px"></div>
+
+      <!-- 엘리베이터 문(캐릭터보다 앞) -->
+      <div class="abs ev-clip"><div class="abs ev-door" id="doorL"></div><div class="abs ev-door" id="doorR"></div></div>
+
+      <!-- 캐릭터 -->
+      <div class="pupW" id="rabW" style="z-index: 20"><svg viewBox="0 0 400 600" id="rabSvg"></svg></div>
+      <div class="abs part o" id="rabPart" style="left: 1930px; width: 300px; background: #F7B6C8; z-index: 25"></div>
+      <div class="abs mon o" style="left: 2000px; z-index: 26"></div><div class="abs mon-s" style="left: 2065px; z-index: 26"></div>
+      <div class="abs desk o" style="left: 1920px; width: 320px; z-index: 26"></div>
+      <div class="abs leg" style="left: 1940px; z-index: 26"></div><div class="abs leg" style="left: 2202px; z-index: 26"></div>
+      <div class="pupW" id="stuW" style="z-index: 28"><svg viewBox="0 0 400 600" id="stuSvg"></svg></div>
+      <div class="qm o" id="qm">?</div>
+      <img class="abs cover o" id="flyBook" src="assets/cover-adsp.jpg" style="left: 0; top: 0; z-index: 50" />
+      <div class="spark" id="spark1"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="spark" id="spark2"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+    </div>
+
+    <div id="endcard">
+      <div class="logo"><img src="assets/icon.png" alt="" /><span class="nm">합격빠따</span></div>
+      <div><span class="sub">빠르게 따는 자격증, 오늘도 출근 완료!</span></div>
+    </div>
+  </div>
+  <script>
+// 빠따 만화 캐릭터 두 명(수험생, 민트 토끼)을 코드로 다시 그린 인형.
+// 원본: shared/keyvisuals/ppatta-comic-sqld-01.png (상반신만 있어 전신은 그림체를 따라 새로 그림).
+// 쓰는 법: <svg viewBox="0 0 400 600">${PPATTA.student("id")}</svg> → 부위별 g에 id-legL, id-armR, id-head 등이 붙는다.
+// 관절 기준점(GSAP svgOrigin): 다리 위쪽, 어깨, 목. PPATTA.pivots 참고. 발끝 기준선 y=562.
+(function () {
+  const INK = "#2B2B3A", SW = 7;
+  const S = `stroke="${INK}" stroke-width="${SW}" stroke-linejoin="round" stroke-linecap="round"`;
+  const C = {
+    skin: "#FCE3CF", cheek: "#F6A7A7", hair: "#A25A30", hairHi: "#C47A47",
+    hoodie: "#2F3F92", hoodieDark: "#26357E", hood: "#3B50A6", string: "#F4F4F4",
+    pants: "#4B4F5E", shoe: "#F5F5F5", sole: "#C9CCD3",
+    mint: "#8FD4C4", mintDark: "#77C2B1", face: "#FFFFFF", rCheek: "#F7B3C4", mouth: "#5B2A33", tongue: "#F08FA0",
+  };
+
+  function student(id) {
+    return `
+<g id="${id}">
+  <g id="${id}-legL">
+    <path d="M152,416 L192,416 L190,536 L154,536 Z" fill="${C.pants}" ${S}/>
+    <path d="M146,532 Q144,562 166,563 L200,563 Q208,548 192,532 Z" fill="${C.shoe}" ${S}/>
+  </g>
+  <g id="${id}-legR">
+    <path d="M208,416 L248,416 L246,536 L210,536 Z" fill="${C.pants}" ${S}/>
+    <path d="M208,532 Q192,548 200,563 L234,563 Q256,562 254,532 Z" fill="${C.shoe}" ${S}/>
+  </g>
+  <g id="${id}-body">
+    <path d="M128,302 Q130,258 166,250 L234,250 Q270,258 272,302 L280,418 Q280,432 266,432 L134,432 Q120,432 120,418 Z" fill="${C.hoodie}" ${S}/>
+    <path d="M156,372 Q200,364 244,372 L249,414 L151,414 Z" fill="${C.hoodieDark}" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M140,262 Q200,304 260,262 Q262,246 250,240 L150,240 Q138,246 140,262 Z" fill="${C.hood}" ${S}/>
+    <path d="M184,272 L181,312 M216,272 L219,312" stroke="${C.string}" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="181" cy="316" r="5" fill="${C.string}" stroke="${INK}" stroke-width="3"/>
+    <circle cx="219" cy="316" r="5" fill="${C.string}" stroke="${INK}" stroke-width="3"/>
+  </g>
+  <g id="${id}-armL">
+    <path d="M140,268 Q108,276 104,326 L98,392 Q98,406 112,406 L132,404 Q134,352 146,300 Z" fill="${C.hoodie}" ${S}/>
+    <circle cx="114" cy="411" r="18" fill="${C.skin}" ${S}/>
+  </g>
+  <g id="${id}-armR">
+    <path d="M260,268 Q292,276 296,326 L302,392 Q302,406 288,406 L268,404 Q266,352 254,300 Z" fill="${C.hoodie}" ${S}/>
+    <circle cx="286" cy="411" r="18" fill="${C.skin}" ${S}/>
+  </g>
+  <g id="${id}-head">
+    <circle cx="104" cy="194" r="17" fill="${C.skin}" ${S}/>
+    <circle cx="296" cy="194" r="17" fill="${C.skin}" ${S}/>
+    <ellipse cx="200" cy="164" rx="98" ry="92" fill="${C.skin}" ${S}/>
+    <path d="M100,182 Q82,72 200,54 Q318,72 300,182 Q298,198 290,204 Q292,172 282,152 Q274,170 260,162 Q262,138 244,130 Q238,152 220,154 Q216,128 196,124 Q190,150 172,152 Q166,128 150,132 Q150,156 132,160 Q124,150 118,152 Q110,174 112,204 Q102,196 100,182 Z" fill="${C.hair}" ${S}/>
+    <path d="M196,58 Q204,26 228,38 Q210,44 208,60" fill="${C.hair}" ${S}/>
+    <path d="M138,90 Q168,72 202,72" fill="none" stroke="${C.hairHi}" stroke-width="7" stroke-linecap="round"/>
+    <g id="${id}-face">
+      <ellipse cx="166" cy="186" rx="8" ry="11" fill="${INK}"/>
+      <ellipse cx="234" cy="186" rx="8" ry="11" fill="${INK}"/>
+      <circle cx="169" cy="182" r="3" fill="#FFF"/>
+      <circle cx="237" cy="182" r="3" fill="#FFF"/>
+      <ellipse cx="146" cy="210" rx="15" ry="9" fill="${C.cheek}" opacity="0.55"/>
+      <ellipse cx="254" cy="210" rx="15" ry="9" fill="${C.cheek}" opacity="0.55"/>
+      <path id="${id}-mouth" d="M186,214 Q200,230 214,214 Z" fill="${C.mouth}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+    </g>
+  </g>
+</g>`;
+  }
+
+  function rabbit(id) {
+    return `
+<g id="${id}">
+  <g id="${id}-legL">
+    <path d="M150,452 L192,452 L190,540 Q190,563 168,563 Q146,563 146,540 Z" fill="${C.mint}" ${S}/>
+  </g>
+  <g id="${id}-legR">
+    <path d="M208,452 L250,452 L254,540 Q254,563 232,563 Q210,563 210,540 Z" fill="${C.mint}" ${S}/>
+  </g>
+  <g id="${id}-body">
+    <path d="M132,322 Q200,300 268,322 L284,446 Q284,468 262,468 L138,468 Q116,468 116,446 Z" fill="${C.mint}" ${S}/>
+    <path d="M168,330 Q200,322 232,330" fill="none" stroke="${C.mintDark}" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <g id="${id}-armL">
+    <path d="M142,334 Q106,352 102,410 Q102,424 118,424 Q134,424 136,410 L154,358 Z" fill="${C.mint}" ${S}/>
+    <circle cx="119" cy="426" r="19" fill="#FFFFFF" ${S}/>
+  </g>
+  <g id="${id}-armR">
+    <path d="M258,334 Q294,352 298,410 Q298,424 282,424 Q266,424 264,410 L246,358 Z" fill="${C.mint}" ${S}/>
+    <circle cx="281" cy="426" r="19" fill="#FFFFFF" ${S}/>
+  </g>
+  <g id="${id}-head">
+    <g id="${id}-earL"><path d="M138,160 Q104,46 148,22 Q186,28 184,150 Z" fill="${C.mint}" ${S}/></g>
+    <g id="${id}-earR"><path d="M262,160 Q296,46 252,22 Q214,28 216,150 Z" fill="${C.mint}" ${S}/></g>
+    <circle cx="200" cy="232" r="112" fill="${C.mint}" ${S}/>
+    <ellipse cx="200" cy="246" rx="80" ry="72" fill="${C.face}" stroke="${INK}" stroke-width="5"/>
+    <g id="${id}-face">
+      <ellipse cx="176" cy="238" rx="7" ry="10" fill="${INK}"/>
+      <ellipse cx="224" cy="238" rx="7" ry="10" fill="${INK}"/>
+      <ellipse cx="152" cy="264" rx="16" ry="11" fill="${C.rCheek}" opacity="0.85"/>
+      <ellipse cx="248" cy="264" rx="16" ry="11" fill="${C.rCheek}" opacity="0.85"/>
+      <path id="${id}-mouth" d="M186,262 Q200,288 214,262 Z" fill="${C.mouth}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M192,274 Q200,282 208,274" fill="${C.tongue}"/>
+    </g>
+  </g>
+</g>`;
+  }
+
+  window.PPATTA = {
+    student, rabbit, colors: C,
+    pivots: {
+      student: { legL: "172 418", legR: "228 418", armL: "138 280", armR: "262 280", head: "200 252", body: "200 432" },
+      rabbit: { legL: "170 454", legR: "230 454", armL: "142 340", armR: "258 340", head: "200 330", body: "200 468", earL: "160 150", earR: "240 150" },
+    },
+  };
+})();
+
+    // ───── 세계 꾸미기(정해진 값으로만 그린다) ─────
+    const add = (parent, html) => document.getElementById(parent).insertAdjacentHTML("beforeend", html);
+    const bg = document.getElementById("bg");
+    for (let i = 0; i < 12; i++) bg.insertAdjacentHTML("beforeend", `<div class="abs lamp" style="left:${260 + i * 540}px"><div class="cord"></div><div class="shade"></div></div>`);
+    [[1000, "#8FD4C4"], [1460, "#A9DBF5"]].forEach(([x, c]) => {
+      add("desks", `<div class="abs part o" style="left:${x - 20}px; width:300px; background:${c}"></div>`);
+    });
+    [1000, 1460].forEach((x) => {
+      add("desks", `<div class="abs mon o" style="left:${x + 50}px"></div><div class="abs mon-s" style="left:${x + 115}px"></div>`);
+      add("desks", `<div class="abs desk o" style="left:${x - 30}px; width:320px"></div>`);
+      add("desks", `<div class="abs leg" style="left:${x - 10}px"></div><div class="abs leg" style="left:${x + 252}px"></div>`);
+    });
+    add("desks", `<div class="abs leaf o" style="left:2338px; top:732px; transform:rotate(-20deg)"></div><div class="abs leaf o" style="left:2386px; top:720px; transform:scaleX(-1) rotate(-20deg)"></div><div class="abs pot o" style="left:2330px; top:852px"></div>`);
+    // 책장: 칸 3개, 가운데 칸은 표지가 보이게
+    [580, 760, 920].forEach((y) => add("books", `<div class="abs shelf-b" style="top:${y}px"></div>`));
+    const spineColors = ["#F07AA0", "#8FD4C4", "#FFD34D", "#A9DBF5", "#6CC28F", "#FFFFFF", "#F7B6C8"];
+    for (let i = 0; i < 15; i++) {
+      const h = 100 + (i * 37) % 36;
+      add("books", `<div class="abs spine" style="left:${4600 + i * 38}px; top:${580 - h}px; height:${h}px; background:${spineColors[i % 7]}"></div>`);
+    }
+    ["bigdata", "bigdata2", "comhwal1", "comhwal2"].forEach((k, i) => add("books", `<img class="abs cover" src="assets/cover-${k}.jpg" style="left:${4610 + i * 110}px; top:${760 - 126}px" />`));
+    for (let i = 0; i < 12; i++) {
+      const h = 90 + (i * 29) % 40;
+      add("books", `<div class="abs spine" style="left:${4600 + i * 46}px; top:${920 - h}px; height:${h}px; background:${spineColors[(i + 3) % 7]}"></div>`);
+    }
+    [[0, 180], [130, 260], [260, 140], [390, 220], [520, 300], [650, 160], [780, 240], [910, 200], [1040, 280], [1170, 150], [1300, 230]].forEach(([x, h]) =>
+      add("city", `<div class="abs city" style="left:${x}px; height:${h}px"></div>`));
+    for (let i = 0; i < 8; i++) add("steams", `<div class="abs steam" id="st${i}"></div>`);
+
+    // ───── 캐릭터 ─────
+    document.getElementById("stuSvg").innerHTML = PPATTA.student("stu");
+    document.getElementById("rabSvg").innerHTML = PPATTA.rabbit("rab");
+    const INK = "#2B2B3A";
+    // 소품: 수험생 오른손 머그, 왼손 책(처음엔 숨김), 토끼 오른손 컵(처음엔 숨김)
+    document.getElementById("stu-armR").insertAdjacentHTML("beforeend",
+      `<g id="stu-mug"><path d="M300,378 L344,378 L340,430 Q338,440 328,440 L316,440 Q306,440 304,430 Z" fill="#FFF" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>
+       <path d="M342,392 Q362,394 360,410 Q358,424 340,422" fill="none" stroke="${INK}" stroke-width="6"/>
+       <ellipse cx="322" cy="382" rx="18" ry="5" fill="#7A4A2A"/></g>`);
+    document.getElementById("stu-armL").insertAdjacentHTML("beforeend",
+      `<g id="stu-book" opacity="0"><image href="assets/cover-adsp.jpg" x="40" y="318" width="84" height="116" preserveAspectRatio="none"/>
+       <rect x="40" y="318" width="84" height="116" fill="none" stroke="${INK}" stroke-width="6" rx="4"/></g>`);
+    document.getElementById("rab-armL").insertAdjacentHTML("beforeend",
+      `<g id="rab-cup" opacity="0"><path d="M70,384 L112,384 L108,430 Q106,440 96,440 L86,440 Q76,440 74,430 Z" fill="#FFF" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>
+       <ellipse cx="91" cy="388" rx="17" ry="5" fill="#7A4A2A"/></g>`);
+    const PS = PPATTA.pivots.student, PR = PPATTA.pivots.rabbit;
+    Object.entries(PS).forEach(([k, v]) => gsap.set(`#stu-${k}`, { svgOrigin: v }));
+    Object.entries(PR).forEach(([k, v]) => gsap.set(`#rab-${k}`, { svgOrigin: v }));
+
+    // ───── 시간표 ─────
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { immediateRender: false, ...to }, t);
+    const SCALE = 0.75;                 // SVG 1단위 = 0.75px
+    const TOP = 538;                    // 인형 위쪽 y(발끝 y=960)
+    const VIEW = 608;                   // 수험생을 화면 x 760 근처에 둔다(세계 608 × 1.25)
+    const camAt = (x) => Math.max(0, x - VIEW);
+    const setCam = (t0, t1, x0, x1) => {
+      ft("#world", { x: -camAt(x0) }, { x: -camAt(x1), duration: t1 - t0, ease: "none" }, t0);
+      ft("#bg", { x: -camAt(x0) * 0.75 }, { x: -camAt(x1) * 0.75, duration: t1 - t0, ease: "none" }, t0);
+    };
+    const place = (id, x) => tl.set(`#${id}W`, { x: x - 150 }, 0);
+
+    // 걷기: 다리·팔 흔들기 + 몸 들썩임 + 토끼 귀 흔들기. 끝나면 제자리 자세로.
+    const STEP = 0.32;
+    const steps = [];
+    function walk(id, t0, t1, x0, x1, cam = false) {
+      const n = Math.max(2, Math.round((t1 - t0) / STEP));
+      const d = (t1 - t0) / n;
+      ft(`#${id}W`, { x: x0 - 150 }, { x: x1 - 150, duration: t1 - t0, ease: "none" }, t0);
+      const end = n % 2 ? 1 : -1;
+      const swing = (part, a) => {
+        ft(`#${id}-${part}`, { rotation: -a }, { rotation: a, duration: d, ease: "sine.inOut", yoyo: true, repeat: n - 1 }, t0);
+        ft(`#${id}-${part}`, { rotation: a * end }, { rotation: 0, duration: 0.15, ease: "power1.out" }, t1);
+      };
+      swing("legL", 15); swing("legR", -15); swing("armL", -14);
+      if (id === "rab") { swing("armR", 14); swing("earL", -6); swing("earR", 6); } else { swing("armR", 6); }
+      ft(`#${id}-body`, { y: 0 }, { y: -6, duration: d / 2, ease: "sine.inOut", yoyo: true, repeat: 2 * n - 1 }, t0);
+      ft(`#${id}-head`, { y: 0 }, { y: -8, duration: d / 2, ease: "sine.inOut", yoyo: true, repeat: 2 * n - 1 }, t0);
+      if (cam) setCam(t0, t1, x0, x1);
+      if (id === "stu") for (let i = 0; i < n; i++) steps.push(+(t0 + i * d).toFixed(3));
+    }
+    const pose = (id, part, a, t, dur = 0.3, ease = "back.out(1.6)") => ft(`#${id}-${part}`, { rotation: 0 }, { rotation: a, duration: dur, ease }, t);
+    const unpose = (id, part, a, t, dur = 0.25) => ft(`#${id}-${part}`, { rotation: a }, { rotation: 0, duration: dur, ease: "power2.inOut" }, t);
+    // 뛰어오르기: 위로 갔다가 내려온다(두 움직임으로 나눠 시간 이동에도 안전하게)
+    const hop = (sel, t, y0, peak, y1, dur) => {
+      ft(sel, { y: y0 }, { y: peak, duration: dur / 2, ease: "sine.out" }, t);
+      ft(sel, { y: peak }, { y: y1, duration: dur / 2, ease: "sine.in" }, t + dur / 2);
+    };
+    const pop = (sel, t) => ft(sel, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(2.2)" }, t);
+    function sparkle(id, x, y, t) {
+      tl.set(`#${id}`, { x, y }, 0);
+      document.getElementById(id).querySelectorAll("i").forEach((el, i) => {
+        const a = (i / 6) * Math.PI * 2;
+        ft(el, { x: 0, y: 0, opacity: 1, scale: 0.4 }, { x: Math.cos(a) * 110, y: Math.sin(a) * 110, opacity: 0, scale: 1.1, duration: 0.7, ease: "power2.out" }, t);
+      });
+    }
+
+    // 정해진 위치(수험생 x): 엘리베이터 680 → 책상 1880 → 탕비실 2760 → 회의실 3800 → 책장 4840 → 창가 5900. 토끼는 +190
+    place("stu", 500); place("rab", 2090);
+    // 토끼는 칸막이 뒤에 숨어 있다: 칸막이 윗선(세계 y=680)보다 아래는 잘라 낸다. 아래쪽 자르기 = 308 + y
+    tl.set("#rabW", { y: 140, clipPath: "inset(0px 0px 448px 0px)" }, 0);
+    setCam(0, 0.01, 0, 0);
+
+    // 0~3.7 엘리베이터: 띵, 문 열림, 걸어 나와 손 흔들기
+    ft("#doorL", { x: 0 }, { x: -148, duration: 0.8, ease: "power2.inOut" }, 0.6);
+    ft("#doorR", { x: 0 }, { x: 148, duration: 0.8, ease: "power2.inOut" }, 0.6);
+    tl.set("#stuW", { y: -18 }, 0);
+    ft("#stuW", { y: -18 }, { y: 0, duration: 0.5, ease: "power1.inOut" }, 1.6);
+    walk("stu", 1.5, 2.4, 500, 680);
+    pose("stu", "armL", 150, 2.5);
+    ft("#stu-armL", { rotation: 150 }, { rotation: 125, duration: 0.18, yoyo: true, repeat: 3, ease: "sine.inOut" }, 2.8);
+    unpose("stu", "armL", 150, 3.5);
+
+    // 3.8~9.25 책상 구역: 걷는 동안 토끼가 칸막이 뒤에서 쏙
+    walk("stu", 3.8, 9.25, 680, 1880, true);
+    ft("#rabW", { y: 140, clipPath: "inset(0px 0px 448px 0px)" }, { y: -80, clipPath: "inset(0px 0px 228px 0px)", duration: 0.4, ease: "back.out(1.8)" }, 6.4);
+    ft("#rab-earL", { rotation: 0 }, { rotation: -14, duration: 0.15, yoyo: true, repeat: 3 }, 6.8);
+    ft("#rab-earR", { rotation: 0 }, { rotation: 14, duration: 0.15, yoyo: true, repeat: 3 }, 6.8);
+    hop("#rabW", 7.6, -80, -260, 0, 0.75);
+    ft("#rabW", { x: 2090 - 150 }, { x: 2070 - 150, duration: 0.75, ease: "none" }, 7.6);
+    tl.set("#rabW", { zIndex: 30, clipPath: "inset(0px 0px 0px 0px)" }, 7.72);
+    pose("rab", "armL", 150, 8.4);
+    ft("#rab-armL", { rotation: 150 }, { rotation: 125, duration: 0.16, yoyo: true, repeat: 3, ease: "sine.inOut" }, 8.7);
+    unpose("rab", "armL", 150, 9.4);
+
+    // 9.8~13.8 탕비실까지 함께
+    walk("stu", 9.8, 13.8, 1880, 2800, true);
+    walk("rab", 9.8, 13.8, 2070, 3150);
+    // 13.8~17 커피: 머신 불빛, 컵, 김, 토끼 컵 받기, 수험생 한 모금
+    ft(".mach-led", { scale: 1 }, { scale: 1.5, duration: 0.12, yoyo: true, repeat: 3 }, 13.9);
+    pop("#machCup", 14.2);
+    for (let i = 0; i < 8; i++) {
+      const x = 2960 + (i % 2) * 18, y0 = 720;
+      tl.set(`#st${i}`, { x, y: y0 }, 0);
+      // 김: 떠오르기(위치·크기)와 나타났다 사라지기(투명도)를 따로 — 같은 속성을 두 움직임이 다투지 않게
+      ft(`#st${i}`, { y: y0, scale: 0.5 }, { y: y0 - 160, scale: 1.2, duration: 1.1, ease: "power1.out" }, 14.3 + i * 0.25);
+      ft(`#st${i}`, { opacity: 0 }, { opacity: 0.95, duration: 0.25 }, 14.3 + i * 0.25);
+      ft(`#st${i}`, { opacity: 0.95 }, { opacity: 0, duration: 0.3 }, 15.1 + i * 0.25);
+    }
+    ft("#machCup", { opacity: 1 }, { opacity: 0, duration: 0.15 }, 15.5);
+    ft("#rab-cup", { opacity: 0 }, { opacity: 1, duration: 0.15 }, 15.55);
+    pose("rab", "armL", 40, 15.6);
+    unpose("rab", "armL", 40, 16.6);
+    pose("stu", "armR", -110, 15.9, 0.35, "power2.out");
+    unpose("stu", "armR", -110, 16.6, 0.3);
+
+    // 17~21.73 회의실 앞으로
+    walk("stu", 17.0, 21.73, 2800, 3800, true);
+    walk("rab", 17.0, 21.73, 3150, 3990);
+    // 21.73~23.93 화이트보드 구경: 고개 돌리고 물음표
+    pose("stu", "head", -10, 21.8); pose("rab", "head", -12, 21.9);
+    tl.set("#qm", { x: 3800 - 175, y: 560 }, 0);
+    pop("#qm", 22.2);
+    pose("stu", "armL", 160, 22.3, 0.3);
+    ft("#stu-armL", { rotation: 160 }, { rotation: 150, duration: 0.15, yoyo: true, repeat: 3 }, 22.6);
+    unpose("stu", "armL", 160, 23.3);
+    ft("#qm", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 23.5);
+    unpose("stu", "head", -10, 23.6); unpose("rab", "head", -12, 23.6);
+
+    // 23.93~28.66 책장으로
+    walk("stu", 23.93, 28.66, 3800, 4840, true);
+    walk("rab", 23.93, 28.66, 3990, 5030);
+    // 28.66~32.46 토끼가 책을 꺼내 건넨다 → 수험생이 번쩍
+    tl.set("#flyBook", { x: 5050, y: 634 }, 0);
+    pose("rab", "armR", -150, 28.9, 0.35);
+    hop("#rabW", 28.95, 0, -150, 0, 0.7);
+    ft("#flyBook", { x: 5050, y: 634 }, { x: 5080, y: 610, duration: 0.25 }, 29.3);
+    ft("#flyBook", { x: 5080, y: 610, rotation: 0 }, { x: 4734, y: 780, rotation: -12, duration: 0.7, ease: "power2.inOut" }, 29.7);
+    unpose("rab", "armR", -150, 29.8);
+    ft("#flyBook", { opacity: 1 }, { opacity: 0, duration: 0.05 }, 30.4);
+    ft("#stu-book", { opacity: 0 }, { opacity: 1, duration: 0.05 }, 30.4);
+    pose("stu", "armL", 105, 30.6, 0.35);
+    sparkle("spark1", 4660, 640, 30.85);
+    unpose("stu", "armL", 105, 32.0, 0.3);
+
+    // 32.46~37.28 창가로
+    walk("stu", 32.46, 37.28, 4840, 5900, true);
+    walk("rab", 32.46, 37.28, 5030, 6090);
+    // 37.4~ 만세 점프 + 끝 카드
+    ["stu", "rab"].forEach((id, k) => {
+      const t = 37.5 + k * 0.08;
+      pose(id, "armL", 125, t, 0.25); pose(id, "armR", -125, t, 0.25);
+      hop(`#${id}W`, t + 0.05, 0, -90, 0, 0.55);
+    });
+    sparkle("spark2", 5995, 560, 37.75);
+    ft("#endcard", { opacity: 0, y: 30, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.6)" }, 38.6);
+
+    window.__steps = steps;
+    window.__timelines["tour"] = tl;
+  </script>
+</template>

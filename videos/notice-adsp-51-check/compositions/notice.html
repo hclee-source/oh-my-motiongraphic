@@ -1,0 +1,231 @@
+<template>
+  <!-- 공지 쇼츠 틀: 시험 전 30초 점검(세로 1080×1920, 30초). notices/build_notice.py가 {{ }} 자리를 채워 compositions/notice.html로 쓴다.
+       장면: 훅 → ① 분포 모양 개념(왜도형) → ② 계수 해석 개념(오즈비형, 틀린 보기 ✗ / 맞는 보기 ✓) → 마무리. 위쪽 초시계가 30초 동안 줄어든다.
+       하우스 깔끔형: 노랑 #FFE500 · 남색 #1E2687 · 종이 #F2F0EA. 쇼츠 가림 자리(위 0~140, 아래 1450~, 오른쪽 960~ 중 1000 아래)에는 글자를 두지 않는다. -->
+  <style>
+    @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+    @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+    @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-7Bold.ttf") format("truetype"); font-weight: 700; font-display: block; }
+    @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Paperlogy", sans-serif; letter-spacing: -0.03em; }
+    .sc { position: absolute; inset: 0; opacity: 0; }
+    .Y { background: #FFE500; color: #1E2687; }
+    .N { background: #1E2687; color: #F2F0EA; }
+    .P { background: #F2F0EA; color: #1E2687; }
+    .w { display: inline-block; }
+    .in { opacity: 0; }
+    .sx { transform: scaleX(0); transform-origin: left center; }
+    .box { display: inline-block; background: #1E2687; color: #FFE500; padding: 0.02em 0.14em 0.08em; }
+    .boxY { display: inline-block; background: #FFE500; color: #1E2687; padding: 0.02em 0.14em 0.08em; }
+    .chip { display: inline-flex; align-items: center; gap: 16px; padding: 14px 30px; border-radius: 999px; font-size: 46px; font-weight: 800; }
+    sup { font-size: 0.6em; vertical-align: 0.75em; line-height: 0; }
+    sub { font-size: 0.6em; vertical-align: -0.2em; line-height: 0; }
+
+    /* 초시계(모든 장면 위) */
+    #timer { position: absolute; left: 96px; top: 168px; height: 92px; padding: 0 34px 0 24px; border-radius: 999px; background: #1E2687;
+      border: 5px solid #FFE500; display: flex; align-items: center; gap: 16px; color: #FFE500; box-sizing: border-box; }
+    #timer svg { width: 52px; height: 52px; }
+    #timer .num { position: relative; width: 78px; height: 60px; font-size: 60px; font-weight: 800; line-height: 60px; }
+    #timer .dg { position: absolute; left: 0; right: 0; top: 0; text-align: center; opacity: 0; }
+    #timer .unit { font-size: 40px; font-weight: 800; }
+    #bar { position: absolute; left: 420px; top: 205px; width: 564px; height: 18px; border-radius: 9px; background: rgba(30,38,135,0.16); overflow: hidden; }
+    #bar-fill { position: absolute; inset: 0; background: #1E2687; border-radius: 9px; transform-origin: left center; }
+
+    /* 1 훅 */
+    #s1 .l1 { position: absolute; left: 96px; top: 560px; font-size: 84px; font-weight: 800; line-height: 1; }
+    #s1 .l2 { position: absolute; left: 96px; top: 680px; font-size: 112px; font-weight: 800; line-height: 1; }
+    #s1 .l3 { position: absolute; left: 90px; top: 820px; font-size: 172px; font-weight: 800; line-height: 1; letter-spacing: -0.05em; }
+    #s1 .l2 .w, #s1 .l3 .w { opacity: 0; }  /* 첫 줄만 첫 화면부터 보이고, 둘째·셋째 줄은 떨어지며 들어온다 */
+    #s1 .l3 .box { transform: scaleX(0); transform-origin: left center; }
+    #s1 .chip { position: absolute; left: 96px; top: 1090px; background: #1E2687; color: #FFE500; }
+
+    /* 공통: 문제 번호·질문 */
+    .qchip { position: absolute; left: 96px; top: 330px; }
+    .ask { position: absolute; left: 96px; top: 440px; font-size: 88px; font-weight: 800; line-height: 1.26; }
+
+    /* 2 분포(왜도형) */
+    #s2 .qchip { background: #1E2687; color: #F2F0EA; }
+    #s2 .chart { position: absolute; left: 90px; top: 690px; width: 870px; height: 400px; }
+    #s2 .chart .area { fill: rgba(30,38,135,0.10); }
+    #s2 .chart .curve { fill: none; stroke: #1E2687; stroke-width: 9; stroke-linecap: round; stroke-dasharray: 2000; stroke-dashoffset: 2000; }
+    #s2 .chart .base { stroke: #1E2687; stroke-width: 5; }
+    #s2 .mk { position: absolute; bottom: 90px; width: 0; }
+    #s2 .mk .ln { position: absolute; left: -3px; bottom: 0; width: 6px; background: repeating-linear-gradient(#1E2687 0 14px, transparent 14px 24px); transform-origin: bottom; transform: scaleY(0); }
+    #s2 .mk .lb { position: absolute; left: -110px; width: 220px; bottom: -64px; text-align: center; font-size: 38px; font-weight: 800; white-space: nowrap; }
+    #s2 .mk.mean .ln { background: repeating-linear-gradient(#FF3B30 0 14px, transparent 14px 24px); }
+    #s2 .mk.mean .lb span { background: #1E2687; color: #FFE500; padding: 2px 12px 6px; }
+    #s2 .tip { position: absolute; left: 520px; top: 770px; font-size: 42px; font-weight: 800; display: flex; align-items: center; gap: 12px; white-space: nowrap; }
+    #s2 .tip svg { width: 70px; height: 30px; }
+    #s2 .ans { position: absolute; left: 96px; top: 1150px; font-size: 66px; font-weight: 800; line-height: 1; white-space: nowrap; }
+    #s2 .stamp { position: absolute; left: 90px; top: 1250px; font-size: 108px; font-weight: 800; line-height: 1; }
+    #s2 .rev { position: absolute; left: 560px; top: 1262px; width: 390px; font-size: 40px; font-weight: 700; line-height: 1.25; color: #4A4F8F; }
+
+    /* 3 계수 해석(오즈비형) */
+    #s3 .qchip { background: #FFE500; color: #1E2687; }
+    #s3 .card { position: absolute; left: 90px; width: 870px; border-radius: 26px; box-sizing: border-box; padding: 0 44px; }
+    #s3 .fx { top: 690px; height: 196px; background: #FFFFFF; color: #1E2687; display: flex; flex-direction: column; justify-content: center; gap: 28px; }
+    #s3 .fx .f1 { font-size: 58px; font-weight: 800; line-height: 1; white-space: nowrap; }
+    #s3 .fx .f2 { font-size: 46px; font-weight: 700; line-height: 1; color: #4A4F8F; }
+    #s3 .opt { height: 136px; display: flex; align-items: center; justify-content: space-between; font-size: 64px; font-weight: 800; white-space: nowrap; }
+    #s3 .wrong { top: 930px; border: 5px solid rgba(242,240,234,0.55); color: rgba(242,240,234,0.9); }
+    #s3 .right { top: 1096px; background: #FFE500; color: #1E2687; }
+    #s3 .opt .t { position: relative; }
+    #s3 .strike { position: absolute; left: -8px; right: -8px; top: 52%; height: 8px; background: #FF3B30; transform: scaleX(0); transform-origin: left center; }
+    #s3 .mark { flex: 0 0 96px; height: 96px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    #s3 .wrong .mark { background: #FF3B30; }
+    #s3 .right .mark { background: #1E2687; }
+    #s3 .mark svg { width: 56px; height: 56px; }
+    #s3 .note { position: absolute; left: 96px; top: 1272px; font-size: 54px; font-weight: 800; line-height: 1; white-space: nowrap; }
+    #s3 .key { position: absolute; left: 96px; top: 1352px; font-size: 58px; font-weight: 800; line-height: 1; }
+
+    /* 4 마무리 */
+    #s4 { clip-path: inset(0 100% 0 0); }
+    #s4 .o1 { position: absolute; left: 96px; top: 560px; font-size: 104px; font-weight: 800; line-height: 1; }
+    #s4 .o2 { position: absolute; left: 96px; top: 690px; font-size: 104px; font-weight: 800; line-height: 1; display: flex; align-items: center; gap: 24px; }
+    #s4 .o2 .dot { width: 34px; height: 34px; border-radius: 50%; background: #FF3B30; }
+    #s4 .o3 { position: absolute; left: 90px; top: 830px; font-size: 156px; font-weight: 800; line-height: 1; letter-spacing: -0.05em; }
+    #s4 .cheer { position: absolute; left: 96px; top: 1090px; font-size: 54px; font-weight: 800; line-height: 1.3; }
+    #s4 .foot { position: absolute; left: 96px; top: 1290px; display: flex; align-items: center; gap: 20px; font-size: 40px; font-weight: 700; color: rgba(30,38,135,0.75); }
+    #s4 .foot img { width: 64px; height: 64px; }
+  </style>
+  <div id="root" data-composition-id="notice" data-width="1080" data-height="1920">
+    <div class="sc Y" id="s1" data-layout-cover style="opacity: 1">
+      <div class="l1"><span class="w">ADsP</span> <span class="w">내일</span> <span class="w">시험,</span></div>
+      <div class="l2"><span class="w">시험장</span> <span class="w">가기</span> <span class="w">전</span></div>
+      <div class="l3"><span class="w"><span class="box">30초</span></span> <span class="w">점검</span></div>
+      <div class="chip in">헷갈리는 2가지만 콕</div>
+    </div>
+
+    <div class="sc P" id="s2" data-layout-cover>
+      <div class="chip qchip in">① 왜도</div>
+      <div class="ask"><div class="w in">꼬리가 오른쪽으로</div><br /><div class="w in">길면?</div></div>
+      <div class="chart">
+        <svg width="870" height="400" viewBox="0 0 870 400">
+          <path class="area in" d="M 20 310 C 110 310, 150 40, 230 40 C 310 40, 360 140, 450 215 C 560 290, 700 306, 850 308 L 850 310 Z" />
+          <path class="curve" d="M 20 310 C 110 310, 150 40, 230 40 C 310 40, 360 140, 450 215 C 560 290, 700 306, 850 308" />
+          <line class="base" x1="10" y1="310" x2="860" y2="310" />
+        </svg>
+        <div class="mk m1" style="left: 230px"><div class="ln" style="height: 270px"></div><div class="lb in">최빈값</div></div>
+        <div class="mk m2" style="left: 370px"><div class="ln" style="height: 176px"></div><div class="lb in">중앙값</div></div>
+        <div class="mk mean" style="left: 520px"><div class="ln" style="height: 57px"></div><div class="lb in"><span>평균</span></div></div>
+      </div>
+      <div class="tip in">평균은 꼬리 쪽으로
+        <svg viewBox="0 0 70 30"><path d="M2 15 H60 M46 3 L64 15 L46 27" fill="none" stroke="#1E2687" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="ans in">최빈값 &lt; 중앙값 &lt; 평균</div>
+      <div class="stamp in"><span class="box sx">왜도 &gt; 0</span></div>
+      <div class="rev in">왼쪽 꼬리면 반대<br />왜도 &lt; 0</div>
+    </div>
+
+    <div class="sc N" id="s3" data-layout-cover>
+      <div class="chip qchip in">② 오즈비</div>
+      <div class="ask"><div class="w in">로지스틱 회귀,</div><br /><div class="w in">계수 β = 0.7이면?</div></div>
+      <div class="card fx in"><div class="f1">log(오즈) = β<sub>0</sub> + 0.7x</div><div class="f2">x가 1 늘면 무엇이 몇 배?</div></div>
+      <div class="card opt wrong in"><span class="t" data-layout-allow-overlap>확률이 2배<span class="strike"></span></span>
+        <span class="mark in"><svg viewBox="0 0 24 24"><path d="M5 5 L19 19 M19 5 L5 19" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round"/></svg></span></div>
+      <div class="card opt right in"><span class="t">오즈가 e<sup>0.7</sup> ≈ 2.01배</span>
+        <span class="mark in"><svg viewBox="0 0 24 24"><path d="M4 12.5 L10 18 L20 6" fill="none" stroke="#FFE500" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+      <div class="note in">오즈 = p / (1 − p)</div>
+      <div class="key in"><span class="boxY sx">확률 말고 오즈!</span></div>
+    </div>
+
+    <div class="sc Y" id="s4" data-layout-cover>
+      <div class="o1 in">오늘 밤 8시</div>
+      <div class="o2 in"><span class="dot"></span>LIVE 특강에서</div>
+      <div class="o3 in"><span class="box sx">마무리!</span></div>
+      <div class="cheer in">내일 시험, 합격을 응원합니다</div>
+      <div class="foot in"><img src="assets/icon.png" alt="" />LIVE 특강 · 10/30(금) 오후 8시</div>
+    </div>
+
+    <div id="timer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#FFE500" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="13.5" r="8" /><path d="M12 9.5 V13.5 L14.8 15.4 M9.5 2.5 H14.5 M12 2.5 V5.5" /></svg>
+      <div class="num"><span class="dg" id="dg30">30</span><span class="dg" id="dg29">29</span><span class="dg" id="dg28">28</span><span class="dg" id="dg27">27</span><span class="dg" id="dg26">26</span><span class="dg" id="dg25">25</span><span class="dg" id="dg24">24</span><span class="dg" id="dg23">23</span><span class="dg" id="dg22">22</span><span class="dg" id="dg21">21</span><span class="dg" id="dg20">20</span><span class="dg" id="dg19">19</span><span class="dg" id="dg18">18</span><span class="dg" id="dg17">17</span><span class="dg" id="dg16">16</span><span class="dg" id="dg15">15</span><span class="dg" id="dg14">14</span><span class="dg" id="dg13">13</span><span class="dg" id="dg12">12</span><span class="dg" id="dg11">11</span><span class="dg" id="dg10">10</span><span class="dg" id="dg9">9</span><span class="dg" id="dg8">8</span><span class="dg" id="dg7">7</span><span class="dg" id="dg6">6</span><span class="dg" id="dg5">5</span><span class="dg" id="dg4">4</span><span class="dg" id="dg3">3</span><span class="dg" id="dg2">2</span><span class="dg" id="dg1">1</span><span class="dg" id="dg0">0</span></div><div class="unit">초</div>
+    </div>
+    <div id="bar"><div id="bar-fill"></div></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4, ease: "power3.out", immediateRender: false, ...to }, t);
+    const drop = (sel, t, stagger = 0.1) => ft(sel, { y: -60, opacity: 0, filter: "blur(10px)" }, { y: 0, opacity: 1, filter: "blur(0px)", ease: "back.out(1.7)", duration: 0.45, stagger }, t);
+    const rise = (sel, t) => ft(sel, { y: 40, opacity: 0 }, { y: 0, opacity: 1 }, t);
+    const grow = (sel, t, d = 0.28) => ft(sel, { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: d }, t);
+    const pop = (sel, t) => ft(sel, { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, ease: "back.out(2.6)", duration: 0.35 }, t);
+    const show = (sel, t) => tl.set(sel, { opacity: 1 }, t);
+    const hide = (sel, t) => tl.set(sel, { opacity: 0 }, t);
+
+    // 초시계: 29초 동안 30→0으로 줄고(한 칸 29/30초), 마지막 1초는 0에서 한 번 튀며 멈춘다
+    const TICK = 29 / 30;
+    show("#dg30", 0);
+    for (let k = 1; k <= 30; k++) { hide(`#dg${31 - k}`, k * TICK); show(`#dg${30 - k}`, k * TICK); }
+    tl.fromTo("#bar-fill", { scaleX: 1 }, { scaleX: 0, duration: 29, ease: "none", immediateRender: false }, 0);
+    tl.fromTo("#timer", { scale: 1 }, { scale: 1.12, duration: 0.15, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, 29.0);
+    // 초시계·막대는 첫 화면부터 그대로 둔다(등장 효과를 0초 뒤에 걸면 첫 프레임에 보였다가 사라지며 깜빡임)
+
+    // 1 훅(0~3초)
+    tl.fromTo("#s1 .l1 .w", { y: -24, filter: "blur(6px)" }, { y: 0, filter: "blur(0px)", duration: 0.35, ease: "power3.out", stagger: 0.06 }, 0);
+    drop("#s1 .l2 .w", 0.35, 0.12);
+    drop("#s1 .l3 .w", 0.8, 0.12);
+    grow("#s1 .l3 .box", 1.05, 0.25);
+    pop("#s1 .chip", 1.75);
+
+    // 2 분포(3~15초): 종이 화면이 아래에서 밀고 올라온다
+    tl.set("#s2", { opacity: 1, yPercent: 100 }, 2.9);
+    tl.to("#s2", { yPercent: 0, duration: 0.32, ease: "power3.inOut" }, 2.9);
+    hide("#s1", 3.22);
+    pop("#s2 .qchip", 3.3);
+    drop("#s2 .ask .w", 3.55, 0.25);
+    // 곡선 그리기: 실제 길이를 재서 점선 간격·밀림을 그 길이로 맞춘다(pathLength는 브라우저에서 안 먹었음)
+    const curve = document.querySelector('[data-composition-id="notice"] #s2 .curve');
+    const CL = Math.ceil(curve.getTotalLength()) + 2;
+    curve.style.strokeDasharray = `${CL}`;
+    curve.style.strokeDashoffset = `${CL}`;
+    tl.fromTo(curve, { strokeDashoffset: CL }, { strokeDashoffset: 0, duration: 1.1, ease: "power2.inOut", immediateRender: false }, 4.6);
+    ft("#s2 .area", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 5.4);
+    [["m1", 6.0], ["m2", 6.7], ["mean", 7.4]].forEach(([m, t]) => {
+      ft(`#s2 .${m} .ln`, { scaleY: 0 }, { scaleY: 1, duration: 0.35, ease: "power3.out" }, t);
+      drop(`#s2 .${m} .lb`, t + 0.1);
+    });
+    ft("#s2 .tip", { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4 }, 8.3);
+    tl.fromTo("#s2 .tip svg", { x: 0 }, { x: 16, duration: 0.35, ease: "sine.inOut", yoyo: true, repeat: 5, immediateRender: false }, 8.7);
+    rise("#s2 .ans", 9.6);
+    show("#s2 .stamp", 10.8);
+    ft("#s2 .stamp .box", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.3, ease: "back.out(1.6)" }, 10.8);
+    rise("#s2 .rev", 12.2);
+
+    // 3 계수 해석(15~26초): 남색 원이 퍼지며 들어온다
+    tl.set("#s3", { opacity: 1 }, 14.85);
+    tl.fromTo("#s3", { clipPath: "circle(0% at 540px 960px)" }, { clipPath: "circle(150% at 540px 960px)", duration: 0.5, ease: "power2.in", immediateRender: false }, 14.85);
+    hide("#s2", 15.4);
+    // 막대 색은 남색 원이 막대 자리까지 퍼졌을 때(약 15.15초) 바꾼다
+    tl.set("#bar-fill", { backgroundColor: "#FFE500" }, 15.15);
+    tl.set("#bar", { backgroundColor: "rgba(242,240,234,0.22)" }, 15.15);
+    pop("#s3 .qchip", 15.3);
+    drop("#s3 .ask .w", 15.55, 0.25);
+    rise("#s3 .fx", 16.8);
+    ft("#s3 .wrong", { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35 }, 18.0);
+    pop("#s3 .wrong .mark", 18.7);
+    grow("#s3 .strike", 18.75, 0.25);
+    ft("#s3 .wrong", { opacity: 1 }, { opacity: 0.55, duration: 0.3 }, 19.2);
+    ft("#s3 .right", { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35 }, 19.9);
+    pop("#s3 .right .mark", 20.5);
+    ft("#s3 .right", { scale: 1 }, { scale: 1.04, duration: 0.14, ease: "power2.out", yoyo: true, repeat: 1, transformOrigin: "left center" }, 20.5);
+    rise("#s3 .note", 21.8);
+    show("#s3 .key", 23.0);
+    grow("#s3 .key .boxY", 23.0, 0.3);
+
+    // 4 마무리(26~30초): 노랑이 왼쪽에서 닦아 들어오고, 끝 문구가 2초 넘게 머문다
+    tl.set("#s4", { opacity: 1 }, 25.85);
+    tl.fromTo("#s4", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 0.4, ease: "power3.inOut", immediateRender: false }, 25.85);
+    hide("#s3", 26.3);
+    tl.set("#bar-fill", { backgroundColor: "#1E2687" }, 26.0);
+    tl.set("#bar", { backgroundColor: "rgba(30,38,135,0.16)" }, 26.0);
+    drop("#s4 .o1", 26.2);
+    drop("#s4 .o2", 26.45);
+    tl.fromTo("#s4 .o2 .dot", { opacity: 1 }, { opacity: 0.15, duration: 0.25, ease: "none", yoyo: true, repeat: 5, immediateRender: false }, 26.7);
+    show("#s4 .o3", 26.8);
+    grow("#s4 .o3 .box", 26.8, 0.3);
+    rise("#s4 .cheer", 27.1);
+    ft("#s4 .foot", { opacity: 0 }, { opacity: 1 }, 27.3);
+
+    window.__timelines["notice"] = tl;
+  </script>
+</template>

@@ -1,0 +1,149 @@
+{
+ "rounds": [
+  {
+   "exam": "ADsP",
+   "round": 48,
+   "stage": "",
+   "year": 2026,
+   "apply_start": "2026-01-05",
+   "apply_end": "2026-01-09",
+   "exam_date": "2026-02-07",
+   "result": "2026-03-06",
+   "source": "https://www.dataq.or.kr/www/accept/schedule.do",
+   "confirmed": false
+  },
+  {
+   "exam": "SQLD",
+   "round": 60,
+   "stage": "",
+   "year": 2026,
+   "apply_start": "2026-02-02",
+   "apply_end": "2026-02-06",
+   "exam_date": "2026-03-07",
+   "result": "2026-03-27",
+   "source": "https://www.dataq.or.kr/www/accept/schedule.do",
+   "confirmed": false
+  },
+  {
+   "exam": "빅분기",
+   "round": 12,
+   "stage": "필기",
+   "year": 2026,
+   "apply_start": "2026-03-03",
+   "apply_end": "2026-03-09",
+   "exam_date": "2026-04-04",
+   "result": "2026-04-24",
+   "source": "https://www.dataq.or.kr/www/accept/schedule.do",
+   "confirmed": false
+  },
+  {
+   "exam": "ADsP",
+   "round": 49,
+   "stage": "",
+   "year": 2026,
+   "apply_start": "2026-04-13",
+   "apply_end": "2026-04-17",
+   "exam_date": "2026-05-17",
+   "result": "2026-06-05",
+   "source": "https://www.dataq.or.kr/www/accept/schedule.do",
+   "confirmed": false
+  },
+  {
+   "exam": "SQLD",
+   "round": 61,
+   "stage": "",
+   "year": 2026,
+   "apply_start": "2026-04-27",
+   "apply_end": "2026-05-01",
+   "exam_date": "2026-05-31",
+   "result": "2026-06-19",
+   "source": "https://www.dataq.or.kr/www/accept/schedule.do",
+   "confirmed": false
+  },
+  {
+   "exam": "빅분기",
+   "round": 12,
+   "stage": "실기",
+   "year": 2026,
+   "apply_start": "2026-05-18",
+   "apply_end": "2026-05-22",
+   "exam_date": "2026-06-20",
+   "result": "2026-07-10",
+   "source": "https://www.dataq.or.kr/www/accept/schedule.do",
+   "confirmed": false
+  },
+  {
+   "exam": "ADsP",
+   "round": 50,
+   "stage": "",
+   "year": 2026,
+   "apply_start": "2026-07-06",
+   "apply_end": "2026-07-10",
+   "exam_date": "2026-08-08",
+   "result": "2026-08-28",
+   "source": "https://www.dataq.or.kr/www/accept/schedule.do",
+   "confirmed": false
+  },
+  {
+   "exam": "SQLD",
+   "round": 62,
+   "stage": "",
+   "year": 2026,
+   "apply_start": "2026-07-20",
+   "apply_end": "2026-07-24",
+   "exam_date": "2026-08-22",
+   "result": "2026-09-11",
+   "source": "https://www.dataq.or.kr/www/accept/schedule.do",
+   "confirmed": false
+  },
+  {
+   "exam": "빅분기",
+   "round": 13,
+   "stage": "필기",
+   "year": 2026,
+   "apply_start": "2026-08-03",
+   "apply_end": "2026-08-07",
+   "exam_date": "2026-09-05",
+   "result": "2026-09-23",
+   "source": "https://www.dataq.or.kr/www/accept/schedule.do",
+   "confirmed": false
+  },
+  {
+   "exam": "ADsP",
+   "round": 51,
+   "stage": "",
+   "year": 2026,
+   "apply_start": "2026-09-28",
+   "apply_end": "2026-10-02",
+   "exam_date": "2026-10-31",
+   "result": "2026-11-20",
+   "source": "https://www.dataq.or.kr/www/accept/schedule.do",
+   "confirmed": false
+  },
+  {
+   "exam": "SQLD",
+   "round": 63,
+   "stage": "",
+   "year": 2026,
+   "apply_start": "2026-10-12",
+   "apply_end": "2026-10-16",
+   "exam_date": "2026-11-14",
+   "result": "2026-12-04",
+   "source": "https://www.dataq.or.kr/www/accept/schedule.do",
+   "confirmed": false
+  },
+  {
+   "exam": "빅분기",
+   "round": 13,
+   "stage": "실기",
+   "year": 2026,
+   "apply_start": "2026-10-26",
+   "apply_end": "2026-10-30",
+   "exam_date": "2026-11-28",
+   "result": "2026-12-18",
+   "source": "https://www.dataq.or.kr/www/accept/schedule.do",
+   "confirmed": false
+  }
+ ],
+ "dataq_checked": "2026-10-29"
+}

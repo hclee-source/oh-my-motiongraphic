@@ -1,0 +1,67 @@
+<template>
+  <!-- 공지 포스터 틀: 특강 이벤트(1080×1920 정지 이미지). 쇼츠와 같은 입력으로 만든다. 사이트·카페·게시판용. -->
+  <style>
+    @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+    @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+    @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-7Bold.ttf") format("truetype"); font-weight: 700; font-display: block; }
+    @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Paperlogy", sans-serif; letter-spacing: -0.03em; color: #1E2687; }
+    .band { position: absolute; left: 0; right: 0; }
+    #top { top: 0; height: 900px; background: #FFE500; }
+    #mid { top: 900px; height: 560px; background: #F2F0EA; }
+    #bot { top: 1460px; height: 460px; background: #1E2687; color: #F2F0EA; }
+    .box { display: inline-block; background: #1E2687; color: #FFE500; padding: 0.02em 0.14em 0.08em; }
+    .boxY { display: inline-block; background: #FFE500; color: #1E2687; padding: 0.02em 0.14em 0.08em; }
+    .chip { display: inline-flex; align-items: center; gap: 14px; padding: 12px 28px; border-radius: 999px; font-size: 38px; font-weight: 800; }
+
+    #top .chip { position: absolute; left: 80px; top: 110px; background: #1E2687; color: #F2F0EA; }
+    #top .dot { width: 24px; height: 24px; border-radius: 50%; background: #FF3B30; }
+    #top .t1 { position: absolute; left: 80px; top: 230px; font-size: 80px; font-weight: 800; line-height: 1; }
+    #top .exam { position: absolute; left: 70px; top: 345px; font-size: 200px; font-weight: 800; line-height: 1; letter-spacing: -0.05em; }
+    #top .t2 { position: absolute; left: 80px; top: 690px; font-size: 150px; font-weight: 800; line-height: 1; }
+    #top .cover { position: absolute; left: 700px; top: 190px; width: 300px; height: 410px; object-fit: cover;
+      box-shadow: 14px 14px 0 #1E2687; transform: rotate(5deg); }
+
+    #mid .lab { position: absolute; left: 80px; top: 50px; font-size: 40px; font-weight: 800; color: #6B6F9E; }
+    #mid .when { position: absolute; left: 80px; top: 110px; font-size: 104px; font-weight: 800; line-height: 1; white-space: nowrap; }
+    #mid .lab2 { position: absolute; left: 80px; top: 270px; font-size: 40px; font-weight: 800; color: #6B6F9E; }
+    #mid ul { position: absolute; left: 80px; top: 330px; margin: 0; padding: 0; list-style: none; }
+    #mid li { display: flex; align-items: center; gap: 22px; height: 66px; font-size: 48px; font-weight: 800; }
+    #mid .ck { position: relative; width: 46px; height: 46px; border: 5px solid #1E2687; border-radius: 10px; box-sizing: border-box; }
+    #mid .ck::after { content: ""; position: absolute; left: 9px; top: 0; width: 13px; height: 25px; border-right: 6px solid #1E2687; border-bottom: 6px solid #1E2687; transform: rotate(45deg); }
+
+    #bot .lab { position: absolute; left: 80px; top: 56px; font-size: 40px; font-weight: 800; color: #FFE500; }
+    #bot .how { position: absolute; left: 80px; top: 116px; font-size: 76px; font-weight: 800; line-height: 1; white-space: nowrap; }
+    #bot .guide { position: absolute; left: 80px; top: 232px; font-size: 44px; font-weight: 700; color: rgba(242,240,234,0.85); white-space: nowrap; }
+    #bot .brand { position: absolute; left: 80px; top: 340px; display: flex; align-items: center; gap: 18px; font-size: 34px; font-weight: 700; letter-spacing: 0.12em; color: #CEAE73; }
+    #bot .brand img { width: 64px; height: 64px; }
+  </style>
+  <div id="root" data-composition-id="poster" data-width="1080" data-height="1920">
+    <div class="band" id="top">
+      <div class="chip"><span class="dot"></span>LIVE</div>
+      <div class="t1">시험 직전 마무리</div>
+      <div class="exam">ADsP</div>
+      <div class="t2"><span class="box">LIVE 특강</span></div>
+      <img class="cover" src="assets/cover.jpg" alt="" />
+    </div>
+    <div class="band" id="mid">
+      <div class="lab">특강 일시</div>
+      <div class="when">10/30(금) 오후 8시</div>
+      <div class="lab2">이런 분이라면 꼭 참여하세요</div>
+      <ul>
+        <li><span class="ck"></span>개념 정리가 아직 부족한 분</li>
+        <li><span class="ck"></span>CBT 응시 점수가 애매한 분</li>
+        <li><span class="ck"></span>벼락치기로 학습 중인 분</li>
+      </ul>
+    </div>
+    <div class="band" id="bot">
+      <div class="lab">참여 방법</div>
+      <div class="how">좋아요 + 댓글 <span class="boxY">‘참여’</span></div>
+      <div class="guide">참여 방법 안내 · 10/30(금) 오후 3시 고정 댓글</div>
+      <div class="brand"><img src="assets/icon.png" alt="" />GOLDEN RABBIT</div>
+    </div>
+  </div>
+  <script>
+    window.__timelines["poster"] = gsap.timeline({ paused: true });
+  </script>
+</template>

@@ -1,0 +1,180 @@
+<template>
+  <!-- 공지 쇼츠 틀: 특강 이벤트(세로 1080×1920, 15초). notices/build_notice.py가 {{ }} 자리를 채워 compositions/notice.html로 쓴다.
+       하우스 깔끔형: 한 화면 한 마디, 노랑 #FFE500 · 남색 #1E2687 · 종이 #F2F0EA, 금색은 로고에만.
+       쇼츠 가림 자리(위 0~140, 아래 1450~, 오른쪽 960~ 중 1000 아래)에는 글자를 두지 않는다. -->
+  <style>
+    @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+    @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; font-display: block; }
+    @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-7Bold.ttf") format("truetype"); font-weight: 700; font-display: block; }
+    @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: block; }
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Paperlogy", sans-serif; letter-spacing: -0.03em; }
+    .sc { position: absolute; inset: 0; opacity: 0; }
+    .Y { background: #FFE500; color: #1E2687; }
+    .N { background: #1E2687; color: #F2F0EA; }
+    .P { background: #F2F0EA; color: #1E2687; }
+    .w { display: inline-block; }
+    /* 등장 전 상태: 들어오기 전에는 숨겨 둔다(등장 효과가 시작되면 GSAP이 덮어씀) */
+    .in { opacity: 0; }
+    .sx { transform: scaleX(0); transform-origin: left center; }
+    .box { display: inline-block; background: #1E2687; color: #FFE500; padding: 0.02em 0.14em 0.08em; }
+    .boxY { display: inline-block; background: #FFE500; color: #1E2687; padding: 0.02em 0.14em 0.08em; }
+    .chip { display: inline-flex; align-items: center; gap: 16px; padding: 14px 30px; border-radius: 999px; font-size: 40px; font-weight: 800; }
+
+    /* 1 훅 */
+    #s1 .l1 { position: absolute; left: 96px; top: 700px; font-size: 96px; font-weight: 800; line-height: 1; }
+    #s1 .l2 .w { opacity: 0; }
+    #s1 .l2 .box { transform: scaleX(0); transform-origin: left center; }
+    #s1 .l2 { position: absolute; left: 96px; top: 830px; font-size: 120px; font-weight: 800; line-height: 1; }
+
+    /* 2 특강 이름 */
+    #s2 .chip { position: absolute; left: 96px; top: 470px; border: 4px solid #F2F0EA; color: #F2F0EA; }
+    #s2 .dot { width: 26px; height: 26px; border-radius: 50%; background: #FF3B30; }
+    #s2 .t1 { position: absolute; left: 96px; top: 600px; font-size: 84px; font-weight: 800; line-height: 1; }
+    #s2 .t2 { position: absolute; left: 90px; top: 720px; font-size: 180px; font-weight: 800; line-height: 1; color: #FFE500; letter-spacing: -0.05em; }
+    #s2 .cover { position: absolute; left: 560px; top: 1010px; width: 300px; height: 410px; object-fit: cover;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.55); transform: rotate(-6deg); }
+
+    /* 3 일시 */
+    #s3 .chip { position: absolute; left: 50%; top: 430px; transform: translateX(-50%); background: #1E2687; color: #F2F0EA; }
+    #s3 .cal { position: absolute; left: 290px; top: 540px; width: 500px; height: 520px; background: #FFFFFF; border-radius: 28px;
+      box-shadow: 14px 14px 0 #1E2687; overflow: hidden; text-align: center; }
+    #s3 .cal-top { height: 110px; background: #1E2687; color: #F2F0EA; font-size: 46px; font-weight: 800; line-height: 110px; letter-spacing: -0.01em; }
+    #s3 .cal-d { margin-top: 10px; font-size: 270px; font-weight: 800; line-height: 1; letter-spacing: -0.05em; }
+    #s3 .cal-w { margin-top: 6px; font-size: 64px; font-weight: 800; }
+    #s3 .time { position: absolute; left: 0; right: 0; top: 1130px; text-align: center; font-size: 150px; font-weight: 800; line-height: 1; }
+
+    /* 4 대상 */
+    #s4 .ttl { position: absolute; left: 96px; top: 410px; font-size: 120px; font-weight: 800; line-height: 1; }
+    #s4 .row { position: absolute; left: 90px; width: 870px; height: 150px; background: #FFFFFF; border-radius: 24px;
+      display: flex; align-items: center; gap: 30px; padding: 0 40px; box-sizing: border-box; box-shadow: 10px 10px 0 #1E2687; }
+    #s4 .r1 { top: 620px; } #s4 .r2 { top: 800px; } #s4 .r3 { top: 980px; }
+    #s4 .ck { position: relative; flex: 0 0 72px; height: 72px; border: 7px solid #1E2687; border-radius: 14px; box-sizing: border-box; }
+    #s4 .tick { position: absolute; left: 14px; top: 2px; width: 22px; height: 40px; border-right: 9px solid #1E2687; border-bottom: 9px solid #1E2687;
+      transform: rotate(45deg) scale(0); transform-origin: 60% 60%; }
+    #s4 .rt { font-size: 62px; font-weight: 800; line-height: 1; white-space: nowrap; }
+
+    /* 5 참여 방법 */
+    #s5 { clip-path: circle(0% at 540px 1060px); }
+    #s5 .mock { position: absolute; left: 90px; top: 330px; width: 870px; height: 300px; background: #FFFFFF; border-radius: 28px; color: #1E2687; }
+    #s5 .like { position: absolute; left: 40px; top: 40px; height: 96px; padding: 0 36px; border-radius: 999px; border: 5px solid #1E2687;
+      display: flex; align-items: center; gap: 18px; font-size: 48px; font-weight: 800; box-sizing: border-box; isolation: isolate; }
+    #s5 .like-fill { position: absolute; inset: -5px; border-radius: 999px; background: #FFE500; opacity: 0; }
+    #s5 .like svg, #s5 .like span { position: relative; }
+    #s5 .like svg { width: 52px; height: 52px; }
+    #s5 .cmt { position: absolute; left: 40px; right: 40px; top: 170px; height: 90px; border-bottom: 4px solid #1E2687; display: flex; align-items: center; gap: 22px; }
+    #s5 .av { width: 70px; height: 70px; border-radius: 50%; background: #1E2687; flex: 0 0 70px; }
+    #s5 .ph { font-size: 44px; font-weight: 500; color: #9A9DB8; letter-spacing: -0.02em; }
+    #s5 .typed { font-size: 56px; font-weight: 800; }
+    #s5 .typed span { opacity: 0; }
+    #s5 .caret { width: 5px; height: 56px; background: #1E2687; opacity: 0; }
+    #s5 .big { position: absolute; left: 96px; top: 690px; font-size: 104px; font-weight: 800; line-height: 1.22; }
+    #s5 .info { position: absolute; left: 90px; top: 1000px; width: 870px; padding: 34px 40px; box-sizing: border-box; border: 5px solid #FFE500; border-radius: 24px; }
+    #s5 .info-l { font-size: 40px; font-weight: 800; color: #FFE500; }
+    #s5 .info-v { margin-top: 12px; font-size: 54px; font-weight: 800; white-space: nowrap; }
+    #s5 .foot { position: absolute; left: 96px; top: 1290px; display: flex; align-items: center; gap: 20px; font-size: 40px; font-weight: 700; color: rgba(242,240,234,0.75); }
+    #s5 .foot img { width: 64px; height: 64px; }
+  </style>
+  <div id="root" data-composition-id="notice" data-width="1080" data-height="1920">
+    <div class="sc Y" id="s1" data-layout-cover style="opacity: 1">
+      <div class="l1"><span class="w">ADsP</span> <span class="w">시험</span> <span class="w">직전,</span></div>
+      <div class="l2"><span class="w"><span class="box">마무리</span></span> <span class="w">됐나요?</span></div>
+    </div>
+
+    <div class="sc N" id="s2" data-layout-cover>
+      <div class="chip in"><span class="dot"></span>LIVE</div>
+      <div class="t1 in">시험 직전 마무리</div>
+      <div class="t2 in">LIVE 특강</div>
+      <img class="cover in" src="assets/cover.jpg" alt="" />
+    </div>
+
+    <div class="sc P" id="s3" data-layout-cover>
+      <div class="chip in">특강 일시</div>
+      <div class="cal in">
+        <div class="cal-top">2026년 10월</div>
+        <div class="cal-d">30</div>
+        <div class="cal-w">금요일</div>
+      </div>
+      <div class="time in"><span class="box sx">오후 8시</span></div>
+    </div>
+
+    <div class="sc Y" id="s4" data-layout-cover>
+      <div class="ttl in">이런 분 <span class="box sx" id="s4-box">꼭!</span></div>
+      <div class="row r1 in"><div class="ck"><div class="tick"></div></div><div class="rt">개념 정리가 아직 부족</div></div>
+      <div class="row r2 in"><div class="ck"><div class="tick"></div></div><div class="rt">CBT 점수가 애매</div></div>
+      <div class="row r3 in"><div class="ck"><div class="tick"></div></div><div class="rt">벼락치기 중</div></div>
+    </div>
+
+    <div class="sc N" id="s5" data-layout-cover>
+      <div class="mock in">
+        <div class="like"><div class="like-fill"></div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1E2687" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M7 10v11H3V10h4zM7 10l4-8c1.7 0 3 1.3 3 3v4h5.5c1.4 0 2.4 1.3 2 2.6l-2.2 8c-.3.9-1.1 1.4-2 1.4H7"/></svg>
+          <span>좋아요</span></div>
+        <div class="cmt"><div class="av"></div><div class="ph" id="s5-ph">댓글 추가…</div><div class="typed"><span>참</span><span>여</span></div><div class="caret"></div></div>
+      </div>
+      <div class="big"><div class="w in" id="s5-b1">좋아요 누르고</div><br /><div class="w in" id="s5-b2">댓글에 <span class="boxY">‘참여’</span></div></div>
+      <div class="info in">
+        <div class="info-l">참여 방법 안내</div>
+        <div class="info-v">10/30(금) 오후 3시 고정 댓글</div>
+      </div>
+      <div class="foot in"><img src="assets/icon.png" alt="" />LIVE 특강 · 10/30(금) 오후 8시</div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4, ease: "power3.out", immediateRender: false, ...to }, t);
+    const drop = (sel, t, stagger = 0.1) => ft(sel, { y: -60, opacity: 0, filter: "blur(10px)" }, { y: 0, opacity: 1, filter: "blur(0px)", ease: "back.out(1.7)", duration: 0.45, stagger }, t);
+    const show = (sel, t) => tl.set(sel, { opacity: 1 }, t);
+    const hide = (sel, t) => tl.set(sel, { opacity: 0 }, t);
+
+    // 1 훅(0~2초): 첫 줄은 첫 화면부터 보이고 살짝 내려앉는다
+    tl.fromTo("#s1 .l1 .w", { y: -24, filter: "blur(6px)" }, { y: 0, filter: "blur(0px)", duration: 0.35, ease: "power3.out", stagger: 0.06 }, 0);
+    drop("#s1 .l2 .w", 0.45, 0.14);
+    ft("#s1 .l2 .box", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.25, ease: "power3.out" }, 0.8);
+
+    // 2 특강 이름(2~4.5초): 남색으로 뒤집힌다
+    show("#s2", 2.0); hide("#s1", 2.0);
+    ft("#s2 .chip", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, ease: "back.out(2)", duration: 0.3 }, 2.05);
+    tl.fromTo("#s2 .dot", { opacity: 1 }, { opacity: 0.15, duration: 0.25, ease: "none", yoyo: true, repeat: 7, immediateRender: false }, 2.35);
+    ft("#s2 .t1", { y: 30, opacity: 0 }, { y: 0, opacity: 1 }, 2.15);
+    ft("#s2 .t2", { scale: 0.85, opacity: 0, filter: "blur(12px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", ease: "back.out(1.6)", duration: 0.45, transformOrigin: "left center" }, 2.35);
+    ft("#s2 .cover", { x: 420, rotation: -14, opacity: 0 }, { x: 0, rotation: -6, opacity: 1, ease: "power3.out", duration: 0.55 }, 2.75);
+
+    // 3 일시(4.5~7초): 종이 화면이 아래에서 밀고 올라온다
+    tl.set("#s3", { opacity: 1, yPercent: 100 }, 4.3);
+    tl.to("#s3", { yPercent: 0, duration: 0.32, ease: "power3.inOut" }, 4.3);
+    hide("#s2", 4.62);
+    drop("#s3 .chip", 4.7);
+    ft("#s3 .cal", { rotationX: -90, opacity: 0, transformPerspective: 1200, transformOrigin: "50% 0%" }, { rotationX: 0, opacity: 1, ease: "back.out(1.4)", duration: 0.55 }, 4.8);
+    drop("#s3 .time", 5.5);
+    ft("#s3 .time .box", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.3 }, 5.5);
+
+    // 4 대상(7~10.5초): 체크가 하나씩 켜진다
+    show("#s4", 7.0); hide("#s3", 7.0);
+    drop("#s4 .ttl", 7.05);
+    ft("#s4-box", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.25 }, 7.35);
+    ["r1", "r2", "r3"].forEach((r, i) => {
+      const t = 7.6 + i * 0.8;
+      ft(`#s4 .${r}`, { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35 }, t);
+      ft(`#s4 .${r} .tick`, { scale: 0 }, { scale: 1, rotation: 45, ease: "back.out(3)", duration: 0.25 }, t + 0.25);
+    });
+
+    // 5 참여 방법(10.5~15초): 남색 원이 퍼지며 들어오고, 마지막 3초는 멈춘다
+    tl.set("#s5", { opacity: 1 }, 10.35);
+    tl.fromTo("#s5", { clipPath: "circle(0% at 540px 1060px)" }, { clipPath: "circle(150% at 540px 1060px)", duration: 0.5, ease: "power2.in", immediateRender: false }, 10.35);
+    ft("#s4 .ttl, #s4 .row", { opacity: 1 }, { opacity: 0, duration: 0.18, ease: "power1.in" }, 10.3);
+    hide("#s4", 10.9);
+    ft("#s5 .mock", { y: 40, opacity: 0 }, { y: 0, opacity: 1 }, 10.8);
+    ft("#s5 .like", { scale: 1 }, { scale: 1.12, duration: 0.12, ease: "power2.out", yoyo: true, repeat: 1 }, 11.25);
+    ft("#s5 .like-fill", { opacity: 0 }, { opacity: 1, duration: 0.12 }, 11.25);
+    tl.set("#s5-ph", { display: "none" }, 11.6);
+    tl.fromTo("#s5 .caret", { opacity: 0 }, { opacity: 1, duration: 0.01, yoyo: true, repeat: 9, repeatDelay: 0.24, immediateRender: false }, 11.6);
+    tl.set("#s5 .typed span", { opacity: 1, stagger: 0.22 }, 11.7);
+    drop("#s5-b1", 12.0);
+    drop("#s5-b2", 12.2);
+    ft("#s5 .info", { y: 30, opacity: 0 }, { y: 0, opacity: 1 }, 12.5);
+    ft("#s5 .foot", { opacity: 0 }, { opacity: 1 }, 12.75);
+
+    window.__timelines["notice"] = tl;
+  </script>
+</template>

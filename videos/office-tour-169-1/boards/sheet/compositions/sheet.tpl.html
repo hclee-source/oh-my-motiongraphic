@@ -1,0 +1,41 @@
+<template>
+  <style>
+    @font-face { font-family: "Paperlogy"; src: url("assets/Paperlogy-8ExtraBold.ttf") format("truetype"); font-weight: 800; }
+    @font-face { font-family: "Paperlogy"; src: url("assets/Paperlogy-5Medium.ttf") format("truetype"); font-weight: 500; }
+    #root { position: absolute; inset: 0; background: #F4F1EA; font-family: "Paperlogy", sans-serif; color: #2B2B3A; }
+    .ttl { position: absolute; left: 70px; top: 50px; font-size: 52px; font-weight: 800; }
+    .lab { position: absolute; font-size: 34px; font-weight: 800; }
+    .orig { position: absolute; border: 4px solid #2B2B3A; border-radius: 18px; background: #fff; object-fit: cover; }
+    .pup { position: absolute; width: 330px; height: 495px; }
+    .cap { position: absolute; font-size: 26px; font-weight: 500; color: #6B6E7E; width: 330px; text-align: center; }
+    .div { position: absolute; left: 640px; top: 150px; width: 4px; height: 860px; background: #D8D3C7; border-radius: 2px; }
+  </style>
+  <div id="root" data-composition-id="sheet" data-width="1920" data-height="1080">
+    <div class="ttl">캐릭터 인형 시안 — 원본과 비교</div>
+    <div class="lab" style="left:70px; top:160px">원본(만화)</div>
+    <img class="orig" src="assets/orig-student.png" style="left:70px; top:220px; width:260px; height:286px" />
+    <img class="orig" src="assets/orig-rabbit.png" style="left:350px; top:220px; width:230px; height:340px" />
+    <div class="div"></div>
+    <div class="lab" style="left:700px; top:160px">코드로 다시 그린 인형</div>
+    <svg class="pup" id="p1" viewBox="0 0 400 600" style="left:690px; top:300px"></svg>
+    <svg class="pup" id="p2" viewBox="0 0 400 600" style="left:990px; top:300px"></svg>
+    <svg class="pup" id="p3" viewBox="0 0 400 600" style="left:1290px; top:300px"></svg>
+    <svg class="pup" id="p4" viewBox="0 0 400 600" style="left:1590px; top:300px; width:300px"></svg>
+    <div class="cap" style="left:690px; top:810px">서 있기</div>
+    <div class="cap" style="left:990px; top:810px">걷기(발 내딛음)</div>
+    <div class="cap" style="left:1290px; top:810px">서 있기</div>
+    <div class="cap" style="left:1575px; top:810px">걷기(발 내딛음)</div>
+  </div>
+  <script>
+/*PUPPETS*/
+    const rot = (id, deg, origin) => { const g = document.getElementById(id); g.setAttribute("transform", `rotate(${deg} ${origin.replace(" ", " ")})`); };
+    document.getElementById("p1").innerHTML = PPATTA.student("a");
+    document.getElementById("p2").innerHTML = PPATTA.student("b");
+    document.getElementById("p3").innerHTML = PPATTA.rabbit("c");
+    document.getElementById("p4").innerHTML = PPATTA.rabbit("d");
+    const ps = PPATTA.pivots.student, pr = PPATTA.pivots.rabbit;
+    rot("b-legL", 14, ps.legL); rot("b-legR", -14, ps.legR); rot("b-armL", -16, ps.armL); rot("b-armR", 16, ps.armR);
+    rot("d-legL", 14, pr.legL); rot("d-legR", -14, pr.legR); rot("d-armL", -18, pr.armL); rot("d-armR", 18, pr.armR); rot("d-earL", -8, pr.earL); rot("d-earR", 6, pr.earR);
+    window.__timelines["sheet"] = gsap.timeline({ paused: true });
+  </script>
+</template>
