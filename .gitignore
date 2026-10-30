@@ -1,3 +1,6 @@
+# 썸네일 시안·찍은 그림(편 폴더의 thumbnail.png만 남긴다)
+concept/thumbnails/out/
+
 # OS / Python
 .DS_Store
 .venv/

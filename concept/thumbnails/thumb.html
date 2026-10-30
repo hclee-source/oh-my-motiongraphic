@@ -1,0 +1,226 @@
+<!doctype html>
+<!-- 개념 영상 썸네일 틀(1280×720). 주소 뒤에 ?ep=002&style=a&badge=1 처럼 편·스타일·시험 이름 표시를 고른다.
+     찍기: concept/thumbnails/shoot.py. 편별 글자·그림은 아래 EP에 적는다. -->
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<style>
+  @font-face { font-family: "Paperlogy"; src: url("../episodes/001-precision-recall/video/assets/fonts/Paperlogy-6SemiBold.woff2"); font-weight: 600; }
+  @font-face { font-family: "Paperlogy"; src: url("../episodes/001-precision-recall/video/assets/fonts/Paperlogy-7Bold.woff2"); font-weight: 700; }
+  @font-face { font-family: "Paperlogy"; src: url("../episodes/001-precision-recall/video/assets/fonts/Paperlogy-8ExtraBold.woff2"); font-weight: 800; }
+  @font-face { font-family: "Paperlogy"; src: url("../episodes/001-precision-recall/video/assets/fonts/Paperlogy-9Black.woff2"); font-weight: 900; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; font-family: "Paperlogy", sans-serif; }
+  #t { position: relative; width: 1280px; height: 720px; overflow: hidden; }
+  .badge { position: absolute; left: 64px; top: 44px; padding: 10px 22px; border-radius: 14px; font-size: 40px; font-weight: 900; display: none; }
+  .show-badge .badge { display: block; }
+  .title { position: absolute; left: 60px; font-weight: 900; letter-spacing: -0.035em; line-height: 1.02; white-space: nowrap; }
+  .fig { position: absolute; }
+  .fig svg { width: 100%; height: 100%; overflow: visible; }
+
+  /* A. 시리즈 통일형: 영상과 같은 연회색 + 보라 */
+  .a { background: #F1F2F5; color: #18181B; }
+  .a .badge { background: #FFFFFF; color: #71717A; border: 2px solid #E3E5EA; }
+  .a .title { top: 150px; font-size: 168px; }
+  .a .bar { position: absolute; left: 64px; top: 348px; width: 300px; height: 16px; border-radius: 8px; background: #6B3FE6; }
+  .a .sub1 { position: absolute; left: 64px; top: 410px; font-size: 52px; font-weight: 800; color: #71717A; }
+  .a .sub2 { position: absolute; left: 60px; top: 474px; font-size: 96px; font-weight: 900; color: #6B3FE6; letter-spacing: -0.02em; white-space: nowrap; }
+  .a .fig { left: 790px; top: 110px; width: 430px; height: 430px; padding: 34px; background: #FFFFFF; border: 2px solid #E3E5EA; border-radius: 36px;
+    box-shadow: 0 16px 40px rgba(20,24,40,0.08); }
+
+  /* B. 회사 채널형: 합격빠따 노랑 + 남색 */
+  .b { background: #FFE500; color: #1E2687; }
+  .b .badge { background: #1E2687; color: #FFE500; }
+  .b .title { top: 150px; font-size: 156px; }
+  .b .bar { display: none; }
+  .b .sub1 { position: absolute; left: 64px; top: 400px; font-size: 52px; font-weight: 800; color: #1E2687; }
+  .b .sub2 { position: absolute; left: 64px; top: 470px; padding: 14px 30px 18px; background: #1E2687; color: #FFFFFF; border-radius: 20px;
+    font-size: 84px; font-weight: 900; letter-spacing: -0.02em; white-space: nowrap; }
+  .b .fig { left: 830px; top: 110px; width: 390px; height: 390px; padding: 32px; background: #FFFFFF; border-radius: 36px; }
+
+  /* C. 숫자·질문형: 큰 숫자 하나로 궁금하게 */
+  .c { background: #F1F2F5; color: #18181B; }
+  .c .badge { background: #FFFFFF; color: #71717A; border: 2px solid #E3E5EA; }
+  .c .title { top: 128px; font-size: 76px; }
+  .c .bar { display: none; }
+  .c .sub1 { position: absolute; left: 52px; top: 196px; font-size: 300px; font-weight: 900; color: #6B3FE6; letter-spacing: -0.05em; line-height: 1; }
+  .c .sub2 { position: absolute; left: 64px; top: 520px; font-size: 64px; font-weight: 900; white-space: nowrap; }
+  .c .fig { left: 760px; top: 96px; width: 470px; height: 470px; padding: 36px; background: #FFFFFF; border: 2px solid #E3E5EA; border-radius: 36px; }
+
+  /* ── 자극형(d·e·f): 두꺼운 검은 테두리 글자, 노랑·빨강·검정 대비 ── */
+  .hot { position: absolute; z-index: 1; font-weight: 900; letter-spacing: -0.04em; line-height: 1; white-space: nowrap; }
+  .hot::before { content: attr(data-t); position: absolute; left: 0; top: 0; z-index: -1; -webkit-text-stroke: 22px #000000; color: #000000; }
+  .tag { position: absolute; padding: 8px 22px 12px; background: #E60012; color: #FFFFFF; font-size: 46px; font-weight: 900; border-radius: 10px;
+    transform: rotate(-3deg); box-shadow: 6px 6px 0 #000000; white-space: nowrap; }
+  .hide { display: none; }
+  /* D. 함정 경고형: 노랑 바탕, 틀린 답에 큰 빨간 ✕ */
+  .d { background: #FFE500; }
+  .d .xbar { position: absolute; z-index: 3; left: 110px; top: 360px; width: 440px; height: 30px; background: #E60012;
+    border: 5px solid #000000; border-radius: 10px; }
+  .d .band { position: absolute; left: 0; right: 0; bottom: 0; height: 132px; background: #000000; color: #FFE500;
+    display: flex; align-items: center; padding-left: 64px; font-size: 64px; font-weight: 900; letter-spacing: -0.02em; }
+  /* E. 빨간 동그라미형: 그래프를 크게, 헷갈리는 자리에 동그라미와 화살표 */
+  .e { background: #FFFFFF; }
+  .e .bigfig { position: absolute; left: 620px; top: 70px; width: 520px; height: 520px; }
+  .e .bigfig svg { width: 100%; height: 100%; overflow: visible; }
+  .e .xl { position: absolute; left: 650px; top: 612px; font-size: 54px; font-weight: 900; color: #000000; white-space: nowrap; }
+  .e .circle { position: absolute; left: 610px; top: 584px; width: 400px; height: 118px; border: 10px solid #E60012; border-radius: 50%; transform: rotate(-4deg); }
+  /* F. 검정 숫자형: 검은 바탕에 노란 큰 숫자 */
+  .f { background: #111111; }
+  .f .glow { position: absolute; left: 760px; top: 110px; width: 460px; height: 460px; }
+  .f .glow svg { width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+  <div id="t">
+    <div class="badge" id="badge"></div>
+    <div class="title" id="title"></div>
+    <div class="bar"></div>
+    <div class="sub1" id="sub1"></div>
+    <div class="sub2" id="sub2"></div>
+    <div class="fig" id="fig"></div>
+  </div>
+  <script>
+    // 편별 내용: a·b는 주제 + 핵심 한 줄, c는 큰 숫자 + 질문
+    // 시리즈 기본형은 d(함정 경고형, 2026-10-30 사용자 선택): 흔한 오해에 빨간 ✕. big은 짧게(물음표 포함 4자 안팎)
+    const RED = "#E60012";
+    // 주제 묶음별 바탕색(2026-10-30 사용자 선택). 아래 검은 띠 글자도 이 색. 묶음 이름은 topics.json의 group과 같다.
+    // 밝은 색 10가지를 소재 목록 순서대로 쓰고, 이웃한 묶음끼리는 겹치지 않게 다시 돌려 쓴다
+    const C10 = { 노랑: "#FFE500", 하늘: "#3EC6FF", 연두: "#8BE04E", 주황: "#FF9F1C", 연보라: "#B79CFF",
+                  민트: "#2EE6C5", 분홍: "#FF8FC7", 파랑: "#4D8BFF", 살구: "#FFC48C", 라임: "#C6F000" };
+    const GROUP = {
+      "모델 평가": C10.노랑, "연관분석": C10.하늘, "군집분석": C10.연두, "기술통계": C10.주황, "확률과 분포": C10.연보라,
+      "추정과 검정": C10.민트, "상관과 회귀": C10.분홍, "분류 모델": C10.파랑, "전처리": C10.살구, "차원 축소": C10.라임,
+      "시계열": C10.하늘, "데이터 이해": C10.주황, "분석 기획": C10.연보라, "R 기초": C10.민트, "수집과 저장": C10.분홍,
+      "탐색": C10.연두, "고급 분석": C10.파랑, "모형 개선": C10.살구, "결과 활용": C10.라임
+    };
+    const EP = {
+      "001": {
+        badge: "ADsP · 빅분기",
+        d: { l1: "정확도 99% 모델", big: "좋다?", band: "정밀도·재현율 모르면 감점" },
+        fig: () => `<svg viewBox="0 0 360 360">
+          <rect x="0" y="0" width="172" height="172" rx="22" fill="${RED}" stroke="#000" stroke-width="7" />
+          <rect x="188" y="0" width="172" height="172" rx="22" fill="#FFF" stroke="#000" stroke-width="7" />
+          <rect x="0" y="188" width="172" height="172" rx="22" fill="#FFF" stroke="#000" stroke-width="7" />
+          <rect x="188" y="188" width="172" height="172" rx="22" fill="#FFF" stroke="#000" stroke-width="7" />
+          <g font-family="Paperlogy" font-weight="900" font-size="64" text-anchor="middle">
+            <text x="86" y="110" fill="#FFF">TP</text><text x="274" y="110" fill="#000">FN</text>
+            <text x="86" y="298" fill="#000">FP</text><text x="274" y="298" fill="#000">TN</text></g>
+        </svg>`
+      },
+      "003": {
+        badge: "ADsP · 빅분기",
+        d: { l1: "4번 다 틀렸는데", big: "오차 0?", band: "MAE·MSE·RMSE·MAPE 한 번에" },
+        fig: () => `<svg viewBox="0 0 360 360">
+          <path d="M0 200 H360" stroke="#000" stroke-width="7" />
+          <rect x="16" y="140" width="52" height="60" fill="#000" /><rect x="86" y="200" width="52" height="60" fill="#000" />
+          <rect x="156" y="140" width="52" height="60" fill="#000" /><rect x="226" y="200" width="52" height="60" fill="#000" />
+          <rect x="296" y="0" width="52" height="200" fill="${RED}" stroke="#000" stroke-width="6" />
+        </svg>`
+      },
+      "004": {
+        badge: "ADsP · 빅분기",
+        d: { l1: "훈련 100점 모델", big: "최고?", band: "과대적합 모르면 감점" },
+        fig: () => `<svg viewBox="0 0 360 360">
+          <path d="M0 0 V360 H360" stroke="#000" stroke-width="7" fill="none" />
+          <path d="M30 300 C60 200 80 180 100 250 C120 320 140 120 170 150 C200 180 210 60 240 110 C270 160 290 40 330 70"
+            stroke="${RED}" stroke-width="10" fill="none" stroke-linecap="round" />
+          <g fill="#000"><circle cx="30" cy="300" r="12" /><circle cx="100" cy="250" r="12" /><circle cx="170" cy="150" r="12" />
+            <circle cx="240" cy="110" r="12" /><circle cx="330" cy="70" r="12" /></g>
+        </svg>`
+      },
+      "005": {
+        badge: "ADsP · 빅분기",
+        d: { l1: "모델 고를 때", big: "테스트?", band: "부트스트랩 36.8%까지" },
+        fig: () => `<svg viewBox="0 0 360 360">${[0, 1, 2, 3, 4].map(r => [0, 1, 2, 3, 4].map(c =>
+          `<rect x="${c * 74}" y="${r * 74}" width="64" height="64" rx="10" fill="${r === c ? RED : "#000"}" />`).join("")).join("")}</svg>`
+      },
+      "006": {
+        badge: "ADsP · 빅분기",
+        d: { l1: "신뢰도 0.8이면", big: "꿀조합?", band: "향상도 1이면 관련 없음" },
+        fig: () => `<svg viewBox="0 0 360 360">
+          <defs><clipPath id="vc"><circle cx="130" cy="180" r="115" /></clipPath></defs>
+          <circle cx="235" cy="180" r="115" fill="${RED}" clip-path="url(#vc)" />
+          <circle cx="130" cy="180" r="115" fill="none" stroke="#000" stroke-width="8" />
+          <circle cx="235" cy="180" r="115" fill="none" stroke="#000" stroke-width="8" />
+        </svg>`
+      },
+      "002": {
+        badge: "ADsP · 빅분기",
+        title: "ROC 곡선", sub1: "가로축은", sub2: "1 − 특이도",
+        cTitle: "ROC 곡선 · AUC", cNum: "0.72", cQ: "곡선 아래 넓이?",
+        // 자극형: d = 틀린 답에 ✕, e = 헷갈리는 자리에 빨간 동그라미, f = 큰 숫자
+        d: { l1: "ROC 곡선 가로축", big: "특이도?", band: "헷갈리면 바로 감점" },
+        e: { tag: "ROC 곡선", lines: ["이거", "헷갈리면", "감점!"], mark: "1 − 특이도" },
+        f: { tag: "AUC", big: "0.72", l2: "이 숫자의 정체" },
+        fig: (ink, acc) => `<svg viewBox="0 0 360 360">
+          <path d="M0 360 L0 216 L72 216 L72 144 L144 144 L144 72 L288 72 L288 0 L360 0 L360 360 Z" fill="${acc}" fill-opacity="0.18" />
+          <path d="M0 360 L360 0" stroke="#A1A1AA" stroke-width="6" stroke-dasharray="14 12" fill="none" />
+          <path d="M0 0 L0 360 L360 360" stroke="${ink}" stroke-width="7" fill="none" />
+          <path d="M0 360 L0 216 L72 216 L72 144 L144 144 L144 72 L288 72 L288 0 L360 0" stroke="${acc}" stroke-width="11" stroke-linejoin="round" fill="none" />
+        </svg>`
+      }
+    };
+    const q = new URLSearchParams(location.search);
+    const epId = q.get("ep") || "002", ep = EP[epId], style = q.get("style") || "a";
+    // 편 → 주제 묶음(topics.json의 group). 새 편을 넣을 때 여기에도 적는다. ?group=으로 색만 미리 볼 수 있다
+    const EPG = { "001": "모델 평가", "002": "모델 평가", "003": "모델 평가", "004": "모델 평가", "005": "모델 평가", "006": "연관분석" };
+    const bg = GROUP[q.get("group") || EPG[epId]] || C10.노랑;
+    const t = document.getElementById("t");
+    // 테두리 글자: data-t를 ::before가 검은 테두리로 한 번 더 그린다
+    const hot = (txt, css) => `<div class="hot" data-t="${txt}" style="${css}">${txt}</div>`;
+    const badge = q.get("badge") === "1" ? ep.badge : "";
+    if (style === "d") {
+      t.className = "d";
+      t.style.background = bg;
+      t.innerHTML = (badge ? `<div class="tag" style="left: 64px; top: 40px">${badge}</div>` : "")
+        + `<div class="hot" style="left: 64px; top: 150px; font-size: 96px; color: #000000">${ep.d.l1}</div>`
+        + hot(ep.d.big, "left: 58px; top: 270px; font-size: 230px; color: #FFFFFF").replace('class="hot"', 'class="hot" id="big"')
+        + `<div class="xbar" style="transform: rotate(28deg)"></div><div class="xbar" style="transform: rotate(-28deg)"></div>`
+        + `<div class="fig" style="left: 900px; top: 150px; width: 320px; height: 320px; padding: 26px; background: #FFFFFF; border: 6px solid #000000; border-radius: 28px">${ep.fig("#000000", "#E60012")}</div>`
+        + `<div class="band" style="color: ${bg}">${ep.d.band}</div>`;
+      // 글꼴이 들어온 뒤: 큰 글자가 그림 앞(x 860)을 넘으면 줄이고, ✕는 물음표를 뺀 글자 가운데에
+      document.fonts.ready.then(() => {
+        const big = document.getElementById("big");
+        let fs = 230;
+        while (big.getBoundingClientRect().right > 860 && fs > 150) { fs -= 10; big.style.fontSize = fs + "px"; }
+        const r = big.getBoundingClientRect(), cx = r.left + r.width * (ep.d.big.endsWith("?") ? 0.42 : 0.5), cy = r.top + r.height * 0.52;
+        // ✕는 글자가 비쳐 읽히도록 가늘고 낮게 기울인다
+        const w = Math.min(420, r.width * 0.66);
+        document.querySelectorAll(".xbar").forEach((b, k) => {
+          b.style.width = w + "px"; b.style.left = cx - w / 2 + "px"; b.style.top = cy - 15 + "px";
+          b.style.transform = `rotate(${k ? -20 : 20}deg)`;
+        });
+      });
+    } else if (style === "e") {
+      t.className = "e";
+      const [a1, a2, a3] = ep.e.lines;
+      t.innerHTML = `<div class="tag" style="left: 64px; top: 46px">${ep.e.tag}</div>`
+        + hot(a1, "left: 60px; top: 150px; font-size: 150px; color: #FFE500")
+        + hot(a2, "left: 60px; top: 312px; font-size: 128px; color: #FFFFFF")
+        + hot(a3, "left: 60px; top: 460px; font-size: 150px; color: #E60012")
+        + `<div class="bigfig">${ep.fig("#000000", "#6B3FE6")}</div>`
+        + `<div class="xl">${ep.e.mark}</div><div class="circle"></div>`
+        + (badge ? `<div style="position: absolute; left: 64px; top: 640px; padding: 6px 16px; background: #000000; color: #FFFFFF; font-size: 34px; font-weight: 900; border-radius: 8px">${badge}</div>` : "");
+    } else if (style === "f") {
+      t.className = "f";
+      t.innerHTML = `<div class="tag" style="left: 64px; top: 56px">${ep.f.tag}</div>`
+        + (badge ? `<div style="position: absolute; left: 250px; top: 66px; color: #A1A1AA; font-size: 40px; font-weight: 900">${badge}</div>` : "")
+        + `<div class="hot" style="left: 44px; top: 190px; font-size: 260px; color: #FFE500">${ep.f.big}</div>`
+        + `<div style="position: absolute; left: 64px; top: 490px; width: 540px; height: 22px; background: #E60012; transform: rotate(-2deg)"></div>`
+        + `<div class="hot" style="left: 64px; top: 560px; font-size: 88px; color: #FFFFFF">${ep.f.l2}</div>`
+        + `<div class="glow">${ep.fig("#FFFFFF", "#FFE500")}</div>`;
+    }
+    if (["d", "e", "f"].includes(style)) throw "done"; // 자극형은 여기서 끝(아래는 a·b·c)
+    t.className = style + (q.get("badge") === "1" ? " show-badge" : "");
+    const set = (id, v) => { document.getElementById(id).textContent = v; };
+    set("badge", ep.badge);
+    if (style === "c") { set("title", ep.cTitle); set("sub1", ep.cNum); set("sub2", ep.cQ); }
+    else { set("title", ep.title); set("sub1", ep.sub1); set("sub2", ep.sub2); }
+    const ink = style === "b" ? "#1E2687" : "#18181B", acc = style === "b" ? "#1E2687" : "#6B3FE6";
+    document.getElementById("fig").innerHTML = ep.fig(ink, acc);
+    // 시험 이름이 있으면 제목을 조금 내린다(a·b)
+    if (q.get("badge") === "1" && style !== "c") document.getElementById("title").style.marginTop = "18px";
+  </script>
+</body>
+</html>

@@ -37,7 +37,7 @@ def main():
 
     videos = [p for p in new if p.suffix.lower() in VIDEO]
     images = [p for p in new if p.suffix.lower() in IMAGE]
-    title = f"합격빠따 · 올릴 영상 {len(videos)}개 준비됨" + (f" (포스터 {len(images)}장)" if images else "")
+    title = f"합격빠따 · 올릴 영상 {len(videos)}개 준비됨" + (f" (썸네일·포스터 {len(images)}장)" if images else "")
     names = [p.stem[11:] or p.stem for p in videos or images]  # 앞의 날짜(2026-10-30_)를 뗀 이름
     body = " · ".join(names[:3]) + (f" 외 {len(names) - 3}개" if len(names) > 3 else "")
     if sys.stdout:

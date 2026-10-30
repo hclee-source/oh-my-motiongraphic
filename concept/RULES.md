@@ -22,6 +22,7 @@
 4번 화면·편집 명령(맨 위 폴더에서, 2026-10-30 002~006 다섯 편을 만들며 정리):
 - 새 편 뼈대: `.venv/Scripts/python.exe concept/tools/new_episode.py <번호>-<id> "<제목>"` (본편·쇼츠 프로젝트 설정·글꼴·효과음·공용 틀 복사)
 - 한 번에: 조립+검사 `bash concept/tools/check_episode.sh concept/episodes/<편>` → 장마다 한 장 `concept/tools/sheet.py concept/episodes/<편> [--shorts]`(boards/review/sheet.jpg를 눈으로 확인) → 렌더·소리 크기·완성본 `concept/tools/render_episode.py concept/episodes/<편> "<제목>"` → 업로드 정보 `concept/tools/youtube_info.py <정보 JSON>`
+- 썸네일(5번 역할, 2026-10-30 사용자 선택 = 함정 경고형 d): 바탕은 주제 묶음별 색(thumb.html의 GROUP, 모델 평가 = 노랑, 연관분석 = 하늘, 군집분석 = 연두 …, 새 편은 EPG에 묶음을 적는다), 위에 빨간 ‘ADsP · 빅분기’ 표, 윗줄(9자 안팎) + 흔한 오해 한 마디(물음표 포함 4자 안팎, 흰 글자·검은 테두리)에 가는 빨간 ✕, 오른쪽 작은 그림, 아래 검은 띠에 노란 한 줄(14자 안팎). 근거 없는 숫자(‘99%가 틀림’ 등)는 쓰지 않는다. 글자·그림은 `concept/thumbnails/thumb.html`의 EP에 편마다 적고 `.venv/Scripts/python.exe concept/thumbnails/shoot.py <번호> d --badge` → 편 폴더 `thumbnail.png`로 복사, `tools/save_final.py`로 완성본에. 쇼츠는 따로 만들지 않는다(영상 한 장면을 표지로).
 - 렌더 중에는 배치 검사(브라우저를 띄움)를 같이 돌리지 않는다(메모리 부족으로 렌더가 죽은 적 있음).
 - 음성: `.venv/Scripts/python.exe concept/tools/tts_episode.py concept/episodes/<편>`
 - 조립: `.venv/Scripts/python.exe concept/tools/build_video.py concept/episodes/<편>`
