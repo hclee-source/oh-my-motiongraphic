@@ -1,0 +1,31 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 540px; text-align: center; overflow: visible;
+      font-size: 54px; font-weight: 700; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 940px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cap-01a" class="cap clip" data-start="0.000" data-duration="1.470"><span>ROLLUP(A, B)는</span></div>
+    <div id="cap-01b" class="cap clip" data-start="1.470" data-duration="1.760"><span>오른쪽부터 하나씩 지우며</span></div>
+    <div id="cap-01c" class="cap clip" data-start="3.230" data-duration="1.590"><span>소계를 붙입니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="4.870" data-duration="1.390"><span>A와 B로 묶고,</span></div>
+    <div id="cap-02b" class="cap clip" data-start="6.260" data-duration="1.820"><span>A로만 묶고,</span></div>
+    <div id="cap-02c" class="cap clip" data-start="8.080" data-duration="1.328"><span>마지막에 총계.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="9.458" data-duration="1.850"><span>그래서 괄호 안 순서를 바꾸면</span></div>
+    <div id="cap-03b" class="cap clip" data-start="11.308" data-duration="1.712"><span>결과도 바뀝니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="13.220" data-duration="1.490"><span>CUBE(A, B)는</span></div>
+    <div id="cap-04b" class="cap clip" data-start="14.710" data-duration="2.401"><span>가능한 모든 조합으로 묶습니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="17.161" data-duration="3.670"><span>A와 B, A, B,</span></div>
+    <div id="cap-05b" class="cap clip" data-start="20.831" data-duration="2.979"><span>그리고 총계까지 네 가지입니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="24.010" data-duration="0.690"><span>GROUPING SETS는</span></div>
+    <div id="cap-06b" class="cap clip" data-start="24.700" data-duration="1.600"><span>괄호에 적은 묶음만</span></div>
+    <div id="cap-06c" class="cap clip" data-start="26.300" data-duration="1.250"><span>따로 나옵니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="27.750" data-duration="1.990"><span>오른쪽부터 지우면 ROLLUP,</span></div>
+    <div id="cap-07b" class="cap clip" data-start="29.740" data-duration="1.980"><span>모든 조합은 CUBE,</span></div>
+    <div id="cap-07c" class="cap clip" data-start="31.720" data-duration="2.653"><span>지정한 묶음만 GROUPING SETS.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

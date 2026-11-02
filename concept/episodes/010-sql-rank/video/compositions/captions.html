@@ -1,0 +1,87 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 108px; text-align: center; overflow: visible;
+      font-size: 46px; font-weight: 600; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 1536px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-01a" class="cap clip" data-start="3.600" data-duration="1.870"><span>85점을 받은 학생이 세 명,</span></div>
+    <div id="cap-01b" class="cap clip" data-start="5.470" data-duration="2.544"><span>모두 공동 3등입니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="8.114" data-duration="3.142"><span>그렇다면 다음 80점 학생은 몇 등일까요?</span></div>
+    <div id="cap-03a" class="cap clip" data-start="11.355" data-duration="1.610"><span>4등이라고 하는 함수도 있고,</span></div>
+    <div id="cap-03b" class="cap clip" data-start="12.965" data-duration="2.932"><span>6등이라고 하는 함수도 있습니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="15.998" data-duration="2.190"><span>SQL의 순위 함수 세 개가 동점을</span></div>
+    <div id="cap-04b" class="cap clip" data-start="18.188" data-duration="2.289"><span>처리하는 방식이 다르기 때문입니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="20.577" data-duration="2.650"><span>오늘은 학생 여섯 명의 점수로 RANK,</span></div>
+    <div id="cap-05b" class="cap clip" data-start="23.227" data-duration="3.957"><span>DENSE_RANK, ROW_NUMBER를 비교해 보겠습니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="27.834" data-duration="2.566"><span>두 반 학생 여섯 명의 점수입니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="30.499" data-duration="3.810"><span>1반은 90, 85, 85,</span></div>
+    <div id="cap-07b" class="cap clip" data-start="34.309" data-duration="4.645"><span>80점, 2반은 95, 85점입니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="39.055" data-duration="1.830"><span>순위 함수는 뒤에 OVER를 붙이고,</span></div>
+    <div id="cap-08b" class="cap clip" data-start="40.885" data-duration="3.301"><span>괄호 안에 순위를 매길 기준을 적습니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="44.286" data-duration="1.670"><span>점수가 높은 순이니 점수를</span></div>
+    <div id="cap-09b" class="cap clip" data-start="45.956" data-duration="2.627"><span>내림차순으로 정렬하라고 적습니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="48.683" data-duration="3.170"><span>이런 함수를 윈도우 함수라고 하는데, GROUP BY와</span></div>
+    <div id="cap-10b" class="cap clip" data-start="51.853" data-duration="3.858"><span>달리 행을 줄이지 않고 행마다 값을 하나씩 붙입니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="56.361" data-duration="1.679"><span>첫 번째 RANK입니다.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="58.140" data-duration="3.010"><span>95점 1등, 90점 2등,</span></div>
+    <div id="cap-12b" class="cap clip" data-start="61.150" data-duration="2.967"><span>85점 세 명은 모두 3등입니다.</span></div>
+    <div id="cap-13a" class="cap clip" data-start="64.217" data-duration="2.234"><span>그다음 80점은 6등입니다.</span></div>
+    <div id="cap-14a" class="cap clip" data-start="66.551" data-duration="1.650"><span>3등이 세 자리를 차지했으니,</span></div>
+    <div id="cap-14b" class="cap clip" data-start="68.201" data-duration="2.671"><span>4등과 5등을 건너뛴 겁니다.</span></div>
+    <div id="cap-15a" class="cap clip" data-start="70.972" data-duration="2.150"><span>나보다 점수가 높은 사람 수에</span></div>
+    <div id="cap-15b" class="cap clip" data-start="73.122" data-duration="2.217"><span>1을 더한 값이라고 보면 쉽습니다.</span></div>
+    <div id="cap-16a" class="cap clip" data-start="75.989" data-duration="1.250"><span>두 번째 DENSE_RANK는</span></div>
+    <div id="cap-16b" class="cap clip" data-start="77.239" data-duration="2.162"><span>번호를 건너뛰지 않습니다.</span></div>
+    <div id="cap-17a" class="cap clip" data-start="79.500" data-duration="4.170"><span>1등, 2등, 85점 세 명이 3등,</span></div>
+    <div id="cap-17b" class="cap clip" data-start="83.670" data-duration="2.459"><span>그리고 80점은 바로 4등입니다.</span></div>
+    <div id="cap-18a" class="cap clip" data-start="86.229" data-duration="2.770"><span>순위 번호가 빈틈없이 촘촘하게 이어져서</span></div>
+    <div id="cap-18b" class="cap clip" data-start="88.999" data-duration="2.056"><span>DENSE라는 이름이 붙었습니다.</span></div>
+    <div id="cap-19a" class="cap clip" data-start="91.706" data-duration="1.230"><span>세 번째 ROW_NUMBER는</span></div>
+    <div id="cap-19b" class="cap clip" data-start="92.936" data-duration="2.227"><span>동점을 인정하지 않습니다.</span></div>
+    <div id="cap-20a" class="cap clip" data-start="95.263" data-duration="4.370"><span>85점 세 명에게도 3, 4, 5를 차례로 붙여서,</span></div>
+    <div id="cap-20b" class="cap clip" data-start="99.633" data-duration="3.443"><span>1부터 6까지 모두 다른 번호가 나옵니다.</span></div>
+    <div id="cap-21a" class="cap clip" data-start="103.176" data-duration="2.150"><span>동점자 가운데 누가 먼저 번호를</span></div>
+    <div id="cap-21b" class="cap clip" data-start="105.326" data-duration="2.187"><span>받을지는 정해져 있지 않습니다.</span></div>
+    <div id="cap-22a" class="cap clip" data-start="107.613" data-duration="2.710"><span>순서를 확실히 하려면 정렬 기준에 학번처럼</span></div>
+    <div id="cap-22b" class="cap clip" data-start="110.323" data-duration="2.594"><span>겹치지 않는 열을 하나 더 적습니다.</span></div>
+    <div id="cap-23a" class="cap clip" data-start="113.567" data-duration="3.183"><span>이번에는 반마다 따로 순위를 매겨 보겠습니다.</span></div>
+    <div id="cap-24a" class="cap clip" data-start="116.849" data-duration="2.190"><span>OVER 괄호 안에 PARTITION BY 반을 더하면,</span></div>
+    <div id="cap-24b" class="cap clip" data-start="119.039" data-duration="4.143"><span>반이 바뀔 때마다 순위가 1부터 다시 시작합니다.</span></div>
+    <div id="cap-25a" class="cap clip" data-start="123.282" data-duration="4.950"><span>1반은 RANK로 1등, 2등, 2등, 4등,</span></div>
+    <div id="cap-25b" class="cap clip" data-start="128.232" data-duration="5.074"><span>DENSE_RANK로 1등, 2등, 2등, 3등입니다.</span></div>
+    <div id="cap-26a" class="cap clip" data-start="133.406" data-duration="1.630"><span>ROW_NUMBER로는 1번,</span></div>
+    <div id="cap-26b" class="cap clip" data-start="135.036" data-duration="3.680"><span>2번, 3번, 4번입니다.</span></div>
+    <div id="cap-27a" class="cap clip" data-start="138.816" data-duration="4.154"><span>2반은 95점이 1등, 85점이 2등입니다.</span></div>
+    <div id="cap-28a" class="cap clip" data-start="143.070" data-duration="2.570"><span>전체 순위에서는 3등이던 85점이,</span></div>
+    <div id="cap-28b" class="cap clip" data-start="145.640" data-duration="2.470"><span>반별로는 2등이 됩니다.</span></div>
+    <div id="cap-29a" class="cap clip" data-start="148.759" data-duration="1.890"><span>시험에는 순위로 상위 몇 명을</span></div>
+    <div id="cap-29b" class="cap clip" data-start="150.649" data-duration="2.029"><span>뽑는 문제가 자주 나옵니다.</span></div>
+    <div id="cap-30a" class="cap clip" data-start="152.778" data-duration="3.430"><span>전체 순위 3등까지 뽑으면, RANK와 DENSE_RANK는</span></div>
+    <div id="cap-30b" class="cap clip" data-start="156.208" data-duration="3.600"><span>85점 세 명이 모두 들어가 5행이 나옵니다.</span></div>
+    <div id="cap-31a" class="cap clip" data-start="159.908" data-duration="2.623"><span>ROW_NUMBER로 뽑으면 딱 3행입니다.</span></div>
+    <div id="cap-32a" class="cap clip" data-start="162.631" data-duration="1.970"><span>주의할 점은 순위 함수를 WHERE</span></div>
+    <div id="cap-32b" class="cap clip" data-start="164.601" data-duration="2.335"><span>절에 바로 쓸 수 없다는 것입니다.</span></div>
+    <div id="cap-33a" class="cap clip" data-start="167.037" data-duration="3.190"><span>순위 함수는 SELECT 단계에서 계산되는데,</span></div>
+    <div id="cap-33b" class="cap clip" data-start="170.227" data-duration="2.797"><span>WHERE는 그보다 먼저 처리되기 때문입니다.</span></div>
+    <div id="cap-34a" class="cap clip" data-start="173.124" data-duration="2.590"><span>그래서 순위를 매긴 SQL을 FROM 절 괄호</span></div>
+    <div id="cap-34b" class="cap clip" data-start="175.714" data-duration="3.238"><span>안에 넣고, 바깥에서 WHERE로 거릅니다.</span></div>
+    <div id="cap-35a" class="cap clip" data-start="179.052" data-duration="1.230"><span>이렇게 FROM 절에 넣은</span></div>
+    <div id="cap-35b" class="cap clip" data-start="180.282" data-duration="2.342"><span>서브쿼리를 인라인 뷰라고 합니다.</span></div>
+    <div id="cap-36a" class="cap clip" data-start="183.274" data-duration="2.582"><span>시험장에서 챙길 것 세 가지입니다.</span></div>
+    <div id="cap-37a" class="cap clip" data-start="185.956" data-duration="6.030"><span>첫째, 동점 뒤 번호를 건너뛰면 RANK, 건너뛰지 않으면 DENSE_RANK,</span></div>
+    <div id="cap-37b" class="cap clip" data-start="191.986" data-duration="4.124"><span>동점이어도 모두 다른 번호를 붙이면 ROW_NUMBER입니다.</span></div>
+    <div id="cap-38a" class="cap clip" data-start="196.210" data-duration="1.670"><span>둘째, PARTITION BY는</span></div>
+    <div id="cap-38b" class="cap clip" data-start="197.880" data-duration="2.966"><span>묶음마다 순위를 1부터 다시 매깁니다.</span></div>
+    <div id="cap-39a" class="cap clip" data-start="200.945" data-duration="3.210"><span>셋째, 순위 함수는 WHERE에 바로 쓸 수 없어서,</span></div>
+    <div id="cap-39b" class="cap clip" data-start="204.155" data-duration="3.472"><span>인라인 뷰로 감싼 뒤 바깥에서 거릅니다.</span></div>
+    <div id="cap-40a" class="cap clip" data-start="207.727" data-duration="3.802"><span>덧붙여, 윈도우 함수는 행 수를 줄이지 않습니다.</span></div>
+    <div id="cap-41a" class="cap clip" data-start="212.179" data-duration="2.894"><span>오늘 내용을 한 줄로 정리하면 이렇습니다.</span></div>
+    <div id="cap-42a" class="cap clip" data-start="215.173" data-duration="4.070"><span>85점 세 명 다음의 80점은, RANK로 6등,</span></div>
+    <div id="cap-42b" class="cap clip" data-start="219.243" data-duration="3.669"><span>DENSE_RANK로 4등, ROW_NUMBER로 6번입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

@@ -1,0 +1,57 @@
+{
+  "concept/episodes/007-sql-order": {
+    "titles": ["SELECT 별칭이 WHERE에서 안 되는 이유, SQL 실행 순서 | SQLD", "프웨그해셀오, SQL 실행 순서 한 번에 | SQLD"],
+    "desc": "SELECT에서 붙인 별칭이 ORDER BY에서는 되는데 WHERE에서는 오류가 나는 이유, 처리 순서에 답이 있습니다. 직원 8명의 표로 FROM, WHERE, GROUP BY, HAVING, SELECT, ORDER BY를 한 단계씩 따라가며 8행이 2행으로 줄어드는 과정을 직접 확인합니다. WHERE와 HAVING의 차이, 집계 함수 조건을 어디에 쓰는지도 정리합니다.",
+    "hashtags": "#SQLD #SQL개발자 #SQL실행순서 #GROUPBY #HAVING",
+    "tags": ["SQLD", "SQL 개발자", "SQL 실행 순서", "SQL 처리 순서", "WHERE", "GROUP BY", "HAVING", "ORDER BY", "별칭", "집계 함수", "데이터 자격증"],
+    "shorts": {
+      "titles": ["SQL 실행 순서, 1분 정리", "SELECT 별칭, WHERE에서 쓰면 오류인 이유"],
+      "desc": "SQL은 SELECT부터 쓰지만 처리는 FROM, WHERE, GROUP BY, HAVING, SELECT, ORDER BY 순서입니다. 그래서 SELECT에서 붙인 별칭은 WHERE에서는 쓸 수 없고 ORDER BY에서는 쓸 수 있습니다.",
+      "tags": ["SQLD", "SQL 실행 순서", "WHERE", "HAVING", "쇼츠"]
+    }
+  },
+  "concept/episodes/008-sql-null": {
+    "titles": ["평균이 80점일까 64점일까? NULL의 함정 | SQLD", "COUNT(*)와 COUNT(열), NOT IN과 NULL까지 한 번에 | SQLD"],
+    "desc": "학생 5명 가운데 1명의 점수가 NULL일 때 AVG는 80일까요, 64일까요? COUNT(*)와 COUNT(열)의 차이, 집계 함수가 NULL을 건너뛰는 방식, ‘= NULL’ 대신 IS NULL을 써야 하는 이유, NOT IN 목록에 NULL이 있으면 0행이 되는 함정, NVL·NVL2·COALESCE·NULLIF, 정렬에서 NULL의 위치까지 한 번에 정리합니다.",
+    "hashtags": "#SQLD #SQL개발자 #NULL #NVL #NOTIN",
+    "tags": ["SQLD", "SQL 개발자", "NULL", "COUNT", "AVG", "IS NULL", "NOT IN", "NVL", "NVL2", "COALESCE", "NULLIF", "데이터 자격증"],
+    "shorts": {
+      "titles": ["NULL의 함정 세 가지, 1분 정리", "NOT IN에 NULL이 있으면 결과는 0행"],
+      "desc": "COUNT(*)는 NULL인 행도 세지만 COUNT(열)은 빼고 셉니다. NULL은 ‘= NULL’이 아니라 IS NULL로 찾고, NOT IN 목록에 NULL이 하나라도 있으면 결과는 0행입니다.",
+      "tags": ["SQLD", "NULL", "IS NULL", "NOT IN", "쇼츠"]
+    }
+  },
+  "concept/episodes/009-sql-join": {
+    "titles": ["LEFT 5행, RIGHT 5행이면 FULL은 10행? 조인 결과 행 수 | SQLD", "INNER부터 CROSS까지, 조인 다섯 가지 행 수 세기 | SQLD"],
+    "desc": "사원 5명, 부서 4개의 두 표로 INNER, LEFT OUTER, RIGHT OUTER, FULL OUTER, CROSS JOIN의 결과 행 수를 직접 세어 봅니다. 조인 열이 NULL인 행이 INNER JOIN에서 빠지는 이유, FULL OUTER JOIN = LEFT + RIGHT − INNER, CROSS JOIN = 두 표 행 수의 곱, 오라클 (+) 표기의 방향까지 정리합니다.",
+    "hashtags": "#SQLD #SQL개발자 #조인 #OUTERJOIN #카티션곱",
+    "tags": ["SQLD", "SQL 개발자", "조인", "INNER JOIN", "OUTER JOIN", "FULL OUTER JOIN", "CROSS JOIN", "카티션 곱", "오라클 조인", "데이터 자격증"],
+    "shorts": {
+      "titles": ["조인 결과 행 수, 1분 정리", "FULL OUTER JOIN은 LEFT + RIGHT가 아니다"],
+      "desc": "INNER는 양쪽에 짝이 있는 행만 남기고, LEFT·RIGHT·FULL은 한쪽 또는 양쪽을 모두 살립니다. FULL의 행 수는 LEFT + RIGHT − INNER, CROSS JOIN은 두 표 행 수의 곱입니다.",
+      "tags": ["SQLD", "조인", "OUTER JOIN", "CROSS JOIN", "쇼츠"]
+    }
+  },
+  "concept/episodes/010-sql-rank": {
+    "titles": ["공동 3등 다음은 몇 등? RANK · DENSE_RANK · ROW_NUMBER | SQLD", "순위 함수 세 개, 동점 처리만 보면 끝 | SQLD"],
+    "desc": "85점이 세 명이면 다음 80점은 4등일까요, 6등일까요? 학생 6명의 점수로 RANK, DENSE_RANK, ROW_NUMBER가 동점을 처리하는 방식을 비교하고, PARTITION BY로 반별 순위를 매겨 봅니다. 상위 3명을 뽑으면 함수마다 몇 행이 나오는지, 순위 함수를 WHERE에 바로 쓰지 못해 인라인 뷰로 감싸는 이유도 정리합니다.",
+    "hashtags": "#SQLD #SQL개발자 #윈도우함수 #RANK #ROW_NUMBER",
+    "tags": ["SQLD", "SQL 개발자", "윈도우 함수", "순위 함수", "RANK", "DENSE_RANK", "ROW_NUMBER", "PARTITION BY", "Top N", "인라인 뷰", "데이터 자격증"],
+    "shorts": {
+      "titles": ["RANK · DENSE_RANK · ROW_NUMBER, 1분 정리", "공동 1등 다음은 2등? 3등?"],
+      "desc": "90, 90, 85, 80점이면 RANK는 1, 1, 3, 4, DENSE_RANK는 1, 1, 2, 3, ROW_NUMBER는 1, 2, 3, 4입니다. PARTITION BY를 넣으면 묶음마다 1부터 다시 셉니다.",
+      "tags": ["SQLD", "윈도우 함수", "RANK", "DENSE_RANK", "ROW_NUMBER", "쇼츠"]
+    }
+  },
+  "concept/episodes/011-sql-rollup": {
+    "titles": ["ROLLUP 순서 바꾸면 결과도 바뀔까? ROLLUP · CUBE · GROUPING SETS | SQLD", "그룹 함수 결과 행 수, 같은 표로 세어 보기 | SQLD"],
+    "desc": "부서 2개 × 직급 3개의 직원 표로 ROLLUP, CUBE, GROUPING SETS의 결과 행 수를 직접 셉니다. ROLLUP(부서, 직급)은 9행, ROLLUP(직급, 부서)는 10행, CUBE는 12행, GROUPING SETS는 5행. 소계 행에 NULL이 나오는 이유와 GROUPING 함수로 소계·총계를 구분하는 방법도 정리합니다.",
+    "hashtags": "#SQLD #SQL개발자 #ROLLUP #CUBE #GROUPINGSETS",
+    "tags": ["SQLD", "SQL 개발자", "그룹 함수", "ROLLUP", "CUBE", "GROUPING SETS", "GROUPING", "소계", "총계", "데이터 자격증"],
+    "shorts": {
+      "titles": ["ROLLUP · CUBE · GROUPING SETS, 1분 정리", "ROLLUP은 순서가 중요하다"],
+      "desc": "ROLLUP(A, B)는 오른쪽부터 지우며 소계와 총계를 붙이고, CUBE(A, B)는 가능한 모든 조합, GROUPING SETS는 괄호에 적은 묶음만 만듭니다.",
+      "tags": ["SQLD", "ROLLUP", "CUBE", "GROUPING SETS", "쇼츠"]
+    }
+  }
+}

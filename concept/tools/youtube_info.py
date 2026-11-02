@@ -24,7 +24,7 @@ def main():
         md = [f"# {ep.name.split('-')[0]} 업로드용 정보", "", "## 제목 (하나 고르기)", *[f"- {t}" for t in info["titles"]], "",
               "## 설명란", "", info["desc"], "", *chapters, "", info["hashtags"], "", "## 태그", ", ".join(info["tags"]), ""]
         if (ep / "thumbnail.png").exists():
-            md += ["## 썸네일", "- 이 폴더의 thumbnail.png(완성본 폴더에도 같은 그림, 파일 이름 끝이 ‘-썸네일’)", ""]
+            md += ["## 썸네일", "- 완성본 영상 폴더의 ‘… - 썸네일.png’(작업 폴더에서는 thumbnail.png)", ""]
         (ep / "youtube.md").write_text("\n".join(md), encoding="utf-8")
         s = info["shorts"]
         md = [f"# {ep.name.split('-')[0]} 쇼츠 업로드용 정보", "", "## 제목 (하나 고르기)", *[f"- {t}" for t in s["titles"]], "",

@@ -1,0 +1,111 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s02-col { position: absolute; top: 262px; width: 240px; text-align: center; font-size: 40px; font-weight: 800; opacity: 0; }
+    .s02-row { position: absolute; left: 192px; width: 120px; height: 190px; display: flex; align-items: center; justify-content: center;
+      font-size: 40px; font-weight: 800; opacity: 0; }
+    .s02-cell { position: absolute; width: 240px; height: 190px; }
+    .s02-pay { position: absolute; left: 0; right: 0; top: 70px; text-align: center; font-size: 36px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    .s02-sum { position: absolute; left: 0; right: 0; top: 96px; text-align: center; font-size: 60px; font-weight: 900; line-height: 1; opacity: 0; }
+    #s02-code { left: 1180px; top: 262px; width: 548px; }
+    #s02-code .q-ln { font-size: 32px; padding: 0 32px; }
+    #s02-note { position: absolute; left: 1180px; top: 534px; width: 548px; height: 312px; }
+    .s02-ph { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .s02-big { font-size: 44px; font-weight: 900; white-space: nowrap; opacity: 0; }
+    .s02-big + .s02-big { margin-top: 18px; }
+    #s02-rt { font-size: 30px; font-weight: 700; color: var(--color-ink2, #71717A); opacity: 0; }
+    #s02-r6 { margin-top: 6px; font-size: 84px; font-weight: 900; line-height: 1.1; color: var(--color-accent, #6B3FE6); opacity: 0; }
+    .s02-no { margin-top: 10px; font-size: 32px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    #s02-fn { position: absolute; left: 352px; top: 774px; width: 768px; display: flex; justify-content: center; gap: 24px; }
+    #s02-fn > .q-chip { position: relative; }
+  </style>
+  <div id="root" data-composition-id="s02" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,7.5,11.2,17.3,22]"},{"id":"dur","type":"number","label":"장면 길이","default":27},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"e1","type":"number","label":"영업 시각","default":1.2},{"id":"e2","type":"number","label":"개발 시각","default":2},{"id":"j1","type":"number","label":"사원 시각","default":4.2},{"id":"j2","type":"number","label":"대리 시각","default":4.8},{"id":"j3","type":"number","label":"과장 시각","default":5.4},{"id":"sm","type":"number","label":"급여 합계 시각","default":13.5},{"id":"r6","type":"number","label":"6행 시각","default":16},{"id":"n8","type":"number","label":"회사 시각","default":19.5},{"id":"fn","type":"number","label":"그룹 함수 시각","default":24.5},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s02-all">
+      <div id="s02-head" class="x-head">직원 표와 GROUP BY</div>
+      <div class="s02-col" id="s02-j1" style="left:352px">사원</div>
+      <div class="s02-col" id="s02-j2" style="left:616px">대리</div>
+      <div class="s02-col" id="s02-j3" style="left:880px">과장</div>
+      <div class="s02-row" id="s02-e1" style="top:330px">영업</div>
+      <div class="s02-row" id="s02-e2" style="top:544px">개발</div>
+      <div class="s02-cell x-card x-hide" id="s02-x1" style="left:352px;top:330px"><div class="s02-pay" id="s02-p1">300 · 280</div><div class="s02-sum" id="s02-s1">580</div></div>
+      <div class="s02-cell x-card x-hide" id="s02-x2" style="left:616px;top:330px"><div class="s02-pay" id="s02-p2">400</div><div class="s02-sum" id="s02-s2">400</div></div>
+      <div class="s02-cell x-card x-hide" id="s02-x3" style="left:880px;top:330px"><div class="s02-pay" id="s02-p3">500</div><div class="s02-sum" id="s02-s3">500</div></div>
+      <div class="s02-cell x-card x-hide" id="s02-x4" style="left:352px;top:544px"><div class="s02-pay" id="s02-p4">320</div><div class="s02-sum" id="s02-s4">320</div></div>
+      <div class="s02-cell x-card x-hide" id="s02-x5" style="left:616px;top:544px"><div class="s02-pay" id="s02-p5">420 · 380</div><div class="s02-sum" id="s02-s5">800</div></div>
+      <div class="s02-cell x-card x-hide" id="s02-x6" style="left:880px;top:544px"><div class="s02-pay" id="s02-p6">550</div><div class="s02-sum" id="s02-s6">550</div></div>
+      <div id="s02-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">SELECT</span> 부서, 직급, SUM(급여)</span></div>
+        <div class="q-ln"><span><span class="q-k">FROM</span> 직원</span></div>
+        <div class="q-ln"><div class="q-hi" id="s02-h3"></div><span><span class="q-k">GROUP BY</span> 부서, 직급;</span></div>
+      </div>
+      <div id="s02-note" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s02-ph" id="s02-pa">
+          <div class="s02-big" id="s02-ka">부서 2 × 직급 3</div>
+          <div class="s02-big x-acc" id="s02-kb">= 6가지 조합</div>
+        </div>
+        <div class="s02-ph" id="s02-pb">
+          <div id="s02-rt">조합마다 한 행</div>
+          <div id="s02-r6">6행</div>
+          <div class="s02-no" id="s02-n1">부서 전체 합계 ✕</div>
+          <div class="s02-no" id="s02-n2">회사 전체 합계 ✕</div>
+        </div>
+      </div>
+      <div id="s02-fn">
+        <div id="s02-f1" class="q-chip q-ng">ROLLUP</div>
+        <div id="s02-f2" class="q-chip q-ng">CUBE</div>
+        <div id="s02-f3" class="q-chip q-ng">GROUPING SETS</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 27;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => (Number(V[k]) || d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const ids = (p, ks) => ks.map((k) => `#s02-${p}${k}`);
+    const K6 = [1, 2, 3, 4, 5, 6];
+
+    // 5 부서 영업·개발 두 개, 직급 사원·대리·과장 세 개 — 2 × 3 격자
+    ft("#s02-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    K6.forEach((k, j) => ft(`#s02-x${k}`, { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(0, 0.4 + j * 0.08)));
+    ft("#s02-e1", { opacity: 0, x: -12 }, { opacity: 1, x: 0 }, X("e1", at(0, 1.2)));
+    ft("#s02-e2", { opacity: 0, x: -12 }, { opacity: 1, x: 0 }, X("e2", at(0, 2.0)));
+    ft("#s02-j1", { opacity: 0, y: -10 }, { opacity: 1, y: 0 }, X("j1", at(0, 4.0)));
+    ft("#s02-j2", { opacity: 0, y: -10 }, { opacity: 1, y: 0 }, X("j2", at(0, 4.6)));
+    ft("#s02-j3", { opacity: 0, y: -10 }, { opacity: 1, y: 0 }, X("j3", at(0, 5.2)));
+    ft("#s02-note", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(0, 5.6));
+    fade("#s02-ka", at(0, 5.9), 0, 1);
+    // 6 직원 여덟 명이 여섯 조합에 나뉘어 있다
+    ids("p", K6).forEach((p, j) => ft(p, { opacity: 0, y: 8 }, { opacity: 1, y: 0 }, at(1, 0.3 + j * 0.12)));
+    fade("#s02-kb", at(1, 1.6), 0, 1);
+    // 7 GROUP BY 부서, 직급 → 칸마다 급여 합계, 6행
+    ft("#s02-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(2, 0.2));
+    fade("#s02-h3", at(2, 1.2), 0, 1);
+    fade("#s02-pa", at(2, 1.0), 1, 0);
+    const sm = X("sm", at(2, 2.6));
+    ft(ids("p", K6), { y: 0, color: "#18181B", scale: 1 }, { y: -36, color: "#A1A1AA", scale: 0.8 }, sm);
+    ids("s", K6).forEach((s, j) => ft(s, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, sm + 0.3 + j * 0.1));
+    const r6 = X("r6", at(2, 4.4));
+    fade("#s02-rt", r6 - 0.2, 0, 1);
+    stamp("#s02-r6", r6);
+    // 8 부서 전체 합계도, 회사 전체 합계도 없다
+    fade("#s02-h3", at(3, 0.2), 1, 0);
+    fade("#s02-n1", at(3, 0.5), 0, 1);
+    fade("#s02-n2", X("n8", at(3, 2.0)), 0, 1);
+    // 9 소계와 총계를 붙여 주는 그룹 함수 세 개
+    const fn = X("fn", at(4, 2.8));
+    stamp("#s02-f1", fn);
+    stamp("#s02-f2", fn + 0.3);
+    stamp("#s02-f3", fn + 0.6);
+    if (String(V.exit) !== "false") ft("#s02-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s02"] = tl;
+  </script>
+</template>

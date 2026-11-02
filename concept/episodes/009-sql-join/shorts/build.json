@@ -1,0 +1,22 @@
+{
+  "_설명": "쇼츠(세로) 조립 설정. 장면 순서(장 번호, 여러 장을 한 장면으로 묶을 수 있음), 영상 내내 떠 있는 위쪽 제목, 효과음 위치([이름, 장면 안 문장 순번(0부터), 그 문장 시작 뒤 초]).",
+  "format": {
+    "width": 1080, "height": 1920, "resolution": "portrait",
+    "caption": { "max": 17, "deep": true, "bottom": 540, "size": 54, "weight": 700, "width": 940 }
+  },
+  "overlays": [
+    { "id": "hd", "file": "header.html" }
+  ],
+  "scenes": [
+    { "id": "h1", "file": "h1-inner.html", "chapter": 1, "extra": { "lz": { "sentence": 1, "at": "짝이" } } },
+    { "id": "h2", "file": "h2-outer.html", "chapter": 2, "extra": { "rt": { "sentence": 3, "at": "RIGHT는" }, "fl": { "sentence": 3, "at": "FULL은" } } },
+    { "id": "h3", "file": "h3-formula.html", "chapter": 3, "extra": { "lr": { "sentence": 5, "at": "LEFT" }, "in": { "sentence": 5, "at": "INNER를" } } },
+    { "id": "h4", "file": "h4-plus.html", "chapter": 4, "exit": false, "extra": { "nl": { "sentence": 7, "at": "NULL로" }, "op": { "sentence": 7, "at": "반대편이" } } }
+  ],
+  "sfx": {
+    "h1": [["pop", 0, 0.1], ["click-soft", 0, 1.7], ["pop", 1, 0.1], ["whoosh-short", 1, 1.6]],
+    "h2": [["pop", 0, -0.3], ["click-soft", 0, 0.3], ["click-soft", 0, 1.4], ["click-soft", 0, 3.2], ["pop", 0, 3.6], ["click-soft", 1, 0.3]],
+    "h3": [["pop", 0, -0.2], ["click-soft", 0, 1.0], ["click-soft", 0, 2.55], ["pop", 1, 0.0], ["click-soft", 1, 0.9]],
+    "h4": [["pop", 0, -0.3], ["pop", 0, 1.45], ["pop", 0, 3.5]]
+  }
+}

@@ -92,7 +92,9 @@
       "모델 평가": C10.노랑, "연관분석": C10.하늘, "군집분석": C10.연두, "기술통계": C10.주황, "확률과 분포": C10.연보라,
       "추정과 검정": C10.민트, "상관과 회귀": C10.분홍, "분류 모델": C10.파랑, "전처리": C10.살구, "차원 축소": C10.라임,
       "시계열": C10.하늘, "데이터 이해": C10.주황, "분석 기획": C10.연보라, "R 기초": C10.민트, "수집과 저장": C10.분홍,
-      "탐색": C10.연두, "고급 분석": C10.파랑, "모형 개선": C10.살구, "결과 활용": C10.라임
+      "탐색": C10.연두, "고급 분석": C10.파랑, "모형 개선": C10.살구, "결과 활용": C10.라임,
+      // SQLD 편(2026-11-02): SQL 기본(처리 순서·NULL·조인) / SQL 활용(윈도우·그룹 함수)
+      "SQL 기본": C10.민트, "SQL 활용": C10.주황
     };
     const EP = {
       "001": {
@@ -145,6 +147,54 @@
           <circle cx="235" cy="180" r="115" fill="none" stroke="#000" stroke-width="8" />
         </svg>`
       },
+      "007": {
+        badge: "SQLD",
+        d: { l1: "SELECT 별칭", big: "WHERE?", band: "실행 순서 한 번에 정리" },
+        fig: () => `<svg viewBox="0 0 360 360">
+          ${[0, 1, 2, 3, 4, 5].map((i) => `<rect x="0" y="${i * 61}" width="360" height="48" rx="12" fill="${i === 4 ? RED : "#000"}" stroke="#000" stroke-width="5" />
+            <text x="28" y="${i * 61 + 36}" font-family="Paperlogy" font-weight="900" font-size="34" fill="#FFF">${i + 1}</text>`).join("")}
+        </svg>`
+      },
+      "008": {
+        badge: "SQLD",
+        d: { l1: "NULL 섞인 평균", big: "64점?", band: "AVG는 NULL을 건너뛴다" },
+        fig: () => `<svg viewBox="0 0 360 360">
+          ${[0, 1, 2, 3].map((i) => `<rect x="0" y="${i * 72}" width="360" height="56" rx="12" fill="#000" />`).join("")}
+          <rect x="4" y="292" width="352" height="56" rx="12" fill="#FFF" stroke="${RED}" stroke-width="7" stroke-dasharray="16 10" />
+          <text x="180" y="333" text-anchor="middle" font-family="Paperlogy" font-weight="900" font-size="36" fill="${RED}">NULL</text>
+        </svg>`
+      },
+      "009": {
+        badge: "SQLD",
+        d: { l1: "FULL 조인 행 수", big: "10행?", band: "조인 결과 행 수 계산" },
+        fig: () => `<svg viewBox="0 0 360 360">
+          <circle cx="130" cy="180" r="115" fill="${RED}" stroke="#000" stroke-width="8" />
+          <circle cx="235" cy="180" r="115" fill="${RED}" stroke="#000" stroke-width="8" />
+          <circle cx="130" cy="180" r="115" fill="none" stroke="#000" stroke-width="8" />
+        </svg>`
+      },
+      "010": {
+        badge: "SQLD",
+        d: { l1: "RANK 공동 3등 뒤", big: "4등?", band: "순위 함수 세 개 차이" },
+        fig: () => `<svg viewBox="0 0 360 360">
+          <path d="M0 356 H360" stroke="#000" stroke-width="8" />
+          <rect x="6" y="20" width="58" height="336" fill="#000" /><rect x="76" y="80" width="58" height="276" fill="#000" />
+          <rect x="146" y="150" width="58" height="206" fill="${RED}" stroke="#000" stroke-width="6" />
+          <rect x="216" y="150" width="58" height="206" fill="${RED}" stroke="#000" stroke-width="6" />
+          <rect x="286" y="150" width="58" height="206" fill="${RED}" stroke="#000" stroke-width="6" />
+        </svg>`
+      },
+      "011": {
+        badge: "SQLD",
+        d: { l1: "ROLLUP 순서", big: "상관없다?", band: "ROLLUP·CUBE 행 수 계산" },
+        fig: () => `<svg viewBox="0 0 360 360">
+          ${[0, 1].map((r) => [0, 1, 2].map((c) => `<rect x="${c * 74}" y="${r * 74}" width="64" height="64" rx="10" fill="#000" />`).join("")).join("")}
+          <rect x="250" y="0" width="100" height="64" rx="10" fill="${RED}" stroke="#000" stroke-width="5" />
+          <rect x="250" y="74" width="100" height="64" rx="10" fill="${RED}" stroke="#000" stroke-width="5" />
+          <rect x="0" y="170" width="350" height="72" rx="12" fill="${RED}" stroke="#000" stroke-width="6" />
+          <text x="175" y="219" text-anchor="middle" font-family="Paperlogy" font-weight="900" font-size="40" fill="#FFF">총계</text>
+        </svg>`
+      },
       "002": {
         badge: "ADsP · 빅분기",
         title: "ROC 곡선", sub1: "가로축은", sub2: "1 − 특이도",
@@ -164,7 +214,8 @@
     const q = new URLSearchParams(location.search);
     const epId = q.get("ep") || "002", ep = EP[epId], style = q.get("style") || "a";
     // 편 → 주제 묶음(topics.json의 group). 새 편을 넣을 때 여기에도 적는다. ?group=으로 색만 미리 볼 수 있다
-    const EPG = { "001": "모델 평가", "002": "모델 평가", "003": "모델 평가", "004": "모델 평가", "005": "모델 평가", "006": "연관분석" };
+    const EPG = { "001": "모델 평가", "002": "모델 평가", "003": "모델 평가", "004": "모델 평가", "005": "모델 평가", "006": "연관분석",
+                  "007": "SQL 기본", "008": "SQL 기본", "009": "SQL 기본", "010": "SQL 활용", "011": "SQL 활용" };
     const bg = GROUP[q.get("group") || EPG[epId]] || C10.노랑;
     const t = document.getElementById("t");
     // 테두리 글자: data-t를 ::before가 검은 테두리로 한 번 더 그린다

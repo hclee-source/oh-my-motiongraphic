@@ -1,0 +1,30 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 540px; text-align: center; overflow: visible;
+      font-size: 54px; font-weight: 700; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 940px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cap-01a" class="cap clip" data-start="0.000" data-duration="4.690"><span>90, 90, 85, 80점.</span></div>
+    <div id="cap-01b" class="cap clip" data-start="4.690" data-duration="3.992"><span>90점 두 명이 공동 1등입니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="8.732" data-duration="1.070"><span>그다음 85점은</span></div>
+    <div id="cap-02b" class="cap clip" data-start="9.802" data-duration="1.296"><span>몇 등일까요?</span></div>
+    <div id="cap-03a" class="cap clip" data-start="11.297" data-duration="3.470"><span>RANK는 1, 1, 3, 4.</span></div>
+    <div id="cap-03b" class="cap clip" data-start="14.767" data-duration="1.140"><span>동점자 수만큼</span></div>
+    <div id="cap-03c" class="cap clip" data-start="15.907" data-duration="1.971"><span>다음 번호를 건너뜁니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="17.928" data-duration="3.230"><span>DENSE_RANK는 1, 1, 2, 3.</span></div>
+    <div id="cap-04b" class="cap clip" data-start="21.158" data-duration="1.592"><span>건너뛰지 않습니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="22.800" data-duration="0.730"><span>ROW_NUMBER는</span></div>
+    <div id="cap-05b" class="cap clip" data-start="23.530" data-duration="3.540"><span>1번, 2번, 3번, 4번.</span></div>
+    <div id="cap-05c" class="cap clip" data-start="27.070" data-duration="2.228"><span>동점이어도 다른 번호입니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="29.499" data-duration="1.210"><span>PARTITION BY를 넣으면</span></div>
+    <div id="cap-06b" class="cap clip" data-start="30.709" data-duration="2.544"><span>묶음마다 1부터 다시 셉니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="33.453" data-duration="1.570"><span>건너뛰면 RANK,</span></div>
+    <div id="cap-07b" class="cap clip" data-start="35.023" data-duration="2.120"><span>촘촘하면 DENSE_RANK,</span></div>
+    <div id="cap-07c" class="cap clip" data-start="37.143" data-duration="2.206"><span>모두 다르면 ROW_NUMBER.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

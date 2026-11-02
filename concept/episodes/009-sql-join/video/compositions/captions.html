@@ -1,0 +1,80 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 108px; text-align: center; overflow: visible;
+      font-size: 46px; font-weight: 600; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 1536px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-01a" class="cap clip" data-start="3.600" data-duration="4.030"><span>사원 표와 부서 표를 LEFT OUTER JOIN 하면 5행,</span></div>
+    <div id="cap-01b" class="cap clip" data-start="7.630" data-duration="2.839"><span>RIGHT OUTER JOIN 해도 5행이 나옵니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="10.569" data-duration="1.090"><span>그렇다면 FULL OUTER</span></div>
+    <div id="cap-02b" class="cap clip" data-start="11.659" data-duration="1.697"><span>JOIN은 몇 행일까요?</span></div>
+    <div id="cap-03a" class="cap clip" data-start="13.457" data-duration="3.808"><span>5 더하기 5, 10행이라고 답하면 틀립니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="17.364" data-duration="1.870"><span>정답은 6행입니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="19.334" data-duration="2.270"><span>오늘은 같은 두 표로 조인 다섯 가지의</span></div>
+    <div id="cap-05b" class="cap clip" data-start="21.604" data-duration="2.627"><span>결과 행 수를 직접 세어 보겠습니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="24.882" data-duration="2.090"><span>왼쪽은 사원 다섯 명의 표,</span></div>
+    <div id="cap-06b" class="cap clip" data-start="26.972" data-duration="2.737"><span>오른쪽은 부서 네 개의 표입니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="29.809" data-duration="2.320"><span>두 표는 부서번호로 이어집니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="32.228" data-duration="4.370"><span>민수와 지영은 10번 영업, 현우는 20번 개발,</span></div>
+    <div id="cap-08b" class="cap clip" data-start="36.598" data-duration="2.532"><span>수진은 30번 인사 부서입니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="39.231" data-duration="1.750"><span>동훈은 아직 부서가 정해지지</span></div>
+    <div id="cap-09b" class="cap clip" data-start="40.981" data-duration="2.079"><span>않아 부서번호가 NULL입니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="43.160" data-duration="1.790"><span>그리고 40번 기획 부서에는</span></div>
+    <div id="cap-10b" class="cap clip" data-start="44.950" data-duration="2.294"><span>사원이 한 명도 없습니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="47.893" data-duration="1.270"><span>INNER JOIN은 양쪽</span></div>
+    <div id="cap-11b" class="cap clip" data-start="49.163" data-duration="2.386"><span>모두에 짝이 있는 행만 남깁니다.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="51.649" data-duration="6.218"><span>민수, 지영, 현우, 수진, 이렇게 네 행입니다.</span></div>
+    <div id="cap-13a" class="cap clip" data-start="57.967" data-duration="1.810"><span>동훈은 부서번호가 NULL이라 어느</span></div>
+    <div id="cap-13b" class="cap clip" data-start="59.777" data-duration="2.734"><span>부서와도 같다고 할 수 없어서 빠집니다.</span></div>
+    <div id="cap-14a" class="cap clip" data-start="62.611" data-duration="3.137"><span>사원이 없는 기획 부서도 짝이 없어 빠집니다.</span></div>
+    <div id="cap-15a" class="cap clip" data-start="65.848" data-duration="2.130"><span>영업 부서는 사원이 둘이라 결과에</span></div>
+    <div id="cap-15b" class="cap clip" data-start="67.978" data-duration="2.500"><span>두 번 나온다는 점도 눈여겨보세요.</span></div>
+    <div id="cap-16a" class="cap clip" data-start="71.128" data-duration="1.170"><span>LEFT OUTER JOIN은</span></div>
+    <div id="cap-16b" class="cap clip" data-start="72.298" data-duration="2.457"><span>왼쪽 표의 행을 모두 살립니다.</span></div>
+    <div id="cap-17a" class="cap clip" data-start="74.854" data-duration="1.250"><span>INNER JOIN의 네 행에,</span></div>
+    <div id="cap-17b" class="cap clip" data-start="76.104" data-duration="3.241"><span>짝이 없던 동훈이 더해져 5행입니다.</span></div>
+    <div id="cap-18a" class="cap clip" data-start="79.446" data-duration="2.595"><span>동훈의 부서명 칸은 NULL로 채워집니다.</span></div>
+    <div id="cap-19a" class="cap clip" data-start="82.140" data-duration="1.070"><span>RIGHT OUTER JOIN은</span></div>
+    <div id="cap-19b" class="cap clip" data-start="83.210" data-duration="3.189"><span>반대로 오른쪽 표의 행을 모두 살립니다.</span></div>
+    <div id="cap-20a" class="cap clip" data-start="86.500" data-duration="2.610"><span>네 행에 사원이 없는 기획 부서가 더해져 역시</span></div>
+    <div id="cap-20b" class="cap clip" data-start="89.110" data-duration="3.576"><span>5행이고, 이번에는 사원 칸이 NULL입니다.</span></div>
+    <div id="cap-21a" class="cap clip" data-start="93.335" data-duration="0.850"><span>FULL OUTER JOIN은</span></div>
+    <div id="cap-21b" class="cap clip" data-start="94.185" data-duration="2.568"><span>양쪽 표의 행을 모두 살립니다.</span></div>
+    <div id="cap-22a" class="cap clip" data-start="96.853" data-duration="3.450"><span>짝이 있는 네 행, 왼쪽에만 있는 동훈,</span></div>
+    <div id="cap-22b" class="cap clip" data-start="100.303" data-duration="4.005"><span>오른쪽에만 있는 기획 부서, 모두 6행입니다.</span></div>
+    <div id="cap-23a" class="cap clip" data-start="104.408" data-duration="1.790"><span>LEFT와 RIGHT를 그냥 더하면</span></div>
+    <div id="cap-23b" class="cap clip" data-start="106.198" data-duration="2.916"><span>짝이 있는 네 행을 두 번 세게 됩니다.</span></div>
+    <div id="cap-24a" class="cap clip" data-start="109.214" data-duration="1.450"><span>그래서 5 더하기 5에서</span></div>
+    <div id="cap-24b" class="cap clip" data-start="110.664" data-duration="2.333"><span>겹친 4를 빼야 6이 됩니다.</span></div>
+    <div id="cap-25a" class="cap clip" data-start="113.647" data-duration="1.190"><span>CROSS JOIN은 조건</span></div>
+    <div id="cap-25b" class="cap clip" data-start="114.837" data-duration="2.447"><span>없이 모든 행끼리 짝을 짓습니다.</span></div>
+    <div id="cap-26a" class="cap clip" data-start="117.384" data-duration="2.250"><span>사원 다섯 명이 부서 네 개와 한 번씩</span></div>
+    <div id="cap-26b" class="cap clip" data-start="119.634" data-duration="3.340"><span>만나니 5 곱하기 4, 20행입니다.</span></div>
+    <div id="cap-27a" class="cap clip" data-start="123.074" data-duration="3.550"><span>FROM 절에 표만 나열하고 조인 조건을 빠뜨려도 이렇게</span></div>
+    <div id="cap-27b" class="cap clip" data-start="126.624" data-duration="4.413"><span>모든 짝이 만들어지는데, 이것을 카티션 곱이라고 합니다.</span></div>
+    <div id="cap-28a" class="cap clip" data-start="131.687" data-duration="2.904"><span>시험에는 오라클 전용 표기도 나옵니다.</span></div>
+    <div id="cap-29a" class="cap clip" data-start="134.691" data-duration="1.430"><span>WHERE 절의 조인 조건에서,</span></div>
+    <div id="cap-29b" class="cap clip" data-start="136.121" data-duration="4.321"><span>짝이 없어 NULL로 채워질 쪽에 (+)를 붙입니다.</span></div>
+    <div id="cap-30a" class="cap clip" data-start="140.542" data-duration="3.030"><span>부서 쪽에 (+)가 붙으면 부서 칸은 비어도</span></div>
+    <div id="cap-30b" class="cap clip" data-start="143.572" data-duration="3.320"><span>된다는 뜻이라, 사원이 모두 살아남습니다.</span></div>
+    <div id="cap-31a" class="cap clip" data-start="146.992" data-duration="2.730"><span>그래서 이 조건은 사원을 기준으로 한</span></div>
+    <div id="cap-31b" class="cap clip" data-start="149.722" data-duration="2.285"><span>LEFT OUTER JOIN과 같습니다.</span></div>
+    <div id="cap-32a" class="cap clip" data-start="152.107" data-duration="2.050"><span>(+)가 붙은 쪽의 반대편이</span></div>
+    <div id="cap-32b" class="cap clip" data-start="154.157" data-duration="2.670"><span>모두 살아남는다고 기억하면 됩니다.</span></div>
+    <div id="cap-33a" class="cap clip" data-start="157.477" data-duration="2.582"><span>시험장에서 챙길 것 세 가지입니다.</span></div>
+    <div id="cap-34a" class="cap clip" data-start="160.158" data-duration="2.630"><span>첫째, 조인 열이 NULL인 행은</span></div>
+    <div id="cap-34b" class="cap clip" data-start="162.788" data-duration="1.619"><span>INNER JOIN에서 빠집니다.</span></div>
+    <div id="cap-35a" class="cap clip" data-start="164.507" data-duration="2.450"><span>둘째, FULL OUTER JOIN 행 수는</span></div>
+    <div id="cap-35b" class="cap clip" data-start="166.957" data-duration="2.784"><span>LEFT 더하기 RIGHT 빼기 INNER입니다.</span></div>
+    <div id="cap-36a" class="cap clip" data-start="169.841" data-duration="1.810"><span>셋째, CROSS JOIN 행</span></div>
+    <div id="cap-36b" class="cap clip" data-start="171.651" data-duration="2.482"><span>수는 두 표 행 수의 곱입니다.</span></div>
+    <div id="cap-37a" class="cap clip" data-start="174.783" data-duration="2.894"><span>오늘 내용을 한 줄로 정리하면 이렇습니다.</span></div>
+    <div id="cap-38a" class="cap clip" data-start="177.776" data-duration="4.430"><span>짝이 있는 행만 INNER, 한쪽을 모두 살리면 LEFT와 RIGHT,</span></div>
+    <div id="cap-38b" class="cap clip" data-start="182.206" data-duration="4.339"><span>양쪽 다 살리면 FULL, 모든 짝은 CROSS입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

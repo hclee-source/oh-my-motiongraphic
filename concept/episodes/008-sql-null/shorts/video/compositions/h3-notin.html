@@ -1,0 +1,42 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h3-q { left: 80px; top: 380px; width: 920px; height: 136px; }
+    #h3-q .q-ln { height: 84px; font-size: 46px; padding: 0 48px; }
+    #h3-n { display: inline-block; padding: 0 14px; margin-left: 4px; border-radius: 14px; line-height: 64px; color: #FFFFFF;
+      background: rgba(107, 63, 230, 0); }
+    #h3-r { position: absolute; left: 80px; top: 590px; width: 920px; height: 330px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; }
+    #h3-rl { font-size: 40px; font-weight: 800; color: var(--color-ink2, #71717A); }
+    #h3-rv { margin-top: 6px; font-size: 150px; font-weight: 900; line-height: 1.1; color: var(--color-accent, #6B3FE6); }
+  </style>
+  <div id="root" data-composition-id="h3" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45]"},{"id":"dur","type":"number","label":"장면 길이","default":4.218},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"nl","type":"number","label":"NULL이 시각","default":1.455},{"id":"z","type":"number","label":"결과는 시각","default":3.088},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h3-all">
+      <div id="h3-q" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">WHERE</span> 열 <span class="q-k">NOT IN</span> (…, <span id="h3-n">NULL</span>)</span></div>
+      </div>
+      <div id="h3-r" class="x-card x-hide"><div id="h3-rl">결과</div><div id="h3-rv">0행</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 4.218;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+
+    // 7 NOT IN 목록에 NULL이 하나라도 있으면 결과는 0행
+    ft("#h3-q", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, -0.3));
+    const nl = Number(V.nl) || at(0, 1.0);
+    ft("#h3-n", { backgroundColor: "rgba(107, 63, 230, 0)" }, { backgroundColor: "rgba(107, 63, 230, 1)" }, nl);
+    const z = Math.max(nl + 0.6, (Number(V.z) || at(0, 2.6)) - 0.4);
+    ft("#h3-r", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, z);
+    if (String(V.exit) !== "false") ft("#h3-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h3"] = tl;
+  </script>
+</template>

@@ -1,0 +1,71 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h2-code { position: absolute; left: 80px; top: 330px; width: 920px; height: 150px; }
+    .h2-q { position: absolute; left: 0; right: 0; top: 0; height: 150px; display: flex; align-items: center; justify-content: center;
+      font-size: 64px; font-weight: 900; white-space: nowrap; color: #FFFFFF; }
+    #h2-qb { opacity: 0; }
+    .h2-b { position: absolute; width: 420px; height: 260px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .h2-g { font-size: 72px; font-weight: 900; white-space: nowrap; }
+    .h2-l { margin-top: 14px; font-size: 36px; font-weight: 800; color: var(--color-ink2, #71717A); white-space: nowrap; }
+    .h2-ring { position: absolute; inset: -2px; border-radius: 32px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    #h2-lab { position: absolute; left: 80px; top: 1130px; width: 880px; height: 80px; }
+    #h2-lab > div { position: absolute; left: 0; right: 0; top: 0; height: 80px; display: flex; align-items: center; justify-content: center;
+      font-size: 48px; font-weight: 900; white-space: nowrap; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="h2" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,4.4,11.2]"},{"id":"dur","type":"number","label":"장면 길이","default":14.5},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"al","type":"number","label":"모든 조합 시각","default":1.9},{"id":"x2","type":"number","label":"A 시각","default":5.6},{"id":"x3","type":"number","label":"B 시각","default":6.2},{"id":"x4","type":"number","label":"총계 시각","default":7.9},{"id":"x5","type":"number","label":"네 가지 시각","default":9},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h2-all">
+      <div id="h2-code" class="x-dark x-hide" data-layout-allow-overlap>
+        <div class="h2-q" id="h2-qa"><span><span class="q-k">CUBE</span>(A, B)</span></div>
+        <div class="h2-q" id="h2-qb"><span><span class="q-k">GROUPING SETS</span>(A, B)</span></div>
+      </div>
+      <div class="h2-b x-card x-hide" id="h2-b1" style="left:80px;top:520px"><div class="h2-ring" id="h2-o1"></div><div class="h2-g">(A, B)</div><div class="h2-l">A·B별</div></div>
+      <div class="h2-b x-card x-hide" id="h2-b2" style="left:540px;top:520px"><div class="h2-ring" id="h2-o2"></div><div class="h2-g">(A)</div><div class="h2-l">A별</div></div>
+      <div class="h2-b x-card x-hide" id="h2-b3" style="left:80px;top:820px"><div class="h2-ring" id="h2-o3"></div><div class="h2-g">(B)</div><div class="h2-l">B별</div></div>
+      <div class="h2-b x-card x-hide" id="h2-b4" style="left:540px;top:820px"><div class="h2-ring" id="h2-o4"></div><div class="h2-g">()</div><div class="h2-l">총계</div></div>
+      <div id="h2-lab" data-layout-allow-overlap>
+        <div id="h2-la"><span>묶는 방법 <span class="x-acc">4가지</span></span></div>
+        <div id="h2-lb"><span>지정한 <span class="x-acc">(A) · (B)</span>만</span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 14.5;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => (Number(V[k]) || d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    let ring = 0;
+    const focus = (k, t) => { if (ring) fade(`#h2-o${ring}`, t, 1, 0); if (k) fade(`#h2-o${k}`, t, 0, 1); ring = k; };
+
+    // 4 CUBE(A, B)는 가능한 모든 조합으로 묶는다
+    ft("#h2-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0));
+    const al = X("al", at(0, 1.4));
+    [1, 2, 3, 4].forEach((k, j) => stamp(`#h2-b${k}`, al + j * 0.12));
+    // 5 A와 B, A, B, 그리고 총계까지 네 가지
+    focus(1, at(1, 0));
+    focus(2, X("x2", at(1, 1.2)));
+    focus(3, X("x3", at(1, 1.8)));
+    focus(4, X("x4", at(1, 3.4)));
+    fade("#h2-la", X("x5", at(1, 4.6)), 0, 1);
+    // 6 GROUPING SETS는 괄호에 적은 묶음만 따로
+    focus(0, at(2, 0));
+    fade("#h2-qa", at(2, 0.1), 1, 0);
+    fade("#h2-qb", at(2, 0.25), 0, 1);
+    // ‘적은 묶음만’ 무렵(영문 이름이 글자 수로는 길어 낱말 추정 대신 문장 시작 기준)
+    const gs = at(2, 0.9);
+    fade(["#h2-b1", "#h2-b4"], gs, 1, 0.25);
+    fade(["#h2-o2", "#h2-o3"], gs + 0.15, 0, 1);
+    fade("#h2-la", gs + 0.1, 1, 0);
+    fade("#h2-lb", gs + 0.3, 0, 1);
+    if (String(V.exit) !== "false") ft("#h2-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h2"] = tl;
+  </script>
+</template>

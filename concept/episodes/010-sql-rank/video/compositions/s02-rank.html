@@ -1,0 +1,191 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s02-code { left: 192px; top: 262px; width: 1536px; padding: 22px 0; }
+    .s02-l { position: absolute; left: 40px; top: 0; line-height: 60px; white-space: nowrap; }
+    .s02-slot { position: relative; display: inline-block; }
+    #s02-ph { position: absolute; left: 0; top: 0; color: #A1A1AA; opacity: 0; }
+    #s02-ov, #s02-cp, #s02-ob { opacity: 0; }
+    #s02-win { position: absolute; right: 40px; top: 0; line-height: 60px; font-size: 30px; font-weight: 700; color: #A1A1AA; opacity: 0; }
+    #s02-tb { left: 192px; top: 386px; width: 1536px; height: 464px; }
+    #s02-tb .q-th, #s02-tb .q-tr { grid-template-columns: 180px 130px 160px 240px 270px 270px 230px; }
+    #s02-th { top: 16px; }
+    #s02-tr, #s02-td, #s02-tw { opacity: 0; }
+    #s02-tb .q-tr > div.s02-v { font-size: 40px; font-weight: 900; opacity: 0; }
+    .s02-cnt { position: relative; height: 40px; }
+    .s02-cnt > span { position: absolute; left: 0; right: 0; top: 0; text-align: center; font-size: 32px; font-weight: 900;
+      color: var(--color-accent, #6B3FE6); opacity: 0; }
+    .s02-band { position: absolute; top: 8px; height: 420px; border-radius: 18px;
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 9%, #FFFFFF); opacity: 0; }
+    .s02-bk { position: absolute; width: 6px; border-radius: 3px; background: var(--color-accent, #6B3FE6); transform-origin: 50% 0; opacity: 0; }
+    .s02-nt { position: absolute; height: 56px; line-height: 56px; font-size: 32px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    .s02-sw { position: absolute; width: 440px; height: 56px; }
+    .s02-sw > span { position: absolute; left: 0; top: 0; line-height: 56px; font-size: 32px; font-weight: 800; white-space: nowrap;
+      color: var(--color-accent, #6B3FE6); opacity: 0; }
+    .s02-sw s { color: #A1A1AA; }
+    #s02-tdn { position: absolute; left: 1040px; top: 196px; opacity: 0; }
+    #s02-tdn > div:first-child { font-size: 36px; font-weight: 900; white-space: nowrap; }
+    #s02-tdn > div.s02-sub { margin-top: 14px; font-size: 30px; font-weight: 700; color: var(--color-ink2, #71717A); white-space: nowrap; }
+    #s02-tw3 { position: absolute; left: 1312px; top: 242px; font-size: 28px; font-weight: 800; line-height: 1.35; white-space: nowrap;
+      color: var(--color-accent, #6B3FE6); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s02" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3.12,11.67,16.9,21.3,28.98,30.76,36.83,39.17,43.59,48.61,52.12,58.85,64.32,67.88,75.79,80.23]"},{"id":"dur","type":"number","label":"장면 길이","default":85.7},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"c2","type":"number","label":"2반 시각","default":7.65},{"id":"r1","type":"number","label":"RANK 1등 시각","default":31.42},{"id":"r2","type":"number","label":"RANK 2등 시각","default":32.74},{"id":"r3","type":"number","label":"RANK 3등 시각","default":35.17},{"id":"sk","type":"number","label":"4등과 시각","default":41.21},{"id":"d2","type":"number","label":"DENSE 2등 시각","default":52.76},{"id":"d3","type":"number","label":"DENSE 3등 시각","default":54.67},{"id":"d4","type":"number","label":"DENSE 4등 시각","default":57.22},{"id":"w3","type":"number","label":"3, 4, 5 시각","default":69.43},{"id":"w6","type":"number","label":"6까지 시각","default":72.53},{"id":"hb","type":"number","label":"학번 시각","default":82.37},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s02-all">
+      <div id="s02-ha" class="x-head">점수 표와 OVER</div>
+      <div id="s02-hb" class="x-head">RANK</div>
+      <div id="s02-hc" class="x-head">DENSE_RANK</div>
+      <div id="s02-hd" class="x-head">ROW_NUMBER</div>
+      <div id="s02-code" class="x-dark q-code x-hide">
+        <div class="q-ln" data-layout-allow-overlap>
+          <div class="q-hi" id="s02-hi"></div>
+          <span class="s02-l" id="s02-l1"><span class="q-k">RANK</span>() <span id="s02-ov"><span class="q-k">OVER</span> (</span><span class="s02-slot"><span id="s02-ph">기준</span><span id="s02-ob"><span class="q-k">ORDER BY</span> 점수 <span class="q-k">DESC</span></span></span><span id="s02-cp">)</span></span>
+          <span class="s02-l x-hide" id="s02-l2"><span class="q-k">DENSE_RANK</span>() <span class="q-k">OVER</span> (<span class="q-k">ORDER BY</span> 점수 <span class="q-k">DESC</span>)</span>
+          <span class="s02-l x-hide" id="s02-l3"><span class="q-k">ROW_NUMBER</span>() <span class="q-k">OVER</span> (<span class="q-k">ORDER BY</span> 점수 <span class="q-k">DESC</span>)</span>
+          <span class="s02-l x-hide" id="s02-l4"><span class="q-k">ROW_NUMBER</span>() <span class="q-k">OVER</span> (<span class="q-k">ORDER BY</span> 점수 <span class="q-k">DESC</span>, 학번)</span>
+          <span id="s02-win">윈도우 함수</span>
+        </div>
+      </div>
+      <div id="s02-tb" class="x-card q-tb x-hide">
+        <div class="s02-band" id="s02-ba" style="left:508px;width:220px"></div>
+        <div class="s02-band" id="s02-bd" style="left:748px;width:250px"></div>
+        <div class="s02-band" id="s02-bw" style="left:1018px;width:250px"></div>
+        <div class="q-th" id="s02-th"><div>이름</div><div>반</div><div>점수</div><div id="s02-tr">RANK</div><div id="s02-td">DENSE_RANK</div><div id="s02-tw">ROW_NUMBER</div>
+          <div class="s02-cnt" data-layout-allow-overlap><span id="s02-n1">6행</span><span id="s02-n2">6행 그대로</span></div></div>
+        <!-- 처음에는 반 순서(1반 4명, 2반 2명), 정렬 뒤 위에서부터 동훈 · 민수 · 지영 · 현우 · 예린 · 수진 -->
+        <div class="q-tr x-hide" id="s02-r0" style="top:84px"><div>민수</div><div id="s02-c0">1반</div><div id="s02-p0">90</div><div class="s02-v" id="s02-a0">2</div><div class="s02-v" id="s02-d0">2</div><div class="s02-v" id="s02-w0">2</div><div></div></div>
+        <div class="q-tr x-hide" id="s02-r1" style="top:140px"><div>지영</div><div id="s02-c1">1반</div><div id="s02-p1">85</div><div class="s02-v" id="s02-a1">3</div><div class="s02-v" id="s02-d1">3</div><div class="s02-v" id="s02-w1">3</div><div></div></div>
+        <div class="q-tr x-hide" id="s02-r2" style="top:196px"><div>현우</div><div id="s02-c2">1반</div><div id="s02-p2">85</div><div class="s02-v" id="s02-a2">3</div><div class="s02-v" id="s02-d2">3</div><div class="s02-v" id="s02-w2">4</div><div></div></div>
+        <div class="q-tr x-hide" id="s02-r3" style="top:252px"><div>수진</div><div id="s02-c3">1반</div><div id="s02-p3">80</div><div class="s02-v" id="s02-a3">6</div><div class="s02-v" id="s02-d3">4</div><div class="s02-v" id="s02-w3">6</div><div></div></div>
+        <div class="q-tr x-hide" id="s02-r4" style="top:308px"><div>동훈</div><div id="s02-c4">2반</div><div id="s02-p4">95</div><div class="s02-v" id="s02-a4">1</div><div class="s02-v" id="s02-d4">1</div><div class="s02-v" id="s02-w4">1</div><div></div></div>
+        <div class="q-tr x-hide" id="s02-r5" style="top:364px"><div>예린</div><div id="s02-c5">2반</div><div id="s02-p5">85</div><div class="s02-v" id="s02-a5">3</div><div class="s02-v" id="s02-d5">3</div><div class="s02-v" id="s02-w5">5</div><div></div></div>
+        <!-- RANK: 3등이 세 자리, 4 · 5 건너뜀 -->
+        <div class="s02-bk" id="s02-k3" style="left:750px;top:204px;height:152px"></div>
+        <div class="s02-nt" id="s02-t3" style="left:774px;top:252px">3등이 세 자리</div>
+        <div class="s02-sw" style="left:774px;top:364px" data-layout-allow-overlap>
+          <span id="s02-t45"><s>4 · 5</s> 건너뜀</span>
+          <span id="s02-t51">높은 사람 5명 + 1</span>
+        </div>
+        <!-- DENSE_RANK: 촘촘한 -->
+        <div id="s02-tdn"><div><span class="x-acc">DENSE</span> = 촘촘한</div><div class="s02-sub">빈틈없이 1 · 2 · 3 · 4</div></div>
+        <!-- ROW_NUMBER: 동점자 순서 -->
+        <div class="s02-bk" id="s02-kw" style="left:1290px;top:204px;height:152px"></div>
+        <div id="s02-tw3">순서는<br />정해지지 않음</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 85.7;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => (Number(V[k]) || d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+    const paint = (sel, t, a, b) => ft(sel, { color: a }, { color: b }, t);
+    const head = (id, prev, t) => { if (prev) fade(prev, t, 1, 0); ft(id, { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, t + (prev ? 0.2 : 0)); };
+    const ACC = "#6B3FE6", INK = "#18181B";
+    let line = "#s02-l1";
+    const sql = (id, t) => { fade(line, t, 1, 0); fade(id, t + 0.1, 0, 1); line = id; };
+    const move = (sel, dy, t, d = 0.6) => ft(sel, { y: 0 }, { y: dy, duration: d * S, ease: "power2.inOut" }, t);
+    const R = (ids) => ids.map((i) => `#s02-r${i}`);
+    const cells = (c, ids) => ids.map((i) => `#s02-${c}${i}`);
+
+    // 6 두 반 학생 여섯 명 — 반 순서대로
+    head("#s02-ha", null, at(0, 0));
+    ft("#s02-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.2));
+    R([0, 1, 2, 3, 4, 5]).forEach((r, j) => ft(r, { opacity: 0, y: 8 }, { opacity: 1, y: 0 }, at(0, 0.6 + j * 0.12)));
+    fade("#s02-n1", at(0, 1.8), 0, 1);
+    // 7 1반 90, 85, 85, 80 / 2반 95, 85
+    paint(cells("p", [0, 1, 2, 3]).concat(cells("c", [0, 1, 2, 3])), at(1, 0.3), INK, ACC);
+    const c2 = X("c2", at(1, 4.5));
+    paint(cells("p", [0, 1, 2, 3]).concat(cells("c", [0, 1, 2, 3])), c2, ACC, INK);
+    paint(cells("p", [4, 5]).concat(cells("c", [4, 5])), c2 + 0.1, INK, ACC);
+    // 8 순위 함수 뒤에 OVER, 괄호 안에 기준
+    paint(cells("p", [4, 5]).concat(cells("c", [4, 5])), at(2, 0.1), ACC, INK);
+    ft("#s02-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(2, 0.1));
+    fade(["#s02-ov", "#s02-cp"], at(2, 1.0), 0, 1);
+    fade("#s02-ph", at(2, 2.3), 0, 1);
+    // 9 점수 내림차순 — 표도 점수 높은 순으로
+    fade("#s02-ph", at(3, 1.2), 1, 0);
+    fade("#s02-ob", at(3, 1.3), 0, 1);
+    fade("#s02-hi", at(3, 1.3), 0, 1);
+    const T = at(3, 2.1);
+    fade(R([3, 4]), T, 1, 0);
+    move(R([0, 1, 2]), 56, T + 0.5);
+    move("#s02-r5", -56, T + 0.5);
+    move("#s02-r4", -224, T + 0.75, 0.01);
+    move("#s02-r3", 112, T + 0.75, 0.01);
+    fade(R([4, 3]), T + 1.5, 0, 1);
+    // 10 윈도우 함수 — 행은 그대로, 행마다 값을 하나씩
+    fade("#s02-hi", at(4, 0.2), 1, 0);
+    fade("#s02-win", at(4, 0.8), 0, 1);
+    fade("#s02-n1", at(4, 3.4), 1, 0);
+    fade("#s02-n2", at(4, 3.5), 0, 1);
+    fade(["#s02-ba", "#s02-tr"], at(4, 4.6), 0, 1);
+
+    // 11 RANK
+    head("#s02-hb", "#s02-ha", at(5, 0));
+    // 12 95점 1등, 90점 2등, 85점 세 명은 모두 3등
+    stamp("#s02-a4", X("r1", at(6, 0.66)) + 0.1);
+    stamp("#s02-a0", X("r2", at(6, 2.0)) + 0.1);
+    cells("a", [1, 2, 5]).forEach((c, j) => stamp(c, X("r3", at(6, 4.4)) + 0.1 + j * 0.12));
+    // 13 80점은 6등
+    stamp("#s02-a3", at(7, 1.2));
+    paint("#s02-a3", at(7, 1.2), INK, ACC);
+    // 14 3등이 세 자리 → 4등과 5등을 건너뜀
+    paint(cells("a", [1, 2, 5]), at(8, 0.3), INK, ACC);
+    ft("#s02-k3", { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1 }, at(8, 0.3));
+    fade("#s02-t3", at(8, 0.5), 0, 1);
+    fade("#s02-t45", X("sk", at(8, 2.0)), 0, 1);
+    // 15 나보다 점수가 높은 사람 수 + 1
+    fade("#s02-t45", at(9, 0.3), 1, 0);
+    fade(["#s02-k3", "#s02-t3"], at(9, 0.3), 1, 0.35);
+    paint(cells("p", [4, 0, 1, 2, 5]), at(9, 1.3), INK, ACC);
+    fade("#s02-t51", at(9, 2.0), 0, 1);
+
+    // 16 DENSE_RANK — 앞 칸은 흐리게
+    head("#s02-hc", "#s02-hb", at(10, 0));
+    fade(["#s02-k3", "#s02-t3"], at(10, 0.1), 0.35, 0);
+    fade(["#s02-t51", "#s02-ba"], at(10, 0.1), 1, 0);
+    paint(cells("p", [4, 0, 1, 2, 5]), at(10, 0.1), ACC, INK);
+    fade(["#s02-tr"].concat(cells("a", [0, 1, 2, 3, 4, 5])), at(10, 0.2), 1, 0.3);
+    sql("#s02-l2", at(10, 0.3));
+    fade(["#s02-bd", "#s02-td"], at(10, 0.6), 0, 1);
+    // 17 1등, 2등, 85점 세 명이 3등, 80점은 바로 4등
+    stamp("#s02-d4", at(11, 0.15));
+    stamp("#s02-d0", X("d2", at(11, 0.64)) + 0.05);
+    cells("d", [1, 2, 5]).forEach((c, j) => stamp(c, X("d3", at(11, 2.55)) + 0.05 + j * 0.12));
+    stamp("#s02-d3", X("d4", at(11, 5.1)) + 0.05);
+    paint("#s02-d3", X("d4", at(11, 5.1)) + 0.05, INK, ACC);
+    // 18 빈틈없이 촘촘하게 — DENSE
+    ft("#s02-tdn", { opacity: 0, x: 16 }, { opacity: 1, x: 0 }, at(12, 0.6));
+
+    // 19 ROW_NUMBER — 동점을 인정하지 않는다
+    head("#s02-hd", "#s02-hc", at(13, 0));
+    fade(["#s02-tdn", "#s02-bd"], at(13, 0.1), 1, 0);
+    fade(["#s02-td"].concat(cells("d", [0, 1, 2, 3, 4, 5])), at(13, 0.2), 1, 0.3);
+    sql("#s02-l3", at(13, 0.3));
+    fade(["#s02-bw", "#s02-tw"], at(13, 0.6), 0, 1);
+    // 20 85점 세 명에게도 3, 4, 5 — 1부터 6까지 모두 다른 번호
+    stamp("#s02-w4", at(14, 0.3));
+    stamp("#s02-w0", at(14, 0.7));
+    // ‘3, 4, 5를’ 실제로 말한 시각(20번 문장 시작 기준, listen_episode.py로 잰 값): 1.38 1.92 2.78
+    cells("w", [1, 2, 5]).forEach((c, j) => stamp(c, at(14, [1.38, 1.92, 2.78][j] - 0.05)));
+    stamp("#s02-w3", X("w6", at(14, 4.65)));
+    // 21 동점자 가운데 누가 먼저인지는 정해지지 않음
+    paint(cells("w", [1, 2, 5]), at(15, 0.6), INK, ACC);
+    ft("#s02-kw", { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1 }, at(15, 0.6));
+    fade("#s02-tw3", at(15, 0.8), 0, 1);
+    // 22 정렬 기준에 학번처럼 겹치지 않는 열을 하나 더
+    const hb = X("hb", at(16, 2.1));
+    sql("#s02-l4", hb - 0.2);
+    fade("#s02-hi", hb, 0, 1);
+    if (String(V.exit) !== "false") ft("#s02-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s02"] = tl;
+  </script>
+</template>

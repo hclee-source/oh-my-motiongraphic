@@ -1,0 +1,51 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h1-code { left: 80px; top: 330px; width: 920px; }
+    #h1-code .q-ln { font-size: 40px; height: 76px; padding: 0 44px; }
+    #h1-code .q-no { width: 52px; height: 52px; top: 12px; right: 26px; border-radius: 26px; font-size: 30px; }
+    #h1-lab { position: absolute; left: 80px; top: 900px; width: 920px; text-align: center; font-size: 50px; font-weight: 900; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="h1" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.2,4.5]"},{"id":"dur","type":"number","label":"장면 길이","default":10},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"f1","type":"number","label":"처리는 FROM 시각","default":2.2},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h1-all">
+      <div id="h1-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><div class="q-hi" id="h1-h1"></div><span><span class="q-k">SELECT</span> 부서, AVG(급여) <span class="q-k">AS</span> 평균</span><div class="q-no" id="h1-n1">5</div></div>
+        <div class="q-ln"><div class="q-hi" id="h1-h2"></div><span><span class="q-k">FROM</span> 직원</span><div class="q-no" id="h1-n2">1</div></div>
+        <div class="q-ln"><div class="q-hi" id="h1-h3"></div><span><span class="q-k">WHERE</span> 급여 &gt;= 300</span><div class="q-no" id="h1-n3">2</div></div>
+        <div class="q-ln"><div class="q-hi" id="h1-h4"></div><span><span class="q-k">GROUP BY</span> 부서</span><div class="q-no" id="h1-n4">3</div></div>
+        <div class="q-ln"><div class="q-hi" id="h1-h5"></div><span><span class="q-k">HAVING</span> COUNT(*) &gt;= 2</span><div class="q-no" id="h1-n5">4</div></div>
+        <div class="q-ln"><div class="q-hi" id="h1-h6"></div><span><span class="q-k">ORDER BY</span> 평균 <span class="q-k">DESC</span>;</span><div class="q-no" id="h1-n6">6</div></div>
+      </div>
+      <div id="h1-lab">쓰는 순서 <span class="x-acc">≠</span> 처리 순서</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 10;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+    let cur = 0;
+    const hi = (k, t) => { if (cur) fade(`#h1-h${cur}`, t, 1, 0); if (k) fade(`#h1-h${k}`, t, 0, 1); cur = k; };
+
+    // 1 SELECT부터 쓰지만, 처리는 FROM부터
+    ft("#h1-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0));
+    hi(1, at(0, 0.4));
+    // ‘처리는 FROM부터’: 1번 문장 ‘From’ 2.72초(listen_episode.py로 잰 값)
+    const f1 = at(0, 2.67);
+    hi(2, f1);
+    stamp("#h1-n2", f1 + 0.1);
+    fade("#h1-lab", f1 + 0.4, 0, 1);
+    // 2 FROM, WHERE, GROUP BY, HAVING, SELECT, ORDER BY — 말하는 순간 그 줄과 순번(실제 시각: 0.00 0.70 2.20 3.72 4.94 6.30)
+    hi(2, at(1, 0));
+    [[3, 0.7], [4, 2.2], [5, 3.72], [1, 4.94], [6, 6.3]].forEach(([k, s]) => { hi(k, at(1, s - 0.05)); stamp(`#h1-n${k}`, at(1, s)); });
+    if (String(V.exit) !== "false") ft("#h1-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h1"] = tl;
+  </script>
+</template>

@@ -1,0 +1,62 @@
+/* 모든 장면이 함께 쓰는 틀. 색·글꼴 값은 index.html 변수에서 온다. */
+.x-head { position: absolute; left: 192px; top: 120px; font-size: 64px; font-weight: 800; letter-spacing: -0.01em; opacity: 0; }
+.x-sub { position: absolute; left: 192px; top: 214px; font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); opacity: 0; }
+.x-card { background: var(--color-card, #FFFFFF); border: 2px solid var(--color-line, #E3E5EA); border-radius: 28px;
+  box-shadow: 0 10px 30px var(--color-shadow, rgba(20,24,40,0.06)); }
+.x-dark { background: var(--color-anchor, #18181B); border-radius: 28px; color: #FFFFFF; }
+.x-hide { opacity: 0; }
+.x-acc { color: var(--color-accent, #6B3FE6); }
+.x-accd { color: var(--color-accent-dark, #A68CFF); }
+.x-mute { color: #A1A1AA; }
+.x-ink2 { color: var(--color-ink2, #71717A); }
+.x-wrap { position: relative; display: inline-block; }
+.x-ov { position: absolute; left: 0; top: 0; white-space: nowrap; color: var(--color-accent, #6B3FE6); opacity: 0; }
+
+/* 혼동행렬: 모든 장면에서 같은 자리 */
+.x-mx { position: absolute; left: 192px; top: 270px; display: grid;
+  grid-template-columns: 180px 300px 300px; grid-template-rows: 52px 52px 200px 200px; gap: 18px; }
+.x-lab { font-size: 36px; font-weight: 700; display: flex; align-items: center; }
+.x-pred { grid-column: 2 / 4; justify-content: center; border-bottom: 2px solid var(--color-hair, #D3D6DD); }
+.x-act { justify-content: flex-end; padding-right: 20px; }
+.x-h { font-size: 32px; font-weight: 600; color: var(--color-ink2, #71717A); display: flex; align-items: center; }
+.x-ch { justify-content: center; }
+.x-rh { justify-content: flex-end; padding-right: 20px; }
+.x-cell { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+.x-hl { position: absolute; inset: -2px; border-radius: 28px; border: 2px solid var(--color-accent, #6B3FE6);
+  background: color-mix(in srgb, var(--color-accent, #6B3FE6) 14%, var(--color-card, #FFFFFF)); opacity: 0; }
+.x-code { position: relative; font-size: 88px; font-weight: 800; line-height: 1; letter-spacing: -0.01em; }
+.x-kn { position: relative; font-size: 32px; font-weight: 600; color: var(--color-ink2, #71717A); }
+.x-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 112px; font-weight: 900; letter-spacing: -0.015em; opacity: 0; }
+.x-corner { position: absolute; left: 26px; top: 20px; font-size: 32px; font-weight: 800; color: var(--color-ink2, #71717A); opacity: 0; }
+
+/* 오른쪽 수식 카드 */
+.x-side { position: absolute; left: 1188px; width: 540px; box-sizing: border-box; }
+.x-fname { font-size: 44px; font-weight: 800; }
+.x-fdef { margin-top: 16px; font-size: 40px; font-weight: 600; color: #A1A1AA; }
+.x-fmean { margin-top: 22px; font-size: 32px; font-weight: 700; color: var(--color-accent-dark, #A68CFF); }
+
+/* ── SQL 장면(SQLD 편, 2026-11-02): new_episode.py --sql 이 scene.css 끝에 붙인다 ── */
+/* SQL 카드: class="x-dark q-code" + 줄마다 .q-ln, 예약어는 .q-k, 지금 줄 강조 .q-hi, 처리 순번 .q-no */
+.q-code { position: absolute; padding: 26px 0; box-sizing: border-box; }
+.q-ln { position: relative; height: 60px; padding: 0 40px; display: flex; align-items: center;
+  font-size: 34px; font-weight: 700; white-space: nowrap; color: #FFFFFF; }
+.q-k { color: var(--color-accent-dark, #A68CFF); }
+.q-m { color: #A1A1AA; }
+.q-hi { position: absolute; left: 14px; right: 14px; top: 3px; bottom: 3px; border-radius: 14px;
+  background: rgba(166, 140, 255, 0.22); opacity: 0; }
+.q-no { position: absolute; right: 22px; top: 8px; width: 44px; height: 44px; border-radius: 22px;
+  background: var(--color-accent-dark, #A68CFF); color: #18181B; font-size: 26px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center; opacity: 0; }
+/* 결과 표: class="x-card q-tb" + 머리 .q-th, 행 .q-tr(top을 직접 준다), 칸 너비는 표마다 grid-template-columns */
+.q-tb { position: absolute; box-sizing: border-box; }
+.q-th, .q-tr { position: absolute; left: 28px; right: 28px; height: 56px; display: grid; align-items: center; }
+.q-th { border-bottom: 2px solid var(--color-hair, #D3D6DD); }
+.q-th > div { font-size: 28px; font-weight: 700; color: var(--color-ink2, #71717A); text-align: center; white-space: nowrap; }
+.q-tr > div { font-size: 34px; font-weight: 800; text-align: center; white-space: nowrap; }
+.q-null { color: #A1A1AA; font-weight: 700; }
+/* 결과 표시 칩 */
+.q-chip { position: absolute; height: 72px; padding: 0 28px; border-radius: 36px; box-sizing: border-box;
+  display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 800; white-space: nowrap; opacity: 0; }
+.q-ok { background: color-mix(in srgb, var(--color-accent, #6B3FE6) 14%, #FFFFFF); color: var(--color-accent, #6B3FE6); }
+.q-ng { background: var(--color-anchor, #18181B); color: #FFFFFF; }

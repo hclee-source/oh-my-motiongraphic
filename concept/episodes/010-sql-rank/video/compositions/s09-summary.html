@@ -1,0 +1,48 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s09-lead { position: absolute; left: 192px; top: 262px; font-size: 44px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    .s09-c { position: absolute; top: 366px; width: 496px; height: 420px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .s09-kw { font-size: 40px; font-weight: 900; white-space: nowrap; }
+    .s09-v { margin-top: 26px; text-align: center; line-height: 1; white-space: nowrap; opacity: 0; }
+    .s09-num { font-size: 150px; font-weight: 900; color: var(--color-accent, #6B3FE6); }
+    .s09-u { margin-left: 10px; font-size: 52px; font-weight: 800; }
+    .s09-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s09" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3.44]"},{"id":"dur","type":"number","label":"장면 길이","default":12.5},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s09-all">
+      <div id="s09-head" class="x-head">한 줄 정리</div>
+      <div id="s09-lead">85점 세 명 다음의 <span class="x-acc">80점</span>은</div>
+      <div class="s09-c x-card x-hide" id="s09-c1" style="left:192px"><div class="s09-ring" id="s09-o1"></div><div class="s09-kw">RANK</div>
+        <div class="s09-v" id="s09-v1"><span class="s09-num">6</span><span class="s09-u">등</span></div></div>
+      <div class="s09-c x-card x-hide" id="s09-c2" style="left:712px"><div class="s09-ring" id="s09-o2"></div><div class="s09-kw">DENSE_RANK</div>
+        <div class="s09-v" id="s09-v2"><span class="s09-num">4</span><span class="s09-u">등</span></div></div>
+      <div class="s09-c x-card x-hide" id="s09-c3" style="left:1232px"><div class="s09-ring" id="s09-o3"></div><div class="s09-kw">ROW_NUMBER</div>
+        <div class="s09-v" id="s09-v3"><span class="s09-num">6</span><span class="s09-u">번</span></div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 12.5;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+
+    // 41 한 줄로 정리하면
+    ft("#s09-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    [1, 2, 3].forEach((k, j) => ft(`#s09-c${k}`, { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, at(0, 0.6 + j * 0.2)));
+    // 42 85점 세 명 다음의 80점은 — RANK 6등, DENSE_RANK 4등, ROW_NUMBER 6번 (이름이 나올 때 하나씩)
+    fade("#s09-lead", at(1, 0.1), 0, 1);
+    [[1, 2.5], [2, 3.7], [3, 5.3]].forEach(([k, d]) => {
+      fade(`#s09-o${k}`, at(1, d), 0, 1);
+      if (k > 1) fade(`#s09-o${k - 1}`, at(1, d), 1, 0);
+      ft(`#s09-v${k}`, { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, at(1, d + 0.4));
+    });
+    window.__timelines["s09"] = tl;
+  </script>
+</template>

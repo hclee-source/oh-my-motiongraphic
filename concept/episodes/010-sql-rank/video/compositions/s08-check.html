@@ -1,0 +1,80 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s08-c { position: absolute; left: 192px; width: 1096px; height: 176px; padding: 0 44px; box-sizing: border-box;
+      display: grid; grid-template-columns: 84px 1fr; align-items: center; }
+    #s08-c1 { top: 262px; }
+    #s08-c2 { top: 466px; }
+    #s08-c3 { top: 670px; }
+    .s08-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    .s08-n { font-size: 72px; font-weight: 900; color: var(--color-ink2, #71717A); }
+    .s08-t { font-size: 44px; font-weight: 800; white-space: nowrap; }
+    .s08-d { margin-top: 8px; font-size: 30px; font-weight: 600; color: var(--color-ink2, #71717A); opacity: 0; white-space: nowrap; }
+    #s08-d1 { opacity: 1; }
+    #s08-d1 > span { opacity: 0; }
+    #s08-side { left: 1328px; width: 400px; top: 262px; height: 584px; padding: 44px 40px; }
+    #s08-plus { font-size: 30px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    #s08-sname { margin-top: 10px; font-size: 46px; font-weight: 900; line-height: 1.25; }
+    #s08-sdef { margin-top: 26px; font-size: 40px; font-weight: 800; color: var(--color-accent, #6B3FE6); line-height: 1.4; }
+  </style>
+  <div id="root" data-composition-id="s08" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3.13,13.39,18.12,24.9]"},{"id":"dur","type":"number","label":"장면 길이","default":28.9},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s08-all">
+      <div id="s08-head" class="x-head">시험장 체크</div>
+      <div class="s08-c x-card x-hide" id="s08-c1"><div class="s08-ring" id="s08-r1"></div><div class="s08-n" id="s08-n1">1</div>
+        <div><div class="s08-t">동점 뒤 번호가 다르다</div><div class="s08-d" id="s08-d1"><span id="s08-p1">RANK 건너뜀</span><span id="s08-p2"> · DENSE_RANK 촘촘</span><span id="s08-p3"> · ROW_NUMBER 모두 다름</span></div></div></div>
+      <div class="s08-c x-card x-hide" id="s08-c2"><div class="s08-ring" id="s08-r2"></div><div class="s08-n" id="s08-n2">2</div>
+        <div><div class="s08-t">PARTITION BY는 묶음마다 1부터</div><div class="s08-d" id="s08-d2">OVER (PARTITION BY 반 ORDER BY 점수 DESC)</div></div></div>
+      <div class="s08-c x-card x-hide" id="s08-c3"><div class="s08-ring" id="s08-r3"></div><div class="s08-n" id="s08-n3">3</div>
+        <div><div class="s08-t">순위 조건은 인라인 뷰로</div><div class="s08-d" id="s08-d3">WHERE에 바로 쓰면 ✕ · 감싼 뒤 바깥에서 거른다</div></div></div>
+      <div id="s08-side" class="x-side x-card x-hide">
+        <div id="s08-plus">덧붙여</div>
+        <div id="s08-sname">윈도우 함수는</div>
+        <div id="s08-sdef">행 수를<br />줄이지 않는다</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 28.9;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, ease: "back.out(1.6)" }, t);
+    const ACC = "#6B3FE6", INK2 = "#71717A";
+
+    // 36 세 가지
+    ft("#s08-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    // 지금 말하는 카드만 테두리와 번호가 강조색
+    const focus = (k, t) => {
+      stamp(`#s08-c${k}`, t);
+      fade(`#s08-r${k}`, t, 0, 1);
+      ft(`#s08-n${k}`, { color: INK2 }, { color: ACC }, t);
+      if (k > 1) {
+        fade(`#s08-r${k - 1}`, t, 1, 0);
+        ft(`#s08-n${k - 1}`, { color: ACC }, { color: INK2 }, t);
+      }
+    };
+    // 37 건너뛰면 RANK, 건너뛰지 않으면 DENSE_RANK, 모두 다르면 ROW_NUMBER — 이름이 나올 때 하나씩
+    focus(1, at(1, 0.2));
+    fade("#s08-p1", at(1, 2.5), 0, 1);
+    fade("#s08-p2", at(1, 4.5), 0, 1);
+    fade("#s08-p3", at(1, 8.3), 0, 1);
+    // 38 PARTITION BY는 묶음마다 1부터
+    focus(2, at(2, 0.2));
+    fade("#s08-d2", at(2, 2.2), 0, 1);
+    // 39 WHERE에 바로 ✕, 인라인 뷰로 감싼 뒤 바깥에서
+    focus(3, at(3, 0.2));
+    fade("#s08-d3", at(3, 2.2), 0, 1);
+    // 40 덧붙여 윈도우 함수는 행 수를 줄이지 않는다
+    fade("#s08-r3", at(4, 0.2), 1, 0);
+    ft("#s08-n3", { color: ACC }, { color: INK2 }, at(4, 0.2));
+    ft("#s08-side", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(4, 0.3));
+    if (String(V.exit) !== "false") ft("#s08-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s08"] = tl;
+  </script>
+</template>

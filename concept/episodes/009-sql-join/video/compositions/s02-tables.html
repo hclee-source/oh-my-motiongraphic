@@ -1,0 +1,237 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    /* 두 원본 표와 잇는 선(묶음 #s02-src): 2장에서는 화면 가운데, 3장부터 왼쪽으로 옮겨 결과 표 자리를 낸다 */
+    #s02-src { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform: translateX(338px); }
+    .s02-tb { top: 262px; width: 360px; height: 444px; }
+    #s02-emp { left: 192px; }
+    #s02-dep { left: 692px; }
+    .s02-tb .q-th, .s02-tb .q-tr { grid-template-columns: 152px 152px; }
+    .s02-tb .q-th, #s02-res .q-th { top: 76px; }
+    .s02-tn { position: absolute; left: 32px; top: 18px; font-size: 36px; font-weight: 900; white-space: nowrap; }
+    .s02-tn span { margin-left: 12px; font-size: 30px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    .s02-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    .s02-band { position: absolute; left: 12px; right: 12px; height: 56px; border-radius: 14px;
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 12%, #FFFFFF); opacity: 0; }
+    #s02-svg { position: absolute; left: 192px; top: 262px; width: 860px; height: 444px; overflow: visible; }
+    .s02-ln { stroke-width: 4; stroke-linecap: round; stroke-dasharray: 270; stroke-dashoffset: 270; }
+    /* 결과 표 */
+    #s02-res { left: 1112px; top: 262px; width: 616px; height: 584px; }
+    #s02-res .q-th, #s02-res .q-tr { grid-template-columns: 170px 170px 220px; }
+    #s02-cnt { position: absolute; right: 32px; top: 18px; width: 140px; height: 50px; }
+    #s02-cnt > span { position: absolute; right: 0; top: 0; font-size: 36px; font-weight: 900; color: var(--color-accent, #6B3FE6);
+      white-space: nowrap; opacity: 0; }
+    .s02-nh { position: absolute; top: 3px; width: 140px; height: 50px; box-sizing: border-box; border: 3px solid var(--color-accent, #6B3FE6);
+      border-radius: 12px; opacity: 0; }
+    /* NULL 글자: 흐린 회색이되 흰 카드 위 대비 3:1 이상 */
+    #s02-all .q-null { color: #8F8F99; }
+    .s02-gb { position: absolute; left: 382px; width: 6px; border-radius: 3px; background: var(--color-accent, #6B3FE6); opacity: 0; }
+    .s02-g { position: absolute; left: 404px; width: 180px; height: 56px; }
+    .s02-g > span { position: absolute; left: 0; top: 0; height: 56px; display: flex; align-items: center; font-size: 32px; font-weight: 800;
+      white-space: nowrap; opacity: 0; }
+    /* 아래 한 줄 메모 */
+    #s02-note { position: absolute; left: 192px; top: 738px; width: 860px; height: 108px; }
+    .s02-n { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 40px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    #s02-n-e { font-size: 48px; font-weight: 900; }
+    #s02-n-e span { opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s02" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,5,8,14,18,23,27,33,38,41,46,50,54,57,62,68,72,79,84]"},{"id":"dur","type":"number","label":"장면 길이","default":88},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"d2","type":"number","label":"오른쪽은 시각","default":2.5},{"id":"m2","type":"number","label":"현우는 시각","default":9.9},{"id":"m3","type":"number","label":"수진은 시각","default":11.5},{"id":"j1","type":"number","label":"지영 시각","default":27.5},{"id":"j2","type":"number","label":"현우 시각","default":28.4},{"id":"j3","type":"number","label":"수진 시각","default":29.2},{"id":"j4","type":"number","label":"네 행 시각","default":30.9},{"id":"l1","type":"number","label":"동훈이 시각","default":52.4},{"id":"l2","type":"number","label":"5행 시각","default":53.3},{"id":"g1","type":"number","label":"기획 시각","default":62.7},{"id":"g2","type":"number","label":"5행이고 시각","default":64.3},{"id":"g3","type":"number","label":"사원 칸이 시각","default":65.6},{"id":"f1","type":"number","label":"왼쪽에만 시각","default":73.3},{"id":"f2","type":"number","label":"오른쪽에만 시각","default":75.1},{"id":"a6","type":"number","label":"모두 6행 시각","default":77.6},{"id":"x1","type":"number","label":"겹친 시각","default":85.8},{"id":"x2","type":"number","label":"6이 시각","default":86.8},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s02-all">
+      <div id="s02-ha" class="x-head">사원 표와 부서 표</div>
+      <div id="s02-hb" class="x-head">INNER JOIN</div>
+      <div id="s02-hc" class="x-head">LEFT OUTER JOIN</div>
+      <div id="s02-hd" class="x-head">RIGHT OUTER JOIN</div>
+      <div id="s02-he" class="x-head">FULL OUTER JOIN</div>
+      <div id="s02-src">
+        <div id="s02-emp" class="x-card q-tb s02-tb x-hide">
+          <div class="s02-ring" id="s02-oe"></div>
+          <div class="s02-band" id="s02-be" style="top:364px"></div>
+          <div class="s02-tn">사원<span>5행</span></div>
+          <div class="q-th"><div>이름</div><div id="s02-k1">부서번호</div></div>
+          <div class="q-tr" id="s02-e0" style="top:140px"><div>민수</div><div>10</div></div>
+          <div class="q-tr" id="s02-e1" style="top:196px"><div>지영</div><div>10</div></div>
+          <div class="q-tr" id="s02-e2" style="top:252px"><div>현우</div><div>20</div></div>
+          <div class="q-tr" id="s02-e3" style="top:308px"><div>수진</div><div>30</div></div>
+          <div class="q-tr" id="s02-e4" style="top:364px"><div>동훈</div><div class="q-null">NULL</div></div>
+        </div>
+        <div id="s02-dep" class="x-card q-tb s02-tb x-hide">
+          <div class="s02-ring" id="s02-od"></div>
+          <div class="s02-band" id="s02-bd" style="top:308px"></div>
+          <div class="s02-tn">부서<span>4행</span></div>
+          <div class="q-th"><div id="s02-k2">부서번호</div><div>부서명</div></div>
+          <div class="q-tr" id="s02-d0" style="top:140px"><div>10</div><div id="s02-dy">영업</div></div>
+          <div class="q-tr" id="s02-d1" style="top:196px"><div>20</div><div>개발</div></div>
+          <div class="q-tr" id="s02-d2" style="top:252px"><div>30</div><div>인사</div></div>
+          <div class="q-tr" id="s02-d3" style="top:308px"><div>40</div><div>기획</div></div>
+        </div>
+        <!-- 같은 부서번호끼리 잇는 선(묶음 기준 좌표: 사원 표 0~360, 부서 표 500~860) -->
+        <svg id="s02-svg" viewBox="0 0 860 444">
+          <line class="s02-ln" id="s02-l0" x1="300" y1="168" x2="560" y2="168" stroke="#6B3FE6" />
+          <line class="s02-ln" id="s02-l1" x1="300" y1="224" x2="560" y2="168" stroke="#6B3FE6" />
+          <line class="s02-ln" id="s02-l2" x1="300" y1="280" x2="560" y2="224" stroke="#6B3FE6" />
+          <line class="s02-ln" id="s02-l3" x1="300" y1="336" x2="560" y2="280" stroke="#6B3FE6" />
+          <circle id="s02-a0" cx="300" cy="168" r="7" fill="#6B3FE6" opacity="0" />
+          <circle id="s02-a1" cx="300" cy="224" r="7" fill="#6B3FE6" opacity="0" />
+          <circle id="s02-a2" cx="300" cy="280" r="7" fill="#6B3FE6" opacity="0" />
+          <circle id="s02-a3" cx="300" cy="336" r="7" fill="#6B3FE6" opacity="0" />
+          <circle id="s02-b0" cx="560" cy="168" r="7" fill="#6B3FE6" opacity="0" />
+          <circle id="s02-b1" cx="560" cy="168" r="7" fill="#6B3FE6" opacity="0" />
+          <circle id="s02-b2" cx="560" cy="224" r="7" fill="#6B3FE6" opacity="0" />
+          <circle id="s02-b3" cx="560" cy="280" r="7" fill="#6B3FE6" opacity="0" />
+        </svg>
+      </div>
+      <div id="s02-res" class="x-card q-tb x-hide">
+        <div class="s02-ring" id="s02-or"></div>
+        <div class="s02-tn">결과</div>
+        <div id="s02-cnt" data-layout-allow-overlap><span id="s02-c4">4행</span><span id="s02-c5">5행</span><span id="s02-c6">6행</span></div>
+        <div class="q-th"><div>이름</div><div>부서명</div><div></div></div>
+        <div class="q-tr x-hide" id="s02-r0" style="top:140px"><div>민수</div><div id="s02-y0">영업</div><div></div></div>
+        <div class="q-tr x-hide" id="s02-r1" style="top:204px"><div>지영</div><div id="s02-y1">영업</div><div></div></div>
+        <div class="q-tr x-hide" id="s02-r2" style="top:268px"><div>현우</div><div>개발</div><div></div></div>
+        <div class="q-tr x-hide" id="s02-r3" style="top:332px"><div>수진</div><div>인사</div><div></div></div>
+        <div class="q-tr x-hide" id="s02-rd" style="top:396px"><div>동훈</div><div class="q-null">NULL</div><div></div><div class="s02-nh" id="s02-hd1" style="left:185px"></div></div>
+        <div class="q-tr x-hide" id="s02-rg" style="top:396px"><div class="q-null">NULL</div><div>기획</div><div></div><div class="s02-nh" id="s02-hg1" style="left:15px"></div></div>
+        <div class="s02-gb" id="s02-gb1" style="top:146px;height:236px"></div>
+        <div class="s02-gb" id="s02-gb2" style="top:402px;height:44px"></div>
+        <div class="s02-gb" id="s02-gb3" style="top:466px;height:44px"></div>
+        <div class="s02-g" style="top:236px" data-layout-allow-overlap><span id="s02-g1">짝 있음</span><span id="s02-g1b" class="x-acc">두 번 셈</span></div>
+        <div class="s02-g" style="top:396px"><span id="s02-g2">왼쪽만</span></div>
+        <div class="s02-g" style="top:460px"><span id="s02-g3">오른쪽만</span></div>
+      </div>
+      <div id="s02-note" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s02-n" id="s02-n-a"><div>양쪽에 <span class="x-acc">짝이 있는</span> 행만</div></div>
+        <div class="s02-n" id="s02-n-b"><div><span class="x-acc">왼쪽</span> 표의 행을 모두 살린다</div></div>
+        <div class="s02-n" id="s02-n-c"><div><span class="x-acc">오른쪽</span> 표의 행을 모두 살린다</div></div>
+        <div class="s02-n" id="s02-n-d"><div><span class="x-acc">양쪽</span> 표의 행을 모두 살린다</div></div>
+        <div class="s02-n" id="s02-n-e"><div><span id="s02-f1">5 + 5</span> <span id="s02-f2" class="x-acc">− 4</span> <span id="s02-f3">= 6</span></div></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 88;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const ACC = "#6B3FE6", INK = "#18181B", INK2 = "#71717A", GRAY = "#B4B4BE";
+    const head = (id, prev, t) => { if (prev) fade(prev, t, 1, 0); ft(id, { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, t + (prev ? 0.2 : 0)); };
+    let note = null;
+    const say = (id, t) => { if (note) fade(note, t, 1, 0); fade(id, t + 0.15, 0, 1); note = id; };
+    let cnt = 0;
+    const count = (k, t) => { if (cnt) fade(`#s02-c${cnt}`, t, 1, 0); fade(`#s02-c${k}`, t + 0.1, 0, 1); cnt = k; };
+    const rowIn = (id, t) => ft(id, { opacity: 0, x: -16 }, { opacity: 1, x: 0 }, t);
+    // 잇는 선: 그어지고 양 끝 점이 찍힌다 / 선 색 바꾸기(초점이면 강조색, 아니면 회색)
+    const draw = (k, t) => {
+      ft(`#s02-l${k}`, { strokeDashoffset: 270 }, { strokeDashoffset: 0, duration: 0.5 * S, ease: "power2.inOut" }, t);
+      fade(`#s02-a${k}`, t, 0, 1);
+      fade(`#s02-b${k}`, t + 0.45 * S, 0, 1);
+    };
+    const lineColor = (ks, a, b, t) => ks.forEach((k) => {
+      ft(`#s02-l${k}`, { stroke: a }, { stroke: b }, t);
+      ft([`#s02-a${k}`, `#s02-b${k}`], { fill: a }, { fill: b }, t);
+    });
+
+    // 6 왼쪽 사원 다섯 명, 오른쪽 부서 네 개
+    head("#s02-ha", null, at(0, 0));
+    ft("#s02-emp", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.6));
+    ft("#s02-dep", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("d2", at(0, 2.0)));
+    // 7 두 표는 부서번호로 이어진다
+    ft(["#s02-k1", "#s02-k2"], { color: INK2 }, { color: ACC }, at(1, 0.3));
+    // 8 민수·지영 → 10 영업, 현우 → 20 개발, 수진 → 30 인사
+    draw(0, at(2, 0.3));
+    draw(1, at(2, 1.1));
+    draw(2, X("m2", at(2, 2.2)));
+    draw(3, X("m3", at(2, 3.8)));
+    // 9 동훈은 부서번호가 NULL — 이을 곳이 없다
+    ft(["#s02-k1", "#s02-k2"], { color: ACC }, { color: INK2 }, at(3, 0.2));
+    lineColor([0, 1, 2, 3], ACC, GRAY, at(3, 0.2));
+    fade("#s02-be", at(3, 0.3), 0, 1);
+    // 10 40번 기획 부서에는 사원이 없다
+    fade("#s02-be", at(4, 0.2), 1, 0);
+    fade("#s02-bd", at(4, 0.3), 0, 1);
+
+    // 11 INNER JOIN — 원본 표는 왼쪽으로, 결과 표가 오른쪽에
+    head("#s02-hb", "#s02-ha", at(5, 0));
+    fade("#s02-bd", at(5, 0.1), 1, 0);
+    ft("#s02-src", { x: 338 }, { x: 0, duration: 0.7 * S, ease: "power2.inOut" }, at(5, 0.2));
+    lineColor([0, 1, 2, 3], GRAY, ACC, at(5, 0.6));
+    ft("#s02-res", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(5, 1.3));
+    ft("#s02-note", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(5, 1.5));
+    say("#s02-n-a", at(5, 1.5));
+    // 12 민수, 지영, 현우, 수진 — 네 행
+    rowIn("#s02-r0", at(6, 0.1));
+    rowIn("#s02-r1", X("j1", at(6, 0.9)));
+    rowIn("#s02-r2", X("j2", at(6, 1.7)));
+    rowIn("#s02-r3", X("j3", at(6, 2.5)));
+    count(4, X("j4", at(6, 4.2)));
+    // 13 동훈은 NULL이라 어느 부서와도 같지 않다 → 빠진다
+    fade("#s02-e4", at(7, 1.6), 1, 0.3);
+    // 14 사원이 없는 기획도 빠진다
+    fade("#s02-d3", at(8, 1.2), 1, 0.3);
+    // 15 영업은 사원이 둘이라 결과에 두 번
+    lineColor([2, 3], ACC, GRAY, at(9, 0.6));
+    ft(["#s02-y0", "#s02-y1", "#s02-dy"], { color: INK }, { color: ACC }, at(9, 0.8));
+
+    // 16 LEFT OUTER JOIN — 왼쪽 표를 모두 살린다
+    head("#s02-hc", "#s02-hb", at(10, 0));
+    lineColor([0, 1], ACC, GRAY, at(10, 0.1));
+    ft(["#s02-y0", "#s02-y1", "#s02-dy"], { color: ACC }, { color: INK }, at(10, 0.1));
+    fade("#s02-oe", at(10, 0.3), 0, 1);
+    fade("#s02-e4", at(10, 0.5), 0.3, 1);
+    say("#s02-n-b", at(10, 0.3));
+    // 17 네 행에 동훈이 더해져 5행
+    rowIn("#s02-rd", X("l1", at(11, 2.4)));
+    count(5, X("l2", at(11, 3.4)));
+    // 18 동훈의 부서명 칸은 NULL
+    fade("#s02-hd1", at(12, 0.5), 0, 1);
+    // 19 RIGHT OUTER JOIN — 오른쪽 표를 모두 살린다(동훈 행은 빠지고 다시 4행)
+    head("#s02-hd", "#s02-hc", at(13, 0));
+    fade("#s02-oe", at(13, 0.2), 1, 0);
+    fade("#s02-od", at(13, 0.3), 0, 1);
+    fade("#s02-e4", at(13, 0.3), 1, 0.3);
+    fade("#s02-d3", at(13, 0.5), 0.3, 1);
+    fade(["#s02-rd", "#s02-hd1"], at(13, 0.3), 1, 0);
+    count(4, at(13, 0.6));
+    say("#s02-n-c", at(13, 0.3));
+    // 20 기획이 더해져 5행, 이번에는 사원 칸이 NULL
+    rowIn("#s02-rg", X("g1", at(14, 1.2)));
+    count(5, X("g2", at(14, 2.7)));
+    fade("#s02-hg1", X("g3", at(14, 4.1)), 0, 1);
+
+    // 21 FULL OUTER JOIN — 양쪽 표를 모두 살린다
+    head("#s02-he", "#s02-hd", at(15, 0));
+    fade("#s02-oe", at(15, 0.3), 0, 1);
+    fade("#s02-e4", at(15, 0.3), 0.3, 1);
+    fade("#s02-hg1", at(15, 0.2), 1, 0);
+    ft("#s02-rg", { y: 0 }, { y: 64, duration: 0.5 * S, ease: "power2.inOut" }, at(15, 0.4));
+    rowIn("#s02-rd", at(15, 1.2));
+    count(6, at(15, 1.6));
+    say("#s02-n-d", at(15, 0.3));
+    // 22 짝 있는 네 행, 왼쪽에만 동훈, 오른쪽에만 기획 — 6행
+    const bar = (k, t) => { ft(`#s02-gb${k}`, { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1 }, t); fade(`#s02-g${k}`, t + 0.15, 0, 1); };
+    bar(1, at(16, 0.4));
+    bar(2, X("f1", at(16, 1.5)));
+    bar(3, X("f2", at(16, 3.3)));
+    // 모두 6행 — 초점이 원본 표에서 결과 표로
+    const a6 = X("a6", at(16, 5.6));
+    fade(["#s02-oe", "#s02-od"], a6, 1, 0);
+    fade("#s02-or", a6 + 0.1, 0, 1);
+    // 23 LEFT + RIGHT는 짝 있는 네 행을 두 번 센다
+    say("#s02-n-e", at(17, 0.2));
+    fade("#s02-f1", at(17, 0.35), 0, 1);
+    fade("#s02-g1", at(17, 1.6), 1, 0);
+    fade("#s02-g1b", at(17, 1.75), 0, 1);
+    // 24 5 + 5에서 겹친 4를 빼면 6
+    fade("#s02-f2", X("x1", at(18, 1.5)), 0, 1);
+    fade("#s02-f3", X("x2", at(18, 2.5)), 0, 1);
+    if (String(V.exit) !== "false") ft("#s02-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s02"] = tl;
+  </script>
+</template>

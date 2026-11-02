@@ -1,0 +1,142 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s03-tb { left: 192px; top: 262px; width: 620px; height: 584px; }
+    #s03-tb .q-th, #s03-tb .q-tr { grid-template-columns: 282px 282px; }
+    #s03-tb .q-th > div { font-size: 30px; }
+    #s03-tb .q-tr > div { font-size: 40px; }
+    #s03-tb .q-null { color: #8A8A93; }
+    .s03-sw { position: relative; height: 56px; }
+    .s03-sw > span { position: absolute; left: 0; right: 0; top: 0; line-height: 56px; text-align: center; white-space: nowrap; }
+    #s03-rh { position: absolute; left: 16px; right: 16px; top: 448px; height: 72px; border-radius: 16px;
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 12%, #FFFFFF); opacity: 0; }
+    #s03-rs { left: 872px; top: 262px; width: 856px; height: 584px; }
+    #s03-rs .q-th, #s03-rs .q-tr { grid-template-columns: 420px 200px 180px; }
+    #s03-rs .q-th > div { font-size: 30px; }
+    #s03-rs .q-th > div:first-child, #s03-rs .q-tr > div.s03-fn { text-align: left; padding-left: 20px; }
+    #s03-rs .q-tr { height: 64px; }
+    #s03-rs .q-tr > div { font-size: 36px; font-weight: 800; }
+    #s03-rs .q-tr > .s03-calc { font-size: 30px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    #s03-rs .q-tr > .s03-val { font-size: 44px; font-weight: 900; }
+    .s03-bar { position: absolute; left: -12px; right: -12px; top: -4px; bottom: -4px; border-radius: 16px;
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 12%, #FFFFFF); opacity: 0; z-index: -1; }
+    #s03-rs .q-tr { z-index: 0; }
+    #s03-note { position: absolute; left: 28px; right: 28px; top: 440px; height: 110px; }
+    #s03-note > div { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 36px; font-weight: 800; white-space: nowrap; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s03" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,6.666,9.749,13.514,16.836,21.793,27.481,32.335,36.759,42.647,46.644]"},{"id":"dur","type":"number","label":"장면 길이","default":53.912},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"v5","type":"number","label":"5 시각","default":8.778},{"id":"v4","type":"number","label":"4 시각","default":12.576},{"id":"v320","type":"number","label":"320 시각","default":15.618},{"id":"v80","type":"number","label":"80 시각","default":20.605},{"id":"n320","type":"number","label":"그대로 320 시각","default":38.236},{"id":"n5","type":"number","label":"나누는 수 5 시각","default":39.897},{"id":"n64","type":"number","label":"평균 64 시각","default":41.189},{"id":"a80","type":"number","label":"언제나 80 시각","default":47.943},{"id":"a64","type":"number","label":"NVL로 64 시각","default":51.514},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s03-all">
+      <div id="s03-ha" class="x-head">집계 함수는 NULL을 건너뛴다</div>
+      <div id="s03-hb" class="x-head">0점으로 치면</div>
+      <div id="s03-tb" class="x-card q-tb x-hide">
+        <div id="s03-rh"></div>
+        <div class="q-th" style="top:30px"><div>이름</div>
+          <div class="s03-sw" data-layout-allow-overlap><span id="s03-t1">점수</span><span id="s03-t2" class="x-acc" style="opacity:0">NVL(점수, 0)</span></div></div>
+        <div class="q-tr x-hide" id="s03-r0" style="top:120px"><div>민수</div><div>90</div></div>
+        <div class="q-tr x-hide" id="s03-r1" style="top:204px"><div>지영</div><div>80</div></div>
+        <div class="q-tr x-hide" id="s03-r2" style="top:288px"><div>현우</div><div>70</div></div>
+        <div class="q-tr x-hide" id="s03-r3" style="top:372px"><div>수진</div><div>80</div></div>
+        <div class="q-tr x-hide" id="s03-r4" style="top:456px"><div>동훈</div>
+          <div class="s03-sw" data-layout-allow-overlap><span class="q-null" id="s03-x0">NULL</span><span class="x-acc" id="s03-x1" style="opacity:0">0</span></div></div>
+      </div>
+      <div id="s03-rs" class="x-card q-tb x-hide">
+        <div class="q-th" style="top:30px"><div>식</div><div>계산</div><div>결과</div></div>
+        <div class="q-tr x-hide" id="s03-f0" style="top:112px"><div class="s03-bar" id="s03-b0"></div><div class="s03-fn">COUNT(*)</div>
+          <div class="s03-calc x-hide" id="s03-k0">행 5개</div><div class="s03-val x-hide" id="s03-v0">5</div></div>
+        <div class="q-tr x-hide" id="s03-f1" style="top:192px"><div class="s03-bar" id="s03-b1"></div><div class="s03-fn">COUNT(점수)</div>
+          <div class="s03-calc x-hide" id="s03-k1">NULL 빼고</div><div class="s03-val x-hide" id="s03-v1">4</div></div>
+        <div class="q-tr x-hide" id="s03-f2" style="top:272px"><div class="s03-bar" id="s03-b2"></div><div class="s03-fn">SUM(점수)</div>
+          <div class="s03-calc x-hide" id="s03-k2">NULL 빼고</div><div class="s03-val x-hide" id="s03-v2">320</div></div>
+        <div class="q-tr x-hide" id="s03-f3" style="top:352px"><div class="s03-bar" id="s03-b3"></div><div class="s03-fn">AVG(점수)</div>
+          <div class="s03-calc x-hide" id="s03-k3">320 ÷ 4</div><div class="s03-val x-acc x-hide" id="s03-v3">80</div></div>
+        <div class="q-tr x-hide" id="s03-f4" style="top:192px"><div class="s03-bar" id="s03-b4"></div><div class="s03-fn">AVG(NVL(점수, 0))</div>
+          <div class="s03-calc"><span class="x-hide" id="s03-k4a">320</span> <span class="x-hide" id="s03-k4b">÷ 5</span></div><div class="s03-val x-acc x-hide" id="s03-v4">64</div></div>
+        <div class="q-tr x-hide" id="s03-f5" style="top:272px"><div class="s03-bar" id="s03-b5"></div><div class="s03-fn">SUM(점수) ÷ COUNT(*)</div>
+          <div class="s03-calc x-hide" id="s03-k5">320 ÷ 5</div><div class="s03-val x-acc x-hide" id="s03-v5">64</div></div>
+        <div id="s03-note" data-layout-allow-overlap>
+          <div id="s03-na"><span><span class="x-acc">COUNT(*)</span> 말고는 NULL을 건너뛴다</span></div>
+          <div id="s03-nb"><span>0점 처리 조건이 있을 때만 <span class="x-acc">NVL</span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 53.912;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+    const head = (id, prev, t) => { if (prev) fade(prev, t, 1, 0); ft(id, { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, t + (prev ? 0.2 : 0)); };
+    const num = (k, fallback) => Number(V[k]) || fallback;
+    // 지금 계산하는 결과 행만 연보라 바탕
+    let cur = -1;
+    const bar = (k, t) => { if (cur >= 0) fade(`#s03-b${cur}`, t, 1, 0); if (k >= 0) fade(`#s03-b${k}`, t, 0, 1); cur = k; };
+    let note = null;
+    const say = (id, t) => { if (note) fade(note, t, 1, 0); if (id) fade(id, t + 0.15, 0, 1); note = id; };
+
+    // 11 집계 함수는 NULL을 만나도 결과가 NULL이 되지 않는다
+    head("#s03-ha", null, at(0, 0));
+    ft("#s03-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.2));
+    [0, 1, 2, 3, 4].forEach((r, j) => ft(`#s03-r${r}`, { opacity: 0, y: 8 }, { opacity: 1, y: 0 }, at(0, 0.6 + j * 0.12)));
+    ft("#s03-rs", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 1.4));
+    [0, 1, 2, 3].forEach((r, j) => ft(`#s03-f${r}`, { opacity: 0, y: 8 }, { opacity: 1, y: 0 }, at(0, 2.0 + j * 0.2)));
+    // 12 COUNT(*)는 행의 개수 → 5
+    bar(0, at(1, 0.2));
+    fade("#s03-k0", at(1, 1.0), 0, 1);
+    stamp("#s03-v0", num("v5", at(1, 2.1)));
+    // 13 COUNT(점수)는 NULL이 아닌 행만 → 4 (동훈 행이 흐려진다)
+    bar(1, at(2, 0.2));
+    fade("#s03-r4", at(2, 1.2), 1, 0.25);
+    fade("#s03-k1", at(2, 1.4), 0, 1);
+    stamp("#s03-v1", num("v4", at(2, 2.8)));
+    // 14 SUM(점수)는 NULL을 빼고 더해 320
+    bar(2, at(3, 0.2));
+    fade("#s03-k2", at(3, 0.9), 0, 1);
+    stamp("#s03-v2", num("v320", at(3, 2.1)));
+    // 15 AVG(점수)도 NULL을 빼고, 320을 4로 나눈 80
+    bar(3, at(4, 0.2));
+    fade("#s03-k3", at(4, 2.4), 0, 1);
+    stamp("#s03-v3", num("v80", at(4, 3.8)));
+    // 16 COUNT(*)만 빼면 모두 NULL을 건너뛴다
+    bar(-1, at(5, 0.2));
+    say("#s03-na", at(5, 0.3));
+
+    // 17 0점으로 치려면 NULL을 0으로 — 앞 결과는 접고 AVG(점수) 80만 위로
+    head("#s03-hb", "#s03-ha", at(6, 0));
+    say(null, at(6, 0.2));
+    fade(["#s03-f0", "#s03-f1", "#s03-f2"], at(6, 0.2), 1, 0);
+    ft("#s03-f3", { y: 0 }, { y: -240, duration: 0.6 * S, ease: "power2.inOut" }, at(6, 1.0));
+    fade("#s03-r4", at(6, 0.4), 0.25, 1);
+    fade("#s03-rh", at(6, 2.0), 0, 1);
+    // 18 NVL(점수, 0) — NULL이면 0
+    fade("#s03-t1", at(7, 0.3), 1, 0);
+    fade("#s03-t2", at(7, 0.5), 0, 1);
+    fade("#s03-x0", at(7, 2.4), 1, 0);
+    fade("#s03-x1", at(7, 2.6), 0, 1);
+    // 19 합은 그대로 320, 나누는 수는 5 → 64
+    fade("#s03-rh", at(8, 0.2), 1, 0);
+    ft("#s03-f4", { opacity: 0, y: 8 }, { opacity: 1, y: 0 }, at(8, 0.2));
+    bar(4, at(8, 0.4));
+    fade("#s03-k4a", num("n320", at(8, 1.5)), 0, 1);
+    fade("#s03-k4b", num("n5", at(8, 3.1)), 0, 1);
+    stamp("#s03-v4", num("n64", at(8, 4.4)));
+    // 20 SUM(점수) ÷ COUNT(*)도 같은 64
+    ft("#s03-f5", { opacity: 0, y: 8 }, { opacity: 1, y: 0 }, at(9, 0.2));
+    bar(5, at(9, 0.3));
+    fade("#s03-k5", at(9, 1.8), 0, 1);
+    stamp("#s03-v5", at(9, 2.6));
+    // 21 AVG(점수)는 언제나 80, 0점 조건이 있을 때만 NVL로 64
+    bar(3, num("a80", at(10, 1.3)));
+    bar(4, num("a64", at(10, 4.9)));
+    say("#s03-nb", num("a64", at(10, 4.9)) + 0.2);
+    if (String(V.exit) !== "false") ft("#s03-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s03"] = tl;
+  </script>
+</template>

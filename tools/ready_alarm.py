@@ -1,4 +1,4 @@
-"""평일 아침 알림: 완성본/에 새로 들어온 파일(올릴 영상·포스터)이 있으면 윈도우 알림으로 알려 준다.
+"""평일 아침 알림: 완성본/의 영상 폴더에 새로 들어온 파일(영상·썸네일·포스터)이 있으면 윈도우 알림으로 알려 준다.
 
 작업 스케줄러 '합격빠따 영상 알림'이 평일 09:00에 실행한다(그 시각에 컴퓨터가 꺼져 있었으면 켤 때 실행).
 이미 알린 파일은 완성본/.알림기록.json에 적어 두고 다시 알리지 않는다. 새 파일이 없으면 알리지 않는다.
@@ -28,18 +28,19 @@ def main():
 
     log = json.loads(LOG.read_text(encoding="utf-8")) if LOG.exists() else {"알린 파일": [], "기록": []}
     seen = set(log["알린 파일"])
-    files = sorted(p for p in BOX.glob("*/*") if p.suffix.lower() in VIDEO | IMAGE) if BOX.exists() else []
+    # 완성본/<연-월>/<날짜> <제목>/ 안의 파일(영상 하나당 폴더 하나)
+    files = sorted(p for p in BOX.rglob("*") if p.is_file() and p.suffix.lower() in VIDEO | IMAGE) if BOX.exists() else []
     new = [p for p in files if p.relative_to(BOX).as_posix() not in seen]
     if not new:
         if sys.stdout:
             print("새로 준비된 파일 없음")
         return
 
-    videos = [p for p in new if p.suffix.lower() in VIDEO]
-    images = [p for p in new if p.suffix.lower() in IMAGE]
-    title = f"합격빠따 · 올릴 영상 {len(videos)}개 준비됨" + (f" (썸네일·포스터 {len(images)}장)" if images else "")
-    names = [p.stem[11:] or p.stem for p in videos or images]  # 앞의 날짜(2026-10-30_)를 뗀 이름
-    body = " · ".join(names[:3]) + (f" 외 {len(names) - 3}개" if len(names) > 3 else "")
+    folders = list(dict.fromkeys(p.parent for p in new))  # 새 파일이 든 영상 폴더(순서 유지)
+    n_img = sum(p.suffix.lower() in IMAGE for p in new)
+    title = f"합격빠따 · 올릴 영상 {len(folders)}편 준비됨" + (f" (썸네일·포스터 {n_img}장 포함)" if n_img else "")
+    names = [f.name[11:] if f.name[:4].isdigit() else f.name for f in folders]  # 앞의 날짜(2026-10-30 )를 뗀 이름
+    body = " · ".join(names[:3]) + (f" 외 {len(names) - 3}편" if len(names) > 3 else "")
     if sys.stdout:
         print(title)
         for p in new:

@@ -18,7 +18,7 @@ TOPICS = ROOT / "topics" / "topics.json"
 BLUEPRINT = ROOT / "topics" / "blueprint.json"
 TABLE = ROOT / "topics" / "진행표.md"
 STATES = ["대기", "대본", "검수 통과", "영상 완성", "업로드 완료"]
-EXAMS = {"adsp": "ADsP", "bigdata": "빅분기"}
+EXAMS = {"adsp": "ADsP", "bigdata": "빅분기", "sqld": "SQLD"}  # topics.json 칸 이름 → 시험 이름(칸이 없으면 빈 목록)
 
 def load():
     return json.loads(TOPICS.read_text(encoding="utf-8")), json.loads(BLUEPRINT.read_text(encoding="utf-8"))
@@ -26,8 +26,13 @@ def load():
 def save(data):
     TOPICS.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
 
+def codes(t, exam):
+    return t.get(exam) or []
+
 def exam_of(t):
-    a, b = bool(t["adsp"]), bool(t["bigdata"])
+    if codes(t, "sqld"):
+        return "SQLD"
+    a, b = bool(codes(t, "adsp")), bool(codes(t, "bigdata"))
     return "공통" if a and b else "ADsP" if a else "빅분기"
 
 def path_of(bp, exam, code):
@@ -51,10 +56,10 @@ def check(data, bp):
     for t in ts:
         if t["status"] not in STATES:
             errs.append(f"{t['id']}: 알 수 없는 상태 ‘{t['status']}’")
-        if not t["adsp"] and not t["bigdata"]:
+        if not any(codes(t, e) for e in EXAMS):
             errs.append(f"{t['id']}: 출제기준 번호가 없음")
         for exam in EXAMS:
-            for code in t[exam]:
+            for code in codes(t, exam):
                 if code not in bp[exam]["items"]:
                     errs.append(f"{t['id']}: {EXAMS[exam]} 출제기준에 없는 번호 {code}")
         for p in t["prereq"]:
@@ -65,7 +70,7 @@ def check(data, bp):
     # 출제기준 빈 곳: 가장 아래 항목마다 다루는 주제가 있는지(위 항목 번호로 걸어 둔 것도 인정)
     gaps = {}
     for exam in EXAMS:
-        used = {c for t in ts for c in t[exam]}
+        used = {c for t in ts for c in codes(t, exam)}
         gaps[exam] = [c for c in leaves(bp, exam)
                       if not any(c == u or c.startswith(u + ".") for u in used)]
     return errs, gaps
@@ -92,9 +97,9 @@ def table(data, bp):
         "",
         "`tools/topics.py`가 만드는 파일입니다. 직접 고치지 말고 topics.json을 고친 뒤 `python tools/topics.py table`.",
         "",
-        f"- 전체 {len(ts)}개: 공통 {ex['공통']} · ADsP만 {ex['ADsP']} · 빅분기만 {ex['빅분기']}",
+        f"- 전체 {len(ts)}개: 공통 {ex['공통']} · ADsP만 {ex['ADsP']} · 빅분기만 {ex['빅분기']} · SQLD {ex['SQLD']}",
         "- 상태: " + " · ".join(f"{s} {cnt[s]}" for s in STATES),
-        f"- 출제기준: ADsP({bp['adsp']['checked']} 확인), 빅분기({bp['bigdata']['period']})",
+        f"- 출제기준: ADsP({bp['adsp']['checked']} 확인), 빅분기({bp['bigdata']['period']}), SQLD({bp['sqld']['checked']} 확인)",
         "",
         "| 순서 | 개념 | 시험 | 묶음 | 계산 | 상태 | 폴더 |",
         "|---:|---|---|---|:---:|---|---|",
@@ -103,7 +108,7 @@ def table(data, bp):
         lines.append(f"| {t['order']} | {t['title']} | {exam_of(t)} | {t['group']} | {'○' if t['calc'] else ''} | {t['status']} | {t.get('folder', '')} |")
     lines += ["", "## 출제기준 위치", ""]
     for t in ts:
-        locs = [f"{EXAMS[e]} {path_of(bp, e, c)}" for e in EXAMS for c in t[e]]
+        locs = [f"{EXAMS[e]} {path_of(bp, e, c)}" for e in EXAMS for c in codes(t, e)]
         lines.append(f"- **{t['title']}** — " + " / ".join(locs))
     TABLE.write_text("\n".join(lines) + "\n", encoding="utf-8")
 

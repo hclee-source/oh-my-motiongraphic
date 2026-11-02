@@ -15,7 +15,7 @@
    - 쇼츠: 그 폴더에서 `npx hyperframes render -o renders/raw.mp4 --workers 2`
    - 효과음 키우기: `ffmpeg -i renders/raw.mp4 -c:v copy -af volume=8dB -c:a aac -b:a 192k renders/<이름>-shorts.mp4`
    - 포스터: `poster/`에서 `npx hyperframes snapshot --at 0.5`
-5. 모으기: `.venv/Scripts/python.exe tools/save_final.py videos/notice-<이름>/renders/<이름>-shorts.mp4` (포스터가 있으면 함께) → `완성본/<연-월>/<날짜>_<파일 이름>`
+5. 모으기: `.venv/Scripts/python.exe tools/save_final.py --title "공지 <쇼츠 이름>" --name "<쇼츠 이름>" 쇼츠=videos/notice-<이름>/renders/<이름>-shorts.mp4 [포스터=…png] [정보=<제목 적은 글 파일>]` → `완성본/<연-월>/<날짜> 공지 <쇼츠 이름>/` (예: ‘공지 ADsP 51회 시험 전 30초 점검’)
 
 명령은 모두 저장소 맨 위 폴더(`oh-my-motiongraphic`)에서 실행한다(`npx hyperframes` 검사·렌더·효과음 키우기만 그 영상 폴더에서).
 

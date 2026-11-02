@@ -110,6 +110,100 @@
   },
   {
    "order": 7,
+   "id": "sql-order",
+   "title": "SQL 처리 순서와 WHERE·GROUP BY·HAVING",
+   "group": "SQL 기본",
+   "adsp": [],
+   "bigdata": [],
+   "sqld": [
+    "2.1.2",
+    "2.1.4",
+    "2.1.5",
+    "2.1.6"
+   ],
+   "calc": true,
+   "prereq": [],
+   "cover": "처리 순서 6단계(프·웨·그·해·셀·오), 별칭은 ORDER BY에서만, WHERE는 행·HAVING은 묶음, 집계 함수 조건은 HAVING",
+   "status": "영상 완성",
+   "folder": "episodes/007-sql-order"
+  },
+  {
+   "order": 8,
+   "id": "sql-null",
+   "title": "NULL의 함정: 집계·비교·NOT IN·NULL 함수",
+   "group": "SQL 기본",
+   "adsp": [],
+   "bigdata": [],
+   "sqld": [
+    "1.2.4",
+    "2.1.3",
+    "2.1.4"
+   ],
+   "calc": true,
+   "prereq": [],
+   "cover": "COUNT(*)와 COUNT(열), AVG의 분모, = NULL과 IS NULL, NOT IN에 NULL, NVL·NVL2·COALESCE·NULLIF, 정렬에서 NULL 위치",
+   "status": "영상 완성",
+   "folder": "episodes/008-sql-null"
+  },
+  {
+   "order": 9,
+   "id": "sql-join",
+   "title": "조인 결과 행 수: INNER·OUTER·CROSS와 (+)",
+   "group": "SQL 기본",
+   "adsp": [],
+   "bigdata": [],
+   "sqld": [
+    "1.2.2",
+    "2.1.7",
+    "2.1.8"
+   ],
+   "calc": true,
+   "prereq": [
+    "sql-null"
+   ],
+   "cover": "INNER·LEFT·RIGHT·FULL·CROSS 행 수, FULL = LEFT + RIGHT − INNER, 조인 열 NULL, 오라클 (+) 방향",
+   "status": "영상 완성",
+   "folder": "episodes/009-sql-join"
+  },
+  {
+   "order": 10,
+   "id": "sql-rank",
+   "title": "순위 함수 RANK·DENSE_RANK·ROW_NUMBER",
+   "group": "SQL 활용",
+   "adsp": [],
+   "bigdata": [],
+   "sqld": [
+    "2.2.4",
+    "2.2.5"
+   ],
+   "calc": true,
+   "prereq": [
+    "sql-order"
+   ],
+   "cover": "동점 처리 세 가지, PARTITION BY, 상위 N명 행 수, WHERE에 못 쓰고 인라인 뷰로",
+   "status": "영상 완성",
+   "folder": "episodes/010-sql-rank"
+  },
+  {
+   "order": 11,
+   "id": "sql-rollup",
+   "title": "그룹 함수 ROLLUP·CUBE·GROUPING SETS",
+   "group": "SQL 활용",
+   "adsp": [],
+   "bigdata": [],
+   "sqld": [
+    "2.2.3"
+   ],
+   "calc": true,
+   "prereq": [
+    "sql-order"
+   ],
+   "cover": "결과 행 수 세기, ROLLUP 순서의 영향, CUBE 모든 조합, GROUPING SETS와 빈 괄호, GROUPING 함수",
+   "status": "영상 완성",
+   "folder": "episodes/011-sql-rollup"
+  },
+  {
+   "order": 12,
    "id": "apriori",
    "title": "아프리오리 알고리즘",
    "group": "연관분석",
@@ -127,7 +221,7 @@
    "status": "대기"
   },
   {
-   "order": 8,
+   "order": 13,
    "id": "distance-measures",
    "title": "거리 척도: 유클리드·맨해튼·마할라노비스",
    "group": "군집분석",
@@ -143,7 +237,7 @@
    "status": "대기"
   },
   {
-   "order": 9,
+   "order": 14,
    "id": "kmeans",
    "title": "k-평균 군집",
    "group": "군집분석",
@@ -161,7 +255,7 @@
    "status": "대기"
   },
   {
-   "order": 10,
+   "order": 15,
    "id": "hierarchical-clustering",
    "title": "계층적 군집과 연결법",
    "group": "군집분석",
@@ -179,7 +273,7 @@
    "status": "대기"
   },
   {
-   "order": 11,
+   "order": 16,
    "id": "cluster-evaluation",
    "title": "군집 평가: 실루엣 계수와 엘보우",
    "group": "군집분석",
@@ -198,7 +292,7 @@
    "status": "대기"
   },
   {
-   "order": 12,
+   "order": 17,
    "id": "dbscan-gmm",
    "title": "밀도 기반 군집과 혼합분포 군집",
    "group": "군집분석",
@@ -216,7 +310,7 @@
    "status": "대기"
   },
   {
-   "order": 13,
+   "order": 18,
    "id": "som",
    "title": "자기조직화지도(SOM)",
    "group": "군집분석",
@@ -235,7 +329,7 @@
    "status": "대기"
   },
   {
-   "order": 14,
+   "order": 19,
    "id": "measurement-scales",
    "title": "측정 척도: 명목·순서·구간·비율",
    "group": "기술통계",
@@ -251,7 +345,7 @@
    "status": "대기"
   },
   {
-   "order": 15,
+   "order": 20,
    "id": "central-tendency",
    "title": "대푯값: 평균·중앙값·최빈값",
    "group": "기술통계",
@@ -268,7 +362,7 @@
    "status": "대기"
   },
   {
-   "order": 16,
+   "order": 21,
    "id": "dispersion",
    "title": "퍼짐: 분산·표준편차·변동계수",
    "group": "기술통계",
@@ -287,7 +381,7 @@
    "status": "대기"
   },
   {
-   "order": 17,
+   "order": 22,
    "id": "skew-kurtosis",
    "title": "왜도와 첨도",
    "group": "기술통계",
@@ -305,7 +399,7 @@
    "status": "대기"
   },
   {
-   "order": 18,
+   "order": 23,
    "id": "boxplot-iqr",
    "title": "상자그림 읽기와 IQR",
    "group": "기술통계",
@@ -324,7 +418,7 @@
    "status": "대기"
   },
   {
-   "order": 19,
+   "order": 24,
    "id": "sampling-methods",
    "title": "표본추출: 단순무작위·계통·층화·군집",
    "group": "확률과 분포",
@@ -340,7 +434,7 @@
    "status": "대기"
   },
   {
-   "order": 20,
+   "order": 25,
    "id": "probability-basics",
    "title": "확률 기초: 조건부확률과 독립",
    "group": "확률과 분포",
@@ -356,7 +450,7 @@
    "status": "대기"
   },
   {
-   "order": 21,
+   "order": 26,
    "id": "bayes-theorem",
    "title": "베이즈 정리",
    "group": "확률과 분포",
@@ -375,7 +469,7 @@
    "status": "대기"
   },
   {
-   "order": 22,
+   "order": 27,
    "id": "expectation-variance",
    "title": "확률변수의 기댓값과 분산",
    "group": "확률과 분포",
@@ -393,7 +487,7 @@
    "status": "대기"
   },
   {
-   "order": 23,
+   "order": 28,
    "id": "discrete-distributions",
    "title": "이산확률분포: 베르누이·이항·포아송",
    "group": "확률과 분포",
@@ -411,7 +505,7 @@
    "status": "대기"
   },
   {
-   "order": 24,
+   "order": 29,
    "id": "normal-distribution",
    "title": "정규분포와 표준화",
    "group": "확률과 분포",
@@ -429,7 +523,7 @@
    "status": "대기"
   },
   {
-   "order": 25,
+   "order": 30,
    "id": "t-chi-f",
    "title": "t분포·카이제곱분포·F분포",
    "group": "확률과 분포",
@@ -448,7 +542,7 @@
    "status": "대기"
   },
   {
-   "order": 26,
+   "order": 31,
    "id": "clt",
    "title": "표본분포와 중심극한정리",
    "group": "확률과 분포",
@@ -466,7 +560,7 @@
    "status": "대기"
   },
   {
-   "order": 27,
+   "order": 32,
    "id": "estimation",
    "title": "점추정과 구간추정",
    "group": "추정과 검정",
@@ -485,7 +579,7 @@
    "status": "대기"
   },
   {
-   "order": 28,
+   "order": 33,
    "id": "hypothesis-testing",
    "title": "가설검정: 귀무가설과 p-값",
    "group": "추정과 검정",
@@ -503,7 +597,7 @@
    "status": "대기"
   },
   {
-   "order": 29,
+   "order": 34,
    "id": "type1-type2",
    "title": "1종 오류·2종 오류와 검정력",
    "group": "추정과 검정",
@@ -521,7 +615,7 @@
    "status": "대기"
   },
   {
-   "order": 30,
+   "order": 35,
    "id": "t-tests",
    "title": "t검정 세 가지: 단일·독립·대응표본",
    "group": "추정과 검정",
@@ -539,7 +633,7 @@
    "status": "대기"
   },
   {
-   "order": 31,
+   "order": 36,
    "id": "anova",
    "title": "분산분석(ANOVA)",
    "group": "추정과 검정",
@@ -557,7 +651,7 @@
    "status": "대기"
   },
   {
-   "order": 32,
+   "order": 37,
    "id": "chi-square-tests",
    "title": "카이제곱 검정: 적합도·독립성",
    "group": "추정과 검정",
@@ -577,7 +671,7 @@
    "status": "대기"
   },
   {
-   "order": 33,
+   "order": 38,
    "id": "nonparametric",
    "title": "비모수 검정",
    "group": "추정과 검정",
@@ -595,7 +689,7 @@
    "status": "대기"
   },
   {
-   "order": 34,
+   "order": 39,
    "id": "normality-tests",
    "title": "정규성 확인: Q-Q 플롯과 샤피로-윌크",
    "group": "추정과 검정",
@@ -614,7 +708,7 @@
    "status": "대기"
   },
   {
-   "order": 35,
+   "order": 40,
    "id": "covariance-correlation",
    "title": "공분산과 상관계수",
    "group": "상관과 회귀",
@@ -632,7 +726,7 @@
    "status": "대기"
   },
   {
-   "order": 36,
+   "order": 41,
    "id": "pearson-spearman",
    "title": "피어슨과 스피어만 상관",
    "group": "상관과 회귀",
@@ -650,7 +744,7 @@
    "status": "대기"
   },
   {
-   "order": 37,
+   "order": 42,
    "id": "simple-regression",
    "title": "단순선형회귀와 최소제곱법",
    "group": "상관과 회귀",
@@ -668,7 +762,7 @@
    "status": "대기"
   },
   {
-   "order": 38,
+   "order": 43,
    "id": "r-squared",
    "title": "결정계수와 수정 결정계수",
    "group": "상관과 회귀",
@@ -687,7 +781,7 @@
    "status": "대기"
   },
   {
-   "order": 39,
+   "order": 44,
    "id": "regression-significance",
    "title": "회귀계수 t검정과 모형 F검정",
    "group": "상관과 회귀",
@@ -706,7 +800,7 @@
    "status": "대기"
   },
   {
-   "order": 40,
+   "order": 45,
    "id": "regression-assumptions",
    "title": "회귀분석의 가정과 잔차 진단",
    "group": "상관과 회귀",
@@ -724,7 +818,7 @@
    "status": "대기"
   },
   {
-   "order": 41,
+   "order": 46,
    "id": "multicollinearity",
    "title": "다중공선성과 VIF",
    "group": "상관과 회귀",
@@ -743,7 +837,7 @@
    "status": "대기"
   },
   {
-   "order": 42,
+   "order": 47,
    "id": "variable-selection",
    "title": "변수 선택: 전진·후진·단계적",
    "group": "상관과 회귀",
@@ -761,7 +855,7 @@
    "status": "대기"
   },
   {
-   "order": 43,
+   "order": 48,
    "id": "aic-bic",
    "title": "AIC와 BIC",
    "group": "상관과 회귀",
@@ -780,7 +874,7 @@
    "status": "대기"
   },
   {
-   "order": 44,
+   "order": 49,
    "id": "regularization",
    "title": "릿지·라쏘·엘라스틱넷",
    "group": "상관과 회귀",
@@ -800,7 +894,7 @@
    "status": "대기"
   },
   {
-   "order": 45,
+   "order": 50,
    "id": "logistic-regression",
    "title": "로지스틱 회귀와 오즈비",
    "group": "분류 모델",
@@ -818,7 +912,7 @@
    "status": "대기"
   },
   {
-   "order": 46,
+   "order": 51,
    "id": "tree-split",
    "title": "의사결정나무의 분리 기준: 지니와 엔트로피",
    "group": "분류 모델",
@@ -834,7 +928,7 @@
    "status": "대기"
   },
   {
-   "order": 47,
+   "order": 52,
    "id": "tree-pruning",
    "title": "의사결정나무: 정지 규칙과 가지치기",
    "group": "분류 모델",
@@ -853,7 +947,7 @@
    "status": "대기"
   },
   {
-   "order": 48,
+   "order": 53,
    "id": "ensemble",
    "title": "앙상블: 배깅·부스팅·랜덤 포레스트",
    "group": "분류 모델",
@@ -873,7 +967,7 @@
    "status": "대기"
   },
   {
-   "order": 49,
+   "order": 54,
    "id": "neural-network",
    "title": "인공신경망: 퍼셉트론과 활성화 함수",
    "group": "분류 모델",
@@ -889,7 +983,7 @@
    "status": "대기"
   },
   {
-   "order": 50,
+   "order": 55,
    "id": "backpropagation",
    "title": "역전파와 기울기 소실",
    "group": "분류 모델",
@@ -908,7 +1002,7 @@
    "status": "대기"
   },
   {
-   "order": 51,
+   "order": 56,
    "id": "svm",
    "title": "서포트벡터머신",
    "group": "분류 모델",
@@ -924,7 +1018,7 @@
    "status": "대기"
   },
   {
-   "order": 52,
+   "order": 57,
    "id": "knn",
    "title": "k-최근접 이웃",
    "group": "분류 모델",
@@ -942,7 +1036,7 @@
    "status": "대기"
   },
   {
-   "order": 53,
+   "order": 58,
    "id": "naive-bayes",
    "title": "나이브 베이즈 분류",
    "group": "분류 모델",
@@ -960,7 +1054,7 @@
    "status": "대기"
   },
   {
-   "order": 54,
+   "order": 59,
    "id": "lift-gain",
    "title": "향상도 곡선과 이익 도표",
    "group": "모델 평가",
@@ -978,7 +1072,7 @@
    "status": "대기"
   },
   {
-   "order": 55,
+   "order": 60,
    "id": "data-mining-overview",
    "title": "데이터 마이닝 개요: 지도학습과 비지도학습",
    "group": "분류 모델",
@@ -995,7 +1089,7 @@
    "status": "대기"
   },
   {
-   "order": 56,
+   "order": 61,
    "id": "missing-types",
    "title": "결측값의 종류: MCAR·MAR·MNAR",
    "group": "전처리",
@@ -1011,7 +1105,7 @@
    "status": "대기"
   },
   {
-   "order": 57,
+   "order": 62,
    "id": "missing-imputation",
    "title": "결측값 처리: 삭제와 대치",
    "group": "전처리",
@@ -1029,7 +1123,7 @@
    "status": "대기"
   },
   {
-   "order": 58,
+   "order": 63,
    "id": "outlier-handling",
    "title": "이상값 판단과 처리",
    "group": "전처리",
@@ -1048,7 +1142,7 @@
    "status": "대기"
   },
   {
-   "order": 59,
+   "order": 64,
    "id": "derived-variables",
    "title": "파생변수와 요약변수",
    "group": "전처리",
@@ -1064,7 +1158,7 @@
    "status": "대기"
   },
   {
-   "order": 60,
+   "order": 65,
    "id": "pca",
    "title": "주성분 분석",
    "group": "차원 축소",
@@ -1083,7 +1177,7 @@
    "status": "대기"
   },
   {
-   "order": 61,
+   "order": 66,
    "id": "pca-components",
    "title": "주성분 개수 정하기: 기여율과 스크리 플롯",
    "group": "차원 축소",
@@ -1101,7 +1195,7 @@
    "status": "대기"
   },
   {
-   "order": 62,
+   "order": 67,
    "id": "mds",
    "title": "다차원 척도법",
    "group": "차원 축소",
@@ -1120,7 +1214,7 @@
    "status": "대기"
   },
   {
-   "order": 63,
+   "order": 68,
    "id": "stationarity",
    "title": "시계열의 정상성과 차분",
    "group": "시계열",
@@ -1136,7 +1230,7 @@
    "status": "대기"
   },
   {
-   "order": 64,
+   "order": 69,
    "id": "ts-decomposition",
    "title": "시계열 분해: 추세·계절·순환·불규칙",
    "group": "시계열",
@@ -1154,7 +1248,7 @@
    "status": "대기"
   },
   {
-   "order": 65,
+   "order": 70,
    "id": "smoothing",
    "title": "이동평균과 지수평활",
    "group": "시계열",
@@ -1172,7 +1266,7 @@
    "status": "대기"
   },
   {
-   "order": 66,
+   "order": 71,
    "id": "arima",
    "title": "AR·MA·ARIMA와 ACF·PACF",
    "group": "시계열",
@@ -1190,7 +1284,7 @@
    "status": "대기"
   },
   {
-   "order": 67,
+   "order": 72,
    "id": "dikw",
    "title": "데이터·정보·지식·지혜(DIKW)",
    "group": "데이터 이해",
@@ -1206,7 +1300,7 @@
    "status": "대기"
   },
   {
-   "order": 68,
+   "order": 73,
    "id": "data-structure-types",
    "title": "정형·반정형·비정형 데이터",
    "group": "데이터 이해",
@@ -1222,7 +1316,7 @@
    "status": "대기"
   },
   {
-   "order": 69,
+   "order": 74,
    "id": "tacit-explicit",
    "title": "암묵지와 형식지",
    "group": "데이터 이해",
@@ -1240,7 +1334,7 @@
    "status": "대기"
   },
   {
-   "order": 70,
+   "order": 75,
    "id": "big-data-v",
    "title": "빅데이터의 특징: 3V에서 5V로",
    "group": "데이터 이해",
@@ -1256,7 +1350,7 @@
    "status": "대기"
   },
   {
-   "order": 71,
+   "order": 76,
    "id": "big-data-shifts",
    "title": "빅데이터가 바꾼 네 가지",
    "group": "데이터 이해",
@@ -1274,7 +1368,7 @@
    "status": "대기"
   },
   {
-   "order": 72,
+   "order": 77,
    "id": "big-data-value",
    "title": "빅데이터의 가치와 가치 산정이 어려운 이유",
    "group": "데이터 이해",
@@ -1292,7 +1386,7 @@
    "status": "대기"
   },
   {
-   "order": 73,
+   "order": 78,
    "id": "data-scientist",
    "title": "데이터 사이언티스트의 역량",
    "group": "데이터 이해",
@@ -1308,7 +1402,7 @@
    "status": "대기"
   },
   {
-   "order": 74,
+   "order": 79,
    "id": "analytics-org",
    "title": "분석 조직 구조: 집중형·기능형·분산형",
    "group": "분석 기획",
@@ -1324,7 +1418,7 @@
    "status": "대기"
   },
   {
-   "order": 75,
+   "order": 80,
    "id": "ai-ml-dl",
    "title": "인공지능·머신러닝·딥러닝의 관계",
    "group": "데이터 이해",
@@ -1342,7 +1436,7 @@
    "status": "대기"
   },
   {
-   "order": 76,
+   "order": 81,
    "id": "analysis-types",
    "title": "분석 기획의 네 유형: 최적화·솔루션·통찰·발견",
    "group": "분석 기획",
@@ -1358,7 +1452,7 @@
    "status": "대기"
   },
   {
-   "order": 77,
+   "order": 82,
    "id": "planning-considerations",
    "title": "분석 기획 고려사항과 장애 요소",
    "group": "분석 기획",
@@ -1376,7 +1470,7 @@
    "status": "대기"
   },
   {
-   "order": 78,
+   "order": 83,
    "id": "methodology-models",
    "title": "분석 방법론 모델: 폭포수·프로토타입·나선형",
    "group": "분석 기획",
@@ -1392,7 +1486,7 @@
    "status": "대기"
   },
   {
-   "order": 79,
+   "order": 84,
    "id": "kdd",
    "title": "KDD 분석 방법론",
    "group": "분석 기획",
@@ -1410,7 +1504,7 @@
    "status": "대기"
   },
   {
-   "order": 80,
+   "order": 85,
    "id": "crisp-dm",
    "title": "CRISP-DM",
    "group": "분석 기획",
@@ -1428,7 +1522,7 @@
    "status": "대기"
   },
   {
-   "order": 81,
+   "order": 86,
    "id": "bigdata-methodology",
    "title": "빅데이터 분석 방법론 5단계",
    "group": "분석 기획",
@@ -1446,7 +1540,7 @@
    "status": "대기"
   },
   {
-   "order": 82,
+   "order": 87,
    "id": "top-down-bottom-up",
    "title": "분석 과제 발굴: 하향식과 상향식",
    "group": "분석 기획",
@@ -1464,7 +1558,7 @@
    "status": "대기"
   },
   {
-   "order": 83,
+   "order": 88,
    "id": "business-model-canvas",
    "title": "비즈니스 모델 캔버스로 분석 기회 찾기",
    "group": "분석 기획",
@@ -1482,7 +1576,7 @@
    "status": "대기"
   },
   {
-   "order": 84,
+   "order": 89,
    "id": "design-thinking",
    "title": "디자인 사고와 프로토타이핑",
    "group": "분석 기획",
@@ -1500,7 +1594,7 @@
    "status": "대기"
   },
   {
-   "order": 85,
+   "order": 90,
    "id": "project-management",
    "title": "분석 프로젝트의 특성과 관리",
    "group": "분석 기획",
@@ -1516,7 +1610,7 @@
    "status": "대기"
   },
   {
-   "order": 86,
+   "order": 91,
    "id": "priority-matrix",
    "title": "분석 과제 우선순위: 시급성과 난이도",
    "group": "분석 기획",
@@ -1532,7 +1626,7 @@
    "status": "대기"
   },
   {
-   "order": 87,
+   "order": 92,
    "id": "roi-4v",
    "title": "ROI 관점의 4V",
    "group": "분석 기획",
@@ -1550,7 +1644,7 @@
    "status": "대기"
   },
   {
-   "order": 88,
+   "order": 93,
    "id": "roadmap",
    "title": "분석 로드맵과 단계적 구현",
    "group": "분석 기획",
@@ -1568,7 +1662,7 @@
    "status": "대기"
   },
   {
-   "order": 89,
+   "order": 94,
    "id": "maturity-readiness",
    "title": "분석 성숙도와 준비도",
    "group": "분석 기획",
@@ -1584,7 +1678,7 @@
    "status": "대기"
   },
   {
-   "order": 90,
+   "order": 95,
    "id": "database-basics",
    "title": "데이터베이스의 정의와 특징",
    "group": "데이터 이해",
@@ -1598,7 +1692,7 @@
    "status": "대기"
   },
   {
-   "order": 91,
+   "order": 96,
    "id": "oltp-olap",
    "title": "OLTP와 OLAP, 데이터 웨어하우스",
    "group": "데이터 이해",
@@ -1616,7 +1710,7 @@
    "status": "대기"
   },
   {
-   "order": 92,
+   "order": 97,
    "id": "enterprise-systems",
    "title": "기업 정보 시스템: ERP·CRM·SCM·BI",
    "group": "데이터 이해",
@@ -1630,7 +1724,7 @@
    "status": "대기"
   },
   {
-   "order": 93,
+   "order": 98,
    "id": "big-data-techniques",
    "title": "빅데이터 활용 기본 테크닉 7가지",
    "group": "데이터 이해",
@@ -1644,7 +1738,7 @@
    "status": "대기"
   },
   {
-   "order": 94,
+   "order": 99,
    "id": "big-data-risks",
    "title": "빅데이터의 위기 요인과 통제 방안",
    "group": "데이터 이해",
@@ -1658,7 +1752,7 @@
    "status": "대기"
   },
   {
-   "order": 95,
+   "order": 100,
    "id": "big-data-future",
    "title": "미래의 빅데이터와 데이터 사이언스",
    "group": "데이터 이해",
@@ -1673,7 +1767,7 @@
    "status": "대기"
   },
   {
-   "order": 96,
+   "order": 101,
    "id": "strategic-insight",
    "title": "빅데이터 분석과 전략 인사이트",
    "group": "데이터 이해",
@@ -1687,7 +1781,7 @@
    "status": "대기"
   },
   {
-   "order": 97,
+   "order": 102,
    "id": "governance",
    "title": "분석 거버넌스 체계와 데이터 거버넌스",
    "group": "분석 기획",
@@ -1703,7 +1797,7 @@
    "status": "대기"
   },
   {
-   "order": 98,
+   "order": 103,
    "id": "r-data-structures",
    "title": "R 데이터 구조: 벡터·행렬·데이터프레임·리스트",
    "group": "R 기초",
@@ -1717,7 +1811,7 @@
    "status": "대기"
   },
   {
-   "order": 99,
+   "order": 104,
    "id": "r-basic-functions",
    "title": "R 기초 함수와 결과 읽기",
    "group": "R 기초",
@@ -1733,7 +1827,7 @@
    "status": "대기"
   },
   {
-   "order": 100,
+   "order": 105,
    "id": "r-data-mart",
    "title": "R로 데이터 마트 만들기",
    "group": "R 기초",
@@ -1749,7 +1843,7 @@
    "status": "대기"
   },
   {
-   "order": 101,
+   "order": 106,
    "id": "data-industry",
    "title": "데이터 산업의 이해",
    "group": "데이터 이해",
@@ -1763,7 +1857,7 @@
    "status": "대기"
   },
   {
-   "order": 102,
+   "order": 107,
    "id": "hadoop-spark",
    "title": "빅데이터 플랫폼: 하둡과 스파크",
    "group": "수집과 저장",
@@ -1777,7 +1871,7 @@
    "status": "대기"
   },
   {
-   "order": 103,
+   "order": 108,
    "id": "privacy-law",
    "title": "데이터 3법과 가명정보·익명정보",
    "group": "수집과 저장",
@@ -1792,7 +1886,7 @@
    "status": "대기"
   },
   {
-   "order": 104,
+   "order": 109,
    "id": "de-identification",
    "title": "비식별화 기법과 k-익명성",
    "group": "수집과 저장",
@@ -1808,7 +1902,7 @@
    "status": "대기"
   },
   {
-   "order": 105,
+   "order": 110,
    "id": "data-collection",
    "title": "데이터 수집 기술",
    "group": "수집과 저장",
@@ -1822,7 +1916,7 @@
    "status": "대기"
   },
   {
-   "order": 106,
+   "order": 111,
    "id": "data-transformation",
    "title": "데이터 변환: 평활화·집계·일반화·정규화",
    "group": "수집과 저장",
@@ -1836,7 +1930,7 @@
    "status": "대기"
   },
   {
-   "order": 107,
+   "order": 112,
    "id": "data-quality",
    "title": "데이터 품질 검증",
    "group": "수집과 저장",
@@ -1850,7 +1944,7 @@
    "status": "대기"
   },
   {
-   "order": 108,
+   "order": 113,
    "id": "data-storage",
    "title": "데이터 적재와 저장: 웨어하우스·레이크·NoSQL",
    "group": "수집과 저장",
@@ -1867,7 +1961,7 @@
    "status": "대기"
   },
   {
-   "order": 109,
+   "order": 114,
    "id": "analysis-plan",
    "title": "데이터 확보 계획과 분석 작업 계획",
    "group": "분석 기획",
@@ -1884,7 +1978,7 @@
    "status": "대기"
   },
   {
-   "order": 110,
+   "order": 115,
    "id": "data-cleaning",
    "title": "데이터 정제: 잡음과 불일치",
    "group": "전처리",
@@ -1898,7 +1992,7 @@
    "status": "대기"
   },
   {
-   "order": 111,
+   "order": 116,
    "id": "scaling",
    "title": "변수 변환: 정규화·표준화·로그 변환·구간화",
    "group": "전처리",
@@ -1914,7 +2008,7 @@
    "status": "대기"
   },
   {
-   "order": 112,
+   "order": 117,
    "id": "imbalanced-data",
    "title": "불균형 데이터 처리",
    "group": "전처리",
@@ -1930,7 +2024,7 @@
    "status": "대기"
   },
   {
-   "order": 113,
+   "order": 118,
    "id": "eda-overview",
    "title": "탐색적 데이터 분석(EDA)",
    "group": "탐색",
@@ -1947,7 +2041,7 @@
    "status": "대기"
   },
   {
-   "order": 114,
+   "order": 119,
    "id": "spatiotemporal-eda",
    "title": "시공간 데이터 탐색과 시각화",
    "group": "탐색",
@@ -1962,7 +2056,7 @@
    "status": "대기"
   },
   {
-   "order": 115,
+   "order": 120,
    "id": "factor-analysis",
    "title": "요인분석과 다변량 탐색",
    "group": "차원 축소",
@@ -1979,7 +2073,7 @@
    "status": "대기"
   },
   {
-   "order": 116,
+   "order": 121,
    "id": "text-mining",
    "title": "텍스트 마이닝: 토큰화와 TF-IDF",
    "group": "고급 분석",
@@ -1994,7 +2088,7 @@
    "status": "대기"
   },
   {
-   "order": 117,
+   "order": 122,
    "id": "sna",
    "title": "사회연결망 분석과 중심성",
    "group": "고급 분석",
@@ -2008,7 +2102,7 @@
    "status": "대기"
   },
   {
-   "order": 118,
+   "order": 123,
    "id": "categorical-analysis",
    "title": "범주형 자료 분석: 상대위험도와 오즈비",
    "group": "고급 분석",
@@ -2024,7 +2118,7 @@
    "status": "대기"
   },
   {
-   "order": 119,
+   "order": 124,
    "id": "cnn",
    "title": "합성곱 신경망(CNN)",
    "group": "고급 분석",
@@ -2040,7 +2134,7 @@
    "status": "대기"
   },
   {
-   "order": 120,
+   "order": 125,
    "id": "rnn-lstm",
    "title": "순환 신경망(RNN)과 LSTM",
    "group": "고급 분석",
@@ -2056,7 +2150,7 @@
    "status": "대기"
   },
   {
-   "order": 121,
+   "order": 126,
    "id": "autoencoder-gan",
    "title": "오토인코더와 GAN",
    "group": "고급 분석",
@@ -2072,7 +2166,7 @@
    "status": "대기"
   },
   {
-   "order": 122,
+   "order": 127,
    "id": "hyperparameter-tuning",
    "title": "하이퍼파라미터 최적화",
    "group": "모형 개선",
@@ -2088,7 +2182,7 @@
    "status": "대기"
   },
   {
-   "order": 123,
+   "order": 128,
    "id": "optimizers",
    "title": "경사하강법과 최적화 알고리즘",
    "group": "모형 개선",
@@ -2104,7 +2198,7 @@
    "status": "대기"
   },
   {
-   "order": 124,
+   "order": 129,
    "id": "overfitting-prevention",
    "title": "과대적합 방지 기법",
    "group": "모형 개선",
@@ -2121,7 +2215,7 @@
    "status": "대기"
   },
   {
-   "order": 125,
+   "order": 130,
    "id": "model-fusion",
    "title": "분석모형 융합: 보팅과 스태킹",
    "group": "모형 개선",
@@ -2137,7 +2231,7 @@
    "status": "대기"
   },
   {
-   "order": 126,
+   "order": 131,
    "id": "final-model",
    "title": "최종 모형 선정과 해석",
    "group": "모형 개선",
@@ -2154,7 +2248,7 @@
    "status": "대기"
   },
   {
-   "order": 127,
+   "order": 132,
    "id": "business-contribution",
    "title": "비즈니스 기여도 평가: ROI·NPV·IRR",
    "group": "결과 활용",
@@ -2168,7 +2262,7 @@
    "status": "대기"
   },
   {
-   "order": 128,
+   "order": 133,
    "id": "visualization-types",
    "title": "시각화 유형: 시간·분포·관계·비교·공간",
    "group": "결과 활용",
@@ -2184,7 +2278,7 @@
    "status": "대기"
   },
   {
-   "order": 129,
+   "order": 134,
    "id": "infographics",
    "title": "인포그래픽",
    "group": "결과 활용",
@@ -2200,7 +2294,7 @@
    "status": "대기"
   },
   {
-   "order": 130,
+   "order": 135,
    "id": "model-deployment",
    "title": "분석모형 전개·모니터링·리모델링",
    "group": "결과 활용",
@@ -2217,7 +2311,7 @@
    "status": "대기"
   },
   {
-   "order": 131,
+   "order": 136,
    "id": "model-design",
    "title": "분석모형 설계: 선정·정의·구축 절차와 분석 도구",
    "group": "결과 활용",

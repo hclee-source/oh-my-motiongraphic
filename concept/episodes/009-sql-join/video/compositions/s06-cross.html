@@ -1,0 +1,103 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    /* 사원 5 × 부서 4 격자: 칸 하나 = 결과 한 행 */
+    #s06-g { position: absolute; left: 192px; top: 262px; width: 820px; height: 584px; box-sizing: border-box; }
+    .s06-ch { position: absolute; top: 34px; width: 140px; height: 50px; display: flex; align-items: center; justify-content: center;
+      font-size: 32px; font-weight: 800; color: var(--color-ink2, #71717A); }
+    .s06-rh { position: absolute; left: 36px; width: 130px; height: 76px; display: flex; align-items: center; justify-content: center;
+      font-size: 34px; font-weight: 800; }
+    .s06-c { position: absolute; width: 140px; height: 76px; border-radius: 14px;
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 18%, #FFFFFF); opacity: 0; }
+    #s06-f { position: absolute; left: 1076px; top: 262px; width: 652px; height: 210px; box-sizing: border-box; }
+    #s06-fl { position: absolute; left: 0; right: 0; top: 36px; text-align: center; font-size: 32px; font-weight: 800;
+      color: var(--color-ink2, #71717A); opacity: 0; }
+    #s06-fv { position: absolute; left: 0; right: 0; top: 92px; text-align: center; font-size: 72px; font-weight: 900; white-space: nowrap; }
+    #s06-fv span { opacity: 0; }
+    #s06-q { left: 1076px; top: 512px; width: 652px; }
+    #s06-cpw { position: absolute; left: 1076px; top: 774px; width: 652px; height: 72px; display: flex; justify-content: center; }
+    #s06-cp { position: relative; font-size: 34px; }
+  </style>
+  <div id="root" data-composition-id="s06" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,4,10]"},{"id":"dur","type":"number","label":"장면 길이","default":18},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"mt","type":"number","label":"5 곱하기 시각","default":7.2},{"id":"tw","type":"number","label":"20행 시각","default":8.3},{"id":"cn","type":"number","label":"조인 조건 시각","default":11.8},{"id":"ct","type":"number","label":"카티션 시각","default":15.9},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s06-all">
+      <div id="s06-head" class="x-head">CROSS JOIN</div>
+      <div id="s06-g" class="x-card x-hide">
+        <div class="s06-ch" style="left:180px">영업</div>
+        <div class="s06-ch" style="left:334px">개발</div>
+        <div class="s06-ch" style="left:488px">인사</div>
+        <div class="s06-ch" style="left:642px">기획</div>
+        <div class="s06-rh" style="top:100px">민수</div>
+        <div class="s06-rh" style="top:190px">지영</div>
+        <div class="s06-rh" style="top:280px">현우</div>
+        <div class="s06-rh" style="top:370px">수진</div>
+        <div class="s06-rh" style="top:460px">동훈</div>
+        <div class="s06-c" id="s06-c00" style="left:180px;top:100px"></div>
+        <div class="s06-c" id="s06-c01" style="left:334px;top:100px"></div>
+        <div class="s06-c" id="s06-c02" style="left:488px;top:100px"></div>
+        <div class="s06-c" id="s06-c03" style="left:642px;top:100px"></div>
+        <div class="s06-c" id="s06-c10" style="left:180px;top:190px"></div>
+        <div class="s06-c" id="s06-c11" style="left:334px;top:190px"></div>
+        <div class="s06-c" id="s06-c12" style="left:488px;top:190px"></div>
+        <div class="s06-c" id="s06-c13" style="left:642px;top:190px"></div>
+        <div class="s06-c" id="s06-c20" style="left:180px;top:280px"></div>
+        <div class="s06-c" id="s06-c21" style="left:334px;top:280px"></div>
+        <div class="s06-c" id="s06-c22" style="left:488px;top:280px"></div>
+        <div class="s06-c" id="s06-c23" style="left:642px;top:280px"></div>
+        <div class="s06-c" id="s06-c30" style="left:180px;top:370px"></div>
+        <div class="s06-c" id="s06-c31" style="left:334px;top:370px"></div>
+        <div class="s06-c" id="s06-c32" style="left:488px;top:370px"></div>
+        <div class="s06-c" id="s06-c33" style="left:642px;top:370px"></div>
+        <div class="s06-c" id="s06-c40" style="left:180px;top:460px"></div>
+        <div class="s06-c" id="s06-c41" style="left:334px;top:460px"></div>
+        <div class="s06-c" id="s06-c42" style="left:488px;top:460px"></div>
+        <div class="s06-c" id="s06-c43" style="left:642px;top:460px"></div>
+      </div>
+      <div id="s06-f" class="x-card x-hide">
+        <div id="s06-fl">조건 없이 모든 짝</div>
+        <div id="s06-fv"><span id="s06-m1">5 × 4</span> <span id="s06-m2" class="x-acc">= 20행</span></div>
+      </div>
+      <div id="s06-q" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">SELECT</span> *</span></div>
+        <div class="q-ln"><div class="q-hi" id="s06-h2"></div><span><span class="q-k">FROM</span> 사원, 부서</span></div>
+        <div class="q-ln" id="s06-l3" style="opacity:0"><div class="q-hi" id="s06-h3"></div><span class="q-m">-- 조인 조건 없음</span></div>
+      </div>
+      <div id="s06-cpw"><div id="s06-cp" class="q-chip q-ok">카티션 곱</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 18;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+
+    // 25 조건 없이 모든 행끼리 짝을 짓는다
+    ft("#s06-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s06-g", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    ft("#s06-f", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(0, 1.0));
+    fade("#s06-fl", at(0, 1.4), 0, 1);
+    // 26 사원 다섯 명 × 부서 네 개 — 칸이 한 줄씩 차서 20칸
+    for (let r = 0; r < 5; r++) for (let c = 0; c < 4; c++) {
+      ft(`#s06-c${r}${c}`, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.25 * S, ease: "back.out(1.6)" }, at(1, 0.3 + (r * 4 + c) * 0.12));
+    }
+    fade("#s06-m1", X("mt", at(1, 3.0)), 0, 1);
+    fade("#s06-m2", X("tw", at(1, 4.1)), 0, 1);
+    // 27 FROM에 표만 나열하고 조인 조건을 빠뜨려도 → 카티션 곱
+    fade("#s06-f", at(2, 0.2), 1, 0.45);
+    ft("#s06-q", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(2, 0.2));
+    fade("#s06-h2", at(2, 0.8), 0, 1);
+    const cn = X("cn", at(2, 1.9));
+    fade("#s06-h2", cn, 1, 0);
+    fade(["#s06-l3", "#s06-h3"], cn + 0.1, 0, 1);
+    stamp("#s06-cp", X("ct", at(2, 6.0)));
+    if (String(V.exit) !== "false") ft("#s06-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s06"] = tl;
+  </script>
+</template>

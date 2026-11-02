@@ -1,0 +1,34 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h4-c { position: absolute; left: 80px; width: 880px; height: 200px; padding: 0 48px; display: flex; align-items: center; justify-content: space-between; }
+    .h4-ph { font-size: 44px; font-weight: 800; white-space: nowrap; }
+    .h4-sq { margin-top: 12px; font-size: 34px; font-weight: 700; color: var(--color-ink2, #71717A); white-space: nowrap; }
+    .h4-nm { font-size: 54px; font-weight: 900; color: var(--color-accent, #6B3FE6); white-space: nowrap; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="h4" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45]"},{"id":"dur","type":"number","label":"장면 길이","default":7.1},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h4-all">
+      <div class="h4-c x-card x-hide" id="h4-c1" style="top:340px"><div><div class="h4-ph">건너뛰면</div><div class="h4-sq">1 · 1 · 3 · 4</div></div><div class="h4-nm" id="h4-n1">RANK</div></div>
+      <div class="h4-c x-card x-hide" id="h4-c2" style="top:580px"><div><div class="h4-ph">촘촘하면</div><div class="h4-sq">1 · 1 · 2 · 3</div></div><div class="h4-nm" id="h4-n2">DENSE_RANK</div></div>
+      <div class="h4-c x-card x-hide" id="h4-c3" style="top:820px"><div><div class="h4-ph">모두 다르면</div><div class="h4-sq">1 · 2 · 3 · 4</div></div><div class="h4-nm" id="h4-n3">ROW_NUMBER</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+
+    // 7 건너뛰면 RANK, 촘촘하면 DENSE_RANK, 모두 다르면 ROW_NUMBER — 말이 나올 때 한 장씩, 이름은 조금 뒤
+    [[1, -0.1], [2, 1.4], [3, 3.35]].forEach(([k, d]) => {
+      ft(`#h4-c${k}`, { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, d));
+      stamp(`#h4-n${k}`, at(0, d + 0.6));
+    });
+    window.__timelines["h4"] = tl;
+  </script>
+</template>

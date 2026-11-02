@@ -1,0 +1,80 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s07-q { left: 192px; top: 262px; width: 1536px; }
+    #s07-q .q-ln { font-size: 36px; height: 58px; padding: 0 44px; }
+    /* 조건의 왼쪽(사원)과 오른쪽(부서) */
+    .s07-k { position: absolute; top: 520px; width: 752px; height: 206px; box-sizing: border-box; padding: 28px 40px; }
+    #s07-a { left: 192px; }
+    #s07-b { left: 976px; }
+    .s07-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    .s07-t { font-size: 30px; font-weight: 700; color: var(--color-ink2, #71717A); white-space: nowrap; }
+    .s07-v { margin-top: 8px; font-size: 44px; font-weight: 900; white-space: nowrap; }
+    .s07-l { margin-top: 14px; font-size: 32px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    #s07-m { position: absolute; left: 192px; top: 772px; width: 1536px; height: 64px; }
+    #s07-m > div { position: absolute; left: 0; right: 0; top: 0; text-align: center; font-size: 44px; font-weight: 800; white-space: nowrap; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s07" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,3.5,9.3,15.8,20.9]"},{"id":"dur","type":"number","label":"장면 길이","default":26},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"pl","type":"number","label":"(+)를 시각","default":7.6},{"id":"nl","type":"number","label":"부서 칸은 시각","default":11.1},{"id":"sv","type":"number","label":"사원이 시각","default":13.4},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s07-all">
+      <div id="s07-head" class="x-head">오라클의 (+) 표기</div>
+      <div id="s07-q" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">SELECT</span> 사원.이름, 부서.부서명</span></div>
+        <div class="q-ln"><span><span class="q-k">FROM</span> 사원, 부서</span></div>
+        <div class="q-ln"><div class="q-hi" id="s07-h3"></div><span><span class="q-k">WHERE</span> 사원.부서번호 = 부서.부서번호<span id="s07-p">(+)</span>;</span></div>
+      </div>
+      <div id="s07-a" class="s07-k x-card x-hide">
+        <div class="s07-ring" id="s07-oa"></div>
+        <div class="s07-t">사원.부서번호</div>
+        <div class="s07-v">모두 살아남는 쪽</div>
+        <div class="s07-l" id="s07-al">민수 · 지영 · 현우 · 수진 · 동훈</div>
+      </div>
+      <div id="s07-b" class="s07-k x-card x-hide">
+        <div class="s07-ring" id="s07-ob"></div>
+        <div class="s07-t">부서.부서번호(+)</div>
+        <div class="s07-v">NULL로 채워질 쪽</div>
+        <div class="s07-l x-ink2" id="s07-bl">부서 칸은 비어도 된다</div>
+      </div>
+      <div id="s07-m" data-layout-allow-overlap>
+        <div id="s07-m1">= 사원 기준 <span class="x-acc">LEFT OUTER JOIN</span></div>
+        <div id="s07-m2">(+)가 붙은 쪽의 <span class="x-acc">반대편</span>이 모두 살아남는다</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 26;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+
+    // 28 오라클 전용 표기
+    ft("#s07-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s07-q", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.4));
+    // 29 WHERE 조인 조건에서, NULL로 채워질 쪽에 (+)
+    fade("#s07-h3", at(1, 0.3), 0, 1);
+    const pl = X("pl", at(1, 4.0));
+    ft("#s07-p", { color: "#FFFFFF" }, { color: "#A68CFF" }, pl);
+    ft("#s07-b", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, pl + 0.2);
+    fade("#s07-ob", pl + 0.2, 0, 1);
+    // 30 부서 칸은 비어도 된다 → 사원이 모두 살아남는다
+    fade("#s07-bl", X("nl", at(2, 1.8)), 0, 1);
+    const sv = X("sv", at(2, 4.1));
+    ft("#s07-a", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, sv);
+    fade("#s07-ob", sv, 1, 0);
+    fade("#s07-oa", sv + 0.1, 0, 1);
+    fade("#s07-al", sv + 0.6, 0, 1);
+    // 31 사원 기준 LEFT OUTER JOIN과 같다
+    fade("#s07-m1", at(3, 0.3), 0, 1);
+    // 32 (+)의 반대편이 모두 살아남는다
+    fade("#s07-m1", at(4, 0.1), 1, 0);
+    fade("#s07-m2", at(4, 0.3), 0, 1);
+    if (String(V.exit) !== "false") ft("#s07-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s07"] = tl;
+  </script>
+</template>

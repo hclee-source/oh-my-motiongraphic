@@ -1,0 +1,22 @@
+{
+  "_설명": "쇼츠(세로) 조립 설정. 장면 순서(장 번호, 여러 장을 한 장면으로 묶을 수 있음), 영상 내내 떠 있는 위쪽 제목, 효과음 위치([이름, 장면 안 문장 순번(0부터), 그 문장 시작 뒤 초]). 숫자·영문 함수 이름은 글자 수와 읽는 길이가 달라 장면 안에서 문장 시작 + 초로 맞췄다.",
+  "format": {
+    "width": 1080, "height": 1920, "resolution": "portrait",
+    "caption": { "max": 17, "deep": true, "bottom": 540, "size": 54, "weight": 700, "width": 940 }
+  },
+  "overlays": [
+    { "id": "hd", "file": "header.html" }
+  ],
+  "scenes": [
+    { "id": "h1", "file": "h1-tie.html", "chapter": 1, "extra": { "j1": { "sentence": 1, "at": "공동" } } },
+    { "id": "h2", "file": "h2-three.html", "chapter": 2 },
+    { "id": "h3", "file": "h3-partition.html", "chapter": 3 },
+    { "id": "h4", "file": "h4-summary.html", "chapter": 4, "exit": false }
+  ],
+  "sfx": {
+    "h1": [["pop", 0, 0.1], ["click-soft", 0, 6.0], ["pop", 1, 0.9]],
+    "h2": [["pop", 0, 0.1], ["click-soft", 0, 4.6], ["pop", 1, 0.1], ["click-soft", 1, 2.7], ["pop", 2, 0.1], ["click-soft", 2, 2.6]],
+    "h3": [["whoosh-short", 0, 0.0], ["pop", 0, 1.9]],
+    "h4": [["pop", 0, 0.0], ["pop", 0, 1.4], ["pop", 0, 3.35]]
+  }
+}

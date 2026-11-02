@@ -1,0 +1,59 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s07-c { position: absolute; width: 752px; height: 276px; padding: 50px 52px 0; box-sizing: border-box;
+      display: flex; flex-direction: column; justify-content: flex-start; }
+    .s07-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    .s07-fn { font-size: 52px; font-weight: 900; white-space: nowrap; }
+    .s07-m { margin-top: 14px; font-size: 36px; font-weight: 700; line-height: 1.45; white-space: nowrap; opacity: 0; }
+    .s07-m span { color: var(--color-accent, #6B3FE6); font-weight: 800; }
+  </style>
+  <div id="root" data-composition-id="s07" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3.837,9.862,17.365,21.595]"},{"id":"dur","type":"number","label":"장면 길이","default":28.981},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s07-all">
+      <div id="s07-head" class="x-head">NULL을 다루는 함수</div>
+      <div class="s07-c x-card x-hide" id="s07-c1" style="left:192px;top:262px"><div class="s07-ring" id="s07-o1"></div>
+        <div class="s07-fn" id="s07-f1">NVL(A, B)</div>
+        <div class="s07-m" id="s07-m1">A가 NULL이면 <span>B</span><br />아니면 A 그대로</div></div>
+      <div class="s07-c x-card x-hide" id="s07-c2" style="left:976px;top:262px"><div class="s07-ring" id="s07-o2"></div>
+        <div class="s07-fn" id="s07-f2">NVL2(A, B, C)</div>
+        <div class="s07-m" id="s07-m2">A가 NULL이 아니면 <span>B</span><br />NULL이면 <span>C</span></div></div>
+      <div class="s07-c x-card x-hide" id="s07-c3" style="left:192px;top:570px"><div class="s07-ring" id="s07-o3"></div>
+        <div class="s07-fn" id="s07-f3">COALESCE(A, B, …)</div>
+        <div class="s07-m" id="s07-m3">처음으로 <span>NULL이 아닌 값</span></div></div>
+      <div class="s07-c x-card x-hide" id="s07-c4" style="left:976px;top:570px"><div class="s07-ring" id="s07-o4"></div>
+        <div class="s07-fn" id="s07-f4">NULLIF(A, B)</div>
+        <div class="s07-m" id="s07-m4">A와 B가 같으면 <span>NULL</span><br />다르면 A</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 28.981;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const ACC = "#6B3FE6", INK = "#18181B";
+
+    // 35 네 개만 기억하면 된다 — 이름만 먼저
+    ft("#s07-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    [1, 2, 3, 4].forEach((k, j) => ft(`#s07-c${k}`, { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, at(0, 0.6 + j * 0.25)));
+    // 지금 말하는 함수만 테두리와 이름이 강조색, 뜻이 붙는다
+    const focus = (k, t) => {
+      fade(`#s07-o${k}`, t, 0, 1);
+      ft(`#s07-f${k}`, { color: INK }, { color: ACC }, t);
+      fade(`#s07-m${k}`, t + 0.8, 0, 1);
+      if (k > 1) {
+        fade(`#s07-o${k - 1}`, t, 1, 0);
+        ft(`#s07-f${k - 1}`, { color: ACC }, { color: INK }, t);
+      }
+    };
+    // 36 NVL / 37 NVL2 / 38 COALESCE / 39 NULLIF
+    [1, 2, 3, 4].forEach((k) => focus(k, at(k, 0.2)));
+    if (String(V.exit) !== "false") ft("#s07-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s07"] = tl;
+  </script>
+</template>

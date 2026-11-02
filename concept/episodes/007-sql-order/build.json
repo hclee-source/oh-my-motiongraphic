@@ -1,0 +1,25 @@
+{
+  "_설명": "장면 순서(장 번호와 연결, 여러 장을 한 장면으로 묶을 수 있음), 장면 끝에서 사라질지(exit), 효과음 위치([이름, 장면 안 문장 순번(0부터), 그 문장 시작 뒤 초]). extra는 그 낱말이 나오는 시각(장면 기준).",
+  "scenes": [
+    { "id": "s00", "file": "s00-title.html" },
+    { "id": "s01", "file": "s01-hook.html", "chapter": 1 },
+    { "id": "s02", "file": "s02-order.html", "chapter": 2,
+      "extra": { "o2": { "sentence": 9, "at": "WHERE" }, "o3": { "sentence": 9, "at": "GROUP BY" }, "o4": { "sentence": 9, "at": "HAVING" },
+                 "o5": { "sentence": 9, "at": "SELECT" }, "o6": { "sentence": 9, "at": "ORDER BY" },
+                 "c2": { "sentence": 11, "at": "두 명 이상" }, "c3": { "sentence": 11, "at": "평균이 높은" } } },
+    { "id": "s03", "file": "s03-flow.html", "chapter": [3, 4, 5, 6], "extra": { "g2t": { "sentence": 24, "at": "개발은" } } },
+    { "id": "s07", "file": "s07-why.html", "chapter": 7 },
+    { "id": "s08", "file": "s08-check.html", "chapter": 8 },
+    { "id": "s09", "file": "s09-summary.html", "chapter": 9, "exit": false, "extra": { "sy": { "sentence": 41, "at": "앞 글자" } } }
+  ],
+  "sfx": {
+    "s00": [["chime", null, 0.15], ["whoosh-short", null, 3.0]],
+    "s01": [["pop", 0, 0.4], ["click-soft", 1, 1.6], ["pop", 2, 0.2], ["click-soft", 2, 1.8], ["whoosh-short", 5, 0.3]],
+    "s02": [["pop", 0, 0.4], ["click-soft", 1, 0.6], ["pop", 3, 0.4], ["click-soft", 4, 0.3]],
+    "s03": [["pop", 0, 0.5], ["click-soft", 2, 1.6], ["whoosh-short", 4, 1.0], ["pop", 5, 0.3], ["pop", 5, 1.4], ["pop", 5, 2.5],
+            ["click-soft", 9, 1.4], ["click-soft", 12, 1.6], ["whoosh-short", 14, 0.9], ["click-soft", 14, 3.0]],
+    "s07": [["pop", 0, 0.5], ["pop", 1, 2.4], ["pop", 2, 1.6], ["pop", 3, 1.4], ["pop", 4, 1.6], ["pop", 5, 0.8], ["pop", 6, 0.8]],
+    "s08": [["pop", 1, 0.2], ["pop", 2, 0.2], ["pop", 3, 0.2], ["pop", 4, 0.3]],
+    "s09": [["pop", 1, 0.1]]
+  }
+}

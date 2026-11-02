@@ -1,0 +1,30 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 540px; text-align: center; overflow: visible;
+      font-size: 54px; font-weight: 700; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 940px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cap-01a" class="cap clip" data-start="0.000" data-duration="2.010"><span>SQL은 SELECT부터 쓰지만,</span></div>
+    <div id="cap-01b" class="cap clip" data-start="2.010" data-duration="2.014"><span>처리는 FROM부터 합니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="4.074" data-duration="3.670"><span>FROM, WHERE, GROUP BY,</span></div>
+    <div id="cap-02b" class="cap clip" data-start="7.744" data-duration="3.602"><span>HAVING, SELECT, ORDER BY.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="11.546" data-duration="1.590"><span>SELECT에서 붙인 별칭은</span></div>
+    <div id="cap-03b" class="cap clip" data-start="13.136" data-duration="1.863"><span>다섯 번째에야 생깁니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="15.049" data-duration="1.930"><span>그래서 WHERE에서는 오류,</span></div>
+    <div id="cap-04b" class="cap clip" data-start="16.979" data-duration="2.214"><span>ORDER BY에서는 됩니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="19.393" data-duration="1.930"><span>WHERE는 묶기 전의 행을,</span></div>
+    <div id="cap-05b" class="cap clip" data-start="21.323" data-duration="0.980"><span>HAVING은 묶은 뒤의</span></div>
+    <div id="cap-05c" class="cap clip" data-start="22.303" data-duration="1.362"><span>묶음을 거릅니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="23.715" data-duration="2.350"><span>그래서 COUNT, AVG 같은</span></div>
+    <div id="cap-06b" class="cap clip" data-start="26.065" data-duration="1.260"><span>집계 함수 조건은</span></div>
+    <div id="cap-06c" class="cap clip" data-start="27.325" data-duration="1.421"><span>HAVING에 적습니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="28.946" data-duration="2.350"><span>앞 글자만 따면,</span></div>
+    <div id="cap-07b" class="cap clip" data-start="31.296" data-duration="5.680"><span>프, 웨, 그, 해, 셀, 오입니다.</span></div>
+    <div id="cap-07c" class="cap clip" data-start="36.976" data-duration="2.253"><span>이 순서만 기억하세요.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

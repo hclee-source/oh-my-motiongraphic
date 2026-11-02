@@ -1,0 +1,80 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 108px; text-align: center; overflow: visible;
+      font-size: 46px; font-weight: 600; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 1536px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-01a" class="cap clip" data-start="3.600" data-duration="2.910"><span>ROLLUP(부서, 직급)과 ROLLUP(직급,</span></div>
+    <div id="cap-01b" class="cap clip" data-start="6.510" data-duration="2.306"><span>부서)는 결과가 같을까요?</span></div>
+    <div id="cap-02a" class="cap clip" data-start="8.916" data-duration="1.850"><span>괄호 안 순서만 바꿨으니 같아</span></div>
+    <div id="cap-02b" class="cap clip" data-start="10.766" data-duration="2.764"><span>보이지만, 행 수부터 다릅니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="13.630" data-duration="3.814"><span>앞의 것은 9행, 뒤의 것은 10행입니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="17.543" data-duration="2.990"><span>오늘은 같은 표로 ROLLUP, CUBE,</span></div>
+    <div id="cap-04b" class="cap clip" data-start="20.533" data-duration="3.540"><span>GROUPING SETS의 결과 행 수를 직접 세어 보겠습니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="24.723" data-duration="2.530"><span>부서는 영업과 개발 두 개,</span></div>
+    <div id="cap-05b" class="cap clip" data-start="27.253" data-duration="4.406"><span>직급은 사원, 대리, 과장 세 개입니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="31.759" data-duration="1.230"><span>직원 여덟 명이 이 여섯</span></div>
+    <div id="cap-06b" class="cap clip" data-start="32.989" data-duration="2.339"><span>가지 조합에 나뉘어 있습니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="35.428" data-duration="2.250"><span>부서와 직급으로 GROUP BY 해서 급여</span></div>
+    <div id="cap-07b" class="cap clip" data-start="37.678" data-duration="3.754"><span>합계를 구하면 조합마다 한 행, 6행이 나옵니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="41.532" data-duration="1.830"><span>여기에는 부서 전체의 합계도,</span></div>
+    <div id="cap-08b" class="cap clip" data-start="43.362" data-duration="2.811"><span>회사 전체의 합계도 없습니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="46.273" data-duration="1.830"><span>소계와 총계를 한 번에 붙여 주는</span></div>
+    <div id="cap-09b" class="cap clip" data-start="48.103" data-duration="2.950"><span>것이 오늘의 그룹 함수 세 개입니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="51.704" data-duration="2.150"><span>ROLLUP(부서, 직급)은 괄호 안의</span></div>
+    <div id="cap-10b" class="cap clip" data-start="53.854" data-duration="3.359"><span>열을 오른쪽부터 하나씩 지워 가며 묶습니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="57.312" data-duration="3.273"><span>먼저 부서와 직급으로 묶은 6행이 나옵니다.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="60.685" data-duration="3.170"><span>직급을 지우고 부서로만 묶은 소계가 2행,</span></div>
+    <div id="cap-12b" class="cap clip" data-start="63.855" data-duration="3.735"><span>영업 1480, 개발 1670입니다.</span></div>
+    <div id="cap-13a" class="cap clip" data-start="67.690" data-duration="2.030"><span>마지막으로 모두 지운 총계 1행,</span></div>
+    <div id="cap-13b" class="cap clip" data-start="69.720" data-duration="2.495"><span>3150이 붙습니다.</span></div>
+    <div id="cap-14a" class="cap clip" data-start="72.316" data-duration="3.873"><span>6 더하기 2 더하기 1, 모두 9행입니다.</span></div>
+    <div id="cap-15a" class="cap clip" data-start="76.839" data-duration="3.285"><span>이번에는 ROLLUP(직급, 부서)입니다.</span></div>
+    <div id="cap-16a" class="cap clip" data-start="80.224" data-duration="1.770"><span>오른쪽의 부서를 먼저 지우니,</span></div>
+    <div id="cap-16b" class="cap clip" data-start="81.994" data-duration="2.977"><span>이번 소계는 직급별로 나옵니다.</span></div>
+    <div id="cap-17a" class="cap clip" data-start="85.071" data-duration="4.850"><span>사원 900, 대리 1200, 과장 1050,</span></div>
+    <div id="cap-17b" class="cap clip" data-start="89.921" data-duration="2.405"><span>직급이 세 개라 소계가 3행입니다.</span></div>
+    <div id="cap-18a" class="cap clip" data-start="92.426" data-duration="3.640"><span>6 더하기 3 더하기 1, 모두 10행입니다.</span></div>
+    <div id="cap-19a" class="cap clip" data-start="96.166" data-duration="1.450"><span>ROLLUP은 괄호 안 순서에</span></div>
+    <div id="cap-19b" class="cap clip" data-start="97.616" data-duration="2.552"><span>따라 소계의 기준이 달라집니다.</span></div>
+    <div id="cap-20a" class="cap clip" data-start="100.818" data-duration="2.070"><span>CUBE(부서, 직급)은 순서와</span></div>
+    <div id="cap-20b" class="cap clip" data-start="102.888" data-duration="2.969"><span>상관없이 가능한 모든 조합으로 묶습니다.</span></div>
+    <div id="cap-21a" class="cap clip" data-start="105.957" data-duration="3.550"><span>부서와 직급 6행, 부서 소계 2행,</span></div>
+    <div id="cap-21b" class="cap clip" data-start="109.507" data-duration="3.502"><span>직급 소계 3행, 총계 1행입니다.</span></div>
+    <div id="cap-22a" class="cap clip" data-start="113.109" data-duration="2.198"><span>모두 더하면 12행입니다.</span></div>
+    <div id="cap-23a" class="cap clip" data-start="115.407" data-duration="2.270"><span>열이 두 개면 묶는 방법이 네 가지,</span></div>
+    <div id="cap-23b" class="cap clip" data-start="117.677" data-duration="2.755"><span>세 개면 여덟 가지로 늘어납니다.</span></div>
+    <div id="cap-24a" class="cap clip" data-start="120.532" data-duration="1.730"><span>모든 조합을 다 만들기 때문에,</span></div>
+    <div id="cap-24b" class="cap clip" data-start="122.262" data-duration="4.442"><span>CUBE는 괄호 안 순서를 바꿔도 결과 행 수가 같습니다.</span></div>
+    <div id="cap-25a" class="cap clip" data-start="127.354" data-duration="1.430"><span>GROUPING SETS(부서,</span></div>
+    <div id="cap-25b" class="cap clip" data-start="128.784" data-duration="3.587"><span>직급)은 괄호 안에 적은 묶음만 따로따로 만듭니다.</span></div>
+    <div id="cap-26a" class="cap clip" data-start="132.471" data-duration="4.692"><span>부서별 2행, 직급별 3행, 모두 5행입니다.</span></div>
+    <div id="cap-27a" class="cap clip" data-start="137.263" data-duration="3.860"><span>부서와 직급을 함께 묶은 행도, 총계도 없습니다.</span></div>
+    <div id="cap-28a" class="cap clip" data-start="141.223" data-duration="2.090"><span>총계까지 원하면 괄호 안에 빈</span></div>
+    <div id="cap-28b" class="cap clip" data-start="143.313" data-duration="2.221"><span>괄호를 하나 더 적어야 합니다.</span></div>
+    <div id="cap-29a" class="cap clip" data-start="146.183" data-duration="1.710"><span>소계 행에서는 지워진 열</span></div>
+    <div id="cap-29b" class="cap clip" data-start="147.893" data-duration="1.750"><span>자리가 NULL로 나옵니다.</span></div>
+    <div id="cap-30a" class="cap clip" data-start="149.743" data-duration="3.087"><span>영업 소계 행의 직급 칸이 비어 있는 이유입니다.</span></div>
+    <div id="cap-31a" class="cap clip" data-start="152.930" data-duration="1.450"><span>원래 데이터에 있던 NULL과</span></div>
+    <div id="cap-31b" class="cap clip" data-start="154.380" data-duration="2.711"><span>구분하려면 GROUPING 함수를 씁니다.</span></div>
+    <div id="cap-32a" class="cap clip" data-start="157.191" data-duration="2.590"><span>GROUPING(직급)은 직급을 지운 행,</span></div>
+    <div id="cap-32b" class="cap clip" data-start="159.781" data-duration="4.312"><span>곧 소계와 총계 행이면 1, 아니면 0을 돌려줍니다.</span></div>
+    <div id="cap-33a" class="cap clip" data-start="164.193" data-duration="2.490"><span>이 값을 CASE와 함께 써서 빈칸에</span></div>
+    <div id="cap-33b" class="cap clip" data-start="166.683" data-duration="2.664"><span>‘소계’나 ‘총계’라는 글자를 넣기도 합니다.</span></div>
+    <div id="cap-34a" class="cap clip" data-start="169.997" data-duration="2.582"><span>시험장에서 챙길 것 세 가지입니다.</span></div>
+    <div id="cap-35a" class="cap clip" data-start="172.678" data-duration="2.750"><span>첫째, ROLLUP은 오른쪽부터 지우므로</span></div>
+    <div id="cap-35b" class="cap clip" data-start="175.428" data-duration="3.112"><span>괄호 안 순서가 바뀌면 결과도 바뀝니다.</span></div>
+    <div id="cap-36a" class="cap clip" data-start="178.640" data-duration="2.150"><span>둘째, CUBE는 모든 조합이라</span></div>
+    <div id="cap-36b" class="cap clip" data-start="180.790" data-duration="3.031"><span>순서와 상관없이 같은 결과가 나옵니다.</span></div>
+    <div id="cap-37a" class="cap clip" data-start="183.922" data-duration="2.790"><span>셋째, GROUPING SETS는 괄호에 적은</span></div>
+    <div id="cap-37b" class="cap clip" data-start="186.712" data-duration="4.001"><span>묶음만 나오고, 총계는 빈 괄호를 적어야 나옵니다.</span></div>
+    <div id="cap-38a" class="cap clip" data-start="191.363" data-duration="2.894"><span>오늘 내용을 한 줄로 정리하면 이렇습니다.</span></div>
+    <div id="cap-39a" class="cap clip" data-start="194.356" data-duration="4.030"><span>오른쪽부터 지우면 ROLLUP, 모든 조합은 CUBE,</span></div>
+    <div id="cap-39b" class="cap clip" data-start="198.386" data-duration="2.946"><span>지정한 묶음만 GROUPING SETS입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

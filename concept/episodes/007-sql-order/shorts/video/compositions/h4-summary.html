@@ -1,0 +1,33 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h4-c { position: absolute; width: 280px; height: 280px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .h4-sy { font-size: 140px; font-weight: 900; line-height: 1; color: var(--color-accent, #6B3FE6); }
+    .h4-kw { margin-top: 18px; font-size: 32px; font-weight: 800; color: var(--color-ink2, #71717A); white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="h4" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.2]"},{"id":"dur","type":"number","label":"장면 길이","default":8},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"sy","type":"number","label":"프 시각","default":1.2},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h4-all">
+      <div class="h4-c x-card x-hide" id="h4-c1" style="left:80px;top:330px"><div class="h4-sy">프</div><div class="h4-kw">FROM</div></div>
+      <div class="h4-c x-card x-hide" id="h4-c2" style="left:400px;top:330px"><div class="h4-sy">웨</div><div class="h4-kw">WHERE</div></div>
+      <div class="h4-c x-card x-hide" id="h4-c3" style="left:720px;top:330px"><div class="h4-sy">그</div><div class="h4-kw">GROUP BY</div></div>
+      <div class="h4-c x-card x-hide" id="h4-c4" style="left:80px;top:650px"><div class="h4-sy">해</div><div class="h4-kw">HAVING</div></div>
+      <div class="h4-c x-card x-hide" id="h4-c5" style="left:400px;top:650px"><div class="h4-sy">셀</div><div class="h4-kw">SELECT</div></div>
+      <div class="h4-c x-card x-hide" id="h4-c6" style="left:720px;top:650px"><div class="h4-sy">오</div><div class="h4-kw">ORDER BY</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const stamp = (sel, t) => tl.fromTo(sel, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.35 * S, ease: "back.out(1.8)", immediateRender: false }, t);
+
+    // 7 앞 글자만 따서 프, 웨, 그, 해, 셀, 오
+    // 실제로 말한 시각(listen_episode.py로 잰 값): 프 1.26, 웨 2.40, 그 3.30, 해 4.10, 셀 5.32, 오 6.40
+    [1.26, 2.4, 3.3, 4.1, 5.32, 6.4].forEach((s, j) => stamp(`#h4-c${j + 1}`, at(0, s - 0.05)));
+    window.__timelines["h4"] = tl;
+  </script>
+</template>

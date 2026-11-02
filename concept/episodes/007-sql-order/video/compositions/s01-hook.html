@@ -1,0 +1,69 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s01-a { left: 192px; top: 262px; width: 740px; }
+    #s01-b { left: 988px; top: 262px; width: 740px; }
+    #s01-oka { left: 192px; top: 560px; }
+    #s01-ngb { left: 988px; top: 560px; }
+    #s01-q { position: absolute; left: 192px; top: 700px; width: 1536px; height: 80px; }
+    #s01-q > div { position: absolute; left: 0; right: 0; top: 0; text-align: center; font-size: 48px; font-weight: 800; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s01" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.3,4,8,12,16,20]"},{"id":"dur","type":"number","label":"장면 길이","default":26},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s01-all">
+      <div id="s01-head" class="x-head">별칭이 통하지 않는 곳</div>
+      <div id="s01-a" class="x-dark q-code x-hide">
+        <div class="q-ln"><div class="q-hi" id="s01-ha1"></div><span><span class="q-k">SELECT</span> 이름, 급여 * 12 <span class="q-k">AS</span> 연봉</span></div>
+        <div class="q-ln"><span><span class="q-k">FROM</span> 직원</span></div>
+        <div class="q-ln"><div class="q-hi" id="s01-ha3"></div><span><span class="q-k">ORDER BY</span> 연봉;</span></div>
+      </div>
+      <div id="s01-b" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">SELECT</span> 이름, 급여 * 12 <span class="q-k">AS</span> 연봉</span></div>
+        <div class="q-ln"><span><span class="q-k">FROM</span> 직원</span></div>
+        <div class="q-ln"><div class="q-hi" id="s01-hb3"></div><span><span class="q-k">WHERE</span> 연봉 &gt;= 4000;</span></div>
+      </div>
+      <div id="s01-oka" class="q-chip q-ok">✓ 연봉 순서로 정렬</div>
+      <div id="s01-ngb" class="q-chip q-ng">✕ 오류</div>
+      <div id="s01-q" data-layout-allow-overlap>
+        <div id="s01-q1">같은 별칭인데, 왜 한쪽만?</div>
+        <div id="s01-q2" class="x-acc">답은 SQL의 처리 순서</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 26;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+
+    // 1 급여 * 12에 별칭 ‘연봉’
+    ft("#s01-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s01-a", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    fade("#s01-ha1", at(0, 1.6), 0, 1);
+    // 2 ORDER BY 연봉 → 정렬 잘 됨
+    fade("#s01-ha1", at(1, 0), 1, 0);
+    fade("#s01-ha3", at(1, 0.1), 0, 1);
+    stamp("#s01-oka", at(1, 1.6));
+    // 3 같은 별칭을 WHERE에 → 오류
+    ft("#s01-b", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(2, 0.1));
+    fade("#s01-ha3", at(2, 0.1), 1, 0);
+    fade("#s01-hb3", at(2, 0.6), 0, 1);
+    stamp("#s01-ngb", at(2, 1.8));
+    // 4 왜 한쪽에서만?
+    fade("#s01-q1", at(3, 0.3), 0, 1);
+    // 5 답은 처리 순서
+    fade("#s01-q1", at(4, 0.1), 1, 0);
+    fade("#s01-q2", at(4, 0.3), 0, 1);
+    // 6 직원 여덟 명 표로 따라가기 — 두 카드는 흐리게
+    fade("#s01-hb3", at(5, 0.2), 1, 0);
+    fade(["#s01-a", "#s01-b", "#s01-oka", "#s01-ngb"], at(5, 0.3), 1, 0.4);
+    if (String(V.exit) !== "false") ft("#s01-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s01"] = tl;
+  </script>
+</template>

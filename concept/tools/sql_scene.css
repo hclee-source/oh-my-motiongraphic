@@ -1,0 +1,25 @@
+
+/* ── SQL 장면(SQLD 편, 2026-11-02): new_episode.py --sql 이 scene.css 끝에 붙인다 ── */
+/* SQL 카드: class="x-dark q-code" + 줄마다 .q-ln, 예약어는 .q-k, 지금 줄 강조 .q-hi, 처리 순번 .q-no */
+.q-code { position: absolute; padding: 26px 0; box-sizing: border-box; }
+.q-ln { position: relative; height: 60px; padding: 0 40px; display: flex; align-items: center;
+  font-size: 34px; font-weight: 700; white-space: nowrap; color: #FFFFFF; }
+.q-k { color: var(--color-accent-dark, #A68CFF); }
+.q-m { color: #A1A1AA; }
+.q-hi { position: absolute; left: 14px; right: 14px; top: 3px; bottom: 3px; border-radius: 14px;
+  background: rgba(166, 140, 255, 0.22); opacity: 0; }
+.q-no { position: absolute; right: 22px; top: 8px; width: 44px; height: 44px; border-radius: 22px;
+  background: var(--color-accent-dark, #A68CFF); color: #18181B; font-size: 26px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center; opacity: 0; }
+/* 결과 표: class="x-card q-tb" + 머리 .q-th, 행 .q-tr(top을 직접 준다), 칸 너비는 표마다 grid-template-columns */
+.q-tb { position: absolute; box-sizing: border-box; }
+.q-th, .q-tr { position: absolute; left: 28px; right: 28px; height: 56px; display: grid; align-items: center; }
+.q-th { border-bottom: 2px solid var(--color-hair, #D3D6DD); }
+.q-th > div { font-size: 28px; font-weight: 700; color: var(--color-ink2, #71717A); text-align: center; white-space: nowrap; }
+.q-tr > div { font-size: 34px; font-weight: 800; text-align: center; white-space: nowrap; }
+.q-null { color: #8A8A93; font-weight: 700; }  /* #A1A1AA는 흰 바탕 대비 2.56:1로 hyperframes check 탈락 */
+/* 결과 표시 칩 */
+.q-chip { position: absolute; height: 72px; padding: 0 28px; border-radius: 36px; box-sizing: border-box;
+  display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 800; white-space: nowrap; opacity: 0; }
+.q-ok { background: color-mix(in srgb, var(--color-accent, #6B3FE6) 14%, #FFFFFF); color: var(--color-accent, #6B3FE6); }
+.q-ng { background: var(--color-anchor, #18181B); color: #FFFFFF; }

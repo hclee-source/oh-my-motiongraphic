@@ -1,0 +1,37 @@
+{
+  "_설명": "장면 순서(장 번호와 연결, 여러 장을 한 장면으로 묶을 수 있음), 장면 끝에서 사라질지(exit), 효과음 위치([이름, 장면 안 문장 순번(0부터), 그 문장 시작 뒤 초]). extra는 그 낱말이 나오는 시각(장면 기준).",
+  "scenes": [
+    { "id": "s00", "file": "s00-title.html" },
+    { "id": "s01", "file": "s01-hook.html", "chapter": 1,
+      "extra": { "lv": { "sentence": 1, "at": "5행" }, "rr": { "sentence": 1, "at": "RIGHT" }, "rv": { "sentence": 1, "at": "5행이" },
+                 "ng": { "sentence": 3, "at": "틀립니다" } } },
+    { "id": "s02", "file": "s02-tables.html", "chapter": [2, 3, 4, 5],
+      "extra": { "d2": { "sentence": 6, "at": "오른쪽은" },
+                 "m2": { "sentence": 8, "at": "현우는" }, "m3": { "sentence": 8, "at": "수진은" },
+                 "j1": { "sentence": 12, "at": "지영" }, "j2": { "sentence": 12, "at": "현우" }, "j3": { "sentence": 12, "at": "수진" }, "j4": { "sentence": 12, "at": "네 행" },
+                 "l1": { "sentence": 17, "at": "동훈이" }, "l2": { "sentence": 17, "at": "5행" },
+                 "g1": { "sentence": 20, "at": "기획" }, "g2": { "sentence": 20, "at": "5행이고" }, "g3": { "sentence": 20, "at": "사원 칸이" },
+                 "f1": { "sentence": 22, "at": "왼쪽에만" }, "f2": { "sentence": 22, "at": "오른쪽에만" }, "a6": { "sentence": 22, "at": "모두" },
+                 "x1": { "sentence": 24, "at": "겹친" }, "x2": { "sentence": 24, "at": "6이" } } },
+    { "id": "s06", "file": "s06-cross.html", "chapter": 6,
+      "extra": { "mt": { "sentence": 26, "at": "5 곱하기" }, "tw": { "sentence": 26, "at": "20행" },
+                 "cn": { "sentence": 27, "at": "조인 조건을" }, "ct": { "sentence": 27, "at": "카티션" } } },
+    { "id": "s07", "file": "s07-oracle.html", "chapter": 7,
+      "extra": { "pl": { "sentence": 29, "at": "(+)를" }, "nl": { "sentence": 30, "at": "부서 칸은" }, "sv": { "sentence": 30, "at": "사원이" } } },
+    { "id": "s08", "file": "s08-check.html", "chapter": 8 },
+    { "id": "s09", "file": "s09-summary.html", "chapter": 9, "exit": false,
+      "extra": { "w2": { "sentence": 38, "at": "한쪽을" }, "w3": { "sentence": 38, "at": "양쪽" }, "w4": { "sentence": 38, "at": "모든 짝은" } } }
+  ],
+  "sfx": {
+    "s00": [["chime", null, 0.15], ["whoosh-short", null, 3.0]],
+    "s01": [["pop", 0, 0.5], ["pop", 0, 3.45], ["pop", 1, 0.1], ["click-soft", 2, 0.2], ["pop", 2, 2.75], ["pop", 3, 0.3], ["whoosh-short", 4, 0.3]],
+    "s02": [["pop", 0, 0.7], ["pop", 0, 2.0], ["click-soft", 1, 0.3], ["click-soft", 2, 0.3], ["click-soft", 3, 0.3], ["click-soft", 4, 0.3],
+            ["whoosh-short", 5, 0.2], ["pop", 6, 0.1], ["click-soft", 7, 1.6], ["click-soft", 8, 1.2], ["click-soft", 9, 0.8],
+            ["click-soft", 10, 0.2], ["pop", 11, 2.55], ["click-soft", 12, 0.5], ["click-soft", 13, 0.2], ["pop", 14, 1.2],
+            ["click-soft", 15, 0.2], ["pop", 15, 1.2], ["click-soft", 16, 0.4], ["pop", 17, 0.2], ["pop", 18, 1.6]],
+    "s06": [["pop", 0, 0.4], ["pop", 1, 0.3], ["click-soft", 1, 3.05], ["pop", 2, 0.2], ["pop", 2, 6.0]],
+    "s07": [["pop", 0, 0.5], ["click-soft", 1, 0.3], ["pop", 1, 4.35], ["pop", 2, 4.1], ["click-soft", 3, 0.3], ["click-soft", 4, 0.1]],
+    "s08": [["pop", 1, 0.2], ["pop", 2, 0.2], ["pop", 3, 0.2]],
+    "s09": [["pop", 1, 0.1]]
+  }
+}

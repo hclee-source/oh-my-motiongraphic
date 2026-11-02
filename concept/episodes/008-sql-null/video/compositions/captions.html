@@ -1,0 +1,99 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 108px; text-align: center; overflow: visible;
+      font-size: 46px; font-weight: 600; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 1536px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-01a" class="cap clip" data-start="3.600" data-duration="2.330"><span>학생 다섯 명 가운데 한 명이 시험을</span></div>
+    <div id="cap-01b" class="cap clip" data-start="5.930" data-duration="2.533"><span>보지 않아 점수 칸이 비어 있습니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="8.563" data-duration="2.390"><span>나머지 네 명의 점수는 90,</span></div>
+    <div id="cap-02b" class="cap clip" data-start="10.953" data-duration="4.137"><span>80, 70, 80입니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="15.190" data-duration="1.710"><span>이 표에서 AVG로 평균을</span></div>
+    <div id="cap-03b" class="cap clip" data-start="16.900" data-duration="2.000"><span>구하면 몇 점이 나올까요?</span></div>
+    <div id="cap-04a" class="cap clip" data-start="19.000" data-duration="2.290"><span>다섯 명으로 나눈 64점일까요,</span></div>
+    <div id="cap-04b" class="cap clip" data-start="21.290" data-duration="2.679"><span>네 명으로 나눈 80점일까요?</span></div>
+    <div id="cap-05a" class="cap clip" data-start="24.069" data-duration="1.838"><span>정답은 80점입니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="26.007" data-duration="2.350"><span>오늘은 이 빈칸, NULL이 SQL</span></div>
+    <div id="cap-06b" class="cap clip" data-start="28.357" data-duration="3.223"><span>곳곳에서 만드는 함정을 정리해 보겠습니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="32.230" data-duration="1.910"><span>NULL은 0도 아니고 띄어쓰기 같은</span></div>
+    <div id="cap-07b" class="cap clip" data-start="34.140" data-duration="3.457"><span>공백 문자도 아닌, 아직 모르는 값입니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="37.697" data-duration="1.430"><span>그래서 계산에 NULL이 끼면</span></div>
+    <div id="cap-08b" class="cap clip" data-start="39.127" data-duration="2.238"><span>결과도 대부분 NULL이 됩니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="41.465" data-duration="3.188"><span>동훈의 점수에 10을 더해도 결과는 NULL입니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="44.753" data-duration="3.070"><span>이 성질이 집계 함수, 비교,</span></div>
+    <div id="cap-10b" class="cap clip" data-start="47.823" data-duration="3.162"><span>NOT IN에서 각각 다른 모습으로 나타납니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="51.635" data-duration="2.630"><span>먼저 집계 함수는 행 안의 덧셈과 달리,</span></div>
+    <div id="cap-11b" class="cap clip" data-start="54.265" data-duration="3.486"><span>NULL을 만나도 결과가 NULL이 되지 않습니다.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="57.851" data-duration="2.983"><span>COUNT(*)는 행의 개수를 세므로 5입니다.</span></div>
+    <div id="cap-13a" class="cap clip" data-start="60.934" data-duration="1.430"><span>COUNT(점수)는 점수가</span></div>
+    <div id="cap-13b" class="cap clip" data-start="62.364" data-duration="2.236"><span>NULL이 아닌 행만 세서 4입니다.</span></div>
+    <div id="cap-14a" class="cap clip" data-start="64.699" data-duration="3.221"><span>SUM(점수)는 NULL을 빼고 더해 320입니다.</span></div>
+    <div id="cap-15a" class="cap clip" data-start="68.021" data-duration="1.590"><span>AVG(점수)도 NULL을 빼고</span></div>
+    <div id="cap-15b" class="cap clip" data-start="69.611" data-duration="3.267"><span>계산하니 320을 4로 나눈 80입니다.</span></div>
+    <div id="cap-16a" class="cap clip" data-start="72.978" data-duration="2.470"><span>COUNT(*)만 빼면, 집계 함수는</span></div>
+    <div id="cap-16b" class="cap clip" data-start="75.448" data-duration="2.568"><span>NULL을 아예 없는 것처럼 건너뜁니다.</span></div>
+    <div id="cap-17a" class="cap clip" data-start="78.666" data-duration="2.010"><span>시험을 안 본 학생을 0점으로 치고</span></div>
+    <div id="cap-17b" class="cap clip" data-start="80.676" data-duration="2.745"><span>싶다면 NULL을 0으로 바꿔야 합니다.</span></div>
+    <div id="cap-18a" class="cap clip" data-start="83.520" data-duration="2.250"><span>NVL(점수, 0)은 점수가</span></div>
+    <div id="cap-18b" class="cap clip" data-start="85.770" data-duration="2.074"><span>NULL이면 0을 돌려줍니다.</span></div>
+    <div id="cap-19a" class="cap clip" data-start="87.944" data-duration="2.190"><span>그러면 합은 그대로 320,</span></div>
+    <div id="cap-19b" class="cap clip" data-start="90.134" data-duration="3.598"><span>나누는 수는 5가 되어 평균은 64입니다.</span></div>
+    <div id="cap-20a" class="cap clip" data-start="93.832" data-duration="1.510"><span>SUM(점수)를 COUNT(*)로</span></div>
+    <div id="cap-20b" class="cap clip" data-start="95.342" data-duration="2.386"><span>나눠도 같은 64가 나옵니다.</span></div>
+    <div id="cap-21a" class="cap clip" data-start="97.829" data-duration="2.270"><span>AVG(점수)는 언제나 80이고,</span></div>
+    <div id="cap-21b" class="cap clip" data-start="100.099" data-duration="4.798"><span>0점으로 치라는 조건이 있을 때만 NVL로 64를 구합니다.</span></div>
+    <div id="cap-22a" class="cap clip" data-start="105.547" data-duration="1.833"><span>이번에는 WHERE 절입니다.</span></div>
+    <div id="cap-23a" class="cap clip" data-start="107.480" data-duration="2.530"><span>점수가 NULL인 학생을 찾으려고 ‘점수</span></div>
+    <div id="cap-23b" class="cap clip" data-start="110.010" data-duration="2.999"><span>= NULL’이라고 쓰면, 결과는 0행입니다.</span></div>
+    <div id="cap-24a" class="cap clip" data-start="113.109" data-duration="3.690"><span>NULL과 비교하면 참도 거짓도 아닌 ‘알 수 없음’이 되고,</span></div>
+    <div id="cap-24b" class="cap clip" data-start="116.799" data-duration="2.520"><span>WHERE는 참인 행만 남기기 때문입니다.</span></div>
+    <div id="cap-25a" class="cap clip" data-start="119.420" data-duration="1.690"><span>NULL을 찾을 때는 IS NULL,</span></div>
+    <div id="cap-25b" class="cap clip" data-start="121.110" data-duration="3.111"><span>아닌 것을 찾을 때는 IS NOT NULL을 씁니다.</span></div>
+    <div id="cap-26a" class="cap clip" data-start="124.321" data-duration="2.308"><span>비슷한 함정이 하나 더 있습니다.</span></div>
+    <div id="cap-27a" class="cap clip" data-start="126.729" data-duration="2.730"><span>점수가 80이 아닌 학생을 찾으면 셋이</span></div>
+    <div id="cap-27b" class="cap clip" data-start="129.459" data-duration="3.631"><span>아니라 둘, 90점과 70점만 나옵니다.</span></div>
+    <div id="cap-28a" class="cap clip" data-start="133.189" data-duration="1.890"><span>동훈은 점수가 80이 아닌지도</span></div>
+    <div id="cap-28b" class="cap clip" data-start="135.079" data-duration="2.379"><span>알 수 없어서 빠지는 겁니다.</span></div>
+    <div id="cap-29a" class="cap clip" data-start="138.108" data-duration="1.770"><span>NULL의 함정 가운데 가장 자주</span></div>
+    <div id="cap-29b" class="cap clip" data-start="139.878" data-duration="2.110"><span>나오는 것이 NOT IN입니다.</span></div>
+    <div id="cap-30a" class="cap clip" data-start="142.088" data-duration="3.470"><span>‘점수 IN (80, NULL)’은 80점인 두 명만 찾고,</span></div>
+    <div id="cap-30b" class="cap clip" data-start="145.558" data-duration="3.051"><span>점수가 NULL인 동훈은 찾지 못합니다.</span></div>
+    <div id="cap-31a" class="cap clip" data-start="148.709" data-duration="2.450"><span>그런데 ‘점수 NOT IN (80,</span></div>
+    <div id="cap-31b" class="cap clip" data-start="151.159" data-duration="2.411"><span>NULL)’은 한 명도 돌려주지 않습니다.</span></div>
+    <div id="cap-32a" class="cap clip" data-start="153.670" data-duration="1.430"><span>NOT IN은 ‘80과 다르고,</span></div>
+    <div id="cap-32b" class="cap clip" data-start="155.100" data-duration="3.206"><span>그리고 NULL과도 다르다’라는 뜻입니다.</span></div>
+    <div id="cap-33a" class="cap clip" data-start="158.406" data-duration="2.770"><span>그런데 NULL과의 비교는 늘 ‘알 수 없음’이 되므로,</span></div>
+    <div id="cap-33b" class="cap clip" data-start="161.176" data-duration="2.937"><span>조건 전체가 참이 될 수 없습니다.</span></div>
+    <div id="cap-34a" class="cap clip" data-start="164.212" data-duration="3.190"><span>값 목록이든 서브쿼리 결과든, NULL이 하나라도</span></div>
+    <div id="cap-34b" class="cap clip" data-start="167.402" data-duration="3.198"><span>섞여 있으면 NOT IN은 빈 결과를 냅니다.</span></div>
+    <div id="cap-35a" class="cap clip" data-start="171.251" data-duration="3.287"><span>NULL을 다루는 함수는 네 개만 기억하면 됩니다.</span></div>
+    <div id="cap-36a" class="cap clip" data-start="174.638" data-duration="3.150"><span>NVL(A, B)는 A가 NULL이면 B를,</span></div>
+    <div id="cap-36b" class="cap clip" data-start="177.788" data-duration="2.775"><span>아니면 A를 그대로 돌려줍니다.</span></div>
+    <div id="cap-37a" class="cap clip" data-start="180.663" data-duration="3.930"><span>NVL2(A, B, C)는 A가 NULL이</span></div>
+    <div id="cap-37b" class="cap clip" data-start="184.593" data-duration="3.473"><span>아니면 B, NULL이면 C를 돌려줍니다.</span></div>
+    <div id="cap-38a" class="cap clip" data-start="188.166" data-duration="2.070"><span>COALESCE는 괄호 안에서 처음으로</span></div>
+    <div id="cap-38b" class="cap clip" data-start="190.236" data-duration="2.061"><span>NULL이 아닌 값을 돌려줍니다.</span></div>
+    <div id="cap-39a" class="cap clip" data-start="192.397" data-duration="2.430"><span>NULLIF(A, B)는 반대로,</span></div>
+    <div id="cap-39b" class="cap clip" data-start="194.827" data-duration="4.755"><span>A와 B가 같으면 NULL을, 다르면 A를 돌려줍니다.</span></div>
+    <div id="cap-40a" class="cap clip" data-start="200.232" data-duration="2.919"><span>정렬할 때도 NULL은 따로 자리를 잡습니다.</span></div>
+    <div id="cap-41a" class="cap clip" data-start="203.251" data-duration="2.490"><span>오라클은 NULL을 가장 큰 값으로 보아,</span></div>
+    <div id="cap-41b" class="cap clip" data-start="205.741" data-duration="4.745"><span>오름차순이면 맨 뒤, 내림차순이면 맨 앞에 둡니다.</span></div>
+    <div id="cap-42a" class="cap clip" data-start="210.586" data-duration="2.150"><span>SQL Server는 반대로 가장 작은</span></div>
+    <div id="cap-42b" class="cap clip" data-start="212.736" data-duration="3.541"><span>값으로 보아, 오름차순에서 맨 앞에 둡니다.</span></div>
+    <div id="cap-43a" class="cap clip" data-start="216.927" data-duration="2.582"><span>시험장에서 챙길 것 세 가지입니다.</span></div>
+    <div id="cap-44a" class="cap clip" data-start="219.609" data-duration="3.170"><span>첫째, COUNT(*)만 NULL이 있는 행까지 세고,</span></div>
+    <div id="cap-44b" class="cap clip" data-start="222.779" data-duration="3.309"><span>나머지 집계 함수는 NULL을 건너뜁니다.</span></div>
+    <div id="cap-45a" class="cap clip" data-start="226.188" data-duration="2.990"><span>둘째, NULL은 IS NULL로 찾고,</span></div>
+    <div id="cap-45b" class="cap clip" data-start="229.178" data-duration="3.334"><span>NOT IN 목록에 NULL이 있으면 결과는 0행입니다.</span></div>
+    <div id="cap-46a" class="cap clip" data-start="232.612" data-duration="2.550"><span>셋째, 오라클은 NULL을 가장 큰</span></div>
+    <div id="cap-46b" class="cap clip" data-start="235.162" data-duration="3.030"><span>값으로 보아 오름차순에서 맨 뒤에 둡니다.</span></div>
+    <div id="cap-47a" class="cap clip" data-start="238.843" data-duration="2.894"><span>오늘 내용을 한 줄로 정리하면 이렇습니다.</span></div>
+    <div id="cap-48a" class="cap clip" data-start="241.836" data-duration="3.110"><span>NULL은 모르는 값, 집계에서는 빠지고,</span></div>
+    <div id="cap-48b" class="cap clip" data-start="244.946" data-duration="2.506"><span>비교하면 알 수 없음이 됩니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

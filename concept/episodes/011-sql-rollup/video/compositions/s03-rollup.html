@@ -1,0 +1,183 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s03-code { left: 192px; top: 262px; width: 620px; }
+    #s03-code .q-ln { font-size: 30px; height: 54px; padding: 0 36px; }
+    .s03-sw { position: relative; }
+    .s03-alt { position: absolute; left: 0; top: 0; white-space: nowrap; opacity: 0; }
+    #s03-st { position: absolute; left: 192px; top: 516px; width: 620px; height: 330px; }
+    .s03-grp { position: absolute; inset: 0; }
+    .s03-sr { position: absolute; left: 44px; right: 44px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+    .s03-sg { font-size: 36px; font-weight: 800; color: #8E8E96; white-space: nowrap; }
+    .s03-sc { font-size: 36px; font-weight: 900; color: var(--color-accent, #6B3FE6); white-space: nowrap; opacity: 0; }
+    .s03-hr { position: absolute; left: 44px; right: 44px; top: 222px; height: 2px; background: var(--color-hair, #D3D6DD); opacity: 0; }
+    .s03-sf { position: absolute; left: 44px; right: 44px; top: 240px; height: 60px; display: flex; align-items: center; justify-content: center;
+      font-size: 40px; font-weight: 900; white-space: nowrap; opacity: 0; }
+    #s03-tb { left: 872px; top: 262px; width: 856px; height: 584px; }
+    #s03-tb .q-th, #s03-tb .q-tr { grid-template-columns: 170px 170px 220px 240px; }
+    #s03-tb .q-tr { height: 48px; }
+    #s03-tb .q-tr > div { font-size: 32px; }
+    #s03-tb .q-tr > div.q-null { font-size: 28px; }
+    #s03-th { top: 20px; }
+    .s03-cnt { position: relative; height: 40px; }
+    .s03-cnt > span { position: absolute; left: 0; right: 0; top: 0; text-align: center; font-size: 32px; font-weight: 900;
+      color: var(--color-accent, #6B3FE6); opacity: 0; }
+    #s03-tb .q-tr > div.s03-tag { font-size: 28px; font-weight: 800; color: var(--color-accent, #6B3FE6); }
+    .s03-bd { position: absolute; left: 14px; right: 14px; height: 48px; border-radius: 12px;
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 9%, #FFFFFF); opacity: 0; }
+    .s03-tr0 { opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s03" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,6,9.4,16.4,21,25.6,29,33.8,41.2,44.9]"},{"id":"dur","type":"number","label":"장면 길이","default":49},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"a3t","type":"number","label":"영업 1480 시각","default":12.9},{"id":"a7t","type":"number","label":"개발 1670 시각","default":14.6},{"id":"a8t","type":"number","label":"총계 시각","default":18},{"id":"r9","type":"number","label":"9행 시각","default":23.6},{"id":"b2t","type":"number","label":"사원 900 시각","default":33.9},{"id":"b5t","type":"number","label":"대리 1200 시각","default":35.4},{"id":"b8t","type":"number","label":"과장 1050 시각","default":37},{"id":"r10","type":"number","label":"10행 시각","default":43.5},{"id":"kj","type":"number","label":"소계의 기준 시각","default":47},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s03-all">
+      <div id="s03-ha" class="x-head">ROLLUP</div>
+      <div id="s03-hb" class="x-head">순서를 바꾼 ROLLUP</div>
+      <div id="s03-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">SELECT</span> 부서, 직급, SUM(급여)</span></div>
+        <div class="q-ln"><span><span class="q-k">FROM</span> 직원</span></div>
+        <div class="q-ln"><div class="q-hi" id="s03-h3"></div>
+          <div class="s03-sw" data-layout-allow-overlap><span id="s03-l3a"><span class="q-k">GROUP BY ROLLUP</span>(부서, 직급);</span><span id="s03-l3b" class="s03-alt"><span class="q-k">GROUP BY ROLLUP</span>(직급, 부서);</span></div></div>
+      </div>
+      <div id="s03-st" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s03-grp" id="s03-sa">
+          <div class="s03-sr" style="top:28px"><span class="s03-sg" id="s03-ag1">(부서, 직급)</span><span class="s03-sc" id="s03-ac1">6행</span></div>
+          <div class="s03-sr" style="top:92px"><span class="s03-sg" id="s03-ag2">(부서)</span><span class="s03-sc" id="s03-ac2">2행</span></div>
+          <div class="s03-sr" style="top:156px"><span class="s03-sg" id="s03-ag3">()</span><span class="s03-sc" id="s03-ac3">1행</span></div>
+          <div class="s03-hr" id="s03-ahr"></div>
+          <div class="s03-sf" id="s03-af"><span>6 + 2 + 1 = <span class="x-acc">9행</span></span></div>
+        </div>
+        <div class="s03-grp x-hide" id="s03-sb">
+          <div class="s03-sr" style="top:28px"><span class="s03-sg" id="s03-bg1">(직급, 부서)</span><span class="s03-sc" id="s03-bc1">6행</span></div>
+          <div class="s03-sr" style="top:92px"><span class="s03-sg" id="s03-bg2">(직급)</span><span class="s03-sc" id="s03-bc2">3행</span></div>
+          <div class="s03-sr" style="top:156px"><span class="s03-sg" id="s03-bg3">()</span><span class="s03-sc" id="s03-bc3">1행</span></div>
+          <div class="s03-hr" id="s03-bhr"></div>
+          <div class="s03-sf" id="s03-bf"><span>6 + 3 + 1 = <span class="x-acc">10행</span></span></div>
+        </div>
+      </div>
+      <div id="s03-tb" class="x-card q-tb x-hide">
+        <div class="q-th" id="s03-th"><div>부서</div><div>직급</div><div>급여 합계</div>
+          <div class="s03-cnt" data-layout-allow-overlap><span id="s03-c1">6행</span><span id="s03-c2">9행</span><span id="s03-c3">6행</span><span id="s03-c4">10행</span></div></div>
+        <!-- ROLLUP(부서, 직급): 부서 묶음 뒤에 부서 소계, 맨 아래 총계 -->
+        <div id="s03-A">
+          <div class="s03-bd" id="s03-ad3" style="top:228px"></div>
+          <div class="s03-bd" id="s03-ad7" style="top:420px"></div>
+          <div class="s03-bd" id="s03-ad8" style="top:468px"></div>
+          <div class="q-tr s03-tr0" id="s03-a0" style="top:84px"><div>영업</div><div>사원</div><div>580</div><div></div></div>
+          <div class="q-tr s03-tr0" id="s03-a1" style="top:132px"><div>영업</div><div>대리</div><div>400</div><div></div></div>
+          <div class="q-tr s03-tr0" id="s03-a2" style="top:180px"><div>영업</div><div>과장</div><div>500</div><div></div></div>
+          <div class="q-tr s03-tr0" id="s03-a3" style="top:228px"><div>영업</div><div class="q-null">NULL</div><div>1480</div><div class="s03-tag">소계</div></div>
+          <div class="q-tr s03-tr0" id="s03-a4" style="top:228px"><div>개발</div><div>사원</div><div>320</div><div></div></div>
+          <div class="q-tr s03-tr0" id="s03-a5" style="top:276px"><div>개발</div><div>대리</div><div>800</div><div></div></div>
+          <div class="q-tr s03-tr0" id="s03-a6" style="top:324px"><div>개발</div><div>과장</div><div>550</div><div></div></div>
+          <div class="q-tr s03-tr0" id="s03-a7" style="top:420px"><div>개발</div><div class="q-null">NULL</div><div>1670</div><div class="s03-tag">소계</div></div>
+          <div class="q-tr s03-tr0" id="s03-a8" style="top:468px"><div class="q-null">NULL</div><div class="q-null">NULL</div><div>3150</div><div class="s03-tag">총계</div></div>
+        </div>
+        <!-- ROLLUP(직급, 부서): 직급 묶음 뒤에 직급 소계, 맨 아래 총계 -->
+        <div id="s03-B">
+          <div class="s03-bd" id="s03-bd2" style="top:180px"></div>
+          <div class="s03-bd" id="s03-bd5" style="top:324px"></div>
+          <div class="s03-bd" id="s03-bd8" style="top:468px"></div>
+          <div class="s03-bd" id="s03-bd9" style="top:516px"></div>
+          <div class="q-tr s03-tr0" id="s03-b0" style="top:84px"><div>영업</div><div>사원</div><div>580</div><div></div></div>
+          <div class="q-tr s03-tr0" id="s03-b1" style="top:132px"><div>개발</div><div>사원</div><div>320</div><div></div></div>
+          <div class="q-tr s03-tr0" id="s03-b2" style="top:180px"><div class="q-null">NULL</div><div>사원</div><div>900</div><div class="s03-tag">소계</div></div>
+          <div class="q-tr s03-tr0" id="s03-b3" style="top:180px"><div>영업</div><div>대리</div><div>400</div><div></div></div>
+          <div class="q-tr s03-tr0" id="s03-b4" style="top:228px"><div>개발</div><div>대리</div><div>800</div><div></div></div>
+          <div class="q-tr s03-tr0" id="s03-b5" style="top:324px"><div class="q-null">NULL</div><div>대리</div><div>1200</div><div class="s03-tag">소계</div></div>
+          <div class="q-tr s03-tr0" id="s03-b6" style="top:276px"><div>영업</div><div>과장</div><div>500</div><div></div></div>
+          <div class="q-tr s03-tr0" id="s03-b7" style="top:324px"><div>개발</div><div>과장</div><div>550</div><div></div></div>
+          <div class="q-tr s03-tr0" id="s03-b8" style="top:468px"><div class="q-null">NULL</div><div>과장</div><div>1050</div><div class="s03-tag">소계</div></div>
+          <div class="q-tr s03-tr0" id="s03-b9" style="top:516px"><div class="q-null">NULL</div><div class="q-null">NULL</div><div>3150</div><div class="s03-tag">총계</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 49;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => (Number(V[k]) || d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+    const head = (id, prev, t) => { if (prev) fade(prev, t, 1, 0); ft(id, { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, t + (prev ? 0.2 : 0)); };
+    const ACC = "#6B3FE6", INK = "#18181B", MUTE = "#8E8E96";
+    // 묶는 단계: 지금 단계는 진하게 + 행 수(강조색), 앞 단계 행 수는 검정으로
+    let act = null;
+    const step = (g, k, t) => {
+      ft(`#s03-${g}g${k}`, { color: MUTE }, { color: INK }, t);
+      stamp(`#s03-${g}c${k}`, t + 0.15);
+      if (act) ft(act, { color: ACC }, { color: INK }, t);
+      act = `#s03-${g}c${k}`;
+    };
+    let cnt = 0;
+    const count = (k, t) => { if (cnt) fade(`#s03-c${cnt}`, t, 1, 0); if (k) fade(`#s03-c${k}`, t + 0.1, 0, 1); cnt = k; };
+    const row = (id, t) => ft(id, { opacity: 0, x: 16 }, { opacity: 1, x: 0 }, t);
+    const sub = (r, bd, t) => { fade(bd, t, 0, 1); row(r, t + 0.1); };
+    const move = (ids, dy, t) => ft(ids, { y: 0 }, { y: dy, duration: 0.6 * S, ease: "power2.inOut" }, t);
+
+    // 10 ROLLUP(부서, 직급) — 오른쪽부터 하나씩 지우며 묶는다
+    head("#s03-ha", null, at(0, 0));
+    ft("#s03-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.2));
+    ft("#s03-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.4));
+    fade("#s03-h3", at(0, 1.0), 0, 1);
+    ft("#s03-st", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 1.6));
+    // 11 먼저 (부서, 직급) 6행
+    step("a", 1, at(1, 0.2));
+    ["#s03-a0", "#s03-a1", "#s03-a2", "#s03-a4", "#s03-a5", "#s03-a6"].forEach((r, j) => row(r, at(1, 0.5 + j * 0.1)));
+    count(1, at(1, 1.8));
+    // 12 직급을 지운 (부서) 소계 2행 — 영업 1480, 개발 1670이 끼어든다
+    step("a", 2, at(2, 0.2));
+    count(0, at(2, 0.3));
+    move(["#s03-a4", "#s03-a5", "#s03-a6"], 48, at(2, 0.6));
+    sub("#s03-a3", "#s03-ad3", X("a3t", at(2, 3.5)));
+    sub("#s03-a7", "#s03-ad7", X("a7t", at(2, 5.2)));
+    // 13 모두 지운 총계 1행 3150
+    step("a", 3, at(3, 0.2));
+    sub("#s03-a8", "#s03-ad8", X("a8t", at(3, 1.6)));
+    // 14 6 + 2 + 1 = 9행
+    fade("#s03-ahr", at(4, 0.2), 0, 1);
+    fade("#s03-af", at(4, 0.3), 0, 1);
+    count(2, X("r9", at(4, 2.4)));
+
+    // 15 ROLLUP(직급, 부서)
+    head("#s03-hb", "#s03-ha", at(5, 0));
+    fade("#s03-l3a", at(5, 0.3), 1, 0);
+    fade("#s03-l3b", at(5, 0.45), 0, 1);
+    fade("#s03-A", at(5, 0.2), 1, 0);
+    count(0, at(5, 0.2));
+    fade("#s03-sa", at(5, 0.3), 1, 0);
+    fade("#s03-sb", at(5, 0.5), 0, 1);
+    act = null;
+    step("b", 1, at(5, 1.1));
+    ["#s03-b0", "#s03-b1", "#s03-b3", "#s03-b4", "#s03-b6", "#s03-b7"].forEach((r, j) => row(r, at(5, 1.2 + j * 0.1)));
+    count(3, at(5, 2.3));
+    // 16 오른쪽의 부서를 먼저 지우니 소계는 직급별 — 자리가 벌어진다
+    step("b", 2, at(6, 0.3));
+    count(0, at(6, 0.6));
+    move(["#s03-b3", "#s03-b4"], 48, at(6, 0.9));
+    move(["#s03-b6", "#s03-b7"], 96, at(6, 0.9));
+    // 17 사원 900, 대리 1200, 과장 1050 — 소계 3행
+    sub("#s03-b2", "#s03-bd2", X("b2t", at(7, 0.3)));
+    sub("#s03-b5", "#s03-bd5", X("b5t", at(7, 1.8)));
+    sub("#s03-b8", "#s03-bd8", X("b8t", at(7, 3.3)));
+    // 18 6 + 3 + 1 = 10행
+    step("b", 3, at(8, 0.1));
+    sub("#s03-b9", "#s03-bd9", at(8, 0.3));
+    fade("#s03-bhr", at(8, 0.6), 0, 1);
+    fade("#s03-bf", at(8, 0.7), 0, 1);
+    count(4, X("r10", at(8, 2.4)));
+    // 19 순서에 따라 소계의 기준이 달라진다 — 직급 소계만 또렷하게
+    const kj = X("kj", at(9, 2.0));
+    fade(["#s03-b0", "#s03-b1", "#s03-b3", "#s03-b4", "#s03-b6", "#s03-b7", "#s03-b9", "#s03-bd9"], kj, 1, 0.3);
+    ft("#s03-bc2", { color: INK }, { color: ACC }, kj);
+    ft("#s03-bc3", { color: ACC }, { color: INK }, kj);
+    ft(["#s03-bg1", "#s03-bg3", "#s03-bc1", "#s03-bc3", "#s03-bf"], { opacity: 1 }, { opacity: 0.4 }, kj);
+    if (String(V.exit) !== "false") ft("#s03-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s03"] = tl;
+  </script>
+</template>

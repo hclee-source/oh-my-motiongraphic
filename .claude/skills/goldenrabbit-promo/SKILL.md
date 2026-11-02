@@ -233,6 +233,9 @@ bash SKILL/scripts/finalize.sh videos/<name>         # delivery render, loudness
 - runs **`pop_scan.py`** on the delivered MP4: `✗ POP` = a frame unlike both neighbours (one-frame flash — grab the 3
   frames and fix it; a deliberate 1-frame shake can show as a low-Δ pop), `⚠ SPIKE` = an isolated hard change mid-scene
   (often an intended 0 ms swap — glance at it). Run alone: `python3 SKILL/scripts/pop_scan.py videos/<name>`.
+- **safe mode** when the PC froze, rebooted or blue-screened during a render (2026-11-02, 0x139 on this 16 GB PC):
+  `GR_WORKERS=2 GR_BROWSER_GPU=off bash SKILL/scripts/finalize.sh videos/<name>` — fewer Chrome workers, no GPU. Still
+  failing → `GR_WORKERS=1`. Ask the user to close heavy apps first.
 
 Report the MP4 path, its duration, whether audio is present, the loudness line and any POP, and show the contact sheet.
 Verify in the **rendered MP4** (ffmpeg frame grabs), not only in snapshots: H.264 chroma subsampling can turn fine

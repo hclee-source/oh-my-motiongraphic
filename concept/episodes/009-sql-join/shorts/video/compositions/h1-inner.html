@@ -1,0 +1,54 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h1-lab { position: absolute; left: 80px; top: 318px; width: 920px; text-align: center; font-size: 60px; font-weight: 900; opacity: 0; }
+    /* 두 원: A 중심 (410, 680), B 중심 (670, 680), 반지름 240 */
+    #h1-svg { position: absolute; left: 80px; top: 420px; width: 920px; height: 520px; overflow: visible; }
+    .h1-t { position: absolute; width: 120px; text-align: center; font-size: 64px; font-weight: 900; opacity: 0; }
+    #h1-in { position: absolute; left: 470px; top: 652px; width: 140px; text-align: center; font-size: 40px; font-weight: 900; color: #FFFFFF;
+      white-space: nowrap; opacity: 0; }
+    #h1-null { left: 225px; top: 700px; width: 150px; height: 76px; padding: 0; font-size: 38px; background: #E4E4E7; color: #71717A; }
+  </style>
+  <div id="root" data-composition-id="h1" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0,3.3]"},{"id":"dur","type":"number","label":"장면 길이","default":6},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"lz","type":"number","label":"짝이 시각","default":1.7},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h1-all">
+      <div id="h1-lab">INNER JOIN</div>
+      <svg id="h1-svg" viewBox="0 0 920 520">
+        <defs><clipPath id="h1-cp"><circle cx="330" cy="260" r="240" /></clipPath></defs>
+        <circle id="h1-lens" cx="590" cy="260" r="240" fill="#6B3FE6" fill-opacity="0.9" clip-path="url(#h1-cp)" opacity="0" />
+        <circle id="h1-ca" cx="330" cy="260" r="240" fill="none" stroke="#18181B" stroke-width="6" opacity="0" />
+        <circle id="h1-cb" cx="590" cy="260" r="240" fill="none" stroke="#18181B" stroke-width="6" opacity="0" />
+      </svg>
+      <div class="h1-t" id="h1-ta" style="left:240px;top:520px">A</div>
+      <div class="h1-t" id="h1-tb" style="left:720px;top:520px">B</div>
+      <div id="h1-in">짝 있음</div>
+      <div id="h1-null" class="q-chip">NULL</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 6;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+
+    // 1 INNER JOIN은 양쪽에 짝이 있는 행만 — 가운데만 칠해진다
+    ft("#h1-lab", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(0, 0));
+    fade(["#h1-ca", "#h1-cb"], at(0, 0.1), 0, 1);
+    fade(["#h1-ta", "#h1-tb"], at(0, 0.3), 0, 1);
+    const lz = X("lz", at(0, 1.4));
+    fade("#h1-lens", lz, 0, 1);
+    fade("#h1-in", lz + 0.2, 0, 1);
+    // 2 조인 열이 NULL인 행은 짝을 못 찾아 원 밖으로 빠진다
+    stamp("#h1-null", at(1, 0.1));
+    ft("#h1-null", { x: 0, y: 0, opacity: 1 }, { x: -20, y: 230, opacity: 0.4, duration: 0.6 * S, ease: "power2.in" }, at(1, 1.6));
+    if (String(V.exit) !== "false") ft("#h1-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h1"] = tl;
+  </script>
+</template>

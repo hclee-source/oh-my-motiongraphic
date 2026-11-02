@@ -1,0 +1,62 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h3-card { position: absolute; left: 80px; width: 920px; padding: 52px 56px; box-sizing: border-box; }
+    #h3-f { top: 330px; height: 380px; }
+    #h3-c { top: 750px; height: 300px; }
+    .h3-k { font-size: 44px; font-weight: 800; color: var(--color-ink2, #71717A); white-space: nowrap; }
+    .h3-v { margin-top: 20px; font-size: 76px; font-weight: 900; line-height: 1.25; white-space: nowrap; opacity: 0; }
+    #h3-c .h3-v { font-size: 68px; }
+    .h3-ic { position: absolute; right: 56px; top: 40px; width: 150px; height: 97px; overflow: visible; }
+  </style>
+  <div id="root" data-composition-id="h3" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,4.6]"},{"id":"dur","type":"number","label":"장면 길이","default":7.1},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"lr","type":"number","label":"LEFT 시각","default":1.4},{"id":"in","type":"number","label":"INNER 시각","default":3.0},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h3-all">
+      <div class="h3-card x-card x-hide" id="h3-f">
+        <svg class="h3-ic" viewBox="0 0 170 110">
+          <g opacity="0.85"><circle cx="62" cy="55" r="46" fill="#6B3FE6" /><circle cx="108" cy="55" r="46" fill="#6B3FE6" /></g>
+          <circle cx="62" cy="55" r="46" fill="none" stroke="#18181B" stroke-width="4" />
+          <circle cx="108" cy="55" r="46" fill="none" stroke="#18181B" stroke-width="4" />
+        </svg>
+        <div class="h3-k">FULL 행 수</div>
+        <div class="h3-v" id="h3-f1">= LEFT + RIGHT</div>
+        <div class="h3-v x-acc" id="h3-f2" style="margin-top:0">− INNER</div>
+      </div>
+      <div class="h3-card x-card x-hide" id="h3-c">
+        <svg class="h3-ic" viewBox="0 0 170 110">
+          <g fill="#6B3FE6" fill-opacity="0.85">
+            <rect x="10" y="0" width="30" height="30" rx="7" /><rect x="50" y="0" width="30" height="30" rx="7" /><rect x="90" y="0" width="30" height="30" rx="7" /><rect x="130" y="0" width="30" height="30" rx="7" />
+            <rect x="10" y="40" width="30" height="30" rx="7" /><rect x="50" y="40" width="30" height="30" rx="7" /><rect x="90" y="40" width="30" height="30" rx="7" /><rect x="130" y="40" width="30" height="30" rx="7" />
+            <rect x="10" y="80" width="30" height="30" rx="7" /><rect x="50" y="80" width="30" height="30" rx="7" /><rect x="90" y="80" width="30" height="30" rx="7" /><rect x="130" y="80" width="30" height="30" rx="7" />
+          </g>
+        </svg>
+        <div class="h3-k">CROSS 행 수</div>
+        <div class="h3-v" id="h3-c1">= A 행 수 × B 행 수</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 7.1;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const rise = (sel, t) => ft(sel, { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, t);
+
+    // 5 FULL의 행 수는 LEFT 더하기 RIGHT에서 INNER를 뺀 만큼
+    ft("#h3-f", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, -0.2));
+    rise("#h3-f1", X("lr", at(0, 1.0)));
+    rise("#h3-f2", X("in", at(0, 2.5)));
+    // 6 CROSS JOIN은 두 표 행 수의 곱
+    fade("#h3-f", at(1, 0), 1, 0.45);
+    ft("#h3-c", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(1, -0.15));
+    rise("#h3-c1", at(1, 0.35));
+    if (String(V.exit) !== "false") ft("#h3-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h3"] = tl;
+  </script>
+</template>

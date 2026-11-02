@@ -11,7 +11,12 @@ FPS=$(grep -oE 'fps: *[0-9]+' "$PROJ/STORYBOARD.md" | head -1 | grep -oE '[0-9]+
 OUT="renders/$NAME.mp4"
 cd "$PROJ"
 npx hyperframes check . >/tmp/gr_check_$$.log 2>&1 || { sed 's/\x1b\[[0-9;]*m//g' /tmp/gr_check_$$.log | grep -E "✗|error" | head -20; echo "✗ check failed — fix before rendering"; exit 1; }
-npx hyperframes render . --skill=music-to-video -q "$Q" -o "$OUT" --fps "$FPS" 2>&1 | sed 's/\x1b\[[0-9;]*m//g' | tail -3
+# Safe mode for PCs that freeze or blue-screen while rendering (seen 2026-11-02 on a 16 GB PC):
+#   GR_WORKERS=2 → fewer parallel Chrome processes (default: auto), GR_BROWSER_GPU=off → software rendering in Chrome
+RARGS=()
+[ -n "${GR_WORKERS:-}" ] && RARGS+=(--workers "$GR_WORKERS")
+[ "${GR_BROWSER_GPU:-auto}" = "off" ] && RARGS+=(--no-browser-gpu)
+npx hyperframes render . --skill=music-to-video -q "$Q" -o "$OUT" --fps "$FPS" ${RARGS[@]+"${RARGS[@]}"} 2>&1 | sed 's/\x1b\[[0-9;]*m//g' | tail -3
 # Loudness: two-pass loudnorm to -14 LUFS / -1.5 dBTP (YouTube reference) so every cut plays at the same level
 # (renders varied from -18.4 to -12.0 LUFS before this). Video stream is copied untouched. Skip with GR_LOUDNORM=0.
 if [ "${GR_LOUDNORM:-1}" != "0" ]; then

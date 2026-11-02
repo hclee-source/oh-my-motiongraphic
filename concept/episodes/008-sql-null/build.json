@@ -1,0 +1,38 @@
+{
+  "_설명": "장면 순서(장 번호와 연결, 여러 장을 한 장면으로 묶을 수 있음), 장면 끝에서 사라질지(exit), 효과음 위치([이름, 장면 안 문장 순번(0부터), 그 문장 시작 뒤 초]). extra는 그 낱말이 나오는 시각(장면 기준).",
+  "scenes": [
+    { "id": "s00", "file": "s00-title.html" },
+    { "id": "s01", "file": "s01-hook.html", "chapter": 1,
+      "extra": { "p1": { "sentence": 2, "at": "90" }, "p2": { "sentence": 2, "at": "80, 70" }, "p3": { "sentence": 2, "at": "70" },
+                 "p4": { "sentence": 2, "at": "80입니다" }, "a80": { "sentence": 4, "at": "네 명으로" } } },
+    { "id": "s02", "file": "s02-unknown.html", "chapter": 2,
+      "extra": { "k2": { "sentence": 7, "at": "띄어쓰기" }, "k3": { "sentence": 7, "at": "아직" },
+                 "g1": { "sentence": 10, "at": "집계" }, "g2": { "sentence": 10, "at": "비교" }, "g3": { "sentence": 10, "at": "NOT IN" } } },
+    { "id": "s03", "file": "s03-agg.html", "chapter": [3, 4],
+      "extra": { "v5": { "sentence": 12, "at": "5입니다" }, "v4": { "sentence": 13, "at": "4입니다" }, "v320": { "sentence": 14, "at": "320" },
+                 "v80": { "sentence": 15, "at": "80입니다" }, "n320": { "sentence": 19, "at": "320" }, "n5": { "sentence": 19, "at": "5가" },
+                 "n64": { "sentence": 19, "at": "64" }, "a80": { "sentence": 21, "at": "언제나" }, "a64": { "sentence": 21, "at": "NVL로" } } },
+    { "id": "s05", "file": "s05-where.html", "chapter": [5, 6],
+      "extra": { "e1": { "sentence": 24, "at": "WHERE는" }, "e2": { "sentence": 25, "at": "아닌 것을" }, "e3": { "sentence": 27, "at": "90점과" },
+                 "e4": { "sentence": 30, "at": "동훈은" }, "e5": { "sentence": 32, "at": "그리고" } } },
+    { "id": "s07", "file": "s07-func.html", "chapter": 7 },
+    { "id": "s08", "file": "s08-sort.html", "chapter": 8,
+      "extra": { "ob": { "sentence": 41, "at": "맨 뒤" }, "od": { "sentence": 41, "at": "내림차순" } } },
+    { "id": "s09", "file": "s09-check.html", "chapter": 9 },
+    { "id": "s10", "file": "s10-summary.html", "chapter": 10, "exit": false,
+      "extra": { "y2": { "sentence": 48, "at": "집계에서는" }, "y3": { "sentence": 48, "at": "비교하면" } } }
+  ],
+  "sfx": {
+    "s00": [["chime", null, 0.15], ["whoosh-short", null, 3.0]],
+    "s01": [["pop", 0, 0.4], ["pop", 2, 0.4], ["pop", 3, 0.6], ["click-soft", 4, 0.3], ["whoosh-short", 5, 0.3]],
+    "s02": [["pop", 0, 0.5], ["pop", 1, 0.4], ["click-soft", 2, 2.0], ["pop", 3, 1.0]],
+    "s03": [["pop", 0, 0.5], ["click-soft", 1, 1.6], ["click-soft", 2, 2.4], ["click-soft", 3, 2.2], ["click-soft", 4, 3.4],
+            ["whoosh-short", 6, 0.3], ["click-soft", 7, 0.8], ["pop", 8, 4.4], ["pop", 9, 2.6]],
+    "s05": [["pop", 0, 0.4], ["click-soft", 1, 2.6], ["pop", 2, 0.4], ["click-soft", 3, 0.4], ["click-soft", 5, 0.4],
+            ["whoosh-short", 7, 0.2], ["click-soft", 8, 0.4], ["click-soft", 9, 0.4], ["pop", 10, 0.4], ["pop", 12, 0.4]],
+    "s07": [["pop", 0, 0.5], ["click-soft", 1, 0.3], ["click-soft", 2, 0.3], ["click-soft", 3, 0.3], ["click-soft", 4, 0.3]],
+    "s08": [["pop", 0, 0.5], ["click-soft", 1, 2.0], ["pop", 1, 4.0], ["pop", 2, 0.4]],
+    "s09": [["pop", 1, 0.2], ["pop", 2, 0.2], ["pop", 3, 0.2]],
+    "s10": [["pop", 1, 0.1]]
+  }
+}

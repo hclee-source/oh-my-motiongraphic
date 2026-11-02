@@ -1,0 +1,147 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s07-cond { left: 192px; top: 262px; }
+    .s07-c { position: absolute; top: 362px; width: 496px; height: 484px; box-sizing: border-box; }
+    .s07-t { position: absolute; left: 32px; top: 22px; line-height: 56px; font-size: 36px; font-weight: 900; white-space: nowrap; }
+    .s07-n { position: absolute; right: 32px; top: 22px; line-height: 56px; font-size: 40px; font-weight: 900; white-space: nowrap;
+      color: var(--color-accent, #6B3FE6); opacity: 0; }
+    .s07-hr { position: absolute; left: 28px; right: 28px; top: 86px; height: 2px; background: var(--color-hair, #D3D6DD); }
+    .s07-r { position: absolute; left: 28px; right: 28px; height: 56px; display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; }
+    .s07-r > div { text-align: center; font-size: 32px; font-weight: 800; white-space: nowrap; }
+    .s07-r > div:last-child { font-size: 36px; font-weight: 900; }
+    .s07-cut { position: absolute; left: 20px; right: 20px; height: 0; border-top: 3px dashed var(--color-accent, #6B3FE6);
+      transform-origin: 0 50%; opacity: 0; }
+    #s07-a { left: 192px; top: 262px; width: 700px; }
+    #s07-ng { left: 192px; top: 524px; }
+    #s07-note { position: absolute; left: 192px; top: 640px; width: 700px; height: 206px; box-sizing: border-box; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 18px; }
+    .s07-nl { font-size: 34px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    #s07-b { left: 940px; top: 262px; width: 788px; }
+    #s07-b .q-ln { height: 56px; font-size: 32px; }
+    #s07-b .s07-in { padding-left: 84px; }
+    #s07-bk { top: 85px; bottom: auto; height: 162px; }
+    #s07-ok { left: 940px; top: 680px; }
+    #s07-iv { left: 1254px; top: 680px; }
+  </style>
+  <div id="root" data-composition-id="s07" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,4.47,11.6,14.32,18.73,24.82,30.74]"},{"id":"dur","type":"number","label":"장면 길이","default":34.5},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"f5","type":"number","label":"85점 시각","default":7.8},{"id":"r5","type":"number","label":"5행 시각","default":10.1},{"id":"wh","type":"number","label":"WHERE는 시각","default":21.6},{"id":"out","type":"number","label":"바깥에서 시각","default":28.25},{"id":"iv","type":"number","label":"인라인 시각","default":32.78},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s07-all">
+      <div id="s07-head" class="x-head">상위 3명 뽑기</div>
+      <div id="s07-pa">
+        <div id="s07-cond" class="q-chip q-ok">순위 3 이하</div>
+        <div class="s07-c x-card x-hide" id="s07-c1" style="left:192px">
+          <div class="s07-t">RANK</div><div class="s07-n" id="s07-n1">5행</div><div class="s07-hr"></div>
+          <div class="s07-r" style="top:100px"><div>동훈</div><div>95</div><div>1</div></div>
+          <div class="s07-r" style="top:156px"><div>민수</div><div>90</div><div>2</div></div>
+          <div class="s07-r" style="top:212px"><div>지영</div><div>85</div><div class="s07-k1">3</div></div>
+          <div class="s07-r" style="top:268px"><div>현우</div><div>85</div><div class="s07-k1">3</div></div>
+          <div class="s07-r" style="top:324px"><div>예린</div><div>85</div><div class="s07-k1">3</div></div>
+          <div class="s07-r" id="s07-x1" style="top:380px"><div>수진</div><div>80</div><div>6</div></div>
+          <div class="s07-cut" id="s07-u1" style="top:378px"></div>
+        </div>
+        <div class="s07-c x-card x-hide" id="s07-c2" style="left:712px">
+          <div class="s07-t">DENSE_RANK</div><div class="s07-n" id="s07-n2">5행</div><div class="s07-hr"></div>
+          <div class="s07-r" style="top:100px"><div>동훈</div><div>95</div><div>1</div></div>
+          <div class="s07-r" style="top:156px"><div>민수</div><div>90</div><div>2</div></div>
+          <div class="s07-r" style="top:212px"><div>지영</div><div>85</div><div class="s07-k2">3</div></div>
+          <div class="s07-r" style="top:268px"><div>현우</div><div>85</div><div class="s07-k2">3</div></div>
+          <div class="s07-r" style="top:324px"><div>예린</div><div>85</div><div class="s07-k2">3</div></div>
+          <div class="s07-r" id="s07-x2" style="top:380px"><div>수진</div><div>80</div><div>4</div></div>
+          <div class="s07-cut" id="s07-u2" style="top:378px"></div>
+        </div>
+        <div class="s07-c x-card x-hide" id="s07-c3" style="left:1232px">
+          <div class="s07-t">ROW_NUMBER</div><div class="s07-n" id="s07-n3">3행</div><div class="s07-hr"></div>
+          <div class="s07-r" style="top:100px"><div>동훈</div><div>95</div><div>1</div></div>
+          <div class="s07-r" style="top:156px"><div>민수</div><div>90</div><div>2</div></div>
+          <div class="s07-r" style="top:212px"><div>지영</div><div>85</div><div>3</div></div>
+          <div class="s07-r s07-x3" style="top:268px"><div>현우</div><div>85</div><div>4</div></div>
+          <div class="s07-r s07-x3" style="top:324px"><div>예린</div><div>85</div><div>5</div></div>
+          <div class="s07-r s07-x3" style="top:380px"><div>수진</div><div>80</div><div>6</div></div>
+          <div class="s07-cut" id="s07-u3" style="top:266px"></div>
+        </div>
+      </div>
+      <div id="s07-a" class="x-dark q-code x-hide">
+        <div class="q-ln"><div class="q-hi" id="s07-ha1"></div><span><span class="q-k">SELECT</span> 이름, 점수</span></div>
+        <div class="q-ln"><span><span class="q-k">FROM</span> 학생</span></div>
+        <div class="q-ln"><div class="q-hi" id="s07-ha3"></div><span><span class="q-k">WHERE</span> <span class="q-k">RANK</span>() <span class="q-k">OVER</span> (…) &lt;= 3;</span></div>
+      </div>
+      <div id="s07-ng" class="q-chip q-ng">✕ 오류</div>
+      <div id="s07-note" class="x-card x-hide">
+        <div class="s07-nl" id="s07-nl1">순위는 SELECT 단계에서 계산</div>
+        <div class="s07-nl" id="s07-nl2">WHERE는 그보다 <span class="x-acc">먼저</span></div>
+      </div>
+      <div id="s07-b" class="x-dark q-code x-hide">
+        <div class="q-hi" id="s07-bk"></div>
+        <div class="q-ln"><span><span class="q-k">SELECT</span> * <span class="q-k">FROM</span> (</span></div>
+        <div class="q-ln s07-in"><span><span class="q-k">SELECT</span> 이름, 점수,</span></div>
+        <div class="q-ln s07-in"><span><span class="q-k">RANK</span>() <span class="q-k">OVER</span> (…) <span class="q-k">AS</span> 순위</span></div>
+        <div class="q-ln s07-in"><span><span class="q-k">FROM</span> 학생</span></div>
+        <div class="q-ln"><span>)</span></div>
+        <div class="q-ln"><div class="q-hi" id="s07-hb6"></div><span><span class="q-k">WHERE</span> 순위 &lt;= 3;</span></div>
+      </div>
+      <div id="s07-ok" class="q-chip q-ok">✓ 바깥에서 거른다</div>
+      <div id="s07-iv" class="q-chip q-ok">괄호 안 = 인라인 뷰</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 34.5;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => (Number(V[k]) || d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const ACC = "#6B3FE6", INK = "#18181B";
+    // 3등까지 자르는 선이 그어지고, 잘린 행은 흐려진다
+    const cut = (k, rows, t) => { ft(`#s07-u${k}`, { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1 }, t); fade(rows, t + 0.4, 1, 0.25); };
+
+    // 29 순위로 상위 몇 명을 뽑는 문제
+    ft("#s07-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    stamp("#s07-cond", at(0, 1.2));
+    [1, 2, 3].forEach((k, j) => ft(`#s07-c${k}`, { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 1.8 + j * 0.2)));
+    // 30 RANK와 DENSE_RANK는 85점 세 명이 모두 들어가 5행
+    cut(1, "#s07-x1", at(1, 2.2));
+    cut(2, "#s07-x2", at(1, 2.7));
+    ft([".s07-k1", ".s07-k2"], { color: INK }, { color: ACC }, X("f5", at(1, 3.3)));
+    const r5 = X("r5", at(1, 5.3)) - 0.2;
+    stamp("#s07-n1", r5);
+    stamp("#s07-n2", r5 + 0.15);
+    // 31 ROW_NUMBER는 딱 3행
+    cut(3, ".s07-x3", at(2, 0.9));
+    stamp("#s07-n3", at(2, 1.6));
+    // 32 순위 함수는 WHERE에 바로 쓸 수 없다
+    fade("#s07-pa", at(3, 0), 1, 0);
+    ft("#s07-a", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(3, 0.5));
+    fade("#s07-ha3", at(3, 1.5), 0, 1);
+    stamp("#s07-ng", at(3, 2.6));
+    // 33 순위는 SELECT 단계, WHERE는 그보다 먼저
+    fade("#s07-ha3", at(4, 0.4), 1, 0);
+    fade("#s07-ha1", at(4, 0.5), 0, 1);
+    ft("#s07-note", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(4, 0.5));
+    fade("#s07-nl1", at(4, 0.7), 0, 1);
+    const wh = X("wh", at(4, 2.9));
+    fade("#s07-ha1", wh, 1, 0);
+    fade("#s07-ha3", wh + 0.1, 0, 1);
+    fade("#s07-nl2", wh + 0.2, 0, 1);
+    // 34 FROM 절 괄호 안에 넣고, 바깥에서 WHERE로 거른다
+    fade("#s07-ha3", at(5, 0.1), 1, 0);
+    fade(["#s07-a", "#s07-ng", "#s07-note"], at(5, 0.2), 1, 0.35);
+    ft("#s07-b", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(5, 0.4));
+    fade("#s07-bk", at(5, 1.6), 0, 1);
+    const out = X("out", at(5, 3.6));
+    fade("#s07-bk", out, 1, 0);
+    fade("#s07-hb6", out + 0.1, 0, 1);
+    stamp("#s07-ok", out + 0.6);
+    // 35 FROM 절에 넣은 서브쿼리 = 인라인 뷰
+    fade("#s07-hb6", at(6, 0.2), 1, 0);
+    fade("#s07-bk", at(6, 0.3), 0, 1);
+    stamp("#s07-iv", X("iv", at(6, 2.0)) - 0.1);
+    if (String(V.exit) !== "false") ft("#s07-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s07"] = tl;
+  </script>
+</template>

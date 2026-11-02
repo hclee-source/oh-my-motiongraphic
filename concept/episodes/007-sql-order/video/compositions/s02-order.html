@@ -1,0 +1,70 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s02-code { left: 192px; top: 262px; width: 900px; }
+    #s02-q { top: 262px; height: 412px; padding: 40px 44px; }
+    #s02-qt { font-size: 30px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    .s02-qi { margin-top: 22px; font-size: 38px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    .s02-qi span { color: var(--color-accent, #6B3FE6); }
+  </style>
+  <div id="root" data-composition-id="s02" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,3,6,13,17]"},{"id":"dur","type":"number","label":"장면 길이","default":26},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"o2","type":"number","label":"WHERE 시각","default":7},{"id":"o3","type":"number","label":"GROUP BY 시각","default":8},{"id":"o4","type":"number","label":"HAVING 시각","default":9},{"id":"o5","type":"number","label":"SELECT 시각","default":10},{"id":"o6","type":"number","label":"ORDER BY 시각","default":11},{"id":"c2","type":"number","label":"두 명 이상 시각","default":19},{"id":"c3","type":"number","label":"높은 순 시각","default":21},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s02-all">
+      <div id="s02-head" class="x-head">쓰는 순서와 처리 순서</div>
+      <div id="s02-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><div class="q-hi" id="s02-h1"></div><span><span class="q-k">SELECT</span> 부서, AVG(급여) <span class="q-k">AS</span> 평균</span><div class="q-no" id="s02-n1">5</div></div>
+        <div class="q-ln"><div class="q-hi" id="s02-h2"></div><span><span class="q-k">FROM</span> 직원</span><div class="q-no" id="s02-n2">1</div></div>
+        <div class="q-ln"><div class="q-hi" id="s02-h3"></div><span><span class="q-k">WHERE</span> 급여 &gt;= 300</span><div class="q-no" id="s02-n3">2</div></div>
+        <div class="q-ln"><div class="q-hi" id="s02-h4"></div><span><span class="q-k">GROUP BY</span> 부서</span><div class="q-no" id="s02-n4">3</div></div>
+        <div class="q-ln"><div class="q-hi" id="s02-h5"></div><span><span class="q-k">HAVING</span> COUNT(*) &gt;= 2</span><div class="q-no" id="s02-n5">4</div></div>
+        <div class="q-ln"><div class="q-hi" id="s02-h6"></div><span><span class="q-k">ORDER BY</span> 평균 <span class="q-k">DESC</span>;</span><div class="q-no" id="s02-n6">6</div></div>
+      </div>
+      <div id="s02-q" class="x-side x-card x-hide">
+        <div id="s02-qt">오늘 따라갈 SQL</div>
+        <div class="s02-qi" id="s02-q1"><span>부서별</span> 평균 급여</div>
+        <div class="s02-qi" id="s02-q2">급여 <span>300 이상</span>만</div>
+        <div class="s02-qi" id="s02-q3"><span>두 명 이상</span> 부서만</div>
+        <div class="s02-qi" id="s02-q4">평균 <span>높은 순</span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 26;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+    // 지금 처리하는 줄만 밝게(줄 번호 1~6 = 화면 위에서부터)
+    let cur = 0;
+    const hi = (k, t) => { if (cur) fade(`#s02-h${cur}`, t, 1, 0); if (k) fade(`#s02-h${k}`, t, 0, 1); cur = k; };
+
+    // 7 SELECT부터 쓴다
+    ft("#s02-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s02-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    hi(1, at(0, 1.2));
+    // 8 데이터베이스는 FROM부터
+    hi(2, at(1, 0.4));
+    stamp("#s02-n2", at(1, 0.6));
+    // 9 처리 순서 FROM, WHERE, GROUP BY, HAVING, SELECT, ORDER BY — 낱말이 나올 때 순번이 붙는다
+    const ord = [[3, Number(V.o2)], [4, Number(V.o3)], [5, Number(V.o4)], [1, Number(V.o5)], [6, Number(V.o6)]];
+    for (const [k, t] of ord) { hi(k, t); stamp(`#s02-n${k}`, t + 0.05); }
+    // 10 부서별 평균 급여 SQL
+    hi(1, at(3, 0.3));
+    ft("#s02-q", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(3, 0.3));
+    fade("#s02-q1", at(3, 1.0), 0, 1);
+    // 11 300 이상만 · 두 명 이상 부서만 · 평균 높은 순
+    hi(3, at(4, 0.2));
+    fade("#s02-q2", at(4, 0.3), 0, 1);
+    hi(5, Number(V.c2));
+    fade("#s02-q3", Number(V.c2) + 0.1, 0, 1);
+    hi(6, Number(V.c3));
+    fade("#s02-q4", Number(V.c3) + 0.1, 0, 1);
+    if (String(V.exit) !== "false") ft("#s02-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s02"] = tl;
+  </script>
+</template>

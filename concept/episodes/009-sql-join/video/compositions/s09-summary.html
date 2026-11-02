@@ -1,0 +1,76 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s09-r { position: absolute; left: 192px; width: 1536px; height: 126px; padding: 0 48px; box-sizing: border-box;
+      display: grid; grid-template-columns: 320px 1fr auto; align-items: center; }
+    .s09-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    .s09-ic { display: flex; gap: 16px; align-items: center; }
+    .s09-ic svg { width: 140px; height: 90px; overflow: visible; }
+    .s09-d { font-size: 44px; font-weight: 800; white-space: nowrap; }
+    .s09-k { font-size: 52px; font-weight: 900; color: var(--color-accent, #6B3FE6); white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="s09" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,3.4]"},{"id":"dur","type":"number","label":"장면 길이","default":13.5},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"w2","type":"number","label":"한쪽을 시각","default":5.3},{"id":"w3","type":"number","label":"양쪽 시각","default":8.2},{"id":"w4","type":"number","label":"모든 짝은 시각","default":9.9},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s09-all">
+      <div id="s09-head" class="x-head">한 줄 정리</div>
+      <div class="s09-r x-card x-hide" id="s09-r1" style="top:262px"><div class="s09-ring" id="s09-o1"></div>
+        <div class="s09-ic"><svg viewBox="0 0 140 90">
+          <defs><clipPath id="s09-k1"><circle cx="50" cy="45" r="36" /></clipPath></defs>
+          <circle cx="90" cy="45" r="36" fill="#6B3FE6" fill-opacity="0.85" clip-path="url(#s09-k1)" />
+          <circle cx="50" cy="45" r="36" fill="none" stroke="#18181B" stroke-width="3" />
+          <circle cx="90" cy="45" r="36" fill="none" stroke="#18181B" stroke-width="3" />
+        </svg></div>
+        <div class="s09-d">짝이 있는 행만</div><div class="s09-k">INNER</div></div>
+      <div class="s09-r x-card x-hide" id="s09-r2" style="top:414px"><div class="s09-ring" id="s09-o2"></div>
+        <div class="s09-ic"><svg viewBox="0 0 140 90">
+          <circle cx="50" cy="45" r="36" fill="#6B3FE6" fill-opacity="0.85" />
+          <circle cx="50" cy="45" r="36" fill="none" stroke="#18181B" stroke-width="3" />
+          <circle cx="90" cy="45" r="36" fill="none" stroke="#18181B" stroke-width="3" />
+        </svg><svg viewBox="0 0 140 90">
+          <circle cx="90" cy="45" r="36" fill="#6B3FE6" fill-opacity="0.85" />
+          <circle cx="50" cy="45" r="36" fill="none" stroke="#18181B" stroke-width="3" />
+          <circle cx="90" cy="45" r="36" fill="none" stroke="#18181B" stroke-width="3" />
+        </svg></div>
+        <div class="s09-d">한쪽을 모두 살리면</div><div class="s09-k">LEFT · RIGHT</div></div>
+      <div class="s09-r x-card x-hide" id="s09-r3" style="top:566px"><div class="s09-ring" id="s09-o3"></div>
+        <div class="s09-ic"><svg viewBox="0 0 140 90">
+          <g opacity="0.85"><circle cx="50" cy="45" r="36" fill="#6B3FE6" /><circle cx="90" cy="45" r="36" fill="#6B3FE6" /></g>
+          <circle cx="50" cy="45" r="36" fill="none" stroke="#18181B" stroke-width="3" />
+          <circle cx="90" cy="45" r="36" fill="none" stroke="#18181B" stroke-width="3" />
+        </svg></div>
+        <div class="s09-d">양쪽 다 살리면</div><div class="s09-k">FULL</div></div>
+      <div class="s09-r x-card x-hide" id="s09-r4" style="top:718px"><div class="s09-ring" id="s09-o4"></div>
+        <div class="s09-ic"><svg viewBox="0 0 140 90">
+          <g fill="#6B3FE6" fill-opacity="0.85">
+            <rect x="14" y="4" width="22" height="22" rx="5" /><rect x="44" y="4" width="22" height="22" rx="5" /><rect x="74" y="4" width="22" height="22" rx="5" /><rect x="104" y="4" width="22" height="22" rx="5" />
+            <rect x="14" y="34" width="22" height="22" rx="5" /><rect x="44" y="34" width="22" height="22" rx="5" /><rect x="74" y="34" width="22" height="22" rx="5" /><rect x="104" y="34" width="22" height="22" rx="5" />
+            <rect x="14" y="64" width="22" height="22" rx="5" /><rect x="44" y="64" width="22" height="22" rx="5" /><rect x="74" y="64" width="22" height="22" rx="5" /><rect x="104" y="64" width="22" height="22" rx="5" />
+          </g>
+        </svg></div>
+        <div class="s09-d">모든 짝</div><div class="s09-k">CROSS</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+
+    // 37 한 줄로 정리하면
+    ft("#s09-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    // 38 짝이 있는 행만 INNER, 한쪽을 모두 LEFT와 RIGHT, 양쪽 다 FULL, 모든 짝은 CROSS — 말하는 줄만 테두리
+    const times = [at(1, 0.1), X("w2", at(1, 1.9)) - 0.1, X("w3", at(1, 4.8)) - 0.1, X("w4", at(1, 6.5)) - 0.1];
+    times.forEach((t, j) => {
+      const k = j + 1;
+      ft(`#s09-r${k}`, { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, t);
+      fade(`#s09-o${k}`, t, 0, 1);
+      if (k > 1) fade(`#s09-o${k - 1}`, t, 1, 0);
+    });
+    window.__timelines["s09"] = tl;
+  </script>
+</template>

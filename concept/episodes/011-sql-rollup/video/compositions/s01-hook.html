@@ -1,0 +1,79 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s01-a { left: 192px; top: 262px; width: 680px; }
+    #s01-b { left: 1048px; top: 262px; width: 680px; }
+    #s01-eq { position: absolute; left: 872px; top: 330px; width: 176px; height: 96px; }
+    #s01-eq > div { position: absolute; left: 0; right: 0; top: 0; text-align: center; font-size: 72px; font-weight: 900; line-height: 96px; opacity: 0; }
+    #s01-eq1 { color: var(--color-ink2, #71717A); }
+    .s01-c { top: 548px; width: 280px; font-size: 38px; }
+    #s01-ca { left: 392px; }
+    #s01-cb { left: 1248px; }
+    #s01-fn { position: absolute; left: 192px; top: 700px; width: 1536px; display: flex; justify-content: center; gap: 28px; }
+    #s01-fn > .q-chip { position: relative; }
+  </style>
+  <div id="root" data-composition-id="s01" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.2,5.5,10.2,14.1]"},{"id":"dur","type":"number","label":"장면 길이","default":20.8},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"b","type":"number","label":"두 번째 ROLLUP 시각","default":2},{"id":"eq","type":"number","label":"결과가 시각","default":3.6},{"id":"ne","type":"number","label":"행 수부터 시각","default":8.3},{"id":"c9","type":"number","label":"9행 시각","default":11},{"id":"c10","type":"number","label":"10행 시각","default":12.4},{"id":"f1","type":"number","label":"ROLLUP 시각","default":15.2},{"id":"f2","type":"number","label":"CUBE 시각","default":16},{"id":"f3","type":"number","label":"GROUPING SETS 시각","default":16.6},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s01-all">
+      <div id="s01-head" class="x-head">순서를 바꾸면</div>
+      <div id="s01-a" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">SELECT</span> 부서, 직급, SUM(급여)</span></div>
+        <div class="q-ln"><span><span class="q-k">FROM</span> 직원</span></div>
+        <div class="q-ln"><div class="q-hi" id="s01-ha3"></div><span><span class="q-k">GROUP BY ROLLUP</span>(부서, 직급);</span></div>
+      </div>
+      <div id="s01-b" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">SELECT</span> 부서, 직급, SUM(급여)</span></div>
+        <div class="q-ln"><span><span class="q-k">FROM</span> 직원</span></div>
+        <div class="q-ln"><div class="q-hi" id="s01-hb3"></div><span><span class="q-k">GROUP BY ROLLUP</span>(직급, 부서);</span></div>
+      </div>
+      <div id="s01-eq" data-layout-allow-overlap>
+        <div id="s01-eq1">=?</div>
+        <div id="s01-eq2" class="x-acc">≠</div>
+      </div>
+      <div id="s01-ca" class="q-chip q-ok s01-c">결과 9행</div>
+      <div id="s01-cb" class="q-chip q-ok s01-c">결과 10행</div>
+      <div id="s01-fn">
+        <div id="s01-f1" class="q-chip q-ng">ROLLUP</div>
+        <div id="s01-f2" class="q-chip q-ng">CUBE</div>
+        <div id="s01-f3" class="q-chip q-ng">GROUPING SETS</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 20.8;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => (Number(V[k]) || d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+
+    // 1 ROLLUP(부서, 직급)과 ROLLUP(직급, 부서)는 결과가 같을까?
+    ft("#s01-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s01-a", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    fade("#s01-ha3", at(0, 1.0), 0, 1);
+    const b = X("b", at(0, 1.8));
+    ft("#s01-b", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, b);
+    fade("#s01-hb3", b + 0.7, 0, 1);
+    stamp("#s01-eq1", X("eq", at(0, 3.2)));
+    // 2 괄호 안 순서만 바꿨는데, 행 수부터 다르다
+    const ne = X("ne", at(1, 2.6));
+    fade("#s01-eq1", ne, 1, 0);
+    stamp("#s01-eq2", ne + 0.15);
+    // 3 앞의 것은 9행, 뒤의 것은 10행
+    stamp("#s01-ca", X("c9", at(2, 0.9)));
+    stamp("#s01-cb", X("c10", at(2, 2.3)));
+    // 4 ROLLUP, CUBE, GROUPING SETS의 행 수를 세어 본다 — 두 카드는 흐리게
+    fade(["#s01-ha3", "#s01-hb3"], at(3, 0.2), 1, 0);
+    fade(["#s01-a", "#s01-b", "#s01-eq", "#s01-ca", "#s01-cb"], at(3, 0.3), 1, 0.4);
+    stamp("#s01-f1", X("f1", at(3, 1.2)));
+    stamp("#s01-f2", X("f2", at(3, 1.8)));
+    stamp("#s01-f3", X("f3", at(3, 2.3)));
+    if (String(V.exit) !== "false") ft("#s01-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s01"] = tl;
+  </script>
+</template>

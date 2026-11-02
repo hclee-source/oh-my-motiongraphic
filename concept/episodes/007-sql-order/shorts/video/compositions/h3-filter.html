@@ -1,0 +1,59 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h3-card { position: absolute; left: 80px; width: 920px; height: 360px; padding: 56px 56px; box-sizing: border-box; }
+    #h3-w { top: 330px; }
+    #h3-h { top: 740px; }
+    .h3-k { font-size: 64px; font-weight: 900; color: var(--color-accent, #6B3FE6); }
+    .h3-d { margin-top: 18px; font-size: 42px; font-weight: 800; white-space: nowrap; }
+    #h3-x { margin-top: 26px; font-size: 34px; font-weight: 800; color: var(--color-ink2, #71717A); white-space: nowrap; opacity: 0; }
+    .h3-bar { position: absolute; left: 680px; width: 184px; height: 30px; border-radius: 10px; background: #CDD0D8; }
+    .h3-blk { position: absolute; left: 680px; width: 184px; border-radius: 14px; background: #CDD0D8; }
+    .h3-acc { background: var(--color-accent, #6B3FE6); }
+  </style>
+  <div id="root" data-composition-id="h3" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.2,5]"},{"id":"dur","type":"number","label":"장면 길이","default":10},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"hv","type":"number","label":"HAVING 시각","default":2.5},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h3-all">
+      <div class="h3-card x-card x-hide" id="h3-w">
+        <div class="h3-k">WHERE</div>
+        <div class="h3-d">묶기 전의 <span class="x-acc">행</span>을 거른다</div>
+        <div class="h3-bar" style="top:70px"></div>
+        <div class="h3-bar" id="h3-b2" style="top:114px"></div>
+        <div class="h3-bar" style="top:158px"></div>
+        <div class="h3-bar" id="h3-b4" style="top:202px"></div>
+        <div class="h3-bar" style="top:246px"></div>
+      </div>
+      <div class="h3-card x-card x-hide" id="h3-h">
+        <div class="h3-k">HAVING</div>
+        <div class="h3-d">묶은 뒤의 <span class="x-acc">묶음</span>을 거른다</div>
+        <div id="h3-x">COUNT · AVG 조건은 여기</div>
+        <div class="h3-blk" style="top:56px;height:110px"></div>
+        <div class="h3-blk" style="top:180px;height:74px"></div>
+        <div class="h3-blk" id="h3-k3" style="top:268px;height:36px"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 10;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+
+    // 5 WHERE는 묶기 전의 행을, HAVING은 묶은 뒤의 묶음을
+    ft("#h3-w", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0));
+    fade(["#h3-b2", "#h3-b4"], at(0, 0.9), 1, 0.2);
+    const hv = Number(V.hv) || at(0, 2.5);
+    ft("#h3-h", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, hv);
+    fade("#h3-k3", hv + 0.9, 1, 0.2);
+    // 6 COUNT · AVG 같은 집계 함수 조건은 HAVING에
+    fade("#h3-w", at(1, 0.2), 1, 0.45);
+    fade("#h3-x", at(1, 0.4), 0, 1);
+    if (String(V.exit) !== "false") ft("#h3-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h3"] = tl;
+  </script>
+</template>

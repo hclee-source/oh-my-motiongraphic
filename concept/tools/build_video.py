@@ -67,6 +67,9 @@ def main():
     ep = Path(sys.argv[1])
     tl = json.loads((ep / "timeline.json").read_text(encoding="utf-8"))
     cfg = json.loads((ep / "build.json").read_text(encoding="utf-8"))
+    if (ep / "word_times.json").exists():
+        WORD_TIMES.update({k: v for k, v in json.loads((ep / "word_times.json").read_text(encoding="utf-8")).items()
+                           if not k.startswith("_")})
     fmt = {**FORMAT, **cfg.get("format", {})}
     cap = {**FORMAT["caption"], **cfg.get("format", {}).get("caption", {})}
     W, H = fmt["width"], fmt["height"]
@@ -143,9 +146,17 @@ def main():
         # 대본에 ‘|’로 끊을 자리를 적었으면 그대로 따르고, 아니면 길이로 나눈다
         parts = [x.strip() for x in s["text"].split("|")] if "|" in s["text"] else split_caption(s["text"], cap["max"], cap["deep"])
         weights = [len(p.replace(" ", "")) for p in parts]
+        # 조각이 바뀌는 시각: 잰 말 시각(word_times.json의 cap|문장|조각)이 있으면 그것, 없으면 글자 수 비례
+        cuts = [s["start"]]
+        for j in range(1, len(parts)):
+            est = s["start"] + s["dur"] * sum(weights[:j]) / sum(weights)
+            got = WORD_TIMES.get(f'cap|{s["n"]}|{j}')
+            real = s["start"] + got - 0.05 if got is not None else None
+            cuts.append(real if real is not None and cuts[-1] + 0.3 < real < end - 0.3 else est)
+        cuts.append(end)
         t = s["start"]
         for j, p in enumerate(parts):
-            span = (s["dur"] * weights[j] / sum(weights)) if j < len(parts) - 1 else end - t
+            span = cuts[j + 1] - cuts[j]
             caps.append(f'    <div id="cap-{s["n"]:02d}{"abcdefgh"[j]}" class="cap clip" data-start="{t:.3f}" data-duration="{span:.3f}"><span>{html.escape(p)}</span></div>')
             t += span
 
@@ -209,9 +220,15 @@ def main():
     (video / "compositions" / "captions.html").write_text(captions, encoding="utf-8")
     print(f"장면 {len(hosts)}개, 자막 {len(caps)}묶음, 효과음 {len(sfx_tags)}개, 전체 {total:.1f}초")
 
+WORD_TIMES = {}  # 편 폴더의 word_times.json(받아 적기로 잰 실제 말 시각, verify_episode.py --write-times)
+
 def eval_extra(spec, chapters, start):
-    """build.json의 extra 값: {"sentence": 73, "at": "재현율"} → 그 낱말이 나오는 시각(장면 기준, 글자 수 비례 추정)."""
+    """build.json의 extra 값: {"sentence": 73, "at": "재현율"} → 그 낱말이 나오는 시각(장면 기준).
+    word_times.json에 잰 시각이 있으면 그것을, 없으면 글자 수 비례로 추정한다."""
     s = next(x for c in chapters.values() for x in c["sentences"] if x["n"] == spec["sentence"])
+    key = f'{spec["sentence"]}|{spec["at"]}'
+    if key in WORD_TIMES and WORD_TIMES[key] <= s["dur"]:
+        return round(s["start"] - start + WORD_TIMES[key], 3)
     pos = s["text"].find(spec["at"])
     frac = len(s["text"][:pos].replace(" ", "")) / max(1, len(s["text"].replace(" ", "")))
     return round(s["start"] - start + s["dur"] * frac, 3)

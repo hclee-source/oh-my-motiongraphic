@@ -1,0 +1,83 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 108px; text-align: center; overflow: visible;
+      font-size: 46px; font-weight: 600; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 1536px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-01a" class="cap clip" data-start="3.600" data-duration="1.210"><span>급여에 12를 곱하고</span></div>
+    <div id="cap-01b" class="cap clip" data-start="4.810" data-duration="2.407"><span>‘연봉’이라는 별칭을 붙였습니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="7.317" data-duration="1.390"><span>이 별칭으로 ORDER BY를</span></div>
+    <div id="cap-02b" class="cap clip" data-start="8.707" data-duration="3.115"><span>하면 연봉 순서대로 잘 정렬됩니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="11.921" data-duration="1.270"><span>그런데 같은 별칭을</span></div>
+    <div id="cap-03b" class="cap clip" data-start="13.191" data-duration="2.353"><span>WHERE에서 쓰면 오류가 납니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="15.645" data-duration="1.950"><span>같은 SQL 안에서 붙인 이름인데,</span></div>
+    <div id="cap-04b" class="cap clip" data-start="17.595" data-duration="2.617"><span>왜 한쪽에서만 통할까요?</span></div>
+    <div id="cap-05a" class="cap clip" data-start="20.312" data-duration="2.837"><span>답은 SQL이 처리되는 순서에 있습니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="23.249" data-duration="2.510"><span>오늘은 직원 여덟 명의 표 하나로 그</span></div>
+    <div id="cap-06b" class="cap clip" data-start="25.759" data-duration="2.628"><span>순서를 한 단계씩 따라가 보겠습니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="29.036" data-duration="2.540"><span>SQL을 쓸 때는 SELECT부터 씁니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="31.676" data-duration="2.986"><span>하지만 데이터베이스는 FROM부터 읽습니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="34.762" data-duration="3.130"><span>처리 순서는 FROM, WHERE, GROUP BY,</span></div>
+    <div id="cap-09b" class="cap clip" data-start="37.892" data-duration="6.463"><span>HAVING, SELECT, 그리고 마지막이 ORDER BY입니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="44.455" data-duration="1.770"><span>오늘 따라갈 SQL은 부서별</span></div>
+    <div id="cap-10b" class="cap clip" data-start="46.225" data-duration="2.376"><span>평균 급여를 구하는 문장입니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="48.701" data-duration="1.550"><span>급여 300 이상인 직원만,</span></div>
+    <div id="cap-11b" class="cap clip" data-start="50.251" data-duration="4.469"><span>두 명 이상인 부서만, 평균이 높은 순으로 봅니다.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="55.369" data-duration="1.550"><span>첫 번째 FROM은 직원 표</span></div>
+    <div id="cap-12b" class="cap clip" data-start="56.919" data-duration="2.289"><span>여덟 행을 그대로 가져옵니다.</span></div>
+    <div id="cap-13a" class="cap clip" data-start="59.309" data-duration="1.670"><span>두 번째 WHERE는 행을 하나씩</span></div>
+    <div id="cap-13b" class="cap clip" data-start="60.979" data-duration="2.678"><span>보며 조건에 맞지 않는 행을 버립니다.</span></div>
+    <div id="cap-14a" class="cap clip" data-start="63.756" data-duration="1.630"><span>급여가 300 미만인 두 명이</span></div>
+    <div id="cap-14b" class="cap clip" data-start="65.386" data-duration="2.320"><span>빠져서 여섯 행이 남습니다.</span></div>
+    <div id="cap-15a" class="cap clip" data-start="67.806" data-duration="1.490"><span>WHERE는 아직 묶기 전이라,</span></div>
+    <div id="cap-15b" class="cap clip" data-start="69.296" data-duration="2.623"><span>한 행 한 행만 볼 수 있습니다.</span></div>
+    <div id="cap-16a" class="cap clip" data-start="72.568" data-duration="1.710"><span>세 번째 GROUP BY는 남은</span></div>
+    <div id="cap-16b" class="cap clip" data-start="74.278" data-duration="2.246"><span>여섯 행을 부서별로 묶습니다.</span></div>
+    <div id="cap-17a" class="cap clip" data-start="76.625" data-duration="2.510"><span>영업 세 명, 개발 두 명,</span></div>
+    <div id="cap-17b" class="cap clip" data-start="79.135" data-duration="2.927"><span>인사 한 명, 세 묶음이 됩니다.</span></div>
+    <div id="cap-18a" class="cap clip" data-start="82.162" data-duration="3.382"><span>이제부터는 행이 아니라 묶음 단위로 계산합니다.</span></div>
+    <div id="cap-19a" class="cap clip" data-start="85.644" data-duration="1.650"><span>COUNT나 AVG 같은 집계</span></div>
+    <div id="cap-19b" class="cap clip" data-start="87.294" data-duration="2.801"><span>함수가 여기서부터 의미를 갖습니다.</span></div>
+    <div id="cap-20a" class="cap clip" data-start="90.745" data-duration="3.043"><span>네 번째 HAVING은 묶음을 거르는 조건입니다.</span></div>
+    <div id="cap-21a" class="cap clip" data-start="93.888" data-duration="2.090"><span>두 명 이상인 부서만 남기라고 했으니,</span></div>
+    <div id="cap-21b" class="cap clip" data-start="95.978" data-duration="3.925"><span>WHERE를 거치고 한 명만 남은 인사 부서가 빠집니다.</span></div>
+    <div id="cap-22a" class="cap clip" data-start="100.004" data-duration="1.250"><span>WHERE가 행을 거른다면,</span></div>
+    <div id="cap-22b" class="cap clip" data-start="101.254" data-duration="2.457"><span>HAVING은 묶음을 거릅니다.</span></div>
+    <div id="cap-23a" class="cap clip" data-start="104.361" data-duration="2.705"><span>다섯 번째에야 SELECT가 실행됩니다.</span></div>
+    <div id="cap-24a" class="cap clip" data-start="107.166" data-duration="4.330"><span>영업은 300, 500, 400의 평균 400,</span></div>
+    <div id="cap-24b" class="cap clip" data-start="111.496" data-duration="4.178"><span>개발은 600과 450의 평균 525입니다.</span></div>
+    <div id="cap-25a" class="cap clip" data-start="115.774" data-duration="2.996"><span>별칭 ‘평균’도 바로 이 순간에 생깁니다.</span></div>
+    <div id="cap-26a" class="cap clip" data-start="118.870" data-duration="2.930"><span>마지막 ORDER BY가 평균이 높은 순으로 정렬해,</span></div>
+    <div id="cap-26b" class="cap clip" data-start="121.800" data-duration="4.205"><span>개발 525, 영업 400이 결과입니다.</span></div>
+    <div id="cap-27a" class="cap clip" data-start="126.106" data-duration="2.936"><span>여덟 행으로 시작해 두 행이 남았습니다.</span></div>
+    <div id="cap-28a" class="cap clip" data-start="129.692" data-duration="2.754"><span>이제 처음 질문으로 돌아가 보겠습니다.</span></div>
+    <div id="cap-29a" class="cap clip" data-start="132.546" data-duration="1.470"><span>WHERE는 두 번째,</span></div>
+    <div id="cap-29b" class="cap clip" data-start="134.016" data-duration="2.780"><span>SELECT는 다섯 번째에 처리됩니다.</span></div>
+    <div id="cap-30a" class="cap clip" data-start="136.895" data-duration="1.810"><span>WHERE가 실행될 때는 ‘연봉’이라는</span></div>
+    <div id="cap-30b" class="cap clip" data-start="138.705" data-duration="2.742"><span>별칭이 아직 없으니 오류가 납니다.</span></div>
+    <div id="cap-31a" class="cap clip" data-start="141.547" data-duration="1.410"><span>ORDER BY는 SELECT보다</span></div>
+    <div id="cap-31b" class="cap clip" data-start="142.957" data-duration="2.215"><span>뒤라서 별칭을 쓸 수 있습니다.</span></div>
+    <div id="cap-32a" class="cap clip" data-start="145.272" data-duration="2.150"><span>같은 원리로 WHERE에는 COUNT나</span></div>
+    <div id="cap-32b" class="cap clip" data-start="147.422" data-duration="2.991"><span>AVG 같은 집계 함수를 쓸 수 없습니다.</span></div>
+    <div id="cap-33a" class="cap clip" data-start="150.513" data-duration="2.390"><span>묶음은 GROUP BY에서 생기는데,</span></div>
+    <div id="cap-33b" class="cap clip" data-start="152.903" data-duration="2.485"><span>WHERE는 그보다 먼저이기 때문입니다.</span></div>
+    <div id="cap-34a" class="cap clip" data-start="155.487" data-duration="2.781"><span>묶음에 대한 조건은 HAVING에 적어야 합니다.</span></div>
+    <div id="cap-35a" class="cap clip" data-start="158.918" data-duration="2.582"><span>시험장에서 챙길 것 세 가지입니다.</span></div>
+    <div id="cap-36a" class="cap clip" data-start="161.599" data-duration="4.390"><span>첫째, 처리 순서는 FROM, WHERE, GROUP BY,</span></div>
+    <div id="cap-36b" class="cap clip" data-start="165.989" data-duration="5.669"><span>HAVING, SELECT, ORDER BY입니다.</span></div>
+    <div id="cap-37a" class="cap clip" data-start="171.758" data-duration="4.850"><span>둘째, SELECT에서 붙인 별칭은 ORDER BY에서만 쓸 수 있고,</span></div>
+    <div id="cap-37b" class="cap clip" data-start="176.608" data-duration="4.335"><span>WHERE, GROUP BY, HAVING에서는 쓸 수 없습니다.</span></div>
+    <div id="cap-38a" class="cap clip" data-start="181.043" data-duration="2.610"><span>셋째, 집계 함수 조건은 WHERE가</span></div>
+    <div id="cap-38b" class="cap clip" data-start="183.653" data-duration="1.763"><span>아니라 HAVING에 적습니다.</span></div>
+    <div id="cap-39a" class="cap clip" data-start="185.516" data-duration="3.350"><span>덧붙여, GROUP BY를 쓰면 GROUP BY에 없는 열은</span></div>
+    <div id="cap-39b" class="cap clip" data-start="188.866" data-duration="3.698"><span>집계 함수로 감싸지 않고는 SELECT에 쓸 수 없습니다.</span></div>
+    <div id="cap-40a" class="cap clip" data-start="193.214" data-duration="2.894"><span>오늘 내용을 한 줄로 정리하면 이렇습니다.</span></div>
+    <div id="cap-41a" class="cap clip" data-start="196.207" data-duration="6.110"><span>FROM, WHERE, GROUP BY, HAVING, SELECT,</span></div>
+    <div id="cap-41b" class="cap clip" data-start="202.317" data-duration="9.182"><span>ORDER BY. 앞 글자만 따면, 프, 웨, 그, 해, 셀, 오입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

@@ -47,5 +47,8 @@ videos/*/.work/**/*.jpg
 *.log
 *.err
 
+# 개념 영상 음성 받아쓰기 검수 임시 결과(verify_episode.py)
+.verify/
+
 # API 키 (.env의 주석이 전제하는 규칙)
 .env*

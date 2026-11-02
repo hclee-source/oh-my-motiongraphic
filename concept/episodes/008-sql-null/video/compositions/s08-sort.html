@@ -1,0 +1,77 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s08-c { position: absolute; top: 262px; width: 480px; height: 584px; }
+    .s08-db { position: absolute; left: 0; right: 0; top: 34px; text-align: center; font-size: 40px; font-weight: 900; white-space: nowrap; }
+    .s08-or { position: absolute; left: 0; right: 0; top: 90px; text-align: center; font-size: 30px; font-weight: 700;
+      color: var(--color-ink2, #71717A); white-space: nowrap; }
+    .s08-line { position: absolute; left: 48px; right: 48px; top: 146px; height: 2px; background: var(--color-hair, #D3D6DD); }
+    .s08-i { position: absolute; left: 0; right: 0; height: 56px; line-height: 56px; text-align: center; font-size: 40px; font-weight: 800; }
+    .s08-i.q-null { font-weight: 800; color: #8A8A93; }
+    .s08-hl { position: absolute; left: 130px; right: 130px; height: 64px; border-radius: 32px;
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 14%, #FFFFFF); opacity: 0; }
+    .s08-ft { position: absolute; left: 0; right: 0; top: 512px; text-align: center; font-size: 32px; font-weight: 800;
+      color: var(--color-accent, #6B3FE6); white-space: nowrap; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s08" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3.468,10.804]"},{"id":"dur","type":"number","label":"장면 길이","default":16.695},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"ob","type":"number","label":"맨 뒤 시각","default":7.659},{"id":"od","type":"number","label":"내림차순 시각","default":8.183},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s08-all">
+      <div id="s08-head" class="x-head">정렬과 NULL</div>
+      <div class="s08-c x-card x-hide" id="s08-a" style="left:192px">
+        <div class="s08-db">오라클</div><div class="s08-or">오름차순</div><div class="s08-line"></div>
+        <div class="s08-hl" id="s08-ha" style="top:422px"></div>
+        <div class="s08-i" style="top:170px">70</div><div class="s08-i" style="top:234px">80</div><div class="s08-i" style="top:298px">80</div>
+        <div class="s08-i" style="top:362px">90</div><div class="s08-i q-null" id="s08-na" style="top:426px">NULL</div>
+        <div class="s08-ft" id="s08-fa">NULL = 가장 큰 값</div>
+      </div>
+      <div class="s08-c x-card x-hide" id="s08-b" style="left:720px">
+        <div class="s08-db">오라클</div><div class="s08-or">내림차순</div><div class="s08-line"></div>
+        <div class="s08-hl" id="s08-hb" style="top:166px"></div>
+        <div class="s08-i q-null" id="s08-nb" style="top:170px">NULL</div><div class="s08-i" style="top:234px">90</div><div class="s08-i" style="top:298px">80</div>
+        <div class="s08-i" style="top:362px">80</div><div class="s08-i" style="top:426px">70</div>
+        <div class="s08-ft" id="s08-fb">NULL = 가장 큰 값</div>
+      </div>
+      <div class="s08-c x-card x-hide" id="s08-c" style="left:1248px">
+        <div class="s08-db">SQL Server</div><div class="s08-or">오름차순</div><div class="s08-line"></div>
+        <div class="s08-hl" id="s08-hc" style="top:166px"></div>
+        <div class="s08-i q-null" id="s08-nc" style="top:170px">NULL</div><div class="s08-i" style="top:234px">70</div><div class="s08-i" style="top:298px">80</div>
+        <div class="s08-i" style="top:362px">80</div><div class="s08-i" style="top:426px">90</div>
+        <div class="s08-ft" id="s08-fc">NULL = 가장 작은 값</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 16.695;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, ease: "back.out(1.6)" }, t);
+    const ACC = "#6B3FE6", MUTE = "#8A8A93";
+    // NULL 자리에 연보라 바탕, 글자는 강조색
+    const spot = (k, t) => { fade(`#s08-h${k}`, t, 0, 1); ft(`#s08-n${k}`, { color: MUTE }, { color: ACC }, t); };
+
+    // 40 정렬할 때도 NULL은 따로 자리를 잡는다 — 오라클 오름차순 목록
+    ft("#s08-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    stamp("#s08-a", at(0, 0.5));
+    // 41 오라클은 NULL을 가장 큰 값 → 오름차순 맨 뒤, 내림차순 맨 앞
+    fade("#s08-fa", at(1, 1.8), 0, 1);
+    const ob = Number(V.ob) || at(1, 4.2);
+    const od = Math.max(Number(V.od) || at(1, 4.7), ob + 0.6);
+    spot("a", ob);
+    stamp("#s08-b", od);
+    spot("b", od + 0.7);
+    fade("#s08-fb", od + 0.7, 0, 1);
+    // 42 SQL Server는 반대로 가장 작은 값 → 오름차순 맨 앞
+    fade("#s08-b", at(2, 0.2), 1, 0.4);
+    stamp("#s08-c", at(2, 0.4));
+    fade("#s08-fc", at(2, 2.2), 0, 1);
+    spot("c", at(2, 3.6));
+    if (String(V.exit) !== "false") ft("#s08-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s08"] = tl;
+  </script>
+</template>

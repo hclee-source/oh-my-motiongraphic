@@ -1,0 +1,32 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 540px; text-align: center; overflow: visible;
+      font-size: 54px; font-weight: 700; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 940px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cap-01a" class="cap clip" data-start="0.000" data-duration="1.730"><span>COUNT(*)는 NULL인 행도 세지만,</span></div>
+    <div id="cap-01b" class="cap clip" data-start="1.730" data-duration="2.736"><span>COUNT(열)은 NULL을 빼고 셉니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="4.516" data-duration="1.470"><span>SUM과 AVG도</span></div>
+    <div id="cap-02b" class="cap clip" data-start="5.986" data-duration="1.100"><span>NULL을 건너뜁니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="7.136" data-duration="0.980"><span>그래서 AVG는</span></div>
+    <div id="cap-03b" class="cap clip" data-start="8.116" data-duration="2.211"><span>NULL을 뺀 개수로 나눕니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="10.526" data-duration="0.710"><span>‘= NULL’로는</span></div>
+    <div id="cap-04b" class="cap clip" data-start="11.236" data-duration="2.085"><span>아무것도 찾지 못합니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="13.371" data-duration="0.850"><span>NULL과 비교하면</span></div>
+    <div id="cap-05b" class="cap clip" data-start="14.221" data-duration="1.140"><span>참도 거짓도 아닌</span></div>
+    <div id="cap-05c" class="cap clip" data-start="15.361" data-duration="1.696"><span>알 수 없음이 되니까요.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="17.107" data-duration="0.390"><span>NULL은</span></div>
+    <div id="cap-06b" class="cap clip" data-start="17.497" data-duration="1.616"><span>IS NULL로 찾습니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="19.313" data-duration="1.290"><span>NOT IN 목록에 NULL이</span></div>
+    <div id="cap-07b" class="cap clip" data-start="20.603" data-duration="0.700"><span>하나라도 있으면</span></div>
+    <div id="cap-07c" class="cap clip" data-start="21.303" data-duration="2.028"><span>결과는 0행입니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="23.531" data-duration="1.110"><span>NULL은 모르는 값.</span></div>
+    <div id="cap-08b" class="cap clip" data-start="24.641" data-duration="1.260"><span>집계에서는 빠지고,</span></div>
+    <div id="cap-08c" class="cap clip" data-start="25.901" data-duration="2.361"><span>비교하면 알 수 없음.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

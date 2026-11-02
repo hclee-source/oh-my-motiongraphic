@@ -1,0 +1,66 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h2-sc { position: absolute; left: 80px; top: 320px; width: 880px; height: 110px; }
+    .h2-g { position: absolute; left: 24px; right: 24px; display: grid; grid-template-columns: repeat(4, 1fr); align-items: center; }
+    #h2-sc .h2-g { top: 0; height: 106px; }
+    #h2-sc .h2-g > div { text-align: center; font-size: 44px; font-weight: 800; color: var(--color-ink2, #71717A); white-space: nowrap; }
+    .h2-r { position: absolute; left: 80px; width: 880px; height: 220px; }
+    .h2-nm { position: absolute; left: 36px; top: 26px; line-height: 52px; font-size: 40px; font-weight: 900; white-space: nowrap; }
+    .h2-nt { position: absolute; right: 36px; top: 26px; line-height: 52px; font-size: 32px; font-weight: 800; white-space: nowrap;
+      color: var(--color-accent, #6B3FE6); opacity: 0; }
+    .h2-r .h2-g { top: 96px; height: 100px; }
+    .h2-r .h2-g > div { text-align: center; font-size: 96px; font-weight: 900; line-height: 100px; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="h2" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,7.08,11.95]"},{"id":"dur","type":"number","label":"장면 길이","default":17.3},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h2-all">
+      <div id="h2-sc" class="x-card x-hide"><div class="h2-g"><div>90점</div><div>90점</div><div>85점</div><div>80점</div></div></div>
+      <div class="h2-r x-card x-hide" id="h2-r1" style="top:460px">
+        <div class="h2-nm">RANK</div><div class="h2-nt" id="h2-t1">2등 건너뜀</div>
+        <div class="h2-g"><div id="h2-a1">1</div><div id="h2-a2">1</div><div id="h2-a3">3</div><div id="h2-a4">4</div></div>
+      </div>
+      <div class="h2-r x-card x-hide" id="h2-r2" style="top:710px">
+        <div class="h2-nm">DENSE_RANK</div><div class="h2-nt" id="h2-t2">건너뛰지 않음</div>
+        <div class="h2-g"><div id="h2-d1">1</div><div id="h2-d2">1</div><div id="h2-d3">2</div><div id="h2-d4">3</div></div>
+      </div>
+      <div class="h2-r x-card x-hide" id="h2-r3" style="top:960px">
+        <div class="h2-nm">ROW_NUMBER</div><div class="h2-nt" id="h2-t3">동점도 다른 번호</div>
+        <div class="h2-g"><div id="h2-w1">1</div><div id="h2-w2">2</div><div id="h2-w3">3</div><div id="h2-w4">4</div></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 17.3;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+    const ACC = "#6B3FE6", INK = "#18181B";
+    // 함수 이름을 부르면 그 줄이 들어오고, 숫자를 부를 때 하나씩 찍힌다. 그 함수만의 숫자는 강조색.
+    // nums = 숫자 네 개를 실제로 말한 시각(문장 시작 기준 초, listen_episode.py로 잰 값, 2026-11-02)
+    const row = (k, c, key, i, t0, tn, nums) => {
+      ft(`#h2-r${k}`, { opacity: 0, x: -20 }, { opacity: 1, x: 0 }, at(i, t0));
+      nums.forEach((s, j) => stamp(`#h2-${c}${j + 1}`, at(i, s - 0.05)));
+      fade(`#h2-t${k}`, at(i, tn), 0, 1);
+      ft(`#h2-${c}${key}`, { color: INK }, { color: ACC }, at(i, tn));
+    };
+
+    // 3 RANK 1, 1, 3, 4 — 동점자 수만큼 다음 번호를 건너뛴다
+    ft("#h2-sc", { opacity: 0, y: -12 }, { opacity: 1, y: 0 }, at(0, -0.3));
+    row(1, "a", 3, 0, 0.05, 4.66, [0.5, 1.08, 1.86, 2.8]);
+    // 4 DENSE_RANK 1, 1, 2, 3 — 건너뛰지 않는다
+    fade("#h2-r1", at(1, 0.1), 1, 0.4);
+    row(2, "d", 3, 1, 0.1, 3.28, [0.82, 1.44, 2.18, 3.02]);
+    // 5 ROW_NUMBER 1번, 2번, 3번, 4번 — 동점이어도 다른 번호
+    fade("#h2-r2", at(2, 0.1), 1, 0.4);
+    row(3, "w", 2, 2, 0.1, 4.32, [0.78, 1.66, 2.72, 3.64]);
+    if (String(V.exit) !== "false") ft("#h2-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h2"] = tl;
+  </script>
+</template>

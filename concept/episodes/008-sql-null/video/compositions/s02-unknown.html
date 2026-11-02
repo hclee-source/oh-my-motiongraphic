@@ -1,0 +1,67 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s02-c { position: absolute; top: 262px; width: 480px; height: 220px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; }
+    .s02-big { font-size: 88px; font-weight: 900; line-height: 1.1; color: #8A8A93; }
+    .s02-big.x-acc { color: var(--color-accent, #6B3FE6); }
+    .s02-sp { width: 112px; height: 30px; margin: 46px 0 21px; border: 9px solid #8A8A93; border-top: 0; border-radius: 0 0 8px 8px; }
+    .s02-lab { margin-top: 12px; font-size: 34px; font-weight: 800; white-space: nowrap; }
+    .s02-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    #s02-f { position: absolute; left: 192px; top: 530px; width: 1536px; height: 150px; }
+    .s02-fx { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 52px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    .s02-op { color: #A1A1AA; padding: 0 22px; }
+    .s02-g { top: 730px; width: 360px; }
+  </style>
+  <div id="root" data-composition-id="s02" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,5.917,9.685,12.973]"},{"id":"dur","type":"number","label":"장면 길이","default":19.405},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"k2","type":"number","label":"띄어쓰기 시각","default":1.955},{"id":"k3","type":"number","label":"아직 시각","default":4.062},{"id":"g1","type":"number","label":"집계 시각","default":13.698},{"id":"g2","type":"number","label":"비교 시각","default":14.604},{"id":"g3","type":"number","label":"NOT IN 시각","default":15.148},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s02-all">
+      <div id="s02-head" class="x-head">NULL은 모르는 값</div>
+      <div class="s02-c x-card x-hide" id="s02-c1" style="left:192px"><div class="s02-big">0</div><div class="s02-lab">0이 아니다</div></div>
+      <div class="s02-c x-card x-hide" id="s02-c2" style="left:720px"><div class="s02-sp"></div><div class="s02-lab">공백 문자도 아니다</div></div>
+      <div class="s02-c x-card x-hide" id="s02-c3" style="left:1248px"><div class="s02-ring" id="s02-o3"></div><div class="s02-big x-acc">?</div><div class="s02-lab x-acc">아직 모르는 값</div></div>
+      <div id="s02-f" class="x-dark x-hide" data-layout-allow-overlap>
+        <div class="s02-fx" id="s02-f1"><span>NULL<span class="s02-op">+</span>값<span class="s02-op">=</span><span class="x-accd">NULL</span></span></div>
+        <div class="s02-fx" id="s02-f2"><span>동훈 점수<span class="s02-op">+</span>10<span class="s02-op">=</span><span class="x-accd">NULL</span></span></div>
+      </div>
+      <div class="q-chip q-ok s02-g" id="s02-g1" style="left:372px">집계 함수</div>
+      <div class="q-chip q-ok s02-g" id="s02-g2" style="left:780px">비교</div>
+      <div class="q-chip q-ok s02-g" id="s02-g3" style="left:1188px">NOT IN</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 19.405;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+
+    // 7 NULL은 0도, 공백 문자도 아닌, 아직 모르는 값
+    ft("#s02-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    stamp("#s02-c1", at(0, 0.5));
+    stamp("#s02-c2", Number(V.k2) || at(0, 1.5));
+    stamp("#s02-c3", Number(V.k3) || at(0, 3.6));
+    fade("#s02-o3", (Number(V.k3) || at(0, 3.6)) + 0.3, 0, 1);
+    // 8 계산에 NULL이 끼면 결과도 NULL
+    fade(["#s02-c1", "#s02-c2"], at(1, 0.2), 1, 0.4);
+    ft("#s02-f", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(1, 0.3));
+    fade("#s02-f1", at(1, 0.6), 0, 1);
+    // 9 동훈 점수 + 10 = NULL
+    fade("#s02-f1", at(2, 0.2), 1, 0);
+    fade("#s02-f2", at(2, 0.4), 0, 1);
+    // 10 집계 함수, 비교, NOT IN에서 각각 다르게 — 앞 그림은 흐리게
+    fade(["#s02-c3", "#s02-f"], at(3, 0.2), 1, 0.4);
+    fade("#s02-o3", at(3, 0.2), 1, 0);
+    stamp("#s02-g1", Number(V.g1) || at(3, 0.7));
+    stamp("#s02-g2", Number(V.g2) || at(3, 1.6));
+    stamp("#s02-g3", Number(V.g3) || at(3, 2.2));
+    if (String(V.exit) !== "false") ft("#s02-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s02"] = tl;
+  </script>
+</template>

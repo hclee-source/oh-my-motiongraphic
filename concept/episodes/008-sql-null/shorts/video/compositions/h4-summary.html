@@ -1,0 +1,38 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h4-c { position: absolute; left: 80px; width: 920px; padding: 0 60px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
+    #h4-c1 { top: 340px; height: 250px; }
+    #h4-c2 { top: 630px; height: 190px; }
+    #h4-c3 { top: 860px; height: 190px; }
+    .h4-k { font-size: 42px; font-weight: 800; color: var(--color-ink2, #71717A); white-space: nowrap; }
+    .h4-v { margin-top: 8px; font-size: 64px; font-weight: 900; white-space: nowrap; }
+    #h4-c1 .h4-v { font-size: 80px; }
+  </style>
+  <div id="root" data-composition-id="h4" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45]"},{"id":"dur","type":"number","label":"장면 길이","default":5.932},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"y2","type":"number","label":"집계에서는 시각","default":2.093},{"id":"y3","type":"number","label":"비교하면 시각","default":3.587},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h4-all">
+      <div class="h4-c x-card x-hide" id="h4-c1"><div class="h4-k">NULL은</div><div class="h4-v x-acc">모르는 값</div></div>
+      <div class="h4-c x-card x-hide" id="h4-c2"><div class="h4-k">집계에서는</div><div class="h4-v">빠지고</div></div>
+      <div class="h4-c x-card x-hide" id="h4-c3"><div class="h4-k">비교하면</div><div class="h4-v">알 수 없음</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const stamp = (sel, t) => tl.fromTo(sel, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.35 * S, ease: "back.out(1.8)", immediateRender: false }, t);
+
+    // 8 NULL은 모르는 값. 집계에서는 빠지고, 비교하면 알 수 없음.
+    const t1 = at(0, -0.1);
+    const t2 = Math.max(Number(V.y2) || at(0, 1.6), t1 + 0.6);
+    const t3 = Math.max(Number(V.y3) || at(0, 3.1), t2 + 0.6);
+    stamp("#h4-c1", t1);
+    stamp("#h4-c2", t2);
+    stamp("#h4-c3", t3);
+    window.__timelines["h4"] = tl;
+  </script>
+</template>
