@@ -1,0 +1,110 @@
+{
+  "concept/episodes/012-sql-hierarchy": {
+    "titles": ["PRIOR 자리 하나로 7행이 1행으로? CONNECT BY 방향 | SQLD", "CONNECT BY PRIOR, 어느 쪽에 붙여야 아래로 내려갈까 | SQLD", "WHERE는 한 행만, CONNECT BY는 가지째, 계층형 질의와 셀프 조인 | SQLD"],
+    "desc": "사원 일곱 명의 조직도 표로 계층형 질의를 한 단계씩 따라갑니다. START WITH와 CONNECT BY PRIOR의 방향(순방향·역방향), 결과가 나오는 순서와 LEVEL, ORDER SIBLINGS BY, 같은 조건을 WHERE에 적을 때와 CONNECT BY에 적을 때의 행 수 차이, CONNECT_BY_ISLEAF·CONNECT_BY_ROOT·SYS_CONNECT_BY_PATH, 그리고 같은 표를 두 번 쓰는 셀프 조인까지 정리합니다.",
+    "hashtags": "#SQLD #SQL개발자 #계층형질의 #CONNECTBY #셀프조인",
+    "tags": ["SQLD", "SQL 개발자", "계층형 질의", "CONNECT BY", "START WITH", "PRIOR", "LEVEL", "ORDER SIBLINGS BY", "셀프 조인", "데이터 자격증"],
+    "shorts": {"titles": ["CONNECT BY PRIOR 방향, 1분 정리", "WHERE로 빼면 한 행, CONNECT BY로 빼면 가지째"],
+               "desc": "PRIOR가 붙은 쪽이 방금 읽은 부모 행입니다. 방향 정하는 법, 출발 행의 LEVEL, 조건을 WHERE에 적을 때와 CONNECT BY에 적을 때의 차이를 1분에 정리합니다.",
+               "tags": ["SQLD", "계층형 질의", "CONNECT BY", "PRIOR", "쇼츠"]}
+  },
+  "concept/episodes/013-sql-window-agg": {
+    "titles": ["같은 급여 두 명, 누적합이 똑같은 이유? ROWS와 RANGE | SQLD", "LAST_VALUE가 마지막 값이 아닌 이유, 윈도우 함수 기본 범위 | SQLD", "누적합부터 LAG · LEAD까지, 윈도우 함수 범위 한 번에 | SQLD"],
+    "desc": "직원 다섯 명의 급여로 윈도우 함수의 범위를 직접 계산합니다. OVER 안에 ORDER BY를 넣으면 누적합이 되는 이유, 생략된 기본 범위가 RANGE라서 같은 값끼리 누적합이 같아지는 함정, ROWS와의 차이, PARTITION BY, 앞뒤 한 행만 더하는 이동 합, LAG·LEAD, LAST_VALUE의 함정, 그리고 RATIO_TO_REPORT·PERCENT_RANK·CUME_DIST·NTILE까지 정리합니다.",
+    "hashtags": "#SQLD #SQL개발자 #윈도우함수 #ROWS #RANGE",
+    "tags": ["SQLD", "SQL 개발자", "윈도우 함수", "누적합", "ROWS", "RANGE", "LAG", "LEAD", "LAST_VALUE", "NTILE", "데이터 자격증"],
+    "shorts": {"titles": ["ROWS와 RANGE 차이, 1분 정리", "같은 값이면 누적합도 같다? 기본 범위 RANGE"],
+               "desc": "OVER에 ORDER BY만 적으면 범위는 RANGE라서 같은 값끼리 누적합이 같습니다. ROWS와의 차이, LAG·LEAD, LAST_VALUE의 함정을 1분에 정리합니다.",
+               "tags": ["SQLD", "윈도우 함수", "ROWS", "RANGE", "쇼츠"]}
+  },
+  "concept/episodes/014-sql-tcl": {
+    "titles": ["ROLLBACK을 세 번 했는데 왜 4행일까? COMMIT · ROLLBACK · SAVEPOINT | SQLD", "ROLLBACK TO는 어디까지 되돌릴까? SAVEPOINT 따라가기 | SQLD", "DDL 다음 ROLLBACK이 안 되는 이유, 오라클 자동 커밋 | SQLD"],
+    "desc": "과일 표 하나에 명령 열 줄을 차례로 실행하며 행 수를 셉니다. ROLLBACK TO 저장점이 되돌리는 범위, 그 뒤에 만든 저장점이 사라지는 이유, 이름 없는 ROLLBACK은 마지막 COMMIT까지만 돌아간다는 점, 같은 이름의 SAVEPOINT, 오라클에서 DDL을 실행하면 자동으로 COMMIT되는 함정과 SQL Server와의 차이를 정리합니다.",
+    "hashtags": "#SQLD #SQL개발자 #TCL #COMMIT #ROLLBACK",
+    "tags": ["SQLD", "SQL 개발자", "TCL", "트랜잭션", "COMMIT", "ROLLBACK", "SAVEPOINT", "자동 커밋", "데이터 자격증"],
+    "shorts": {"titles": ["ROLLBACK은 어디까지 되돌릴까? 1분 정리", "DDL 다음에 ROLLBACK이 안 되는 이유"],
+               "desc": "ROLLBACK TO는 저장점 뒤만, 이름 없는 ROLLBACK은 마지막 COMMIT까지, 오라클 DDL은 자동 COMMIT. 세 가지 규칙을 1분에 정리합니다.",
+               "tags": ["SQLD", "TCL", "COMMIT", "ROLLBACK", "SAVEPOINT", "쇼츠"]}
+  },
+  "concept/episodes/015-sql-subquery": {
+    "titles": ["등호 뒤 서브쿼리가 오류 나는 이유, IN · ANY · ALL · EXISTS | SQLD", "ANY는 최솟값일까 최댓값일까? 서브쿼리 연산자 한 번에 | SQLD", "서브쿼리 결과가 두 행이면 오류? 직원 일곱 명으로 정리 | SQLD"],
+    "desc": "직원 일곱 명의 표로 서브쿼리 연산자의 결과 행 수를 셉니다. 단일 행 연산자에 여러 행이 돌아오면 오류가 나는 이유, IN, ANY와 ALL이 최솟값·최댓값 중 무엇과 비교하는지, 결과가 0행일 때의 ALL, 바깥 행마다 다시 계산하는 연관 서브쿼리, EXISTS와 NOT EXISTS, 스칼라 서브쿼리·인라인 뷰·중첩 서브쿼리의 자리와 규칙을 정리합니다.",
+    "hashtags": "#SQLD #SQL개발자 #서브쿼리 #ANY #EXISTS",
+    "tags": ["SQLD", "SQL 개발자", "서브쿼리", "IN", "ANY", "ALL", "EXISTS", "연관 서브쿼리", "스칼라 서브쿼리", "인라인 뷰", "데이터 자격증"],
+    "shorts": {"titles": ["ANY와 ALL, 1분 정리", "ANY는 최솟값, ALL은 최댓값? 부등호 방향까지"],
+               "desc": "서브쿼리가 여러 값을 돌려줄 때 ANY는 통과하기 쉬운 쪽 끝값, ALL은 어려운 쪽 끝값과 비교합니다. 부등호 방향별 정리와 EXISTS까지 1분에 봅니다.",
+               "tags": ["SQLD", "서브쿼리", "ANY", "ALL", "EXISTS", "쇼츠"]}
+  },
+  "concept/episodes/016-sql-topn": {
+    "titles": ["ROWNUM으로 상위 3명 뽑았는데 1등이 없다? Top N 쿼리 | SQLD", "ROWNUM = 2는 왜 0행일까? ROWNUM · FETCH FIRST · TOP | SQLD"],
+    "desc": "직원 일곱 명의 표로 ROWNUM이 붙는 순간을 따라갑니다. 같은 SELECT에서 ROWNUM으로 자르고 정렬하면 상위 3명이 안 나오는 이유, ROWNUM = 2가 0행인 이유, 인라인 뷰로 먼저 정렬하는 방법과 중간 구간 자르기, 오라클 12c부터 쓰는 FETCH FIRST와 WITH TIES, OFFSET, 그리고 SQL Server의 TOP까지 정리합니다.",
+    "hashtags": "#SQLD #SQL개발자 #ROWNUM #TopN #FETCH",
+    "tags": ["SQLD", "SQL 개발자", "ROWNUM", "Top N 쿼리", "FETCH FIRST", "WITH TIES", "OFFSET", "TOP", "인라인 뷰", "데이터 자격증"],
+    "shorts": {"titles": ["ROWNUM으로 상위 몇 개 뽑기, 1분 정리", "ROWNUM = 2는 왜 0행일까"],
+               "desc": "ROWNUM은 정렬하기 전에 붙는 번호입니다. 정렬 먼저 하는 법, ROWNUM = 2가 0행인 이유, FETCH FIRST와 WITH TIES를 1분에 정리합니다.",
+               "tags": ["SQLD", "ROWNUM", "Top N", "FETCH", "쇼츠"]}
+  },
+  "concept/episodes/017-sql-set": {
+    "titles": ["4행 UNION 3행은 7행? 집합 연산자 결과 행 수 | SQLD", "UNION · UNION ALL · INTERSECT · MINUS, 행 수로 한 번에 | SQLD", "MINUS는 순서를 바꾸면 결과가 다르다, 집합 연산자 네 개 | SQLD"],
+    "desc": "봄·여름 응모자 명단 두 표로 집합 연산자의 결과 행 수를 셉니다. UNION ALL과 UNION의 차이(한 표 안의 중복도 지움), INTERSECT, 순서를 바꾸면 결과가 달라지는 MINUS, 열 개수와 결과 열 이름 규칙, ORDER BY는 맨 끝에 한 번, 그리고 집합 연산자가 NULL을 같은 값으로 보는 점까지 정리합니다.",
+    "hashtags": "#SQLD #SQL개발자 #집합연산자 #UNION #MINUS",
+    "tags": ["SQLD", "SQL 개발자", "집합 연산자", "UNION", "UNION ALL", "INTERSECT", "MINUS", "EXCEPT", "데이터 자격증"],
+    "shorts": {"titles": ["집합 연산자 네 개, 1분 정리", "UNION과 UNION ALL, 행 수가 다른 이유"],
+               "desc": "중복을 남기는 건 UNION ALL 하나, 나머지 셋은 중복을 지웁니다. UNION·UNION ALL·INTERSECT·MINUS 결과 행 수를 1분에 정리합니다.",
+               "tags": ["SQLD", "집합 연산자", "UNION", "MINUS", "쇼츠"]}
+  },
+  "concept/episodes/018-model-normalization": {
+    "titles": ["상품명 하나 바꾸는데 세 행을 고친다? 정규화 1·2·3정규형 | SQLD", "정규화하면 조회가 무조건 느려질까? 제1·2·3정규형 한 번에 | SQLD", "부분 함수 종속과 이행 함수 종속, 테이블을 나누며 보기 | SQLD"],
+    "desc": "주문 정보를 한 테이블에 다 담았을 때 생기는 갱신·삽입·삭제 이상에서 시작해, 테이블을 직접 나누며 정규화를 따라갑니다. 함수 종속과 결정자, 제1정규형(원자값), 제2정규형(부분 함수 종속), 제3정규형(이행 함수 종속), BCNF, 그리고 정규화가 조회 성능에 주는 영향과 반정규화까지 정리합니다.",
+    "hashtags": "#SQLD #SQL개발자 #정규화 #정규형 #데이터모델링",
+    "tags": ["SQLD", "SQL 개발자", "정규화", "제1정규형", "제2정규형", "제3정규형", "BCNF", "함수 종속", "반정규화", "이상 현상", "데이터 모델링"],
+    "shorts": {"titles": ["제1·2·3정규형, 1분 정리", "부분 함수 종속 vs 이행 함수 종속, 한 줄씩"],
+               "desc": "제1정규형은 원자값, 제2정규형은 부분 함수 종속 제거, 제3정규형은 이행 함수 종속 제거. 학생 수강 예시로 1분에 정리합니다.",
+               "tags": ["SQLD", "정규화", "정규형", "함수 종속", "쇼츠"]}
+  },
+  "concept/episodes/019-sql-ddl": {
+    "titles": ["다 지우고 ROLLBACK 하면 남는 건? DELETE · TRUNCATE · DROP | SQLD", "DELETE와 TRUNCATE, 다 지우는 건 똑같을까? 제약 조건까지 | SQLD", "부모 행을 지우면 자식은? ON DELETE CASCADE와 SET NULL | SQLD"],
+    "desc": "같은 표에 DELETE, TRUNCATE, DROP을 실행하고 ROLLBACK 했을 때 남는 것을 비교합니다. 이어서 부서·사원 표에 INSERT를 여섯 번 실행하며 PRIMARY KEY, UNIQUE, NOT NULL, CHECK, FOREIGN KEY 중 어느 제약에 걸리는지 세고, 부모 행을 지울 때의 기본 동작과 ON DELETE CASCADE, ON DELETE SET NULL, ALTER TABLE 문법 차이까지 정리합니다.",
+    "hashtags": "#SQLD #SQL개발자 #DDL #TRUNCATE #제약조건",
+    "tags": ["SQLD", "SQL 개발자", "DELETE", "TRUNCATE", "DROP", "DDL", "DML", "제약 조건", "PRIMARY KEY", "FOREIGN KEY", "ON DELETE CASCADE", "데이터 자격증"],
+    "shorts": {"titles": ["DELETE · TRUNCATE · DROP, 1분 정리", "다 지우고 ROLLBACK, 살아나는 건 하나뿐"],
+               "desc": "DELETE는 DML이라 커밋 전이면 되돌릴 수 있고, TRUNCATE와 DROP은 DDL이라 되돌릴 수 없습니다. 지우는 명령 세 가지를 1분에 비교합니다.",
+               "tags": ["SQLD", "DELETE", "TRUNCATE", "DROP", "쇼츠"]}
+  },
+  "concept/episodes/020-sql-functions": {
+    "titles": ["ROUND(125, -1)은 125일까? 단일 행 함수 결과 맞히기 | SQLD", "SUBSTR 음수 위치부터 CASE의 ELSE까지, 함수 함정 모음 | SQLD", "CEIL(-1.5)는 -1일까 -2일까? 함수 결과 맞히기 | SQLD"],
+    "desc": "시험에 자주 나오는 단일 행 함수의 결과를 하나씩 맞혀 봅니다. SUBSTR의 음수 위치, INSTR과 LENGTH, LPAD·LTRIM·REPLACE, ROUND와 TRUNC의 음수 자릿수, CEIL과 FLOOR, 날짜 더하기와 빼기, DECODE와 CASE에서 맞는 조건이 없을 때의 NULL, 검색 CASE의 조건 순서까지 정리합니다.",
+    "hashtags": "#SQLD #SQL개발자 #SQL함수 #ROUND #CASE",
+    "tags": ["SQLD", "SQL 개발자", "단일 행 함수", "SUBSTR", "INSTR", "ROUND", "TRUNC", "CEIL", "FLOOR", "DECODE", "CASE", "데이터 자격증"],
+    "shorts": {"titles": ["함수 결과 맞히기 6문제, 1분 정리", "CEIL(-2.7)은 -3일까 -2일까?"],
+               "desc": "SUBSTR 음수 위치, RPAD, TRUNC 음수 자릿수, CEIL 음수, 날짜 더하기, ELSE 없는 CASE까지 결과 맞히기 6문제입니다.",
+               "tags": ["SQLD", "SQL 함수", "결과 맞히기", "쇼츠"]}
+  },
+  "concept/episodes/021-model-identifier": {
+    "titles": ["일련번호 PK면 깔끔할까? 식별자와 관계 한 번에 | SQLD", "실선은 식별자 관계, 점선은 비식별자 관계, 차이는 주식별자 | SQLD", "주식별자 네 가지 특징부터 인조식별자의 함정까지 | SQLD"],
+    "desc": "고객·주문·상품·주문상품 네 엔터티로 식별자와 관계를 정리합니다. ERD 상자와 관계 기호 읽는 법, 관계의 차수와 선택성, 주식별자의 네 가지 특징(유일성·최소성·불변성·존재성), 식별자 분류, 식별자 관계와 비식별자 관계의 차이와 고르는 기준, 그리고 일련번호 같은 인조식별자를 쓸 때 생기는 중복 데이터와 불필요한 인덱스까지 다룹니다.",
+    "hashtags": "#SQLD #SQL개발자 #식별자 #데이터모델링 #ERD",
+    "tags": ["SQLD", "SQL 개발자", "식별자", "주식별자", "식별자 관계", "비식별자 관계", "본질식별자", "인조식별자", "ERD", "데이터 모델링"],
+    "shorts": {"titles": ["식별자 관계 vs 비식별자 관계, 1분 정리", "실선이냐 점선이냐, 부모 키가 어디로 가느냐"],
+               "desc": "부모의 주식별자가 자식의 주식별자에 들어가면 식별자 관계(실선), 일반 속성으로 들어가면 비식별자 관계(점선). 주식별자 네 가지 특징까지 1분에 정리합니다.",
+               "tags": ["SQLD", "식별자", "비식별자 관계", "데이터 모델링", "쇼츠"]}
+  },
+  "concept/episodes/022-sql-pivot": {
+    "titles": ["부서는 2개인데 PIVOT 결과는 3행? PIVOT · UNPIVOT | SQLD", "PIVOT은 남은 열로 묶인다, 인라인 뷰가 필요한 이유 | SQLD", "UNPIVOT하면 NULL은 어디로? 행과 열 바꾸기 한 번에 | SQLD"],
+    "desc": "부서·분기별 실적 표로 PIVOT과 UNPIVOT의 결과를 직접 만듭니다. PIVOT 문법(집계 함수, FOR, IN 목록과 별칭), PIVOT이 남은 열로 묶이기 때문에 인라인 뷰가 필요한 이유, IN 목록에 없는 값과 NULL 칸, CASE와 GROUP BY로 같은 결과 만들기, UNPIVOT에서 NULL이 빠지는 기본 동작과 INCLUDE NULLS까지 정리합니다.",
+    "hashtags": "#SQLD #SQL개발자 #PIVOT #UNPIVOT",
+    "tags": ["SQLD", "SQL 개발자", "PIVOT", "UNPIVOT", "INCLUDE NULLS", "인라인 뷰", "CASE", "데이터 자격증"],
+    "shorts": {"titles": ["PIVOT · UNPIVOT, 1분 정리", "PIVOT 결과 행이 늘어나는 이유"],
+               "desc": "PIVOT은 행을 열로, UNPIVOT은 열을 행으로 바꿉니다. 남은 열로 묶이는 규칙과 UNPIVOT에서 NULL이 빠지는 점을 1분에 정리합니다.",
+               "tags": ["SQLD", "PIVOT", "UNPIVOT", "쇼츠"]}
+  },
+  "concept/episodes/023-sql-regex": {
+    "titles": ["숫자 세 자리 코드만 찾았는데 4행? 정규 표현식 함수 | SQLD", "REGEXP 함수 다섯 개, 결과 맞히기로 한 번에 | SQLD", "정규 표현식은 가장 길게 잡는다, REGEXP 결과 맞히기 | SQLD"],
+    "desc": "코드 표와 전화번호, 날짜 문자열로 정규 표현식 함수의 결과를 맞혀 봅니다. 글자 하나를 뜻하는 기호와 반복 기호, 시작과 끝을 뜻하는 캐럿·달러 기호, REGEXP_LIKE·REGEXP_SUBSTR·REGEXP_REPLACE·REGEXP_COUNT·REGEXP_INSTR의 결과, 대소문자 옵션, 가장 길게 잡는 반복과 가장 짧게 잡는 반복까지 정리합니다.",
+    "hashtags": "#SQLD #SQL개발자 #정규표현식 #REGEXP",
+    "tags": ["SQLD", "SQL 개발자", "정규 표현식", "REGEXP_LIKE", "REGEXP_SUBSTR", "REGEXP_REPLACE", "REGEXP_COUNT", "REGEXP_INSTR", "데이터 자격증"],
+    "shorts": {"titles": ["정규 표현식 결과 맞히기 다섯 문제", "REGEXP 함수, 결과는 무엇일까?"],
+               "desc": "REGEXP 함수 다섯 개의 결과를 빠르게 맞혀 봅니다. 시작 기호, 숫자 덩어리, 위치, 바꾸기, 가장 길게 잡는 반복까지 1분 정리.",
+               "tags": ["SQLD", "정규 표현식", "REGEXP", "쇼츠"]}
+  }
+}

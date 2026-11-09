@@ -1,0 +1,126 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h1-mem { position: absolute; left: 80px; top: 300px; width: 880px; height: 220px; }
+    #h1-name { position: absolute; left: 32px; top: 22px; height: 56px; line-height: 56px; font-size: 42px; font-weight: 900; }
+    #h1-cnt { position: absolute; right: 32px; top: 22px; width: 140px; height: 56px; }
+    #h1-cnt > span { position: absolute; right: 0; top: 0; line-height: 56px; font-size: 42px; font-weight: 900; color: var(--color-accent, #6B3FE6); opacity: 0; }
+    .h1-m { position: absolute; top: 104px; width: 256px; height: 84px; border-radius: 22px; background: var(--color-ground, #F1F2F5);
+      display: flex; align-items: center; justify-content: center; font-size: 42px; font-weight: 800; opacity: 0; }
+    .h1-m small { margin-right: 14px; font-size: 34px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    #h1-grid { position: absolute; left: 80px; top: 560px; width: 880px; height: 690px; }
+    .h1-row { position: absolute; left: 30px; right: 30px; display: grid; grid-template-columns: 184px 212px 212px 212px; align-items: center; }
+    .h1-row > div { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; white-space: nowrap; }
+    .h1-lab { align-items: flex-start !important; font-size: 32px; font-weight: 800; color: var(--color-ink2, #71717A); opacity: 0; }
+    .h1-hd { font-size: 36px; font-weight: 900; opacity: 0; }
+    .h1-big { font-size: 46px; font-weight: 900; line-height: 1.1; }
+    .h1-mark { font-size: 58px; font-weight: 900; line-height: 1.1; }
+    .h1-sm { margin-top: 16px; font-size: 34px; line-height: 1.1; font-weight: 700; color: var(--color-ink2, #71717A); }
+    .h1-cell { opacity: 0; }
+    .h1-sep { position: absolute; left: 30px; right: 30px; height: 2px; background: var(--color-hair, #D3D6DD); opacity: 0; }
+    /* 작은 표 그림: 꽉 찬 표 / 머리만 남은 표 / 점선 빈자리 */
+    .h1-ic { position: relative; width: 112px; height: 58px; box-sizing: border-box; border-radius: 10px; border: 3px solid #18181B; overflow: hidden; }
+    .h1-ic .bar { position: absolute; left: 0; right: 0; top: 0; height: 14px; background: #18181B; }
+    .h1-ic .ln { position: absolute; left: 10px; right: 10px; height: 4px; border-radius: 2px; background: #A1A1AA; }
+    .h1-ic.gone { border: 3px dashed #A1A1AA; }
+    .h1-lb { margin-top: 10px; font-size: 36px; font-weight: 800; }
+  </style>
+  <div id="root" data-composition-id="h1" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.2,3.6,7.2,12.2,16.4,20.6,22.6,27.2,30.6]"},{"id":"dur","type":"number","label":"장면 길이","default":35.4},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"d1","type":"number","label":"DELETE 시각","default":3.6},{"id":"d2","type":"number","label":"TRUNCATE 시각","default":4.4},{"id":"d3","type":"number","label":"DROP 시각","default":5.8},{"id":"k1","type":"number","label":"DML은 시각","default":8.4},{"id":"k2","type":"number","label":"DDL입니다 시각","default":11},{"id":"rb","type":"number","label":"ROLLBACK 시각","default":13.4},{"id":"r3","type":"number","label":"세 행이 시각","default":15},{"id":"ac","type":"number","label":"자동으로 시각","default":18},{"id":"m1","type":"number","label":"DELETE는 시각","default":22.6},{"id":"m2","type":"number","label":"TRUNCATE는 시각","default":24.6},{"id":"wh","type":"number","label":"WHERE를 시각","default":32.4},{"id":"wd","type":"number","label":"DELETE뿐 시각","default":33.6},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h1-all">
+      <div id="h1-mem" class="x-card x-hide">
+        <div id="h1-name">회원 표</div>
+        <div id="h1-cnt" data-layout-allow-overlap><span id="h1-c3">3행</span><span id="h1-c0">0행</span><span id="h1-c3b">3행</span></div>
+        <div class="h1-m" id="h1-m1" style="left:32px"><small>1</small>가윤</div>
+        <div class="h1-m" id="h1-m2" style="left:312px"><small>2</small>도현</div>
+        <div class="h1-m" id="h1-m3" style="left:592px"><small>3</small>하린</div>
+      </div>
+      <div id="h1-grid" class="x-card x-hide">
+        <div class="h1-row" style="top:24px; height:80px"><div></div>
+          <div class="h1-hd" id="h1-h1">DELETE</div><div class="h1-hd" id="h1-h2">TRUNCATE</div><div class="h1-hd" id="h1-h3">DROP</div></div>
+        <div class="h1-sep" id="h1-s1" style="top:112px"></div>
+        <div class="h1-row" style="top:124px; height:120px"><div class="h1-lab" id="h1-l1">분류</div>
+          <div class="h1-cell" id="h1-a1"><div class="h1-big x-acc">DML</div><div class="h1-sm">데이터</div></div>
+          <div class="h1-cell" id="h1-a2"><div class="h1-big">DDL</div><div class="h1-sm">구조</div></div>
+          <div class="h1-cell" id="h1-a3"><div class="h1-big">DDL</div><div class="h1-sm">구조</div></div></div>
+        <div class="h1-sep" id="h1-s2" style="top:256px"></div>
+        <div class="h1-row" style="top:268px; height:124px"><div class="h1-lab" id="h1-l2">ROLLBACK</div>
+          <div class="h1-cell" id="h1-b1"><div class="h1-mark x-acc">✓</div><div class="h1-sm x-acc" id="h1-b1s" style="opacity:0">3행 복귀</div></div>
+          <div class="h1-cell" id="h1-b2"><div class="h1-mark">✕</div><div class="h1-sm" id="h1-b2s" style="opacity:0">자동 커밋</div></div>
+          <div class="h1-cell" id="h1-b3"><div class="h1-mark">✕</div><div class="h1-sm" id="h1-b3s" style="opacity:0">자동 커밋</div></div></div>
+        <div class="h1-sep" id="h1-s3" style="top:404px"></div>
+        <div class="h1-row" style="top:416px; height:124px"><div class="h1-lab" id="h1-l3">남는 것</div>
+          <div class="h1-cell" id="h1-c1"><div class="h1-ic"><div class="bar"></div><div class="ln" style="top:24px"></div><div class="ln" style="top:36px"></div><div class="ln" style="top:46px"></div></div><div class="h1-lb x-acc">표 · 공간</div></div>
+          <div class="h1-cell" id="h1-c2"><div class="h1-ic"><div class="bar"></div></div><div class="h1-lb">빈 표</div></div>
+          <div class="h1-cell" id="h1-c3x"><div class="h1-ic gone"></div><div class="h1-lb">없음</div></div></div>
+        <div class="h1-sep" id="h1-s4" style="top:552px"></div>
+        <div class="h1-row" style="top:564px; height:100px"><div class="h1-lab" id="h1-l4">WHERE</div>
+          <div class="h1-cell" id="h1-w1"><div class="h1-mark x-acc">✓</div></div>
+          <div class="h1-cell" id="h1-w2"><div class="h1-mark">✕</div></div>
+          <div class="h1-cell" id="h1-w3"><div class="h1-mark">✕</div></div></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 35.4;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+    const rise = (sel, t) => ft(sel, { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, t);
+    let cnt = null;
+    const count = (id, t) => { if (cnt) fade(cnt, t, 1, 0); fade(id, t + 0.1, 0, 1); cnt = id; };
+    const MEM = ["#h1-m1", "#h1-m2", "#h1-m3"];
+
+    // 1 회원 표 세 행을 모두 지우는 명령은 세 가지
+    rise("#h1-mem", at(0, 0));
+    MEM.forEach((m, j) => rise(m, at(0, 0.3 + j * 0.15)));
+    count("#h1-c3", at(0, 0.6));
+    // 2 DELETE, TRUNCATE, 그리고 DROP — 셋 다 행을 지운다
+    rise("#h1-grid", at(1, 0));
+    rise("#h1-h1", X("d1", at(1, 0.1)));
+    rise("#h1-h2", X("d2", at(1, 0.9)));
+    rise("#h1-h3", X("d3", at(1, 2.2)));
+    fade(MEM, X("d3", at(1, 2.2)) + 0.6, 1, 0.15);
+    count("#h1-c0", X("d3", at(1, 2.2)) + 0.7);
+    // 3 데이터를 다루는 DML은 DELETE뿐, 구조를 다루는 DDL
+    fade(["#h1-s1", "#h1-s2", "#h1-s3", "#h1-s4"], at(2, 0), 0, 1);
+    fade("#h1-l1", at(2, 0.1), 0, 1);
+    stamp("#h1-a1", X("k1", at(2, 1.0)));
+    stamp("#h1-a2", X("k2", at(2, 3.4)) - 0.6);
+    stamp("#h1-a3", X("k2", at(2, 3.4)) - 0.4);
+    // 4 COMMIT 전에 ROLLBACK 하면 DELETE만 세 행이 돌아온다
+    fade("#h1-l2", at(3, 0.1), 0, 1);
+    const rb = X("rb", at(3, 1.0));
+    stamp("#h1-b1", rb + 0.2);
+    stamp("#h1-b2", rb + 0.4);
+    stamp("#h1-b3", rb + 0.5);
+    const r3 = X("r3", at(3, 2.8));
+    fade(MEM, r3 - 0.2, 0.15, 1);
+    count("#h1-c3b", r3);
+    fade("#h1-b1s", r3, 0, 1);
+    // 5 DDL은 실행하자마자 자동으로 커밋
+    fade(["#h1-b2s", "#h1-b3s"], X("ac", at(4, 1.2)), 0, 1);
+    // 6 지운 뒤 남는 것 — 회원 표는 흐리게
+    fade("#h1-mem", at(5, 0.1), 1, 0.4);
+    fade("#h1-l3", at(5, 0.2), 0, 1);
+    // 7 DELETE는 표와 저장 공간, TRUNCATE는 빈 표
+    stamp("#h1-c1", X("m1", at(6, 0.1)));
+    stamp("#h1-c2", X("m2", at(6, 2.0)));
+    // 8 DROP은 구조까지 통째로
+    stamp("#h1-c3x", at(7, 0.2));
+    // 9 골라 지우는 WHERE는 DELETE뿐
+    fade("#h1-l4", at(8, 0.1), 0, 1);
+    stamp("#h1-w1", X("wh", at(8, 1.6)));
+    stamp("#h1-w2", X("wd", at(8, 2.6)));
+    stamp("#h1-w3", X("wd", at(8, 2.6)) + 0.15);
+    if (String(V.exit) !== "false") ft("#h1-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h1"] = tl;
+  </script>
+</template>

@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parent.parent
 TEMPLATES = Path(__file__).resolve().parent / "templates"
 HF_VERSION = "0.8.214"
 WEEK = "월화수목금토일"
-DURATION = {"lecture-event": 15, "exam-check": 30}
+DURATION = {"lecture-event": 15, "exam-check": 30, "exam-check-sql": 30}
 SFX = {  # [이름, 시각, 길이, 음량, (소리 시작점)] — 음악 없이 효과음만 작게. 앞이 조용한 소리는 시작점(shared/sfx/peaks.json 최고점 직전)을 준다
     "lecture-event": [
         ["pop", 0.45, 0.6, 0.22], ["click-soft", 0.8, 0.37, 0.28],
@@ -43,6 +43,8 @@ SFX = {  # [이름, 시각, 길이, 음량, (소리 시작점)] — 음악 없�
         ["whoosh-short", 25.85, 0.57, 0.18], ["pop", 26.25, 0.6, 0.2], ["pop", 26.5, 0.6, 0.2], ["sparkle", 26.85, 1.0, 0.18], ["ping", 29.0, 0.8, 0.16, 0.25],
     ],
 }
+# SQL판(2026-11-05): 장면 시각이 exam-check와 같아서 효과음도 그대로 쓴다. ① 표 칸이 채워지는 시각(6.0·6.7·7.4·7.85)에 pop이 맞는다
+SFX["exam-check-sql"] = SFX["exam-check"] + [["pop", 7.9, 0.6, 0.18]]
 
 def when(date_s, time_s):
     d = dt.date.fromisoformat(date_s)
@@ -147,7 +149,7 @@ def main():
     name = data["name"]
     warn = []
 
-    if kind == "exam-check":
+    if kind in ("exam-check", "exam-check-sql"):
         values = check_values(data, warn)
     else:
         values = lecture_values(data, warn)
@@ -204,7 +206,7 @@ def check_values(data, warn):
         "HOOK1": words(data["hook"][0]), "HOOK2": words(data["hook"][1]), "HOOK3": words(data["hook"][2], data.get("hook_box")),
         "SUB": data["sub"],
         "I1_NO": a["no"], "I1_TOPIC": a["topic"], "I1_ASK1": rich(a["ask"][0]), "I1_ASK2": rich(a["ask"][1]),
-        "I1_L1": a["marks"][0], "I1_L2": a["marks"][1], "I1_L3": a["marks"][2], "I1_TIP": a["tip"],
+        "I1_TIP": a["tip"],
         "I1_ANSWER": rich(a["answer"]), "I1_STAMP": rich(a["stamp"]), "I1_REVERSE": rich(a["reverse"]),
         "I2_NO": b["no"], "I2_TOPIC": b["topic"], "I2_ASK1": rich(b["ask"][0]), "I2_ASK2": rich(b["ask"][1]),
         "I2_FORMULA": rich(b["formula"]), "I2_LEAD": rich(b["lead"]), "I2_WRONG": rich(b["wrong"]), "I2_RIGHT": rich(b["right"]),
@@ -212,6 +214,22 @@ def check_values(data, warn):
         "OUT1": data["outro"][0], "OUT2": data["outro"][1], "OUT3": data["outro"][2], "CHEER": data["cheer"],
         "TIMER_DIGITS": "".join(f'<span class="dg" id="dg{k}">{k}</span>' for k in range(30, -1, -1)),
     }
+    if data["type"] == "exam-check-sql":
+        # ① 결과 표: table = {"head": [열 이름 셋], "rows": [[값 셋], ...]} — 마지막 행의 둘째·셋째 칸을 빨간 상자로
+        t = a["table"]
+        if len(t["rows"]) > 5:
+            warn.append("① 표는 5행까지만 화면에 들어갑니다")
+        h = [html.escape(str(x)) for x in t["head"]]
+        out = [f'        <div class="tr th"><div class="c1">{h[0]}</div><div class="c2">{h[1]}</div><div class="c3">{h[2]}</div></div>']
+        for i, row in enumerate(t["rows"]):
+            c1, c2, c3 = (html.escape(str(x)) for x in row)
+            last = i == len(t["rows"]) - 1
+            out.append(f'        <div class="tr"><div class="c1">{c1}</div>'
+                       f'<div class="c2"><span class="v {"c2b hl" if last else "c2a"}">{c2}</span></div>'
+                       f'<div class="c3"><span class="v {"c3b hl" if last else "c3a"}">{c3}</span></div></div>')
+        v["I1_TABLE"] = "\n".join(out)
+    else:
+        v.update({"I1_L1": a["marks"][0], "I1_L2": a["marks"][1], "I1_L3": a["marks"][2]})
     lec = data.get("lecture")
     if lec:
         lec_d, lec_md, lec_t, _ = when(lec["date"], lec["time"])

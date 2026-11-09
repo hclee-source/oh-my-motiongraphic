@@ -1,0 +1,28 @@
+{
+  "_설명": "쇼츠(세로) 조립 설정. 장면 순서(장 번호, 여러 장을 한 장면으로 묶을 수 있음), 영상 내내 떠 있는 위쪽 제목, 효과음 위치([이름, 장면 안 문장 순번(0부터), 그 문장 시작 뒤 초]).",
+  "format": {
+    "width": 1080, "height": 1920, "resolution": "portrait",
+    "caption": { "max": 17, "deep": true, "bottom": 540, "size": 54, "weight": 700, "width": 940 }
+  },
+  "overlays": [
+    { "id": "hd", "file": "header.html" }
+  ],
+  "scenes": [
+    { "id": "h1", "file": "h1-hook.html", "chapter": 1 },
+    { "id": "h2", "file": "h2-to.html", "chapter": 2,
+      "extra": { "sp": { "sentence": 3, "at": "SAVEPOINT A로" }, "mo": { "sentence": 3, "at": "한 행을 더" } } },
+    { "id": "h3", "file": "h3-plain.html", "chapter": 3, "extra": { "lc": { "sentence": 6, "at": "마지막 COMMIT" } } },
+    { "id": "h4", "file": "h4-ddl.html", "chapter": 4,
+      "extra": { "ac": { "sentence": 9, "at": "자동으로" }, "tb": { "sentence": 10, "at": "테이블을" },
+                 "rb": { "sentence": 10, "at": "ROLLBACK해도" }, "jw": { "sentence": 10, "at": "지운 행은" } } },
+    { "id": "h5", "file": "h5-summary.html", "chapter": 5, "exit": false,
+      "extra": { "r2": { "sentence": 11, "at": "그냥 ROLLBACK은" }, "r3": { "sentence": 11, "at": "DDL은" } } }
+  ],
+  "sfx": {
+    "h1": [["pop", 0, 0.9], ["click-soft", 1, 0.2], ["pop", 1, 1.6]],
+    "h2": [["pop", 0, 0.2], ["pop", 0, 0.84], ["pop", 0, 3.92], ["click-soft", 1, 0.1], ["click-soft", 2, 0.3]],
+    "h3": [["pop", 0, 0.9], ["whoosh-short", 0, 1.32], ["click-soft", 2, 0.4]],
+    "h4": [["pop", 0, 3.42], ["pop", 1, 1.5], ["click-soft", 1, 2.98]],
+    "h5": [["pop", 0, 0.1]]
+  }
+}

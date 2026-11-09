@@ -1,0 +1,58 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s03-r { position: absolute; left: 192px; width: 1536px; height: 128px; padding: 0 48px; box-sizing: border-box;
+      display: grid; grid-template-columns: 400px 1fr; align-items: center; }
+    .s03-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    .s03-sym { position: relative; font-size: 64px; font-weight: 900; color: var(--color-accent, #6B3FE6); white-space: nowrap; }
+    .s03-sym .s03-or { font-size: 40px; color: var(--color-ink2, #71717A); margin: 0 18px; }
+    .s03-m { position: relative; font-size: 44px; font-weight: 800; white-space: nowrap; }
+    .s03-m small { margin-left: 36px; font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); }
+  </style>
+  <div id="root" data-composition-id="s03" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3.2,9,15.4]"},{"id":"dur","type":"number","label":"장면 길이","default":24.2},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"b2","type":"number","label":"대괄호는 시각","default":6},{"id":"b3","type":"number","label":"역슬래시 시각","default":12.5},{"id":"b4","type":"number","label":"대괄호 밖의 시각","default":19.5},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s03-all">
+      <div id="s03-head" class="x-head">글자 하나를 뜻하는 기호</div>
+      <div class="s03-r x-card x-hide" id="s03-r1" style="top:262px"><div class="s03-ring" id="s03-o1"></div>
+        <div class="s03-sym">.</div><div class="s03-m">아무 글자 하나</div></div>
+      <div class="s03-r x-card x-hide" id="s03-r2" style="top:414px"><div class="s03-ring" id="s03-o2"></div>
+        <div class="s03-sym">[abc]</div><div class="s03-m">안에 적은 글자 가운데 하나</div></div>
+      <div class="s03-r x-card x-hide" id="s03-r3" style="top:566px"><div class="s03-ring" id="s03-o3"></div>
+        <div class="s03-sym">[0-9]<span id="s03-d" style="opacity:0"><span class="s03-or">=</span>\d</span></div><div class="s03-m">숫자 하나</div></div>
+      <div class="s03-r x-card x-hide" id="s03-r4" style="top:718px"><div class="s03-ring" id="s03-o4"></div>
+        <div class="s03-sym">[^0-9]</div><div class="s03-m">숫자가 아닌 글자 하나<small id="s03-nb" style="opacity:0">대괄호 밖의 ^와는 다름</small></div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 24.2;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k] ?? d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    // 지금 말하는 줄만 테두리, 설명이 끝난 줄은 흐리게
+    const focus = (k, t) => {
+      ft(`#s03-r${k}`, { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, t);
+      fade(`#s03-o${k}`, t, 0, 1);
+      if (k > 1) { fade(`#s03-o${k - 1}`, t, 1, 0); fade(`#s03-r${k - 1}`, t, 1, 0.45); }
+    };
+
+    // 10 글자 하나를 뜻하는 기호
+    ft("#s03-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    // 11 점 = 아무 글자 하나, 대괄호 = 안에 적은 글자 가운데 하나
+    focus(1, at(1, 0.1));
+    focus(2, X("b2", 6) - 0.1);
+    // 12 [0-9] 숫자 하나, \d도 같은 뜻
+    focus(3, at(2, 0.1));
+    fade("#s03-d", X("b3", 12.5) - 0.1, 0, 1);
+    // 13 대괄호 안 맨 앞의 ^ = 적은 글자가 아닌 것, 대괄호 밖의 ^와는 다름
+    focus(4, at(3, 0.1));
+    fade("#s03-nb", X("b4", 19.5) - 0.1, 0, 1);
+    if (String(V.exit) !== "false") ft("#s03-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s03"] = tl;
+  </script>
+</template>

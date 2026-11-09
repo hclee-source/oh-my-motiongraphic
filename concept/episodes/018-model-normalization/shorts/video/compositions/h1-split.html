@@ -1,0 +1,86 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h1-c { position: absolute; left: 60px; box-sizing: border-box; }
+    .h1-c .q-th { top: 56px; }
+    .h1-c .q-th > div { font-size: 30px; }
+    .h1-c .q-tr { height: 60px; }
+    .h1-c .q-tr > div { font-size: 38px; }
+    .h1-nm { position: absolute; left: 28px; top: 8px; height: 46px; display: flex; align-items: center; font-size: 36px; font-weight: 900; }
+    #h1-big { top: 330px; width: 880px; height: 320px; }
+    #h1-big .q-th, #h1-big .q-tr { grid-template-columns: 110px 120px 120px 170px 150px 154px; }
+    #h1-a { top: 330px; width: 506px; height: 318px; }
+    #h1-b { top: 672px; width: 506px; height: 254px; }
+    #h1-c { top: 950px; width: 356px; height: 254px; }
+    #h1-a .q-th, #h1-a .q-tr, #h1-b .q-th, #h1-b .q-tr { grid-template-columns: 150px 150px 150px; }
+    #h1-c .q-th, #h1-c .q-tr { grid-template-columns: 150px 150px; }
+    #h1-k1 { left: 596px; top: 400px; width: 344px; }
+    #h1-k2 { left: 596px; top: 510px; width: 344px; }
+    #h1-k3 { left: 596px; top: 620px; width: 344px; }
+    .h1-k { font-size: 38px; }
+  </style>
+  <div id="root" data-composition-id="h1" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,4.6]"},{"id":"dur","type":"number","label":"장면 길이","default":10.5},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"sp","type":"number","label":"나누는 시각","default":0},{"id":"g1","type":"number","label":"갱신 시각","default":0},{"id":"g2","type":"number","label":"삽입 시각","default":0},{"id":"g3","type":"number","label":"삭제 시각","default":0},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h1-all">
+      <div data-layout-allow-overlap>
+        <div id="h1-big" class="h1-c x-card q-tb x-hide">
+          <div class="h1-nm">수강</div>
+          <div class="q-th"><div>학번</div><div>이름</div><div>학과</div><div>학과장</div><div>과목</div><div>성적</div></div>
+          <div class="q-tr" style="top:120px"><div>1001</div><div>민지</div><div>국문</div><div>김교수</div><div>수학</div><div>90</div></div>
+          <div class="q-tr" style="top:184px"><div>1001</div><div>민지</div><div>국문</div><div>김교수</div><div>영어</div><div>85</div></div>
+          <div class="q-tr" style="top:248px"><div>1002</div><div>서준</div><div>경영</div><div>이교수</div><div>수학</div><div>70</div></div>
+        </div>
+        <div id="h1-a" class="h1-c x-card q-tb x-hide">
+          <div class="h1-nm">수강</div>
+          <div class="q-th"><div>학번</div><div>과목</div><div>성적</div></div>
+          <div class="q-tr" style="top:120px"><div>1001</div><div>수학</div><div>90</div></div>
+          <div class="q-tr" style="top:184px"><div>1001</div><div>영어</div><div>85</div></div>
+          <div class="q-tr" style="top:248px"><div>1002</div><div>수학</div><div>70</div></div>
+        </div>
+        <div id="h1-b" class="h1-c x-card q-tb x-hide">
+          <div class="h1-nm">학생</div>
+          <div class="q-th"><div>학번</div><div>이름</div><div>학과</div></div>
+          <div class="q-tr" style="top:120px"><div>1001</div><div>민지</div><div>국문</div></div>
+          <div class="q-tr" style="top:184px"><div>1002</div><div>서준</div><div>경영</div></div>
+        </div>
+        <div id="h1-c" class="h1-c x-card q-tb x-hide">
+          <div class="h1-nm">학과</div>
+          <div class="q-th"><div>학과</div><div>학과장</div></div>
+          <div class="q-tr" style="top:120px"><div>국문</div><div>김교수</div></div>
+          <div class="q-tr" style="top:184px"><div>경영</div><div>이교수</div></div>
+        </div>
+      </div>
+      <div class="q-chip q-ng h1-k" id="h1-k1">갱신 이상</div>
+      <div class="q-chip q-ng h1-k" id="h1-k2">삽입 이상</div>
+      <div class="q-chip q-ng h1-k" id="h1-k3">삭제 이상</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 10.5;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const burst = (sel, dx, t) => { ft(sel, { x: dx, scale: 0.94 }, { x: 0, scale: 1, duration: 0.6, ease: "power3.out" }, t); ft(sel, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, t); };
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+
+    // 1 정규화는 중복과 이상 현상을 줄이려고 테이블을 나누는 일
+    ft("#h1-big", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0));
+    const sp = X("sp", at(0, 2.6));
+    ft("#h1-big", { opacity: 1 }, { opacity: 0, duration: 0.25, ease: "power2.in" }, sp);
+    burst("#h1-a", 60, sp + 0.25);
+    burst("#h1-b", 60, sp + 0.33);
+    burst("#h1-c", 60, sp + 0.41);
+    // 2 이상 현상은 갱신, 삽입, 삭제 세 가지
+    stamp("#h1-k1", X("g1", at(1, 0.9)));
+    stamp("#h1-k2", X("g2", at(1, 2.1)));
+    stamp("#h1-k3", X("g3", at(1, 3.3)));
+    if (String(V.exit) !== "false") ft("#h1-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h1"] = tl;
+  </script>
+</template>

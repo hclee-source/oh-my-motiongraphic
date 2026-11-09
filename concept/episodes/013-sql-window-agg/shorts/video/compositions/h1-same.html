@@ -1,0 +1,63 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h1-code { left: 80px; top: 320px; width: 920px; }
+    #h1-code .q-ln { font-size: 46px; height: 84px; padding: 0 44px; }
+    .h1-lab { position: absolute; left: 80px; font-size: 40px; font-weight: 800; color: var(--color-ink2, #71717A); opacity: 0; white-space: nowrap; }
+    .h1-b { position: absolute; width: 190px; height: 150px; box-sizing: border-box; display: flex; align-items: center; justify-content: center;
+      font-size: 72px; font-weight: 900; opacity: 0; }
+    #h1-ring { position: absolute; left: 270px; top: 810px; width: 440px; height: 170px; box-sizing: border-box; border-radius: 34px;
+      border: 5px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    #h1-q { left: 80px; top: 1030px; width: 340px; height: 96px; font-size: 48px; border-radius: 48px; }
+  </style>
+  <div id="root" data-composition-id="h1" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,8]"},{"id":"dur","type":"number","label":"장면 길이","default":12},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h1-all">
+      <div id="h1-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">SUM</span>(값) <span class="q-k">OVER</span> (<span class="q-k">ORDER BY</span> 값)</span></div>
+      </div>
+      <div class="h1-lab" id="h1-la" style="top:512px">값</div>
+      <div class="h1-lab" id="h1-lb" style="top:744px">누적</div>
+      <div class="h1-b x-card" id="h1-a0" style="left:80px;top:580px">40</div>
+      <div class="h1-b x-card" id="h1-a1" style="left:290px;top:580px">50</div>
+      <div class="h1-b x-card" id="h1-a2" style="left:500px;top:580px">50</div>
+      <div class="h1-b x-card" id="h1-a3" style="left:710px;top:580px">60</div>
+      <div class="h1-b x-card" id="h1-b0" style="left:80px;top:820px">40</div>
+      <div class="h1-b x-card" id="h1-b1" style="left:290px;top:820px">140</div>
+      <div class="h1-b x-card" id="h1-b2" style="left:500px;top:820px">140</div>
+      <div class="h1-b x-card" id="h1-b3" style="left:710px;top:820px">200</div>
+      <div id="h1-ring"></div>
+      <div id="h1-q" class="q-chip q-ng">왜 같지?</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 12;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const paint = (sel, t, a, b) => ft(sel, { color: a }, { color: b }, t);
+    const ACC = "#6B3FE6", INK = "#18181B";
+    // 값을 말하는 실제 시각(문장 시작 기준 초, listen/words.json에서 잰 값)
+    const TA = [1.78, 2.8, 4.2, 5.4];   // 1 40, 50, 50, 60
+    const TB = [6.72, 7.92, 9.36, 10.62];   // 1 40, 140, 140, 200
+
+    // 1 SUM(값) OVER (ORDER BY 값)으로 40, 50, 50, 60을 누적
+    ft("#h1-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0));
+    fade("#h1-la", at(0, 0.3), 0, 1);
+    TA.forEach((d, j) => stamp(`#h1-a${j}`, at(0, d - 0.1)));
+    fade("#h1-lb", at(0, TB[0] - 0.4), 0, 1);
+    TB.forEach((d, j) => stamp(`#h1-b${j}`, at(0, d - 0.1)));
+    // 2 같은 50인 두 행이 똑같이 140
+    paint(["#h1-a1", "#h1-a2", "#h1-b1", "#h1-b2"], at(1, 0.2), INK, ACC);
+    fade("#h1-ring", at(1, 0.6), 0, 1);
+    stamp("#h1-q", at(1, 1.0));
+    if (String(V.exit) !== "false") ft("#h1-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h1"] = tl;
+  </script>
+</template>

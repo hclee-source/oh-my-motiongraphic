@@ -1,0 +1,36 @@
+{
+  "_설명": "장면 순서(장 번호와 연결, 여러 장을 한 장면으로 묶을 수 있음), 장면 끝에서 사라질지(exit), 효과음 위치([이름, 장면 안 문장 순번(0부터), 그 문장 시작 뒤 초]). extra는 그 낱말이 나오는 시각(장면 기준).",
+  "scenes": [
+    { "id": "s00", "file": "s00-title.html" },
+    { "id": "s01", "file": "s01-hook.html", "chapter": 1,
+      "extra": { "k1": { "sentence": 3, "at": "갱신" }, "gw": { "sentence": 4, "at": "넣을" },
+                 "k2": { "sentence": 5, "at": "삽입" }, "dl": { "sentence": 6, "at": "지우면" }, "k3": { "sentence": 6, "at": "삭제" },
+                 "g1": { "sentence": 8, "at": "주문," }, "g2": { "sentence": 8, "at": "상품," }, "g3": { "sentence": 8, "at": "고객이라는" },
+                 "mx": { "sentence": 8, "at": "섞여" } } },
+    { "id": "s02", "file": "s02-first.html", "chapter": 2,
+      "extra": { "mv": { "sentence": 11, "at": "값이" } } },
+    { "id": "s03", "file": "s03-split.html", "chapter": [3, 4, 5],
+      "extra": { "pf": { "sentence": 25, "at": "부분" },
+                 "t1": { "sentence": 26, "at": "상품코드에만," }, "t2": { "sentence": 26, "at": "주문번호에만" },
+                 "cnt1": { "sentence": 31, "at": "5행," }, "cnt2": { "sentence": 31, "at": "상품" }, "cnt3": { "sentence": 31, "at": "3행입니다." },
+                 "gw": { "sentence": 33, "at": "가위도" }, "dl": { "sentence": 33, "at": "지워도" },
+                 "m2": { "sentence": 34, "at": "두" }, "jy": { "sentence": 35, "at": "지우면," } } },
+    { "id": "s04", "file": "s04-stairs.html", "chapter": 6,
+      "extra": { "bc": { "sentence": 43, "at": "BCNF로," }, "f4": { "sentence": 45, "at": "제4정규형과," }, "f5": { "sentence": 45, "at": "제5정규형이" } } },
+    { "id": "s05", "file": "s05-speed.html", "chapter": 7,
+      "extra": { "mx": { "sentence": 46, "at": "무조건" } } },
+    { "id": "s06", "file": "s06-check.html", "chapter": 8 },
+    { "id": "s07", "file": "s07-summary.html", "chapter": 9, "exit": false,
+      "extra": { "w1": { "sentence": 57, "at": "칸마다" }, "w2": { "sentence": 57, "at": "전체에," }, "w3": { "sentence": 57, "at": "주식별자에만" } } }
+  ],
+  "sfx": {
+    "s00": [["chime", null, 0.15], ["whoosh-short", null, 3.0]],
+    "s01": [["pop", 0, 0.4], ["click-soft", 1, 0.8], ["pop", 2, 3.8], ["pop", 3, 1.6], ["pop", 4, 4.6], ["pop", 5, 4.2], ["click-soft", 7, 4.4], ["whoosh-short", 9, 5.0]],
+    "s02": [["pop", 0, 0.5], ["click-soft", 1, 1.2], ["click-soft", 2, 1.0], ["pop", 3, 1.6], ["click-soft", 4, 0.5], ["pop", 5, 0.8]],
+    "s03": [["pop", 0, 0.5], ["pop", 1, 0.2], ["pop", 3, 0.5], ["pop", 4, 0.2], ["pop", 4, 2.4], ["pop", 5, 0.2], ["pop", 8, 3.0], ["pop", 9, 1.4], ["click-soft", 10, 1.8], ["pop", 11, 1.0], ["whoosh-short", 13, 0.3], ["pop", 14, 2.6], ["pop", 16, 1.5], ["pop", 20, 2.6], ["whoosh-short", 22, 2.8], ["pop", 25, 1.4]],
+    "s04": [["pop", 0, 0.9], ["pop", 0, 2.4], ["pop", 1, 0.4], ["pop", 2, 0.4]],
+    "s05": [["pop", 0, 0.3], ["pop", 0, 4.0], ["click-soft", 1, 1.6], ["pop", 2, 0.6], ["pop", 3, 0.3], ["pop", 4, 0.4], ["pop", 5, 1.6]],
+    "s06": [["pop", 1, 0.2], ["pop", 2, 0.2], ["pop", 3, 0.2]],
+    "s07": [["pop", 1, 0.2], ["pop", 1, 3.4], ["pop", 1, 5.6]]
+  }
+}

@@ -1,0 +1,114 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 108px; text-align: center; overflow: visible;
+      font-size: 46px; font-weight: 600; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 1536px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-01a" class="cap clip" data-start="3.600" data-duration="1.850"><span>급여가 가장 높은 직원 세 명을</span></div>
+    <div id="cap-01b" class="cap clip" data-start="5.450" data-duration="3.036"><span>뽑으려고 이런 SQL을 적었습니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="8.586" data-duration="2.350"><span>WHERE에서 ROWNUM이 3 이하인 행만 남기고,</span></div>
+    <div id="cap-02b" class="cap clip" data-start="10.936" data-duration="3.740"><span>ORDER BY로 급여가 높은 순으로 정렬했습니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="14.775" data-duration="2.670"><span>결과는 400, 300,</span></div>
+    <div id="cap-03b" class="cap clip" data-start="17.445" data-duration="2.335"><span>250을 받는 세 명입니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="19.880" data-duration="1.790"><span>그런데 직원 표에는 급여가</span></div>
+    <div id="cap-04b" class="cap clip" data-start="21.670" data-duration="1.859"><span>500인 직원이 있습니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="23.629" data-duration="3.781"><span>상위 3명을 뽑았는데, 왜 1등이 빠졌을까요?</span></div>
+    <div id="cap-06a" class="cap clip" data-start="27.510" data-duration="2.310"><span>오늘은 직원 일곱 명의 표로 ROWNUM이</span></div>
+    <div id="cap-06b" class="cap clip" data-start="29.820" data-duration="2.230"><span>붙는 순간을 따라가 보겠습니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="32.700" data-duration="4.070"><span>저장된 순서로 보면 지영 300, 민수 400,</span></div>
+    <div id="cap-07b" class="cap clip" data-start="36.770" data-duration="5.005"><span>수진 250이 앞의 세 명이고, 현우 500은 네 번째입니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="41.875" data-duration="3.930"><span>ORDER BY가 없으면 행을 읽는 순서는 정해져 있지 않지만,</span></div>
+    <div id="cap-08b" class="cap clip" data-start="45.805" data-duration="3.312"><span>여기서는 저장된 순서대로 읽힌다고 가정합니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="49.216" data-duration="3.970"><span>급여 순으로는 현우 500, 동훈 450,</span></div>
+    <div id="cap-09b" class="cap clip" data-start="53.186" data-duration="3.661"><span>그리고 400을 받는 민수와 예린이 공동 3등입니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="57.497" data-duration="1.730"><span>ROWNUM은 오라클이 조회하면서</span></div>
+    <div id="cap-10b" class="cap clip" data-start="59.227" data-duration="3.131"><span>행에 1부터 차례로 붙이는 번호입니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="62.459" data-duration="3.530"><span>행을 하나 읽을 때마다 지금 차례의 번호를 붙여 보고,</span></div>
+    <div id="cap-11b" class="cap clip" data-start="65.989" data-duration="3.231"><span>WHERE 조건을 통과해야 다음 번호로 넘어갑니다.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="69.319" data-duration="1.330"><span>WHERE 단계에서 붙으니,</span></div>
+    <div id="cap-12b" class="cap clip" data-start="70.649" data-duration="3.714"><span>맨 마지막인 ORDER BY보다 한참 먼저입니다.</span></div>
+    <div id="cap-13a" class="cap clip" data-start="74.463" data-duration="2.910"><span>첫 행 지영이 1번, 민수가 2번,</span></div>
+    <div id="cap-13b" class="cap clip" data-start="77.373" data-duration="3.232"><span>수진이 3번을 받고 모두 통과합니다.</span></div>
+    <div id="cap-14a" class="cap clip" data-start="80.705" data-duration="1.810"><span>다음 행 현우는 4번을 받는데,</span></div>
+    <div id="cap-14b" class="cap clip" data-start="82.515" data-duration="2.711"><span>3 이하가 아니라서 버려집니다.</span></div>
+    <div id="cap-15a" class="cap clip" data-start="85.326" data-duration="2.050"><span>뒤의 행들도 계속 4번이라 버려지고,</span></div>
+    <div id="cap-15b" class="cap clip" data-start="87.376" data-duration="2.750"><span>처음 읽은 세 행만 남습니다.</span></div>
+    <div id="cap-16a" class="cap clip" data-start="90.776" data-duration="2.610"><span>ORDER BY는 이미 세 행만 남은 뒤에 정렬하니,</span></div>
+    <div id="cap-16b" class="cap clip" data-start="93.386" data-duration="2.949"><span>그 세 행 안에서 순서만 바뀝니다.</span></div>
+    <div id="cap-17a" class="cap clip" data-start="96.434" data-duration="2.210"><span>그래서 결과는 민수 400,</span></div>
+    <div id="cap-17b" class="cap clip" data-start="98.644" data-duration="3.417"><span>지영 300, 수진 250입니다.</span></div>
+    <div id="cap-18a" class="cap clip" data-start="102.161" data-duration="1.670"><span>상위 3명이 아니라 먼저</span></div>
+    <div id="cap-18b" class="cap clip" data-start="103.831" data-duration="2.420"><span>읽힌 세 명을 정렬한 것입니다.</span></div>
+    <div id="cap-19a" class="cap clip" data-start="106.351" data-duration="2.226"><span>이것이 첫 번째 함정입니다.</span></div>
+    <div id="cap-20a" class="cap clip" data-start="109.227" data-duration="1.650"><span>두 번째 함정은 ROWNUM으로</span></div>
+    <div id="cap-20b" class="cap clip" data-start="110.877" data-duration="2.304"><span>특정 번호를 찾을 때 나옵니다.</span></div>
+    <div id="cap-21a" class="cap clip" data-start="113.281" data-duration="1.670"><span>ROWNUM = 1이라고 적으면</span></div>
+    <div id="cap-21b" class="cap clip" data-start="114.951" data-duration="2.814"><span>첫 행인 지영 한 명이 잘 나옵니다.</span></div>
+    <div id="cap-22a" class="cap clip" data-start="117.865" data-duration="2.587"><span>그런데 두 번째 행을 보려고 ROWNUM</span></div>
+    <div id="cap-22b" class="cap clip" data-start="120.451" data-duration="2.837"><span>= 2라고 적으면, 결과는 0행입니다.</span></div>
+    <div id="cap-23a" class="cap clip" data-start="123.388" data-duration="1.730"><span>첫 행 지영은 1번을 받는데,</span></div>
+    <div id="cap-23b" class="cap clip" data-start="125.118" data-duration="2.537"><span>2가 아니라서 버려집니다.</span></div>
+    <div id="cap-24a" class="cap clip" data-start="127.755" data-duration="2.170"><span>행이 버려지면 번호가 넘어가지 않으니,</span></div>
+    <div id="cap-24b" class="cap clip" data-start="129.925" data-duration="3.963"><span>다음 행 민수도 다시 1번을 받고 버려집니다.</span></div>
+    <div id="cap-25a" class="cap clip" data-start="133.988" data-duration="1.710"><span>그렇게 일곱 행이 모두 버려져,</span></div>
+    <div id="cap-25b" class="cap clip" data-start="135.698" data-duration="2.833"><span>2번은 끝내 생기지 않습니다.</span></div>
+    <div id="cap-26a" class="cap clip" data-start="138.631" data-duration="1.390"><span>같은 이유로 ROWNUM이</span></div>
+    <div id="cap-26b" class="cap clip" data-start="140.021" data-duration="2.670"><span>1보다 크다는 조건도 0행입니다.</span></div>
+    <div id="cap-27a" class="cap clip" data-start="143.341" data-duration="2.550"><span>상위 3명을 뽑으려면, 정렬을 먼저</span></div>
+    <div id="cap-27b" class="cap clip" data-start="145.891" data-duration="2.893"><span>끝내고 그다음에 번호를 붙이면 됩니다.</span></div>
+    <div id="cap-28a" class="cap clip" data-start="148.885" data-duration="2.490"><span>정렬하는 SELECT를 FROM 절 괄호 안에 넣고,</span></div>
+    <div id="cap-28b" class="cap clip" data-start="151.375" data-duration="3.860"><span>바깥 SELECT의 WHERE에서 ROWNUM으로 자릅니다.</span></div>
+    <div id="cap-29a" class="cap clip" data-start="155.335" data-duration="2.130"><span>괄호 안의 SELECT를 인라인 뷰라고 하고,</span></div>
+    <div id="cap-29b" class="cap clip" data-start="157.465" data-duration="4.585"><span>안쪽에서 먼저 정렬한 뒤 바깥에서 거르는 것이 핵심입니다.</span></div>
+    <div id="cap-30a" class="cap clip" data-start="162.150" data-duration="2.470"><span>안쪽에서 일곱 행이 급여 순으로 나오고,</span></div>
+    <div id="cap-30b" class="cap clip" data-start="164.620" data-duration="5.308"><span>바깥에서 그 순서대로 1번, 2번, 3번이 붙습니다.</span></div>
+    <div id="cap-31a" class="cap clip" data-start="170.028" data-duration="3.350"><span>결과는 현우 500, 동훈 450,</span></div>
+    <div id="cap-31b" class="cap clip" data-start="173.378" data-duration="2.573"><span>그리고 400을 받는 한 명입니다.</span></div>
+    <div id="cap-32a" class="cap clip" data-start="176.051" data-duration="2.050"><span>민수와 예린은 둘 다 400이라,</span></div>
+    <div id="cap-32b" class="cap clip" data-start="178.101" data-duration="3.630"><span>누가 3번이 될지는 정해져 있지 않습니다.</span></div>
+    <div id="cap-33a" class="cap clip" data-start="182.381" data-duration="3.530"><span>네 번째부터 여섯 번째까지를 뽑을 때, ROWNUM이</span></div>
+    <div id="cap-33b" class="cap clip" data-start="185.911" data-duration="4.003"><span>4 이상이라고 바로 적으면 앞에서 본 것처럼 0행입니다.</span></div>
+    <div id="cap-34a" class="cap clip" data-start="190.014" data-duration="2.070"><span>그래서 정렬한 인라인 뷰 바깥에서</span></div>
+    <div id="cap-34b" class="cap clip" data-start="192.084" data-duration="2.949"><span>ROWNUM에 순번이라는 별칭을 붙여 둡니다.</span></div>
+    <div id="cap-35a" class="cap clip" data-start="195.133" data-duration="2.410"><span>그리고 한 겹 더 바깥에서 순번으로 거르면,</span></div>
+    <div id="cap-35b" class="cap clip" data-start="197.543" data-duration="6.079"><span>순번 4부터 6까지인 400, 350, 300이 나옵니다.</span></div>
+    <div id="cap-36a" class="cap clip" data-start="204.271" data-duration="2.150"><span>오라클 12c부터는 인라인 뷰</span></div>
+    <div id="cap-36b" class="cap clip" data-start="206.421" data-duration="2.456"><span>없이 한 번에 자를 수도 있습니다.</span></div>
+    <div id="cap-37a" class="cap clip" data-start="208.977" data-duration="2.210"><span>ORDER BY 뒤에 FETCH FIRST 3 ROWS</span></div>
+    <div id="cap-37b" class="cap clip" data-start="211.187" data-duration="4.460"><span>ONLY를 적으면, 정렬된 결과에서 앞의 세 행만 가져옵니다.</span></div>
+    <div id="cap-38a" class="cap clip" data-start="215.747" data-duration="2.230"><span>이 구문은 ORDER BY 다음에 처리되므로,</span></div>
+    <div id="cap-38b" class="cap clip" data-start="217.977" data-duration="3.458"><span>같은 SELECT 안에 있어도 정렬이 먼저입니다.</span></div>
+    <div id="cap-39a" class="cap clip" data-start="221.535" data-duration="2.390"><span>결과는 인라인 뷰와 같은 3행이고,</span></div>
+    <div id="cap-39b" class="cap clip" data-start="223.925" data-duration="2.885"><span>400인 두 명 중 한 명만 들어갑니다.</span></div>
+    <div id="cap-40a" class="cap clip" data-start="226.910" data-duration="1.770"><span>ONLY 대신 WITH TIES를 적으면,</span></div>
+    <div id="cap-40b" class="cap clip" data-start="228.680" data-duration="3.951"><span>마지막 행과 급여가 같은 행까지 함께 가져옵니다.</span></div>
+    <div id="cap-41a" class="cap clip" data-start="232.732" data-duration="1.750"><span>민수와 예린이 모두 들어가서,</span></div>
+    <div id="cap-41b" class="cap clip" data-start="234.482" data-duration="3.119"><span>결과는 3행이 아니라 4행입니다.</span></div>
+    <div id="cap-42a" class="cap clip" data-start="237.700" data-duration="1.950"><span>동점은 ORDER BY 기준으로 가리니,</span></div>
+    <div id="cap-42b" class="cap clip" data-start="239.650" data-duration="3.394"><span>WITH TIES는 ORDER BY와 함께 적습니다.</span></div>
+    <div id="cap-43a" class="cap clip" data-start="243.145" data-duration="2.857"><span>중간 구간은 OFFSET으로 건너뜁니다.</span></div>
+    <div id="cap-44a" class="cap clip" data-start="246.102" data-duration="3.510"><span>OFFSET 3 ROWS로 세 행을 건너뛰고, FETCH NEXT</span></div>
+    <div id="cap-44b" class="cap clip" data-start="249.612" data-duration="5.068"><span>3 ROWS ONLY로 400, 350, 300을 가져옵니다.</span></div>
+    <div id="cap-45a" class="cap clip" data-start="255.329" data-duration="1.630"><span>SQL Server에서는 SELECT</span></div>
+    <div id="cap-45b" class="cap clip" data-start="256.959" data-duration="2.022"><span>바로 뒤에 TOP(3)을 적습니다.</span></div>
+    <div id="cap-46a" class="cap clip" data-start="259.081" data-duration="3.150"><span>TOP은 정렬한 뒤에 자르니 ORDER BY와 함께 적으면 되고,</span></div>
+    <div id="cap-46b" class="cap clip" data-start="262.231" data-duration="4.014"><span>동점까지 넣으려면 WITH TIES를 붙입니다.</span></div>
+    <div id="cap-47a" class="cap clip" data-start="266.896" data-duration="2.582"><span>시험장에서 챙길 것 세 가지입니다.</span></div>
+    <div id="cap-48a" class="cap clip" data-start="269.577" data-duration="3.450"><span>첫째, WHERE에서 ROWNUM으로 자르고 같은 SELECT에서</span></div>
+    <div id="cap-48b" class="cap clip" data-start="273.027" data-duration="4.314"><span>ORDER BY를 적으면, 먼저 읽힌 행을 자른 뒤에 정렬합니다.</span></div>
+    <div id="cap-49a" class="cap clip" data-start="277.441" data-duration="3.290"><span>둘째, ROWNUM이 1과 같거나 3 이하인 조건은 되지만,</span></div>
+    <div id="cap-49b" class="cap clip" data-start="280.731" data-duration="3.940"><span>2와 같거나 1보다 크다는 조건은 0행입니다.</span></div>
+    <div id="cap-50a" class="cap clip" data-start="284.771" data-duration="4.250"><span>셋째, 상위 몇 개는 정렬한 인라인 뷰 바깥에서 ROWNUM으로</span></div>
+    <div id="cap-50b" class="cap clip" data-start="289.021" data-duration="3.757"><span>자르거나, ORDER BY 뒤에 FETCH FIRST를 적습니다.</span></div>
+    <div id="cap-51a" class="cap clip" data-start="292.878" data-duration="3.090"><span>덧붙여, WITH TIES는 마지막 행과 동점인</span></div>
+    <div id="cap-51b" class="cap clip" data-start="295.968" data-duration="4.085"><span>행까지 넣어서, 적은 개수보다 많이 나올 수 있습니다.</span></div>
+    <div id="cap-52a" class="cap clip" data-start="300.703" data-duration="2.894"><span>오늘 내용을 한 줄로 정리하면 이렇습니다.</span></div>
+    <div id="cap-53a" class="cap clip" data-start="303.696" data-duration="2.090"><span>ROWNUM은 정렬하기 전에 붙는 번호이니,</span></div>
+    <div id="cap-53b" class="cap clip" data-start="305.786" data-duration="4.109"><span>정렬은 안쪽에서 먼저 하고 번호는 바깥에서 붙입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

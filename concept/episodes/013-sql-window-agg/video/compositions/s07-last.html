@@ -1,0 +1,122 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s07-code { left: 192px; top: 262px; width: 808px; }
+    #s07-code .q-ln { font-size: 29px; padding: 0 36px; }
+    .s07-sw { position: relative; display: inline-block; width: 228px; height: 40px; vertical-align: middle; }
+    .s07-sw > span { position: absolute; left: 0; top: 0; line-height: 40px; }
+    #s07-lv { opacity: 0; }
+    .s07-sw3 { position: relative; display: block; width: 736px; height: 44px; }
+    .s07-sw3 > span { position: absolute; left: 0; top: 0; line-height: 44px; white-space: nowrap; }
+    .s07-nw { opacity: 0; }
+    #s07-qq { position: absolute; left: 192px; top: 524px; width: 808px; height: 72px; }
+    #s07-qq .q-chip { top: 0; left: 0; }
+    .s07-x { position: absolute; left: 330px; top: 0; width: 72px; height: 72px; opacity: 0; }
+    .s07-x i { position: absolute; left: 8px; top: 31px; width: 56px; height: 10px; border-radius: 5px; background: var(--color-anchor, #18181B); }
+    .s07-x i:nth-child(1) { transform: rotate(45deg); }
+    .s07-x i:nth-child(2) { transform: rotate(-45deg); }
+    #s07-note { position: absolute; left: 192px; top: 626px; width: 808px; height: 220px; }
+    .s07-n { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 14px; text-align: center; font-size: 42px; font-weight: 900; line-height: 1.3; opacity: 0; }
+    .s07-n small { display: block; font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    #s07-tb { left: 1048px; top: 262px; width: 680px; height: 584px; }
+    #s07-tb .q-th, #s07-tb .q-tr { grid-template-columns: 130px 130px 364px; }
+    #s07-tb .q-th { top: 24px; }
+    #s07-tb .q-th > div { font-size: 30px; }
+    #s07-tb .q-tr > div { font-size: 42px; }
+    .s07-cell { position: relative; height: 48px; }
+    .s07-cell > span { position: absolute; left: 0; right: 0; top: 0; line-height: 48px; text-align: center; font-size: 42px; font-weight: 900; white-space: nowrap; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s07" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,4,10,14,20,25]"},{"id":"dur","type":"number","label":"장면 길이","default":32},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"f2","type":"number","label":"200을 시각","default":8},{"id":"q7","type":"number","label":"700을 시각","default":13},{"id":"w7","type":"number","label":"700이 시각","default":29},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s07-all">
+      <div id="s07-head" class="x-head">LAST_VALUE의 함정</div>
+      <div id="s07-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><span data-layout-allow-overlap><span class="q-k s07-sw"><span id="s07-fv">FIRST_VALUE</span><span id="s07-lv">LAST_VALUE</span></span>(급여) <span class="q-k">OVER</span> (<span class="q-k">ORDER BY</span> 급여</span></div>
+        <div class="q-ln"><div class="s07-sw3" data-layout-allow-overlap>
+          <span class="q-m" id="s07-d2">&nbsp;&nbsp;RANGE BETWEEN UNBOUNDED PRECEDING</span>
+          <span class="s07-nw" id="s07-l2">&nbsp;&nbsp;<span class="q-k">ROWS BETWEEN UNBOUNDED PRECEDING</span></span>
+        </div></div>
+        <div class="q-ln"><div class="s07-sw3" data-layout-allow-overlap>
+          <span class="q-m" id="s07-d3">&nbsp;&nbsp;AND CURRENT ROW)</span>
+          <span class="s07-nw" id="s07-l3">&nbsp;&nbsp;<span class="q-k">AND UNBOUNDED FOLLOWING</span>)</span>
+        </div></div>
+      </div>
+      <div id="s07-qq" data-layout-allow-overlap>
+        <div class="q-chip q-ng" id="s07-q" style="width:300px">모두 700?</div>
+        <div class="s07-x" id="s07-x"><i></i><i></i></div>
+        <div class="q-chip q-ok" id="s07-ok" style="width:300px">모두 700</div>
+      </div>
+      <div id="s07-note" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s07-n" id="s07-n0"><span>기본 범위 때문에<br />생기는 함정 <span class="x-acc">하나 더</span></span><small>범위를 정하지 않았을 때</small></div>
+        <div class="s07-n" id="s07-n9"><span>LAST_VALUE = 범위의 <span class="x-acc">마지막 값</span></span><small>모두 700일까?</small></div>
+        <div class="s07-n" id="s07-na"><span>FIRST_VALUE = 범위의 <span class="x-acc">첫 값</span></span><small>가장 작은 급여 200</small></div>
+        <div class="s07-n" id="s07-nb"><span>기본 범위는 <span class="x-acc">현재 행</span>에서 끝</span><small>마지막 값 = 자기 급여</small></div>
+        <div class="s07-n" id="s07-nc"><span>끝까지 넓혀야 700</span><small>UNBOUNDED FOLLOWING</small></div>
+      </div>
+      <div id="s07-tb" class="x-card q-tb x-hide">
+        <div class="q-th"><div>이름</div><div>급여</div><div>결과</div></div>
+        <div class="q-tr" style="top:100px"><div>민수</div><div>200</div><div class="s07-cell" data-layout-allow-overlap><span id="s07-f0">200</span><span id="s07-l0">200</span><span id="s07-w0">700</span></div></div>
+        <div class="q-tr" style="top:196px"><div>지영</div><div>300</div><div class="s07-cell" data-layout-allow-overlap><span id="s07-f1">200</span><span id="s07-l1">300</span><span id="s07-w1">700</span></div></div>
+        <div class="q-tr" style="top:292px"><div>현우</div><div>300</div><div class="s07-cell" data-layout-allow-overlap><span id="s07-f2">200</span><span id="s07-l2v">300</span><span id="s07-w2">700</span></div></div>
+        <div class="q-tr" style="top:388px"><div>수진</div><div>500</div><div class="s07-cell" data-layout-allow-overlap><span id="s07-f3">200</span><span id="s07-l3v">500</span><span id="s07-w3">700</span></div></div>
+        <div class="q-tr" style="top:484px"><div>동훈</div><div>700</div><div class="s07-cell" data-layout-allow-overlap><span id="s07-f4">200</span><span id="s07-l4">700</span><span id="s07-w4">700</span></div></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 32;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d = 0) => Number(V[k]) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const col = (p, t, gap) => [0, 1, 2, 3, 4].forEach((i, j) => stamp(p(i), t + j * gap));
+    const F = (i) => `#s07-f${i}`;
+    const L = (i) => (i === 2 ? "#s07-l2v" : i === 3 ? "#s07-l3v" : `#s07-l${i}`);
+    const W = (i) => `#s07-w${i}`;
+    const all = (p) => [0, 1, 2, 3, 4].map(p);
+
+    // 36 기본 범위 때문에 생기는 함정 하나 더
+    ft("#s07-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s07-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    ft("#s07-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.5));
+    ft("#s07-note", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(0, 0.8));
+    // 37 FIRST_VALUE는 범위의 첫 값 → 모두 200
+    fade("#s07-n0", at(0, 1.2), 0, 1);
+    fade("#s07-n0", at(1, 0), 1, 0);
+    fade("#s07-na", at(1, 0.2), 0, 1);
+    col(F, X("f2", -0.1), 0.12);
+    // 38 LAST_VALUE는 모두 700일까?
+    fade("#s07-na", at(2, 0), 1, 0);
+    fade("#s07-n9", at(2, 0.4), 0, 1);
+    fade("#s07-fv", at(2, 0.2), 1, 0);
+    fade("#s07-lv", at(2, 0.4), 0, 1);
+    fade(all(F), at(2, 0.2), 1, 0);
+    stamp("#s07-q", X("q7", -0.1));
+    // 39 실제로는 각자 자기 급여
+    col(L, at(3, 1.0), 0.15);
+    fade("#s07-x", at(3, 1.0), 0, 1);
+    // 40 급여로 정렬했으니 현재 행에서 끝나는 범위의 마지막 = 자기 급여
+    fade("#s07-n9", at(4, 0), 1, 0);
+    fade("#s07-nb", at(4, 0.2), 0, 1);
+    // 41 끝까지 보려면 UNBOUNDED FOLLOWING까지
+    fade("#s07-nb", at(5, 0), 1, 0);
+    fade("#s07-nc", at(5, 0.2), 0, 1);
+    fade(["#s07-d2"], at(5, 0.4), 1, 0);
+    fade("#s07-l2", at(5, 0.5), 0, 1);
+    fade(["#s07-d3"], at(5, 0.8), 1, 0);
+    fade("#s07-l3", at(5, 0.9), 0, 1);
+    fade(all(L), X("w7", -0.2), 1, 0);
+    col(W, X("w7", -0.1), 0.12);
+    fade(["#s07-q", "#s07-x"], X("w7", -0.2), 1, 0);
+    stamp("#s07-ok", X("w7", 0.3));
+    if (String(V.exit) !== "false") ft("#s07-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s07"] = tl;
+  </script>
+</template>

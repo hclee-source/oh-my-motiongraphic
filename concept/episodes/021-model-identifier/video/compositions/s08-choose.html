@@ -1,0 +1,165 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s08-svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; }
+    .grp { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    .en { position: absolute; box-sizing: border-box; display: flex; flex-direction: column; width: 380px; padding-bottom: 8px; top: 262px; }
+    .en-n { height: 60px; padding-top: 8px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: 38px; font-weight: 900; }
+    .en-pk { position: relative; min-height: calc(var(--k, 2) * 56px); }
+    .en-at { position: relative; min-height: 112px; }
+    .en-dv { height: 4px; background: #18181B; border-radius: 2px; }
+    .en-r { position: relative; height: 56px; display: flex; align-items: center; padding-left: 36px; font-size: 34px; font-weight: 800; white-space: nowrap; }
+    .en-pk .en-r { color: var(--color-accent, #6B3FE6); }
+    .en-at .en-r { color: #3F3F46; }
+    .c1 { left: 192px; } .c2 { left: 770px; } .c3 { left: 1348px; }
+    #s08-lab { position: absolute; left: 1348px; top: 196px; width: 380px; text-align: center; font-size: 34px; font-weight: 800; color: var(--color-ink2, #71717A); opacity: 0; }
+    .s08-cnt { top: 650px; width: 300px; }
+    #s08-n1 { left: 232px; } #s08-n2 { left: 810px; } #s08-n3 { left: 1388px; }
+    #s08-jn { left: 640px; top: 760px; width: 640px; }
+    #s08-stop { left: 680px; top: 590px; width: 560px; }
+    #s08-jl { position: absolute; left: 560px; top: 662px; width: 800px; text-align: center; font-size: 40px; font-weight: 900; color: var(--color-accent, #6B3FE6); opacity: 0; white-space: nowrap; }
+    #s08-k1 { left: 192px; top: 640px; width: 340px; } #s08-k2 { left: 572px; top: 640px; width: 560px; } #s08-k3 { left: 1172px; top: 640px; width: 440px; }
+    #s08-nt { left: 192px; top: 744px; width: 880px; padding-left: 84px; }
+    .s08-cx { position: absolute; left: 22px; top: 21px; width: 30px; height: 30px; }
+    .s08-cx > div { position: absolute; left: 0; top: 12px; width: 30px; height: 5px; border-radius: 3px; background: #FFFFFF; }
+    .s08-cx > div:first-child { transform: rotate(45deg); }
+    .s08-cx > div:last-child { transform: rotate(-45deg); }
+  </style>
+  <div id="root" data-composition-id="s08" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,5.3,13.2,18.5,24.3,30.7,38,43]"},{"id":"dur","type":"number","label":"장면 길이","default":47.9},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"c3","type":"number","label":"세 칸 시각","default":0},{"id":"k1","type":"number","label":"연결이 약할 때 시각","default":0},{"id":"k2","type":"number","label":"독립 식별자 시각","default":0},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s08-all">
+      <div id="s08-head" class="x-head">어느 쪽을 고를까</div>
+      <div class="grp" id="s08-A" data-layout-allow-overlap>
+        <svg class="s08-svg" id="s08-svgA" viewBox="0 0 1920 1080"></svg>
+        <div id="s08-lab">둔다면</div>
+        <div id="s08-a1" class="en c1 x-card x-hide" style="--k:3">
+          <div class="en-n">주문</div>
+          <div class="en-pk"><div class="en-r">주문번호</div></div>
+          <div class="en-dv"></div>
+          <div class="en-at"><div class="en-r">주문일자</div><div class="en-r">고객번호</div></div>
+        </div>
+        <div id="s08-a2" class="en c2 x-card x-hide" style="--k:3">
+          <div class="en-n">주문상품</div>
+          <div class="en-pk"><div class="en-r">주문번호</div><div class="en-r">상품코드</div></div>
+          <div class="en-dv"></div>
+          <div class="en-at"><div class="en-r">수량</div></div>
+        </div>
+        <div id="s08-a3" class="en c3 x-card x-hide" style="--k:3;border-style:dashed">
+          <div class="en-n">배송</div>
+          <div class="en-pk"><div class="en-r">주문번호</div><div class="en-r">상품코드</div><div class="en-r" id="s08-sq">배송순번</div></div>
+          <div class="en-dv"></div>
+          <div class="en-at"><div class="en-r">배송일자</div></div>
+        </div>
+        <div class="q-chip q-ok s08-cnt" id="s08-n1">주식별자 1칸</div>
+        <div class="q-chip q-ok s08-cnt" id="s08-n2">주식별자 2칸</div>
+        <div class="q-chip q-ok s08-cnt" id="s08-n3">주식별자 3칸</div>
+        <div class="q-chip q-ng" id="s08-jn">조인 조건도 복잡</div>
+      </div>
+      <div class="grp" id="s08-B" data-layout-allow-overlap style="opacity:0">
+        <svg class="s08-svg" id="s08-svgB" viewBox="0 0 1920 1080"></svg>
+        <div id="s08-b1" class="en c1 x-card" style="--k:2">
+          <div class="en-n">고객</div>
+          <div class="en-pk"><div class="en-r">고객번호</div></div>
+          <div class="en-dv"></div>
+          <div class="en-at"><div class="en-r">이메일</div><div class="en-r">이름</div></div>
+        </div>
+        <div id="s08-b2" class="en c2 x-card" style="--k:2">
+          <div class="en-n">주문</div>
+          <div class="en-pk"><div class="en-r">주문번호</div></div>
+          <div class="en-dv"></div>
+          <div class="en-at"><div class="en-r">주문일자</div><div class="en-r">고객번호</div></div>
+        </div>
+        <div id="s08-b3" class="en c3 x-card" style="--k:2">
+          <div class="en-n">주문상품</div>
+          <div class="en-pk"><div class="en-r">주문번호</div><div class="en-r">상품코드</div></div>
+          <div class="en-dv"></div>
+          <div class="en-at"><div class="en-r">수량</div></div>
+        </div>
+        <div class="q-chip q-ng" id="s08-stop">고객번호는 주문에서 멈춤</div>
+        <div id="s08-jl">주문을 거쳐 조인</div>
+        <div class="q-chip q-ok" id="s08-k1">연결이 약할 때</div>
+        <div class="q-chip q-ok" id="s08-k2">자식만의 식별자가 나을 때</div>
+        <div class="q-chip q-ok" id="s08-k3">부모 없이도 생길 때</div>
+        <div class="q-chip q-ng" id="s08-nt"><span class="s08-cx"><div></div><div></div></span>비어 있을 수 있는 값은 주식별자 불가</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 47.9;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, ease: "back.out(1.6)" }, t);
+
+    const NS = "http://www.w3.org/2000/svg";
+    const mk = (tag, a, p) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+    const ST = { stroke: "#18181B", "stroke-width": 5, fill: "none", "stroke-linecap": "round" };
+    function sym(g, x, y, ux, uy, kind) {
+      const nx = -uy, ny = ux;
+      const pt = (a, b) => [x + ux * a + nx * b, y + uy * a + ny * b];
+      const ln = (a1, b1, a2, b2) => { const [p, q] = pt(a1, b1), [r, s] = pt(a2, b2); mk("line", { x1: p, y1: q, x2: r, y2: s, ...ST }, g); };
+      const bar = (o) => ln(o, -20, o, 20);
+      const crow = () => { [-22, 0, 22].forEach((b) => ln(38, 0, 0, b)); };
+      if (kind === "11") { bar(18); bar(34); }
+      else if (kind === "mo") { crow(); const [cx, cy] = pt(62, 0); mk("circle", { cx, cy, r: 12, ...ST, fill: "#FFFFFF" }, g); }
+      else if (kind === "m1") { crow(); bar(54); }
+    }
+    const sA = document.getElementById("s08-svgA");
+    const gA1 = mk("g", { id: "s08-gA1", style: "opacity:0" }, sA);   // 주문상품 — 배송 실선
+    mk("line", { x1: 1150, y1: 352, x2: 1348, y2: 352, ...ST }, gA1);
+    sym(gA1, 1150, 352, 1, 0, "11"); sym(gA1, 1348, 352, -1, 0, "mo");
+    const gA2 = mk("g", { id: "s08-gA2", style: "opacity:0" }, sA);   // 주문 — 주문상품 실선
+    mk("line", { x1: 572, y1: 352, x2: 770, y2: 352, ...ST }, gA2);
+    sym(gA2, 572, 352, 1, 0, "11"); sym(gA2, 770, 352, -1, 0, "m1");
+    const sB = document.getElementById("s08-svgB");
+    const gB1 = mk("g", { id: "s08-gB1" }, sB);
+    mk("line", { x1: 572, y1: 352, x2: 770, y2: 352, "stroke-dasharray": "14 11", ...ST }, gB1);
+    sym(gB1, 572, 352, 1, 0, "11"); sym(gB1, 770, 352, -1, 0, "mo");
+    const gB2 = mk("g", { id: "s08-gB2" }, sB);
+    mk("line", { x1: 1150, y1: 352, x2: 1348, y2: 352, ...ST }, gB2);
+    sym(gB2, 1150, 352, 1, 0, "11"); sym(gB2, 1348, 352, -1, 0, "m1");
+    const gJ = mk("g", { id: "s08-gJ", style: "opacity:0" }, sB);   // 고객 → (주문 거쳐) → 주문상품 조인 화살표
+    mk("path", { d: "M382 566 V640 H1538 V578", stroke: "#6B3FE6", "stroke-width": 6, fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round" }, gJ);
+    mk("polygon", { points: "1520,590 1556,590 1538,562", fill: "#6B3FE6" }, gJ);
+    mk("circle", { cx: 960, cy: 640, r: 11, fill: "#6B3FE6" }, gJ);
+
+    // 35 주문상품 아래에 분할 배송 엔터티를 둔다면
+    ft("#s08-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s08-a2", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.4));
+    ft("#s08-a3", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 1.4));
+    fade("#s08-lab", at(0, 1.6), 0, 1);
+    fade("#s08-gA1", at(0, 2.2), 0, 1);
+    // 36 식별자 관계로 이으면 배송의 주식별자는 세 칸
+    stamp("#s08-n3", X("c3", at(1, 5.6)) - 0.2);
+    // 37 아래로 갈수록 길어지고 조인도 복잡
+    ft("#s08-a1", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(2, 0.3));
+    fade("#s08-gA2", at(2, 0.9), 0, 1);
+    stamp("#s08-n1", at(2, 1.4));
+    stamp("#s08-n2", at(2, 1.9));
+    stamp("#s08-jn", at(2, 3.2));
+    // 38 비식별자 관계에서는 부모의 주식별자가 그 아래로 더 내려가지 않음
+    fade("#s08-A", at(3, 0.1), 1, 0);
+    fade("#s08-B", at(3, 0.6), 0, 1);
+    stamp("#s08-stop", at(3, 2.8));
+    // 39 고객번호가 주문에서 멈추니 주문을 거쳐 조인
+    fade("#s08-stop", at(4, 0.1), 1, 0);
+    fade("#s08-gJ", at(4, 1.6), 0, 1);
+    fade("#s08-jl", at(4, 2.4), 0, 1);
+    // 40 연결이 약할 때, 자식이 독립된 식별자
+    fade(["#s08-gJ", "#s08-jl"], at(5, 0.1), 1, 0);
+    stamp("#s08-k1", X("k1", at(5, 0.8)) - 0.2);
+    stamp("#s08-k2", X("k2", at(5, 3.0)) - 0.2);
+    // 41 부모 없이도 자식이 생길 수 있는 선택 관계
+    stamp("#s08-k3", at(6, 0.4));
+    // 42 비어 있을 수 있는 값은 주식별자가 될 수 없음
+    stamp("#s08-nt", at(7, 0.3));
+    if (String(V.exit) !== "false") ft("#s08-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s08"] = tl;
+  </script>
+</template>

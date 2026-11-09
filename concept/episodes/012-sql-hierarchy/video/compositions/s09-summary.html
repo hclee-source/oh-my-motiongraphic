@@ -1,0 +1,42 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s09-c { position: absolute; width: 744px; height: 270px; box-sizing: border-box; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 22px; text-align: center; }
+    #s09-c1 { left: 192px; top: 262px; }
+    #s09-c2 { left: 984px; top: 262px; }
+    #s09-c3 { left: 192px; top: 556px; }
+    #s09-c4 { left: 984px; top: 556px; }
+    .s09-t { font-size: 60px; font-weight: 900; white-space: nowrap; }
+    .s09-d { font-size: 46px; font-weight: 800; color: var(--color-ink2, #71717A); white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="s09" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3.4]"},{"id":"dur","type":"number","label":"장면 길이","default":13},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"w1","type":"number","label":"START 시각","default":4},{"id":"w2","type":"number","label":"PRIOR는 시각","default":6},{"id":"w3","type":"number","label":"WHERE 시각","default":8},{"id":"w4","type":"number","label":"CONNECT 시각","default":10},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s09-all">
+      <div id="s09-head" class="x-head">한 줄 정리</div>
+      <div class="s09-c x-card x-hide" id="s09-c1"><div class="s09-t x-acc">START WITH</div><div class="s09-d">출발 행</div></div>
+      <div class="s09-c x-card x-hide" id="s09-c2"><div class="s09-t x-acc">PRIOR</div><div class="s09-d">방금 읽은 행</div></div>
+      <div class="s09-c x-card x-hide" id="s09-c3"><div class="s09-t x-acc">WHERE</div><div class="s09-d">그 행만</div></div>
+      <div class="s09-c x-card x-hide" id="s09-c4"><div class="s09-t x-acc">CONNECT BY 조건</div><div class="s09-d">가지째</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d = 0) => Number(V[k]) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+
+    // 48 한 줄로 정리하면
+    ft("#s09-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    // 49 출발은 START WITH, PRIOR는 방금 읽은 행, 한 행만 WHERE, 가지째 CONNECT BY
+    ft("#s09-c1", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("w1", -0.2));
+    ft("#s09-c2", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("w2", -0.2));
+    ft("#s09-c3", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("w3", -0.2));
+    ft("#s09-c4", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("w4", -0.2));
+    window.__timelines["s09"] = tl;
+  </script>
+</template>

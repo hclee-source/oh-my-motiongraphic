@@ -1,0 +1,101 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s08-q { position: absolute; left: 192px; top: 262px; width: 1536px; height: 132px; }
+    .s08-qt { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 42px; font-weight: 900; white-space: nowrap; opacity: 0; }
+    #s08-code { left: 192px; top: 426px; width: 900px; height: 344px; padding: 22px 0; }
+    #s08-code .q-ln { font-size: 32px; height: 60px; padding: 0 30px 0 18px; }
+    .s08-no { display: inline-block; width: 46px; margin-right: 20px; text-align: right; font-size: 30px; font-weight: 700; color: #A1A1AA; }
+    .s08-fl { position: absolute; right: 56px; top: 6px; width: 70px; height: 48px; opacity: 0; }
+    .s08-fp { position: absolute; left: 0; top: 0; width: 5px; height: 48px; border-radius: 3px; background: #D4D4D8; }
+    .s08-ff { position: absolute; left: 9px; top: 0; width: 58px; height: 38px; border-radius: 4px 12px 12px 4px;
+      background: var(--color-accent-dark, #A68CFF); color: #18181B; font-size: 28px; font-weight: 900;
+      display: flex; align-items: center; justify-content: center; }
+    .s08-x { position: absolute; left: -6px; top: -4px; width: 82px; height: 56px; opacity: 0; }
+    .s08-x > i { position: absolute; left: 4px; top: 25px; width: 74px; height: 6px; border-radius: 3px; background: #FFFFFF; }
+    .s08-x > i:first-child { transform: rotate(32deg); }
+    .s08-x > i:last-child { transform: rotate(-32deg); }
+    #s08-tb { left: 1124px; top: 426px; width: 604px; height: 344px; }
+    #s08-tb .q-th, #s08-tb .q-tr { grid-template-columns: 548px; }
+    #s08-tb .q-tr { height: 64px; }
+    #s08-res { position: absolute; left: 28px; right: 28px; top: 240px; height: 72px; }
+    #s08-res > span { position: absolute; left: 0; right: 0; top: 0; text-align: center; font-size: 34px; font-weight: 900; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s08" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3.5,10.3,16.7]"},{"id":"dur","type":"number","label":"장면 길이","default":23.5},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"po","type":"number","label":"포도를 시각","default":11.9},{"id":"da","type":"number","label":"다시 시각","default":13.1},{"id":"kw","type":"number","label":"키위를 시각","default":14.6},{"id":"rt","type":"number","label":"키위만 시각","default":20.3},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s08-all">
+      <div id="s08-head" class="x-head">같은 이름의 SAVEPOINT</div>
+      <div id="s08-q" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s08-qt" id="s08-q1">저장 지점 이름이 겹치면?</div>
+        <div class="s08-qt" id="s08-q2">같은 이름으로 다시 만들면&nbsp;<span class="x-acc">앞의 지점은 지워진다</span></div>
+      </div>
+      <div id="s08-code" class="x-dark q-code x-hide">
+        <div class="q-ln" id="s08-l1"><div class="q-hi" id="s08-h1"></div><span><span class="s08-no">1</span><span class="q-k">SAVEPOINT</span> A;</span>
+          <div class="s08-fl" id="s08-f1"><div class="s08-fp" id="s08-f1p"></div><div class="s08-ff" id="s08-f1f">A</div>
+            <div class="s08-x" id="s08-f1x"><i></i><i></i></div></div></div>
+        <div class="q-ln" id="s08-l2"><div class="q-hi" id="s08-h2"></div><span><span class="s08-no">2</span><span class="q-k">INSERT INTO</span> 과일(이름) <span class="q-k">VALUES</span> ('포도');</span></div>
+        <div class="q-ln" id="s08-l3"><div class="q-hi" id="s08-h3"></div><span><span class="s08-no">3</span><span class="q-k">SAVEPOINT</span> A;</span>
+          <div class="s08-fl" id="s08-f2"><div class="s08-fp"></div><div class="s08-ff">A</div></div></div>
+        <div class="q-ln" id="s08-l4"><div class="q-hi" id="s08-h4"></div><span><span class="s08-no">4</span><span class="q-k">INSERT INTO</span> 과일(이름) <span class="q-k">VALUES</span> ('키위');</span></div>
+        <div class="q-ln" id="s08-l5"><div class="q-hi" id="s08-h5"></div><span><span class="s08-no">5</span><span class="q-k">ROLLBACK TO</span> A;</span></div>
+      </div>
+      <div id="s08-tb" class="x-card q-tb x-hide">
+        <div class="q-th" style="top:20px"><div>새로 넣은 행</div></div>
+        <div class="q-tr" id="s08-r1" style="top:92px"><div>포도</div></div>
+        <div class="q-tr" id="s08-r2" style="top:162px"><div>키위</div></div>
+        <div id="s08-res" data-layout-allow-overlap>
+          <span id="s08-res1" class="x-acc">키위만 취소, 포도는 남음</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 23.5;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, i, d) => Number(V[k]) || at(i, d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+    let cur = 0;
+    const hi = (k, t) => { if (cur) fade(`#s08-h${cur}`, t, 1, 0); if (k) fade(`#s08-h${k}`, t, 0, 1); cur = k; };
+
+    // 38 저장 지점 이름이 겹치면?
+    ft("#s08-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s08-q", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    fade("#s08-q1", at(0, 0.5), 0, 1);
+    // 39 같은 이름으로 다시 만들면 앞의 지점은 지워진다
+    fade("#s08-q1", at(1, 0.2), 1, 0);
+    fade("#s08-q2", at(1, 0.4), 0, 1);
+    // 40 SAVEPOINT A → 포도 → 다시 A(앞의 A 지워짐) → 키위
+    ft("#s08-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(2, 0));
+    ft("#s08-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(2, 0.2));
+    hi(1, at(2, 0.2));
+    stamp("#s08-f1", at(2, 0.6));
+    const po = X("po", 2, 1.6);
+    hi(2, po - 0.2);
+    ft("#s08-r1", { opacity: 0, y: 8 }, { opacity: 1, y: 0 }, po);
+    const da = X("da", 2, 2.8);
+    hi(3, da - 0.1);
+    stamp("#s08-f2", da + 0.3);
+    fade(["#s08-f1p", "#s08-f1f"], da + 0.7, 1, 0.25);
+    fade("#s08-f1x", da + 0.8, 0, 1);
+    const kw = X("kw", 2, 4.4);
+    hi(4, kw - 0.2);
+    ft("#s08-r2", { opacity: 0, y: 8 }, { opacity: 1, y: 0 }, kw);
+    // 41 ROLLBACK TO A → 나중 A로 → 키위만 취소, 포도는 남음
+    hi(5, at(3, 0.2));
+    ft("#s08-f2", { scale: 1 }, { scale: 1.15, duration: 0.25 * S, yoyo: true, repeat: 1, ease: "power2.out" }, at(3, 2.0));
+    const rt = X("rt", 3, 3.6);
+    fade("#s08-l4 > span", rt, 1, 0.3);
+    fade("#s08-r2", rt, 1, 0.22);
+    fade("#s08-res1", rt + 0.6, 0, 1);
+    if (String(V.exit) !== "false") ft("#s08-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s08"] = tl;
+  </script>
+</template>

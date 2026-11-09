@@ -1,0 +1,113 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s03-code { left: 192px; top: 262px; width: 620px; }
+    #s03-code .q-ln { font-size: 32px; height: 56px; padding: 0 36px; }
+    .s03-sw { position: relative; display: inline-block; width: 24px; height: 40px; vertical-align: middle; }
+    .s03-sw > span { position: absolute; left: 0; top: 0; line-height: 40px; }
+    #s03-e2 { color: var(--color-accent-dark, #A68CFF); opacity: 0; }
+    #s03-res { position: absolute; left: 192px; top: 506px; width: 620px; height: 72px; }
+    #s03-res > .q-chip { left: 0; top: 0; }
+    #s03-note { position: absolute; left: 192px; top: 620px; width: 620px; height: 226px; }
+    .s03-n { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 12px; text-align: center; font-size: 36px; font-weight: 800; line-height: 1.35; opacity: 0; }
+    .s03-n small { display: block; font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    #s03-tb { left: 872px; top: 262px; width: 856px; height: 584px; }
+    #s03-tb .q-th, #s03-tb .q-tr { grid-template-columns: 150px 190px 190px 270px; }
+    #s03-th { top: 20px; }
+    #s03-th > div:nth-child(3) { color: var(--color-accent, #6B3FE6); font-weight: 900; }
+    .s03-cell { position: relative; height: 44px; }
+    .s03-cell > span { position: absolute; left: 0; right: 0; top: 0; line-height: 44px; text-align: center; white-space: nowrap; opacity: 0; }
+    .s03-rn { font-size: 36px; font-weight: 900; color: var(--color-accent, #6B3FE6); }
+    .s03-rg { font-size: 36px; font-weight: 900; color: #8A8A93; }
+    .s03-ok { font-size: 30px; font-weight: 800; color: var(--color-accent, #6B3FE6); }
+    .s03-ng { font-size: 30px; font-weight: 800; color: #8A8A93; }
+  </style>
+  <div id="root" data-composition-id="s03" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,4.5,9.09,14.61,18.98,25.21,29.85]"},{"id":"dur","type":"number","label":"장면 길이","default":34.1},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"j1","type":"number","label":"지영 시각","default":7},{"id":"e2","type":"number","label":"ROWNUM = 2 시각","default":11},{"id":"z0","type":"number","label":"0행 시각","default":13.4},{"id":"a1","type":"number","label":"1번을 시각","default":16},{"id":"a2","type":"number","label":"버려집니다 시각","default":17.8},{"id":"b1","type":"number","label":"다시 1번을 시각","default":22},{"id":"b2","type":"number","label":"버려집니다 시각","default":24},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s03-all">
+      <div id="s03-head" class="x-head">ROWNUM = 2는 0행</div>
+      <div id="s03-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">SELECT</span> 이름, 급여</span></div>
+        <div class="q-ln"><span><span class="q-k">FROM</span> 직원</span></div>
+        <div class="q-ln"><div class="q-hi" id="s03-h3"></div><span><span class="q-k">WHERE</span> <span class="q-k">ROWNUM</span> = <span class="s03-sw" data-layout-allow-overlap><span id="s03-e1">1</span><span id="s03-e2">2</span></span></span></div>
+      </div>
+      <div id="s03-res" data-layout-allow-overlap>
+        <div class="q-chip q-ok" id="s03-k1">결과 1행 · 지영</div>
+        <div class="q-chip q-ng" id="s03-k0">결과 0행</div>
+      </div>
+      <div id="s03-note" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s03-n" id="s03-na"><span>1번을 받았는데<br />2가 아니라서 <span class="x-acc">버림</span></span></div>
+        <div class="s03-n" id="s03-nb"><span>버려지면 번호는 그대로</span><small>다음 행도 다시 1번</small></div>
+        <div class="s03-n" id="s03-nc"><span>2번은 끝내 생기지 않는다</span></div>
+        <div class="s03-n" id="s03-nd"><span>ROWNUM &gt; 1도 <span class="x-acc">0행</span></span><small>1보다 큰 번호를 찾는 조건</small></div>
+      </div>
+      <div id="s03-tb" class="x-card q-tb x-hide">
+        <div class="q-th" id="s03-th"><div>이름</div><div>급여(만 원)</div><div>ROWNUM</div><div></div></div>
+        <div class="q-tr" id="s03-r0" style="top:84px"><div>지영</div><div>300</div>
+          <div class="s03-cell" data-layout-allow-overlap><span class="s03-rn" id="s03-ua">1</span><span class="s03-rg" id="s03-u0">1</span></div>
+          <div class="s03-cell" data-layout-allow-overlap><span class="s03-ok" id="s03-ma">통과</span><span class="s03-ng" id="s03-m0">버림</span></div></div>
+        <div class="q-tr" id="s03-r1" style="top:148px"><div>민수</div><div>400</div>
+          <div class="s03-cell"><span class="s03-rg" id="s03-u1">1</span></div><div class="s03-cell"><span class="s03-ng" id="s03-m1">버림</span></div></div>
+        <div class="q-tr" id="s03-r2" style="top:212px"><div>수진</div><div>250</div>
+          <div class="s03-cell"><span class="s03-rg" id="s03-u2">1</span></div><div class="s03-cell"><span class="s03-ng" id="s03-m2">버림</span></div></div>
+        <div class="q-tr" id="s03-r3" style="top:276px"><div>현우</div><div>500</div>
+          <div class="s03-cell"><span class="s03-rg" id="s03-u3">1</span></div><div class="s03-cell"><span class="s03-ng" id="s03-m3">버림</span></div></div>
+        <div class="q-tr" id="s03-r4" style="top:340px"><div>예린</div><div>400</div>
+          <div class="s03-cell"><span class="s03-rg" id="s03-u4">1</span></div><div class="s03-cell"><span class="s03-ng" id="s03-m4">버림</span></div></div>
+        <div class="q-tr" id="s03-r5" style="top:404px"><div>동훈</div><div>450</div>
+          <div class="s03-cell"><span class="s03-rg" id="s03-u5">1</span></div><div class="s03-cell"><span class="s03-ng" id="s03-m5">버림</span></div></div>
+        <div class="q-tr" id="s03-r6" style="top:468px"><div>태호</div><div>350</div>
+          <div class="s03-cell"><span class="s03-rg" id="s03-u6">1</span></div><div class="s03-cell"><span class="s03-ng" id="s03-m6">버림</span></div></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 34.1;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d = 0) => Number(V[k]) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+    let note = null;
+    const say = (id, t) => { if (note) fade(note, t, 1, 0); fade(id, t + 0.15, 0, 1); note = id; };
+    const R = (i) => `#s03-r${i}`;
+    // 한 행이 1번을 받았다가 버려진다
+    const drop = (i, tNum, tDrop) => { stamp(`#s03-u${i}`, tNum); fade(`#s03-m${i}`, tDrop, 0, 1); fade(R(i), tDrop + 0.4, 1, 0.3); };
+
+    // 20 두 번째 함정 — 특정 번호를 찾을 때
+    ft("#s03-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s03-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.2));
+    ft("#s03-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.4));
+    // 21 ROWNUM = 1 → 첫 행 지영 한 명
+    fade("#s03-h3", at(1, 0.1), 0, 1);
+    stamp("#s03-ua", X("j1", -0.3));
+    fade("#s03-ma", X("j1", 0), 0, 1);
+    stamp("#s03-k1", X("j1", 0.4));
+    // 22 ROWNUM = 2 → 결과 0행
+    fade(["#s03-ua", "#s03-ma"], X("e2", -0.4), 1, 0);
+    fade("#s03-k1", X("e2", -0.4), 1, 0);
+    fade("#s03-e1", X("e2", 0), 1, 0);
+    fade("#s03-e2", X("e2", 0.1), 0, 1);
+    stamp("#s03-k0", X("z0", -0.05));
+    // 23 첫 행 지영은 1번 → 2가 아니라 버림
+    ft("#s03-note", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(3, 0.2));
+    drop(0, X("a1", -0.05), X("a2", 0));
+    say("#s03-na", X("a2", 0));
+    // 24 번호가 넘어가지 않으니 민수도 다시 1번 → 버림
+    say("#s03-nb", at(4, 0.3));
+    drop(1, X("b1", -0.05), X("b2", 0));
+    // 25 일곱 행 모두 버려져 2번은 끝내 생기지 않음
+    [2, 3, 4, 5, 6].forEach((i, j) => drop(i, at(5, 0.1 + j * 0.45), at(5, 0.35 + j * 0.45)));
+    say("#s03-nc", at(5, 2.6));
+    // 26 ROWNUM이 1보다 크다는 조건도 0행
+    say("#s03-nd", at(6, 0.2));
+    if (String(V.exit) !== "false") ft("#s03-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s03"] = tl;
+  </script>
+</template>

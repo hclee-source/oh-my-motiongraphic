@@ -1,0 +1,40 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 540px; text-align: center; overflow: visible;
+      font-size: 48px; font-weight: 700; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 940px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cap-01a" class="cap clip" data-start="0.000" data-duration="0.530"><span>정규화는</span></div>
+    <div id="cap-01b" class="cap clip" data-start="0.530" data-duration="1.840"><span>중복과 이상 현상을 줄이려고</span></div>
+    <div id="cap-01c" class="cap clip" data-start="2.370" data-duration="2.029"><span>테이블을 나누는 일입니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="4.449" data-duration="0.830"><span>이상 현상은</span></div>
+    <div id="cap-02b" class="cap clip" data-start="5.279" data-duration="3.000"><span>갱신, 삽입, 삭제,</span></div>
+    <div id="cap-02c" class="cap clip" data-start="8.279" data-duration="2.031"><span>세 가지입니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="10.510" data-duration="1.010"><span>제1정규형은</span></div>
+    <div id="cap-03b" class="cap clip" data-start="11.520" data-duration="1.742"><span>한 칸에 값 하나입니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="13.312" data-duration="0.590"><span>과목 칸에</span></div>
+    <div id="cap-04b" class="cap clip" data-start="13.902" data-duration="1.780"><span>‘수학, 영어’가 함께 있으면</span></div>
+    <div id="cap-04c" class="cap clip" data-start="15.682" data-duration="1.894"><span>두 행으로 나눕니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="17.776" data-duration="0.930"><span>제2정규형은</span></div>
+    <div id="cap-05b" class="cap clip" data-start="18.706" data-duration="2.060"><span>주식별자의 일부에만 종속되는,</span></div>
+    <div id="cap-05c" class="cap clip" data-start="20.766" data-duration="2.746"><span>부분 함수 종속을 없앱니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="23.562" data-duration="1.750"><span>학번과 과목이 주식별자라면,</span></div>
+    <div id="cap-06b" class="cap clip" data-start="25.312" data-duration="2.360"><span>이름처럼 학번에만 딸린 것은</span></div>
+    <div id="cap-06c" class="cap clip" data-start="27.672" data-duration="2.182"><span>학생 테이블로 떼어 냅니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="30.054" data-duration="1.070"><span>제3정규형은</span></div>
+    <div id="cap-07b" class="cap clip" data-start="31.124" data-duration="2.061"><span>이행 함수 종속을 없앱니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="33.235" data-duration="1.230"><span>학번이 학과를 정하고,</span></div>
+    <div id="cap-08b" class="cap clip" data-start="34.465" data-duration="1.860"><span>학과가 학과장을 정하면,</span></div>
+    <div id="cap-08c" class="cap clip" data-start="36.325" data-duration="3.280"><span>학과장은 학과 테이블로 떼어 냅니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="39.806" data-duration="0.950"><span>칸마다 값 하나,</span></div>
+    <div id="cap-09b" class="cap clip" data-start="40.756" data-duration="1.880"><span>주식별자 전체에,</span></div>
+    <div id="cap-09c" class="cap clip" data-start="42.636" data-duration="2.614"><span>그리고 주식별자에만 종속.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="45.300" data-duration="0.750"><span>이 세 줄이</span></div>
+    <div id="cap-10b" class="cap clip" data-start="46.050" data-duration="4.410"><span>제1, 제2, 제3정규형입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

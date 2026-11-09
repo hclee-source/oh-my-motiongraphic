@@ -1,0 +1,31 @@
+{
+  "_설명": "장면 순서(장 번호와 연결, 여러 장을 한 장면으로 묶을 수 있음), 장면 끝에서 사라질지(exit), 효과음 위치([이름, 장면 안 문장 순번(0부터), 그 문장 시작 뒤 초]). extra는 그 낱말이 나오는 시각(장면 기준).",
+  "scenes": [
+    { "id": "s00", "file": "s00-title.html" },
+    { "id": "s01", "file": "s01-hook.html", "chapter": 1, "extra": { "jd": { "sentence": 4, "at": "정답은" } } },
+    { "id": "s02", "file": "s02-tx.html", "chapter": 2, "extra": { "rb": { "sentence": 10, "at": "ROLLBACK은" } } },
+    { "id": "s03", "file": "s03-walk.html", "chapter": [3, 4, 5, 6, 7],
+      "extra": { "g1": { "sentence": 15, "at": "감 40을" }, "fa": { "sentence": 18, "at": "깃발 A를" }, "fb": { "sentence": 20, "at": "깃발 B를" }, "u15": { "sentence": 19, "at": "15로" }, "bd": { "sentence": 21, "at": "배를" },
+                 "br": { "sentence": 24, "at": "배가" }, "a10": { "sentence": 28, "at": "다시" }, "bx": { "sentence": 30, "at": "깃발 B는" },
+                 "gd": { "sentence": 34, "at": "귤을" }, "gr": { "sentence": 36, "at": "귤이" }, "ans": { "sentence": 36, "at": "네 행입니다" } } },
+    { "id": "s08", "file": "s08-same.html", "chapter": 8, "extra": { "po": { "sentence": 40, "at": "포도를" }, "da": { "sentence": 40, "at": "다시" }, "kw": { "sentence": 40, "at": "키위를" }, "rt": { "sentence": 41, "at": "키위만" } } },
+    { "id": "s09", "file": "s09-ddl.html", "chapter": 9, "extra": { "ct": { "sentence": 44, "at": "CREATE TABLE을" }, "rb": { "sentence": 44, "at": "ROLLBACK을" }, "sv": { "sentence": 49, "at": "저장 지점은" } } },
+    { "id": "s10", "file": "s10-check.html", "chapter": 10 },
+    { "id": "s11", "file": "s11-summary.html", "chapter": 11, "exit": false,
+      "extra": { "r2": { "sentence": 55, "at": "그냥 ROLLBACK은" }, "r3": { "sentence": 55, "at": "DDL은" } } }
+  ],
+  "sfx": {
+    "s00": [["chime", null, 0.15], ["whoosh-short", null, 3.0]],
+    "s01": [["pop", 0, 0.4], ["pop", 0, 2.3], ["click-soft", 1, 1.0], ["pop", 2, 0.2], ["click-soft", 4, 0.3], ["whoosh-short", 5, 0.4]],
+    "s02": [["pop", 0, 0.7], ["click-soft", 1, 0.3], ["pop", 2, 0.4], ["pop", 3, 0.3], ["pop", 4, 0.3], ["pop", 5, 0.4], ["click-soft", 6, 0.3]],
+    "s03": [["pop", 0, 0.5], ["pop", 1, 1.1], ["pop", 4, 4.5], ["click-soft", 5, 2.0], ["pop", 6, 4.4], ["click-soft", 7, 1.2],
+            ["whoosh-short", 9, 0.2], ["click-soft", 10, 2.3], ["whoosh-short", 13, 0.2], ["click-soft", 14, 4.5], ["click-soft", 16, 1.8],
+            ["whoosh-short", 18, 0.2], ["click-soft", 20, 1.1], ["whoosh-short", 21, 0.3], ["pop", 22, 6.3]],
+    "s08": [["pop", 0, 0.4], ["click-soft", 1, 0.3], ["pop", 2, 0.6], ["pop", 2, 2.5], ["click-soft", 3, 0.3], ["click-soft", 3, 3.6]],
+    "s09": [["pop", 0, 0.4], ["click-soft", 1, 0.0], ["click-soft", 1, 0.92], ["click-soft", 1, 2.2], ["click-soft", 1, 3.18], ["click-soft", 1, 4.36],
+            ["pop", 1, 6.14], ["pop", 2, 0.3], ["pop", 2, 3.5], ["pop", 3, 0.3], ["click-soft", 4, 0.5],
+            ["click-soft", 5, 0.5], ["whoosh-short", 6, 0.2], ["pop", 7, 0.5]],
+    "s10": [["pop", 1, 0.2], ["pop", 2, 0.2], ["pop", 3, 0.2]],
+    "s11": [["pop", 1, 0.1]]
+  }
+}

@@ -1,0 +1,56 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h4-lab { position: absolute; left: 80px; font-size: 44px; font-weight: 800; color: var(--color-ink2, #71717A); white-space: nowrap; opacity: 0; }
+    .h4-b { position: absolute; width: 190px; height: 130px; box-sizing: border-box; display: flex; align-items: center; justify-content: center;
+      font-size: 68px; font-weight: 900; opacity: 0; }
+    .h4-null { font-size: 52px; font-weight: 800; color: #A1A1AA; }
+  </style>
+  <div id="root" data-composition-id="h4" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45]"},{"id":"dur","type":"number","label":"장면 길이","default":10},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"ld","type":"number","label":"LEAD 시각","default":3.5},{"id":"nl","type":"number","label":"NULL 시각","default":7},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h4-all">
+      <div class="h4-lab" id="h4-l0" style="top:350px">값</div>
+      <div class="h4-b x-card" id="h4-a0" style="left:80px;top:420px">40</div>
+      <div class="h4-b x-card" id="h4-a1" style="left:290px;top:420px">50</div>
+      <div class="h4-b x-card" id="h4-a2" style="left:500px;top:420px">50</div>
+      <div class="h4-b x-card" id="h4-a3" style="left:710px;top:420px">60</div>
+      <div class="h4-lab" id="h4-l1" style="top:600px">LAG(값) : 바로 앞 행</div>
+      <div class="h4-b x-dark h4-null" id="h4-b0" style="left:80px;top:670px">NULL</div>
+      <div class="h4-b x-dark" id="h4-b1" style="left:290px;top:670px">40</div>
+      <div class="h4-b x-dark" id="h4-b2" style="left:500px;top:670px">50</div>
+      <div class="h4-b x-dark" id="h4-b3" style="left:710px;top:670px">50</div>
+      <div class="h4-lab" id="h4-l2" style="top:850px">LEAD(값) : 바로 뒤 행</div>
+      <div class="h4-b x-dark" id="h4-c0" style="left:80px;top:920px">50</div>
+      <div class="h4-b x-dark" id="h4-c1" style="left:290px;top:920px">50</div>
+      <div class="h4-b x-dark" id="h4-c2" style="left:500px;top:920px">60</div>
+      <div class="h4-b x-dark h4-null" id="h4-c3" style="left:710px;top:920px">NULL</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 10;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d = 0) => Number(V[k]) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const paint = (sel, t, a, b) => ft(sel, { color: a }, { color: b }, t);
+
+    // 9 LAG는 앞 행, LEAD는 뒤 행, 없으면 NULL
+    fade("#h4-l0", at(0, 0), 0, 1);
+    [0, 1, 2, 3].forEach((j) => stamp(`#h4-a${j}`, at(0, 0.2 + j * 0.1)));
+    fade("#h4-l1", at(0, 0.9), 0, 1);
+    [1, 2, 3].forEach((j) => stamp(`#h4-b${j}`, at(0, 1.2 + j * 0.2)));
+    fade("#h4-l2", X("ld", -0.1), 0, 1);
+    [0, 1, 2].forEach((j) => stamp(`#h4-c${j}`, X("ld", 0.3 + j * 0.2)));
+    stamp("#h4-b0", X("nl", -0.1));
+    stamp("#h4-c3", X("nl", 0.1));
+    paint(["#h4-b0", "#h4-c3"], X("nl", 0.2), "#A1A1AA", "#A68CFF");
+    if (String(V.exit) !== "false") ft("#h4-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h4"] = tl;
+  </script>
+</template>

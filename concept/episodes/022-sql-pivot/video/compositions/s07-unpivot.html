@@ -1,0 +1,138 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s07-src { left: 192px; top: 262px; width: 660px; height: 260px; }
+    #s07-name { position: absolute; left: 36px; top: 18px; font-size: 32px; font-weight: 900; color: var(--color-accent, #6B3FE6); }
+    #s07-src .q-th, #s07-src .q-tr { grid-template-columns: 154px 150px 150px 150px; }
+    #s07-src .q-th { top: 66px; }
+    #s07-src .q-tr > div.q-null { font-size: 30px; }
+    .s07-cb { position: absolute; width: 132px; height: 50px; border-radius: 12px; border: 3px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    #s07-code { left: 192px; top: 562px; width: 660px; }
+    #s07-code .q-ln { font-size: 32px; height: 56px; }
+    .s07-sw { position: relative; height: 56px; flex: 1; }
+    .s07-sw > span { position: absolute; left: 0; top: 0; height: 56px; display: flex; align-items: center; white-space: nowrap; }
+    #s07-u2 { opacity: 0; }
+    #s07-tb { left: 900px; top: 262px; width: 828px; height: 440px; }
+    #s07-tb .q-th, #s07-tb .q-tr { grid-template-columns: 200px 200px 200px 172px; }
+    #s07-tb .q-th { top: 20px; }
+    #s07-tb .q-tr > div.q-null { font-size: 30px; }
+    .s07-cnt { position: relative; height: 40px; }
+    .s07-cnt > span { position: absolute; left: 0; right: 0; top: 0; text-align: center; font-size: 32px; font-weight: 900;
+      color: var(--color-accent, #6B3FE6); opacity: 0; }
+    .s07-r { opacity: 0; }
+    .s07-q { color: var(--color-accent, #6B3FE6); }
+    .s07-bd { position: absolute; left: 14px; right: 14px; top: 84px; height: 56px; border-radius: 14px;
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 10%, #FFFFFF); opacity: 0; }
+    #s07-note { position: absolute; left: 900px; top: 726px; width: 828px; height: 128px; }
+    .s07-n { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center; font-size: 36px; font-weight: 800; line-height: 1.3; white-space: nowrap; opacity: 0; }
+    .s07-n small { display: block; font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); }
+  </style>
+  <div id="root" data-composition-id="s07" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,4.38,8.76,13.99,20.38,24.45,29.89,34.7,41.48,47.53,51.83]"},{"id":"dur","type":"number","label":"장면 길이","default":58.9},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"mc","type":"number","label":"매출 시각","default":12.2},{"id":"inl","type":"number","label":"IN 목록에는 시각","default":17.6},{"id":"on","type":"number","label":"원래 열 이름 시각","default":27.2},{"id":"en","type":"number","label":"EXCLUDE NULLS 시각","default":38.6},{"id":"r6","type":"number","label":"6행 시각","default":44.8},{"id":"q4","type":"number","label":"4분기 130 시각","default":55.5},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s07-all">
+      <div id="s07-head" class="x-head">UNPIVOT</div>
+      <div id="s07-src" class="x-card q-tb x-hide">
+        <div id="s07-name">분기실적</div>
+        <div class="q-th"><div>부서</div><div>Q1</div><div>Q2</div><div>Q3</div></div>
+        <div class="s07-cb" style="left:210px;top:129px"></div><div class="s07-cb" style="left:360px;top:129px"></div><div class="s07-cb" style="left:510px;top:129px"></div>
+        <div class="s07-cb" style="left:210px;top:189px"></div><div class="s07-cb" id="s07-cbn" style="left:360px;top:189px"></div><div class="s07-cb" style="left:510px;top:189px"></div>
+        <div class="q-tr" style="top:126px"><div>영업</div><div>150</div><div>120</div><div>110</div></div>
+        <div class="q-tr" style="top:186px"><div>개발</div><div>70</div><div class="q-null" id="s07-sn">NULL</div><div>80</div></div>
+      </div>
+      <div id="s07-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">SELECT</span> * <span class="q-k">FROM</span> 분기실적</span></div>
+        <div class="q-ln"><div class="q-hi" id="s07-h2"></div>
+          <div class="s07-sw" data-layout-allow-overlap>
+            <span id="s07-u1"><span class="q-k">UNPIVOT</span>&nbsp;(<span id="s07-mc">매출</span></span>
+            <span id="s07-u2"><span class="q-k">UNPIVOT</span>&nbsp;<span class="x-accd">INCLUDE NULLS</span>&nbsp;(매출</span>
+          </div></div>
+        <div class="q-ln" style="padding-left:80px"><div class="q-hi" id="s07-h3"></div><span><span class="q-k">FOR</span> 분기 <span class="q-k">IN</span> (Q1, Q2, Q3));</span></div>
+      </div>
+      <div id="s07-tb" class="x-card q-tb x-hide">
+        <div class="q-th"><div>부서</div><div>분기</div><div>매출</div>
+          <div class="s07-cnt" data-layout-allow-overlap><span id="s07-c5">5행</span><span id="s07-c6">6행</span></div></div>
+        <div class="s07-bd" id="s07-bd"></div>
+        <div class="q-tr s07-r" id="s07-r0" style="top:84px"><div>영업</div><div class="s07-q">Q1</div><div>150</div><div></div></div>
+        <div class="q-tr s07-r" id="s07-r1" style="top:140px"><div>영업</div><div class="s07-q">Q2</div><div>120</div><div></div></div>
+        <div class="q-tr s07-r" id="s07-r2" style="top:196px"><div>영업</div><div class="s07-q">Q3</div><div>110</div><div></div></div>
+        <div class="q-tr s07-r" id="s07-r3" style="top:252px"><div>개발</div><div class="s07-q">Q1</div><div>70</div><div></div></div>
+        <div class="q-tr s07-r" id="s07-rn" style="top:308px"><div>개발</div><div class="s07-q">Q2</div><div class="q-null">NULL</div><div></div></div>
+        <div class="q-tr s07-r" id="s07-r4" style="top:308px"><div>개발</div><div class="s07-q">Q3</div><div>80</div><div></div></div>
+      </div>
+      <div id="s07-note" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s07-n" id="s07-n1"><span>2행 × 열 3개 = 칸 <span class="x-acc">6개</span></span></div>
+        <div class="s07-n" id="s07-n2"><span>개발 Q2 = <span class="q-null">NULL</span> → 빠짐</span></div>
+        <div class="s07-n" id="s07-n3"><span>기본 동작 = <span class="x-acc">EXCLUDE NULLS</span></span></div>
+        <div class="s07-n" id="s07-n4"><span><span class="x-acc">INCLUDE NULLS</span> → NULL 행도 남아 6행</span></div>
+        <div class="s07-n" id="s07-n5"><span>PIVOT을 그대로 되돌리지 못한다</span></div>
+        <div class="s07-n" id="s07-n6"><span><span class="x-acc">150</span>은 90 · 60으로 안 나뉨</span><small id="s07-n6b" style="opacity:0">4분기 130은 돌아오지 않음</small></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 58.9;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    let note = null;
+    const say = (id, t) => { if (note) fade(note, t, 1, 0); fade(id, t + 0.15, 0, 1); note = id; };
+    const ACC = "#6B3FE6", INK = "#18181B";
+
+    // 39 열을 행으로 바꾸는 UNPIVOT
+    ft("#s07-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s07-src", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.4));
+    // 40 2행짜리 결과 = 분기실적 표
+    ft("#s07-name", { scale: 1 }, { scale: 1.12, duration: 0.25 * S, yoyo: true, repeat: 1, ease: "power2.out" }, at(1, 1.4));
+    // 41 괄호 안 맨 앞: 값이 들어갈 새 열 매출
+    ft("#s07-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(2, 0.2));
+    fade("#s07-h2", at(2, 0.9), 0, 1);
+    ft("#s07-mc", { color: "#FFFFFF" }, { color: "#A68CFF" }, Number(V.mc) || at(2, 3.4));
+    // 42 FOR 뒤 새 열 분기, IN 목록에 풀어 낼 세 열
+    fade("#s07-h2", at(3, 0.1), 1, 0);
+    fade("#s07-h3", at(3, 0.2), 0, 1);
+    // 43 2행 × 열 3개 = 칸 6개
+    fade("#s07-h3", at(4, 0.1), 1, 0);
+    fade(".s07-cb", at(4, 0.4), 0, 1);
+    ft("#s07-note", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(4, 0.6));
+    say("#s07-n1", at(4, 0.6));
+    // 44 칸 하나가 한 행, 분기 칸에는 원래 열 이름
+    ft("#s07-tb", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(5, 0.1));
+    fade(".s07-cb", at(5, 0.3), 1, 0);
+    ["#s07-r0", "#s07-r1", "#s07-r2", "#s07-r3", "#s07-r4"].forEach((r, j) => ft(r, { opacity: 0, y: -12 }, { opacity: 1, y: 0 }, at(5, 0.6 + j * 0.35)));
+    ft(".s07-q", { scale: 1 }, { scale: 1.15, duration: 0.25 * S, yoyo: true, repeat: 1, ease: "power2.out" }, Number(V.on) || at(5, 3.2));
+    // 45 그런데 5행 — 개발 Q2가 NULL이라 빠졌다
+    fade("#s07-c5", at(6, 0.8), 0, 1);
+    fade("#s07-cbn", at(6, 1.8), 0, 1);
+    say("#s07-n2", at(6, 1.8));
+    // 46 따로 적지 않으면 NULL 칸은 행이 되지 않는다 = EXCLUDE NULLS
+    say("#s07-n3", Number(V.en) || at(6 + 1, 4.4));
+    // 47 UNPIVOT 바로 뒤에 INCLUDE NULLS → 6행
+    fade("#s07-u1", at(8, 1.2), 1, 0);
+    fade("#s07-u2", at(8, 1.4), 0, 1);
+    fade("#s07-h2", at(8, 1.4), 0, 1);
+    const r6 = Number(V.r6) || at(8, 4.4);
+    ft("#s07-r4", { y: 0 }, { y: 56, duration: 0.5 * S, ease: "power2.inOut" }, r6 - 1.2);
+    ft("#s07-rn", { opacity: 0, x: 20 }, { opacity: 1, x: 0 }, r6 - 0.6);
+    fade("#s07-c5", r6 - 0.2, 1, 0);
+    fade("#s07-c6", r6, 0, 1);
+    say("#s07-n4", r6);
+    // 48 UNPIVOT은 PIVOT을 그대로 되돌리지 못한다
+    fade("#s07-h2", at(9, 0.1), 1, 0);
+    fade("#s07-cbn", at(9, 0.1), 1, 0);
+    fade(["#s07-src", "#s07-code"], at(9, 0.3), 1, 0.4);
+    say("#s07-n5", at(9, 0.3));
+    // 49 150은 다시 안 나뉘고, 4분기 130도 돌아오지 않는다
+    say("#s07-n6", at(10, 0.2));
+    fade("#s07-bd", at(10, 0.4), 0, 1);
+    fade("#s07-n6b", Number(V.q4) || at(10, 3.6), 0, 1);
+    if (String(V.exit) !== "false") ft("#s07-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s07"] = tl;
+  </script>
+</template>

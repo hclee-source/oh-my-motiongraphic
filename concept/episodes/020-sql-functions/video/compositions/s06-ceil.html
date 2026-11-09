@@ -1,0 +1,106 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s06-nl { position: absolute; left: 192px; top: 262px; width: 1536px; height: 220px; box-sizing: border-box; }
+    #s06-line { position: absolute; left: 120px; top: 124px; width: 1296px; height: 4px; border-radius: 2px; background: var(--color-hair, #D3D6DD); }
+    .s06-tick { position: absolute; top: 114px; width: 4px; height: 24px; border-radius: 2px; background: var(--color-ink2, #71717A); }
+    #s06-dot { position: absolute; left: 488px; top: 114px; width: 24px; height: 24px; border-radius: 12px; background: var(--color-accent, #6B3FE6); }
+    .s06-tl { position: absolute; top: 152px; width: 140px; height: 44px; line-height: 44px; text-align: center;
+      font-size: 38px; font-weight: 800; color: var(--color-ink2, #71717A); }
+    .s06-al { position: absolute; top: 22px; width: 160px; height: 44px; line-height: 44px; text-align: center;
+      font-size: 36px; font-weight: 900; white-space: nowrap; opacity: 0; }
+    .s06-ar { position: absolute; top: 76px; opacity: 0; }
+    #s06-codes { position: absolute; left: 192px; top: 526px; width: 1080px; height: 120px; }
+    .s06-code { left: 0; top: 0; width: 1080px; }
+    .s06-code .q-ln { font-size: 46px; height: 68px; padding: 0 44px; }
+    #s06-ans { position: absolute; left: 1316px; top: 536px; width: 412px; height: 100px; }
+    .s06-big { left: 0; top: 0; height: 100px; padding: 0 44px; border-radius: 50px; font-size: 60px; font-weight: 900; }
+    .s06-qm { background: #FFFFFF; border: 2px solid var(--color-line, #E3E5EA); color: var(--color-ink2, #71717A); }
+    #s06-notes { position: absolute; left: 192px; top: 684px; width: 1536px; height: 72px; }
+    .s06-note { left: 0; top: 0; }
+  </style>
+  <div id="root" data-composition-id="s06" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,4.3,6.5,12.1]"},{"id":"dur","type":"number","label":"장면 길이","default":17},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"a1","type":"number","label":"-1 시각","default":5},{"id":"z0","type":"number","label":"0 쪽 시각","default":10},{"id":"a2","type":"number","label":"-2 시각","default":15.3},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s06-all">
+      <div id="s06-head" class="x-head">CEIL과 FLOOR</div>
+      <div id="s06-nl" class="x-card x-hide">
+        <div id="s06-line"></div>
+        <div class="s06-tick" style="left:298px"></div>
+        <div class="s06-tick" style="left:698px"></div>
+        <div class="s06-tick" style="left:1098px"></div>
+        <div id="s06-dot"></div>
+        <div class="s06-tl" id="s06-t2" style="left:230px">-2</div>
+        <div class="s06-tl" id="s06-t15" style="left:430px;color:#6B3FE6">-1.5</div>
+        <div class="s06-tl" id="s06-t1" style="left:630px">-1</div>
+        <div class="s06-tl" id="s06-t0" style="left:1030px">0</div>
+        <div class="s06-al x-acc" id="s06-lc" style="left:520px">CEIL</div>
+        <div class="s06-al" id="s06-lf" style="left:320px">FLOOR</div>
+        <svg class="s06-ar" id="s06-ac" style="left:500px" width="200" height="24" viewBox="0 0 200 24"><path d="M0 12 H184" stroke="#6B3FE6" stroke-width="6" fill="none" /><path d="M180 1 L200 12 L180 23 Z" fill="#6B3FE6" /></svg>
+        <svg class="s06-ar" id="s06-af" style="left:300px" width="200" height="24" viewBox="0 0 200 24"><path d="M16 12 H200" stroke="#18181B" stroke-width="6" fill="none" /><path d="M20 1 L0 12 L20 23 Z" fill="#18181B" /></svg>
+      </div>
+      <div id="s06-codes" data-layout-allow-overlap>
+        <div id="s06-c1" class="s06-code x-dark q-code x-hide">
+          <div class="q-ln"><span><span class="q-k">SELECT</span> CEIL(-1.5) <span class="q-k">FROM</span> DUAL;</span></div>
+        </div>
+        <div id="s06-c2" class="s06-code x-dark q-code x-hide">
+          <div class="q-ln"><span><span class="q-k">SELECT</span> FLOOR(-1.5) <span class="q-k">FROM</span> DUAL;</span></div>
+        </div>
+      </div>
+      <div id="s06-ans" data-layout-allow-overlap>
+        <div id="s06-q1" class="q-chip s06-big s06-qm">?</div>
+        <div id="s06-a1" class="q-chip q-ok s06-big">-1</div>
+        <div id="s06-a2" class="q-chip q-ok s06-big">-2</div>
+      </div>
+      <div id="s06-notes" data-layout-allow-overlap>
+        <div class="q-chip q-ok s06-note" id="s06-n1">CEIL = 크거나 같은 가장 작은 정수 · 음수는 0 쪽으로</div>
+        <div class="q-chip q-ok s06-note" id="s06-n2">FLOOR = 작거나 같은 가장 큰 정수</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 17;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const ink = (sel, t, a, b) => ft(sel, { color: a }, { color: b }, t);
+    const ACC = "#6B3FE6", INK2 = "#71717A";
+
+    // 36 CEIL에 -1.5
+    ft("#s06-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s06-nl", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    ft("#s06-c1", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.6));
+    stamp("#s06-q1", at(0, 2.2));
+    // 37 정답은 -1 — 오른쪽으로
+    const a1 = X("a1", at(1, 0.7));
+    ft("#s06-ac", { opacity: 0, scaleX: 0, transformOrigin: "left center" }, { opacity: 1, scaleX: 1 }, a1 - 0.3);
+    fade("#s06-lc", a1 - 0.3, 0, 1);
+    ink("#s06-t1", a1, INK2, ACC);
+    fade("#s06-q1", a1 - 0.1, 1, 0);
+    stamp("#s06-a1", a1);
+    // 38 크거나 같은 가장 작은 정수, 음수에서는 0 쪽으로
+    stamp("#s06-n1", at(2, 0.3));
+    ink("#s06-t0", X("z0", at(2, 3.5)), INK2, ACC);
+    // 39 FLOOR는 작거나 같은 가장 큰 정수, -2
+    fade("#s06-c1", at(3, 0.1), 1, 0);
+    fade("#s06-c2", at(3, 0.2), 0, 1);
+    fade(["#s06-n1", "#s06-a1"], at(3, 0.1), 1, 0);
+    ink("#s06-t1", at(3, 0.1), ACC, INK2);
+    ink("#s06-t0", at(3, 0.1), ACC, INK2);
+    fade(["#s06-ac", "#s06-lc"], at(3, 0.2), 1, 0.3);
+    stamp("#s06-n2", at(3, 0.5));
+    const a2 = X("a2", at(3, 3.2));
+    ft("#s06-af", { opacity: 0, scaleX: 0, transformOrigin: "right center" }, { opacity: 1, scaleX: 1 }, a2 - 0.3);
+    fade("#s06-lf", a2 - 0.3, 0, 1);
+    ink("#s06-t2", a2, INK2, ACC);
+    stamp("#s06-a2", a2);
+    if (String(V.exit) !== "false") ft("#s06-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s06"] = tl;
+  </script>
+</template>

@@ -1,0 +1,213 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s04-code { left: 192px; top: 262px; width: 1080px; }
+    #s04-code .q-ln { font-size: 30px; }
+    .s04-sw { position: relative; height: 60px; width: 1000px; }
+    .s04-v { position: absolute; left: 0; top: 0; height: 60px; line-height: 60px; white-space: nowrap; opacity: 0; }
+    .s04-op { color: #FFFFFF; font-weight: 900; }
+    #s04-chips { position: absolute; left: 1312px; top: 270px; width: 416px; height: 96px; }
+    .s04-ch { top: 12px; width: 150px; }
+    .s04-ring { position: absolute; top: 6px; width: 162px; height: 84px; border-radius: 42px; border: 4px solid var(--color-accent, #6B3FE6);
+      box-sizing: border-box; opacity: 0; }
+    .s04-t { position: absolute; top: 480px; width: 180px; height: 150px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .s04-g { position: absolute; inset: -2px; border-radius: 28px; border: 3px solid var(--color-accent, #6B3FE6);
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 12%, #FFFFFF); opacity: 0; }
+    .s04-nm { position: relative; font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    .s04-sl { position: relative; margin-top: 6px; font-size: 52px; font-weight: 900; }
+    #s04-bar { position: absolute; left: 0; top: 458px; width: 6px; height: 194px; border-radius: 3px; background: var(--color-accent, #6B3FE6); opacity: 0; }
+    .s04-lb { position: absolute; top: 400px; width: 300px; height: 44px; text-align: center; font-size: 32px; font-weight: 900;
+      color: var(--color-accent, #6B3FE6); white-space: nowrap; opacity: 0; }
+    #s04-sum { position: absolute; left: 192px; top: 680px; width: 1300px; height: 166px; }
+    .s04-sm { position: absolute; left: 0; right: 0; height: 52px; display: flex; align-items: center; justify-content: center;
+      font-size: 40px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    #s04-cnt { position: absolute; left: 1528px; top: 727px; width: 200px; height: 72px; }
+    .s04-c { left: 0; top: 0; width: 200px; font-size: 40px; font-weight: 900; }
+  </style>
+  <div id="root" data-composition-id="s04" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,4.6,10.4,14.4,20.7,27,32,35.2,41.5,47.4,52.2,58.4,65.5,72.4]"},{"id":"dur","type":"number","label":"장면 길이","default":79.7},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"kmin","type":"number","label":"가장 작은 시각","default":18},{"id":"n1","type":"number","label":"지영 시각","default":20.8},{"id":"n2","type":"number","label":"동훈 시각","default":22.2},{"id":"n3","type":"number","label":"현우 시각","default":23.6},{"id":"r3","type":"number","label":"세 행 시각","default":25},{"id":"kmax","type":"number","label":"가장 큰 시각","default":29.4},{"id":"k24","type":"number","label":"작은 애니 가장 큰 시각","default":48.6},{"id":"r5","type":"number","label":"다섯 행 시각","default":50.6},{"id":"k25","type":"number","label":"작은 올 가장 작은 시각","default":53.4},{"id":"r2","type":"number","label":"두 행 시각","default":56.8},{"id":"nany","type":"number","label":"넘을 값 시각","default":76},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s04-all">
+      <div id="s04-ha" class="x-head">&gt; ANY와 &gt; ALL</div>
+      <div id="s04-hb" class="x-head">부등호를 뒤집으면</div>
+      <div id="s04-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><div class="q-hi" id="s04-hi"></div>
+          <div class="s04-sw" data-layout-allow-overlap>
+            <span class="s04-v" id="s04-vz"><span class="q-k">WHERE</span> 급여 <span class="x-accd">&gt; ?</span> (<span class="q-k">SELECT</span> 급여 <span class="q-k">FROM</span> 직원 <span class="q-k">WHERE</span> 부서 = '개발')</span>
+            <span class="s04-v" id="s04-va"><span class="q-k">WHERE</span> 급여 <span class="s04-op">&gt; ANY</span> (<span class="q-k">SELECT</span> 급여 <span class="q-k">FROM</span> 직원 <span class="q-k">WHERE</span> 부서 = '개발')</span>
+            <span class="s04-v" id="s04-vb"><span class="q-k">WHERE</span> 급여 <span class="s04-op">&gt; ALL</span> (<span class="q-k">SELECT</span> 급여 <span class="q-k">FROM</span> 직원 <span class="q-k">WHERE</span> 부서 = '개발')</span>
+            <span class="s04-v" id="s04-vc"><span class="q-k">WHERE</span> 급여 <span class="s04-op">&lt; ANY</span> (<span class="q-k">SELECT</span> 급여 <span class="q-k">FROM</span> 직원 <span class="q-k">WHERE</span> 부서 = '개발')</span>
+            <span class="s04-v" id="s04-vd"><span class="q-k">WHERE</span> 급여 <span class="s04-op">&lt; ALL</span> (<span class="q-k">SELECT</span> 급여 <span class="q-k">FROM</span> 직원 <span class="q-k">WHERE</span> 부서 = '개발')</span>
+            <span class="s04-v" id="s04-ve"><span class="q-k">WHERE</span> 급여 <span class="s04-op">&gt; ALL</span> (<span class="q-k">SELECT</span> 급여 <span class="q-k">FROM</span> 직원 <span class="q-k">WHERE</span> 부서 = '기획')</span>
+            <span class="s04-v" id="s04-vf"><span class="q-k">WHERE</span> 급여 <span class="s04-op">&gt; ANY</span> (<span class="q-k">SELECT</span> 급여 <span class="q-k">FROM</span> 직원 <span class="q-k">WHERE</span> 부서 = '기획')</span>
+          </div></div>
+      </div>
+      <div id="s04-chips" data-layout-allow-overlap>
+        <div class="s04-ring" id="s04-o4" style="left:14px"></div>
+        <div class="s04-ring" id="s04-o6" style="left:194px"></div>
+        <div class="q-chip q-ok s04-ch" id="s04-v4" style="left:20px">400</div>
+        <div class="q-chip q-ok s04-ch" id="s04-v6" style="left:200px">600</div>
+        <div class="q-chip q-ng s04-ch" id="s04-v0" style="left:20px;width:330px">결과 0행</div>
+      </div>
+      <div class="s04-t x-card x-hide" id="s04-t0" style="left:258px"><div class="s04-g" id="s04-g0"></div><div class="s04-nm">민수</div><div class="s04-sl">300</div></div>
+      <div class="s04-t x-card x-hide" id="s04-t1" style="left:462px"><div class="s04-g" id="s04-g1"></div><div class="s04-nm">예린</div><div class="s04-sl">350</div></div>
+      <div class="s04-t x-card x-hide" id="s04-t2" style="left:666px"><div class="s04-g" id="s04-g2"></div><div class="s04-nm">수진</div><div class="s04-sl">400</div></div>
+      <div class="s04-t x-card x-hide" id="s04-t3" style="left:870px"><div class="s04-g" id="s04-g3"></div><div class="s04-nm">서연</div><div class="s04-sl">400</div></div>
+      <div class="s04-t x-card x-hide" id="s04-t4" style="left:1074px"><div class="s04-g" id="s04-g4"></div><div class="s04-nm">지영</div><div class="s04-sl">500</div></div>
+      <div class="s04-t x-card x-hide" id="s04-t5" style="left:1278px"><div class="s04-g" id="s04-g5"></div><div class="s04-nm">동훈</div><div class="s04-sl">600</div></div>
+      <div class="s04-t x-card x-hide" id="s04-t6" style="left:1482px"><div class="s04-g" id="s04-g6"></div><div class="s04-nm">현우</div><div class="s04-sl">700</div></div>
+      <div id="s04-bar"></div>
+      <div class="s04-lb" id="s04-l1" style="left:912px">최솟값 400</div>
+      <div class="s04-lb" id="s04-l2" style="left:1320px">최댓값 600</div>
+      <div class="s04-lb" id="s04-l3" style="left:1116px">최댓값 600</div>
+      <div class="s04-lb" id="s04-l4" style="left:504px">최솟값 400</div>
+      <div id="s04-sum" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s04-sm" id="s04-a1" style="top:26px"><span><span class="x-acc">&gt; ANY</span> = 최솟값과 비교</span></div>
+        <div class="s04-sm" id="s04-a2" style="top:88px"><span><span class="x-acc">&gt; ALL</span> = 최댓값과 비교</span></div>
+        <div class="s04-sm" id="s04-b1" style="top:26px"><span><span class="x-acc">ANY</span> = 통과하기 쉬운 쪽 끝값</span></div>
+        <div class="s04-sm" id="s04-b2" style="top:88px"><span><span class="x-acc">ALL</span> = 통과하기 어려운 쪽 끝값</span></div>
+        <div class="s04-sm" id="s04-e1" style="top:26px"><span><span class="x-acc">&gt; ALL</span> → 모든 행 참</span></div>
+        <div class="s04-sm" id="s04-e2" style="top:88px"><span><span class="x-acc">&gt; ANY</span> → 모든 행 거짓</span></div>
+      </div>
+      <div id="s04-cnt" data-layout-allow-overlap>
+        <div class="q-chip q-ok s04-c" id="s04-c3">3행</div>
+        <div class="q-chip q-ok s04-c" id="s04-c1">1행</div>
+        <div class="q-chip q-ok s04-c" id="s04-c5">5행</div>
+        <div class="q-chip q-ok s04-c" id="s04-c2">2행</div>
+        <div class="q-chip q-ok s04-c" id="s04-c7">7행</div>
+        <div class="q-chip q-ng s04-c" id="s04-c0">0행</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 79.7;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const head = (id, prev, t) => { if (prev) fade(prev, t, 1, 0); ft(id, { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, t + (prev ? 0.2 : 0)); };
+    const w = (k, d) => (Number(V[k]) || d);
+
+    // SQL 한 줄 바꾸기
+    let code = null;
+    const sql = (id, t) => { if (code) fade(code, t, 1, 0); fade(id, t + 0.15, 0, 1); code = id; };
+    // 행 수 칩 바꾸기
+    let cnt = null;
+    const count = (id, t) => { if (cnt) fade(cnt, t, 1, 0); if (id) stamp(id, t + 0.1); cnt = id; };
+    // 요약 카드 줄
+    let sumOn = [];
+    const sumOff = (t) => { sumOn.forEach((id) => fade(id, t, 1, 0)); sumOn = []; };
+    const sum = (id, t) => { fade(id, t, 0, 1); sumOn.push(id); };
+    // 일곱 칸 상태: 통과(테두리) · 탈락(흐리게) · 보통
+    const op = [1, 1, 1, 1, 1, 1, 1], ring = [0, 0, 0, 0, 0, 0, 0];
+    const tile = (i, o, g, t) => {
+      if (op[i] !== o) fade(`#s04-t${i}`, t, op[i], o);
+      if (ring[i] !== g) fade(`#s04-g${i}`, t, ring[i], g);
+      op[i] = o; ring[i] = g;
+    };
+    const pass = (i, t) => tile(i, 1, 1, t);
+    const dim = (ids, t) => ids.forEach((i) => tile(i, 0.3, 0, t));
+    const reset = (t) => [0, 1, 2, 3, 4, 5, 6].forEach((i) => tile(i, 1, 0, t));
+    // 기준선(칸 사이 틈 가운데)
+    const GAP = (i) => 450 + i * 204 - 3;
+    let barX = null, lab = null;
+    const bar = (gap, labId, t) => {
+      const x = GAP(gap);
+      if (barX === null) ft("#s04-bar", { x, opacity: 0 }, { x, opacity: 1 }, t);
+      else ft("#s04-bar", { x: barX }, { x, duration: 0.7 * S, ease: "power2.inOut" }, t);
+      if (lab) fade(lab, t, 1, 0);
+      fade(labId, t + 0.3, 0, 1);
+      barX = x; lab = labId;
+    };
+    const barOff = (t) => { if (barX !== null) fade("#s04-bar", t, 1, 0); if (lab) fade(lab, t, 1, 0); barX = null; lab = null; };
+    let chipRing = null;
+    const cring = (id, t) => { if (chipRing) fade(chipRing, t, 1, 0); if (id) fade(id, t, 0, 1); chipRing = id; };
+
+    // 15 개발 부서보다 급여가 많은 직원
+    head("#s04-ha", null, at(0, 0));
+    ft("#s04-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.2));
+    sql("#s04-vz", at(0, 0.3));
+    [0, 1, 2, 3, 4, 5, 6].forEach((i) => ft(`#s04-t${i}`, { opacity: 0, y: 10 }, { opacity: 1, y: 0 }, at(0, 1.0 + i * 0.12)));
+    // 16 누구 한 명보다? 모두보다? — 개발 부서 급여 400 · 600
+    stamp("#s04-v4", at(1, 0.3));
+    stamp("#s04-v6", at(1, 0.5));
+    // 17 앞의 뜻 > ANY, 뒤의 뜻 > ALL
+    sql("#s04-va", at(2, 0.2));
+    // 18 > ANY: 하나보다만 크면 → 가장 작은 400
+    fade("#s04-hi", at(3, 0.1), 0, 1);
+    cring("#s04-o4", w("kmin", at(3, 3.6)));
+    bar(3, "#s04-l1", w("kmin", at(3, 3.6)) + 0.2);
+    // 19 지영 500, 동훈 600, 현우 700, 세 행
+    dim([0, 1, 2, 3], at(4, 0));
+    pass(4, w("n1", at(4, 0.1)) - 0.1);
+    pass(5, w("n2", at(4, 1.4)) - 0.1);
+    pass(6, w("n3", at(4, 2.8)) - 0.1);
+    count("#s04-c3", w("r3", at(4, 4.4)) - 0.1);
+    // 20 > ALL: 둘 모두보다 → 가장 큰 600
+    sql("#s04-vb", at(5, 0.1));
+    reset(at(5, 0.3));
+    count(null, at(5, 0.3));
+    cring("#s04-o6", w("kmax", at(5, 2.6)));
+    bar(5, "#s04-l2", w("kmax", at(5, 2.6)) + 0.2);
+    // 21 현우 700, 한 행
+    dim([0, 1, 2, 3, 4, 5], at(6, 0));
+    pass(6, at(6, 0.1));
+    count("#s04-c1", at(6, 1.2));
+    // 22 > ANY = 최솟값, > ALL = 최댓값
+    ft("#s04-sum", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(7, 0.2));
+    sum("#s04-a1", at(7, 0.4));
+    sum("#s04-a2", at(7, 2.4));
+    // 23 부등호를 뒤집으면 끝값도 바뀐다
+    head("#s04-hb", "#s04-ha", at(8, 0));
+    fade(["#s04-a1", "#s04-a2"], at(8, 0.3), 1, 0.4);
+    reset(at(8, 0.3));
+    count(null, at(8, 0.3));
+    barOff(at(8, 0.3));
+    cring(null, at(8, 0.3));
+    // 24 < ANY: 가장 큰 600보다 작으면 → 다섯 행
+    sql("#s04-vc", at(9, 0.1));
+    cring("#s04-o6", w("k24", at(9, 1.2)));
+    bar(4, "#s04-l3", w("k24", at(9, 1.2)) + 0.2);
+    dim([5, 6], w("r5", at(9, 3.2)) - 0.6);
+    [0, 1, 2, 3, 4].forEach((i) => pass(i, w("r5", at(9, 3.2)) - 0.6));
+    count("#s04-c5", w("r5", at(9, 3.2)) - 0.1);
+    // 25 < ALL: 가장 작은 400보다 작아야 → 민수 · 예린, 두 행
+    sql("#s04-vd", at(10, 0.1));
+    reset(at(10, 0.3));
+    count(null, at(10, 0.3));
+    cring("#s04-o4", w("k25", at(10, 1.2)));
+    bar(1, "#s04-l4", w("k25", at(10, 1.2)) + 0.2);
+    dim([2, 3, 4, 5, 6], w("r2", at(10, 4.4)) - 1.4);
+    pass(0, w("r2", at(10, 4.4)) - 1.4);
+    pass(1, w("r2", at(10, 4.4)) - 1.4);
+    count("#s04-c2", w("r2", at(10, 4.4)) - 0.1);
+    // 26 ANY = 통과하기 쉬운 쪽 끝값, ALL = 어려운 쪽 끝값
+    fade(["#s04-a1", "#s04-a2"], at(11, 0.1), 0.4, 0);
+    sumOn = [];
+    sum("#s04-b1", at(11, 0.4));
+    sum("#s04-b2", at(11, 3.0));
+    // 27 기획 부서처럼 결과가 0행이면 비교할 값이 없다
+    sql("#s04-ve", at(12, 0.1));
+    sumOff(at(12, 0.2));
+    reset(at(12, 0.2));
+    count(null, at(12, 0.2));
+    barOff(at(12, 0.2));
+    cring(null, at(12, 0.2));
+    fade(["#s04-v4", "#s04-v6"], at(12, 0.4), 1, 0);
+    stamp("#s04-v0", at(12, 1.0));
+    // 28 > ALL은 모든 행이 참(7행), > ANY는 모든 행이 거짓(0행)
+    [0, 1, 2, 3, 4, 5, 6].forEach((i) => pass(i, at(13, 0.3)));
+    sum("#s04-e1", at(13, 0.3));
+    count("#s04-c7", at(13, 1.4));
+    sql("#s04-vf", w("nany", at(13, 3.6)) - 0.8);
+    dim([0, 1, 2, 3, 4, 5, 6], w("nany", at(13, 3.6)));
+    sum("#s04-e2", w("nany", at(13, 3.6)));
+    count("#s04-c0", w("nany", at(13, 3.6)) + 0.4);
+    if (String(V.exit) !== "false") ft("#s04-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s04"] = tl;
+  </script>
+</template>

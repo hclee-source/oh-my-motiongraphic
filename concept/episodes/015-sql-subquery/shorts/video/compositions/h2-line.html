@@ -1,0 +1,96 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h2-code { left: 90px; top: 320px; width: 900px; height: 140px; }
+    .h2-v { position: absolute; left: 0; right: 0; top: 0; height: 140px; display: flex; align-items: center; justify-content: center;
+      font-size: 56px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    .h2-op { color: var(--color-accent-dark, #A68CFF); font-weight: 900; }
+    .h2-ch { top: 520px; width: 140px; height: 90px; border-radius: 45px; font-size: 48px; }
+    .h2-ring { position: absolute; top: 513px; width: 154px; height: 104px; border-radius: 52px; border: 4px solid var(--color-accent, #6B3FE6);
+      box-sizing: border-box; opacity: 0; }
+    #h2-axis { position: absolute; left: 120px; top: 678px; width: 780px; height: 6px; border-radius: 3px; background: var(--color-hair, #D3D6DD); opacity: 0; }
+    #h2-band { position: absolute; left: 0; top: 664px; width: 100px; height: 34px; border-radius: 17px;
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 18%, #FFFFFF); opacity: 0; transform-origin: left center; }
+    #h2-bar { position: absolute; left: 0; top: 630px; width: 8px; height: 104px; border-radius: 4px; background: var(--color-accent, #6B3FE6); opacity: 0; }
+    #h2-dot { position: absolute; left: 571px; top: 664px; width: 34px; height: 34px; border-radius: 17px; background: var(--color-anchor, #18181B); opacity: 0; }
+    #h2-sixty { left: 483px; top: 750px; width: 210px; height: 90px; border-radius: 45px; font-size: 46px; }
+    .h2-res { top: 880px; width: 400px; height: 100px; border-radius: 50px; font-size: 48px; font-weight: 900; }
+    #h2-rows { position: absolute; left: 90px; top: 1010px; width: 860px; height: 230px; }
+    .h2-r { position: absolute; left: 0; right: 0; height: 100px; display: flex; align-items: center; justify-content: center;
+      font-size: 50px; font-weight: 900; white-space: nowrap; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="h2" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,7.9,13.8,18.6,23.2]"},{"id":"dur","type":"number","label":"장면 길이","default":30.7},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"a20","type":"number","label":"20 시각","default":2.4},{"id":"a50","type":"number","label":"50 시각","default":3},{"id":"a80","type":"number","label":"80 시각","default":3.6},{"id":"a60","type":"number","label":"60 시각","default":5.6},{"id":"kmin","type":"number","label":"가장 작은 시각","default":11},{"id":"kmax","type":"number","label":"가장 큰 시각","default":16},{"id":"fl","type":"number","label":"거짓 시각","default":21.6},{"id":"lany","type":"number","label":"작은 애니 시각","default":25.6},{"id":"lall","type":"number","label":"작은 올 시각","default":27.6},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h2-all">
+      <div id="h2-code" class="x-dark q-code x-hide" data-layout-allow-overlap>
+        <div class="h2-v" id="h2-va"><span>60 <span class="h2-op">&gt; ANY</span> (20, 50, 80)</span></div>
+        <div class="h2-v" id="h2-vb"><span>60 <span class="h2-op">&gt; ALL</span> (20, 50, 80)</span></div>
+      </div>
+      <div class="h2-ring" id="h2-o20" style="left:199px"></div>
+      <div class="h2-ring" id="h2-o80" style="left:667px"></div>
+      <div class="q-chip q-ok h2-ch" id="h2-c20" style="left:206px">20</div>
+      <div class="q-chip q-ok h2-ch" id="h2-c50" style="left:440px">50</div>
+      <div class="q-chip q-ok h2-ch" id="h2-c80" style="left:674px">80</div>
+      <div id="h2-axis"></div>
+      <div id="h2-band"></div>
+      <div id="h2-bar"></div>
+      <div id="h2-dot"></div>
+      <div id="h2-sixty" class="q-chip q-ng">값 60</div>
+      <div class="q-chip q-ok h2-res" id="h2-ry" style="left:120px">&gt; ANY ✓ 참</div>
+      <div class="q-chip q-ng h2-res" id="h2-rn" style="left:550px">&gt; ALL ✕ 거짓</div>
+      <div id="h2-rows" class="x-card x-hide">
+        <div class="h2-r" id="h2-l1" style="top:16px"><span><span class="x-acc">&lt; ANY</span> = 최댓값과 비교</span></div>
+        <div class="h2-r" id="h2-l2" style="top:114px"><span><span class="x-acc">&lt; ALL</span> = 최솟값과 비교</span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 30.7;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const w = (k, d) => (Number(V[k]) || d);
+    // 숫자 줄: 0~100을 x 120~900에
+    const X = (v) => 120 + v * 7.8;
+
+    // 4 서브쿼리 결과 20, 50, 80 / 비교할 값 60
+    fade("#h2-axis", at(0, 0), 0, 1);
+    stamp("#h2-c20", w("a20", at(0, 1.9)) - 0.1);
+    stamp("#h2-c50", w("a50", at(0, 2.5)) - 0.1);
+    stamp("#h2-c80", w("a80", at(0, 3.1)) - 0.1);
+    stamp("#h2-dot", w("a60", at(0, 5.1)) - 0.1);
+    stamp("#h2-sixty", w("a60", at(0, 5.1)));
+    // 5 > ANY: 하나보다만 크면 → 가장 작은 20
+    ft("#h2-code", { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, at(1, 0));
+    fade("#h2-va", at(1, 0.1), 0, 1);
+    const k1 = w("kmin", at(1, 3.3)) - 0.1;
+    fade("#h2-o20", k1, 0, 1);
+    ft("#h2-bar", { x: X(20) - 4, opacity: 0 }, { x: X(20) - 4, opacity: 1 }, k1 + 0.2);
+    ft("#h2-band", { x: X(20), scaleX: (900 - X(20)) / 100, opacity: 0 }, { x: X(20), scaleX: (900 - X(20)) / 100, opacity: 1 }, k1 + 0.3);
+    // 6 > ALL: 모두보다 → 가장 큰 80
+    fade("#h2-va", at(2, 0), 1, 0);
+    fade("#h2-vb", at(2, 0.15), 0, 1);
+    const k2 = w("kmax", at(2, 2.6)) - 0.1;
+    fade("#h2-o20", k2, 1, 0);
+    fade("#h2-o80", k2, 0, 1);
+    ft("#h2-bar", { x: X(20) - 4 }, { x: X(80) - 4, duration: 0.6 * S, ease: "power2.inOut" }, k2 + 0.2);
+    ft("#h2-band", { x: X(20), scaleX: (900 - X(20)) / 100 }, { x: X(80), scaleX: (900 - X(80)) / 100, duration: 0.6 * S, ease: "power2.inOut" }, k2 + 0.2);
+    // 7 그래서 60은 > ANY 참, > ALL 거짓
+    stamp("#h2-ry", at(3, 0.8));
+    stamp("#h2-rn", w("fl", at(3, 3)) - 0.1);
+    // 8 부등호를 뒤집으면 < ANY = 최댓값, < ALL = 최솟값
+    fade(["#h2-bar", "#h2-band", "#h2-o80"], at(4, 0), 1, 0);
+    fade(["#h2-ry", "#h2-rn", "#h2-code", "#h2-vb"], at(4, 0), 1, 0.35);
+    ft("#h2-rows", { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, at(4, 0.4));
+    fade("#h2-l1", w("lany", at(4, 2.4)) - 0.2, 0, 1);
+    fade("#h2-l2", w("lall", at(4, 4.4)) - 0.2, 0, 1);
+    if (String(V.exit) !== "false") ft("#h2-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h2"] = tl;
+  </script>
+</template>

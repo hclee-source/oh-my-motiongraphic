@@ -1,0 +1,64 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h2-tb { left: 60px; top: 360px; width: 880px; height: 360px; }
+    #h2-tb .q-th, #h2-tb .q-tr { grid-template-columns: 190px 200px 434px; }
+    #h2-tb .q-th { top: 20px; }
+    #h2-tb .q-th > div { font-size: 32px; }
+    #h2-tb .q-tr { height: 64px; }
+    #h2-tb .q-tr > div { font-size: 44px; }
+    #h2-rows { position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
+    .h2-r { opacity: 0; }
+    .h2-x { position: absolute; left: 780px; width: 56px; height: 56px; opacity: 0; }
+    .h2-x > div { position: absolute; left: 0; top: 25px; width: 56px; height: 6px; border-radius: 3px; background: #18181B; }
+    .h2-x > div:first-child { transform: rotate(45deg); }
+    .h2-x > div:last-child { transform: rotate(-45deg); }
+    #h2-chip { left: 60px; top: 790px; width: 560px; height: 96px; font-size: 52px; border-radius: 48px; }
+  </style>
+  <div id="root" data-composition-id="h2" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3.2]"},{"id":"dur","type":"number","label":"장면 길이","default":7.3},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"xm","type":"number","label":"함께 시각","default":0},{"id":"sp","type":"number","label":"두 행 시각","default":0},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h2-all">
+      <div id="h2-tb" class="x-card q-tb x-hide">
+        <div class="q-th"><div>학번</div><div>이름</div><div>과목</div></div>
+        <div id="h2-rows" data-layout-allow-overlap>
+          <div class="q-tr h2-r" id="h2-r1c" style="top:90px"><div>1001</div><div>민지</div><div class="h2-cv">수학, 영어</div></div>
+          <div class="q-tr h2-r" id="h2-r1a" style="top:90px"><div>1001</div><div>민지</div><div>수학</div></div>
+          <div class="q-tr h2-r" id="h2-r1b" style="top:174px"><div>1001</div><div>민지</div><div>영어</div></div>
+          <div class="q-tr h2-r" id="h2-r2" style="top:174px"><div>1002</div><div>서준</div><div>수학</div></div>
+        </div>
+        <div class="h2-x" id="h2-x" style="top:90px"><div></div><div></div></div>
+      </div>
+      <div id="h2-chip" class="q-chip q-ok">한 칸에 값 하나</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 7.3;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const ACC = "#6B3FE6", INK = "#18181B";
+
+    // 3 제1정규형은 한 칸에 값 하나
+    ft("#h2-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0));
+    ["#h2-r1c", "#h2-r2"].forEach((id, j) => ft(id, { opacity: 0, y: 8 }, { opacity: 1, y: 0 }, at(0, 0.3 + j * 0.15)));
+    stamp("#h2-chip", at(0, 1.0));
+    // 4 과목 칸에 ‘수학, 영어’가 함께 있으면 두 행으로
+    ft(".h2-cv", { color: INK }, { color: ACC }, X("xm", at(1, 1.0)) - 0.2);
+    stamp("#h2-x", X("xm", at(1, 1.0)));
+    const sp = X("sp", at(1, 2.2));
+    fade("#h2-x", sp - 0.1, 1, 0);
+    fade("#h2-r1c", sp, 1, 0);
+    ft("#h2-r1a", { opacity: 0, y: -6 }, { opacity: 1, y: 0 }, sp);
+    ft("#h2-r1b", { opacity: 0, y: -6 }, { opacity: 1, y: 0 }, sp + 0.1);
+    ft("#h2-r2", { y: 0 }, { y: 84, ease: "power2.inOut" }, sp);
+    if (String(V.exit) !== "false") ft("#h2-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h2"] = tl;
+  </script>
+</template>

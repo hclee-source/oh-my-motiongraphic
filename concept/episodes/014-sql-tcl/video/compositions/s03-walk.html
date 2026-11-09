@@ -1,0 +1,223 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s03-code { left: 192px; top: 262px; width: 900px; height: 584px; padding: 22px 0; }
+    #s03-code .q-ln { font-size: 32px; height: 54px; padding: 0 30px 0 18px; }
+    .s03-no { display: inline-block; width: 46px; margin-right: 20px; text-align: right; font-size: 30px; font-weight: 700; color: #A1A1AA; }
+    /* SAVEPOINT 줄 끝의 깃발: 막대 + 글자 깃발(도형이 글자를 완전히 감쌈) */
+    .s03-fl { position: absolute; right: 56px; top: 3px; width: 70px; height: 48px; opacity: 0; }
+    .s03-fp { position: absolute; left: 0; top: 0; width: 5px; height: 48px; border-radius: 3px; background: #D4D4D8; }
+    .s03-ff { position: absolute; left: 9px; top: 0; width: 58px; height: 38px; border-radius: 4px 12px 12px 4px;
+      background: var(--color-accent-dark, #A68CFF); color: #18181B; font-size: 28px; font-weight: 900;
+      display: flex; align-items: center; justify-content: center; }
+    .s03-x { position: absolute; left: -6px; top: -4px; width: 82px; height: 56px; opacity: 0; }
+    .s03-x > i { position: absolute; left: 4px; top: 25px; width: 74px; height: 6px; border-radius: 3px; background: #FFFFFF; }
+    .s03-x > i:first-child { transform: rotate(32deg); }
+    .s03-x > i:last-child { transform: rotate(-32deg); }
+    #s03-tb { left: 1124px; top: 262px; width: 604px; height: 404px; }
+    #s03-tb .q-th, #s03-tb .q-tr { grid-template-columns: 200px 200px 148px; }
+    .s03-cnt { position: relative; height: 40px; }
+    .s03-cnt > span { position: absolute; left: 0; right: 0; top: 0; text-align: center; font-size: 32px; font-weight: 900;
+      color: var(--color-accent, #6B3FE6); opacity: 0; }
+    .s03-sw { position: relative; height: 44px; }
+    .s03-sw > span { position: absolute; left: 0; right: 0; top: 0; text-align: center; }
+    #s03-st { position: absolute; left: 28px; right: 28px; top: 340px; height: 44px; }
+    #s03-st > span { position: absolute; left: 0; right: 0; top: 0; text-align: center; font-size: 30px; font-weight: 800; opacity: 0; }
+    #s03-note { position: absolute; left: 1124px; top: 690px; width: 604px; height: 156px; }
+    .s03-n { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center;
+      text-align: center; font-size: 36px; font-weight: 800; line-height: 1.35; opacity: 0; }
+    .s03-big { font-size: 60px; font-weight: 900; }
+  </style>
+  <div id="root" data-composition-id="s03" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,6.6,10.3,14.1,18.8,25.7,29.2,35.3,38.8,43.9,48.2,53.1,56.7,62.3,67.1,72.7,77.4,82.6,87.4,91.0,96.0,99.3,104.4,111.8]"},{"id":"dur","type":"number","label":"장면 길이","default":115.3},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"g1","type":"number","label":"감 40 시각","default":8.2},{"id":"fa","type":"number","label":"깃발 A를 시각","default":23.2},{"id":"fb","type":"number","label":"깃발 B를 시각","default":33.4},{"id":"u15","type":"number","label":"15로 시각","default":27.2},{"id":"bd","type":"number","label":"배를 시각","default":37},{"id":"br","type":"number","label":"배가 돌아와 시각","default":50.6},{"id":"a10","type":"number","label":"다시 10 시각","default":70},{"id":"bx","type":"number","label":"깃발 B는 시각","default":79},{"id":"gd","type":"number","label":"귤을 시각","default":97.4},{"id":"gr","type":"number","label":"귤이 돌아와 시각","default":104.6},{"id":"ans","type":"number","label":"네 행입니다 시각","default":109.6},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s03-all">
+      <div id="s03-ha" class="x-head">INSERT와 SAVEPOINT A</div>
+      <div id="s03-hb" class="x-head">UPDATE, SAVEPOINT B, DELETE</div>
+      <div id="s03-hc" class="x-head">ROLLBACK TO B</div>
+      <div id="s03-hd" class="x-head">ROLLBACK TO A</div>
+      <div id="s03-he" class="x-head">COMMIT 다음의 ROLLBACK</div>
+      <div id="s03-code" class="x-dark q-code x-hide">
+        <div class="q-ln" id="s03-l1"><div class="q-hi" id="s03-h1"></div><span><span class="s03-no">1</span><span class="q-k">INSERT INTO</span> 과일 <span class="q-k">VALUES</span> ('감', 40);</span></div>
+        <div class="q-ln" id="s03-l2"><div class="q-hi" id="s03-h2"></div><span><span class="s03-no">2</span><span class="q-k">SAVEPOINT</span> A;</span>
+          <div class="s03-fl" id="s03-fa"><div class="s03-fp" id="s03-fap"></div><div class="s03-ff" id="s03-faf">A</div></div></div>
+        <div class="q-ln" id="s03-l3"><div class="q-hi" id="s03-h3"></div><span><span class="s03-no">3</span><span class="q-k">UPDATE</span> 과일 <span class="q-k">SET</span> 수량 = 15 <span class="q-k">WHERE</span> 이름 = '사과';</span></div>
+        <div class="q-ln" id="s03-l4"><div class="q-hi" id="s03-h4"></div><span><span class="s03-no">4</span><span class="q-k">SAVEPOINT</span> B;</span>
+          <div class="s03-fl" id="s03-fb"><div class="s03-fp" id="s03-fbp"></div><div class="s03-ff" id="s03-fbf">B</div>
+            <div class="s03-x" id="s03-fbx"><i></i><i></i></div></div></div>
+        <div class="q-ln" id="s03-l5"><div class="q-hi" id="s03-h5"></div><span><span class="s03-no">5</span><span class="q-k">DELETE FROM</span> 과일 <span class="q-k">WHERE</span> 이름 = '배';</span></div>
+        <div class="q-ln" id="s03-l6"><div class="q-hi" id="s03-h6"></div><span><span class="s03-no">6</span><span class="q-k">ROLLBACK TO</span> B;</span></div>
+        <div class="q-ln" id="s03-l7"><div class="q-hi" id="s03-h7"></div><span><span class="s03-no">7</span><span class="q-k">ROLLBACK TO</span> A;</span></div>
+        <div class="q-ln" id="s03-l8"><div class="q-hi" id="s03-h8"></div><span><span class="s03-no">8</span><span class="q-k">COMMIT</span>;</span></div>
+        <div class="q-ln" id="s03-l9"><div class="q-hi" id="s03-h9"></div><span><span class="s03-no">9</span><span class="q-k">DELETE FROM</span> 과일 <span class="q-k">WHERE</span> 이름 = '귤';</span></div>
+        <div class="q-ln" id="s03-l10"><div class="q-hi" id="s03-h10"></div><span><span class="s03-no">10</span><span class="q-k">ROLLBACK</span>;</span></div>
+      </div>
+      <div id="s03-tb" class="x-card q-tb x-hide">
+        <div class="q-th" style="top:20px"><div>이름</div><div>수량</div>
+          <div class="s03-cnt" data-layout-allow-overlap><span id="s03-c3">3행</span><span id="s03-c4">4행</span></div></div>
+        <div class="q-tr" id="s03-r0" style="top:92px"><div>사과</div>
+          <div class="s03-sw" data-layout-allow-overlap><span id="s03-a10">10</span><span id="s03-a15" class="x-acc" style="opacity:0">15</span></div><div></div></div>
+        <div class="q-tr" id="s03-r1" style="top:152px"><div>배</div><div>20</div><div></div></div>
+        <div class="q-tr" id="s03-r2" style="top:212px"><div>귤</div><div>30</div><div></div></div>
+        <div class="q-tr" id="s03-r3" style="top:272px;opacity:0;color:#6B3FE6"><div>감</div><div>40</div><div></div></div>
+        <div id="s03-st" data-layout-allow-overlap>
+          <span id="s03-st1" class="x-ink2">모두 확정</span>
+          <span id="s03-st2" class="x-acc">바이올렛 = COMMIT 전 변경</span>
+        </div>
+      </div>
+      <div id="s03-note" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s03-n" id="s03-na"><div>COMMIT 전이라<br />아직 확정되지 않은 행</div></div>
+        <div class="s03-n" id="s03-nb"><div>작업 중인 나에게는<br />4행이 보인다</div></div>
+        <div class="s03-n" id="s03-nc"><div>깃발 A<br /><span class="x-ink2">감까지 넣은 상태</span></div></div>
+        <div class="s03-n" id="s03-nu"><div>UPDATE<br /><span class="x-acc">사과 10 → 15</span></div></div>
+        <div class="s03-n" id="s03-nd"><div>깃발 B<br /><span class="x-ink2">사과가 15인 상태</span></div></div>
+        <div class="s03-n" id="s03-nx"><div>DELETE<br /><span class="x-acc">배 삭제 → 3행</span></div></div>
+        <div class="s03-n" id="s03-ne"><div>B 뒤의 작업만 취소</div></div>
+        <div class="s03-n" id="s03-nf"><div>깃발 A · B 그대로<br /><span class="x-ink2">트랜잭션은 계속</span></div></div>
+        <div class="s03-n" id="s03-ng"><div>A 뒤의 작업 모두 취소</div></div>
+        <div class="s03-n" id="s03-nh"><div>A보다 앞의 감은 그대로</div></div>
+        <div class="s03-n" id="s03-ni"><div>A 뒤에 꽂은 깃발 B는<br />지워진다</div></div>
+        <div class="s03-n" id="s03-nj"><div>ROLLBACK TO B<br /><span class="x-acc">→ 오류</span></div></div>
+        <div class="s03-n" id="s03-nk"><div>COMMIT<br /><span class="x-acc">4행 확정</span></div></div>
+        <div class="s03-n" id="s03-nl"><div>저장 지점도<br />모두 사라진다</div></div>
+        <div class="s03-n" id="s03-ny"><div>DELETE<br /><span class="x-acc">귤 삭제 → 3행</span></div></div>
+        <div class="s03-n" id="s03-nm"><div>이름 없는 ROLLBACK은<br /><span class="x-acc">마지막 COMMIT으로</span></div></div>
+        <div class="s03-n s03-big x-acc" id="s03-nn"><div>답 4행</div></div>
+        <div class="s03-n" id="s03-no"><div>COMMIT한 감은<br />ROLLBACK으로 못 지운다</div></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 115.3;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, i, d) => Number(V[k]) || at(i, d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+    const head = (id, prev, t) => { if (prev) fade(prev, t, 1, 0); ft(id, { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, t + (prev ? 0.2 : 0)); };
+    const ACC = "#6B3FE6", INK = "#18181B";
+    let cur = 0;
+    const hi = (k, t) => { if (cur) fade(`#s03-h${cur}`, t, 1, 0); if (k) fade(`#s03-h${k}`, t, 0, 1); cur = k; };
+    let note = null;
+    const say = (id, t) => { if (note) fade(note, t, 1, 0); if (id) fade(id, t + 0.15, 0, 1); note = id; };
+    let cnt = 0;
+    const count = (k, t) => { if (cnt) fade(`#s03-c${cnt}`, t, 1, 0); fade(`#s03-c${k}`, t + 0.1, 0, 1); cnt = k; };
+    let st = 0;
+    const state = (k, t) => { if (st) fade(`#s03-st${st}`, t, 1, 0); fade(`#s03-st${k}`, t + 0.1, 0, 1); st = k; };
+    const undo = (k, t) => fade(`#s03-l${k} > span`, t, 1, 0.3);  // 되돌려진 줄은 흐리게
+
+    // ── 3장 ── 14 처음 3행이 커밋되어 있다
+    head("#s03-ha", null, at(0, 0));
+    ft("#s03-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.2));
+    ft("#s03-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.5));
+    count(3, at(0, 1.2));
+    state(1, at(0, 1.6));
+    // 15 첫째 줄 INSERT 감 40 → 4행
+    hi(1, at(1, 0.1));
+    const g1 = X("g1", 1, 1.6);
+    ft("#s03-r3", { opacity: 0, y: 8 }, { opacity: 1, y: 0 }, g1);
+    count(4, g1 + 0.5);
+    state(2, g1 + 0.8);
+    // 16 아직 COMMIT 전 / 17 그래도 나에게는 4행이 보인다
+    ft("#s03-note", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(2, 0.2));
+    say("#s03-na", at(2, 0.2));
+    say("#s03-nb", at(3, 0.3));
+    // 18 둘째 줄 SAVEPOINT A — 깃발 A
+    hi(2, at(4, 0.1));
+    const fa = X("fa", 4, 4.4);
+    stamp("#s03-fa", fa);
+    say("#s03-nc", fa + 0.3);
+
+    // ── 4장 ── 19 셋째 줄 UPDATE 사과 15
+    head("#s03-hb", "#s03-ha", at(5, 0));
+    hi(3, at(5, 0.2));
+    const u15 = X("u15", 5, 1.8);
+    fade("#s03-a10", u15, 1, 0);
+    fade("#s03-a15", u15 + 0.15, 0, 1);
+    say("#s03-nu", u15 + 0.2);
+    // 20 넷째 줄 SAVEPOINT B — 깃발 B
+    hi(4, at(6, 0.1));
+    const fb = X("fb", 6, 4.2);
+    stamp("#s03-fb", fb);
+    say("#s03-nd", fb + 0.3);
+    // 21 다섯째 줄 DELETE 배 → 3행
+    hi(5, at(7, 0.1));
+    const bd = X("bd", 7, 1.5);
+    fade("#s03-r1", bd, 1, 0.22);
+    count(3, bd + 0.6);
+    say("#s03-nx", bd + 0.6);
+    // 22 지금 표: 사과 15, 귤 30, 감 40
+    ft(["#s03-r0", "#s03-r2", "#s03-r3"], { scale: 1 }, { scale: 1.04, duration: 0.25 * S, yoyo: true, repeat: 1, ease: "power2.out" }, at(8, 0.4));
+
+    // ── 5장 ── 23 여섯째 줄 ROLLBACK TO B — B 뒤의 작업만
+    head("#s03-hc", "#s03-hb", at(9, 0));
+    hi(6, at(9, 0.2));
+    say("#s03-ne", at(9, 1.4));
+    // 24 B 뒤의 일은 배 삭제 하나 → 배가 돌아와 4행
+    undo(5, at(10, 0.4));
+    const br = X("br", 10, 2.4);
+    fade("#s03-r1", br, 0.22, 1);
+    count(4, br + 0.5);
+    // 25 B보다 앞의 사과 15는 그대로
+    ft("#s03-r0", { scale: 1 }, { scale: 1.06, duration: 0.25 * S, yoyo: true, repeat: 1, ease: "power2.out" }, at(11, 0.6));
+    // 26 깃발 A · B 그대로, 트랜잭션 계속
+    say("#s03-nf", at(12, 0.3));
+    ft(["#s03-fa", "#s03-fb"], { scale: 1 }, { scale: 1.12, duration: 0.25 * S, yoyo: true, repeat: 1, ease: "power2.out" }, at(12, 2.4));
+
+    // ── 6장 ── 27 일곱째 줄 ROLLBACK TO A — A 뒤의 작업 모두
+    head("#s03-hd", "#s03-hc", at(13, 0));
+    hi(7, at(13, 0.2));
+    say("#s03-ng", at(13, 1.4));
+    // 28 A 뒤에 남은 일은 사과 15 → 다시 10
+    undo(3, at(14, 0.6));
+    const a10 = X("a10", 14, 3.6);
+    fade("#s03-a15", a10, 1, 0);
+    fade("#s03-a10", a10 + 0.15, 0, 1);
+    // 29 A보다 앞의 감은 그대로, 여전히 4행
+    say("#s03-nh", at(15, 0.3));
+    ft("#s03-r3", { scale: 1 }, { scale: 1.06, duration: 0.25 * S, yoyo: true, repeat: 1, ease: "power2.out" }, at(15, 1.0));
+    // 30 A 뒤에 꽂은 깃발 B는 지워지고 A만
+    const bx = X("bx", 16, 1.0);
+    say("#s03-ni", bx);
+    fade(["#s03-fbp", "#s03-fbf"], bx + 0.3, 1, 0.25);
+    fade("#s03-fbx", bx + 0.4, 0, 1);
+    // 31 이 다음 ROLLBACK TO B → 오류
+    say("#s03-nj", at(17, 0.3));
+
+    // ── 7장 ── 32 여덟째 줄 COMMIT → 4행 확정
+    head("#s03-he", "#s03-hd", at(18, 0));
+    hi(8, at(18, 0.2));
+    say("#s03-nk", at(18, 1.2));
+    ft("#s03-r3", { color: ACC }, { color: INK }, at(18, 1.4));
+    state(1, at(18, 1.6));
+    // 33 트랜잭션이 끝나고 깃발 A도 사라진다
+    say("#s03-nl", at(19, 0.3));
+    fade(["#s03-fa", "#s03-fb"], at(19, 2.4), 1, 0);
+    // 34 아홉째 줄 DELETE 귤 → 3행
+    hi(9, at(20, 0.1));
+    const gd = X("gd", 20, 1.4);
+    fade("#s03-r2", gd, 1, 0.22);
+    count(3, gd + 0.6);
+    state(2, gd + 0.9);
+    say("#s03-ny", gd + 0.6);
+    // 35 마지막 줄 ROLLBACK — 이름 없음 → 마지막 COMMIT으로
+    hi(10, at(21, 0.2));
+    say("#s03-nm", at(21, 1.4));
+    undo(9, at(21, 2.6));
+    // 36 귤이 돌아와 답 4행
+    const gr = X("gr", 22, 0.1);
+    fade("#s03-r2", gr, 0.22, 1);
+    count(4, gr + 0.5);
+    state(1, gr + 0.8);
+    say("#s03-nn", X("ans", 22, 5.6));
+    // 37 이미 COMMIT한 감은 ROLLBACK으로도 못 지운다
+    say("#s03-no", at(23, 0.2));
+    ft("#s03-r3", { scale: 1 }, { scale: 1.06, duration: 0.25 * S, yoyo: true, repeat: 1, ease: "power2.out" }, at(23, 0.8));
+    if (String(V.exit) !== "false") ft("#s03-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s03"] = tl;
+  </script>
+</template>

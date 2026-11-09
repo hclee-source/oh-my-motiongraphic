@@ -1,0 +1,24 @@
+{
+  "_설명": "쇼츠(세로) 조립 설정. 장면 순서(장 번호, 여러 장을 한 장면으로 묶을 수 있음), 영상 내내 떠 있는 위쪽 제목, 효과음 위치([이름, 장면 안 문장 순번(0부터), 그 문장 시작 뒤 초]).",
+  "format": {
+    "width": 1080, "height": 1920, "resolution": "portrait",
+    "caption": { "max": 17, "deep": true, "bottom": 540, "size": 54, "weight": 700, "width": 940 }
+  },
+  "overlays": [
+    { "id": "hd", "file": "header.html" }
+  ],
+  "scenes": [
+    { "id": "h1", "file": "h1-venn.html", "chapter": [1, 2, 3, 4],
+      "extra": { "lo": { "sentence": 1, "at": "아래" }, "v9": { "sentence": 3, "at": "9행" }, "v6": { "sentence": 4, "at": "6행" },
+                 "dup": { "sentence": 4, "at": "아래 결과 안에서" }, "v2": { "sentence": 5, "at": "2행" },
+                 "v1": { "sentence": 6, "at": "1행" }, "v3": { "sentence": 7, "at": "3행" } } },
+    { "id": "h5", "file": "h5-rules.html", "chapter": 5, "extra": { "nm": { "sentence": 9, "at": "결과 열 이름은" } } },
+    { "id": "h6", "file": "h6-summary.html", "chapter": 6, "exit": false, "extra": { "rs": { "sentence": 11, "at": "나머지" } } }
+  ],
+  "sfx": {
+    "h1": [["pop", 0, 0.4], ["pop", 0, 2.6], ["click-soft", 1, 0.2], ["pop", 2, 0.0], ["click-soft", 3, 0.1], ["click-soft", 4, 0.0],
+           ["click-soft", 5, 0.0], ["click-soft", 6, 0.0], ["pop", 7, 0.1]],
+    "h5": [["pop", 0, -0.3], ["click-soft", 0, 2.7], ["click-soft", 1, 0.1]],
+    "h6": [["pop", 0, -0.1], ["pop", 0, 2.3]]
+  }
+}

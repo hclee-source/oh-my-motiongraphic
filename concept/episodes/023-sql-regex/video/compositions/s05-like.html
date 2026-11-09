@@ -1,0 +1,117 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s05-code { left: 192px; top: 262px; width: 936px; }
+    .s05-pw { position: relative; display: inline-block; width: 300px; height: 60px; vertical-align: middle; }
+    .s05-pw > span { position: absolute; left: 0; top: 0; line-height: 60px; white-space: nowrap; opacity: 0; }
+    #s05-tb { left: 1188px; top: 262px; width: 540px; height: 584px; }
+    #s05-tb .q-th, #s05-tb .q-tr { grid-template-columns: 260px 224px; }
+    #s05-tb .q-tr { height: 64px; }
+    #s05-tb .q-tr > div { font-size: 44px; }
+    #s05-th { top: 20px; }
+    .s05-cnt { position: relative; height: 40px; }
+    .s05-cnt > span { position: absolute; left: 0; right: 0; top: 0; text-align: center; font-size: 32px; font-weight: 900;
+      color: var(--color-accent, #6B3FE6); opacity: 0; }
+    .s05-ok { color: var(--color-accent, #6B3FE6); opacity: 0; }
+    #s05-note { position: absolute; left: 192px; top: 556px; width: 936px; height: 290px; }
+    .s05-n { position: absolute; left: 32px; right: 32px; top: 32px; bottom: 32px; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center; font-size: 46px; font-weight: 800; line-height: 1.45; opacity: 0; }
+    .s05-n small { display: block; font-size: 34px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    .s05-big { font-size: 72px; font-weight: 900; color: var(--color-accent, #6B3FE6); margin-right: 24px; }
+  </style>
+  <div id="root" data-composition-id="s05" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3.2,8,14.3,19.5,26.1,34.7,42.8,47,50.6]"},{"id":"dur","type":"number","label":"장면 길이","default":58.1},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"x1","type":"number","label":"뒤쪽 시각","default":9.2},{"id":"x2","type":"number","label":"앞쪽 시각","default":11.2},{"id":"c3","type":"number","label":"캐럿을 시각","default":21.5},{"id":"c3b","type":"number","label":"빠져 시각","default":24.5},{"id":"c4","type":"number","label":"달러 시각","default":28.4},{"id":"c4b","type":"number","label":"4096도 시각","default":30.5},{"id":"c4c","type":"number","label":"두 행이 시각","default":32.8},{"id":"c5","type":"number","label":"0행 시각","default":48.7},{"id":"c6","type":"number","label":"옵션 시각","default":50.6},{"id":"c6b","type":"number","label":"B30이 시각","default":54.8},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s05-all">
+      <div id="s05-head" class="x-head">REGEXP_LIKE와 ^ · $</div>
+      <div id="s05-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">SELECT</span> 코드</span></div>
+        <div class="q-ln"><span><span class="q-k">FROM</span> 상품</span></div>
+        <div class="q-ln"><div class="q-hi" id="s05-h3"></div><span><span class="q-k">WHERE REGEXP_LIKE</span>(코드, <span class="s05-pw" data-layout-allow-overlap><span id="s05-v1">'[0-9]{3}');</span><span id="s05-v2">'^[0-9]{3}');</span><span id="s05-v3">'^[0-9]{3}$');</span><span id="s05-v4">'^b');</span><span id="s05-v5">'^b', 'i');</span></span></span></div>
+      </div>
+      <div id="s05-tb" class="x-card q-tb x-hide">
+        <div class="q-th" id="s05-th"><div>코드</div>
+          <div class="s05-cnt" data-layout-allow-overlap><span id="s05-c1">6행</span><span id="s05-c2">4행</span><span id="s05-c3">3행</span><span id="s05-c4">2행</span><span id="s05-c5">0행</span><span id="s05-c6">1행</span></div></div>
+        <div class="q-tr" id="s05-r0" style="top:96px"><div>A<span id="s05-m0">101</span></div><div class="s05-ok" id="s05-k0">✓</div></div>
+        <div class="q-tr" id="s05-r1" style="top:170px"><div id="s05-m1">205</div><div class="s05-ok" id="s05-k1">✓</div></div>
+        <div class="q-tr" id="s05-r2" style="top:244px"><div><span id="s05-m2">B</span>30</div><div class="s05-ok" id="s05-k2">✓</div></div>
+        <div class="q-tr" id="s05-r3" style="top:318px"><div><span id="s05-m3">409</span>6</div><div class="s05-ok" id="s05-k3">✓</div></div>
+        <div class="q-tr" id="s05-r4" style="top:392px"><div>77C</div><div></div></div>
+        <div class="q-tr" id="s05-r5" style="top:466px"><div id="s05-m5">310</div><div class="s05-ok" id="s05-k5">✓</div></div>
+      </div>
+      <div id="s05-note" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s05-n" id="s05-na">어느 한 부분만 맞아도 참</div>
+        <div class="s05-n" id="s05-nb"><div><span class="s05-big">^</span>문자열의 시작</div></div>
+        <div class="s05-n" id="s05-nc"><div><span class="s05-big">$</span>문자열의 끝</div></div>
+        <div class="s05-n" id="s05-nd">LIKE는 문자열 전체가 맞아야<small>정규 표현식은 ^ · $로 시작과 끝을 묶는다</small></div>
+        <div class="s05-n" id="s05-ne">기본 설정은 대소문자 구분</div>
+        <div class="s05-n" id="s05-nf">옵션 ‘i’ = 대소문자 무시</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 58.1;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k] ?? d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+    const ACC = "#6B3FE6", INK = "#18181B", DIM = 0.25;
+    let pat = 1, cnt = 1, note = null;
+    const pattern = (k, t) => { fade(`#s05-v${pat}`, t, 1, 0); fade(`#s05-v${k}`, t + 0.15, 0, 1); pat = k; };
+    const count = (k, t) => { fade(`#s05-c${cnt}`, t, 1, 0); fade(`#s05-c${k}`, t + 0.1, 0, 1); cnt = k; };
+    const say = (id, t) => { if (note) fade(note, t, 1, 0); fade(id, t + 0.15, 0, 1); note = id; };
+    const hit = (m, k, t) => { ft(m, { color: INK }, { color: ACC }, t); stamp(k, t + 0.1); };
+
+    // 19 처음 문제로 — 같은 표, 같은 SQL
+    ft("#s05-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s05-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.2));
+    fade("#s05-v1", at(0, 0.2), 0, 1);
+    ft("#s05-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.4));
+    fade("#s05-c1", at(0, 0.6), 0, 1);
+    fade("#s05-h3", at(0, 1.2), 0, 1);
+    // 20 어느 한 부분에서라도 맞으면 참
+    ft("#s05-note", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(1, 0.1));
+    say("#s05-na", at(1, 0.1));
+    // 21 A101은 뒤쪽 101, 4096은 앞쪽 409
+    hit("#s05-m0", "#s05-k0", X("x1", 9.2));
+    hit("#s05-m3", "#s05-k3", X("x2", 11.2));
+    // 22 숫자 두 개뿐인 B30, 77C만 빠지고 4행
+    hit("#s05-m1", "#s05-k1", at(3, 0.2));
+    hit("#s05-m5", "#s05-k5", at(3, 0.2));
+    fade(["#s05-r2", "#s05-r4"], at(3, 1.4), 1, DIM);
+    count(2, at(3, 3.4));
+    // 23 앞에 ^ → 숫자로 시작하지 않는 A101이 빠져 3행
+    pattern(2, X("c3", 21.5));
+    say("#s05-nb", X("c3", 21.5));
+    fade("#s05-r0", X("c3b", 24.5) - 0.3, 1, DIM);
+    count(3, X("c3b", 24.5) + 0.4);
+    // 24 뒤에 $ → 네 자리인 4096도 빠져 두 행
+    pattern(3, X("c4", 28.4));
+    say("#s05-nc", X("c4", 28.4));
+    fade("#s05-r3", X("c4b", 30.5), 1, DIM);
+    count(4, X("c4c", 32.8));
+    // 25 LIKE는 전체 일치, 정규 표현식은 ^ · $로 묶는다
+    say("#s05-nd", at(6, 0.2));
+    // 26 기본 설정은 대소문자 구분
+    say("#s05-ne", at(7, 0.1));
+    // 27 '^b' → 0행: 표를 처음 상태로 돌리고 모두 흐리게
+    pattern(4, at(8, 0.1));
+    ft(["#s05-m0", "#s05-m1", "#s05-m3", "#s05-m5"], { color: ACC }, { color: INK }, at(8, 0.1));
+    fade(["#s05-k0", "#s05-k1", "#s05-k3", "#s05-k5"], at(8, 0.1), 1, 0);
+    fade(["#s05-r1", "#s05-r5"], at(8, 0.3), 1, DIM);
+    count(5, X("c5", 48.7));
+    // 28 옵션 'i' → 대문자 B로 시작하는 B30, 1행
+    pattern(5, X("c6", 50.6));
+    say("#s05-nf", X("c6", 50.6) + 0.3);
+    fade("#s05-r2", X("c6b", 54.8) - 0.2, DIM, 1);
+    hit("#s05-m2", "#s05-k2", X("c6b", 54.8));
+    count(6, X("c6b", 54.8) + 0.8);
+    if (String(V.exit) !== "false") ft("#s05-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s05"] = tl;
+  </script>
+</template>

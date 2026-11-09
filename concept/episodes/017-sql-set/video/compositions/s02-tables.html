@@ -1,0 +1,316 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    /* 원본 표 두 개 + SQL 카드(묶음 #s02-src): 2장에서는 화면 가운데(left 458), 3장부터 왼쪽으로 옮겨 결과 표 자리를 낸다 */
+    #s02-src { position: absolute; left: 458px; top: 0; width: 1920px; height: 1080px; }
+    .s02-tb { top: 262px; width: 290px; height: 348px; }
+    #s02-sp { left: 192px; }
+    #s02-su { left: 522px; }
+    .s02-tb .q-th, .s02-tb .q-tr { grid-template-columns: 1fr; }
+    .s02-tb .q-th { top: 72px; height: 50px; }
+    .s02-tb .q-th > div { font-size: 32px; }
+    .s02-tb .q-tr { height: 50px; }
+    .s02-tn { position: absolute; left: 28px; top: 16px; font-size: 36px; font-weight: 900; white-space: nowrap; }
+    .s02-tn span { margin-left: 12px; font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); opacity: 0; }
+    .s02-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    .s02-band { position: absolute; left: 12px; right: 12px; border-radius: 14px;
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 13%, #FFFFFF); opacity: 0; }
+    #s02-svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; }
+    #s02-ln { stroke-width: 4; stroke-linecap: round; stroke-dasharray: 180; stroke-dashoffset: 180; }
+    /* SQL 카드: 가운데 줄(연산자)만 바뀐다. 6장 끝에서 1·3줄이 자리를 바꾼다 */
+    #s02-q { left: 192px; top: 640px; width: 620px; height: 206px; padding: 22px 0; }
+    #s02-q .q-ln { height: 54px; font-size: 32px; }
+    .s02-op { position: relative; width: 320px; height: 54px; }
+    .s02-op > span { position: absolute; left: 0; top: 0; line-height: 54px; white-space: nowrap; opacity: 0; }
+    /* 결과 표 */
+    #s02-res { left: 872px; top: 262px; width: 856px; height: 584px; }
+    #s02-cnt { position: absolute; right: 32px; top: 16px; width: 160px; height: 50px; }
+    #s02-cnt > span { position: absolute; right: 0; top: 0; font-size: 36px; font-weight: 900; color: var(--color-accent, #6B3FE6);
+      white-space: nowrap; opacity: 0; }
+    #s02-th1 { left: 28px; right: auto; width: 300px; top: 72px; grid-template-columns: 1fr; }
+    #s02-th1 > div { font-size: 32px; }
+    .s02-r { left: 28px; right: auto; width: 300px; grid-template-columns: 1fr; opacity: 0; }
+    .s02-gb { position: absolute; left: 352px; width: 6px; border-radius: 3px; background: var(--color-accent, #6B3FE6); opacity: 0; }
+    .s02-gl { position: absolute; left: 378px; height: 50px; display: flex; align-items: center; font-size: 32px; font-weight: 800;
+      color: var(--color-ink2, #71717A); white-space: nowrap; opacity: 0; }
+    /* 오른쪽 빈 자리의 메모(같은 자리에서 바뀜) */
+    #s02-side { position: absolute; left: 380px; top: 150px; width: 448px; height: 330px; }
+    .s02-sn { position: absolute; left: 0; right: 0; text-align: center; font-weight: 800; white-space: nowrap; opacity: 0; }
+    #s02-nu1 { top: 40px; font-size: 40px; }
+    #s02-fx { top: 40px; font-size: 72px; font-weight: 900; }
+    #s02-fx span { opacity: 0; }
+    #s02-nu2 { top: 190px; font-size: 36px; color: var(--color-ink2, #71717A); }
+    #s02-ni { top: 50px; font-size: 38px; line-height: 1.5; }
+    /* MINUS: 두 칸 나란히 */
+    .s02-mh { position: absolute; top: 76px; width: 390px; text-align: center; font-size: 32px; font-weight: 800; white-space: nowrap;
+      color: var(--color-ink2, #71717A); opacity: 0; }
+    #s02-mha { left: 28px; }
+    #s02-mhb { left: 438px; }
+    #s02-sep { position: absolute; left: 427px; top: 84px; width: 2px; height: 300px; background: var(--color-hair, #D3D6DD); opacity: 0; }
+    .s02-mr { position: absolute; width: 390px; height: 56px; line-height: 56px; text-align: center; font-size: 34px; font-weight: 800; opacity: 0; }
+    .s02-mc { position: absolute; top: 300px; width: 390px; text-align: center; font-size: 56px; font-weight: 900; opacity: 0; }
+    #s02-mnote { position: absolute; left: 28px; right: 28px; top: 430px; height: 80px; }
+    .s02-mn { position: absolute; left: 0; right: 0; top: 0; height: 80px; line-height: 80px; text-align: center; font-size: 38px; font-weight: 800;
+      white-space: nowrap; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s02" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,6.86,13.79,18.86,21.95,29.01,30.92,36.37,41.35,46.36,48.89,54.27,57.7,61.13,67.08,75.83,79.8,83.51,87.63,94.25,98.06,102.36,107.05,113.14,117.14,122.6,127.01,133.34]"},{"id":"dur","type":"number","label":"장면 길이","default":137.3},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"d2","type":"number","label":"오른쪽은 시각","default":2.4},{"id":"lc","type":"number","label":"봄 4행 시각","default":12.2},{"id":"j1","type":"number","label":"지영이 시각","default":10.0},{"id":"s1","type":"number","label":"수진이 시각","default":16.0},{"id":"rc","type":"number","label":"여름 3행 시각","default":17.9},{"id":"u2","type":"number","label":"두 번째 시각","default":33.6},{"id":"c7","type":"number","label":"7행 시각","default":40.2},{"id":"p2","type":"number","label":"현우 시각","default":42.2},{"id":"p3","type":"number","label":"수진이 시각","default":43.0},{"id":"h1","type":"number","label":"하나만 시각","default":56.0},{"id":"d1","type":"number","label":"지영 시각","default":63.0},{"id":"d3","type":"number","label":"수진도 시각","default":65.0},{"id":"f2","type":"number","label":"세 행이 시각","default":68.5},{"id":"f3","type":"number","label":"4행이 시각","default":74.0},{"id":"i1","type":"number","label":"현우뿐이라 시각","default":85.5},{"id":"i2","type":"number","label":"1행 시각","default":86.5},{"id":"m1","type":"number","label":"현우를 시각","default":104.0},{"id":"m2","type":"number","label":"민수와 시각","default":105.5},{"id":"m3","type":"number","label":"2행 시각","default":112.0},{"id":"n1","type":"number","label":"현우를 시각","default":118.5},{"id":"n2","type":"number","label":"수진만 시각","default":119.5},{"id":"n3","type":"number","label":"1행 시각","default":121.5},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s02-all">
+      <div id="s02-ha" class="x-head">두 표</div>
+      <div id="s02-hb" class="x-head">UNION ALL</div>
+      <div id="s02-hc" class="x-head">UNION</div>
+      <div id="s02-hd" class="x-head">INTERSECT</div>
+      <div id="s02-he" class="x-head">MINUS</div>
+      <div id="s02-src">
+        <div id="s02-sp" class="x-card q-tb s02-tb x-hide">
+          <div class="s02-ring" id="s02-op1"></div>
+          <div class="s02-band" id="s02-bp12" style="top:178px;height:100px"></div>
+          <div class="s02-band" id="s02-bp3" style="top:278px;height:50px"></div>
+          <div class="s02-tn">봄응모<span id="s02-cp">4행</span></div>
+          <div class="q-th"><div id="s02-kp">이름</div></div>
+          <div class="q-tr" id="s02-p0" style="top:128px"><div>민수</div></div>
+          <div class="q-tr" id="s02-p1" style="top:178px"><div>지영</div></div>
+          <div class="q-tr" id="s02-p2" style="top:228px"><div>지영</div></div>
+          <div class="q-tr" id="s02-p3" style="top:278px"><div>현우</div></div>
+        </div>
+        <div id="s02-su" class="x-card q-tb s02-tb x-hide">
+          <div class="s02-ring" id="s02-ou1"></div>
+          <div class="s02-band" id="s02-bu0" style="top:128px;height:50px"></div>
+          <div class="s02-band" id="s02-bu12" style="top:178px;height:100px"></div>
+          <div class="s02-tn">여름응모<span id="s02-cu">3행</span></div>
+          <div class="q-th"><div id="s02-ku">이름</div></div>
+          <div class="q-tr" id="s02-u0" style="top:128px"><div>현우</div></div>
+          <div class="q-tr" id="s02-u1" style="top:178px"><div>수진</div></div>
+          <div class="q-tr" id="s02-u2" style="top:228px"><div>수진</div></div>
+        </div>
+        <!-- 양쪽 현우를 잇는 선(봄 현우 행 오른쪽 끝 → 여름 현우 행 왼쪽 끝) -->
+        <svg id="s02-svg" viewBox="0 0 1920 1080">
+          <line id="s02-ln" x1="468" y1="565" x2="536" y2="415" stroke="#6B3FE6" />
+          <circle id="s02-la" cx="468" cy="565" r="7" fill="#6B3FE6" opacity="0" />
+          <circle id="s02-lb" cx="536" cy="415" r="7" fill="#6B3FE6" opacity="0" />
+        </svg>
+        <div id="s02-q" class="x-dark q-code x-hide" data-layout-allow-overlap>
+          <div class="q-ln" id="s02-l1"><span><span class="q-k">SELECT</span> 이름 <span class="q-k">FROM</span> 봄응모</span></div>
+          <div class="q-ln" id="s02-l2"><div class="q-hi" id="s02-hl"></div>
+            <div class="s02-op"><span id="s02-o0" class="q-m">연산자</span><span id="s02-o1" class="q-k">UNION ALL</span><span id="s02-o2" class="q-k">UNION</span><span id="s02-o3" class="q-k">INTERSECT</span><span id="s02-o4" class="q-k">MINUS</span></div></div>
+          <div class="q-ln" id="s02-l3"><span><span class="q-k">SELECT</span> 이름 <span class="q-k">FROM</span> 여름응모</span></div>
+        </div>
+      </div>
+      <div id="s02-res" class="x-card q-tb x-hide">
+        <div class="s02-ring" id="s02-or"></div>
+        <div class="s02-tn">결과</div>
+        <div id="s02-cnt" data-layout-allow-overlap><span id="s02-c7">7행</span><span id="s02-c4">4행</span><span id="s02-c1">1행</span></div>
+        <div class="q-th" id="s02-th1"><div>이름</div></div>
+        <div class="q-tr s02-r" id="s02-r0" style="top:128px"><div>민수</div></div>
+        <div class="q-tr s02-r" id="s02-r1" style="top:184px"><div id="s02-t1">지영</div></div>
+        <div class="q-tr s02-r" id="s02-r2" style="top:240px"><div id="s02-t2">지영</div></div>
+        <div class="q-tr s02-r" id="s02-r3" style="top:296px"><div id="s02-t3">현우</div></div>
+        <div class="q-tr s02-r" id="s02-r4" style="top:352px"><div id="s02-t4">현우</div></div>
+        <div class="q-tr s02-r" id="s02-r5" style="top:408px"><div id="s02-t5">수진</div></div>
+        <div class="q-tr s02-r" id="s02-r6" style="top:464px"><div id="s02-t6">수진</div></div>
+        <div class="q-tr s02-r" id="s02-i0" style="top:128px"><div class="x-acc">현우</div></div>
+        <div class="s02-gb" id="s02-gb1" style="top:136px;height:208px"></div>
+        <div class="s02-gb" id="s02-gb2" style="top:360px;height:152px"></div>
+        <div class="s02-gl" id="s02-gl1" style="top:215px">봄 4행</div>
+        <div class="s02-gl" id="s02-gl2" style="top:411px">여름 3행</div>
+        <div id="s02-side" data-layout-allow-overlap>
+          <div class="s02-sn" id="s02-nu1">중복은 <span class="x-acc">한 번만</span></div>
+          <div class="s02-sn" id="s02-fx"><span id="s02-f1">7</span> <span id="s02-f2">− 3</span> <span id="s02-f3" class="x-acc">= 4</span></div>
+          <div class="s02-sn" id="s02-nu2">한 번이라도 응모한 사람</div>
+          <div class="s02-sn" id="s02-ni">봄에 현우가 두 번이어도<br /><span class="x-acc">결과는 1행</span></div>
+        </div>
+        <div class="s02-mh" id="s02-mha">봄응모 MINUS 여름응모</div>
+        <div class="s02-mh" id="s02-mhb">여름응모 MINUS 봄응모</div>
+        <div id="s02-sep"></div>
+        <div class="s02-mr" id="s02-ma0" style="left:28px;top:136px">민수</div>
+        <div class="s02-mr" id="s02-ma1" style="left:28px;top:192px">지영</div>
+        <div class="s02-mr" id="s02-mb0" style="left:438px;top:136px">수진</div>
+        <div class="s02-mc" id="s02-mca" style="left:28px">2행</div>
+        <div class="s02-mc" id="s02-mcb" style="left:438px">1행</div>
+        <div id="s02-mnote" data-layout-allow-overlap>
+          <div class="s02-mn" id="s02-mn1"><span class="x-acc">MINUS</span>만 순서가 결과를 바꾼다</div>
+          <div class="s02-mn" id="s02-mn2">SQL Server는 MINUS 대신 <span class="x-acc">EXCEPT</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 137.3;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const color = (sel, a, b, t) => ft(sel, { color: a }, { color: b }, t);
+    const ACC = "#6B3FE6", INK = "#18181B", INK2 = "#71717A";
+    const DIM = 0.22;
+    const head = (id, prev, t) => { if (prev) fade(prev, t, 1, 0); ft(id, { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, t + (prev ? 0.2 : 0)); };
+    let op = 0;
+    const opTo = (k, t) => { fade(`#s02-o${op}`, t, 1, 0); fade(`#s02-o${k}`, t + 0.15, 0, 1); op = k; };
+    let cnt = null;
+    const count = (id, t) => { if (cnt) fade(cnt, t, 1, 0); if (id) fade(id, t + 0.1, 0, 1); cnt = id; };
+    let side = null;
+    const say = (id, t) => { if (side) fade(side, t, 1, 0); if (id) fade(id, t + 0.15, 0, 1); side = id; };
+    const rowIn = (id, t) => ft(id, { opacity: 0, x: -16 }, { opacity: 1, x: 0 }, t);
+    const R = (ids) => ids.map((i) => `#s02-r${i}`);
+
+    // ── 2장 두 표 ──
+    // 6 왼쪽 봄 응모 표, 오른쪽 여름 응모 표, 둘 다 이름 열 하나
+    head("#s02-ha", null, at(0, 0));
+    ft("#s02-sp", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.5));
+    ft("#s02-su", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("d2", at(0, 2.4)) - 0.1);
+    color(["#s02-kp", "#s02-ku"], INK2, ACC, at(0, 4.0));
+    // 7 봄: 민수, 지영, 현우 — 지영이 두 번이라 4행
+    color(["#s02-kp", "#s02-ku"], ACC, INK2, at(1, 0));
+    fade("#s02-bp12", X("j1", at(1, 3.3)), 0, 1);
+    fade("#s02-cp", X("lc", at(1, 5.4)) - 0.1, 0, 1);
+    // 8 여름: 현우와 수진 — 수진이 두 번이라 3행
+    fade("#s02-bu12", X("s1", at(2, 2.2)), 0, 1);
+    fade("#s02-cu", X("rc", at(2, 4.0)) - 0.1, 0, 1);
+    // 9 현우는 봄과 여름 모두
+    fade(["#s02-bp12", "#s02-bu12"], at(3, 0), 1, 0);
+    fade(["#s02-bp3", "#s02-bu0"], at(3, 0.2), 0, 1);
+    ft("#s02-ln", { strokeDashoffset: 180 }, { strokeDashoffset: 0, duration: 0.5 * S, ease: "power2.inOut" }, at(3, 0.7));
+    fade("#s02-la", at(3, 0.7), 0, 1);
+    fade("#s02-lb", at(3, 0.7 + 0.45 * S), 0, 1);
+    // 10 집합 연산자는 두 SELECT 사이에 — SQL 틀
+    fade(["#s02-bp3", "#s02-bu0", "#s02-ln", "#s02-la", "#s02-lb"], at(4, 0), 1, 0);
+    ft("#s02-q", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(4, 0.3));
+    fade("#s02-o0", at(4, 0.3), 0, 1);
+    fade("#s02-hl", at(4, 1.6), 0, 1);
+
+    // ── 3장 UNION ALL ──
+    // 11 먼저 UNION ALL — 원본은 왼쪽으로, 결과 표가 오른쪽에
+    head("#s02-hb", "#s02-ha", at(5, 0));
+    opTo(1, at(5, 0.1));
+    ft("#s02-src", { left: 458 }, { left: 0, duration: 0.7 * S, ease: "power2.inOut" }, at(5, 0.2));
+    ft("#s02-res", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(5, 1.1));
+    fade("#s02-th1", at(5, 1.1), 0, 1);
+    // 12 첫 번째 결과 밑에 두 번째 결과를 그대로
+    fade("#s02-op1", at(6, 0.2), 0, 1);
+    R([0, 1, 2, 3]).forEach((r, j) => rowIn(r, at(6, 0.6 + j * 0.25)));
+    const u2 = X("u2", at(6, 2.6));
+    fade("#s02-op1", u2, 1, 0);
+    fade("#s02-ou1", u2, 0, 1);
+    R([4, 5, 6]).forEach((r, j) => rowIn(r, u2 + 0.4 + j * 0.25));
+    // 13 중복을 지우지 않아 4 더하기 3, 7행
+    fade("#s02-ou1", at(7, 0), 1, 0);
+    ft("#s02-gb1", { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1 }, at(7, 0.6));
+    fade("#s02-gl1", at(7, 0.75), 0, 1);
+    ft("#s02-gb2", { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1 }, at(7, 1.3));
+    fade("#s02-gl2", at(7, 1.45), 0, 1);
+    count("#s02-c7", X("c7", at(7, 3.8)) - 0.1);
+    // 14 지영, 현우, 수진이 모두 두 번씩
+    color(["#s02-t1", "#s02-t2"], INK, ACC, at(8, 0.1));
+    color(["#s02-t3", "#s02-t4"], INK, ACC, X("p2", at(8, 0.8)));
+    color(["#s02-t5", "#s02-t6"], INK, ACC, X("p3", at(8, 1.5)));
+
+    // ── 4장 UNION ──
+    // 15 ALL을 뺀 UNION
+    head("#s02-hc", "#s02-hb", at(9, 0));
+    opTo(2, at(9, 0.2));
+    color(["#s02-t1", "#s02-t2", "#s02-t3", "#s02-t4", "#s02-t5", "#s02-t6"], ACC, INK, at(9, 0.3));
+    fade(["#s02-gb1", "#s02-gb2", "#s02-gl1", "#s02-gl2"], at(9, 0.3), 1, 0);
+    // 16 합친 다음 중복을 지워 한 번씩만
+    say("#s02-nu1", at(10, 1.4));
+    // 17 양쪽에 있는 현우는 하나만
+    fade(["#s02-bp3", "#s02-bu0"], at(11, 0.2), 0, 1);
+    fade("#s02-r4", X("h1", at(11, 1.8)), 1, DIM);
+    // 18 한 표 안의 중복
+    fade(["#s02-bp3", "#s02-bu0"], at(12, 0.2), 1, 0);
+    // 19 봄 안의 지영, 여름 안의 수진도 하나씩
+    const d1 = X("d1", at(13, 1.8));
+    fade("#s02-bp12", d1 - 0.2, 0, 1);
+    fade("#s02-r2", d1 + 0.2, 1, DIM);
+    const d3 = X("d3", at(13, 4.4));
+    fade("#s02-bu12", d3 - 0.2, 0, 1);
+    fade("#s02-r6", d3 + 0.2, 1, DIM);
+    // 20 7행에서 세 행이 빠져 4행 — 흐린 행이 빠지고 남은 행이 올라간다
+    fade(["#s02-bp12", "#s02-bu12"], at(14, 0), 1, 0);
+    say("#s02-fx", at(14, 0.1));
+    fade("#s02-f1", at(14, 0.25), 0, 1);
+    const f2 = X("f2", at(14, 1.0));
+    fade("#s02-f2", f2, 0, 1);
+    fade(R([2, 4, 6]), f2 + 0.8, DIM, 0);
+    ft("#s02-r3", { y: 0 }, { y: -56, duration: 0.5 * S, ease: "power2.inOut" }, f2 + 1.2);
+    ft("#s02-r5", { y: 0 }, { y: -112, duration: 0.5 * S, ease: "power2.inOut" }, f2 + 1.2);
+    const f3 = X("f3", at(14, 6.9));
+    fade("#s02-f3", f3, 0, 1);
+    count("#s02-c4", f3);
+    // 21 한 번이라도 응모한 사람의 명단
+    fade("#s02-nu2", at(15, 0.3), 0, 1);
+
+    // ── 5장 INTERSECT ──
+    // 22 두 결과에 모두 있는 행만
+    head("#s02-hd", "#s02-hc", at(16, 0));
+    opTo(3, at(16, 0.2));
+    fade(R([0, 1, 3, 5]), at(16, 0.2), 1, 0);
+    count(null, at(16, 0.2));
+    fade(["#s02-fx", "#s02-nu2"], at(16, 0.2), 1, 0);
+    side = null;
+    fade(["#s02-p0", "#s02-p1", "#s02-p2", "#s02-u1", "#s02-u2"], at(16, 1.2), 1, 0.25);
+    fade(["#s02-bp3", "#s02-bu0"], at(16, 1.4), 0, 1);
+    // 23 양쪽에 모두 응모한 사람은 현우뿐 — 1행
+    rowIn("#s02-i0", X("i1", at(17, 2.0)));
+    count("#s02-c1", X("i2", at(17, 3.0)) - 0.1);
+    // 24 INTERSECT도 중복을 지운다 — 봄에 현우가 두 번이어도 1행
+    say("#s02-ni", at(18, 0.4));
+
+    // ── 6장 MINUS ──
+    // 25 위 결과에서 아래 결과에 있는 행을 뺀다 — 결과 표는 두 칸으로
+    head("#s02-he", "#s02-hd", at(19, 0));
+    opTo(4, at(19, 0.2));
+    fade(["#s02-p0", "#s02-p1", "#s02-p2", "#s02-u1", "#s02-u2"], at(19, 0.2), 0.25, 1);
+    fade(["#s02-bp3", "#s02-bu0"], at(19, 0.2), 1, 0);
+    fade(["#s02-i0", "#s02-th1"], at(19, 0.2), 1, 0);
+    count(null, at(19, 0.2));
+    say(null, at(19, 0.2));
+    fade("#s02-sep", at(19, 0.9), 0, 1);
+    // 26 봄응모 MINUS 여름응모 = 봄에만 응모한 사람
+    fade("#s02-mha", at(20, 0.2), 0, 1);
+    color("#s02-mha", INK2, ACC, at(20, 0.2));
+    fade("#s02-op1", at(20, 0.4), 0, 1);
+    // 27 봄의 4행에서 현우를 빼면 민수와 지영
+    const m1 = X("m1", at(21, 1.7));
+    fade("#s02-p3", m1, 1, 0.25);
+    const m2 = X("m2", at(21, 2.6));
+    rowIn("#s02-ma0", m2);
+    rowIn("#s02-ma1", m2 + 0.6);
+    // 28 지영은 두 번이지만 한 번만 — 2행
+    fade("#s02-bp12", at(22, 0.2), 0, 1);
+    ft("#s02-mca", { opacity: 0, y: 10, color: ACC }, { opacity: 1, y: 0, color: ACC }, X("m3", at(22, 4.9)) - 0.1);
+    // 29 위아래를 바꿔 여름응모 MINUS 봄응모 — 1·3줄이 자리를 바꾼다
+    fade("#s02-bp12", at(23, 0), 1, 0);
+    fade("#s02-p3", at(23, 0), 0.25, 1);
+    fade("#s02-op1", at(23, 0), 1, 0);
+    color("#s02-mha", ACC, INK2, at(23, 0.2));
+    color("#s02-mca", ACC, INK, at(23, 0.2));
+    ft("#s02-l1", { y: 0 }, { y: 108, duration: 0.6 * S, ease: "power2.inOut" }, at(23, 0.5));
+    ft("#s02-l3", { y: 0 }, { y: -108, duration: 0.6 * S, ease: "power2.inOut" }, at(23, 0.5));
+    fade("#s02-mhb", at(23, 1.6), 0, 1);
+    color("#s02-mhb", INK2, ACC, at(23, 1.6));
+    fade("#s02-ou1", at(23, 1.8), 0, 1);
+    // 30 여름의 3행에서 현우를 빼면 수진만 — 1행
+    fade("#s02-u0", X("n1", at(24, 1.5)), 1, 0.25);
+    const n2 = X("n2", at(24, 2.5));
+    fade("#s02-bu12", n2 - 0.1, 0, 1);
+    rowIn("#s02-mb0", n2 + 0.3);
+    ft("#s02-mcb", { opacity: 0, y: 10, color: ACC }, { opacity: 1, y: 0, color: ACC }, X("n3", at(24, 4.5)) - 0.1);
+    // 31 같은 두 표인데 순서를 바꾸자 2행이 1행으로
+    fade(["#s02-bu12", "#s02-ou1"], at(25, 0), 1, 0);
+    fade("#s02-u0", at(25, 0), 0.25, 1);
+    color("#s02-mca", INK, ACC, at(25, 0.4));
+    color("#s02-mhb", ACC, INK2, at(25, 0.4));
+    // 32 UNION·INTERSECT는 바꿔도 같지만 MINUS는 순서가 중요
+    fade("#s02-mn1", at(26, 0.3), 0, 1);
+    // 33 SQL Server는 EXCEPT
+    fade("#s02-mn1", at(27, 0.1), 1, 0);
+    fade("#s02-mn2", at(27, 0.3), 0, 1);
+    if (String(V.exit) !== "false") ft("#s02-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s02"] = tl;
+  </script>
+</template>

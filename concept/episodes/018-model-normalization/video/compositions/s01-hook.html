@@ -1,0 +1,135 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    /* 주문 테이블 5행 × 7열(+ 아래 유령 행 자리) */
+    #s01-tb { left: 192px; top: 262px; width: 1536px; height: 500px; }
+    #s01-tb .q-th, #s01-tb .q-tr { grid-template-columns: 200px 200px 220px 200px 180px 240px 240px; }
+    #s01-tb .q-th { top: 64px; }
+    #s01-tb .q-th > div { font-size: 32px; }
+    .s01-band { position: absolute; left: 12px; right: 12px; height: 56px; border-radius: 14px;
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 12%, #FFFFFF); opacity: 0; }
+    .s01-sw { position: relative; }
+    .s01-sw > span { display: block; }
+    .s01-sw > span.s01-b { position: absolute; left: 0; right: 0; top: 0; opacity: 0; color: var(--color-accent, #6B3FE6); }
+    /* 주문 · 상품 · 고객 묶음 표시 */
+    .s01-gl { position: absolute; top: 12px; height: 40px; display: flex; align-items: center; justify-content: center;
+      font-size: 30px; font-weight: 900; color: var(--color-accent, #6B3FE6); opacity: 0; }
+    .s01-gb { position: absolute; top: 56px; height: 4px; border-radius: 2px; background: var(--color-accent, #6B3FE6); opacity: 0; }
+    /* 주문번호가 빈 새 상품 행 */
+    #s01-ghost { position: absolute; left: 12px; right: 12px; top: 425px; height: 62px; box-sizing: border-box;
+      border: 3px dashed #B4B4BE; border-radius: 14px; opacity: 0; }
+    #s01-gr { opacity: 0; }
+    .s01-empty { width: 96px; height: 42px; margin: 0 auto; box-sizing: border-box; border: 3px dashed var(--color-accent, #6B3FE6); border-radius: 10px; }
+    #s01-xw { position: absolute; left: 96px; top: 424px; width: 64px; height: 64px; opacity: 0; }
+    #s01-xw > div { position: absolute; left: 0; top: 29px; width: 64px; height: 6px; border-radius: 3px; background: #18181B; }
+    #s01-xw > div:first-child { transform: rotate(45deg); }
+    #s01-xw > div:last-child { transform: rotate(-45deg); }
+    /* 아래 줄: 이상 현상 칩 + 오른쪽 한 줄 메모 */
+    #s01-low { position: absolute; left: 192px; top: 786px; width: 1536px; height: 60px; }
+    #s01-low .q-chip { top: 0; height: 60px; }
+    .s01-n { position: absolute; right: 0; top: 0; height: 60px; display: flex; align-items: center; font-size: 36px; font-weight: 800;
+      white-space: nowrap; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s01" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.2,5.1,9.42,15.42,19.17,25.72,31.76,35.95,42.59,48.58]"},{"id":"dur","type":"number","label":"장면 길이","default":55.94},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"k1","type":"number","label":"갱신 시각","default":13.4},{"id":"gw","type":"number","label":"가위 시각","default":17.0},{"id":"k2","type":"number","label":"삽입 시각","default":23.9},{"id":"dl","type":"number","label":"지우면 시각","default":26.6},{"id":"k3","type":"number","label":"삭제 시각","default":30.0},{"id":"g1","type":"number","label":"주문 시각","default":36.0},{"id":"g2","type":"number","label":"상품 시각","default":36.8},{"id":"g3","type":"number","label":"고객 시각","default":37.6},{"id":"mx","type":"number","label":"섞여 시각","default":40.4},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s01-all">
+      <div id="s01-head" class="x-head">테이블 하나에 다 담으면</div>
+      <div id="s01-tb" class="x-card q-tb x-hide">
+        <div class="s01-band" id="s01-bd1" style="top:188px"></div>
+        <div class="s01-band" id="s01-bd2" style="top:248px"></div>
+        <div class="s01-band" id="s01-bd3" style="top:308px"></div>
+        <div class="s01-gl" id="s01-gl1" style="left:48px;width:160px">주문</div>
+        <div class="s01-gl" id="s01-gl2" style="left:248px;width:580px">상품</div>
+        <div class="s01-gl" id="s01-gl3" style="left:1048px;width:440px">고객</div>
+        <div class="s01-gb" id="s01-gb1" style="left:48px;width:160px"></div>
+        <div class="s01-gb" id="s01-gb2" style="left:248px;width:580px"></div>
+        <div class="s01-gb" id="s01-gb3" style="left:1048px;width:440px"></div>
+        <div class="q-th"><div>주문번호</div><div>상품코드</div><div>상품명</div><div>단가</div><div>수량</div><div>고객번호</div><div>고객이름</div></div>
+        <div class="q-tr" id="s01-r0" style="top:128px"><div>1</div><div>P1</div><div>연필</div><div>500</div><div>2</div><div>C1</div><div>민수</div></div>
+        <div class="q-tr" id="s01-r1" style="top:188px"><div>1</div><div>P2</div><div class="s01-sw" data-layout-allow-overlap><span class="s01-a" id="s01-a1">공책</span><span class="s01-b" id="s01-b1">노트</span></div><div>1,500</div><div>1</div><div>C1</div><div>민수</div></div>
+        <div class="q-tr" id="s01-r2" style="top:248px"><div>2</div><div>P2</div><div class="s01-sw" data-layout-allow-overlap><span class="s01-a" id="s01-a2">공책</span><span class="s01-b" id="s01-b2">노트</span></div><div>1,500</div><div>3</div><div>C2</div><div>지영</div></div>
+        <div class="q-tr" id="s01-r3" style="top:308px"><div id="s01-o3">3</div><div>P2</div><div id="s01-a3">공책</div><div>1,500</div><div>1</div><div>C1</div><div>민수</div></div>
+        <div class="q-tr" id="s01-r4" style="top:368px"><div id="s01-o4">3</div><div>P3</div><div id="s01-er">지우개</div><div>800</div><div>2</div><div>C1</div><div>민수</div></div>
+        <div id="s01-ghost"></div>
+        <div class="q-tr" id="s01-gr" style="top:428px"><div><div class="s01-empty" id="s01-em"></div></div><div>P4</div><div>가위</div><div></div><div></div><div></div><div></div></div>
+        <div id="s01-xw"><div></div><div></div></div>
+      </div>
+      <div id="s01-low" data-layout-allow-overlap>
+        <div class="q-chip q-ng" id="s01-k1" style="left:0">갱신 이상</div>
+        <div class="q-chip q-ng" id="s01-k2" style="left:244px">삽입 이상</div>
+        <div class="q-chip q-ng" id="s01-k3" style="left:488px">삭제 이상</div>
+        <div class="s01-n x-ink2" id="s01-n7">왜 이런 일이?</div>
+        <div class="s01-n" id="s01-n8"><span>서로 다른 대상이 <span class="x-acc">한 테이블에</span></span></div>
+        <div class="s01-n" id="s01-n9"><span><span class="x-acc">정규화</span> = 나눠서 중복 · 이상 현상 줄이기</span></div>
+        <div class="s01-n" id="s01-n10"><span>제1 → 제2 → <span class="x-acc">제3정규형</span></span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 55.94;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const ACC = "#6B3FE6", INK = "#18181B";
+    let note = null;
+    const say = (id, t) => { if (note) fade(note, t, 1, 0); fade(id, t + 0.15, 0, 1); note = id; };
+
+    // 1 주문 · 상품 · 고객 정보를 테이블 하나에
+    ft("#s01-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s01-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    [0, 1, 2, 3, 4].forEach((j) => ft(`#s01-r${j}`, { opacity: 0, y: 8 }, { opacity: 1, y: 0 }, at(0, 0.9 + j * 0.15)));
+    // 2 공책을 노트로 — 세 행을 모두
+    ft(["#s01-a1", "#s01-a2", "#s01-a3"], { color: INK }, { color: ACC }, at(1, 0.8));
+    [1, 2, 3].forEach((k, j) => fade(`#s01-bd${k}`, at(1, 2.2 + j * 0.15), 0, 1));
+    // 3 한 행이라도 빠뜨리면 이름이 둘 → 갱신 이상
+    fade("#s01-a1", at(2, 0.6), 1, 0);
+    fade("#s01-b1", at(2, 0.7), 0, 1);
+    fade("#s01-a2", at(2, 1.1), 1, 0);
+    fade("#s01-b2", at(2, 1.2), 0, 1);
+    fade(["#s01-bd1", "#s01-bd2"], at(2, 2.0), 1, 0);
+    stamp("#s01-k1", X("k1", at(2, 3.8)));
+    // 4 주문이 없는 새 상품 가위
+    fade("#s01-bd3", at(3, 0.1), 1, 0);
+    const gw = X("gw", at(3, 1.6));
+    fade("#s01-ghost", gw - 0.2, 0, 1);
+    ft("#s01-gr", { opacity: 0, x: -16 }, { opacity: 1, x: 0 }, gw);
+    stamp("#s01-xw", at(3, 2.6));
+    // 5 주문번호를 비울 수 없다 → 삽입 이상
+    ft("#s01-em", { scale: 1 }, { scale: 1.12, duration: 0.25 * S, yoyo: true, repeat: 1, ease: "power2.out" }, at(4, 2.0));
+    stamp("#s01-k2", X("k2", at(4, 4.6)));
+    // 6 3번 주문을 지우면 지우개까지 → 삭제 이상
+    fade(["#s01-ghost", "#s01-gr", "#s01-xw"], at(5, 0.1), 1, 0);
+    ft(["#s01-o3", "#s01-o4"], { color: INK }, { color: ACC }, at(5, 0.3));
+    ft("#s01-er", { color: INK }, { color: ACC }, at(5, 1.6));
+    fade(["#s01-r3", "#s01-r4"], X("dl", at(5, 1.0)) + 1.4, 1, 0.12);
+    stamp("#s01-k3", X("k3", at(5, 4.2)));
+    // 7 왜 이런 일이? — 표는 원래대로, 칩은 흐리게
+    fade(["#s01-r3", "#s01-r4"], at(6, 0.1), 0.12, 1);
+    ft(["#s01-o3", "#s01-o4", "#s01-er", "#s01-a3"], { color: ACC }, { color: INK }, at(6, 0.1));
+    fade(["#s01-b1", "#s01-b2"], at(6, 0.1), 1, 0);
+    fade(["#s01-a1", "#s01-a2"], at(6, 0.2), 0, 1);
+    ft(["#s01-a1", "#s01-a2"], { color: ACC }, { color: INK }, at(6, 0.1));
+    fade(["#s01-k1", "#s01-k2", "#s01-k3"], at(6, 0.4), 1, 0.45);
+    say("#s01-n7", at(6, 1.4));
+    // 8 주문 · 상품 · 고객, 서로 다른 대상이 한 테이블에
+    [["1", "g1", 0.1], ["2", "g2", 0.8], ["3", "g3", 1.5]].forEach(([k, v, d]) => {
+      const t = X(v, at(7, d));
+      fade(`#s01-gl${k}`, t, 0, 1);
+      ft(`#s01-gb${k}`, { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1 }, t);
+    });
+    say("#s01-n8", X("mx", at(7, 4.4)));
+    // 9 이상 현상을 없애고 중복을 줄이려고 나누는 일 = 정규화
+    say("#s01-n9", at(8, 1.0));
+    // 10 제1, 제2, 제3정규형까지 한 단계씩
+    say("#s01-n10", at(9, 1.0));
+    if (String(V.exit) !== "false") ft("#s01-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s01"] = tl;
+  </script>
+</template>

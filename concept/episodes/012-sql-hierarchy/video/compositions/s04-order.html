@@ -1,0 +1,186 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s04-tb { left: 192px; top: 262px; width: 540px; height: 584px; }
+    #s04-tb .q-th, #s04-tb .q-tr { grid-template-columns: 170px 314px; }
+    #s04-tb .q-th { top: 24px; }
+    #s04-tb .q-th > div { font-size: 30px; }
+    #s04-tb .q-tr > div { font-size: 38px; }
+    .s04-hs { position: relative; display: block; height: 40px; }
+    .s04-hs > span { position: absolute; left: 0; right: 0; top: 0; line-height: 40px; opacity: 0; text-align: center; }
+    .s04-r { opacity: 0; }
+    #s04-org { position: absolute; left: 780px; top: 262px; width: 948px; height: 400px; }
+    .org-svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+    .org-svg path { fill: none; stroke: #D3D6DD; stroke-width: 4; }
+    .org-n { position: absolute; box-sizing: border-box; border: 3px solid #D3D6DD; background: #FFFFFF; border-radius: 20px;
+      display: flex; align-items: center; justify-content: center; font-weight: 900; white-space: nowrap; }
+    .org-b { position: absolute; right: -20px; top: -22px; width: 44px; height: 44px; border-radius: 22px; background: #6B3FE6; color: #FFFFFF;
+      font-size: 28px; font-weight: 900; display: flex; align-items: center; justify-content: center; opacity: 0; }
+    #s04-org .q-chip { height: 64px; font-size: 32px; }
+    #s04-nosup { left: 650px; top: 38px; width: 200px; height: 56px; font-size: 30px; }
+    #s04-cdown { left: 340px; top: 314px; width: 250px; }
+    #s04-cup { left: 620px; top: 314px; width: 250px; }
+    #s04-cfirst { left: 420px; top: 314px; width: 470px; }
+    #s04-cbad { left: 420px; top: 314px; width: 470px; }
+    .cx { position: relative; display: inline-block; width: 26px; height: 26px; margin-right: 16px; }
+    .cx::before, .cx::after { content: ""; position: absolute; left: 10px; top: -4px; width: 6px; height: 34px; border-radius: 3px; background: #FFFFFF; }
+    .cx::before { transform: rotate(45deg); }
+    .cx::after { transform: rotate(-45deg); }
+    #s04-code { left: 780px; top: 686px; width: 948px; }
+    .s04-sw { position: relative; display: block; width: 860px; height: 44px; }
+    .s04-sw > span { position: absolute; left: 0; top: 0; line-height: 44px; white-space: nowrap; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s04" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,6.7,14.6,19.8,27.3,34.7,42.2,49.7,53.5,59.9,65.9,75.5]"},{"id":"dur","type":"number","label":"장면 길이","default":84},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"k1","type":"number","label":"김대표 시각","default":8},{"id":"i2","type":"number","label":"이부장 시각","default":12},{"id":"c4","type":"number","label":"최과장이 시각","default":18},{"id":"h6","type":"number","label":"한사원이 시각","default":24},{"id":"j5","type":"number","label":"정대리가 시각","default":30},{"id":"p3","type":"number","label":"박부장이 시각","default":36},{"id":"y7","type":"number","label":"윤과장이 시각","default":38},{"id":"n7","type":"number","label":"7행입니다 시각","default":41},{"id":"n1","type":"number","label":"상사가 시각","default":60},{"id":"r1","type":"number","label":"1행만 시각","default":62},{"id":"v0","type":"number","label":"한사원으로 시각","default":66},{"id":"v6","type":"number","label":"한사원부터 시각","default":68},{"id":"v4","type":"number","label":"최과장 시각","default":69},{"id":"v2","type":"number","label":"이부장 시각","default":70},{"id":"v1","type":"number","label":"김대표까지 시각","default":71},{"id":"n4","type":"number","label":"4행이 시각","default":73},{"id":"fw","type":"number","label":"순방향 시각","default":76},{"id":"bw","type":"number","label":"역방향이고 시각","default":79},{"id":"lv","type":"number","label":"한사원이 1 시각","default":82},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s04-all">
+      <div id="s04-head" class="x-head">결과가 나오는 순서와 LEVEL</div>
+      <div id="s04-tb" class="x-card q-tb x-hide" data-layout-allow-overlap>
+        <div class="q-th"><div>LEVEL</div><div class="s04-hs"><span id="s04-hs0" style="opacity:1">이름</span><span id="s04-hs1">이름 · 7행</span><span id="s04-hs2">이름 · 1행</span><span id="s04-hs3">이름 · 4행</span></div></div>
+        <div class="q-tr s04-r" id="s04-f1" style="top:100px"><div>1</div><div>김대표</div></div>
+        <div class="q-tr s04-r" id="s04-f2" style="top:164px"><div>2</div><div>이부장</div></div>
+        <div class="q-tr s04-r" id="s04-f3" style="top:228px"><div>3</div><div>최과장</div></div>
+        <div class="q-tr s04-r" id="s04-f4" style="top:292px"><div>4</div><div>한사원</div></div>
+        <div class="q-tr s04-r" id="s04-f5" style="top:356px"><div>3</div><div>정대리</div></div>
+        <div class="q-tr s04-r" id="s04-f6" style="top:420px"><div>2</div><div>박부장</div></div>
+        <div class="q-tr s04-r" id="s04-f7" style="top:484px"><div>3</div><div>윤과장</div></div>
+        <div class="q-tr s04-r" id="s04-v1" style="top:100px"><div>1</div><div>한사원</div></div>
+        <div class="q-tr s04-r" id="s04-v2" style="top:164px"><div>2</div><div>최과장</div></div>
+        <div class="q-tr s04-r" id="s04-v3" style="top:228px"><div>3</div><div>이부장</div></div>
+        <div class="q-tr s04-r" id="s04-v4" style="top:292px"><div>4</div><div>김대표</div></div>
+      </div>
+      <div id="s04-org" class="x-card x-hide"></div>
+      <div id="s04-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><div class="q-hi" id="s04-h1"></div><div class="s04-sw" data-layout-allow-overlap>
+          <span id="s04-a1"><span class="q-k">CONNECT BY PRIOR</span> 사원번호 = 관리자번호</span>
+          <span id="s04-a2"><span class="q-k">CONNECT BY PRIOR</span> 관리자번호 = 사원번호</span>
+        </div></div>
+        <div class="q-ln"><div class="q-hi" id="s04-h2"></div><div class="s04-sw" data-layout-allow-overlap>
+          <span id="s04-b1"><span class="q-k">ORDER SIBLINGS BY</span> 사원번호</span>
+          <span id="s04-b2"><span class="q-k">ORDER BY</span> 사원번호</span>
+          <span id="s04-b3"><span class="q-k">START WITH</span> 사원번호 = 6</span>
+        </div></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 84;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d = 0) => Number(V[k]) + d;
+    const ACC = "#6B3FE6", INK = "#18181B";
+
+    const NODES = { 1: ["김대표", 0, 515], 2: ["이부장", 1, 270], 3: ["박부장", 1, 760], 4: ["최과장", 2, 150], 5: ["정대리", 2, 390], 7: ["윤과장", 2, 760], 6: ["한사원", 3, 150] };
+    const EDGES = [[1, 2], [1, 3], [2, 4], [2, 5], [4, 6], [3, 7]];
+    const G = { w: 190, h: 60, ys: [40, 132, 224, 316], font: 38 };
+    // 가는 순서(정방향): 사원번호 → 번호표, 역방향 번호표
+    const FWD = { 1: 1, 2: 2, 4: 3, 6: 4, 5: 5, 3: 6, 7: 7 };
+    const REV = { 6: 1, 4: 2, 2: 3, 1: 4 };
+    const host = document.getElementById("s04-org");
+    let html = '<svg class="org-svg" viewBox="0 0 948 400">';
+    EDGES.forEach(([a, b]) => {
+      const pa = NODES[a], pb = NODES[b];
+      const x1 = pa[2], y1 = G.ys[pa[1]] + G.h + 8, x2 = pb[2], y2 = G.ys[pb[1]] - 8, ym = (y1 + y2) / 2;
+      html += `<path id="s04-e${a}_${b}" d="M ${x1} ${y1} L ${x1} ${ym} L ${x2} ${ym} L ${x2} ${y2}" />`;
+    });
+    html += "</svg>";
+    Object.keys(NODES).forEach((id) => {
+      const [nm, lv, cx] = NODES[id];
+      html += `<div class="org-n" id="s04-n${id}" style="left:${cx - G.w / 2}px;top:${G.ys[lv]}px;width:${G.w}px;height:${G.h}px;font-size:${G.font}px">${nm}`
+        + `<div class="org-b" id="s04-bf${id}">${FWD[id]}</div>` + (REV[id] ? `<div class="org-b" id="s04-br${id}">${REV[id]}</div>` : "") + `</div>`;
+    });
+    html += '<div class="q-chip q-ng" id="s04-nosup">상사 없음</div>'
+      + '<div class="q-chip q-ok" id="s04-cdown">순방향 · 아래로</div><div class="q-chip q-ok" id="s04-cup">역방향 · 위로</div>'
+      + '<div class="q-chip q-ok" id="s04-cfirst">아래 먼저, 그다음 옆</div>'
+      + '<div class="q-chip q-ng" id="s04-cbad"><span class="cx"></span>계층 순서가 깨짐</div>';
+    host.innerHTML = html;
+
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const OFF = { backgroundColor: "#FFFFFF", color: INK, borderColor: "#D3D6DD" };
+    const ACT = { backgroundColor: ACC, color: "#FFFFFF", borderColor: ACC };
+    const KID = { backgroundColor: "#ECE6FD", color: ACC, borderColor: "#BFA9F5" };
+    const st = (id, t, a, b) => ft(`#s04-n${id}`, a, b, t);
+    const edge = (a, b, t, on) => ft(`#s04-e${a}_${b}`, { stroke: on ? "#D3D6DD" : ACC }, { stroke: on ? ACC : "#D3D6DD" }, t);
+    const PAR = { 2: [1, 2], 3: [1, 3], 4: [2, 4], 5: [2, 5], 6: [4, 6], 7: [3, 7] };
+
+    // 15 ORDER SIBLINGS BY 사원번호로 형제를 번호 순으로
+    ft("#s04-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s04-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    ft("#s04-org", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.5));
+    ft("#s04-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.7));
+    fade("#s04-a1", at(0, 0.8), 0, 1);
+    fade("#s04-b1", at(0, 0.8), 0, 1);
+    fade("#s04-h2", at(0, 1.6), 0, 1);
+    // 16~19 한 행씩 읽는 순서: 김대표 → 이부장 → 최과장 → 한사원 → 정대리 → 박부장 → 윤과장
+    fade("#s04-h2", at(1, 0), 1, 0);
+    const T = [[1, X("k1", -0.1)], [2, X("i2", -0.1)], [4, X("c4", -0.1)], [6, X("h6", -0.1)], [5, X("j5", -0.1)], [3, X("p3", -0.1)], [7, X("y7", -0.1)]];
+    const RW = { 1: 1, 2: 2, 4: 3, 6: 4, 5: 5, 3: 6, 7: 7 };
+    T.forEach(([id, t], i) => {
+      st(id, t, OFF, ACT);
+      stamp(`#s04-bf${id}`, t);
+      stamp(`#s04-f${RW[id]}`, t);
+      if (PAR[id]) edge(PAR[id][0], PAR[id][1], t, true);
+      if (i + 1 < T.length) st(id, T[i + 1][1], ACT, KID);
+    });
+    fade("#s04-hs0", X("n7", 0), 1, 0);
+    fade("#s04-hs1", X("n7", 0.1), 0, 1);
+    // 20 아래를 끝까지 먼저 읽고 옆 형제로
+    stamp("#s04-cfirst", at(5, 0.6));
+    // 21 ORDER SIBLINGS BY 대신 ORDER BY를 쓰면 순서가 깨짐
+    fade("#s04-cfirst", at(6, 0), 1, 0);
+    fade("#s04-b1", at(6, 0.4), 1, 0);
+    fade("#s04-b2", at(6, 0.7), 0, 1);
+    fade("#s04-h2", at(6, 0.7), 0, 1);
+    stamp("#s04-cbad", at(6, 1.2));
+    // 22 이번에는 PRIOR를 관리자번호 쪽으로
+    fade("#s04-cbad", at(7, 0), 1, 0);
+    fade("#s04-b2", at(7, 0), 1, 0);
+    fade("#s04-b1", at(7, 0.3), 0, 1);
+    fade("#s04-h2", at(7, 0), 1, 0);
+    fade("#s04-a1", at(7, 0.3), 1, 0);
+    fade("#s04-a2", at(7, 0.6), 0, 1);
+    fade("#s04-h1", at(7, 0.6), 0, 1);
+    Object.keys(NODES).forEach((id) => {
+      st(id, at(7, 0.3), Number(id) === 7 ? ACT : KID, OFF);
+      fade(`#s04-bf${id}`, at(7, 0.3), 1, 0);
+    });
+    EDGES.forEach(([a, b]) => edge(a, b, at(7, 0.3), false));
+    [1, 2, 3, 4, 5, 6, 7].forEach((i) => fade(`#s04-f${i}`, at(7, 0.3), 1, 0.25));
+    // 24 김대표는 상사가 없어 1행만
+    st(1, X("n1", -0.2), OFF, ACT);
+    stamp("#s04-nosup", X("n1", 0));
+    [2, 3, 4, 5, 6, 7].forEach((i) => fade(`#s04-f${i}`, X("r1", 0), 0.25, 0));
+    fade("#s04-f1", X("r1", 0), 0.25, 1);
+    fade("#s04-hs1", X("r1", 0), 1, 0);
+    fade("#s04-hs2", X("r1", 0.1), 0, 1);
+    // 25 출발점을 한사원으로 → 한사원, 최과장, 이부장, 김대표 4행
+    fade("#s04-h1", at(10, 0), 1, 0);
+    fade("#s04-b1", X("v0", -0.2), 1, 0);
+    fade("#s04-b3", X("v0", 0), 0, 1);
+    fade("#s04-h2", X("v0", 0.2), 0, 1);
+    fade("#s04-nosup", at(10, 0), 1, 0);
+    fade("#s04-f1", at(10, 0), 1, 0);
+    st(1, at(10, 0), ACT, OFF);
+    const R = [[6, X("v6", -0.1)], [4, X("v4", -0.1)], [2, X("v2", -0.1)], [1, X("v1", -0.1)]];
+    R.forEach(([id, t], i) => {
+      st(id, t, OFF, ACT);
+      stamp(`#s04-br${id}`, t);
+      stamp(`#s04-v${i + 1}`, t);
+      if (i > 0) { const q = [R[i - 1][0], R[i][0]].sort((x, y) => x - y); edge(q[0] === 1 ? 1 : q[0], q[1], t, true); }
+      if (i + 1 < R.length) st(id, R[i + 1][1], ACT, KID);
+    });
+    fade("#s04-hs2", X("n4", 0), 1, 0);
+    fade("#s04-hs3", X("n4", 0.1), 0, 1);
+    // 26 순방향 아래로, 역방향 위로, 역방향에서도 출발 행 LEVEL 1
+    stamp("#s04-cdown", X("fw", -0.1));
+    stamp("#s04-cup", X("bw", -0.1));
+    fade("#s04-h2", at(11, 0), 1, 0);
+    if (String(V.exit) !== "false") ft("#s04-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s04"] = tl;
+  </script>
+</template>

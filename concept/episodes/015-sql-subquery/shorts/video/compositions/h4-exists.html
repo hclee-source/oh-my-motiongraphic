@@ -1,0 +1,42 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h4-code { left: 90px; top: 340px; width: 900px; height: 150px; display: flex; align-items: center; justify-content: center;
+      font-size: 60px; font-weight: 800; white-space: nowrap; }
+    #h4-note { position: absolute; left: 90px; top: 540px; width: 900px; height: 60px; text-align: center; font-size: 44px; font-weight: 800;
+      color: var(--color-ink2, #71717A); white-space: nowrap; opacity: 0; }
+    .h4-r { position: absolute; left: 90px; width: 860px; height: 150px; padding: 0 48px; box-sizing: border-box;
+      display: flex; align-items: center; justify-content: space-between; }
+    .h4-k { font-size: 50px; font-weight: 800; white-space: nowrap; }
+    .h4-v { font-size: 56px; font-weight: 900; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="h4" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45]"},{"id":"dur","type":"number","label":"장면 길이","default":5.3},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"rw","type":"number","label":"결과 행이 시각","default":2.4},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h4-all">
+      <div id="h4-code" class="x-dark q-code x-hide"><span><span class="q-k">EXISTS</span> ( 서브쿼리 )</span></div>
+      <div id="h4-note">값은 보지 않는다</div>
+      <div class="h4-r x-card x-hide" id="h4-r1" style="top:660px"><div class="h4-k">결과 행 있음</div><div class="h4-v x-acc">✓ 참</div></div>
+      <div class="h4-r x-card x-hide" id="h4-r2" style="top:840px"><div class="h4-k">결과 0행</div><div class="h4-v x-ink2">✕ 거짓</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 5.3;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const w = (k, d) => (Number(V[k]) || d);
+
+    // 9 EXISTS는 값은 보지 않고, 결과 행이 하나라도 있는지만
+    ft("#h4-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0));
+    fade("#h4-note", at(0, 0.6), 0, 1);
+    ft("#h4-r1", { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, w("rw", at(0, 2)) - 0.1);
+    ft("#h4-r2", { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, w("rw", at(0, 2)) + 0.6);
+    if (String(V.exit) !== "false") ft("#h4-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h4"] = tl;
+  </script>
+</template>

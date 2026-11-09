@@ -1,0 +1,42 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 540px; text-align: center; overflow: visible;
+      font-size: 54px; font-weight: 700; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 940px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cap-01a" class="cap clip" data-start="0.000" data-duration="0.910"><span>회원 표의 세 행을</span></div>
+    <div id="cap-01b" class="cap clip" data-start="0.910" data-duration="1.280"><span>모두 지우는 명령은</span></div>
+    <div id="cap-01c" class="cap clip" data-start="2.190" data-duration="1.191"><span>세 가지입니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="3.431" data-duration="2.450"><span>DELETE, TRUNCATE,</span></div>
+    <div id="cap-02b" class="cap clip" data-start="5.881" data-duration="0.983"><span>그리고 DROP.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="7.064" data-duration="2.670"><span>데이터를 다루는 DML은</span></div>
+    <div id="cap-03b" class="cap clip" data-start="9.734" data-duration="1.160"><span>DELETE뿐,</span></div>
+    <div id="cap-03c" class="cap clip" data-start="10.894" data-duration="0.202"><span>TRUNCATE와 DROP은</span></div>
+    <div id="cap-03d" class="cap clip" data-start="11.096" data-duration="1.739"><span>구조를 다루는 DDL입니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="12.885" data-duration="1.790"><span>그래서 COMMIT 전에</span></div>
+    <div id="cap-04b" class="cap clip" data-start="14.675" data-duration="0.900"><span>ROLLBACK 하면</span></div>
+    <div id="cap-04c" class="cap clip" data-start="15.575" data-duration="0.315"><span>DELETE만</span></div>
+    <div id="cap-04d" class="cap clip" data-start="15.890" data-duration="1.116"><span>세 행이 돌아옵니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="17.056" data-duration="1.370"><span>DDL은 실행하자마자</span></div>
+    <div id="cap-05b" class="cap clip" data-start="18.426" data-duration="1.920"><span>자동으로 커밋되니까요.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="20.546" data-duration="2.033"><span>지운 뒤 남는 것도 다릅니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="22.629" data-duration="2.310"><span>DELETE는 표와 저장 공간을,</span></div>
+    <div id="cap-07b" class="cap clip" data-start="24.939" data-duration="0.720"><span>TRUNCATE는</span></div>
+    <div id="cap-07c" class="cap clip" data-start="25.659" data-duration="2.320"><span>구조만 남은 빈 표를 남깁니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="28.029" data-duration="0.790"><span>마지막 DROP은</span></div>
+    <div id="cap-08b" class="cap clip" data-start="28.819" data-duration="0.920"><span>표의 구조까지</span></div>
+    <div id="cap-08c" class="cap clip" data-start="29.739" data-duration="1.714"><span>통째로 없앱니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="31.653" data-duration="1.930"><span>일부 행만 골라 지울 수 있는 것도</span></div>
+    <div id="cap-09b" class="cap clip" data-start="33.583" data-duration="1.120"><span>WHERE를 붙이는</span></div>
+    <div id="cap-09c" class="cap clip" data-start="34.703" data-duration="1.505"><span>DELETE뿐입니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="36.408" data-duration="1.410"><span>DELETE만 되돌릴 수 있고,</span></div>
+    <div id="cap-10b" class="cap clip" data-start="37.818" data-duration="2.100"><span>TRUNCATE는 빈 표를,</span></div>
+    <div id="cap-10c" class="cap clip" data-start="39.918" data-duration="1.320"><span>DROP은 아무것도</span></div>
+    <div id="cap-10d" class="cap clip" data-start="41.238" data-duration="1.503"><span>남기지 않습니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

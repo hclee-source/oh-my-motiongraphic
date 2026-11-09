@@ -1,0 +1,126 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s02-tb { left: 192px; top: 262px; width: 1536px; height: 460px; }
+    #s02-tb .q-th, #s02-tb .q-tr { grid-template-columns: 200px 200px 220px 200px 180px 240px 240px; }
+    #s02-tb .q-th { top: 64px; }
+    #s02-tb .q-th > div { font-size: 32px; }
+    #s02-rows { position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
+    .s02-ex { opacity: 0; }
+    .s02-sw { position: relative; }
+    .s02-sw > span { display: block; }
+    .s02-sw > span.s02-b { position: absolute; left: 0; right: 0; top: 0; opacity: 0; }
+    .s02-r { opacity: 0; }
+    .s02-band { position: absolute; left: 12px; right: 12px; height: 56px; border-radius: 14px;
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 12%, #FFFFFF); opacity: 0; }
+    /* 값이 여럿인 칸의 ✕(막대 둘) */
+    .s02-x { position: absolute; left: 720px; width: 56px; height: 56px; opacity: 0; }
+    .s02-x > div { position: absolute; left: 0; top: 25px; width: 56px; height: 6px; border-radius: 3px; background: #18181B; }
+    .s02-x > div:first-child { transform: rotate(45deg); }
+    .s02-x > div:last-child { transform: rotate(-45deg); }
+    /* 주식별자 묶음 표시 */
+    #s02-gl { position: absolute; left: 48px; top: 12px; width: 360px; height: 40px; display: flex; align-items: center; justify-content: center; gap: 14px;
+      font-size: 30px; font-weight: 900; color: var(--color-accent, #6B3FE6); opacity: 0; }
+    #s02-gb { position: absolute; left: 48px; top: 56px; width: 360px; height: 4px; border-radius: 2px; background: var(--color-accent, #6B3FE6); opacity: 0; }
+    .s02-key { position: relative; width: 44px; height: 24px; }
+    .s02-key > i { position: absolute; display: block; background: var(--color-accent, #6B3FE6); }
+    .s02-key > i:nth-child(1) { left: 0; top: 2px; width: 20px; height: 20px; border-radius: 10px; background: transparent; border: 4px solid var(--color-accent, #6B3FE6); box-sizing: border-box; }
+    .s02-key > i:nth-child(2) { left: 18px; top: 10px; width: 26px; height: 4px; }
+    .s02-key > i:nth-child(3) { left: 36px; top: 10px; width: 4px; height: 12px; }
+    /* 아래 줄: 한 줄 메모 + 반복 그룹 칩 */
+    #s02-low { position: absolute; left: 192px; top: 770px; width: 1536px; height: 60px; }
+    .s02-n { position: absolute; left: 0; top: 0; height: 60px; display: flex; align-items: center; font-size: 38px; font-weight: 800;
+      white-space: nowrap; opacity: 0; }
+    #s02-rep { left: 0; top: 0; height: 60px; padding-left: 84px; }
+    #s02-rep .s02-cx { position: absolute; left: 22px; top: 15px; width: 30px; height: 30px; }
+    #s02-rep .s02-cx > div { position: absolute; left: 0; top: 12px; width: 30px; height: 5px; border-radius: 3px; background: #FFFFFF; }
+    #s02-rep .s02-cx > div:first-child { transform: rotate(45deg); }
+    #s02-rep .s02-cx > div:last-child { transform: rotate(-45deg); }
+  </style>
+  <div id="root" data-composition-id="s02" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.2,7.65,13.89,18.77,25.77,31.29]"},{"id":"dur","type":"number","label":"장면 길이","default":37.5},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s02-all">
+      <div id="s02-head" class="x-head">제1정규형과 주식별자</div>
+      <div id="s02-tb" class="x-card q-tb x-hide">
+        <div class="s02-band" id="s02-bd1" style="top:128px"></div>
+        <div class="s02-band" id="s02-bd2" style="top:188px"></div>
+        <div id="s02-gl"><span class="s02-key"><i></i><i></i><i></i></span><span>주식별자</span></div>
+        <div id="s02-gb"></div>
+        <div class="q-th"><div id="s02-h0">주문번호</div><div class="s02-ex" id="s02-h1">상품코드</div>
+          <div class="s02-sw"><span id="s02-ha">상품</span><span class="s02-b" id="s02-hb">상품명</span></div>
+          <div class="s02-ex" id="s02-h3">단가</div><div>수량</div><div class="s02-ex" id="s02-h5">고객번호</div><div class="s02-ex" id="s02-h6">고객이름</div></div>
+        <div id="s02-rows" data-layout-allow-overlap>
+          <div class="q-tr s02-r" id="s02-r1c" style="top:128px"><div>1</div><div></div><div class="s02-cv">연필, 공책</div><div></div><div class="s02-cv">2, 1</div><div></div><div></div></div>
+          <div class="q-tr s02-r" id="s02-r1a" style="top:128px"><div class="s02-c0">1</div><div class="s02-ex">P1</div><div>연필</div><div class="s02-ex">500</div><div>2</div><div class="s02-ex">C1</div><div class="s02-ex">민수</div></div>
+          <div class="q-tr s02-r" id="s02-r1b" style="top:188px"><div class="s02-c0">1</div><div class="s02-ex">P2</div><div>공책</div><div class="s02-ex">1,500</div><div>1</div><div class="s02-ex">C1</div><div class="s02-ex">민수</div></div>
+          <div class="q-tr s02-r" id="s02-r2" style="top:188px"><div>2</div><div class="s02-ex">P2</div><div>공책</div><div class="s02-ex">1,500</div><div>3</div><div class="s02-ex">C2</div><div class="s02-ex">지영</div></div>
+          <div class="q-tr s02-r" id="s02-r3c" style="top:248px"><div>3</div><div></div><div class="s02-cv">공책, 지우개</div><div></div><div class="s02-cv">1, 2</div><div></div><div></div></div>
+          <div class="q-tr s02-r" id="s02-r3a" style="top:308px"><div>3</div><div class="s02-ex">P2</div><div>공책</div><div class="s02-ex">1,500</div><div>1</div><div class="s02-ex">C1</div><div class="s02-ex">민수</div></div>
+          <div class="q-tr s02-r" id="s02-r3b" style="top:368px"><div>3</div><div class="s02-ex">P3</div><div>지우개</div><div class="s02-ex">800</div><div>2</div><div class="s02-ex">C1</div><div class="s02-ex">민수</div></div>
+        </div>
+        <div class="s02-x" id="s02-x1" style="top:128px"><div></div><div></div></div>
+        <div class="s02-x" id="s02-x2" style="top:248px"><div></div><div></div></div>
+      </div>
+      <div id="s02-low" data-layout-allow-overlap>
+        <div class="s02-n" id="s02-n1">제1정규형 = 모든 칸에 <span class="x-acc">값 하나</span></div>
+        <div class="s02-n" id="s02-n2"><span>값이 여럿인 칸을 행으로 펼침 → <span class="x-acc">3행이 5행</span></span></div>
+        <div class="q-chip q-ng s02-n" id="s02-rep"><span class="s02-cx"><div></div><div></div></span>상품1 · 상품2 열로 옆에 늘어놓기</div>
+        <div class="s02-n" id="s02-n4"><span>주문번호만으로는 <span class="x-acc">한 행이 정해지지 않음</span></span></div>
+        <div class="s02-n" id="s02-n5"><span>둘을 함께 알아야 한 행이 정해짐 → <span class="x-acc">주식별자</span></span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 37.5;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const ACC = "#6B3FE6", INK = "#18181B";
+    let note = null;
+    const say = (id, t) => { if (note) fade(note, t, 1, 0); fade(id, t + 0.15, 0, 1); note = id; };
+
+    // 11 처음엔 주문 한 건이 한 행 — 상품 칸에 값이 여럿
+    ft("#s02-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s02-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    ["#s02-r1c", "#s02-r2", "#s02-r3c"].forEach((id, j) => ft(id, { opacity: 0, y: 8 }, { opacity: 1, y: 0 }, at(0, 1.0 + j * 0.2)));
+    ft(".s02-cv", { color: INK }, { color: ACC }, X("mv", at(0, 4.4)));
+    stamp("#s02-x1", at(0, 5.4));
+    stamp("#s02-x2", at(0, 5.7));
+    // 12 제1정규형 = 모든 칸에 값 하나
+    say("#s02-n1", at(1, 1.2));
+    // 13 값이 여럿인 칸을 펼치면 3행이 5행
+    fade(["#s02-x1", "#s02-x2"], at(2, 0.2), 1, 0);
+    fade(["#s02-r1c", "#s02-r3c"], at(2, 0.9), 1, 0);
+    ["#s02-r1a", "#s02-r1b"].forEach((id, j) => ft(id, { opacity: 0, y: -6 }, { opacity: 1, y: 0 }, at(2, 1.0 + j * 0.2)));
+    ft("#s02-r2", { y: 0 }, { y: 60, ease: "power2.inOut" }, at(2, 1.0));
+    ["#s02-r3a", "#s02-r3b"].forEach((id, j) => ft(id, { opacity: 0, y: -6 }, { opacity: 1, y: 0 }, at(2, 1.5 + j * 0.2)));
+    say("#s02-n2", at(2, 2.6));
+    // 14 상품 열을 옆으로 늘어놓는 반복 그룹도 위반
+    fade("#s02-n2", at(3, 0.1), 1, 0);
+    note = null;
+    stamp("#s02-rep", at(3, 1.6));
+    // 15 1번 주문이 두 행 — 주문번호만으로는 한 행이 정해지지 않음, 나머지 열이 채워짐
+    fade("#s02-rep", at(4, 0.1), 1, 0);
+    fade(".s02-ex", at(4, 0.5), 0, 1);
+    fade("#s02-ha", at(4, 0.5), 1, 0);
+    fade("#s02-hb", at(4, 0.6), 0, 1);
+    fade(["#s02-bd1", "#s02-bd2"], at(4, 2.4), 0, 1);
+    ft(".s02-c0", { color: INK }, { color: ACC }, at(4, 2.4));
+    say("#s02-n4", at(4, 2.6));
+    // 16 주문번호 + 상품코드가 주식별자
+    fade(["#s02-bd1", "#s02-bd2"], at(5, 0.1), 1, 0);
+    ft(".s02-c0", { color: ACC }, { color: INK }, at(5, 0.1));
+    fade(["#s02-gl", "#s02-gb"], at(5, 0.8), 0, 1);
+    ft(["#s02-h0", "#s02-h1"], { color: "#71717A" }, { color: ACC }, at(5, 0.8));
+    say("#s02-n5", at(5, 2.0));
+    if (String(V.exit) !== "false") ft("#s02-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s02"] = tl;
+  </script>
+</template>

@@ -1,0 +1,46 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 540px; text-align: center; overflow: visible;
+      font-size: 48px; font-weight: 700; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 940px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cap-01a" class="cap clip" data-start="0.000" data-duration="0.450"><span>SUM(값)</span></div>
+    <div id="cap-01b" class="cap clip" data-start="0.450" data-duration="1.280"><span>OVER (ORDER BY 값)으로</span></div>
+    <div id="cap-01c" class="cap clip" data-start="1.730" data-duration="4.940"><span>40, 50, 50, 60을 누적하면</span></div>
+    <div id="cap-01d" class="cap clip" data-start="6.670" data-duration="5.150"><span>40, 140, 140, 200입니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="11.870" data-duration="1.310"><span>같은 50인 두 행이</span></div>
+    <div id="cap-02b" class="cap clip" data-start="13.180" data-duration="2.247"><span>똑같이 140을 받습니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="15.628" data-duration="1.010"><span>ORDER BY만 적으면</span></div>
+    <div id="cap-03b" class="cap clip" data-start="16.638" data-duration="2.180"><span>기본 범위는 RANGE,</span></div>
+    <div id="cap-03c" class="cap clip" data-start="18.818" data-duration="2.018"><span>처음부터 현재 행까지입니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="20.886" data-duration="1.910"><span>RANGE는 값으로 범위를 정해서,</span></div>
+    <div id="cap-04b" class="cap clip" data-start="22.796" data-duration="1.580"><span>같은 값의 행을</span></div>
+    <div id="cap-04c" class="cap clip" data-start="24.376" data-duration="1.291"><span>함께 더합니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="25.867" data-duration="0.870"><span>ROWS로 적으면</span></div>
+    <div id="cap-05b" class="cap clip" data-start="26.737" data-duration="1.720"><span>실제 행을 하나씩 세서</span></div>
+    <div id="cap-05c" class="cap clip" data-start="28.457" data-duration="4.836"><span>40, 90, 140, 200입니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="33.343" data-duration="0.950"><span>같은 50이어도</span></div>
+    <div id="cap-06b" class="cap clip" data-start="34.293" data-duration="1.680"><span>먼저 오는 행은 90,</span></div>
+    <div id="cap-06c" class="cap clip" data-start="35.973" data-duration="2.228"><span>다음 행은 140입니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="38.401" data-duration="0.750"><span>LAST_VALUE는</span></div>
+    <div id="cap-07b" class="cap clip" data-start="39.151" data-duration="1.740"><span>맨 끝 값을 가져오는데,</span></div>
+    <div id="cap-07c" class="cap clip" data-start="40.891" data-duration="2.400"><span>기본 범위가 현재 행에서 끝나서</span></div>
+    <div id="cap-07d" class="cap clip" data-start="43.291" data-duration="1.414"><span>자기 값이 나옵니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="44.755" data-duration="1.190"><span>맨 끝 값을 보려면</span></div>
+    <div id="cap-08b" class="cap clip" data-start="45.945" data-duration="0.620"><span>범위를</span></div>
+    <div id="cap-08c" class="cap clip" data-start="46.565" data-duration="1.280"><span>UNBOUNDED FOLLOWING까지</span></div>
+    <div id="cap-08d" class="cap clip" data-start="47.845" data-duration="1.280"><span>넓혀야 합니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="49.325" data-duration="2.170"><span>LAG는 바로 앞 행의 값,</span></div>
+    <div id="cap-09b" class="cap clip" data-start="51.495" data-duration="2.540"><span>LEAD는 바로 뒤 행의 값을 가져오고,</span></div>
+    <div id="cap-09c" class="cap clip" data-start="54.035" data-duration="2.342"><span>가져올 행이 없으면 NULL입니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="56.578" data-duration="1.710"><span>ORDER BY만 적으면 RANGE라서</span></div>
+    <div id="cap-10b" class="cap clip" data-start="58.288" data-duration="1.760"><span>같은 값은 함께 더하고,</span></div>
+    <div id="cap-10c" class="cap clip" data-start="60.048" data-duration="1.440"><span>한 행씩 더하려면</span></div>
+    <div id="cap-10d" class="cap clip" data-start="61.488" data-duration="1.502"><span>ROWS를 적습니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

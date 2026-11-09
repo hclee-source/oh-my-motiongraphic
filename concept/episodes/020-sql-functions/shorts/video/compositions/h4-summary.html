@@ -1,0 +1,32 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h4-b { position: absolute; left: 80px; width: 880px; height: 170px; box-sizing: border-box; display: flex; align-items: center;
+      padding: 0 56px; font-size: 56px; font-weight: 900; }
+    .h4-b span { color: var(--color-accent, #6B3FE6); margin-left: 18px; }
+  </style>
+  <div id="root" data-composition-id="h4" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45]"},{"id":"dur","type":"number","label":"장면 길이","default":8},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"b2","type":"number","label":"자릿수는 시각","default":2.6},{"id":"b3","type":"number","label":"맞는 시각","default":4.6},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h4-all">
+      <div class="h4-b x-card x-hide" id="h4-b1" style="top:360px">음수 위치<span>뒤에서부터</span></div>
+      <div class="h4-b x-card x-hide" id="h4-b2" style="top:590px">음수 자릿수<span>소수점 왼쪽</span></div>
+      <div class="h4-b x-card x-hide" id="h4-b3" style="top:820px">맞는 조건이 없으면<span>NULL</span></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d = 0) => Number(V[k]) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+
+    // 8 음수 위치는 뒤에서부터, 음수 자릿수는 소수점 왼쪽, 맞는 조건이 없으면 NULL
+    ft("#h4-b1", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0));
+    ft("#h4-b2", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("b2", -0.5));
+    ft("#h4-b3", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("b3", -0.5));
+    window.__timelines["h4"] = tl;
+  </script>
+</template>

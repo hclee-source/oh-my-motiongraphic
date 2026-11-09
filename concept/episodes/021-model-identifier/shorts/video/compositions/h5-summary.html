@@ -1,0 +1,37 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h5-c { position: absolute; left: 60px; width: 900px; height: 240px; padding: 0 40px; box-sizing: border-box;
+      display: grid; grid-template-columns: 220px 1fr; align-items: center; }
+    #h5-c1 { top: 380px; } #h5-c2 { top: 680px; }
+    .h5-k { font-size: 52px; font-weight: 900; white-space: nowrap; }
+    .h5-t { font-size: 56px; font-weight: 900; white-space: nowrap; margin-top: 10px; }
+    .h5-s { display: block; }
+  </style>
+  <div id="root" data-composition-id="h5" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45]"},{"id":"dur","type":"number","label":"장면 길이","default":6.9},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"w1","type":"number","label":"자식의 시각","default":0},{"id":"w2","type":"number","label":"일반 시각","default":0},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h5-all">
+      <div class="h5-c x-card x-hide" id="h5-c1">
+        <svg width="180" height="60" viewBox="0 0 180 60"><line x1="8" y1="30" x2="172" y2="30" stroke="#18181B" stroke-width="7" stroke-linecap="round"/></svg>
+        <div><div class="h5-k x-acc">가로선 위로</div><div class="h5-t">실선 · 식별자 관계</div></div></div>
+      <div class="h5-c x-card x-hide" id="h5-c2">
+        <svg width="180" height="60" viewBox="0 0 180 60"><line x1="8" y1="30" x2="172" y2="30" stroke="#18181B" stroke-width="7" stroke-linecap="round" stroke-dasharray="20 14"/></svg>
+        <div><div class="h5-k">가로선 아래로</div><div class="h5-t">점선 · 비식별자 관계</div></div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+
+    // 11 부모의 주식별자가 자식의 주식별자로 가면 실선, 일반 속성으로 가면 점선
+    ft("#h5-c1", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("w1", at(0, 1.4)) - 0.2);
+    ft("#h5-c2", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("w2", at(0, 3.8)) - 0.2);
+    window.__timelines["h5"] = tl;
+  </script>
+</template>

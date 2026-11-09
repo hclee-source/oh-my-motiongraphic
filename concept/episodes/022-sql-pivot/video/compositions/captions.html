@@ -1,0 +1,111 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 108px; text-align: center; overflow: visible;
+      font-size: 46px; font-weight: 600; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 1536px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-01a" class="cap clip" data-start="3.600" data-duration="1.610"><span>부서별 분기 매출을 한 줄씩</span></div>
+    <div id="cap-01b" class="cap clip" data-start="5.210" data-duration="1.949"><span>보려고 PIVOT을 썼습니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="7.259" data-duration="2.130"><span>부서는 영업과 개발 두 개뿐이니,</span></div>
+    <div id="cap-02b" class="cap clip" data-start="9.389" data-duration="2.848"><span>결과도 2행이 나올 것 같습니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="12.337" data-duration="1.850"><span>그런데 실제 결과는 3행이고,</span></div>
+    <div id="cap-03b" class="cap clip" data-start="14.187" data-duration="2.803"><span>영업이 두 줄로 갈라져 있습니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="17.091" data-duration="3.709"><span>SQL에 오류도 없는데, 왜 이렇게 나왔을까요?</span></div>
+    <div id="cap-05a" class="cap clip" data-start="20.900" data-duration="2.734"><span>답은 PIVOT이 행을 묶는 방식에 있습니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="23.734" data-duration="1.850"><span>오늘은 실적 표 하나로 PIVOT과</span></div>
+    <div id="cap-06b" class="cap clip" data-start="25.584" data-duration="2.700"><span>UNPIVOT을 한 단계씩 따라가 보겠습니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="28.934" data-duration="3.190"><span>오늘의 실적 표는 부서, 분기,</span></div>
+    <div id="cap-07b" class="cap clip" data-start="32.124" data-duration="3.828"><span>매출, 담당자 네 열에 7행입니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="36.052" data-duration="2.850"><span>영업은 1분기부터 4분기까지 다섯 건,</span></div>
+    <div id="cap-08b" class="cap clip" data-start="38.902" data-duration="3.298"><span>개발은 1분기와 3분기에 한 건씩입니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="42.300" data-duration="2.750"><span>부서마다 한 줄을 두고 분기를 옆으로 펼쳐서,</span></div>
+    <div id="cap-09b" class="cap clip" data-start="45.050" data-duration="3.653"><span>행에 있던 값을 열로 세우는 것이 PIVOT입니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="49.353" data-duration="2.430"><span>먼저 FROM 절 괄호 안에서 부서,</span></div>
+    <div id="cap-10b" class="cap clip" data-start="51.783" data-duration="3.654"><span>분기, 매출 세 열만 골라 옵니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="55.537" data-duration="2.219"><span>이유는 조금 뒤에 보겠습니다.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="57.856" data-duration="2.689"><span>PIVOT 괄호 안은 세 부분으로 되어 있습니다.</span></div>
+    <div id="cap-13a" class="cap clip" data-start="60.645" data-duration="2.090"><span>첫째, SUM(매출)은 새로</span></div>
+    <div id="cap-13b" class="cap clip" data-start="62.735" data-duration="2.102"><span>생길 칸에 들어갈 값입니다.</span></div>
+    <div id="cap-14a" class="cap clip" data-start="64.937" data-duration="1.350"><span>PIVOT에는 이렇게 집계</span></div>
+    <div id="cap-14b" class="cap clip" data-start="66.287" data-duration="2.124"><span>함수가 반드시 들어갑니다.</span></div>
+    <div id="cap-15a" class="cap clip" data-start="68.511" data-duration="2.350"><span>둘째, FOR 분기는 분기 열의</span></div>
+    <div id="cap-15b" class="cap clip" data-start="70.861" data-duration="3.143"><span>값을 펼쳐서 열로 만들겠다는 뜻입니다.</span></div>
+    <div id="cap-16a" class="cap clip" data-start="74.104" data-duration="3.030"><span>셋째, IN 목록에 적은 값만 열이 되고,</span></div>
+    <div id="cap-16b" class="cap clip" data-start="77.134" data-duration="3.569"><span>값마다 붙인 별칭이 열 이름이 됩니다.</span></div>
+    <div id="cap-17a" class="cap clip" data-start="80.803" data-duration="4.610"><span>1분기, 2분기, 3분기가 각각 Q1,</span></div>
+    <div id="cap-17b" class="cap clip" data-start="85.413" data-duration="3.348"><span>Q2, Q3 열이 됩니다.</span></div>
+    <div id="cap-18a" class="cap clip" data-start="89.412" data-duration="4.126"><span>결과는 부서마다 한 줄, 영업과 개발 두 줄입니다.</span></div>
+    <div id="cap-19a" class="cap clip" data-start="93.638" data-duration="1.630"><span>영업의 1분기는 두 건이라,</span></div>
+    <div id="cap-19b" class="cap clip" data-start="95.268" data-duration="3.455"><span>90과 60을 더한 150이 들어갑니다.</span></div>
+    <div id="cap-20a" class="cap clip" data-start="98.823" data-duration="1.510"><span>한 칸에 여러 행이 모이니,</span></div>
+    <div id="cap-20b" class="cap clip" data-start="100.333" data-duration="2.933"><span>집계 함수로 하나로 합치는 것입니다.</span></div>
+    <div id="cap-21a" class="cap clip" data-start="103.366" data-duration="3.686"><span>2분기는 120, 3분기는 110입니다.</span></div>
+    <div id="cap-22a" class="cap clip" data-start="107.152" data-duration="1.850"><span>영업 4분기 130은 IN</span></div>
+    <div id="cap-22b" class="cap clip" data-start="109.002" data-duration="2.690"><span>목록에 없어서 결과에서 빠집니다.</span></div>
+    <div id="cap-23a" class="cap clip" data-start="111.792" data-duration="3.130"><span>개발은 1분기 70, 3분기 80이고,</span></div>
+    <div id="cap-23b" class="cap clip" data-start="114.922" data-duration="2.977"><span>2분기에는 데이터가 없습니다.</span></div>
+    <div id="cap-24a" class="cap clip" data-start="118.000" data-duration="2.932"><span>이렇게 데이터가 없는 칸은 NULL로 채워집니다.</span></div>
+    <div id="cap-25a" class="cap clip" data-start="121.032" data-duration="3.163"><span>7행이 PIVOT을 거쳐 2행이 되었습니다.</span></div>
+    <div id="cap-26a" class="cap clip" data-start="124.845" data-duration="2.754"><span>이제 처음 질문으로 돌아가 보겠습니다.</span></div>
+    <div id="cap-27a" class="cap clip" data-start="127.699" data-duration="2.010"><span>PIVOT에는 GROUP BY를 적지 않지만,</span></div>
+    <div id="cap-27b" class="cap clip" data-start="129.709" data-duration="2.720"><span>안에서 저절로 행을 묶습니다.</span></div>
+    <div id="cap-28a" class="cap clip" data-start="132.529" data-duration="2.070"><span>묶는 기준은 집계 함수와 FOR에</span></div>
+    <div id="cap-28b" class="cap clip" data-start="134.599" data-duration="2.533"><span>나오지 않은 나머지 열 전부입니다.</span></div>
+    <div id="cap-29a" class="cap clip" data-start="137.232" data-duration="2.270"><span>괄호 없이 실적 표에 바로 PIVOT을 하면,</span></div>
+    <div id="cap-29b" class="cap clip" data-start="139.502" data-duration="3.084"><span>담당자 열까지 그대로 들어옵니다.</span></div>
+    <div id="cap-30a" class="cap clip" data-start="142.686" data-duration="2.910"><span>매출과 분기를 빼면 부서와 담당자가 남으니,</span></div>
+    <div id="cap-30b" class="cap clip" data-start="145.596" data-duration="2.305"><span>이 두 열로 묶입니다.</span></div>
+    <div id="cap-31a" class="cap clip" data-start="148.000" data-duration="1.870"><span>그래서 영업이 민수와 지영,</span></div>
+    <div id="cap-31b" class="cap clip" data-start="149.870" data-duration="2.971"><span>두 줄로 갈라져 3행이 된 것입니다.</span></div>
+    <div id="cap-32a" class="cap clip" data-start="152.941" data-duration="3.787"><span>영업 1분기 150도 90과 60으로 나뉘었습니다.</span></div>
+    <div id="cap-33a" class="cap clip" data-start="156.828" data-duration="2.950"><span>필요한 열만 골라 넣는 FROM 절의 서브쿼리,</span></div>
+    <div id="cap-33b" class="cap clip" data-start="159.778" data-duration="3.719"><span>곧 인라인 뷰가 필요한 이유가 바로 이것입니다.</span></div>
+    <div id="cap-34a" class="cap clip" data-start="164.146" data-duration="2.010"><span>같은 결과를 PIVOT 없이 CASE와</span></div>
+    <div id="cap-34b" class="cap clip" data-start="166.156" data-duration="2.251"><span>GROUP BY로도 만들 수 있습니다.</span></div>
+    <div id="cap-35a" class="cap clip" data-start="168.507" data-duration="2.170"><span>분기가 1인 행에서만 매출을 돌려주는</span></div>
+    <div id="cap-35b" class="cap clip" data-start="170.677" data-duration="3.016"><span>CASE를 SUM으로 감싸면 Q1 열이 됩니다.</span></div>
+    <div id="cap-36a" class="cap clip" data-start="173.794" data-duration="2.890"><span>분기마다 이렇게 적고 GROUP BY 부서로 묶으면,</span></div>
+    <div id="cap-36b" class="cap clip" data-start="176.684" data-duration="3.105"><span>PIVOT과 똑같은 2행이 나옵니다.</span></div>
+    <div id="cap-37a" class="cap clip" data-start="179.889" data-duration="2.330"><span>여기서는 묶는 기준을 직접 적었으니,</span></div>
+    <div id="cap-37b" class="cap clip" data-start="182.219" data-duration="3.713"><span>담당자 열이 있어도 결과가 갈라지지 않습니다.</span></div>
+    <div id="cap-38a" class="cap clip" data-start="186.032" data-duration="2.450"><span>SQL Server도 PIVOT을 쓰는데,</span></div>
+    <div id="cap-38b" class="cap clip" data-start="188.482" data-duration="3.717"><span>IN 목록에는 별칭 없이 값을 대괄호로 감싸 적습니다.</span></div>
+    <div id="cap-39a" class="cap clip" data-start="192.849" data-duration="0.910"><span>이번에는 반대로,</span></div>
+    <div id="cap-39b" class="cap clip" data-start="193.759" data-duration="2.924"><span>열을 행으로 바꾸는 UNPIVOT입니다.</span></div>
+    <div id="cap-40a" class="cap clip" data-start="196.782" data-duration="1.970"><span>방금 만든 2행짜리 결과를</span></div>
+    <div id="cap-40b" class="cap clip" data-start="198.752" data-duration="2.311"><span>분기실적 표라고 해 보겠습니다.</span></div>
+    <div id="cap-41a" class="cap clip" data-start="201.163" data-duration="1.930"><span>UNPIVOT 괄호 안에는 먼저 값이</span></div>
+    <div id="cap-41b" class="cap clip" data-start="203.093" data-duration="3.200"><span>들어갈 새 열 이름, 매출을 적습니다.</span></div>
+    <div id="cap-42a" class="cap clip" data-start="206.393" data-duration="3.610"><span>FOR 뒤에는 원래 열 이름이 들어갈 새 열 분기를,</span></div>
+    <div id="cap-42b" class="cap clip" data-start="210.003" data-duration="2.678"><span>IN 목록에는 풀어 낼 세 열을 적습니다.</span></div>
+    <div id="cap-43a" class="cap clip" data-start="212.781" data-duration="1.530"><span>2행에 열이 세 개씩이니,</span></div>
+    <div id="cap-43b" class="cap clip" data-start="214.311" data-duration="2.439"><span>칸은 모두 여섯 개입니다.</span></div>
+    <div id="cap-44a" class="cap clip" data-start="216.850" data-duration="1.130"><span>칸 하나가 한 행이 되고,</span></div>
+    <div id="cap-44b" class="cap clip" data-start="217.980" data-duration="4.207"><span>분기 칸에는 Q1 같은 원래 열 이름이 들어갑니다.</span></div>
+    <div id="cap-45a" class="cap clip" data-start="222.287" data-duration="1.330"><span>그런데 결과는 5행,</span></div>
+    <div id="cap-45b" class="cap clip" data-start="223.617" data-duration="3.386"><span>개발의 Q2 칸이 NULL이라 빠졌습니다.</span></div>
+    <div id="cap-46a" class="cap clip" data-start="227.103" data-duration="2.550"><span>UNPIVOT은 따로 적지 않으면 NULL 칸을 행으로</span></div>
+    <div id="cap-46b" class="cap clip" data-start="229.653" data-duration="4.127"><span>만들지 않는데, 이것을 EXCLUDE NULLS라고 합니다.</span></div>
+    <div id="cap-47a" class="cap clip" data-start="233.881" data-duration="1.970"><span>NULL도 남기려면 UNPIVOT 바로 뒤에</span></div>
+    <div id="cap-47b" class="cap clip" data-start="235.851" data-duration="3.974"><span>INCLUDE NULLS를 적고, 그러면 6행이 나옵니다.</span></div>
+    <div id="cap-48a" class="cap clip" data-start="239.925" data-duration="1.690"><span>하나 더, UNPIVOT은</span></div>
+    <div id="cap-48b" class="cap clip" data-start="241.615" data-duration="2.512"><span>PIVOT을 그대로 되돌리지 못합니다.</span></div>
+    <div id="cap-49a" class="cap clip" data-start="244.227" data-duration="2.930"><span>90과 60을 합친 150은 다시 나뉘지 않고,</span></div>
+    <div id="cap-49b" class="cap clip" data-start="247.157" data-duration="3.945"><span>빠졌던 4분기 130도 돌아오지 않습니다.</span></div>
+    <div id="cap-50a" class="cap clip" data-start="251.752" data-duration="2.582"><span>시험장에서 챙길 것 세 가지입니다.</span></div>
+    <div id="cap-51a" class="cap clip" data-start="254.433" data-duration="3.290"><span>첫째, PIVOT은 집계 함수와 FOR에 없는 나머지</span></div>
+    <div id="cap-51b" class="cap clip" data-start="257.723" data-duration="3.964"><span>열로 묶이니, 필요한 열만 인라인 뷰로 골라 넣습니다.</span></div>
+    <div id="cap-52a" class="cap clip" data-start="261.787" data-duration="2.790"><span>둘째, IN 목록에 적은 값만 열이 되고,</span></div>
+    <div id="cap-52b" class="cap clip" data-start="264.577" data-duration="2.718"><span>데이터가 없는 칸은 NULL입니다.</span></div>
+    <div id="cap-53a" class="cap clip" data-start="267.395" data-duration="2.870"><span>셋째, UNPIVOT은 NULL 칸을 빼고,</span></div>
+    <div id="cap-53b" class="cap clip" data-start="270.265" data-duration="2.722"><span>INCLUDE NULLS를 적어야 남깁니다.</span></div>
+    <div id="cap-54a" class="cap clip" data-start="273.637" data-duration="2.894"><span>오늘 내용을 한 줄로 정리하면 이렇습니다.</span></div>
+    <div id="cap-55a" class="cap clip" data-start="276.630" data-duration="2.390"><span>행을 열로 세우는 PIVOT은 남은 열로 묶이고,</span></div>
+    <div id="cap-55b" class="cap clip" data-start="279.020" data-duration="3.440"><span>열을 행으로 푸는 UNPIVOT은 NULL을 뺍니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

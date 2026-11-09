@@ -1,0 +1,44 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h4-top { left: 60px; top: 330px; width: 520px; height: 90px; font-size: 48px; }
+    .h4-c { position: absolute; left: 60px; width: 900px; height: 160px; padding: 0 40px; box-sizing: border-box;
+      display: grid; grid-template-columns: 230px 1fr; align-items: center; }
+    #h4-c1 { top: 450px; } #h4-c2 { top: 630px; } #h4-c3 { top: 810px; } #h4-c4 { top: 990px; }
+    .h4-t { font-size: 54px; font-weight: 900; color: var(--color-accent, #6B3FE6); white-space: nowrap; }
+    .h4-d { font-size: 44px; font-weight: 800; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="h4" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,2.9,8.5]"},{"id":"dur","type":"number","label":"장면 길이","default":12.9},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"u1","type":"number","label":"유일성 시각","default":0},{"id":"u2","type":"number","label":"최소성 시각","default":0},{"id":"u3","type":"number","label":"불변성 시각","default":0},{"id":"u4","type":"number","label":"존재성 시각","default":0},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h4-all">
+      <div id="h4-top" class="q-chip q-ok">주식별자의 조건 네 가지</div>
+      <div class="h4-c x-card x-hide" id="h4-c1"><div class="h4-t">유일성</div><div class="h4-d">한 건만 가리킨다</div></div>
+      <div class="h4-c x-card x-hide" id="h4-c2"><div class="h4-t">최소성</div><div class="h4-d">꼭 필요한 속성만</div></div>
+      <div class="h4-c x-card x-hide" id="h4-c3"><div class="h4-t">불변성</div><div class="h4-d">바뀌지 않는다</div></div>
+      <div class="h4-c x-card x-hide" id="h4-c4"><div class="h4-t">존재성</div><div class="h4-d">값이 반드시 있다</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 12.9;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, ease: "back.out(1.6)" }, t);
+
+    // 8 주식별자는 네 가지를 갖춰야 한다
+    stamp("#h4-top", at(0, 0.5));
+    // 9 한 건만 가리키는 유일성, 꼭 필요한 속성만 담는 최소성
+    stamp("#h4-c1", X("u1", at(1, 0.4)) - 0.2);
+    stamp("#h4-c2", X("u2", at(1, 2.6)) - 0.2);
+    // 10 바뀌지 않는 불변성, 값이 반드시 있는 존재성
+    stamp("#h4-c3", X("u3", at(2, 0.4)) - 0.2);
+    stamp("#h4-c4", X("u4", at(2, 2.4)) - 0.2);
+    if (String(V.exit) !== "false") ft("#h4-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h4"] = tl;
+  </script>
+</template>

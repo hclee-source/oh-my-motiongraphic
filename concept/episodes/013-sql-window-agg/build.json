@@ -1,0 +1,41 @@
+{
+  "_설명": "장면 순서(장 번호와 연결, 여러 장을 한 장면으로 묶을 수 있음), 장면 끝에서 사라질지(exit), 효과음 위치([이름, 장면 안 문장 순번(0부터), 그 문장 시작 뒤 초]). extra는 그 낱말이 나오는 시각(장면 기준).",
+  "scenes": [
+    { "id": "s00", "file": "s00-title.html" },
+    { "id": "s01", "file": "s01-hook.html", "chapter": 1,
+      "extra": { "p500": { "sentence": 4, "at": "500이어야" }, "p800": { "sentence": 4, "at": "800이" } } },
+    { "id": "s02", "file": "s02-over.html", "chapter": [2, 3],
+      "extra": { "t2000": { "sentence": 8, "at": "2000이" }, "p12": { "sentence": 10, "at": "1200" }, "p8": { "sentence": 10, "at": "800입니다" },
+                 "c1": { "sentence": 13, "at": "민수는" }, "c2": { "sentence": 13, "at": "800을" },
+                 "c4": { "sentence": 14, "at": "1300" }, "c5": { "sentence": 14, "at": "2000으로" } } },
+    { "id": "s03", "file": "s03-range.html", "chapter": [4, 5],
+      "extra": { "m1": { "sentence": 17, "at": "맨 처음" }, "m2": { "sentence": 17, "at": "현재 행까지" }, "rg": { "sentence": 18, "at": "급여 값으로" },
+                 "hn": { "sentence": 22, "at": "행 개수를" } } },
+    { "id": "s04", "file": "s04-partition.html", "chapter": 6,
+      "extra": { "pb": { "sentence": 25, "at": "처음부터" } } },
+    { "id": "s05", "file": "s05-sliding.html", "chapter": 7,
+      "extra": { "e5": { "sentence": 30, "at": "500과" } } },
+    { "id": "s06", "file": "s06-lag.html", "chapter": 8 },
+    { "id": "s07", "file": "s07-last.html", "chapter": 9,
+      "extra": { "f2": { "sentence": 37, "at": "200" }, "q7": { "sentence": 38, "at": "700을" }, "w7": { "sentence": 41, "at": "700이" } } },
+    { "id": "s08", "file": "s08-ratio.html", "chapter": 10,
+      "extra": { "r25": { "sentence": 42, "at": "0.25입니다" }, "p0": { "sentence": 45, "at": "0이고" }, "p1": { "sentence": 45, "at": "1입니다" },
+                 "cd": { "sentence": 46, "at": "0.6" }, "nt": { "sentence": 47, "at": "3행과" } } },
+    { "id": "s09", "file": "s09-check.html", "chapter": 11 },
+    { "id": "s10", "file": "s10-summary.html", "chapter": 12, "exit": false,
+      "extra": { "rw": { "sentence": 54, "at": "한 행씩" } } }
+  ],
+  "sfx": {
+    "s00": [["chime", null, 0.15], ["whoosh-short", null, 3.0]],
+    "s01": [["pop", 0, 0.4], ["click-soft", 1, 0.3], ["pop", 2, 0.2], ["pop", 3, 1.0], ["pop", 4, 0.3], ["whoosh-short", 5, 0.3]],
+    "s02": [["pop", 0, 0.5], ["pop", 1, 0.4], ["click-soft", 3, 0.3], ["click-soft", 4, 0.3], ["pop", 6, 1.0], ["pop", 7, 1.0]],
+    "s03": [["pop", 0, 0.5], ["click-soft", 1, 1.0], ["pop", 2, 1.0], ["pop", 3, 1.5], ["pop", 4, 0.4], ["click-soft", 6, 1.1], ["pop", 7, 0.5], ["pop", 8, 0.4]],
+    "s04": [["pop", 0, 0.5], ["pop", 1, 0.9], ["click-soft", 2, 0.4]],
+    "s05": [["pop", 0, 0.5], ["pop", 1, 0.9], ["click-soft", 2, 1.2]],
+    "s06": [["pop", 0, 0.4], ["pop", 1, 0.9], ["click-soft", 2, 0.4], ["pop", 3, 0.9], ["click-soft", 4, 0.4]],
+    "s07": [["pop", 0, 0.5], ["pop", 1, 1.0], ["click-soft", 2, 0.4], ["pop", 3, 1.0], ["click-soft", 5, 0.4]],
+    "s08": [["pop", 0, 1.0], ["click-soft", 2, 0.4], ["pop", 3, 0.8], ["pop", 4, 0.8], ["pop", 5, 0.8]],
+    "s09": [["pop", 1, 0.2], ["pop", 2, 0.2], ["pop", 3, 0.2], ["pop", 4, 0.2]],
+    "s10": [["pop", 1, 0.2], ["pop", 1, 3.0]]
+  }
+}

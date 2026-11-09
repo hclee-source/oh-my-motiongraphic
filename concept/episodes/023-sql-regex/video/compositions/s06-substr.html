@@ -1,0 +1,91 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s06-str { position: absolute; left: 192px; top: 262px; width: 1536px; height: 144px; display: flex; align-items: center; justify-content: center;
+      font-size: 72px; font-weight: 900; white-space: nowrap; }
+    .s06-ck { position: relative; display: inline-block; padding: 0 14px; margin: 0 6px; }
+    .s06-ring { position: absolute; left: 0; right: 0; top: -4px; bottom: -4px; border-radius: 16px; border: 4px solid #A1A1AA; opacity: 0; }
+    .s06-ring.a { border-color: var(--color-accent, #6B3FE6); }
+    .s06-t { position: relative; }
+    .s06-u { position: relative; margin-right: 18px; }
+    #s06-code { left: 192px; top: 446px; width: 1096px; height: 124px; overflow: hidden; }
+    #s06-code .q-ln { height: 72px; }
+    #s06-res { position: absolute; left: 1328px; top: 446px; width: 400px; height: 124px; overflow: hidden; }
+    .s06-rw { position: absolute; left: 24px; right: 24px; height: 72px; }
+    .s06-rw > div { position: absolute; left: 0; right: 0; top: 0; line-height: 72px; text-align: center; font-size: 48px; font-weight: 900; opacity: 0; }
+    #s06-note { position: absolute; left: 192px; top: 754px; width: 1536px; height: 92px; display: flex; align-items: center; justify-content: center;
+      font-size: 36px; font-weight: 800; white-space: nowrap; }
+    #s06-note .x-acc { margin: 0 10px; }
+  </style>
+  <div id="root" data-composition-id="s06" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3,10.3,12.4,18,24.4,30.4]"},{"id":"dur","type":"number","label":"장면 길이","default":35.1},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s06-all">
+      <div id="s06-head" class="x-head">REGEXP_SUBSTR</div>
+      <div id="s06-str" class="x-card x-hide">
+        <span class="s06-ck"><span class="s06-ring" id="s06-g1"></span><span class="s06-ring a" id="s06-a1"></span><span class="s06-t">2026</span></span><span class="s06-u">년</span><span class="s06-ck"><span class="s06-ring" id="s06-g2"></span><span class="s06-ring a" id="s06-a2"></span><span class="s06-t">11</span></span><span class="s06-u">월</span><span class="s06-ck"><span class="s06-ring" id="s06-g3"></span><span class="s06-t">5</span></span><span class="s06-u">일</span>
+      </div>
+      <div id="s06-code" class="x-dark q-code x-hide">
+        <div class="q-ln" id="s06-l1"><div class="q-hi" id="s06-h1"></div><span><span class="q-k">REGEXP_SUBSTR</span>('2026년 11월 5일', '[0-9]+')</span></div>
+        <div class="q-ln" id="s06-l2" style="opacity:0"><div class="q-hi" id="s06-h2"></div><span><span class="q-k">REGEXP_SUBSTR</span>('2026년 11월 5일', '[0-9]+', 1, 2)</span></div>
+        <div class="q-ln" id="s06-l3" style="opacity:0"><div class="q-hi" id="s06-h3"></div><span><span class="q-k">REGEXP_SUBSTR</span>('2026년 11월 5일', '[0-9]{5}')</span></div>
+      </div>
+      <div id="s06-res" class="x-card x-hide">
+        <div class="s06-rw" style="top:26px" data-layout-allow-overlap><div id="s06-q1" class="x-ink2">?</div><div id="s06-v1" class="x-acc">2026</div></div>
+        <div class="s06-rw" style="top:98px"><div id="s06-v2" class="x-acc">11</div></div>
+        <div class="s06-rw" style="top:170px"><div id="s06-v3" class="q-null">NULL</div></div>
+      </div>
+      <div id="s06-note" class="x-card x-hide">세 번째 인자<span class="x-acc">=</span>시작 위치 · 네 번째 인자<span class="x-acc">=</span>몇 번째 덩어리</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 35.1;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+    let cur = 0;
+    const hi = (k, t) => { if (cur) fade(`#s06-h${cur}`, t, 1, 0); if (k) fade(`#s06-h${k}`, t, 0, 1); cur = k; };
+
+    // 29 여기서부터는 결과 맞히기
+    ft("#s06-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    // 30 ‘2026년 11월 5일’에서 숫자가 한 번 이상 이어진 부분 → ?
+    ft("#s06-str", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(1, 0.1));
+    ft("#s06-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(1, 1.6));
+    hi(1, at(1, 2.4));
+    ft("#s06-res", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(1, 3.0));
+    fade("#s06-q1", at(1, 5.4), 0, 1);
+    // 31 답은 2026
+    fade("#s06-q1", at(2, 0), 1, 0);
+    stamp("#s06-v1", at(2, 0.1));
+    fade("#s06-a1", at(2, 0.1), 0, 1);
+    // 32 이어진 숫자를 한 덩어리로, 여러 덩어리 가운데 첫 번째만
+    fade(["#s06-g2", "#s06-g3"], at(3, 1.6), 0, 1);
+    // 33 세 번째 인자 = 시작 위치, 네 번째 인자 = 몇 번째
+    // 카드는 줄이 늘 때마다 아래로 자란다(빈 칸이 오래 보이지 않게)
+    ft(["#s06-code", "#s06-res"], { height: 124 }, { height: 196 }, at(4, 0));
+    fade("#s06-l2", at(4, 0.4), 0, 1);
+    hi(2, at(4, 0.3));
+    ft("#s06-note", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(4, 0.6));
+    // 34 시작 위치에 1, 몇 번째에 2 → 두 번째 덩어리 11
+    fade("#s06-a1", at(5, 2.2), 1, 0);
+    fade("#s06-g1", at(5, 2.2), 0, 1);
+    fade("#s06-g2", at(5, 2.2), 1, 0);
+    fade("#s06-a2", at(5, 2.3), 0, 1);
+    stamp("#s06-v2", at(5, 3.4));
+    // 35 숫자 다섯 개처럼 맞는 부분이 없으면 NULL
+    ft(["#s06-code", "#s06-res"], { height: 196 }, { height: 268 }, at(6, 0));
+    fade("#s06-l3", at(6, 0.4), 0, 1);
+    hi(3, at(6, 0.3));
+    fade(["#s06-g1", "#s06-g3"], at(6, 0.3), 1, 0);
+    fade("#s06-a2", at(6, 0.3), 1, 0);
+    fade("#s06-note", at(6, 0.3), 1, 0.4);
+    stamp("#s06-v3", at(6, 2.2));
+    if (String(V.exit) !== "false") ft("#s06-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s06"] = tl;
+  </script>
+</template>

@@ -1,0 +1,85 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h1-svg { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; pointer-events: none; }
+    .en { position: absolute; box-sizing: border-box; display: flex; flex-direction: column; padding-bottom: 8px; }
+    .en-n { height: 64px; padding-top: 8px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: 44px; font-weight: 900; }
+    .en-pk { position: relative; min-height: calc(var(--k, 1) * 64px); }
+    .en-at { position: relative; min-height: var(--a, 20px); }
+    .en-dv { height: 5px; background: #18181B; border-radius: 3px; }
+    .en-r { position: relative; height: 64px; display: flex; align-items: center; padding-left: 36px; font-size: 40px; font-weight: 800; white-space: nowrap; }
+    .en-pk .en-r { color: var(--color-accent, #6B3FE6); }
+    .en-at .en-r { color: #3F3F46; }
+    #h1-e1 { left: 60px; top: 320px; width: 380px; }
+    #h1-e2 { left: 60px; top: 640px; width: 380px; }
+    #h1-e3 { left: 60px; top: 1004px; width: 380px; }
+    #h1-e4 { left: 640px; top: 1004px; width: 320px; }
+    .h1-lb { position: absolute; left: 290px; font-size: 48px; font-weight: 900; opacity: 0; white-space: nowrap; }
+    #h1-ld { top: 538px; } #h1-ls { top: 902px; }
+    #h1-q { position: absolute; left: 520px; top: 560px; width: 500px; height: 230px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+      font-size: 50px; font-weight: 900; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="h1" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45]"},{"id":"dur","type":"number","label":"장면 길이","default":6.2},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"ds","type":"number","label":"점선 시각","default":0},{"id":"ls","type":"number","label":"실선 시각","default":0},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h1-all">
+      <svg id="h1-svg" viewBox="0 0 1080 1920"></svg>
+      <div id="h1-e1" class="en x-card x-hide"><div class="en-n">학과</div>
+        <div class="en-pk"><div class="en-r">학과코드</div></div><div class="en-dv"></div><div class="en-at"></div></div>
+      <div id="h1-e2" class="en x-card x-hide" style="--a:64px"><div class="en-n">학생</div>
+        <div class="en-pk"><div class="en-r">학번</div></div><div class="en-dv"></div><div class="en-at"><div class="en-r">학과코드</div></div></div>
+      <div id="h1-e3" class="en x-card x-hide"><div class="en-n">수강</div>
+        <div class="en-pk" style="--k:2"><div class="en-r">학번</div><div class="en-r">과목코드</div></div><div class="en-dv"></div><div class="en-at"></div></div>
+      <div id="h1-e4" class="en x-card x-hide"><div class="en-n">과목</div>
+        <div class="en-pk"><div class="en-r">과목코드</div></div><div class="en-dv"></div><div class="en-at"></div></div>
+      <div class="h1-lb" id="h1-ld">점선</div>
+      <div class="h1-lb x-acc" id="h1-ls">실선</div>
+      <div id="h1-q" class="x-card x-hide"><div>부모의 주식별자가</div><div class="x-acc">자식의 어디로?</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 6.2;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, ease: "back.out(1.6)" }, t);
+
+    const NS = "http://www.w3.org/2000/svg";
+    const mk = (tag, a, p) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+    const ST = { stroke: "#18181B", "stroke-width": 6, fill: "none", "stroke-linecap": "round" };
+    function sym(g, x, y, ux, uy, kind) {
+      const nx = -uy, ny = ux;
+      const pt = (a, b) => [x + ux * a + nx * b, y + uy * a + ny * b];
+      const ln = (a1, b1, a2, b2) => { const [p, q] = pt(a1, b1), [r, s] = pt(a2, b2); mk("line", { x1: p, y1: q, x2: r, y2: s, ...ST }, g); };
+      const bar = (o) => ln(o, -22, o, 22);
+      const crow = () => { [-24, 0, 24].forEach((b) => ln(40, 0, 0, b)); };
+      if (kind === "11") { bar(20); bar(38); }
+      else if (kind === "mo") { crow(); const [cx, cy] = pt(66, 0); mk("circle", { cx, cy, r: 13, ...ST, fill: "#FFFFFF" }, g); }
+      else if (kind === "m1") { crow(); bar(58); }
+    }
+    const svg = document.getElementById("h1-svg");
+    const gd = mk("g", { id: "h1-gd", style: "opacity:0" }, svg);       // 학과 — 학생 점선
+    mk("line", { x1: 250, y1: 485, x2: 250, y2: 640, "stroke-dasharray": "16 12", ...ST }, gd);
+    sym(gd, 250, 485, 0, 1, "11"); sym(gd, 250, 640, 0, -1, "mo");
+    const gs = mk("g", { id: "h1-gs", style: "opacity:0" }, svg);       // 학생 — 수강 실선, 수강 — 과목 실선
+    mk("line", { x1: 250, y1: 849, x2: 250, y2: 1004, ...ST }, gs);
+    sym(gs, 250, 849, 0, 1, "11"); sym(gs, 250, 1004, 0, -1, "m1");
+    mk("line", { x1: 440, y1: 1102, x2: 640, y2: 1102, ...ST }, gs);
+    sym(gs, 440, 1102, 1, 0, "m1"); sym(gs, 640, 1102, -1, 0, "11");
+
+    // 1 ERD의 실선과 점선, 차이는 부모의 주식별자가 자식의 어디로 가느냐
+    ["#h1-e1", "#h1-e2", "#h1-e3", "#h1-e4"].forEach((id, j) => ft(id, { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, at(0, 0.1 + j * 0.2)));
+    fade("#h1-gd", at(0, 1.0), 0, 1);
+    fade("#h1-gs", at(0, 1.2), 0, 1);
+    fade("#h1-ls", X("ls", at(0, 0.8)) - 0.2, 0, 1);
+    fade("#h1-ld", X("ds", at(0, 1.6)) - 0.2, 0, 1);
+    stamp("#h1-q", at(0, 3.2));
+    if (String(V.exit) !== "false") ft("#h1-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h1"] = tl;
+  </script>
+</template>

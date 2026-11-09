@@ -1,0 +1,31 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s00-title { position: absolute; left: 186px; top: 410px; font-size: 150px; font-weight: 900; letter-spacing: -0.02em; line-height: 1.05; }
+    #s00-bar { position: absolute; left: 192px; top: 600px; width: 560px; height: 12px; border-radius: 6px;
+      background: var(--color-accent, #6B3FE6); transform-origin: left center; transform: scaleX(0); }
+    #s00-tag { position: absolute; left: 192px; top: 650px; font-size: 32px; font-weight: 800; color: var(--color-ink2, #71717A); }
+  </style>
+  <div id="root" data-composition-id="s00" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"dur","type":"number","label":"장면 길이","default":3.4},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s00-all">
+      <div id="s00-title">서브쿼리와 ANY · ALL</div>
+      <div id="s00-bar"></div>
+      <div id="s00-tag" class="x-hide">IN · ANY · ALL · EXISTS · 연관 서브쿼리</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const D = Number(V.dur) || 3.4;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+
+    // 제목은 첫 프레임부터 보인다(썸네일 프레임). 나머지가 차례로 붙는다.
+    tl.fromTo("#s00-bar", { scaleX: 0 }, { scaleX: 1, duration: 0.5 * S, ease: "power3.inOut" }, 0.15);
+    ft("#s00-tag", { opacity: 0, y: -8 }, { opacity: 1, y: 0 }, 0.75);
+    ft("#s00-all", { opacity: 1, y: 0 }, { opacity: 0, y: -36, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s00"] = tl;
+  </script>
+</template>

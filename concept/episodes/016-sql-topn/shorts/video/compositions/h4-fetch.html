@@ -1,0 +1,65 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h4-code { left: 80px; top: 330px; width: 920px; }
+    #h4-code .q-ln { font-size: 42px; height: 84px; padding: 0 44px; }
+    .h4-sw { position: relative; display: inline-block; margin-left: 12px; width: 230px; height: 56px; vertical-align: middle; }
+    .h4-sw > span { position: absolute; left: 0; top: 0; line-height: 56px; white-space: nowrap; }
+    #h4-w2 { opacity: 0; }
+    #h4-v12 { left: 80px; top: 488px; }
+    .h4-c { position: absolute; top: 620px; width: 160px; height: 200px; box-sizing: border-box; display: flex; align-items: center;
+      justify-content: center; font-size: 80px; font-weight: 900; }
+    .h4-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0;
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 10%, transparent); }
+    #h4-cnt { position: absolute; left: 80px; top: 880px; width: 880px; height: 80px; }
+    #h4-cnt > div { position: absolute; left: 0; right: 0; top: 0; text-align: center; font-size: 60px; font-weight: 900; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="h4" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,6.56]"},{"id":"dur","type":"number","label":"장면 길이","default":10.6},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"tw","type":"number","label":"딱 두 행 시각","default":5},{"id":"l9","type":"number","label":"마지막 90점과 시각","default":8},{"id":"t3","type":"number","label":"세 행입니다 시각","default":9.6},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h4-all">
+      <div id="h4-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">FETCH FIRST</span> 2 <span class="q-k">ROWS</span> <span class="h4-sw" data-layout-allow-overlap><span class="q-k" id="h4-w1">ONLY</span><span class="q-k" id="h4-w2">WITH TIES</span></span></span></div>
+      </div>
+      <div id="h4-v12" class="q-chip q-ok">오라클 12c부터</div>
+      <div class="h4-c x-card x-hide" id="h4-c1" style="left:90px"><div class="h4-ring" id="h4-o1"></div>95</div>
+      <div class="h4-c x-card x-hide" id="h4-c2" style="left:270px"><div class="h4-ring" id="h4-o2"></div>90</div>
+      <div class="h4-c x-card x-hide" id="h4-c3" style="left:450px"><div class="h4-ring" id="h4-o3"></div>90</div>
+      <div class="h4-c x-card x-hide" id="h4-c4" style="left:630px">70</div>
+      <div class="h4-c x-card x-hide" id="h4-c5" style="left:810px">60</div>
+      <div id="h4-cnt" data-layout-allow-overlap>
+        <div id="h4-n2">ONLY → <span class="x-acc">2행</span></div>
+        <div id="h4-n3">WITH TIES → <span class="x-acc">3행</span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 10.6;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d = 0) => Number(V[k]) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+
+    // 8 오라클 12c부터 쓰는 FETCH FIRST 2 ROWS ONLY — 정렬한 뒤 딱 두 행
+    ft("#h4-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0));
+    stamp("#h4-v12", at(0, 0.4));
+    [1, 2, 3, 4, 5].forEach((k, j) => stamp(`#h4-c${k}`, at(0, 0.6 + j * 0.12)));
+    fade(["#h4-o1", "#h4-o2"], X("tw", -0.1), 0, 1);
+    fade(["#h4-c3", "#h4-c4", "#h4-c5"], X("tw", 0.1), 1, 0.3);
+    fade("#h4-n2", X("tw", 0.3), 0, 1);
+    // 9 WITH TIES로 바꾸면 마지막 90점과 같은 행까지 → 세 행
+    fade("#h4-w1", at(1, 0), 1, 0);
+    fade("#h4-w2", at(1, 0.1), 0, 1);
+    fade("#h4-c3", X("l9", -0.1), 0.3, 1);
+    fade("#h4-o3", X("l9", 0), 0, 1);
+    fade("#h4-n2", X("t3", -0.3), 1, 0);
+    fade("#h4-n3", X("t3", -0.1), 0, 1);
+    if (String(V.exit) !== "false") ft("#h4-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h4"] = tl;
+  </script>
+</template>

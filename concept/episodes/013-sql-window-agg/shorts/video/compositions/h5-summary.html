@@ -1,0 +1,33 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h5-c { position: absolute; left: 80px; width: 880px; height: 300px; box-sizing: border-box; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 20px; text-align: center; }
+    #h5-c1 { top: 420px; }
+    #h5-c2 { top: 780px; }
+    .h5-t { font-size: 58px; font-weight: 900; white-space: nowrap; }
+    .h5-d { font-size: 44px; font-weight: 700; color: var(--color-ink2, #71717A); white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="h5" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45]"},{"id":"dur","type":"number","label":"장면 길이","default":9},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"rw","type":"number","label":"한 행씩 시각","default":4},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h5-all">
+      <div class="h5-c x-card x-hide" id="h5-c1"><div class="h5-t">ORDER BY만 적으면 <span class="x-acc">RANGE</span></div><div class="h5-d">같은 값은 함께 더한다</div></div>
+      <div class="h5-c x-card x-hide" id="h5-c2"><div class="h5-t">한 행씩이면 <span class="x-acc">ROWS</span></div><div class="h5-d">행 개수로 센다</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d = 0) => Number(V[k]) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+
+    // 10 ORDER BY만 적으면 RANGE, 한 행씩이면 ROWS
+    ft("#h5-c1", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0));
+    ft("#h5-c2", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("rw", -0.2));
+    window.__timelines["h5"] = tl;
+  </script>
+</template>

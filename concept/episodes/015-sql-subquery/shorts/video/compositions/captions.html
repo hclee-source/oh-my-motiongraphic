@@ -1,0 +1,43 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 540px; text-align: center; overflow: visible;
+      font-size: 54px; font-weight: 700; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 940px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cap-01a" class="cap clip" data-start="0.000" data-duration="0.590"><span>서브쿼리가</span></div>
+    <div id="cap-01b" class="cap clip" data-start="0.590" data-duration="1.260"><span>여러 행을 돌려주면,</span></div>
+    <div id="cap-01c" class="cap clip" data-start="1.850" data-duration="2.863"><span>등호로 비교할 때 오류가 납니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="4.763" data-duration="0.870"><span>이때 쓰는 것이</span></div>
+    <div id="cap-02b" class="cap clip" data-start="5.633" data-duration="0.740"><span>IN과 ANY,</span></div>
+    <div id="cap-02c" class="cap clip" data-start="6.373" data-duration="1.881"><span>그리고 ALL입니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="8.304" data-duration="1.970"><span>IN은 하나라도 같으면 참,</span></div>
+    <div id="cap-03b" class="cap clip" data-start="10.274" data-duration="2.079"><span>‘= ANY’와 같습니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="12.553" data-duration="1.170"><span>서브쿼리 결과가</span></div>
+    <div id="cap-04b" class="cap clip" data-start="13.723" data-duration="2.900"><span>20, 50, 80이고,</span></div>
+    <div id="cap-04c" class="cap clip" data-start="16.623" data-duration="3.282"><span>비교할 값이 60이라고 해 보겠습니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="19.955" data-duration="0.570"><span>‘&gt; ANY’는</span></div>
+    <div id="cap-05b" class="cap clip" data-start="20.525" data-duration="2.080"><span>셋 중 하나보다만 크면 참이라,</span></div>
+    <div id="cap-05c" class="cap clip" data-start="22.605" data-duration="3.103"><span>가장 작은 20보다 크면 됩니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="25.908" data-duration="0.750"><span>‘&gt; ALL’은</span></div>
+    <div id="cap-06b" class="cap clip" data-start="26.658" data-duration="1.160"><span>셋 모두보다 커야 하니,</span></div>
+    <div id="cap-06c" class="cap clip" data-start="27.818" data-duration="2.803"><span>가장 큰 80보다 커야 합니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="30.671" data-duration="1.350"><span>그래서 60은</span></div>
+    <div id="cap-07b" class="cap clip" data-start="32.021" data-duration="1.820"><span>‘&gt; ANY’로는 참,</span></div>
+    <div id="cap-07c" class="cap clip" data-start="33.841" data-duration="1.423"><span>‘&gt; ALL’로는 거짓입니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="35.314" data-duration="0.910"><span>부등호를 뒤집으면</span></div>
+    <div id="cap-08b" class="cap clip" data-start="36.224" data-duration="2.240"><span>끝값도 뒤집혀서,</span></div>
+    <div id="cap-08c" class="cap clip" data-start="38.464" data-duration="1.156"><span>‘&lt; ANY’는 최댓값,</span></div>
+    <div id="cap-08d" class="cap clip" data-start="39.620" data-duration="2.961"><span>‘&lt; ALL’은 최솟값과 비교합니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="42.781" data-duration="1.830"><span>EXISTS는 값은 보지 않고,</span></div>
+    <div id="cap-09b" class="cap clip" data-start="44.611" data-duration="3.295"><span>결과 행이 하나라도 있는지만 봅니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="48.106" data-duration="2.308"><span>‘&gt; ANY’는 최솟값보다,</span></div>
+    <div id="cap-10b" class="cap clip" data-start="50.414" data-duration="1.062"><span>‘&gt; ALL’은 최댓값보다</span></div>
+    <div id="cap-10c" class="cap clip" data-start="51.476" data-duration="2.450"><span>크다는 뜻입니다.</span></div>
+    <div id="cap-10d" class="cap clip" data-start="53.926" data-duration="1.886"><span>이것만 기억하세요.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

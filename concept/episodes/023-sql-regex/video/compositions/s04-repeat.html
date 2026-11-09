@@ -1,0 +1,89 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s04-q { position: absolute; left: 192px; top: 262px; width: 776px; height: 584px; }
+    .s04-r { position: absolute; left: 40px; right: 40px; height: 96px; display: grid; grid-template-columns: 210px 1fr; align-items: center; opacity: 0; }
+    .s04-hl { position: absolute; left: -16px; right: -16px; top: 6px; bottom: 6px; border-radius: 18px;
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 12%, #FFFFFF); opacity: 0; }
+    .s04-sym { position: relative; font-size: 56px; font-weight: 900; color: var(--color-accent, #6B3FE6); white-space: nowrap; }
+    .s04-m { position: relative; font-size: 40px; font-weight: 800; white-space: nowrap; }
+    #s04-ph { position: absolute; left: 1008px; top: 262px; width: 720px; height: 252px; padding: 28px 40px; box-sizing: border-box; }
+    #s04-pl { font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    #s04-pn { margin-top: 12px; font-size: 48px; font-weight: 900; white-space: nowrap; }
+    #s04-pp { margin-top: 16px; font-size: 40px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    #s04-gr { position: absolute; left: 1008px; top: 550px; width: 720px; height: 296px; padding: 34px 40px; box-sizing: border-box; }
+    .s04-g { height: 76px; display: flex; align-items: center; font-size: 40px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    .s04-g .s04-ar { margin: 0 22px; color: var(--color-ink2, #71717A); }
+    .s04-g .s04-ex { color: var(--color-ink2, #71717A); font-weight: 700; }
+  </style>
+  <div id="root" data-composition-id="s04" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,4.7,11.1,18.6,27.2]"},{"id":"dur","type":"number","label":"장면 길이","default":36.4},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"q1","type":"number","label":"별표는 시각","default":4.8},{"id":"q2","type":"number","label":"더하기 시각","default":6.6},{"id":"q3","type":"number","label":"물음표는 시각","default":8.6},{"id":"q4","type":"number","label":"중괄호에 시각","default":11.2},{"id":"q5","type":"number","label":"숫자 두 개를 시각","default":14.6},{"id":"g1","type":"number","label":"글자 하나나 시각","default":30.5},{"id":"g2","type":"number","label":"대괄호 하나에만 시각","default":31.6},{"id":"g3","type":"number","label":"여러 글자를 시각","default":33.5},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s04-all">
+      <div id="s04-head" class="x-head">반복 횟수를 뜻하는 기호</div>
+      <div id="s04-q" class="x-card x-hide">
+        <div class="s04-r" id="s04-r1" style="top:28px"><div class="s04-hl" id="s04-h1"></div><div class="s04-sym" style="font-size:84px;top:16px">*</div><div class="s04-m">0번 이상</div></div>
+        <div class="s04-r" id="s04-r2" style="top:134px"><div class="s04-hl" id="s04-h2"></div><div class="s04-sym">+</div><div class="s04-m">한 번 이상</div></div>
+        <div class="s04-r" id="s04-r3" style="top:240px"><div class="s04-hl" id="s04-h3"></div><div class="s04-sym">?</div><div class="s04-m">없거나 한 번</div></div>
+        <div class="s04-r" id="s04-r4" style="top:346px"><div class="s04-hl" id="s04-h4"></div><div class="s04-sym">{n}</div><div class="s04-m">정확히 n번</div></div>
+        <div class="s04-r" id="s04-r5" style="top:452px"><div class="s04-hl" id="s04-h5"></div><div class="s04-sym">{n,m}</div><div class="s04-m">n번에서 m번</div></div>
+      </div>
+      <div id="s04-ph" class="x-card x-hide">
+        <div id="s04-pl">휴대폰 번호</div>
+        <div id="s04-pn">010-1234-5678</div>
+        <div id="s04-pp">[0-9]<span class="x-acc">{3}</span>-[0-9]<span class="x-acc">{4}</span>-[0-9]<span class="x-acc">{4}</span></div>
+      </div>
+      <div id="s04-gr" class="x-card x-hide">
+        <div class="s04-g" id="s04-g1">a<span id="s04-u1">b</span>+<span class="s04-ar">→</span><span class="s04-ex">ab · abb · abbb</span></div>
+        <div class="s04-g" id="s04-g2"><span id="s04-u2">[0-9]</span>{3}<span class="s04-ar">→</span><span class="s04-ex">숫자 세 개</span></div>
+        <div class="s04-g" id="s04-g3"><span id="s04-u3">(ab)</span>+<span class="s04-ar">→</span><span class="s04-ex">ab · abab</span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 36.4;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k] ?? d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const ACC = "#6B3FE6", INK = "#18181B";
+    let cur = 0;
+    // 기호 줄: 말하는 줄만 바탕 강조
+    const row = (k, t) => {
+      ft(`#s04-r${k}`, { opacity: 0, x: -12 }, { opacity: 1, x: 0 }, t);
+      fade(`#s04-h${k}`, t, 0, 1);
+      if (cur) fade(`#s04-h${cur}`, t, 1, 0);
+      cur = k;
+    };
+
+    // 14 바로 앞 덩어리가 몇 번 나오는지
+    ft("#s04-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s04-q", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    // 15 * 0번 이상, + 한 번 이상, ? 없거나 한 번
+    row(1, X("q1", 4.8) - 0.1);
+    row(2, X("q2", 6.6) - 0.1);
+    row(3, X("q3", 8.6) - 0.1);
+    // 16 {n} 정확히, {n,m} 범위
+    row(4, X("q4", 11.2) - 0.1);
+    row(5, X("q5", 14.6) - 0.1);
+    // 17 휴대폰 번호 = 숫자 세 개, 하이픈, 숫자 네 개, 하이픈, 숫자 네 개
+    fade("#s04-h5", at(3, 0.1), 1, 0);
+    ft("#s04-ph", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(3, 0.1));
+    fade("#s04-pp", at(3, 1.8), 0, 1);
+    // 18 바로 앞 한 덩어리(글자 하나 · 대괄호 하나)에만, 여러 글자는 괄호로
+    fade(["#s04-q", "#s04-ph"], at(4, 0.2), 1, 0.45);
+    ft("#s04-gr", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(4, 0.3));
+    fade("#s04-g1", X("g1", 30.5) - 0.2, 0, 1);
+    ft("#s04-u1", { color: INK }, { color: ACC }, X("g1", 30.5));
+    fade("#s04-g2", X("g2", 31.6) - 0.2, 0, 1);
+    ft("#s04-u2", { color: INK }, { color: ACC }, X("g2", 31.6));
+    fade("#s04-g3", X("g3", 33.5) - 0.1, 0, 1);
+    ft("#s04-u3", { color: INK }, { color: ACC }, X("g3", 33.5) + 1.2);
+    if (String(V.exit) !== "false") ft("#s04-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s04"] = tl;
+  </script>
+</template>

@@ -1,0 +1,34 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h3-c { position: absolute; left: 80px; width: 880px; height: 210px; box-sizing: border-box; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 14px; text-align: center; }
+    #h3-c1 { top: 340px; }
+    #h3-c2 { top: 590px; }
+    #h3-c3 { top: 840px; }
+    .h3-t { font-size: 68px; font-weight: 900; white-space: nowrap; }
+    .h3-d { font-size: 52px; font-weight: 800; color: var(--color-ink2, #71717A); white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="h3" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.2]"},{"id":"dur","type":"number","label":"장면 길이","default":7},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"wp","type":"number","label":"PRIOR는 시각","default":0.3},{"id":"ww","type":"number","label":"WHERE 시각","default":2.4},{"id":"wc","type":"number","label":"CONNECT 시각","default":4},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h3-all">
+      <div class="h3-c x-card x-hide" id="h3-c1"><div class="h3-t x-acc">PRIOR</div><div class="h3-d">방금 읽은 행</div></div>
+      <div class="h3-c x-card x-hide" id="h3-c2"><div class="h3-t x-acc">WHERE</div><div class="h3-d">그 행만</div></div>
+      <div class="h3-c x-card x-hide" id="h3-c3"><div class="h3-t x-acc">CONNECT BY</div><div class="h3-d">가지째</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const X = (k, d = 0) => Number(V[k]) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+
+    // 10 PRIOR는 방금 읽은 행, 한 행만 빼면 WHERE, 가지째 자르면 CONNECT BY
+    ft("#h3-c1", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("wp", 0));
+    ft("#h3-c2", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("ww", -0.2));
+    ft("#h3-c3", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("wc", -0.2));
+    window.__timelines["h3"] = tl;
+  </script>
+</template>

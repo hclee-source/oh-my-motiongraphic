@@ -1,0 +1,81 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s06-tb { left: 192px; top: 262px; width: 1536px; height: 470px; }
+    #s06-tb .q-th, #s06-tb .q-tr { grid-template-columns: 170px 150px 340px 480px 340px; }
+    #s06-tb .q-th { top: 20px; }
+    #s06-tb .q-th > div { font-size: 32px; font-weight: 800; }
+    #s06-tb .q-tr > div { font-size: 42px; }
+    .s06-cell { position: relative; height: 48px; }
+    .s06-cell > span { position: absolute; left: 0; right: 0; top: 0; line-height: 48px; text-align: center; font-size: 42px; font-weight: 900; white-space: nowrap; opacity: 0; }
+    .s06-cell > span.q-null { font-size: 38px; font-weight: 800; }
+    #s06-chips { position: absolute; left: 192px; top: 764px; width: 1536px; height: 72px; }
+    #s06-chips .q-chip { top: 0; }
+  </style>
+  <div id="root" data-composition-id="s06" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,5,12,19,26]"},{"id":"dur","type":"number","label":"장면 길이","default":32},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s06-all">
+      <div id="s06-head" class="x-head">LAG와 LEAD</div>
+      <div id="s06-tb" class="x-card q-tb x-hide">
+        <div class="q-th"><div>이름</div><div>급여</div><div id="s06-h1">LAG(급여)</div><div id="s06-h2">LAG(급여, 2, 0)</div><div id="s06-h3">LEAD(급여)</div></div>
+        <div class="q-tr" style="top:96px"><div>민수</div><div id="s06-p0">200</div>
+          <div class="s06-cell"><span class="q-null" id="s06-a0">NULL</span></div><div class="s06-cell"><span id="s06-b0">0</span></div><div class="s06-cell"><span id="s06-c0">300</span></div></div>
+        <div class="q-tr" style="top:164px"><div>지영</div><div id="s06-p1">300</div>
+          <div class="s06-cell"><span id="s06-a1">200</span></div><div class="s06-cell"><span id="s06-b1">0</span></div><div class="s06-cell"><span id="s06-c1">300</span></div></div>
+        <div class="q-tr" style="top:232px"><div>현우</div><div>300</div>
+          <div class="s06-cell"><span id="s06-a2">300</span></div><div class="s06-cell"><span id="s06-b2">200</span></div><div class="s06-cell"><span id="s06-c2">500</span></div></div>
+        <div class="q-tr" style="top:300px"><div>수진</div><div>500</div>
+          <div class="s06-cell"><span id="s06-a3">300</span></div><div class="s06-cell"><span id="s06-b3">300</span></div><div class="s06-cell"><span id="s06-c3">700</span></div></div>
+        <div class="q-tr" style="top:368px"><div>동훈</div><div>700</div>
+          <div class="s06-cell"><span id="s06-a4">500</span></div><div class="s06-cell"><span id="s06-b4">300</span></div><div class="s06-cell"><span class="q-null" id="s06-c4">NULL</span></div></div>
+      </div>
+      <div id="s06-chips" data-layout-allow-overlap>
+        <div class="q-chip q-ok" id="s06-k1" style="left:578px;width:330px">2 = 두 행 앞</div>
+        <div class="q-chip q-ok" id="s06-k2" style="left:938px;width:320px">0 = 없을 때</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 32;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const paint = (sel, t, a, b) => ft(sel, { color: a }, { color: b }, t);
+    const ACC = "#6B3FE6", INK = "#18181B", INK2 = "#71717A";
+    // 값을 말하는 실제 시각(문장 시작 기준 초, listen/words.json에서 잰 값)
+    const T32 = [1.56, 3.3, 4.28, 5.72, 6.96];  // 32 NULL, 200, 300, 300, 500
+    const T34 = [1.32, 1.5, 3.26, 4.18, 5.44];  // 34 0, 0, 200, 300, 300
+    const T35 = [2.7, 2.7, 2.7, 2.7, 4.5];  // 35 300, 300, 500, 700, NULL
+    const hdr = (id, on, t) => paint(id, t, on ? INK2 : ACC, on ? ACC : INK2);
+
+    ft("#s06-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s06-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    // 31 LAG(급여) — 바로 앞 행의 급여
+    hdr("#s06-h1", true, at(0, 0.8));
+    paint("#s06-p0", at(0, 3.0), INK, ACC);
+    // 32 첫 행 NULL, 그다음부터 200, 300, 300, 500
+    T32.forEach((d, j) => stamp(`#s06-a${j}`, at(1, d - 0.1)));
+    paint("#s06-p0", at(1, T32[1] + 1.0), ACC, INK);
+    // 33 LAG(급여, 2, 0) — 두 행 앞, 없으면 0
+    hdr("#s06-h1", false, at(2, 0.1));
+    hdr("#s06-h2", true, at(2, 0.3));
+    stamp("#s06-k1", at(2, 2.0));
+    stamp("#s06-k2", at(2, 5.5));
+    // 34 처음 두 행은 0, 세 번째 행부터 200, 300, 300
+    T34.forEach((d, j) => stamp(`#s06-b${j}`, at(3, d - 0.1)));
+    // 35 LEAD(급여) — 바로 뒤 행, 마지막 행 NULL
+    fade(["#s06-k1", "#s06-k2"], at(4, 0), 1, 0);
+    hdr("#s06-h2", false, at(4, 0.1));
+    hdr("#s06-h3", true, at(4, 0.3));
+    [0, 1, 2, 3].forEach((j) => stamp(`#s06-c${j}`, at(4, T35[j] + 0.3 * j)));
+    stamp("#s06-c4", at(4, T35[4] - 0.1));
+    if (String(V.exit) !== "false") ft("#s06-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s06"] = tl;
+  </script>
+</template>

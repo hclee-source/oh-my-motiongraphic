@@ -1,0 +1,73 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s06-tb { position: absolute; left: 192px; top: 262px; width: 1536px; height: 560px; box-sizing: border-box; }
+    .s06-r { position: absolute; left: 0; right: 0; height: 130px; padding: 0 40px; box-sizing: border-box; display: grid;
+      grid-template-columns: 240px 580px 1fr; align-items: center; opacity: 0; }
+    #s06-r1 { top: 20px; } #s06-r2 { top: 150px; } #s06-r3 { top: 280px; } #s06-r4 { top: 410px; }
+    .s06-lb { font-size: 40px; font-weight: 900; color: var(--color-ink2, #71717A); white-space: nowrap; }
+    .s06-cell { opacity: 0; }
+    .s06-ty { font-size: 42px; font-weight: 900; color: var(--color-accent, #6B3FE6); white-space: nowrap; }
+    .s06-ex { margin-top: 6px; font-size: 36px; font-weight: 800; white-space: nowrap; }
+    .s06-fk { color: var(--color-accent, #6B3FE6); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s06" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,2.8,8.3,14.7,20.1,27.2,34.7]"},{"id":"dur","type":"number","label":"장면 길이","default":45.5},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"b1","type":"number","label":"보조 시각","default":0},{"id":"a2","type":"number","label":"내부 시각","default":0},{"id":"b2","type":"number","label":"외부 시각","default":0},{"id":"fk","type":"number","label":"외래키 시각","default":0},{"id":"a3","type":"number","label":"단일 시각","default":0},{"id":"b3","type":"number","label":"복합 시각","default":0},{"id":"a4","type":"number","label":"본질 시각","default":0},{"id":"b4","type":"number","label":"인조 시각","default":0},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s06-all">
+      <div id="s06-head" class="x-head">식별자의 분류</div>
+      <div id="s06-tb" class="x-card x-hide">
+        <div class="s06-r" id="s06-r1"><div class="s06-lb">대표성</div>
+          <div class="s06-cell" id="s06-a1"><div class="s06-ty">주식별자</div><div class="s06-ex">고객번호</div></div>
+          <div class="s06-cell" id="s06-b1"><div class="s06-ty">보조식별자</div><div class="s06-ex">이메일</div></div></div>
+        <div class="s06-r" id="s06-r2"><div class="s06-lb">스스로 생성</div>
+          <div class="s06-cell" id="s06-a2"><div class="s06-ty">내부식별자</div><div class="s06-ex">주문번호</div></div>
+          <div class="s06-cell" id="s06-b2"><div class="s06-ty">외부식별자</div><div class="s06-ex">주문의 고객번호<span class="s06-fk" id="s06-fk"> → 외래키</span></div></div></div>
+        <div class="s06-r" id="s06-r3"><div class="s06-lb">속성 수</div>
+          <div class="s06-cell" id="s06-a3"><div class="s06-ty">단일식별자</div><div class="s06-ex">주문번호</div></div>
+          <div class="s06-cell" id="s06-b3"><div class="s06-ty">복합식별자</div><div class="s06-ex">주문번호 + 상품코드</div></div></div>
+        <div class="s06-r" id="s06-r4"><div class="s06-lb">대체 여부</div>
+          <div class="s06-cell" id="s06-a4"><div class="s06-ty">본질식별자</div><div class="s06-ex">주문번호 + 상품코드</div></div>
+          <div class="s06-cell" id="s06-b4"><div class="s06-ty">인조식별자</div><div class="s06-ex">주문상품번호</div></div></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 45.5;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, ease: "back.out(1.6)" }, t);
+    const dim = (r, t) => fade(`#s06-r${r}`, t, 1, 0.55);
+
+    // 22 네 가지 기준
+    ft("#s06-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s06-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    [1, 2, 3, 4].forEach((r, j) => fade(`#s06-r${r}`, at(0, 0.8 + j * 0.35), 0, 1));
+    // 23 대표성: 주식별자 고객번호
+    stamp("#s06-a1", at(1, 0.3));
+    // 24 보조식별자 이메일
+    stamp("#s06-b1", X("b1", at(2, 0.5)) - 0.2);
+    // 25 내부식별자 주문번호
+    dim(1, at(3, 0.1));
+    stamp("#s06-a2", X("a2", at(3, 0.3)) - 0.2);
+    // 26 외부식별자: 주문의 고객번호 → 외래키
+    stamp("#s06-b2", X("b2", at(4, 0.3)) - 0.2);
+    fade("#s06-fk", X("fk", at(4, 3.6)) - 0.2, 0, 1);
+    // 27 단일 / 복합
+    dim(2, at(5, 0.1));
+    stamp("#s06-a3", X("a3", at(5, 0.5)) - 0.2);
+    stamp("#s06-b3", X("b3", at(5, 3.6)) - 0.2);
+    // 28 본질 / 인조
+    dim(3, at(6, 0.1));
+    stamp("#s06-a4", X("a4", at(6, 0.8)) - 0.2);
+    stamp("#s06-b4", X("b4", at(6, 4.8)) - 0.2);
+    if (String(V.exit) !== "false") ft("#s06-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s06"] = tl;
+  </script>
+</template>

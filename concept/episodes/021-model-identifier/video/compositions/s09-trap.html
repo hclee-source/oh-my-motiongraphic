@@ -1,0 +1,108 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s09-tb { left: 192px; top: 262px; width: 940px; height: 400px; }
+    #s09-tb .q-th, #s09-tb .q-tr { grid-template-columns: 240px 200px 200px 140px; }
+    #s09-tb .q-th { top: 64px; }
+    #s09-tb .q-th > div { font-size: 32px; }
+    #s09-tb .q-tr { height: 60px; }
+    .s09-nm { position: absolute; left: 36px; top: 12px; height: 46px; display: flex; align-items: center; font-size: 38px; font-weight: 900; }
+    .s09-r { opacity: 0; }
+    .s09-bd { position: absolute; left: 268px; width: 400px; height: 60px; border-radius: 14px; opacity: 0;
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 13%, #FFFFFF); }
+    .s09-pb { position: absolute; top: 116px; height: 6px; border-radius: 3px; background: var(--color-accent, #6B3FE6); opacity: 0; }
+    #s09-pb1 { left: 28px; width: 240px; opacity: 1; }
+    #s09-pb2 { left: 268px; width: 400px; }
+    #s09-h1, #s09-h2 { color: var(--color-ink2, #71717A); }
+    .s09-x { position: absolute; width: 44px; height: 44px; border-radius: 22px; background: #18181B; opacity: 0; }
+    .s09-x > div { position: absolute; left: 9px; top: 19px; width: 26px; height: 5px; border-radius: 3px; background: #FFFFFF; }
+    .s09-x > div:first-child { transform: rotate(45deg); }
+    .s09-x > div:last-child { transform: rotate(-45deg); }
+    #s09-x4 { left: 848px; top: 336px; }
+    .s09-rc { position: absolute; left: 1170px; width: 558px; box-sizing: border-box; }
+    #s09-r0 { top: 262px; }
+    #s09-r1, #s09-r2 { top: 262px; height: 220px; padding: 22px 32px; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+    .s09-sm { font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); white-space: nowrap; }
+    .s09-bg { font-size: 56px; font-weight: 900; white-space: nowrap; }
+    .s09-md { font-size: 40px; font-weight: 800; white-space: nowrap; }
+    #s09-r1 .s09-x { right: 24px; top: 22px; }
+    #s09-u { left: 1170px; top: 520px; width: 558px; }
+    #s09-z { left: 1170px; top: 620px; width: 558px; }
+    #s09-i1 { left: 192px; top: 720px; width: 380px; } #s09-i2 { left: 612px; top: 720px; width: 380px; } #s09-i3 { left: 1032px; top: 720px; width: 536px; }
+  </style>
+  <div id="root" data-composition-id="s09" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,6.3,11.4,17.6,23.8,29.6,37.4]"},{"id":"dur","type":"number","label":"장면 길이","default":43.7},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s09-all">
+      <div id="s09-head" class="x-head">인조식별자의 함정</div>
+      <div id="s09-tb" class="x-card q-tb x-hide">
+        <div class="s09-bd" id="s09-bd1" style="top:128px"></div>
+        <div class="s09-bd" id="s09-bd4" style="top:320px"></div>
+        <div class="s09-nm">주문상품 4행</div>
+        <div class="s09-pb" id="s09-pb1"></div>
+        <div class="s09-pb" id="s09-pb2"></div>
+        <div class="q-th"><div id="s09-h0" class="x-acc">주문상품번호</div><div id="s09-h1">주문번호</div><div id="s09-h2">상품코드</div><div>수량</div></div>
+        <div class="q-tr s09-r" id="s09-r1x" style="top:128px"><div>1</div><div class="s09-m">1001</div><div class="s09-m">P01</div><div>2</div></div>
+        <div class="q-tr s09-r" id="s09-r2x" style="top:192px"><div>2</div><div>1001</div><div>P02</div><div>1</div></div>
+        <div class="q-tr s09-r" id="s09-r3x" style="top:256px"><div>3</div><div>1002</div><div>P01</div><div>3</div></div>
+        <div class="q-tr s09-r" id="s09-r4x" style="top:320px"><div>4</div><div class="s09-m">1001</div><div class="s09-m">P01</div><div>2</div></div>
+        <div class="s09-x" id="s09-x4"><div></div><div></div></div>
+      </div>
+      <div data-layout-allow-overlap>
+        <div class="q-chip q-ok s09-rc" id="s09-r0">같은 주문 · 같은 상품</div>
+        <div class="s09-rc x-card x-hide" id="s09-r1"><div class="s09-sm">주문상품번호가 주식별자</div><div class="s09-bg">1번 ≠ 4번</div><div class="s09-md">중복을 막지 못함</div>
+          <div class="s09-x" id="s09-xr" style="opacity:1"><div></div><div></div></div></div>
+        <div class="s09-rc x-card x-hide" id="s09-r2"><div class="s09-sm">주식별자를 바꾸면</div><div class="s09-md">주문번호 + 상품코드</div><div class="s09-bg x-acc">4행 → 3행</div></div>
+      </div>
+      <div class="q-chip q-ok" id="s09-u">UNIQUE 제약 추가</div>
+      <div class="q-chip q-ok" id="s09-i1">주식별자 인덱스</div>
+      <div class="q-chip q-ok" id="s09-i2">UNIQUE 인덱스</div>
+      <div class="q-chip q-ng" id="s09-i3">저장 공간 · 입력 · 수정 부담</div>
+      <div class="q-chip q-ok" id="s09-z">꼭 필요한 경우에만</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 43.7;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, ease: "back.out(1.6)" }, t);
+    const ACC = "#6B3FE6", INK2 = "#71717A", INK = "#18181B";
+
+    // 43 주문상품번호를 주식별자로 두고 네 행
+    ft("#s09-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s09-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    ["#s09-r1x", "#s09-r2x", "#s09-r3x", "#s09-r4x"].forEach((id, j) => ft(id, { opacity: 0, y: 8 }, { opacity: 1, y: 0 }, at(0, 1.4 + j * 0.8)));
+    // 44 첫 행과 네 번째 행은 주문번호도 상품코드도 똑같음
+    fade(["#s09-bd1", "#s09-bd4"], at(1, 0.5), 0, 1);
+    ft(".s09-m", { color: INK }, { color: ACC }, at(1, 0.5));
+    stamp("#s09-r0", at(1, 1.6));
+    // 45 주문상품번호 1번과 4번이 다르니 중복을 막지 못함
+    fade("#s09-r0", at(2, 0.1), 1, 0);
+    ft("#s09-r1", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(2, 0.5));
+    // 46 주문번호 + 상품코드가 주식별자였다면 4행은 거부
+    fade("#s09-r1", at(3, 0.1), 1, 0);
+    fade("#s09-pb1", at(3, 0.4), 1, 0);
+    ft("#s09-h0", { color: ACC }, { color: INK2 }, at(3, 0.4));
+    fade("#s09-pb2", at(3, 0.7), 0, 1);
+    ft(["#s09-h1", "#s09-h2"], { color: INK2 }, { color: ACC }, at(3, 0.7));
+    ft("#s09-r2", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(3, 0.8));
+    fade("#s09-r4x", at(3, 3.0), 1, 0.3);
+    fade("#s09-bd4", at(3, 3.0), 1, 0);
+    stamp("#s09-x4", at(3, 3.0));
+    // 47 UNIQUE 제약을 따로
+    stamp("#s09-u", at(4, 1.6));
+    // 48 인덱스 두 개와 부담
+    stamp("#s09-i1", at(5, 0.4));
+    stamp("#s09-i2", at(5, 1.6));
+    stamp("#s09-i3", at(5, 4.4));
+    // 49 꼭 필요한 경우에만
+    stamp("#s09-z", at(6, 2.4));
+    if (String(V.exit) !== "false") ft("#s09-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s09"] = tl;
+  </script>
+</template>

@@ -1,0 +1,107 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 108px; text-align: center; overflow: visible;
+      font-size: 46px; font-weight: 600; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 1536px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-01a" class="cap clip" data-start="3.600" data-duration="2.210"><span>사원 표에서 김대표부터 시작해,</span></div>
+    <div id="cap-01b" class="cap clip" data-start="5.810" data-duration="3.293"><span>조직도를 위에서 아래로 펼치려고 합니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="9.203" data-duration="1.410"><span>두 SQL은 CONNECT BY</span></div>
+    <div id="cap-02b" class="cap clip" data-start="10.613" data-duration="2.463"><span>줄에서 PRIOR의 자리만 다릅니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="13.176" data-duration="2.690"><span>그런데 한쪽은 조직도 전체 7행,</span></div>
+    <div id="cap-03b" class="cap clip" data-start="15.866" data-duration="3.108"><span>다른 쪽은 김대표 1행만 나옵니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="19.074" data-duration="2.880"><span>아래로 내려가는 쪽은 어느 SQL일까요?</span></div>
+    <div id="cap-05a" class="cap clip" data-start="22.054" data-duration="1.710"><span>오늘은 사원 일곱 명의 표로,</span></div>
+    <div id="cap-05b" class="cap clip" data-start="23.764" data-duration="3.985"><span>계층형 질의의 방향과 순서를 따라가 보겠습니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="28.399" data-duration="2.390"><span>사원 표의 관리자번호 칸에는 직속</span></div>
+    <div id="cap-06b" class="cap clip" data-start="30.789" data-duration="2.308"><span>상사의 사원번호가 들어 있습니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="33.197" data-duration="3.010"><span>김대표는 상사가 없어 관리자번호가 NULL이고,</span></div>
+    <div id="cap-07b" class="cap clip" data-start="36.207" data-duration="3.164"><span>이부장과 박부장은 김대표 밑입니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="39.471" data-duration="2.070"><span>최과장과 정대리는 이부장 밑,</span></div>
+    <div id="cap-08b" class="cap clip" data-start="41.541" data-duration="4.332"><span>윤과장은 박부장 밑, 한사원은 최과장 밑입니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="45.973" data-duration="1.810"><span>이렇게 한 표 안의 위아래 관계를</span></div>
+    <div id="cap-09b" class="cap clip" data-start="47.783" data-duration="2.540"><span>따라 읽는 것이 계층형 질의입니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="50.973" data-duration="1.890"><span>START WITH는 출발 행을 정하는데,</span></div>
+    <div id="cap-10b" class="cap clip" data-start="52.863" data-duration="4.941"><span>관리자번호가 NULL인 김대표가 출발점, 곧 루트입니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="57.904" data-duration="1.250"><span>CONNECT BY는 다음에</span></div>
+    <div id="cap-11b" class="cap clip" data-start="59.154" data-duration="2.477"><span>이어 읽을 행을 찾는 조건입니다.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="61.731" data-duration="1.830"><span>여기서 PRIOR가 붙은 열은</span></div>
+    <div id="cap-12b" class="cap clip" data-start="63.561" data-duration="2.063"><span>‘방금 읽은 행’의 값입니다.</span></div>
+    <div id="cap-13a" class="cap clip" data-start="65.723" data-duration="2.590"><span>그래서 PRIOR 사원번호 = 관리자번호는,</span></div>
+    <div id="cap-13b" class="cap clip" data-start="68.313" data-duration="5.848"><span>방금 읽은 사람의 사원번호를 관리자번호로 가진 행, 곧 부하를 찾습니다.</span></div>
+    <div id="cap-14a" class="cap clip" data-start="74.261" data-duration="1.210"><span>부하를 찾아 내려가니,</span></div>
+    <div id="cap-14b" class="cap clip" data-start="75.471" data-duration="3.746"><span>7행이 나오는 쪽이 바로 이 SQL입니다.</span></div>
+    <div id="cap-15a" class="cap clip" data-start="79.867" data-duration="3.030"><span>같은 상사를 둔 형제끼리는 ORDER SIBLINGS</span></div>
+    <div id="cap-15b" class="cap clip" data-start="82.897" data-duration="3.160"><span>BY 사원번호로, 번호 순으로 읽게 했습니다.</span></div>
+    <div id="cap-16a" class="cap clip" data-start="86.157" data-duration="3.250"><span>첫 행은 출발점 김대표, LEVEL 1이고,</span></div>
+    <div id="cap-16b" class="cap clip" data-start="89.407" data-duration="4.543"><span>다음은 번호가 작은 이부장, LEVEL 2입니다.</span></div>
+    <div id="cap-17a" class="cap clip" data-start="94.050" data-duration="1.450"><span>그다음은 박부장이 아니라,</span></div>
+    <div id="cap-17b" class="cap clip" data-start="95.500" data-duration="3.609"><span>이부장의 부하 최과장이 LEVEL 3입니다.</span></div>
+    <div id="cap-18a" class="cap clip" data-start="99.209" data-duration="3.570"><span>최과장 밑의 한사원이 LEVEL 4, 더 내려갈 곳이</span></div>
+    <div id="cap-18b" class="cap clip" data-start="102.779" data-duration="3.811"><span>없으니 이부장의 다른 부하 정대리가 LEVEL 3입니다.</span></div>
+    <div id="cap-19a" class="cap clip" data-start="106.690" data-duration="3.450"><span>이부장 밑을 다 읽고서야 박부장이 LEVEL 2,</span></div>
+    <div id="cap-19b" class="cap clip" data-start="110.140" data-duration="3.822"><span>윤과장이 LEVEL 3으로 나와, 모두 7행입니다.</span></div>
+    <div id="cap-20a" class="cap clip" data-start="114.062" data-duration="3.390"><span>한 사람의 아래를 끝까지 먼저 읽고 옆 형제로 넘어가며,</span></div>
+    <div id="cap-20b" class="cap clip" data-start="117.452" data-duration="4.091"><span>LEVEL은 한 단계 이어질 때마다 1씩 커집니다.</span></div>
+    <div id="cap-21a" class="cap clip" data-start="121.643" data-duration="2.150"><span>여기서 ORDER SIBLINGS BY 대신 ORDER</span></div>
+    <div id="cap-21b" class="cap clip" data-start="123.793" data-duration="4.722"><span>BY를 적으면, 결과 전체가 다시 정렬돼 이 순서가 깨집니다.</span></div>
+    <div id="cap-22a" class="cap clip" data-start="129.165" data-duration="1.870"><span>이번에는 PRIOR를 관리자번호</span></div>
+    <div id="cap-22b" class="cap clip" data-start="131.035" data-duration="1.822"><span>쪽으로 옮겨 보겠습니다.</span></div>
+    <div id="cap-23a" class="cap clip" data-start="132.957" data-duration="2.390"><span>그러면 방금 읽은 사람의 관리자번호를</span></div>
+    <div id="cap-23b" class="cap clip" data-start="135.347" data-duration="3.934"><span>사원번호로 가진 행, 곧 상사를 찾아 올라갑니다.</span></div>
+    <div id="cap-24a" class="cap clip" data-start="139.381" data-duration="2.470"><span>그런데 김대표는 관리자번호가 NULL이라</span></div>
+    <div id="cap-24b" class="cap clip" data-start="141.851" data-duration="3.384"><span>상사가 없으니, 1행만 나오고 끝납니다.</span></div>
+    <div id="cap-25a" class="cap clip" data-start="145.335" data-duration="5.110"><span>출발점을 한사원으로 바꾸면 한사원부터 최과장, 이부장,</span></div>
+    <div id="cap-25b" class="cap clip" data-start="150.445" data-duration="4.403"><span>김대표까지, LEVEL 1부터 4까지 4행이 나옵니다.</span></div>
+    <div id="cap-26a" class="cap clip" data-start="154.948" data-duration="3.870"><span>위에서 아래로는 순방향, 아래에서 위로는 역방향이고,</span></div>
+    <div id="cap-26b" class="cap clip" data-start="158.818" data-duration="4.466"><span>역방향에서도 출발 행의 LEVEL이 1이라 한사원이 1입니다.</span></div>
+    <div id="cap-27a" class="cap clip" data-start="163.934" data-duration="3.560"><span>자주 나오는 함정은 조건을 어디에 적느냐입니다.</span></div>
+    <div id="cap-28a" class="cap clip" data-start="167.595" data-duration="1.650"><span>먼저 이부장 한 사람을 빼는</span></div>
+    <div id="cap-28b" class="cap clip" data-start="169.245" data-duration="2.541"><span>조건을 WHERE에 적어 보겠습니다.</span></div>
+    <div id="cap-29a" class="cap clip" data-start="171.886" data-duration="1.970"><span>WHERE는 계층을 다 펼친 다음,</span></div>
+    <div id="cap-29b" class="cap clip" data-start="173.856" data-duration="2.514"><span>행을 하나씩 따로 거릅니다.</span></div>
+    <div id="cap-30a" class="cap clip" data-start="176.470" data-duration="1.630"><span>그래서 이부장 한 행만 빠지고,</span></div>
+    <div id="cap-30b" class="cap clip" data-start="178.100" data-duration="4.316"><span>그 아래 세 명은 LEVEL도 그대로 남아 6행입니다.</span></div>
+    <div id="cap-31a" class="cap clip" data-start="182.516" data-duration="2.390"><span>같은 조건을 CONNECT BY에 AND로 붙이면,</span></div>
+    <div id="cap-31b" class="cap clip" data-start="184.906" data-duration="4.001"><span>김대표에서 이부장으로 아예 이어 가지 않습니다.</span></div>
+    <div id="cap-32a" class="cap clip" data-start="189.007" data-duration="2.470"><span>이부장과 그 아래 세 명이 통째로 빠져,</span></div>
+    <div id="cap-32b" class="cap clip" data-start="191.477" data-duration="5.929"><span>김대표, 박부장, 윤과장, 3행만 남습니다.</span></div>
+    <div id="cap-33a" class="cap clip" data-start="197.506" data-duration="1.550"><span>WHERE는 그 행만 지우고,</span></div>
+    <div id="cap-33b" class="cap clip" data-start="199.056" data-duration="3.034"><span>CONNECT BY는 가지째 잘라 냅니다.</span></div>
+    <div id="cap-34a" class="cap clip" data-start="202.740" data-duration="3.590"><span>전용 함수 가운데 CONNECT_BY_ISLEAF는 아래로 이어지는</span></div>
+    <div id="cap-34b" class="cap clip" data-start="206.330" data-duration="7.337"><span>행이 없으면 1, 있으면 0이라, 한사원, 정대리, 윤과장만 1입니다.</span></div>
+    <div id="cap-35a" class="cap clip" data-start="213.767" data-duration="2.496"><span>CONNECT_BY_ROOT는 루트의 값,</span></div>
+    <div id="cap-35b" class="cap clip" data-start="216.263" data-duration="4.766"><span>SYS_CONNECT_BY_PATH는 루트부터 그 행까지의 경로를 보여 줍니다.</span></div>
+    <div id="cap-36a" class="cap clip" data-start="221.679" data-duration="1.490"><span>상사 이름을 옆 칸에 붙일</span></div>
+    <div id="cap-36b" class="cap clip" data-start="223.169" data-duration="2.145"><span>때는 셀프 조인이 편합니다.</span></div>
+    <div id="cap-37a" class="cap clip" data-start="225.415" data-duration="3.270"><span>같은 사원 표를 두 번 불러와, 하나에는 부하,</span></div>
+    <div id="cap-37b" class="cap clip" data-start="228.685" data-duration="3.445"><span>다른 하나에는 상사라는 별칭을 붙입니다.</span></div>
+    <div id="cap-38a" class="cap clip" data-start="232.230" data-duration="2.270"><span>조인 조건은 부하의 관리자번호와</span></div>
+    <div id="cap-38b" class="cap clip" data-start="234.500" data-duration="2.649"><span>상사의 사원번호가 같다는 것입니다.</span></div>
+    <div id="cap-39a" class="cap clip" data-start="237.249" data-duration="2.530"><span>그러면 사원과 상사가 한 행에 나란히 붙는데,</span></div>
+    <div id="cap-39b" class="cap clip" data-start="239.779" data-duration="3.409"><span>결과는 7행이 아니라 6행입니다.</span></div>
+    <div id="cap-40a" class="cap clip" data-start="243.288" data-duration="4.210"><span>관리자번호가 NULL인 김대표는 짝이 되는 상사가 없어,</span></div>
+    <div id="cap-40b" class="cap clip" data-start="247.498" data-duration="2.045"><span>INNER JOIN에서 빠지기 때문입니다.</span></div>
+    <div id="cap-41a" class="cap clip" data-start="249.643" data-duration="1.790"><span>LEFT OUTER JOIN으로 바꾸면,</span></div>
+    <div id="cap-41b" class="cap clip" data-start="251.433" data-duration="4.474"><span>상사 칸이 NULL인 김대표까지 살아나 7행이 됩니다.</span></div>
+    <div id="cap-42a" class="cap clip" data-start="256.558" data-duration="2.582"><span>시험장에서 챙길 것 세 가지입니다.</span></div>
+    <div id="cap-43a" class="cap clip" data-start="259.239" data-duration="4.430"><span>첫째, PRIOR를 사원번호에 붙이면 아래로 내려가는 순방향,</span></div>
+    <div id="cap-43b" class="cap clip" data-start="263.669" data-duration="4.054"><span>관리자번호에 붙이면 위로 올라가는 역방향입니다.</span></div>
+    <div id="cap-44a" class="cap clip" data-start="267.823" data-duration="3.750"><span>교재에서는 PRIOR 자식 = 부모를 순방향이라고 외우는데,</span></div>
+    <div id="cap-44b" class="cap clip" data-start="271.573" data-duration="4.712"><span>여기서 자식 칸이 사원번호, 부모 칸이 관리자번호입니다.</span></div>
+    <div id="cap-45a" class="cap clip" data-start="276.385" data-duration="2.970"><span>둘째, 출발 행의 LEVEL은 1이고,</span></div>
+    <div id="cap-45b" class="cap clip" data-start="279.355" data-duration="3.591"><span>결과는 한 가지를 끝까지 읽고 옆 형제로 넘어갑니다.</span></div>
+    <div id="cap-46a" class="cap clip" data-start="283.046" data-duration="3.090"><span>셋째, WHERE는 펼친 뒤 그 행만 거르고,</span></div>
+    <div id="cap-46b" class="cap clip" data-start="286.136" data-duration="3.502"><span>CONNECT BY 조건은 가지째 잘라 냅니다.</span></div>
+    <div id="cap-47a" class="cap clip" data-start="289.738" data-duration="4.870"><span>덧붙여, 고리처럼 되돌아오는 데이터는 NOCYCLE이 없으면 오류가 나고,</span></div>
+    <div id="cap-47b" class="cap clip" data-start="294.608" data-duration="3.494"><span>SQL Server는 재귀 WITH 절로 같은 일을 합니다.</span></div>
+    <div id="cap-48a" class="cap clip" data-start="298.752" data-duration="2.894"><span>오늘 내용을 한 줄로 정리하면 이렇습니다.</span></div>
+    <div id="cap-49a" class="cap clip" data-start="301.745" data-duration="4.030"><span>출발은 START WITH, PRIOR는 방금 읽은 행,</span></div>
+    <div id="cap-49b" class="cap clip" data-start="305.775" data-duration="4.645"><span>한 행만 빼면 WHERE, 가지째 자르면 CONNECT BY입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

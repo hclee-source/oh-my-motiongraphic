@@ -1,0 +1,46 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s09-c { position: absolute; left: 192px; width: 1536px; height: 230px; padding: 0 64px; box-sizing: border-box;
+      display: grid; grid-template-columns: 300px 500px 1fr; align-items: center; }
+    #s09-c1 { top: 290px; }
+    #s09-c2 { top: 570px; }
+    .s09-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    .s09-dir { font-size: 56px; font-weight: 800; color: var(--color-ink2, #71717A); white-space: nowrap; }
+    .s09-kw { font-size: 88px; font-weight: 900; color: var(--color-accent, #6B3FE6); letter-spacing: -0.01em; white-space: nowrap; }
+    .s09-m { font-size: 50px; font-weight: 800; white-space: nowrap; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s09" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3.44]"},{"id":"dur","type":"number","label":"장면 길이","default":10.6},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"m1","type":"number","label":"남은 열로 시각","default":4.6},{"id":"k2","type":"number","label":"열을 행으로 시각","default":6.0},{"id":"m2","type":"number","label":"NULL을 시각","default":7.9},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s09-all">
+      <div id="s09-head" class="x-head">한 줄 정리</div>
+      <div class="s09-c x-card x-hide" id="s09-c1"><div class="s09-ring" id="s09-o1"></div>
+        <div class="s09-dir">행 → 열</div><div class="s09-kw">PIVOT</div><div class="s09-m" id="s09-m1">남은 열로 묶인다</div></div>
+      <div class="s09-c x-card x-hide" id="s09-c2"><div class="s09-ring" id="s09-o2"></div>
+        <div class="s09-dir">열 → 행</div><div class="s09-kw">UNPIVOT</div><div class="s09-m" id="s09-m2">NULL은 뺀다</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+
+    // 54 한 줄로 정리하면
+    ft("#s09-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    // 55 행을 열로 세우는 PIVOT은 남은 열로 묶이고, 열을 행으로 푸는 UNPIVOT은 NULL을 뺀다
+    ft("#s09-c1", { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, at(1, 0));
+    fade("#s09-o1", at(1, 0), 0, 1);
+    fade("#s09-m1", Number(V.m1) || at(1, 1.4), 0, 1);
+    const k2 = Number(V.k2) || at(1, 2.6);
+    ft("#s09-c2", { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, k2);
+    fade("#s09-o1", k2, 1, 0);
+    fade("#s09-o2", k2, 0, 1);
+    fade("#s09-m2", Number(V.m2) || at(1, 4.2), 0, 1);
+    window.__timelines["s09"] = tl;
+  </script>
+</template>

@@ -1,0 +1,42 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 540px; text-align: center; overflow: visible;
+      font-size: 48px; font-weight: 700; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 940px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cap-01a" class="cap clip" data-start="0.000" data-duration="1.790"><span>ERD의 실선과 점선,</span></div>
+    <div id="cap-01b" class="cap clip" data-start="1.790" data-duration="1.960"><span>차이는 부모의 주식별자가</span></div>
+    <div id="cap-01c" class="cap clip" data-start="3.750" data-duration="2.201"><span>자식의 어디로 가느냐입니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="6.151" data-duration="1.070"><span>수강의 주식별자는</span></div>
+    <div id="cap-02b" class="cap clip" data-start="7.221" data-duration="1.140"><span>학생의 학번과</span></div>
+    <div id="cap-02c" class="cap clip" data-start="8.361" data-duration="2.316"><span>과목의 과목코드를 합친 것입니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="10.727" data-duration="1.430"><span>이렇게 부모의 주식별자가</span></div>
+    <div id="cap-03b" class="cap clip" data-start="12.157" data-duration="2.300"><span>자식의 주식별자 안으로 들어가면</span></div>
+    <div id="cap-03c" class="cap clip" data-start="14.457" data-duration="2.827"><span>식별자 관계, 실선입니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="17.334" data-duration="2.210"><span>학번이 수강의 주식별자에 들어 있으니,</span></div>
+    <div id="cap-04b" class="cap clip" data-start="19.544" data-duration="2.798"><span>학생 없이는 수강도 없습니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="22.543" data-duration="1.030"><span>학과의 학과코드는</span></div>
+    <div id="cap-05b" class="cap clip" data-start="23.573" data-duration="2.691"><span>학생의 일반 속성으로 들어갑니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="26.314" data-duration="0.830"><span>학생을 학번으로</span></div>
+    <div id="cap-06b" class="cap clip" data-start="27.144" data-duration="1.320"><span>따로 구분하도록 하면</span></div>
+    <div id="cap-06c" class="cap clip" data-start="28.464" data-duration="3.102"><span>비식별자 관계, 점선입니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="31.616" data-duration="1.330"><span>식별자 관계만 이으면</span></div>
+    <div id="cap-07b" class="cap clip" data-start="32.946" data-duration="1.400"><span>키가 계속 길어지니,</span></div>
+    <div id="cap-07c" class="cap clip" data-start="34.346" data-duration="1.540"><span>연결이 약한 곳은</span></div>
+    <div id="cap-07d" class="cap clip" data-start="35.886" data-duration="2.014"><span>비식별자 관계로 둡니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="38.100" data-duration="0.670"><span>주식별자는</span></div>
+    <div id="cap-08b" class="cap clip" data-start="38.770" data-duration="1.829"><span>네 가지를 갖춰야 합니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="40.649" data-duration="2.370"><span>먼저 한 건만 가리키는 유일성,</span></div>
+    <div id="cap-09b" class="cap clip" data-start="43.019" data-duration="3.162"><span>꼭 필요한 속성만 담는 최소성입니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="46.231" data-duration="1.970"><span>그리고 바뀌지 않는 불변성,</span></div>
+    <div id="cap-10b" class="cap clip" data-start="48.201" data-duration="2.680"><span>값이 반드시 있는 존재성입니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="51.081" data-duration="1.010"><span>부모의 주식별자가</span></div>
+    <div id="cap-11b" class="cap clip" data-start="52.091" data-duration="2.540"><span>자식의 주식별자로 가면 실선,</span></div>
+    <div id="cap-11c" class="cap clip" data-start="54.631" data-duration="2.596"><span>일반 속성으로 가면 점선입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

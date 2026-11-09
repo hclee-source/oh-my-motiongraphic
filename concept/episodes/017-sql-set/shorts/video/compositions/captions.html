@@ -1,0 +1,40 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 540px; text-align: center; overflow: visible;
+      font-size: 54px; font-weight: 700; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 940px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cap-01a" class="cap clip" data-start="0.000" data-duration="2.050"><span>위 SELECT의 결과는 3행,</span></div>
+    <div id="cap-01b" class="cap clip" data-start="2.050" data-duration="2.782"><span>아래 SELECT의 결과는 6행입니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="4.882" data-duration="0.850"><span>그중 두 값은</span></div>
+    <div id="cap-02b" class="cap clip" data-start="5.732" data-duration="1.865"><span>양쪽에 모두 있습니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="7.797" data-duration="0.570"><span>UNION ALL은</span></div>
+    <div id="cap-03b" class="cap clip" data-start="8.367" data-duration="1.240"><span>그대로 이어 붙여</span></div>
+    <div id="cap-03c" class="cap clip" data-start="9.607" data-duration="1.220"><span>9행입니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="10.877" data-duration="2.270"><span>UNION은 중복을 지워 6행,</span></div>
+    <div id="cap-04b" class="cap clip" data-start="13.147" data-duration="2.440"><span>아래 결과 안에서 두 번 나온 값도</span></div>
+    <div id="cap-04c" class="cap clip" data-start="15.587" data-duration="1.610"><span>한 번만 남습니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="17.397" data-duration="0.690"><span>INTERSECT는</span></div>
+    <div id="cap-05b" class="cap clip" data-start="18.087" data-duration="2.040"><span>양쪽에 모두 있는 값만 남겨</span></div>
+    <div id="cap-05c" class="cap clip" data-start="20.127" data-duration="1.135"><span>2행입니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="21.462" data-duration="1.910"><span>위에서 아래를 빼는 MINUS는</span></div>
+    <div id="cap-06b" class="cap clip" data-start="23.372" data-duration="2.590"><span>위에만 있는 값, 1행입니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="26.012" data-duration="2.210"><span>거꾸로 아래에서 위를 빼면 3행,</span></div>
+    <div id="cap-07b" class="cap clip" data-start="28.222" data-duration="2.693"><span>순서를 바꾸면 결과가 달라집니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="30.965" data-duration="0.950"><span>SQL Server에서는</span></div>
+    <div id="cap-08b" class="cap clip" data-start="31.915" data-duration="2.808"><span>MINUS 대신 EXCEPT라고 적습니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="34.922" data-duration="2.070"><span>위아래 열 개수는 같아야 하고,</span></div>
+    <div id="cap-09b" class="cap clip" data-start="36.992" data-duration="1.260"><span>결과 열 이름은</span></div>
+    <div id="cap-09c" class="cap clip" data-start="38.252" data-duration="2.045"><span>첫 번째 SELECT를 따릅니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="40.347" data-duration="0.570"><span>ORDER BY는</span></div>
+    <div id="cap-10b" class="cap clip" data-start="40.917" data-duration="2.264"><span>맨 끝에 한 번만 적습니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="43.381" data-duration="2.090"><span>중복을 남기는 건 UNION ALL 하나,</span></div>
+    <div id="cap-11b" class="cap clip" data-start="45.471" data-duration="1.140"><span>나머지 셋은</span></div>
+    <div id="cap-11c" class="cap clip" data-start="46.611" data-duration="1.415"><span>중복을 지웁니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

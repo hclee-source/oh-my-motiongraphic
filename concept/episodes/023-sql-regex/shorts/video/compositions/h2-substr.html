@@ -1,0 +1,66 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h2-str { position: absolute; left: 80px; top: 330px; width: 920px; height: 180px; display: flex; align-items: center; justify-content: center;
+      font-size: 72px; font-weight: 900; white-space: nowrap; }
+    .h2-ck { position: relative; display: inline-block; padding: 0 16px; margin: 0 6px; }
+    .h2-ring { position: absolute; left: 0; right: 0; top: -4px; bottom: -4px; border-radius: 16px; border: 4px solid #A1A1AA; opacity: 0; }
+    .h2-ring.a { border-color: var(--color-accent, #6B3FE6); }
+    .h2-t { position: relative; }
+    #h2-code { left: 80px; top: 556px; width: 920px; }
+    #h2-code .q-ln { font-size: 40px; height: 76px; padding: 0 44px; }
+    .h2-cw { position: relative; display: block; width: 820px; height: 76px; }
+    .h2-cw > span { position: absolute; left: 0; top: 0; line-height: 76px; white-space: nowrap; opacity: 0; }
+    #h2-res { position: absolute; left: 80px; top: 812px; width: 520px; height: 150px; }
+    .h2-rv { position: absolute; left: 32px; right: 32px; top: 20px; bottom: 20px; display: flex; align-items: center; justify-content: center;
+      font-size: 80px; font-weight: 900; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="h2" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.2,7.35]"},{"id":"dur","type":"number","label":"장면 길이","default":10.2},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"s1","type":"number","label":"첫 덩어리 시각","default":5.2},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h2-all">
+      <div id="h2-str" class="x-card x-hide"><span class="h2-t">사과</span><span class="h2-ck"><span class="h2-ring" id="h2-g1"></span><span class="h2-ring a" id="h2-a1"></span><span class="h2-t">12</span></span><span class="h2-t">개&nbsp;배</span><span class="h2-ck"><span class="h2-ring" id="h2-g2"></span><span class="h2-ring a" id="h2-a2"></span><span class="h2-t">7</span></span><span class="h2-t">개</span></div>
+      <div id="h2-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">REGEXP_SUBSTR</span>('사과 12개 배 7개',</span></div>
+        <div class="q-ln"><span class="h2-cw" data-layout-allow-overlap><span id="h2-v1">&nbsp;&nbsp;'[0-9]+')</span><span id="h2-v2">&nbsp;&nbsp;'[0-9]+', 1, 2)</span></span></div>
+      </div>
+      <div id="h2-res" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="h2-rv x-acc" id="h2-r1">12</div>
+        <div class="h2-rv x-acc" id="h2-r2">7</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 10.2;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k] ?? d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+
+    // 3 ‘사과 12개 배 7개’에서 숫자를 뽑으면 → 첫 덩어리 12
+    ft("#h2-str", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0));
+    ft("#h2-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 1.4));
+    fade("#h2-v1", at(0, 1.4), 0, 1);
+    fade(["#h2-g1", "#h2-g2"], at(0, 3.2), 0, 1);
+    fade("#h2-g1", X("s1", 5.2), 1, 0);
+    fade("#h2-a1", X("s1", 5.2), 0, 1);
+    ft("#h2-res", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, X("s1", 5.2));
+    stamp("#h2-r1", X("s1", 5.2) + 0.2);
+    // 4 두 번째 덩어리 → 7
+    fade("#h2-v1", at(1, 0), 1, 0);
+    fade("#h2-v2", at(1, 0.15), 0, 1);
+    fade("#h2-a1", at(1, 0.6), 1, 0);
+    fade("#h2-g1", at(1, 0.6), 0, 1);
+    fade("#h2-g2", at(1, 0.6), 1, 0);
+    fade("#h2-a2", at(1, 0.6), 0, 1);
+    fade("#h2-r1", at(1, 1.0), 1, 0);
+    stamp("#h2-r2", at(1, 1.1));
+    if (String(V.exit) !== "false") ft("#h2-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h2"] = tl;
+  </script>
+</template>

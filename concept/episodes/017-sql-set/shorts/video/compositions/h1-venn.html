@@ -1,0 +1,123 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h1-svg { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; pointer-events: none; }
+    .h1-lab { position: absolute; top: 300px; width: 420px; text-align: center; font-size: 46px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    .h1-lab b { font-weight: 900; color: var(--color-accent, #6B3FE6); }
+    #h1-la { left: 90px; }
+    #h1-lb { left: 570px; }
+    .h1-v { position: absolute; width: 80px; height: 80px; margin: -40px 0 0 -40px; line-height: 80px; text-align: center;
+      font-size: 60px; font-weight: 900; opacity: 0; }
+    .h1-x2 { position: absolute; width: 60px; height: 40px; line-height: 40px; text-align: center; font-size: 34px; font-weight: 800;
+      color: var(--color-ink2, #71717A); opacity: 0; }
+    #h1-res { position: absolute; left: 100px; top: 960px; width: 840px; height: 280px; box-sizing: border-box; }
+    .h1-k { position: absolute; left: 0; right: 0; top: 0; bottom: 0; opacity: 0; }
+    .h1-op { position: absolute; left: 0; right: 0; top: 44px; text-align: center; font-size: 46px; font-weight: 900; white-space: nowrap; }
+    .h1-val { position: absolute; left: 0; right: 0; top: 128px; text-align: center; font-size: 84px; font-weight: 900; white-space: nowrap; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="h1" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.0,4.88,7.8,10.88,17.4,21.46,26.01,30.96]"},{"id":"dur","type":"number","label":"장면 길이","default":34.47},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"lo","type":"number","label":"아래 시각","default":2.4},{"id":"v9","type":"number","label":"9행 시각","default":9.9},{"id":"v6","type":"number","label":"6행 시각","default":12.6},{"id":"dup","type":"number","label":"아래 결과 안에서 시각","default":13.4},{"id":"v2","type":"number","label":"2행 시각","default":20.3},{"id":"v1","type":"number","label":"1행 시각","default":25.0},{"id":"v3","type":"number","label":"3행 시각","default":28.0},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h1-all">
+      <svg id="h1-svg" viewBox="0 0 1080 1920">
+        <defs>
+          <clipPath id="h1-clipR"><circle cx="680" cy="640" r="250" /></clipPath>
+          <mask id="h1-mA" maskUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920">
+            <rect x="0" y="0" width="1080" height="1920" fill="#000" />
+            <circle cx="400" cy="640" r="250" fill="#fff" /><circle cx="680" cy="640" r="250" fill="#000" />
+          </mask>
+          <mask id="h1-mB" maskUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920">
+            <rect x="0" y="0" width="1080" height="1920" fill="#000" />
+            <circle cx="680" cy="640" r="250" fill="#fff" /><circle cx="400" cy="640" r="250" fill="#000" />
+          </mask>
+        </defs>
+        <g id="h1-fall" opacity="0"><g opacity="0.16"><circle cx="400" cy="640" r="250" fill="#6B3FE6" /><circle cx="680" cy="640" r="250" fill="#6B3FE6" /></g></g>
+        <g id="h1-fint" opacity="0"><circle cx="400" cy="640" r="250" fill="#6B3FE6" fill-opacity="0.22" clip-path="url(#h1-clipR)" /></g>
+        <g id="h1-fa" opacity="0"><rect x="0" y="0" width="1080" height="1920" fill="#6B3FE6" fill-opacity="0.22" mask="url(#h1-mA)" /></g>
+        <g id="h1-fb" opacity="0"><rect x="0" y="0" width="1080" height="1920" fill="#6B3FE6" fill-opacity="0.22" mask="url(#h1-mB)" /></g>
+        <circle id="h1-ca" cx="400" cy="640" r="250" fill="none" stroke="#18181B" stroke-width="5" opacity="0" />
+        <circle id="h1-cb" cx="680" cy="640" r="250" fill="none" stroke="#18181B" stroke-width="5" opacity="0" />
+      </svg>
+      <div class="h1-lab" id="h1-la">위 결과 <b>3행</b></div>
+      <div class="h1-lab" id="h1-lb">아래 결과 <b>6행</b></div>
+      <div class="h1-v" id="h1-ga" style="left:270px;top:640px">가</div>
+      <div class="h1-v" id="h1-na" style="left:540px;top:580px">나</div>
+      <div class="h1-v" id="h1-da" style="left:540px;top:700px">다</div>
+      <div class="h1-x2" id="h1-xn" style="left:582px;top:560px">×2</div>
+      <div class="h1-x2" id="h1-xd" style="left:582px;top:680px">×2</div>
+      <div class="h1-v" id="h1-ra" style="left:740px;top:560px">라</div>
+      <div class="h1-v" id="h1-ma" style="left:850px;top:560px">마</div>
+      <div class="h1-v" id="h1-b1" style="left:740px;top:720px">바</div>
+      <div class="h1-v" id="h1-b2" style="left:850px;top:720px">바</div>
+      <div id="h1-res" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="h1-k" id="h1-k1"><div class="h1-op">UNION ALL</div><div class="h1-val" id="h1-v1">3 + 6 = <span class="x-acc">9행</span></div></div>
+        <div class="h1-k" id="h1-k2"><div class="h1-op">UNION</div><div class="h1-val x-acc" id="h1-v2">6행</div></div>
+        <div class="h1-k" id="h1-k3"><div class="h1-op">INTERSECT</div><div class="h1-val x-acc" id="h1-v3">2행</div></div>
+        <div class="h1-k" id="h1-k4"><div class="h1-op">위 MINUS 아래</div><div class="h1-val x-acc" id="h1-v4">1행</div></div>
+        <div class="h1-k" id="h1-k5"><div class="h1-op">아래 MINUS 위</div><div class="h1-val x-acc" id="h1-v5">3행</div></div>
+        <div class="h1-k" id="h1-k6"><div class="h1-op">SQL Server는 MINUS 대신</div><div class="h1-val x-acc" style="opacity:1">EXCEPT</div></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 34.47;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const pop = (sel, t) => ft(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+    const DIM = 0.25;
+    let fill = null;
+    const fillTo = (id, t) => { if (fill) fade(fill, t, 1, 0); if (id) fade(id, t + 0.1, 0, 1); fill = id; };
+    let card = null;
+    const show = (k, t) => { if (card) fade(card, t, 1, 0); fade(`#h1-k${k}`, t + 0.1, 0, 1); card = `#h1-k${k}`; };
+    const val = (k, t) => ft(`#h1-v${k}`, { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, t);
+
+    // 1 위 결과 3행, 아래 결과 6행
+    fade("#h1-ca", at(0, 0.1), 0, 1);
+    fade("#h1-la", at(0, 0.1), 0, 1);
+    ["#h1-ga", "#h1-na", "#h1-da"].forEach((s, j) => pop(s, at(0, 0.4 + j * 0.15)));
+    const lo = X("lo", at(0, 2.4));
+    fade("#h1-cb", lo - 0.1, 0, 1);
+    fade("#h1-lb", lo - 0.1, 0, 1);
+    ["#h1-ra", "#h1-ma", "#h1-b1", "#h1-b2"].forEach((s, j) => pop(s, lo + 0.2 + j * 0.15));
+    // 2 그중 두 값은 양쪽에 모두
+    fillTo("#h1-fint", at(1, 0.2));
+    fade(["#h1-xn", "#h1-xd"], at(1, 0.8), 0, 1);
+    // 3 UNION ALL — 그대로 이어 붙여 9행
+    fillTo("#h1-fall", at(2, 0));
+    ft("#h1-res", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(2, 0));
+    show(1, at(2, 0));
+    val(1, X("v9", at(2, 2.0)) - 0.2);
+    // 4 UNION — 중복을 지워 6행, 아래 결과 안의 두 번째 바도 한 번만
+    show(2, at(3, 0));
+    fade(["#h1-xn", "#h1-xd"], at(3, 0.3), 1, 0);
+    val(2, X("v6", at(3, 1.6)) - 0.2);
+    fade("#h1-b2", X("dup", at(3, 2.4)) + 0.3, 1, DIM);
+    // 5 INTERSECT — 양쪽에 모두 있는 값만 2행
+    fillTo("#h1-fint", at(4, 0));
+    show(3, at(4, 0));
+    fade(["#h1-ga", "#h1-ra", "#h1-ma", "#h1-b1"], at(4, 0.4), 1, DIM);
+    val(3, X("v2", at(4, 2.9)) - 0.2);
+    // 6 위 MINUS 아래 — 위에만 있는 값 1행
+    fillTo("#h1-fa", at(5, 0));
+    show(4, at(5, 0));
+    fade("#h1-ga", at(5, 0.4), DIM, 1);
+    fade(["#h1-na", "#h1-da"], at(5, 0.4), 1, DIM);
+    val(4, X("v1", at(5, 3.5)) - 0.2);
+    // 7 거꾸로 아래 MINUS 위 — 3행(두 번째 바는 흐린 채)
+    fillTo("#h1-fb", at(6, 0));
+    show(5, at(6, 0));
+    fade("#h1-ga", at(6, 0.4), 1, DIM);
+    fade(["#h1-ra", "#h1-ma", "#h1-b1"], at(6, 0.4), DIM, 1);
+    val(5, X("v3", at(6, 1.9)) - 0.2);
+    // 8 SQL Server는 MINUS 대신 EXCEPT
+    show(6, at(7, 0.1));
+    if (String(V.exit) !== "false") ft("#h1-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h1"] = tl;
+  </script>
+</template>

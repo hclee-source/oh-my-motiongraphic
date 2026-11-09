@@ -1,0 +1,67 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h1-code { left: 80px; top: 320px; width: 920px; }
+    #h1-code .q-ln { font-size: 44px; height: 76px; padding: 0 44px; }
+    .h1-col { position: absolute; top: 620px; width: 160px; height: 300px; }
+    .h1-c { position: absolute; left: 0; top: 0; width: 160px; height: 200px; box-sizing: border-box; display: flex; align-items: center;
+      justify-content: center; font-size: 80px; font-weight: 900; }
+    .h1-tag { position: absolute; left: 0; right: 0; top: 224px; text-align: center; font-size: 52px; font-weight: 900;
+      color: var(--color-accent, #6B3FE6); opacity: 0; }
+    .h1-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    #h1-res { position: absolute; left: 80px; top: 950px; width: 880px; text-align: center; font-size: 60px; font-weight: 900; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="h1" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0,2.77,8.65]"},{"id":"dur","type":"number","label":"장면 길이","default":12.6},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"tw","type":"number","label":"두 행을 시각","default":4},{"id":"ob","type":"number","label":"ORDER BY 시각","default":5.5},{"id":"rd","type":"number","label":"먼저 읽힌 시각","default":6.4},{"id":"so","type":"number","label":"정렬됩니다 시각","default":7.8},{"id":"p95","type":"number","label":"95점이 시각","default":8.7},{"id":"rs","type":"number","label":"결과는 시각","default":10.2},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h1-all">
+      <div id="h1-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><div class="q-hi" id="h1-h1"></div><span><span class="q-k">WHERE ROWNUM</span> &lt;= 2</span></div>
+        <div class="q-ln"><div class="q-hi" id="h1-h2"></div><span><span class="q-k">ORDER BY</span> 점수 <span class="q-k">DESC</span></span></div>
+      </div>
+      <div class="h1-col" id="h1-k1" style="left:90px"><div class="h1-c x-card x-hide" id="h1-c1">60</div><div class="h1-tag" id="h1-t1">1</div></div>
+      <div class="h1-col" id="h1-k2" style="left:270px"><div class="h1-c x-card x-hide" id="h1-c2">70</div><div class="h1-tag" id="h1-t2">2</div></div>
+      <div class="h1-col" id="h1-k3" style="left:450px"><div class="h1-c x-card x-hide" id="h1-c3"><div class="h1-ring" id="h1-o3"></div>95</div></div>
+      <div class="h1-col" id="h1-k4" style="left:630px"><div class="h1-c x-card x-hide" id="h1-c4">90</div></div>
+      <div class="h1-col" id="h1-k5" style="left:810px"><div class="h1-c x-card x-hide" id="h1-c5">90</div></div>
+      <div id="h1-res">결과는 <span class="x-acc">70 · 60</span></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 12.6;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d = 0) => Number(V[k]) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+
+    // 1 ROWNUM은 정렬하기 전에 붙는 번호 — SQL 두 줄과 읽힌 순서대로 카드 다섯 장
+    ft("#h1-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.1));
+    [1, 2, 3, 4, 5].forEach((k, j) => stamp(`#h1-c${k}`, at(0, 0.5 + j * 0.2)));
+    // 2 ROWNUM으로 두 행을 자르고 ORDER BY → 먼저 읽힌 두 행만 정렬
+    fade("#h1-h1", at(1, 0.1), 0, 1);
+    stamp("#h1-t1", X("tw", -0.1));
+    stamp("#h1-t2", X("tw", 0.2));
+    fade("#h1-h1", X("ob", -0.1), 1, 0);
+    fade("#h1-h2", X("ob", 0), 0, 1);
+    fade(["#h1-c3", "#h1-c4", "#h1-c5"], X("rd", 0), 1, 0.3);
+    // 60과 70이 자리를 바꾼다(번호표는 카드와 함께, 움직이는 동안 흐리게)
+    const t0 = X("so", -0.3);
+    fade(["#h1-k1", "#h1-k2"], t0, 1, 0.15);
+    ft("#h1-k1", { x: 0 }, { x: 180, duration: 0.6, ease: "power2.inOut" }, t0 + 0.2);
+    ft("#h1-k2", { x: 0 }, { x: -180, duration: 0.6, ease: "power2.inOut" }, t0 + 0.2);
+    fade(["#h1-k1", "#h1-k2"], t0 + 0.8, 0.15, 1);
+    // 3 95점이 있어도 결과는 70점, 60점
+    fade("#h1-c3", X("p95", -0.1), 0.3, 1);
+    fade("#h1-o3", X("p95", 0), 0, 1);
+    fade("#h1-o3", X("rs", -0.2), 1, 0);
+    fade("#h1-c3", X("rs", -0.2), 1, 0.3);
+    fade("#h1-res", X("rs", 0), 0, 1);
+    if (String(V.exit) !== "false") ft("#h1-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h1"] = tl;
+  </script>
+</template>

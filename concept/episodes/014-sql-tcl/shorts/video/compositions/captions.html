@@ -1,0 +1,46 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 540px; text-align: center; overflow: visible;
+      font-size: 54px; font-weight: 700; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 940px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cap-01a" class="cap clip" data-start="0.000" data-duration="0.650"><span>ROLLBACK을 하면</span></div>
+    <div id="cap-01b" class="cap clip" data-start="0.650" data-duration="1.140"><span>무조건 처음으로</span></div>
+    <div id="cap-01c" class="cap clip" data-start="1.790" data-duration="1.119"><span>돌아갈까요?</span></div>
+    <div id="cap-02a" class="cap clip" data-start="2.959" data-duration="2.390"><span>그렇지 않습니다.</span></div>
+    <div id="cap-02b" class="cap clip" data-start="5.349" data-duration="1.931"><span>규칙은 세 가지입니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="7.480" data-duration="0.970"><span>행 하나를 넣고</span></div>
+    <div id="cap-03b" class="cap clip" data-start="8.450" data-duration="1.200"><span>SAVEPOINT A로</span></div>
+    <div id="cap-03c" class="cap clip" data-start="9.650" data-duration="1.700"><span>저장 지점을 만든 뒤,</span></div>
+    <div id="cap-03d" class="cap clip" data-start="11.350" data-duration="2.102"><span>한 행을 더 넣었습니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="13.502" data-duration="1.470"><span>이제 ROLLBACK TO A를 하면</span></div>
+    <div id="cap-04b" class="cap clip" data-start="14.972" data-duration="1.280"><span>A 뒤에 넣은</span></div>
+    <div id="cap-04c" class="cap clip" data-start="16.252" data-duration="1.569"><span>한 행만 취소됩니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="17.871" data-duration="1.250"><span>A보다 앞의 작업은</span></div>
+    <div id="cap-05b" class="cap clip" data-start="19.121" data-duration="1.563"><span>그대로 남습니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="20.884" data-duration="1.270"><span>이름 없이 ROLLBACK만 하면</span></div>
+    <div id="cap-06b" class="cap clip" data-start="22.154" data-duration="1.580"><span>마지막 COMMIT 시점으로</span></div>
+    <div id="cap-06c" class="cap clip" data-start="23.734" data-duration="1.065"><span>돌아갑니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="24.849" data-duration="1.670"><span>그동안 만든 저장 지점도</span></div>
+    <div id="cap-07b" class="cap clip" data-start="26.519" data-duration="1.550"><span>모두 사라집니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="28.119" data-duration="1.190"><span>이미 COMMIT한 내용은</span></div>
+    <div id="cap-08b" class="cap clip" data-start="29.309" data-duration="2.268"><span>ROLLBACK으로 되돌릴 수 없습니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="31.777" data-duration="2.370"><span>오라클에서는 CREATE, DROP 같은</span></div>
+    <div id="cap-09b" class="cap clip" data-start="34.147" data-duration="1.000"><span>DDL을 실행하면</span></div>
+    <div id="cap-09c" class="cap clip" data-start="35.147" data-duration="1.770"><span>자동으로 COMMIT됩니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="36.967" data-duration="1.050"><span>그래서 DELETE 다음에</span></div>
+    <div id="cap-10b" class="cap clip" data-start="38.017" data-duration="1.260"><span>테이블을 하나 만들고</span></div>
+    <div id="cap-10c" class="cap clip" data-start="39.277" data-duration="0.620"><span>ROLLBACK해도,</span></div>
+    <div id="cap-10d" class="cap clip" data-start="39.897" data-duration="2.535"><span>지운 행은 돌아오지 않습니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="42.632" data-duration="2.470"><span>ROLLBACK TO는 저장 지점까지,</span></div>
+    <div id="cap-11b" class="cap clip" data-start="45.102" data-duration="0.800"><span>그냥 ROLLBACK은</span></div>
+    <div id="cap-11c" class="cap clip" data-start="45.902" data-duration="1.740"><span>마지막 COMMIT까지,</span></div>
+    <div id="cap-11d" class="cap clip" data-start="47.642" data-duration="1.320"><span>DDL은 그 자리에서</span></div>
+    <div id="cap-11e" class="cap clip" data-start="48.962" data-duration="1.247"><span>COMMIT입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

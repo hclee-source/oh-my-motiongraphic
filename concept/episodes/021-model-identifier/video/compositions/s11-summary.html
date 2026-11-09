@@ -1,0 +1,81 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s11-svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; }
+    .en { position: absolute; box-sizing: border-box; display: flex; flex-direction: column; padding-bottom: 8px; }
+    .en-n { height: 52px; padding-top: 8px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; }
+    .en-pk { position: relative; min-height: 56px; }
+    .en-at { position: relative; min-height: 56px; }
+    .en-dv { height: 4px; background: #18181B; border-radius: 2px; }
+    .en-r { position: relative; height: 56px; display: flex; align-items: center; padding-left: 36px; font-size: 34px; font-weight: 800; white-space: nowrap; }
+    .en-pk .en-r { color: var(--color-accent, #6B3FE6); }
+    .en-at .en-r { color: #3F3F46; }
+    .bd { position: absolute; left: 12px; right: 12px; top: 3px; bottom: 3px; border-radius: 12px; opacity: 0; }
+    .bd-p { background: color-mix(in srgb, var(--color-accent, #6B3FE6) 13%, #FFFFFF); }
+    .bd-a { background: #EEF0F4; }
+    .pa { left: 192px; width: 420px; } .ch { left: 1228px; width: 500px; }
+    #s11-p1, #s11-c1 { top: 270px; } #s11-p2, #s11-c2 { top: 560px; }
+    .s11-lb { position: absolute; left: 632px; width: 580px; text-align: center; font-size: 40px; font-weight: 900; white-space: nowrap; opacity: 0; }
+    #s11-l1 { top: 286px; color: var(--color-accent, #6B3FE6); }
+    #s11-l2 { top: 566px; }
+  </style>
+  <div id="root" data-composition-id="s11" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3.4]"},{"id":"dur","type":"number","label":"장면 길이","default":10},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"w1","type":"number","label":"위로 시각","default":0},{"id":"w2","type":"number","label":"아래로 시각","default":0},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s11-all">
+      <div id="s11-head" class="x-head">한 줄 정리</div>
+      <svg id="s11-svg" viewBox="0 0 1920 1080"></svg>
+      <div id="s11-p1" class="en pa x-card x-hide"><div class="en-n">부모</div>
+        <div class="en-pk"><div class="en-r">주식별자</div></div><div class="en-dv"></div>
+        <div class="en-at"><div class="en-r">일반 속성</div></div></div>
+      <div id="s11-c1" class="en ch x-card x-hide"><div class="en-n">자식</div>
+        <div class="en-pk"><div class="bd bd-p" id="s11-bp"></div><div class="en-r x-hide" id="s11-r1">부모의 주식별자</div></div><div class="en-dv"></div>
+        <div class="en-at"><div class="en-r">일반 속성</div></div></div>
+      <div id="s11-p2" class="en pa x-card x-hide"><div class="en-n">부모</div>
+        <div class="en-pk"><div class="en-r">주식별자</div></div><div class="en-dv"></div>
+        <div class="en-at"><div class="en-r">일반 속성</div></div></div>
+      <div id="s11-c2" class="en ch x-card x-hide"><div class="en-n">자식</div>
+        <div class="en-pk"><div class="en-r">자식의 주식별자</div></div><div class="en-dv"></div>
+        <div class="en-at"><div class="bd bd-a" id="s11-ba"></div><div class="en-r x-hide" id="s11-r2">부모의 주식별자</div></div></div>
+      <div class="s11-lb" id="s11-l1">식별자 관계 · 실선</div>
+      <div class="s11-lb" id="s11-l2">비식별자 관계 · 점선</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+
+    const NS = "http://www.w3.org/2000/svg";
+    const mk = (tag, a, p) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+    const ST = { stroke: "#6B3FE6", "stroke-width": 6, fill: "none", "stroke-linecap": "round" };
+    const svg = document.getElementById("s11-svg");
+    const g1 = mk("g", { id: "s11-g1", style: "opacity:0" }, svg);   // 실선: 부모 주식별자 → 자식 가로선 위
+    mk("line", { x1: 612, y1: 352, x2: 1196, y2: 352, ...ST }, g1);
+    mk("polygon", { points: "1194,334 1224,352 1194,370", fill: "#6B3FE6" }, g1);
+    const g2 = mk("g", { id: "s11-g2", style: "opacity:0" }, svg);   // 점선: 부모 주식별자 → 자식 가로선 아래
+    mk("line", { x1: 612, y1: 642, x2: 1190, y2: 700, "stroke-dasharray": "16 12", ...ST, stroke: "#18181B" }, g2);
+    mk("polygon", { points: "1186,682 1224,702 1182,718", fill: "#18181B" }, g2);
+
+    // 56 한 줄로 정리하면
+    ft("#s11-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ["#s11-p1", "#s11-c1", "#s11-p2", "#s11-c2"].forEach((id, j) => ft(id, { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3 + j * 0.3)));
+    // 57 가로선 위로 가면 식별자 관계, 아래로 가면 비식별자 관계
+    const a = X("w1", at(1, 2.4)) - 0.2;
+    fade("#s11-g1", a, 0, 1);
+    fade("#s11-l1", a, 0, 1);
+    fade("#s11-bp", a + 0.8, 0, 1);
+    fade("#s11-r1", a + 0.8, 0, 1);
+    const b = X("w2", at(1, 4.9)) - 0.2;
+    fade("#s11-g2", b, 0, 1);
+    fade("#s11-l2", b, 0, 1);
+    fade("#s11-ba", b + 0.8, 0, 1);
+    fade("#s11-r2", b + 0.8, 0, 1);
+    window.__timelines["s11"] = tl;
+  </script>
+</template>

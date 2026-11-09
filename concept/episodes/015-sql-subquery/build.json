@@ -1,0 +1,43 @@
+{
+  "_설명": "장면 순서(장 번호와 연결, 여러 장을 한 장면으로 묶을 수 있음), 장면 끝에서 사라질지(exit), 효과음 위치([이름, 장면 안 문장 순번(0부터), 그 문장 시작 뒤 초]). extra는 그 낱말이 나오는 시각(장면 기준).",
+  "scenes": [
+    { "id": "s00", "file": "s00-title.html" },
+    { "id": "s01", "file": "s01-hook.html", "chapter": 1,
+      "extra": { "c4": { "sentence": 3, "at": "400과" }, "c6": { "sentence": 3, "at": "600을" },
+                 "kin": { "sentence": 5, "at": "IN과" }, "kany": { "sentence": 5, "at": "ANY와" }, "kall": { "sentence": 5, "at": "ALL을" },
+                 "kex": { "sentence": 5, "at": "EXISTS를" } } },
+    { "id": "s02", "file": "s02-rows.html", "chapter": [2, 3],
+      "extra": { "m2": { "sentence": 7, "at": "메인쿼리가" }, "d1": { "sentence": 8, "at": "영업" }, "d2": { "sentence": 8, "at": "개발" },
+                 "d3": { "sentence": 8, "at": "인사" }, "r3": { "sentence": 12, "at": "세 행" }, "ni": { "sentence": 14, "at": "NOT IN" } } },
+    { "id": "s04", "file": "s04-anyall.html", "chapter": [4, 5],
+      "extra": { "kmin": { "sentence": 18, "at": "가장 작은" }, "n1": { "sentence": 19, "at": "지영" }, "n2": { "sentence": 19, "at": "동훈" },
+                 "n3": { "sentence": 19, "at": "현우" }, "r3": { "sentence": 19, "at": "세 행" }, "kmax": { "sentence": 20, "at": "가장 큰" },
+                 "k24": { "sentence": 24, "at": "가장 큰" }, "r5": { "sentence": 24, "at": "다섯 행" }, "k25": { "sentence": 25, "at": "가장 작은" },
+                 "r2": { "sentence": 25, "at": "두 행" }, "nany": { "sentence": 28, "at": "넘을 값이" } } },
+    { "id": "s06", "file": "s06-corr.html", "chapter": 6,
+      "extra": { "j1": { "sentence": 33, "at": "지영은" }, "r3": { "sentence": 35, "at": "세 행" }, "mq": { "sentence": 37, "at": "메인쿼리는" } } },
+    { "id": "s07", "file": "s07-exists.html", "chapter": 7,
+      "extra": { "gh": { "sentence": 38, "at": "기획에는" }, "e1": { "sentence": 41, "at": "영업" }, "e2": { "sentence": 41, "at": "개발" },
+                 "e3": { "sentence": 41, "at": "인사" }, "r3": { "sentence": 41, "at": "세 행" }, "gk": { "sentence": 42, "at": "기획" },
+                 "ne": { "sentence": 43, "at": "NOT EXISTS에는" } } },
+    { "id": "s08", "file": "s08-place.html", "chapter": 8,
+      "extra": { "hr": { "sentence": 45, "at": "한 행" }, "wh": { "sentence": 47, "at": "WHERE 절에" }, "hv": { "sentence": 47, "at": "HAVING" },
+                 "ss": { "sentence": 49, "at": "SQL Server" } } },
+    { "id": "s09", "file": "s09-check.html", "chapter": 9 },
+    { "id": "s10", "file": "s10-summary.html", "chapter": 10, "exit": false,
+      "extra": { "y2": { "sentence": 56, "at": "여러 행이면" }, "y3": { "sentence": 56, "at": "있는지만" } } }
+  ],
+  "sfx": {
+    "s00": [["chime", null, 0.15], ["whoosh-short", null, 3.0]],
+    "s01": [["pop", 0, 0.4], ["click-soft", 1, 0.8], ["pop", 2, 3.2], ["pop", 2, 4.1], ["whoosh-short", 4, 0.3], ["pop", 4, 3.5]],
+    "s02": [["pop", 0, 0.4], ["pop", 2, 0.3], ["pop", 3, 0.3], ["pop", 4, 0.3], ["click-soft", 5, 0.7], ["pop", 6, 0.7], ["pop", 8, 0.3]],
+    "s04": [["pop", 0, 0.4], ["pop", 1, 0.4], ["click-soft", 2, 0.3], ["click-soft", 3, 3.6], ["pop", 4, 4.3], ["click-soft", 5, 2.7],
+            ["pop", 6, 1.2], ["pop", 7, 0.3], ["whoosh-short", 8, 0.1], ["click-soft", 9, 1.3], ["pop", 9, 3.1], ["click-soft", 10, 1.3],
+            ["pop", 10, 4.3], ["pop", 11, 0.4], ["whoosh-short", 12, 0.2], ["pop", 13, 1.4], ["click-soft", 13, 3.5]],
+    "s06": [["pop", 0, 0.4], ["click-soft", 2, 0.6], ["pop", 3, 0.3], ["click-soft", 4, 0.2], ["click-soft", 5, 0.2], ["pop", 6, 3.8], ["pop", 8, 0.3]],
+    "s07": [["pop", 0, 0.4], ["pop", 1, 0.3], ["click-soft", 2, 1.6], ["pop", 3, 2.2], ["pop", 3, 4.9], ["click-soft", 4, 0.4], ["pop", 5, 0.3]],
+    "s08": [["pop", 0, 0.4], ["pop", 1, 0.3], ["pop", 2, 0.2], ["pop", 3, 0.3], ["pop", 3, 3.0], ["click-soft", 4, 0.8], ["pop", 5, 0.3]],
+    "s09": [["pop", 1, 0.2], ["pop", 2, 0.2], ["pop", 3, 0.2], ["pop", 4, 0.3]],
+    "s10": [["pop", 1, 0.0]]
+  }
+}

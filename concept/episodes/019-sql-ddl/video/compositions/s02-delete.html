@@ -1,0 +1,201 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s02-code { left: 192px; top: 262px; width: 700px; height: 172px; }
+    .s02-set { position: absolute; left: 0; right: 0; top: 26px; opacity: 0; }
+    #s02-chips { position: absolute; left: 192px; top: 470px; width: 700px; height: 256px; }
+    #s02-chips .q-chip { left: 0; }
+    #s02-tb { left: 952px; top: 262px; width: 776px; height: 584px; }
+    #s02-tb .q-th, #s02-tb .q-tr { grid-template-columns: 240px 240px 240px; }
+    #s02-th { top: 24px; height: 64px; }
+    #s02-tb .q-th > div { font-size: 30px; }
+    .s02-cnt { position: relative; height: 44px; }
+    .s02-cnt > span { position: absolute; left: 0; right: 0; top: 0; text-align: center; font-size: 34px; font-weight: 900;
+      color: var(--color-accent, #6B3FE6); opacity: 0; }
+    #s02-ring { position: absolute; left: 16px; right: 16px; top: 14px; height: 84px; box-sizing: border-box; border-radius: 18px;
+      border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    #s02-notes { position: absolute; left: 28px; right: 28px; top: 470px; height: 64px; }
+    .s02-n { position: absolute; left: 0; right: 0; top: 0; text-align: center; font-size: 36px; font-weight: 800; line-height: 64px; opacity: 0; }
+    #s02-gone { position: absolute; left: 952px; top: 262px; width: 776px; height: 584px; box-sizing: border-box; border-radius: 28px;
+      border: 3px dashed #C4C7CE; opacity: 0; }
+    /* 세 명령 나란히 */
+    #s02-cmp { left: 192px; top: 262px; width: 1536px; height: 584px; position: absolute; }
+    .s02-row { position: absolute; left: 48px; right: 48px; display: grid; grid-template-columns: 300px 380px 380px 380px; align-items: center; opacity: 0; }
+    .s02-row > div { text-align: center; font-size: 40px; font-weight: 800; white-space: nowrap; }
+    .s02-row > div:first-child { text-align: left; font-size: 34px; color: var(--color-ink2, #71717A); }
+    #s02-r0 > div { font-size: 44px; font-weight: 900; }
+    .s02-sep { position: absolute; left: 48px; right: 48px; height: 2px; background: var(--color-hair, #D3D6DD); opacity: 0; }
+    #s02-col { position: absolute; left: 348px; top: 28px; width: 380px; height: 528px; box-sizing: border-box; border-radius: 24px;
+      border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s02" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,6,10,14,19,23,29,33,40,45,51,55,61,66,70]"},{"id":"dur","type":"number","label":"장면 길이","default":76},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"dm","type":"number","label":"DML 시각","default":3},{"id":"rb","type":"number","label":"ROLLBACK 시각","default":8},{"id":"wh","type":"number","label":"WHERE 시각","default":11},{"id":"e80","type":"number","label":"80과 시각","default":16},{"id":"e3","type":"number","label":"세 행 시각","default":18},{"id":"tall","type":"number","label":"모두 지우고 시각","default":25},{"id":"tst","type":"number","label":"구조만 시각","default":27},{"id":"ddl","type":"number","label":"DDL이고 시각","default":34},{"id":"z0","type":"number","label":"0행 시각","default":43},{"id":"dst","type":"number","label":"구조까지 시각","default":53},{"id":"sq","type":"number","label":"조회하면 시각","default":57},{"id":"er","type":"number","label":"오류가 시각","default":59},{"id":"dlo","type":"number","label":"DELETE만 시각","default":68},{"id":"n1","type":"number","label":"남는 것 DELETE 시각","default":71},{"id":"n2","type":"number","label":"남는 것 TRUNCATE 시각","default":73},{"id":"n3","type":"number","label":"남는 것 DROP 시각","default":75},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s02-all">
+      <div id="s02-ha" class="x-head">DELETE</div>
+      <div id="s02-hb" class="x-head">TRUNCATE</div>
+      <div id="s02-hc" class="x-head">DROP</div>
+      <div id="s02-hd" class="x-head">세 명령 나란히</div>
+      <div id="s02-code" class="x-dark q-code x-hide" data-layout-allow-overlap>
+        <div class="s02-set" id="s02-sa">
+          <div class="q-ln"><div class="q-hi" id="s02-a1"></div><span><span class="q-k">DELETE FROM</span> 주문;</span></div>
+          <div class="q-ln" id="s02-a2l" style="opacity:0"><div class="q-hi" id="s02-a2"></div><span><span class="q-k">ROLLBACK</span>;</span></div>
+        </div>
+        <div class="s02-set" id="s02-sb">
+          <div class="q-ln"><div class="q-hi" id="s02-b1"></div><span><span class="q-k">DELETE FROM</span> 주문</span></div>
+          <div class="q-ln"><div class="q-hi" id="s02-b2"></div><span><span class="q-k">WHERE</span> 금액 &lt; 100;</span></div>
+        </div>
+        <div class="s02-set" id="s02-sc">
+          <div class="q-ln"><div class="q-hi" id="s02-c1"></div><span><span class="q-k">TRUNCATE TABLE</span> 주문;</span></div>
+          <div class="q-ln" id="s02-c2l" style="opacity:0"><div class="q-hi" id="s02-c2"></div><span><span class="q-k">ROLLBACK</span>;</span></div>
+        </div>
+        <div class="s02-set" id="s02-sd">
+          <div class="q-ln"><div class="q-hi" id="s02-d1"></div><span><span class="q-k">DROP TABLE</span> 주문;</span></div>
+          <div class="q-ln" id="s02-d2l" style="opacity:0"><div class="q-hi" id="s02-d2"></div><span><span class="q-k">SELECT</span> * <span class="q-k">FROM</span> 주문;</span></div>
+        </div>
+      </div>
+      <div id="s02-chips" data-layout-allow-overlap>
+        <div id="s02-k1" class="q-chip q-ok" style="top:0">DML · ROLLBACK 가능</div>
+        <div id="s02-k2" class="q-chip q-ng" style="top:0">DDL · 자동 커밋</div>
+        <div id="s02-k3" class="q-chip q-ng" style="top:92px">ROLLBACK 해도 0행 그대로</div>
+        <div id="s02-k4" class="q-chip q-ng" style="top:184px">✕ WHERE 붙일 수 없음</div>
+        <div id="s02-k5" class="q-chip q-ng" style="top:0">✕ 표가 없다는 오류</div>
+        <div id="s02-k6" class="q-chip q-ng" style="top:92px">DDL · ROLLBACK 불가</div>
+      </div>
+      <div id="s02-gone"></div>
+      <div id="s02-tb" class="x-card q-tb x-hide">
+        <div id="s02-ring"></div>
+        <div class="q-th" id="s02-th"><div>주문번호</div><div>금액</div>
+          <div class="s02-cnt" data-layout-allow-overlap><span id="s02-n5">5행</span><span id="s02-n0">0행</span><span id="s02-n3">3행</span></div></div>
+        <div class="q-tr" id="s02-r1" style="top:104px"><div>101</div><div>120</div><div></div></div>
+        <div class="q-tr" id="s02-r2" style="top:170px"><div>102</div><div id="s02-p2">80</div><div></div></div>
+        <div class="q-tr" id="s02-r3" style="top:236px"><div>103</div><div>250</div><div></div></div>
+        <div class="q-tr" id="s02-r4" style="top:302px"><div>104</div><div id="s02-p4">60</div><div></div></div>
+        <div class="q-tr" id="s02-r5" style="top:368px"><div>105</div><div>300</div><div></div></div>
+        <div id="s02-notes" data-layout-allow-overlap>
+          <div class="s02-n x-ink2" id="s02-na">행을 다 지워도 저장 공간은 그대로</div>
+          <div class="s02-n x-ink2" id="s02-nb">구조만 남기고 저장 공간도 반납</div>
+        </div>
+      </div>
+      <div id="s02-cmp" class="x-card x-hide">
+        <div id="s02-col"></div>
+        <div class="s02-row" id="s02-r0" style="top:40px; height:80px"><div></div><div>DELETE</div><div>TRUNCATE</div><div>DROP</div></div>
+        <div class="s02-sep" id="s02-s1" style="top:136px"></div>
+        <div class="s02-row" id="s02-ra" style="top:150px; height:110px"><div>분류</div><div>DML</div><div>DDL</div><div>DDL</div></div>
+        <div class="s02-sep" id="s02-s2" style="top:276px"></div>
+        <div class="s02-row" id="s02-rb" style="top:290px; height:110px"><div>ROLLBACK</div><div class="x-acc">✓ 가능</div><div>✕ 불가</div><div>✕ 불가</div></div>
+        <div class="s02-sep" id="s02-s3" style="top:416px"></div>
+        <div class="s02-row" id="s02-rc" style="top:430px; height:110px; opacity:1"><div id="s02-cl" style="opacity:0">남는 것</div>
+          <div id="s02-c31" style="opacity:0">표와 저장 공간</div><div id="s02-c32" style="opacity:0">빈 표</div><div id="s02-c33" style="opacity:0">없음</div></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 76;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const head = (id, prev, t) => { if (prev) fade(prev, t, 1, 0); ft(id, { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, t + (prev ? 0.2 : 0)); };
+    let line = null;
+    const hi = (id, t) => { if (line) fade(line, t, 1, 0); if (id) fade(id, t, 0, 1); line = id; };
+    let set = null;
+    const code = (id, t) => { if (set) fade(set, t, 1, 0); fade(id, t + 0.15, 0, 1); set = id; };
+    let cnt = null;
+    const count = (id, t) => { if (cnt) fade(cnt, t, 1, 0); fade(id, t + 0.1, 0, 1); cnt = id; };
+    let note = null;
+    const say = (id, t) => { if (note) fade(note, t, 1, 0); if (id) fade(id, t + 0.15, 0, 1); note = id; };
+    const ALL = ["#s02-r1", "#s02-r2", "#s02-r3", "#s02-r4", "#s02-r5"];
+    const ACC = "#6B3FE6", INK = "#18181B";
+
+    // 7 DELETE는 DML — COMMIT 전이면 ROLLBACK으로 되돌린다
+    head("#s02-ha", null, at(0, 0));
+    ft("#s02-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.2));
+    code("#s02-sa", at(0, 0.2));
+    ft("#s02-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.4));
+    count("#s02-n5", at(0, 1.0));
+    hi("#s02-a1", at(0, 1.2));
+    stamp("#s02-k1", X("dm", at(0, 2.6)) + 0.2);
+    // 8 모두 지웠다가 ROLLBACK 하면 다섯 행이 다시
+    fade(ALL, at(1, 0.6), 1, 0.12);
+    count("#s02-n0", at(1, 1.0));
+    const rb = X("rb", at(1, 2.6));
+    fade("#s02-a2l", rb, 0, 1);
+    hi("#s02-a2", rb);
+    fade(ALL, rb + 0.5, 0.12, 1);
+    count("#s02-n5", rb + 0.6);
+    // 9 WHERE를 붙여 지울 행을 고른다
+    code("#s02-sb", at(2, 0.1));
+    hi("#s02-b2", X("wh", at(2, 1.2)));
+    // 10 100 미만 — 80과 60, 두 행이 빠지고 세 행
+    const e80 = X("e80", at(3, 1.6));
+    ft(["#s02-p2", "#s02-p4"], { color: INK }, { color: ACC }, e80);
+    const e3 = X("e3", at(3, 3.4));
+    fade(["#s02-r2", "#s02-r4"], e3 - 0.6, 1, 0.18);
+    count("#s02-n3", e3);
+    // 11 저장 공간은 그대로
+    say("#s02-na", at(4, 0.3));
+    // 12 TRUNCATE — 행을 모두 지우고 구조만 남긴다(다섯 행에서 다시 시작)
+    head("#s02-hb", "#s02-ha", at(5, 0));
+    code("#s02-sc", at(5, 0.1));
+    hi("#s02-c1", at(5, 0.3));
+    fade("#s02-k1", at(5, 0), 1, 0);
+    say(null, at(5, 0));
+    ft(["#s02-p2", "#s02-p4"], { color: ACC }, { color: INK }, at(5, 0));
+    fade(["#s02-r2", "#s02-r4"], at(5, 0.2), 0.18, 1);
+    count("#s02-n5", at(5, 0.2));
+    const tall = X("tall", at(5, 2.4));
+    fade(ALL, tall, 1, 0);
+    count("#s02-n0", tall + 0.2);
+    fade("#s02-ring", X("tst", at(5, 3.6)), 0, 1);
+    // 13 저장 공간도 반납
+    say("#s02-nb", at(6, 0.3));
+    fade("#s02-ring", at(6, 0.3), 1, 0);
+    // 14 TRUNCATE는 DDL — 오라클 DDL은 자동 커밋
+    stamp("#s02-k2", X("ddl", at(7, 2.0)));
+    // 15 ROLLBACK을 해도 0행 그대로
+    fade("#s02-c2l", at(8, 0.3), 0, 1);
+    hi("#s02-c2", at(8, 0.3));
+    stamp("#s02-k3", X("z0", at(8, 3.0)));
+    ft("#s02-n0", { scale: 1 }, { scale: 1.15, duration: 0.25 * S, yoyo: true, repeat: 1, ease: "power2.out" }, X("z0", at(8, 3.0)));
+    // 16 TRUNCATE에는 WHERE를 붙일 수 없다
+    stamp("#s02-k4", at(9, 1.2));
+    // 17 DROP — 구조까지 지운다
+    head("#s02-hc", "#s02-hb", at(10, 0));
+    code("#s02-sd", at(10, 0.1));
+    hi("#s02-d1", at(10, 0.3));
+    fade(["#s02-k2", "#s02-k3", "#s02-k4"], at(10, 0), 1, 0);
+    const dst = X("dst", at(10, 2.2));
+    fade("#s02-tb", dst, 1, 0);
+    fade("#s02-gone", dst + 0.2, 0, 1);
+    // 18 조회하면 표가 없다는 오류
+    const sq = X("sq", at(11, 2.0));
+    fade("#s02-d2l", sq - 0.3, 0, 1);
+    hi("#s02-d2", sq - 0.3);
+    stamp("#s02-k5", X("er", at(11, 3.4)));
+    // 19 DROP도 DDL — ROLLBACK 불가
+    stamp("#s02-k6", at(12, 0.6));
+    // 20 세 명령을 나란히 — ROLLBACK은 DELETE만
+    head("#s02-hd", "#s02-hc", at(13, 0));
+    fade(["#s02-code", "#s02-k5", "#s02-k6", "#s02-gone"], at(13, 0), 1, 0);
+    ft("#s02-cmp", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(13, 0.5));
+    fade("#s02-r0", at(13, 0.7), 0, 1);
+    fade(["#s02-s1", "#s02-s2", "#s02-s3"], at(13, 0.7), 0, 1);
+    fade("#s02-ra", at(13, 1.0), 0, 1);
+    fade("#s02-rb", at(13, 1.3), 0, 1);
+    fade("#s02-col", X("dlo", at(13, 2.4)), 0, 1);
+    // 21 남는 것 — 표와 저장 공간 / 빈 표 / 없음
+    fade("#s02-col", at(14, 0), 1, 0);
+    fade("#s02-cl", at(14, 0.2), 0, 1);
+    fade("#s02-c31", X("n1", at(14, 1.0)), 0, 1);
+    fade("#s02-c32", X("n2", at(14, 2.6)), 0, 1);
+    fade("#s02-c33", X("n3", at(14, 3.8)), 0, 1);
+    if (String(V.exit) !== "false") ft("#s02-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s02"] = tl;
+  </script>
+</template>

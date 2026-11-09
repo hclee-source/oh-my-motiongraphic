@@ -1,0 +1,101 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s08-tb { left: 192px; top: 262px; width: 1536px; height: 470px; }
+    #s08-tb .q-th, #s08-tb .q-tr { grid-template-columns: 160px 140px 380px 330px 270px 200px; }
+    #s08-tb .q-th { top: 20px; }
+    #s08-tb .q-th > div { font-size: 30px; font-weight: 800; }
+    #s08-tb .q-tr > div { font-size: 42px; }
+    .s08-cell { position: relative; height: 48px; }
+    .s08-cell > span { position: absolute; left: 0; right: 0; top: 0; line-height: 48px; text-align: center; font-size: 42px; font-weight: 900; white-space: nowrap; opacity: 0; }
+    .s08-ring { position: absolute; left: 1318px; width: 180px; box-sizing: border-box; border-radius: 22px;
+      border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    #s08-ra { top: 86px; height: 212px; }
+    #s08-rb { top: 302px; height: 140px; }
+    #s08-chips { position: absolute; left: 192px; top: 756px; width: 1536px; height: 72px; }
+    #s08-chips .q-chip { top: 0; }
+  </style>
+  <div id="root" data-composition-id="s08" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,6,12,18,24,30]"},{"id":"dur","type":"number","label":"장면 길이","default":36},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"r25","type":"number","label":"0.25 시각","default":5},{"id":"p0","type":"number","label":"0이고 시각","default":22},{"id":"p1","type":"number","label":"1입니다 시각","default":23.5},{"id":"cd","type":"number","label":"0.6 시각","default":28},{"id":"nt","type":"number","label":"3행과 시각","default":34},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s08-all">
+      <div id="s08-head" class="x-head">비율 함수</div>
+      <div id="s08-tb" class="x-card q-tb x-hide">
+        <div class="q-th"><div>이름</div><div>급여</div><div id="s08-ha">RATIO_TO_REPORT</div><div id="s08-hb">PERCENT_RANK</div><div id="s08-hc">CUME_DIST</div><div id="s08-hd">NTILE(2)</div></div>
+        <div class="q-tr" style="top:92px"><div>민수</div><div>200</div><div class="s08-cell"><span id="s08-a0">0.1</span></div><div class="s08-cell"><span id="s08-b0">0</span></div><div class="s08-cell"><span id="s08-c0">0.2</span></div><div class="s08-cell"><span id="s08-d0">1</span></div></div>
+        <div class="q-tr" style="top:164px"><div>지영</div><div>300</div><div class="s08-cell"><span id="s08-a1">0.15</span></div><div class="s08-cell"><span id="s08-b1">0.25</span></div><div class="s08-cell"><span id="s08-c1">0.6</span></div><div class="s08-cell"><span id="s08-d1">1</span></div></div>
+        <div class="q-tr" style="top:236px"><div>현우</div><div>300</div><div class="s08-cell"><span id="s08-a2">0.15</span></div><div class="s08-cell"><span id="s08-b2">0.25</span></div><div class="s08-cell"><span id="s08-c2">0.6</span></div><div class="s08-cell"><span id="s08-d2">1</span></div></div>
+        <div class="q-tr" style="top:308px"><div>수진</div><div>500</div><div class="s08-cell"><span id="s08-a3">0.25</span></div><div class="s08-cell"><span id="s08-b3">0.75</span></div><div class="s08-cell"><span id="s08-c3">0.8</span></div><div class="s08-cell"><span id="s08-d3">2</span></div></div>
+        <div class="q-tr" style="top:380px"><div>동훈</div><div>700</div><div class="s08-cell"><span id="s08-a4">0.35</span></div><div class="s08-cell"><span id="s08-b4">1</span></div><div class="s08-cell"><span id="s08-c4">1</span></div><div class="s08-cell"><span id="s08-d4">2</span></div></div>
+        <div class="s08-ring" id="s08-ra"></div>
+        <div class="s08-ring" id="s08-rb"></div>
+      </div>
+      <div id="s08-chips" data-layout-allow-overlap>
+        <div class="q-chip q-ok" id="s08-k1" style="left:372px;width:792px">수진 500 ÷ 2000 = 0.25</div>
+        <div class="q-chip q-ok" id="s08-k2" style="left:420px;width:696px">OVER 안에 PARTITION BY만 · 오라클 전용</div>
+        <div class="q-chip q-ng" id="s08-k3" style="left:230px;width:1076px">PERCENT_RANK · CUME_DIST · NTILE은 ORDER BY 필수</div>
+        <div class="q-chip q-ok" id="s08-k4" style="left:430px;width:676px">(순위 - 1) ÷ (행 수 - 1)</div>
+        <div class="q-chip q-ok" id="s08-k5" style="left:430px;width:676px">300 두 행 = 3 ÷ 5 = 0.6</div>
+        <div class="q-chip q-ok" id="s08-k6" style="left:430px;width:676px">3행 + 2행, 남는 한 행은 앞 묶음</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 36;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d = 0) => Number(V[k]) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const paint = (sel, t, a, b) => ft(sel, { color: a }, { color: b }, t);
+    const ACC = "#6B3FE6", INK = "#18181B", INK2 = "#71717A";
+    const col = (k, t, gap) => [0, 1, 2, 3, 4].forEach((i) => stamp(`#s08-${k}${i}`, t + i * gap));
+    const colAll = (k) => [0, 1, 2, 3, 4].map((i) => `#s08-${k}${i}`);
+    const on = (k, t) => paint(`#s08-h${k}`, t, INK2, ACC);
+    const off = (k, t) => paint(`#s08-h${k}`, t, ACC, INK2);
+    let chip = null;
+    const say = (id, t) => { if (chip) fade(chip, t, 1, 0); stamp(id, t + 0.15); chip = id; };
+
+    // 42 RATIO_TO_REPORT — 수진 500은 2000의 0.25
+    ft("#s08-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s08-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    on("a", at(0, 0.8));
+    col("a", at(0, 2.2), 0.14);
+    paint("#s08-a3", X("r25", 0), INK, ACC);
+    say("#s08-k1", X("r25", 0));
+    // 43 오라클 전용, OVER 안에 PARTITION BY만
+    say("#s08-k2", at(1, 0.4));
+    // 44 나머지 셋은 ORDER BY 필요
+    paint("#s08-a3", at(2, 0), ACC, INK);
+    off("a", at(2, 0.1));
+    fade(colAll("a"), at(2, 0.2), 1, 0.35);
+    say("#s08-k3", at(2, 0.4));
+    // 45 PERCENT_RANK — 맨 앞 0, 맨 뒤 1
+    on("b", at(3, 0.2));
+    col("b", at(3, 0.8), 0.14);
+    say("#s08-k4", at(3, 0.3));
+    paint(["#s08-b0"], X("p0", -0.1), INK, ACC);
+    paint(["#s08-b4"], X("p1", -0.1), INK, ACC);
+    // 46 CUME_DIST — 300 두 사람은 3행, 0.6
+    off("b", at(4, 0));
+    fade(colAll("b"), at(4, 0.1), 1, 0.35);
+    on("c", at(4, 0.2));
+    col("c", at(4, 0.8), 0.14);
+    say("#s08-k5", at(4, 0.3));
+    paint(["#s08-c1", "#s08-c2"], X("cd", -0.1), INK, ACC);
+    // 47 NTILE(2) — 3행과 2행
+    off("c", at(5, 0));
+    fade(colAll("c"), at(5, 0.1), 1, 0.35);
+    on("d", at(5, 0.2));
+    col("d", at(5, 0.8), 0.14);
+    say("#s08-k6", at(5, 0.3));
+    fade("#s08-ra", X("nt", -0.2), 0, 1);
+    fade("#s08-rb", X("nt", 1.6), 0, 1);
+    if (String(V.exit) !== "false") ft("#s08-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s08"] = tl;
+  </script>
+</template>

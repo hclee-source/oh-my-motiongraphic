@@ -1,0 +1,119 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 108px; text-align: center; overflow: visible;
+      font-size: 46px; font-weight: 600; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 1536px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-01a" class="cap clip" data-start="3.600" data-duration="1.950"><span>125를 ROUND로 반올림하면서,</span></div>
+    <div id="cap-01b" class="cap clip" data-start="5.550" data-duration="3.557"><span>두 번째 인수에 -1을 넣었습니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="9.207" data-duration="4.217"><span>소수점 아래가 없으니, 결과도 그대로 125일까요?</span></div>
+    <div id="cap-03a" class="cap clip" data-start="13.524" data-duration="1.921"><span>정답은 130입니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="15.545" data-duration="3.050"><span>자릿수 -1은 십의 자리까지 남기라는 뜻이라,</span></div>
+    <div id="cap-04b" class="cap clip" data-start="18.595" data-duration="3.461"><span>일의 자리 5에서 반올림하기 때문입니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="22.156" data-duration="2.810"><span>여러 행을 하나로 줄이는 집계 함수와 달리,</span></div>
+    <div id="cap-05b" class="cap clip" data-start="24.966" data-duration="5.032"><span>이렇게 행마다 결과 하나를 돌려주는 함수를 단일 행 함수라고 합니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="30.098" data-duration="3.350"><span>오늘은 문자, 숫자, 날짜,</span></div>
+    <div id="cap-06b" class="cap clip" data-start="33.448" data-duration="4.115"><span>조건 순서로 단일 행 함수의 결과를 맞혀 보겠습니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="37.663" data-duration="2.150"><span>예시는 모두 식을 계산해 보는 한</span></div>
+    <div id="cap-07b" class="cap clip" data-start="39.813" data-duration="2.933"><span>행짜리 표, DUAL에서 실행합니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="43.396" data-duration="2.770"><span>먼저 문자열을 자르는 SUBSTR에 ‘ABCDE’,</span></div>
+    <div id="cap-08b" class="cap clip" data-start="46.166" data-duration="3.687"><span>그리고 2와 3을 넣으면 무엇이 나올까요?</span></div>
+    <div id="cap-09a" class="cap clip" data-start="49.953" data-duration="1.829"><span>정답은 BCD입니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="51.882" data-duration="2.710"><span>위치는 1부터 세고, 세 번째 인수는</span></div>
+    <div id="cap-10b" class="cap clip" data-start="54.592" data-duration="2.814"><span>끝 위치가 아니라 자를 글자 수입니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="57.506" data-duration="2.290"><span>이번에는 시작 위치에 -3,</span></div>
+    <div id="cap-11b" class="cap clip" data-start="59.796" data-duration="2.384"><span>길이에 2를 넣으면 어떨까요?</span></div>
+    <div id="cap-12a" class="cap clip" data-start="62.280" data-duration="1.691"><span>정답은 CD입니다.</span></div>
+    <div id="cap-13a" class="cap clip" data-start="64.071" data-duration="2.210"><span>시작 위치가 음수면 뒤에서 세어,</span></div>
+    <div id="cap-13b" class="cap clip" data-start="66.281" data-duration="4.804"><span>뒤에서 세 번째 글자 C부터 오른쪽으로 두 글자를 자릅니다.</span></div>
+    <div id="cap-14a" class="cap clip" data-start="71.735" data-duration="2.450"><span>위치를 찾는 INSTR에 ‘BANANA’와 ‘A’,</span></div>
+    <div id="cap-14b" class="cap clip" data-start="74.185" data-duration="3.581"><span>그리고 1과 2를 넣으면 결과는 무엇일까요?</span></div>
+    <div id="cap-15a" class="cap clip" data-start="77.866" data-duration="1.533"><span>정답은 4입니다.</span></div>
+    <div id="cap-16a" class="cap clip" data-start="79.499" data-duration="1.770"><span>1은 찾기 시작할 위치,</span></div>
+    <div id="cap-16b" class="cap clip" data-start="81.269" data-duration="3.901"><span>2는 두 번째로 나오는 A를 찾으라는 뜻입니다.</span></div>
+    <div id="cap-17a" class="cap clip" data-start="85.270" data-duration="3.848"><span>찾는 문자가 없으면 오류가 아니라 0을 돌려줍니다.</span></div>
+    <div id="cap-18a" class="cap clip" data-start="89.218" data-duration="0.790"><span>LENGTH로 ‘SQL</span></div>
+    <div id="cap-18b" class="cap clip" data-start="90.008" data-duration="2.457"><span>함수’의 길이를 재면 얼마일까요?</span></div>
+    <div id="cap-19a" class="cap clip" data-start="92.565" data-duration="1.542"><span>정답은 6입니다.</span></div>
+    <div id="cap-20a" class="cap clip" data-start="94.207" data-duration="4.170"><span>가운데 공백도, 한글 한 음절도 한 글자로 셉니다.</span></div>
+    <div id="cap-21a" class="cap clip" data-start="98.477" data-duration="2.910"><span>덧붙여 오라클은 빈 문자열을 NULL로 보아서,</span></div>
+    <div id="cap-21b" class="cap clip" data-start="101.387" data-duration="2.867"><span>그 LENGTH도 0이 아니라 NULL입니다.</span></div>
+    <div id="cap-22a" class="cap clip" data-start="104.904" data-duration="2.130"><span>LPAD로 ‘7’의 왼쪽을 ‘0’으로 채우는데,</span></div>
+    <div id="cap-22b" class="cap clip" data-start="107.034" data-duration="3.762"><span>두 번째 인수가 3이면 결과는 무엇일까요?</span></div>
+    <div id="cap-23a" class="cap clip" data-start="110.896" data-duration="1.899"><span>정답은 007입니다.</span></div>
+    <div id="cap-24a" class="cap clip" data-start="112.895" data-duration="1.370"><span>3은 붙일 개수가 아니라,</span></div>
+    <div id="cap-24b" class="cap clip" data-start="114.265" data-duration="3.075"><span>다 채운 뒤의 전체 길이입니다.</span></div>
+    <div id="cap-25a" class="cap clip" data-start="117.440" data-duration="5.770"><span>LTRIM으로 ‘xxAxx’에서</span></div>
+    <div id="cap-25b" class="cap clip" data-start="123.210" data-duration="2.571"><span>‘x’를 지우면 무엇이 남을까요?</span></div>
+    <div id="cap-26a" class="cap clip" data-start="125.880" data-duration="4.156"><span>정답은 Axx입니다.</span></div>
+    <div id="cap-27a" class="cap clip" data-start="130.136" data-duration="1.570"><span>LTRIM은 왼쪽만 지우고,</span></div>
+    <div id="cap-27b" class="cap clip" data-start="131.706" data-duration="4.331"><span>오른쪽은 RTRIM, 양쪽은 TRIM이 지웁니다.</span></div>
+    <div id="cap-28a" class="cap clip" data-start="136.138" data-duration="3.250"><span>REPLACE에 찾을 문자 하이픈만 적고,</span></div>
+    <div id="cap-28b" class="cap clip" data-start="139.388" data-duration="2.954"><span>바꿔 넣을 문자는 적지 않으면 어떻게 될까요?</span></div>
+    <div id="cap-29a" class="cap clip" data-start="142.441" data-duration="2.370"><span>세 번째 인수를 생략하면 찾은 문자를</span></div>
+    <div id="cap-29b" class="cap clip" data-start="144.811" data-duration="3.316"><span>지우기 때문에, 정답은 SQL입니다.</span></div>
+    <div id="cap-30a" class="cap clip" data-start="148.778" data-duration="4.090"><span>ROUND와 TRUNC의 자릿수는, 1이면 소수 첫째 자리,</span></div>
+    <div id="cap-30b" class="cap clip" data-start="152.868" data-duration="5.184"><span>0이면 일의 자리, -1이면 십의 자리까지 남깁니다.</span></div>
+    <div id="cap-31a" class="cap clip" data-start="158.152" data-duration="1.890"><span>ROUND에 123.456과</span></div>
+    <div id="cap-31b" class="cap clip" data-start="160.042" data-duration="2.041"><span>1을 넣으면 무엇일까요?</span></div>
+    <div id="cap-32a" class="cap clip" data-start="162.183" data-duration="1.750"><span>정답은 소수 둘째 자리에서</span></div>
+    <div id="cap-32b" class="cap clip" data-start="163.933" data-duration="2.746"><span>반올림한 123.5입니다.</span></div>
+    <div id="cap-33a" class="cap clip" data-start="166.779" data-duration="2.210"><span>그러면 TRUNC에 129와</span></div>
+    <div id="cap-33b" class="cap clip" data-start="168.989" data-duration="1.907"><span>-1을 넣으면 어떨까요?</span></div>
+    <div id="cap-34a" class="cap clip" data-start="170.997" data-duration="2.995"><span>정답은 130이 아니라 120입니다.</span></div>
+    <div id="cap-35a" class="cap clip" data-start="174.092" data-duration="2.090"><span>TRUNC는 반올림 없이 버리기만 해서,</span></div>
+    <div id="cap-35b" class="cap clip" data-start="176.182" data-duration="3.294"><span>일의 자리가 9여도 올라가지 않습니다.</span></div>
+    <div id="cap-36a" class="cap clip" data-start="180.126" data-duration="3.789"><span>CEIL에 -1.5를 넣으면 결과는 무엇일까요?</span></div>
+    <div id="cap-37a" class="cap clip" data-start="184.015" data-duration="2.088"><span>정답은 -1입니다.</span></div>
+    <div id="cap-38a" class="cap clip" data-start="186.203" data-duration="2.390"><span>CEIL은 크거나 같은 가장 작은 정수라서,</span></div>
+    <div id="cap-38b" class="cap clip" data-start="188.593" data-duration="3.094"><span>음수에서는 0 쪽으로 올라갑니다.</span></div>
+    <div id="cap-39a" class="cap clip" data-start="191.786" data-duration="1.830"><span>반대로 FLOOR는 작거나 같은</span></div>
+    <div id="cap-39b" class="cap clip" data-start="193.616" data-duration="2.840"><span>가장 큰 정수라서 -2입니다.</span></div>
+    <div id="cap-40a" class="cap clip" data-start="197.106" data-duration="2.444"><span>날짜 계산에서는 하루가 1입니다.</span></div>
+    <div id="cap-41a" class="cap clip" data-start="199.650" data-duration="2.895"><span>SYSDATE는 지금 날짜와 시각입니다.</span></div>
+    <div id="cap-42a" class="cap clip" data-start="202.645" data-duration="2.370"><span>지금이 11월 5일 오전 9시일 때,</span></div>
+    <div id="cap-42b" class="cap clip" data-start="205.015" data-duration="3.324"><span>SYSDATE에 1을 더하면 언제일까요?</span></div>
+    <div id="cap-43a" class="cap clip" data-start="208.439" data-duration="2.030"><span>정답은 하루 뒤 같은 시각,</span></div>
+    <div id="cap-43b" class="cap clip" data-start="210.469" data-duration="2.704"><span>11월 6일 오전 9시입니다.</span></div>
+    <div id="cap-44a" class="cap clip" data-start="213.273" data-duration="2.150"><span>24분의 1을 더하면 한 시간</span></div>
+    <div id="cap-44b" class="cap clip" data-start="215.423" data-duration="2.237"><span>뒤인 오전 10시가 됩니다.</span></div>
+    <div id="cap-45a" class="cap clip" data-start="217.760" data-duration="3.070"><span>TO_DATE로 문자를 날짜로 바꾼 두 날짜끼리 빼면,</span></div>
+    <div id="cap-45b" class="cap clip" data-start="220.830" data-duration="2.723"><span>사이의 일수가 숫자로 나옵니다.</span></div>
+    <div id="cap-46a" class="cap clip" data-start="223.653" data-duration="3.321"><span>11월 5일에서 11월 1일을 빼면 4입니다.</span></div>
+    <div id="cap-47a" class="cap clip" data-start="227.624" data-duration="3.890"><span>조건 함수 DECODE에 30을 주고, 10이면 영업,</span></div>
+    <div id="cap-47b" class="cap clip" data-start="231.514" data-duration="3.705"><span>20이면 개발이라고 적으면 결과는 무엇일까요?</span></div>
+    <div id="cap-48a" class="cap clip" data-start="235.319" data-duration="1.516"><span>정답은 NULL입니다.</span></div>
+    <div id="cap-49a" class="cap clip" data-start="236.935" data-duration="1.550"><span>30과 같은 값이 없는데,</span></div>
+    <div id="cap-49b" class="cap clip" data-start="238.485" data-duration="3.850"><span>맨 끝에 기본값도 적지 않았기 때문입니다.</span></div>
+    <div id="cap-50a" class="cap clip" data-start="242.436" data-duration="1.170"><span>끝에 ‘기타’를 하나 더</span></div>
+    <div id="cap-50b" class="cap clip" data-start="243.606" data-duration="2.525"><span>적으면 결과는 ‘기타’가 됩니다.</span></div>
+    <div id="cap-51a" class="cap clip" data-start="246.231" data-duration="2.510"><span>CASE 뒤에 값을 바로 두는 단순 CASE도,</span></div>
+    <div id="cap-51b" class="cap clip" data-start="248.741" data-duration="2.644"><span>ELSE가 없으면 똑같이 NULL입니다.</span></div>
+    <div id="cap-52a" class="cap clip" data-start="252.035" data-duration="1.450"><span>이번에는 WHEN마다 조건을</span></div>
+    <div id="cap-52b" class="cap clip" data-start="253.485" data-duration="1.866"><span>적는 검색 CASE입니다.</span></div>
+    <div id="cap-53a" class="cap clip" data-start="255.451" data-duration="1.250"><span>점수가 95일 때,</span></div>
+    <div id="cap-53b" class="cap clip" data-start="256.701" data-duration="3.012"><span>이 CASE의 결과는 무엇일까요?</span></div>
+    <div id="cap-54a" class="cap clip" data-start="259.813" data-duration="2.534"><span>정답은 우수가 아니라 보통입니다.</span></div>
+    <div id="cap-55a" class="cap clip" data-start="262.447" data-duration="2.970"><span>CASE는 위에서부터 보다가 처음 참이 되는 WHEN에서</span></div>
+    <div id="cap-55b" class="cap clip" data-start="265.417" data-duration="4.230"><span>멈추는데, 95는 첫 줄에서 이미 참이기 때문입니다.</span></div>
+    <div id="cap-56a" class="cap clip" data-start="270.296" data-duration="2.582"><span>시험장에서 챙길 것 세 가지입니다.</span></div>
+    <div id="cap-57a" class="cap clip" data-start="272.978" data-duration="3.370"><span>첫째, SUBSTR의 위치는 1부터,</span></div>
+    <div id="cap-57b" class="cap clip" data-start="276.348" data-duration="4.435"><span>세 번째 인수는 길이, 음수 위치는 뒤에서부터 셉니다.</span></div>
+    <div id="cap-58a" class="cap clip" data-start="280.883" data-duration="3.610"><span>둘째, 자릿수 -1은 십의 자리까지 남기고,</span></div>
+    <div id="cap-58b" class="cap clip" data-start="284.493" data-duration="2.344"><span>TRUNC는 버리기만 합니다.</span></div>
+    <div id="cap-59a" class="cap clip" data-start="286.937" data-duration="3.910"><span>셋째, DECODE의 기본값이나 CASE의 ELSE가 없으면,</span></div>
+    <div id="cap-59b" class="cap clip" data-start="290.847" data-duration="2.998"><span>맞는 값이 없을 때 NULL이 나옵니다.</span></div>
+    <div id="cap-60a" class="cap clip" data-start="293.945" data-duration="5.668"><span>덧붙여, SQL Server의 함수 이름은 SUBSTRING, CHARINDEX,</span></div>
+    <div id="cap-60b" class="cap clip" data-start="299.613" data-duration="4.755"><span>CEILING, GETDATE, 그리고 길이를 재는 LEN입니다.</span></div>
+    <div id="cap-61a" class="cap clip" data-start="304.468" data-duration="1.590"><span>DECODE는 오라클에만 있어서,</span></div>
+    <div id="cap-61b" class="cap clip" data-start="306.058" data-duration="3.303"><span>SQL Server에서는 CASE로 적습니다.</span></div>
+    <div id="cap-62a" class="cap clip" data-start="310.011" data-duration="2.894"><span>오늘 내용을 한 줄로 정리하면 이렇습니다.</span></div>
+    <div id="cap-63a" class="cap clip" data-start="313.005" data-duration="3.950"><span>위치는 1부터, 자릿수 -1은 십의 자리,</span></div>
+    <div id="cap-63b" class="cap clip" data-start="316.955" data-duration="4.340"><span>날짜는 하루가 1이고, 맞는 조건이 없으면 NULL입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

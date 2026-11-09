@@ -1,0 +1,76 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s01-code { left: 192px; top: 262px; width: 900px; }
+    .s01-in { padding-left: 262px; }
+    #s01-err { left: 1150px; top: 342px; }
+    #s01-lab { position: absolute; left: 1150px; top: 446px; font-size: 30px; font-weight: 700; color: var(--color-ink2, #71717A); opacity: 0; white-space: nowrap; }
+    #s01-v4 { left: 1150px; top: 500px; width: 150px; }
+    #s01-v6 { left: 1330px; top: 500px; width: 150px; }
+    #s01-note { position: absolute; left: 192px; top: 604px; width: 1536px; height: 60px; }
+    #s01-note > div { position: absolute; left: 0; right: 0; top: 0; text-align: center; font-size: 40px; font-weight: 800; opacity: 0; white-space: nowrap; }
+    .s01-op { top: 706px; }
+  </style>
+  <div id="root" data-composition-id="s01" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.2,5.5,8,14.5,17.4]"},{"id":"dur","type":"number","label":"장면 길이","default":27.4},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"c4","type":"number","label":"400 시각","default":11.5},{"id":"c6","type":"number","label":"600 시각","default":12.4},{"id":"kin","type":"number","label":"IN 시각","default":21},{"id":"kany","type":"number","label":"ANY 시각","default":21.6},{"id":"kall","type":"number","label":"ALL 시각","default":22.2},{"id":"kex","type":"number","label":"EXISTS 시각","default":24.5},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s01-all">
+      <div id="s01-head" class="x-head">두 행이 돌아오면</div>
+      <div id="s01-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">SELECT</span> 이름 <span class="q-k">FROM</span> 직원</span></div>
+        <div class="q-ln"><div class="q-hi" id="s01-h2"></div><span><span class="q-k">WHERE</span> 급여 = (<span class="q-k">SELECT</span> 급여</span></div>
+        <div class="q-ln"><div class="q-hi" id="s01-h3"></div><span class="s01-in"><span class="q-k">FROM</span> 직원</span></div>
+        <div class="q-ln"><div class="q-hi" id="s01-h4"></div><span class="s01-in"><span class="q-k">WHERE</span> 부서 = '개발');</span></div>
+      </div>
+      <div id="s01-err" class="q-chip q-ng">✕ 오류</div>
+      <div id="s01-lab">서브쿼리 결과 2행</div>
+      <div id="s01-v4" class="q-chip q-ok">400</div>
+      <div id="s01-v6" class="q-chip q-ok">600</div>
+      <div id="s01-note" data-layout-allow-overlap>
+        <div id="s01-n1">등호는 값 <span class="x-acc">하나</span>와만 비교</div>
+        <div id="s01-n2">여러 행이 돌아올 때</div>
+      </div>
+      <div class="q-chip q-ok s01-op" id="s01-k1" style="left:550px;width:150px">IN</div>
+      <div class="q-chip q-ok s01-op" id="s01-k2" style="left:740px;width:170px">ANY</div>
+      <div class="q-chip q-ok s01-op" id="s01-k3" style="left:950px;width:160px">ALL</div>
+      <div class="q-chip q-ng s01-op" id="s01-k4" style="left:1150px;width:220px">EXISTS</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 27.4;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const w = (k, d) => (Number(V[k]) || d);
+
+    // 1 개발 부서 직원과 급여가 같은 직원을 찾는 SQL
+    ft("#s01-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s01-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    // 2 실행하면 오류
+    fade("#s01-h2", at(1, 0), 0, 1);
+    stamp("#s01-err", at(1, 0.8));
+    // 3 괄호 안 SELECT가 400과 600을 한꺼번에
+    fade(["#s01-h3", "#s01-h4"], at(2, 0.2), 0, 1);
+    fade("#s01-lab", at(2, 0.6), 0, 1);
+    stamp("#s01-v4", w("c4", at(2, 3.3)) - 0.1);
+    stamp("#s01-v6", w("c6", at(2, 4.2)) - 0.1);
+    // 4 등호는 값 하나와만
+    fade(["#s01-h2", "#s01-h3", "#s01-h4"], at(3, 0), 1, 0);
+    fade("#s01-n1", at(3, 0.2), 0, 1);
+    // 5 여러 행이 돌아올 때: IN · ANY · ALL, 그리고 EXISTS
+    fade("#s01-n1", at(4, 0), 1, 0);
+    fade("#s01-n2", at(4, 0.2), 0, 1);
+    fade(["#s01-code", "#s01-err", "#s01-lab", "#s01-v4", "#s01-v6"], at(4, 0.4), 1, 0.4);
+    stamp("#s01-k1", w("kin", at(4, 3.6)) - 0.1);
+    stamp("#s01-k2", w("kany", at(4, 4.2)) - 0.1);
+    stamp("#s01-k3", w("kall", at(4, 4.8)) - 0.1);
+    stamp("#s01-k4", w("kex", at(4, 7.0)) - 0.1);
+    if (String(V.exit) !== "false") ft("#s01-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s01"] = tl;
+  </script>
+</template>

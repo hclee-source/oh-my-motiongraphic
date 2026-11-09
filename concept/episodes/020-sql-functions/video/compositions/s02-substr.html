@@ -1,0 +1,121 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s02-codes { position: absolute; left: 192px; top: 262px; width: 1080px; height: 120px; }
+    .s02-code { left: 0; top: 0; width: 1080px; }
+    .s02-code .q-ln { font-size: 41px; height: 68px; padding: 0 44px; }
+    #s02-ans { position: absolute; left: 1316px; top: 272px; width: 412px; height: 100px; }
+    .s02-big { left: 0; top: 0; height: 100px; padding: 0 44px; border-radius: 50px; font-size: 60px; font-weight: 900; }
+    .s02-qm { background: #FFFFFF; border: 2px solid var(--color-line, #E3E5EA); color: var(--color-ink2, #71717A); }
+    .s02-box { position: absolute; top: 500px; width: 120px; height: 120px; box-sizing: border-box;
+      display: flex; align-items: center; justify-content: center; font-size: 64px; font-weight: 900; }
+    .s02-n { position: absolute; width: 120px; height: 40px; line-height: 40px; text-align: center;
+      font-size: 34px; font-weight: 800; color: var(--color-ink2, #71717A); opacity: 0; }
+    .s02-np { top: 440px; }
+    .s02-nm { top: 640px; }
+    #s02-lens { position: absolute; left: 940px; top: 530px; width: 788px; height: 60px; }
+    .s02-len { position: absolute; left: 0; top: 0; height: 60px; line-height: 60px; font-size: 40px; font-weight: 900;
+      color: var(--color-accent, #6B3FE6); white-space: nowrap; opacity: 0; }
+    #s02-notes { position: absolute; left: 192px; top: 740px; width: 1536px; height: 72px; }
+    .s02-note { left: 0; top: 0; }
+  </style>
+  <div id="root" data-composition-id="s02" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,6.7,8.7,14.3,19.2,21]"},{"id":"dur","type":"number","label":"장면 길이","default":28.2},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"a1","type":"number","label":"BCD 시각","default":7.3},{"id":"m3","type":"number","label":"-3 시각","default":16.2},{"id":"a2","type":"number","label":"CD 시각","default":19.8},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s02-all">
+      <div id="s02-head" class="x-head">SUBSTR</div>
+      <div id="s02-codes" data-layout-allow-overlap>
+        <div id="s02-c1" class="s02-code x-dark q-code x-hide">
+          <div class="q-ln"><span><span class="q-k">SELECT</span> SUBSTR('ABCDE', 2, 3) <span class="q-k">FROM</span> DUAL;</span></div>
+        </div>
+        <div id="s02-c2" class="s02-code x-dark q-code x-hide">
+          <div class="q-ln"><span><span class="q-k">SELECT</span> SUBSTR('ABCDE', -3, 2) <span class="q-k">FROM</span> DUAL;</span></div>
+        </div>
+      </div>
+      <div id="s02-ans" data-layout-allow-overlap>
+        <div id="s02-q1" class="q-chip s02-big s02-qm">?</div>
+        <div id="s02-a1" class="q-chip q-ok s02-big">BCD</div>
+        <div id="s02-q2" class="q-chip s02-big s02-qm">?</div>
+        <div id="s02-a2" class="q-chip q-ok s02-big">CD</div>
+      </div>
+      <div class="s02-n s02-np" id="s02-p1" style="left:192px">1</div>
+      <div class="s02-n s02-np" id="s02-p2" style="left:336px">2</div>
+      <div class="s02-n s02-np" id="s02-p3" style="left:480px">3</div>
+      <div class="s02-n s02-np" id="s02-p4" style="left:624px">4</div>
+      <div class="s02-n s02-np" id="s02-p5" style="left:768px">5</div>
+      <div class="s02-box x-card x-hide" id="s02-b1" style="left:192px">A</div>
+      <div class="s02-box x-card x-hide" id="s02-b2" style="left:336px">B</div>
+      <div class="s02-box x-card x-hide" id="s02-b3" style="left:480px">C</div>
+      <div class="s02-box x-card x-hide" id="s02-b4" style="left:624px">D</div>
+      <div class="s02-box x-card x-hide" id="s02-b5" style="left:768px">E</div>
+      <div class="s02-n s02-nm" id="s02-m1" style="left:192px">-5</div>
+      <div class="s02-n s02-nm" id="s02-m2" style="left:336px">-4</div>
+      <div class="s02-n s02-nm" id="s02-m3" style="left:480px">-3</div>
+      <div class="s02-n s02-nm" id="s02-m4" style="left:624px">-2</div>
+      <div class="s02-n s02-nm" id="s02-m5" style="left:768px">-1</div>
+      <div id="s02-lens" data-layout-allow-overlap>
+        <div class="s02-len" id="s02-l1">2번째부터 세 글자</div>
+        <div class="s02-len" id="s02-l2">뒤에서 3번째부터 두 글자 →</div>
+      </div>
+      <div id="s02-notes" data-layout-allow-overlap>
+        <div class="q-chip q-ok s02-note" id="s02-n1">위치는 1부터 · 세 번째 인수 = 자를 글자 수</div>
+        <div class="q-chip q-ok s02-note" id="s02-n2">시작이 음수면 뒤에서 세고, 자르는 방향은 오른쪽</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 28.2;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const ACC = "#6B3FE6", INK = "#18181B", INK2 = "#71717A", TINT = "#EAE4FC", LINE = "#E3E5EA";
+    const on = (k, t) => ft(`#s02-b${k}`, { backgroundColor: "#FFFFFF", borderColor: LINE, color: INK },
+      { backgroundColor: TINT, borderColor: ACC, color: ACC, duration: 0.3 * S }, t);
+    const off = (k, t) => ft(`#s02-b${k}`, { backgroundColor: TINT, borderColor: ACC, color: ACC },
+      { backgroundColor: "#FFFFFF", borderColor: LINE, color: INK, duration: 0.3 * S }, t);
+    const ink = (sel, t, a, b) => ft(sel, { color: a }, { color: b }, t);
+
+    // 8 SUBSTR에 ‘ABCDE’, 2와 3
+    ft("#s02-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s02-c1", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    [1, 2, 3, 4, 5].forEach((k, j) => {
+      ft(`#s02-b${k}`, { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, at(0, 1.0 + j * 0.1));
+      fade(`#s02-p${k}`, at(0, 1.4 + j * 0.1), 0, 1);
+    });
+    stamp("#s02-q1", at(0, 3.6));
+    // 9 정답은 BCD — 2번째 B부터 세 글자
+    const a1 = X("a1", at(1, 0.6));
+    ink("#s02-p2", a1 - 0.2, INK2, ACC);
+    [2, 3, 4].forEach((k, j) => on(k, a1 - 0.2 + j * 0.12));
+    fade("#s02-q1", a1 - 0.1, 1, 0);
+    stamp("#s02-a1", a1);
+    // 10 위치는 1부터, 세 번째 인수는 자를 글자 수
+    fade("#s02-l1", at(2, 0.3), 0, 1);
+    stamp("#s02-n1", at(2, 2.4));
+    // 11 시작 위치에 -3, 길이에 2
+    fade("#s02-c1", at(3, 0.1), 1, 0);
+    fade("#s02-c2", at(3, 0.2), 0, 1);
+    [2, 3, 4].forEach((k) => off(k, at(3, 0.1)));
+    ink("#s02-p2", at(3, 0.1), ACC, INK2);
+    fade(["#s02-l1", "#s02-n1", "#s02-a1"], at(3, 0.1), 1, 0);
+    fade("#s02-q2", at(3, 0.4), 0, 1);
+    [1, 2, 3, 4, 5].forEach((k, j) => fade(`#s02-m${k}`, at(3, 0.6 + j * 0.08), 0, 1));
+    ink("#s02-m3", X("m3", at(3, 1.9)), INK2, ACC);
+    // 12 정답은 CD
+    const a2 = X("a2", at(4, 0.6));
+    [3, 4].forEach((k, j) => on(k, a2 - 0.2 + j * 0.12));
+    fade("#s02-q2", a2 - 0.1, 1, 0);
+    stamp("#s02-a2", a2);
+    // 13 음수면 뒤에서 세어, C부터 오른쪽으로 두 글자
+    fade("#s02-l2", at(5, 0.3), 0, 1);
+    stamp("#s02-n2", at(5, 2.4));
+    if (String(V.exit) !== "false") ft("#s02-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s02"] = tl;
+  </script>
+</template>

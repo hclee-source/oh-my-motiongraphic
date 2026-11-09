@@ -1,0 +1,28 @@
+{
+  "_설명": "쇼츠(세로) 조립 설정. 장면 순서(장 번호, 여러 장을 한 장면으로 묶을 수 있음), 영상 내내 떠 있는 위쪽 제목, 효과음 위치([이름, 장면 안 문장 순번(0부터), 그 문장 시작 뒤 초]).",
+  "format": {
+    "width": 1080, "height": 1920, "resolution": "portrait",
+    "caption": { "max": 17, "deep": true, "bottom": 540, "size": 48, "weight": 700, "width": 940 }
+  },
+  "overlays": [
+    { "id": "hd", "file": "header.html" }
+  ],
+  "scenes": [
+    { "id": "h1", "file": "h1-tree.html", "chapter": [1, 2],
+      "extra": { "f2": { "sentence": 2, "at": "찾아" }, "d2": { "sentence": 2, "at": "아래로" },
+                 "f3": { "sentence": 3, "at": "찾아" }, "u3": { "sentence": 3, "at": "위로" },
+                 "o1": { "sentence": 5, "at": "식품" }, "o2": { "sentence": 5, "at": "과일," }, "o3": { "sentence": 5, "at": "사과까지" }, "o4": { "sentence": 5, "at": "채소입니다" },
+                 "l1": { "sentence": 6, "at": "출발 행" }, "l2": { "sentence": 6, "at": "한 단계" }, "l3": { "sentence": 6, "at": "1씩" },
+                 "sb": { "sentence": 7, "at": "ORDER" } } },
+    { "id": "h2", "file": "h2-cut.html", "chapter": 3,
+      "extra": { "g1": { "sentence": 8, "at": "과일 한" }, "n3": { "sentence": 8, "at": "남습니다" },
+                 "g2": { "sentence": 9, "at": "통째로" }, "n2": { "sentence": 9, "at": "잘립니다" } } },
+    { "id": "h3", "file": "h3-sum.html", "chapter": 4, "exit": false,
+      "extra": { "wp": { "sentence": 10, "at": "PRIOR는" }, "ww": { "sentence": 10, "at": "WHERE," }, "wc": { "sentence": 10, "at": "CONNECT" } } }
+  ],
+  "sfx": {
+    "h1": [["pop", 0, 0.2], ["pop", 0, 1.4], ["click-soft", 1, 0.2], ["click-soft", 2, 0.2], ["whoosh-short", 3, 0.0], ["pop", 3, 0.5], ["pop", 5, 0.4], ["pop", 6, 1.0]],
+    "h2": [["whoosh-short", 0, 0.0], ["pop", 0, 2.5], ["click-soft", 1, 0.2], ["pop", 1, 3.0]],
+    "h3": [["whoosh-short", 0, 0.0], ["pop", 0, 0.3], ["pop", 0, 2.4], ["pop", 0, 4.0]]
+  }
+}

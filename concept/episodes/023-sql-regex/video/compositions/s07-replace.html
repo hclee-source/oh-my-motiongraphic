@@ -1,0 +1,89 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s07-code { left: 192px; top: 262px; width: 1536px; }
+    #s07-code .q-ln { height: 72px; }
+    .s07-cw { position: relative; display: block; width: 1400px; height: 72px; }
+    .s07-cw > span { position: absolute; left: 0; top: 0; line-height: 72px; white-space: nowrap; opacity: 0; }
+    #s07-str { position: absolute; left: 192px; top: 430px; width: 1536px; height: 200px; }
+    #s07-sw { position: absolute; left: 32px; right: 32px; top: 32px; bottom: 32px; }
+    .s07-line { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 96px; font-weight: 900; white-space: nowrap; }
+    .s07-g { position: relative; display: inline-block; width: 260px; height: 120px; }
+    .s07-g > span { position: absolute; left: 0; right: 0; top: 0; line-height: 120px; text-align: center; }
+    .s07-mask { color: var(--color-accent, #6B3FE6); opacity: 0; }
+    .s07-g > span.s07-mask { top: 30px; line-height: 90px; }
+    #s07-lb { opacity: 0; }
+    #s07-note { position: absolute; left: 192px; top: 674px; width: 1536px; height: 172px; }
+    .s07-n { position: absolute; left: 32px; right: 32px; top: 24px; bottom: 24px; display: flex; align-items: center; justify-content: center;
+      text-align: center; font-size: 46px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    .s07-n .x-acc { margin: 0 16px; }
+  </style>
+  <div id="root" data-composition-id="s07" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,7.3,11.2,13.6,20.4]"},{"id":"dur","type":"number","label":"장면 길이","default":28.7},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"r1","type":"number","label":"바꾸면 시각","default":3.6},{"id":"r2","type":"number","label":"빼면 시각","default":9},{"id":"r4","type":"number","label":"숫자가 아닌 시각","default":23.5},{"id":"r5","type":"number","label":"열한 개 시각","default":26.2},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s07-all">
+      <div id="s07-head" class="x-head">REGEXP_REPLACE</div>
+      <div id="s07-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><span class="s07-cw" data-layout-allow-overlap>
+          <span id="s07-v1"><span class="q-k">REGEXP_REPLACE</span>('010-1234-5678', '[0-9]{4}$', '****')</span>
+          <span id="s07-v2"><span class="q-k">REGEXP_REPLACE</span>('010-1234-5678', '[0-9]{4}', '****')</span>
+          <span id="s07-v3"><span class="q-k">REGEXP_REPLACE</span>('010-1234-5678', '[^0-9]')</span>
+        </span></div>
+      </div>
+      <div id="s07-str" class="x-card x-hide">
+        <div id="s07-sw" data-layout-allow-overlap>
+          <div class="s07-line" id="s07-la">010-<span class="s07-g"><span id="s07-o1">1234</span><span class="s07-mask" id="s07-x1">****</span></span>-<span class="s07-g"><span id="s07-o2">5678</span><span class="s07-mask" id="s07-x2">****</span></span></div>
+          <div class="s07-line" id="s07-lb">01012345678</div>
+        </div>
+      </div>
+      <div id="s07-note" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s07-n" id="s07-n1">$ = 끝<span class="x-acc">→</span>마지막 네 자리만</div>
+        <div class="s07-n" id="s07-n2">$를 빼면?</div>
+        <div class="s07-n" id="s07-n3">따로 정하지 않으면<span class="x-acc">맞는 부분을 모두</span>바꾼다</div>
+        <div class="s07-n" id="s07-n4">바꿀 문자 생략 = 지우기<span class="x-acc">→</span>숫자 11개</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 28.7;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k] ?? d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    let code = 0, note = null;
+    const show = (k, t) => { if (code) fade(`#s07-v${code}`, t, 1, 0); fade(`#s07-v${k}`, t + 0.15, 0, 1); code = k; };
+    const say = (id, t) => { if (note) fade(note, t, 1, 0); fade(id, t + 0.15, 0, 1); note = id; };
+    const mask = (k, t) => { fade(`#s07-o${k}`, t, 1, 0); fade(`#s07-x${k}`, t + 0.1, 0, 1); };
+    const unmask = (k, t) => { fade(`#s07-x${k}`, t, 1, 0); fade(`#s07-o${k}`, t + 0.1, 0, 1); };
+
+    // 36 끝의 숫자 네 개를 별 네 개로 → 마지막 네 자리만
+    ft("#s07-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s07-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.2));
+    show(1, at(0, 0.2));
+    ft("#s07-str", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.6));
+    mask(2, X("r1", 3.6));
+    ft("#s07-note", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, X("r1", 3.6) + 0.4);
+    say("#s07-n1", X("r1", 3.6) + 0.4);
+    // 37 달러 기호를 빼면?
+    show(2, X("r2", 9) - 0.2);
+    unmask(2, X("r2", 9) - 0.2);
+    say("#s07-n2", X("r2", 9));
+    // 38 가운데 네 자리까지
+    mask(1, at(2, 0.2));
+    mask(2, at(2, 0.2));
+    // 39 따로 정하지 않으면 모두 바꾼다
+    say("#s07-n3", at(3, 0.2));
+    // 40 바꿀 문자를 적지 않으면 지운다 → 숫자가 아닌 글자를 지우면 숫자 열한 개
+    show(3, at(4, 0.2));
+    fade("#s07-la", X("r4", 23.5), 1, 0);
+    fade("#s07-lb", X("r4", 23.5) + 0.25, 0, 1);
+    say("#s07-n4", X("r5", 26.2) - 0.3);
+    if (String(V.exit) !== "false") ft("#s07-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s07"] = tl;
+  </script>
+</template>

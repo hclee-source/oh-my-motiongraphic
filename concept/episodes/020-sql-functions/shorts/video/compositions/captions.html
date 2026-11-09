@@ -1,0 +1,41 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 540px; text-align: center; overflow: visible;
+      font-size: 54px; font-weight: 700; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 940px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cap-01a" class="cap clip" data-start="0.000" data-duration="0.530"><span>함수 결과,</span></div>
+    <div id="cap-01b" class="cap clip" data-start="0.530" data-duration="2.425"><span>바로 맞혀 보겠습니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="3.005" data-duration="1.670"><span>‘DATABASE’를 SUBSTR에 넣고</span></div>
+    <div id="cap-02b" class="cap clip" data-start="4.675" data-duration="2.940"><span>시작 위치만 -4로 주면?</span></div>
+    <div id="cap-02c" class="cap clip" data-start="7.615" data-duration="2.719"><span>뒤에서 네 번째부터 끝까지,</span></div>
+    <div id="cap-02d" class="cap clip" data-start="10.334" data-duration="1.513"><span>BASE입니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="11.897" data-duration="1.450"><span>RPAD로 ‘AB’ 오른쪽을</span></div>
+    <div id="cap-03b" class="cap clip" data-start="13.347" data-duration="3.050"><span>별표로 채워 길이 5를 맞추면?</span></div>
+    <div id="cap-03c" class="cap clip" data-start="16.397" data-duration="1.370"><span>5는 전체 길이라서</span></div>
+    <div id="cap-03d" class="cap clip" data-start="17.767" data-duration="2.191"><span>별표는 세 개만 붙습니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="20.158" data-duration="3.790"><span>TRUNC에 987과 -2를 넣으면?</span></div>
+    <div id="cap-04b" class="cap clip" data-start="23.948" data-duration="3.300"><span>백의 자리까지만 남기고 버려서</span></div>
+    <div id="cap-04c" class="cap clip" data-start="27.248" data-duration="1.114"><span>900입니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="28.412" data-duration="3.930"><span>CEIL에 -2.7을 넣으면?</span></div>
+    <div id="cap-05b" class="cap clip" data-start="32.342" data-duration="0.600"><span>-3이 아니라,</span></div>
+    <div id="cap-05c" class="cap clip" data-start="32.942" data-duration="3.587"><span>0 쪽으로 올라간 -2입니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="36.730" data-duration="1.470"><span>현재 시각 SYSDATE에</span></div>
+    <div id="cap-06b" class="cap clip" data-start="38.200" data-duration="1.160"><span>0.5를 더하면?</span></div>
+    <div id="cap-06c" class="cap clip" data-start="39.360" data-duration="2.480"><span>하루가 1이니까</span></div>
+    <div id="cap-06d" class="cap clip" data-start="41.840" data-duration="1.804"><span>12시간 뒤입니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="43.694" data-duration="1.790"><span>점수가 50인데,</span></div>
+    <div id="cap-07b" class="cap clip" data-start="45.484" data-duration="0.390"><span>ELSE 없이</span></div>
+    <div id="cap-07c" class="cap clip" data-start="45.874" data-duration="3.130"><span>60 이상만 합격인 CASE라면?</span></div>
+    <div id="cap-07d" class="cap clip" data-start="49.004" data-duration="1.260"><span>맞는 WHEN이 없어서</span></div>
+    <div id="cap-07e" class="cap clip" data-start="50.264" data-duration="1.932"><span>오류가 아니라 NULL입니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="52.397" data-duration="1.990"><span>음수 위치는 뒤에서부터,</span></div>
+    <div id="cap-08b" class="cap clip" data-start="54.387" data-duration="2.620"><span>음수 자릿수는 소수점 왼쪽,</span></div>
+    <div id="cap-08c" class="cap clip" data-start="57.007" data-duration="2.515"><span>맞는 조건이 없으면 NULL입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

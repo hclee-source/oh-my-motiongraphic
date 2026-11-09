@@ -1,0 +1,16 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #hd-t { position: absolute; left: 0; right: 0; top: 168px; text-align: center; font-size: 64px; font-weight: 900;
+      letter-spacing: -0.01em; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="hd" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"dur","type":"number","label":"장면 길이","default":60},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <!-- 영상 내내 위에 떠 있는 주제 이름 -->
+    <div id="hd-t">제1·2·3정규형</div>
+  </div>
+  <script>
+    window.__timelines["hd"] = gsap.timeline({ paused: true });
+  </script>
+</template>

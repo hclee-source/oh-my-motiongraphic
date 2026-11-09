@@ -1,0 +1,92 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s08-q { left: 192px; top: 262px; width: 960px; height: 232px; }
+    .s08-sw { position: relative; height: 60px; width: 760px; }
+    .s08-sw > span { position: absolute; left: 0; top: 0; line-height: 60px; white-space: nowrap; }
+    .s08-b { position: absolute; right: 40px; top: 0; line-height: 60px; font-size: 32px; font-weight: 900; color: var(--color-accent-dark, #A68CFF); opacity: 0; }
+    #s08-n { position: absolute; left: 192px; top: 534px; width: 960px; height: 312px; box-sizing: border-box; }
+    .s08-li { position: absolute; left: 48px; height: 64px; display: flex; align-items: center; gap: 24px; font-size: 40px; font-weight: 800;
+      white-space: nowrap; opacity: 0; }
+    .s08-li i { font-style: normal; font-size: 36px; font-weight: 900; color: var(--color-ink2, #71717A); }
+    #s08-x { left: 1212px; top: 342px; }
+    #s08-res { left: 1212px; top: 262px; width: 516px; height: 384px; }
+    #s08-res .q-th, #s08-res .q-tr { grid-template-columns: 1fr; }
+    #s08-res .q-th { top: 72px; }
+    #s08-res .q-th > div { font-size: 34px; font-weight: 900; color: var(--color-accent, #6B3FE6); }
+    .s08-tn { position: absolute; left: 28px; top: 16px; font-size: 36px; font-weight: 900; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="s08" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3.76,10.04,16.95,20.3]"},{"id":"dur","type":"number","label":"장면 길이","default":26.6},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"ty","type":"number","label":"같은 자리의 시각","default":6.8},{"id":"c2","type":"number","label":"두 열 시각","default":12.6},{"id":"c1","type":"number","label":"하나만 시각","default":14.2},{"id":"er","type":"number","label":"오류가 시각","default":15.6},{"id":"gk","type":"number","label":"고객이라는 시각","default":21.9},{"id":"rn","type":"number","label":"결과 열 시각","default":23.6},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s08-all">
+      <div id="s08-head" class="x-head">열 개수와 열 이름</div>
+      <div id="s08-q" class="x-dark q-code x-hide" data-layout-allow-overlap>
+        <div class="q-ln"><div class="q-hi" id="s08-h1"></div><div class="s08-sw">
+          <span id="s08-a1"><span class="q-k">SELECT</span> 이름, '봄' <span class="q-k">FROM</span> 봄응모</span>
+          <span id="s08-b1" style="opacity:0"><span class="q-k">SELECT</span> 이름 <span class="q-k">AS</span> <span id="s08-al1">응모자</span> <span class="q-k">FROM</span> 봄응모</span></div>
+          <div class="s08-b" id="s08-n2">2열</div></div>
+        <div class="q-ln"><span class="q-k">UNION</span></div>
+        <div class="q-ln"><div class="q-hi" id="s08-h3"></div><div class="s08-sw">
+          <span id="s08-a3"><span class="q-k">SELECT</span> 이름 <span class="q-k">FROM</span> 여름응모</span>
+          <span id="s08-b3" style="opacity:0"><span class="q-k">SELECT</span> 이름 <span id="s08-al3"><span class="q-k">AS</span> 고객</span> <span class="q-k">FROM</span> 여름응모</span></div>
+          <div class="s08-b" id="s08-n1">1열</div></div>
+      </div>
+      <div id="s08-n" class="x-card x-hide">
+        <div class="s08-li" id="s08-l1" style="top:36px"><i>1</i><span>열 개수가 같아야 한다</span></div>
+        <div class="s08-li" id="s08-l2" style="top:124px"><i>2</i><span>같은 자리 열은 자료형이 맞아야 한다</span></div>
+        <div class="s08-li" id="s08-l3" style="top:212px"><i>3</i><span>열 이름은 <span class="x-acc">첫 번째 SELECT</span>를 따른다</span></div>
+      </div>
+      <div id="s08-x" class="q-chip q-ng">✕ 열 개수가 달라 오류</div>
+      <div id="s08-res" class="x-card q-tb x-hide">
+        <div class="s08-tn">결과</div>
+        <div class="q-th"><div>응모자</div></div>
+        <div class="q-tr" style="top:128px"><div>민수</div></div>
+        <div class="q-tr" style="top:184px"><div>지영</div></div>
+        <div class="q-tr" style="top:240px"><div>현우</div></div>
+        <div class="q-tr" style="top:296px"><div>수진</div></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 26.6;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const rise = (sel, t) => ft(sel, { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, t);
+    const INK = "#18181B", INK2 = "#71717A";
+
+    // 36 지켜야 할 규칙
+    ft("#s08-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s08-q", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.4));
+    // 37 열 개수가 같아야, 같은 자리 열은 자료형이 맞아야
+    ft("#s08-n", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(1, 0.1));
+    rise("#s08-l1", at(1, 0.4));
+    rise("#s08-l2", X("ty", at(1, 3.0)) - 0.1);
+    // 38 위는 두 열, 아래는 한 열 → 오류
+    fade("#s08-h1", X("c2", at(2, 2.6)) - 0.3, 0, 1);
+    fade("#s08-n2", X("c2", at(2, 2.6)), 0, 1);
+    fade("#s08-h1", X("c1", at(2, 4.2)) - 0.3, 1, 0);
+    fade("#s08-h3", X("c1", at(2, 4.2)) - 0.3, 0, 1);
+    fade("#s08-n1", X("c1", at(2, 4.2)), 0, 1);
+    stamp("#s08-x", X("er", at(2, 5.6)));
+    // 39 결과의 열 이름은 첫 번째 SELECT — 열 수를 맞춘 SQL로 바뀐다
+    fade(["#s08-x", "#s08-n2", "#s08-n1", "#s08-h3"], at(3, 0), 1, 0);
+    fade(["#s08-a1", "#s08-a3"], at(3, 0.1), 1, 0);
+    fade(["#s08-b1", "#s08-b3"], at(3, 0.3), 0, 1);
+    ft(["#s08-l1", "#s08-l2"], { color: INK }, { color: INK2 }, at(3, 0.3));
+    rise("#s08-l3", at(3, 0.6));
+    // 40 위에 응모자, 아래에 고객 → 결과 열 이름은 응모자
+    fade("#s08-h1", at(4, 0.6), 0, 1);
+    fade("#s08-al3", X("gk", at(4, 1.6)), 1, 0.4);
+    ft("#s08-res", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("rn", at(4, 3.3)) - 0.1);
+    if (String(V.exit) !== "false") ft("#s08-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s08"] = tl;
+  </script>
+</template>

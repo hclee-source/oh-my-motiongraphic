@@ -1,0 +1,85 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s01-code { left: 192px; top: 262px; width: 1536px; padding: 22px 0; }
+    .s01-lab { position: absolute; left: 192px; width: 240px; height: 110px; line-height: 110px; font-size: 40px; font-weight: 800;
+      color: var(--color-ink2, #71717A); white-space: nowrap; opacity: 0; }
+    .s01-b { position: absolute; width: 230px; height: 110px; box-sizing: border-box; display: flex; align-items: center; justify-content: center;
+      font-size: 56px; font-weight: 900; white-space: nowrap; opacity: 0; }
+    .s01-ring { position: absolute; left: 718px; top: 566px; width: 510px; height: 138px; box-sizing: border-box; border-radius: 34px;
+      border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    #s01-q { position: absolute; left: 474px; top: 736px; width: 1254px; height: 72px; }
+    #s01-q .q-chip { top: 0; }
+    #s01-q1 { left: 256px; width: 230px; }
+    #s01-q2 { left: 244px; width: 510px; }
+  </style>
+  <div id="root" data-composition-id="s01" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.2,4.05,10.95,17.83,23.5,27.7]"},{"id":"dur","type":"number","label":"장면 길이","default":33.7},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"p500","type":"number","label":"500이어야 시각","default":20.4},{"id":"p800","type":"number","label":"800이 시각","default":22.2},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s01-all">
+      <div id="s01-head" class="x-head">같은 급여, 같은 누적합</div>
+      <div id="s01-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">SUM</span>(급여) <span class="q-k">OVER</span> (<span class="q-k">ORDER BY</span> 급여)</span></div>
+      </div>
+      <div class="s01-lab" id="s01-la" style="top:420px">급여</div>
+      <div class="s01-lab" id="s01-lb" style="top:580px">누적합</div>
+      <div class="s01-b x-card" id="s01-a0" style="left:474px;top:420px">200</div>
+      <div class="s01-b x-card" id="s01-a1" style="left:730px;top:420px">300</div>
+      <div class="s01-b x-card" id="s01-a2" style="left:986px;top:420px">300</div>
+      <div class="s01-b x-card" id="s01-a3" style="left:1242px;top:420px">500</div>
+      <div class="s01-b x-card" id="s01-a4" style="left:1498px;top:420px">700</div>
+      <div class="s01-b x-card" id="s01-b0" style="left:474px;top:580px">200</div>
+      <div class="s01-b x-card" id="s01-b1" style="left:730px;top:580px">800</div>
+      <div class="s01-b x-card" id="s01-b2" style="left:986px;top:580px">800</div>
+      <div class="s01-b x-card" id="s01-b3" style="left:1242px;top:580px">1300</div>
+      <div class="s01-b x-card" id="s01-b4" style="left:1498px;top:580px">2000</div>
+      <div class="s01-ring" id="s01-ring"></div>
+      <div id="s01-q" data-layout-allow-overlap>
+        <div class="q-chip q-ng" id="s01-q1">500?</div>
+        <div class="q-chip q-ok" id="s01-q2">왜 똑같이 800?</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 33.7;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => (Number(V[k]) || d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const paint = (sel, t, a, b) => ft(sel, { color: a }, { color: b }, t);
+    const ACC = "#6B3FE6", INK = "#18181B";
+    // 숫자를 말하는 실제 시각(문장 시작 기준 초, listen/words.json에서 잰 값)
+    const T2 = [0.62, 1.66, 2.62, 3.6, 4.6];   // 2 급여는 200, 300, 300, 500, 700
+    const T3 = [0.62, 1.66, 2.62, 3.66, 4.9];  // 3 결과는 200, 800, 800, 1300, 2000
+
+    // 1 SUM(급여) OVER (ORDER BY 급여)로 누적합
+    ft("#s01-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s01-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    // 2 급여는 200, 300, 300, 500, 700
+    fade("#s01-la", at(1, 0), 0, 1);
+    T2.forEach((d, j) => stamp(`#s01-a${j}`, at(1, d - 0.1)));
+    // 3 결과는 200, 800, 800, 1300, 2000
+    fade("#s01-lb", at(2, 0), 0, 1);
+    T3.forEach((d, j) => stamp(`#s01-b${j}`, at(2, d - 0.1)));
+    // 4 200 더하기 300, 500이어야 할 것 같은데 800
+    paint(["#s01-a0", "#s01-a1"], at(3, 0.4), INK, ACC);
+    stamp("#s01-q1", X("p500", at(3, 2.6)) - 0.1);
+    paint("#s01-b1", X("p800", at(3, 4.0)), INK, ACC);
+    // 5 급여가 같은 두 행이 왜 똑같이 800?
+    paint(["#s01-a0", "#s01-a1"], at(4, 0.1), ACC, INK);
+    paint(["#s01-a1", "#s01-a2"], at(4, 0.3), INK, ACC);
+    paint("#s01-b2", at(4, 0.3), INK, ACC);
+    fade("#s01-ring", at(4, 0.5), 0, 1);
+    fade("#s01-q1", at(4, 0.6), 1, 0);
+    fade("#s01-q2", at(4, 0.8), 0, 1);
+    // 6 이 질문으로 시작해 윈도우 함수의 범위를 — 모두 흐리게
+    fade(["#s01-code", "#s01-la", "#s01-lb", "#s01-a0", "#s01-a3", "#s01-a4", "#s01-b0", "#s01-b3", "#s01-b4", "#s01-q2"], at(5, 0.4), 1, 0.4);
+    if (String(V.exit) !== "false") ft("#s01-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s01"] = tl;
+  </script>
+</template>

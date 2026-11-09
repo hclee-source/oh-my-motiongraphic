@@ -1,0 +1,59 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h4-top { position: absolute; left: 80px; top: 330px; width: 920px; height: 200px; }
+    #h4-t1 { position: absolute; left: 0; right: 0; top: 36px; text-align: center; font-size: 52px; font-weight: 900; white-space: nowrap; }
+    #h4-t2 { position: absolute; left: 0; right: 0; top: 112px; text-align: center; font-size: 46px; font-weight: 900; white-space: nowrap;
+      color: var(--color-accent, #6B3FE6); opacity: 0; }
+    #h4-code { left: 80px; top: 566px; width: 880px; height: 272px; padding: 22px 0; }
+    #h4-code .q-ln { font-size: 40px; height: 76px; padding: 0 40px; }
+    #h4-auto { left: 80px; top: 870px; height: 76px; font-size: 40px; }
+    #h4-ng { left: 80px; top: 970px; height: 76px; font-size: 40px; }
+  </style>
+  <div id="root" data-composition-id="h4" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,5.6]"},{"id":"dur","type":"number","label":"장면 길이","default":10.9},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"ac","type":"number","label":"자동으로 시각","default":3.4},{"id":"tb","type":"number","label":"테이블을 시각","default":7.2},{"id":"rb","type":"number","label":"ROLLBACK해도 시각","default":8.4},{"id":"jw","type":"number","label":"지운 행은 시각","default":9.4},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h4-all">
+      <div id="h4-top" class="x-card x-hide">
+        <div id="h4-t1">CREATE · DROP 같은 DDL</div>
+        <div id="h4-t2">실행하면 자동 COMMIT</div>
+      </div>
+      <div id="h4-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><div class="q-hi" id="h4-h1"></div><span><span class="q-k">DELETE FROM</span> 회원;</span></div>
+        <div class="q-ln"><div class="q-hi" id="h4-h2"></div><span><span class="q-k">CREATE TABLE</span> 로그 (번호 <span class="q-k">NUMBER</span>);</span></div>
+        <div class="q-ln"><div class="q-hi" id="h4-h3"></div><span><span class="q-k">ROLLBACK</span>;</span></div>
+      </div>
+      <div class="q-chip q-ok" id="h4-auto">CREATE TABLE → 자동 COMMIT</div>
+      <div class="q-chip q-ng" id="h4-ng">지운 행은 안 돌아옴</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 10.9;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, i, d) => Number(V[k]) || at(i, d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    let cur = 0;
+    const hi = (k, t) => { if (cur) fade(`#h4-h${cur}`, t, 1, 0); if (k) fade(`#h4-h${k}`, t, 0, 1); cur = k; };
+
+    // 9 CREATE · DROP 같은 DDL → 자동 COMMIT
+    ft("#h4-top", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, -0.3));
+    fade("#h4-t2", X("ac", 0, 3.2), 0, 1);
+    // 세 줄 카드는 DDL을 말하는 동안 미리 보인다
+    ft("#h4-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 1.2));
+    // 10 DELETE → CREATE TABLE(자동 COMMIT) → ROLLBACK해도 지운 행은 안 돌아옴
+    hi(1, at(1, 0.2));
+    const tb = X("tb", 1, 1.6);
+    hi(2, tb);
+    stamp("#h4-auto", tb + 0.4);
+    hi(3, X("rb", 1, 2.8));
+    stamp("#h4-ng", X("jw", 1, 3.6));
+    if (String(V.exit) !== "false") ft("#h4-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h4"] = tl;
+  </script>
+</template>

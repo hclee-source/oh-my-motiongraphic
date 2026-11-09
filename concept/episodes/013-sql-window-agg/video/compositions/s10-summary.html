@@ -1,0 +1,36 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s10-c { position: absolute; left: 192px; width: 1536px; height: 250px; box-sizing: border-box; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 18px; text-align: center; }
+    #s10-c1 { top: 280px; }
+    #s10-c2 { top: 566px; }
+    .s10-t { font-size: 64px; font-weight: 900; white-space: nowrap; }
+    .s10-d { font-size: 38px; font-weight: 700; color: var(--color-ink2, #71717A); white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="s10" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3.4]"},{"id":"dur","type":"number","label":"장면 길이","default":12},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"rw","type":"number","label":"한 행씩 시각","default":8},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s10-all">
+      <div id="s10-head" class="x-head">한 줄 정리</div>
+      <div class="s10-c x-card x-hide" id="s10-c1"><div class="s10-t">ORDER BY만 적으면 <span class="x-acc">RANGE</span></div><div class="s10-d">같은 값은 함께 더해진다</div></div>
+      <div class="s10-c x-card x-hide" id="s10-c2"><div class="s10-t">한 행씩 더하려면 <span class="x-acc">ROWS</span></div><div class="s10-d">행 개수로 센다</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d = 0) => Number(V[k]) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+
+    // 53 한 줄로 정리하면
+    ft("#s10-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    // 54 ORDER BY만 → RANGE, 한 행씩 → ROWS
+    ft("#s10-c1", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(1, 0.2));
+    ft("#s10-c2", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("rw", -0.2));
+    window.__timelines["s10"] = tl;
+  </script>
+</template>

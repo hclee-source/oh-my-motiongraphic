@@ -1,0 +1,42 @@
+{
+  "_설명": "장면 순서(장 번호와 연결, 여러 장을 한 장면으로 묶을 수 있음), 장면 끝에서 사라질지(exit), 효과음 위치([이름, 장면 안 문장 순번(0부터), 그 문장 시작 뒤 초]). extra는 그 낱말이 나오는 시각(장면 기준).",
+  "scenes": [
+    { "id": "s00", "file": "s00-title.html" },
+    { "id": "s01", "file": "s01-hook.html", "chapter": 1 },
+    { "id": "s02", "file": "s02-table.html", "chapter": 2,
+      "extra": { "b1": { "sentence": 7, "at": "이부장과" }, "y1": { "sentence": 8, "at": "윤과장은" }, "h1": { "sentence": 8, "at": "한사원은" } } },
+    { "id": "s03", "file": "s03-prior.html", "chapter": 3,
+      "extra": { "kw": { "sentence": 13, "at": "관리자번호로" }, "bh": { "sentence": 13, "at": "부하를" }, "r7": { "sentence": 14, "at": "7행이" } } },
+    { "id": "s04", "file": "s04-order.html", "chapter": [4, 5],
+      "extra": { "k1": { "sentence": 16, "at": "김대표" }, "i2": { "sentence": 16, "at": "이부장" },
+                 "c4": { "sentence": 17, "at": "최과장이" }, "h6": { "sentence": 18, "at": "한사원이" }, "j5": { "sentence": 18, "at": "정대리가" },
+                 "p3": { "sentence": 19, "at": "박부장이" }, "y7": { "sentence": 19, "at": "윤과장이" }, "n7": { "sentence": 19, "at": "7행입니다" },
+                 "n1": { "sentence": 24, "at": "상사가" }, "r1": { "sentence": 24, "at": "1행만" },
+                 "v0": { "sentence": 25, "at": "한사원으로" }, "v6": { "sentence": 25, "at": "한사원부터" }, "v4": { "sentence": 25, "at": "최과장," },
+                 "v2": { "sentence": 25, "at": "이부장," }, "v1": { "sentence": 25, "at": "김대표까지" }, "n4": { "sentence": 25, "at": "4행이" },
+                 "fw": { "sentence": 26, "at": "순방향" }, "bw": { "sentence": 26, "at": "역방향이고" }, "lv": { "sentence": 26, "at": "한사원이" } } },
+    { "id": "s05", "file": "s05-where.html", "chapter": 6,
+      "extra": { "x2": { "sentence": 30, "at": "이부장 한" }, "g3": { "sentence": 30, "at": "그 아래" }, "w6": { "sentence": 30, "at": "6행입니다" },
+                 "tg": { "sentence": 32, "at": "통째로" }, "w3": { "sentence": 32, "at": "3행만" } } },
+    { "id": "s06", "file": "s06-funcs.html", "chapter": 7,
+      "extra": { "l1": { "sentence": 34, "at": "한사원," }, "pt": { "sentence": 35, "at": "SYS_CONNECT_BY_PATH" } } },
+    { "id": "s07", "file": "s07-self.html", "chapter": 8,
+      "extra": { "a1": { "sentence": 37, "at": "부하," }, "a2": { "sentence": 37, "at": "상사라는" }, "n6": { "sentence": 39, "at": "6행입니다" },
+                 "lj": { "sentence": 41, "at": "LEFT" }, "nl": { "sentence": 41, "at": "NULL인" }, "n7": { "sentence": 41, "at": "7행이" } } },
+    { "id": "s08", "file": "s08-check.html", "chapter": 9 },
+    { "id": "s09", "file": "s09-summary.html", "chapter": 10, "exit": false,
+      "extra": { "w1": { "sentence": 49, "at": "START" }, "w2": { "sentence": 49, "at": "PRIOR는" }, "w3": { "sentence": 49, "at": "WHERE" }, "w4": { "sentence": 49, "at": "CONNECT" } } }
+  ],
+  "sfx": {
+    "s00": [["chime", null, 0.15], ["whoosh-short", null, 3.0]],
+    "s01": [["pop", 0, 0.4], ["click-soft", 1, 0.4], ["pop", 2, 2.0], ["pop", 2, 3.4], ["pop", 3, 0.2], ["whoosh-short", 4, 0.3]],
+    "s02": [["pop", 0, 0.5], ["pop", 1, 0.4], ["pop", 2, 0.4], ["pop", 3, 0.3]],
+    "s03": [["pop", 0, 0.5], ["click-soft", 1, 0.3], ["pop", 2, 0.3], ["pop", 3, 1.0], ["pop", 4, 3.0]],
+    "s04": [["pop", 0, 0.5], ["click-soft", 1, 1.0], ["click-soft", 2, 0.5], ["click-soft", 3, 0.5], ["click-soft", 4, 0.5], ["pop", 6, 1.2], ["click-soft", 7, 0.6], ["pop", 9, 0.3], ["click-soft", 10, 1.0]],
+    "s05": [["pop", 0, 0.5], ["click-soft", 1, 0.4], ["click-soft", 3, 1.0], ["click-soft", 4, 0.4], ["pop", 5, 1.0]],
+    "s06": [["pop", 0, 0.5], ["pop", 0, 1.8], ["pop", 1, 0.2], ["pop", 1, 4.0]],
+    "s07": [["pop", 0, 0.5], ["click-soft", 1, 0.3], ["pop", 1, 2.5], ["click-soft", 2, 0.3], ["pop", 3, 0.5], ["pop", 4, 0.6], ["pop", 5, 0.6]],
+    "s08": [["pop", 1, 0.2], ["pop", 3, 0.2], ["pop", 4, 0.2], ["pop", 5, 0.4]],
+    "s09": [["pop", 1, 0.2]]
+  }
+}

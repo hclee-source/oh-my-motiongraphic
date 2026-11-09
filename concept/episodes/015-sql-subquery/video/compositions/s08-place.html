@@ -1,0 +1,94 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s08-code { left: 192px; top: 262px; width: 700px; }
+    #s08-code .q-ln { height: 100px; font-size: 38px; }
+    #s08-code .q-hi { top: 14px; bottom: 14px; }
+    .s08-p { color: var(--color-accent-dark, #A68CFF); }
+    .s08-c { position: absolute; left: 940px; width: 788px; height: 88px; padding: 0 36px; box-sizing: border-box;
+      display: flex; align-items: center; justify-content: space-between; }
+    .s08-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    .s08-nm { position: relative; font-size: 40px; font-weight: 900; white-space: nowrap; }
+    .s08-tg { position: relative; width: 260px; height: 44px; }
+    .s08-tg > span { position: absolute; right: 0; top: 0; height: 44px; line-height: 44px; font-size: 32px; font-weight: 800;
+      white-space: nowrap; opacity: 0; }
+    .s08-ok { color: var(--color-accent, #6B3FE6); }
+    .s08-ng { color: var(--color-ink2, #71717A); }
+    #s08-note { position: absolute; left: 192px; top: 650px; width: 1536px; height: 196px; }
+    .s08-n { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center; font-size: 42px; font-weight: 800; line-height: 1.45; white-space: nowrap; opacity: 0; }
+    .s08-n small { display: block; font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); }
+  </style>
+  <div id="root" data-composition-id="s08" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,4,9.9,14,22,27.9]"},{"id":"dur","type":"number","label":"장면 길이","default":34.8},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"hr","type":"number","label":"한 행 시각","default":7},{"id":"wh","type":"number","label":"WHERE 절에 시각","default":17},{"id":"hv","type":"number","label":"HAVING 시각","default":19.5},{"id":"ss","type":"number","label":"SQL Server 시각","default":31.6},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s08-all">
+      <div id="s08-head" class="x-head">서브쿼리가 들어가는 자리</div>
+      <div id="s08-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><div class="q-hi" id="s08-h1"></div><span><span class="q-k">SELECT</span> 이름, <span class="s08-p">( … )</span></span></div>
+        <div class="q-ln"><div class="q-hi" id="s08-h2"></div><span><span class="q-k">FROM</span> <span class="s08-p">( … )</span></span></div>
+        <div class="q-ln"><div class="q-hi" id="s08-h3"></div><span><span class="q-k">WHERE</span> 급여 &gt; <span class="s08-p">( … )</span></span></div>
+      </div>
+      <div class="s08-c x-card x-hide" id="s08-c1" style="top:294px"><div class="s08-ring" id="s08-o1"></div><div class="s08-nm">스칼라 서브쿼리</div>
+        <div class="s08-tg" data-layout-allow-overlap><span class="s08-ok" id="s08-t1">한 행 · 한 열</span><span class="s08-ng" id="s08-u1">ORDER BY ✕</span></div></div>
+      <div class="s08-c x-card x-hide" id="s08-c2" style="top:394px"><div class="s08-ring" id="s08-o2"></div><div class="s08-nm">인라인 뷰</div>
+        <div class="s08-tg"><span class="s08-ok" id="s08-u2">ORDER BY ✓</span></div></div>
+      <div class="s08-c x-card x-hide" id="s08-c3" style="top:494px"><div class="s08-ring" id="s08-o3"></div><div class="s08-nm">중첩 서브쿼리</div>
+        <div class="s08-tg"><span class="s08-ng" id="s08-u3">ORDER BY ✕</span></div></div>
+      <div id="s08-note" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s08-n" id="s08-n1"><small>스칼라 서브쿼리 결과가</small><span>2행 이상 → <span class="x-acc">오류</span> · 0행 → <span class="x-acc">NULL</span></span></div>
+        <div class="s08-n" id="s08-n2"><small>WHERE 절 말고도</small><span><span class="x-acc">HAVING 절</span>에도 쓸 수 있다</span></div>
+        <div class="s08-n" id="s08-n3"><small>다중 열 서브쿼리</small><span>(부서, 급여) IN ( … )&nbsp;&nbsp; 오라클 <span class="x-acc">✓</span><span id="s08-n3b" style="opacity:0"> · SQL Server ✕</span></span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 34.8;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, ease: "back.out(1.6)" }, t);
+    const w = (k, d) => (Number(V[k]) || d);
+    let note = null;
+    const say = (id, t) => { if (note) fade(note, t, 1, 0); if (id) fade(id, t + 0.15, 0, 1); note = id; };
+    let cur = 0;
+    const focus = (k, t) => {
+      if (cur) { fade(`#s08-h${cur}`, t, 1, 0); fade(`#s08-o${cur}`, t, 1, 0); }
+      if (k) { fade(`#s08-h${k}`, t, 0, 1); stamp(`#s08-c${k}`, t); fade(`#s08-o${k}`, t, 0, 1); }
+      cur = k;
+    };
+
+    // 44 자리에 따라 이름이 다르다
+    ft("#s08-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s08-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    // 45 SELECT 절 = 스칼라 서브쿼리, 한 행 · 한 열
+    focus(1, at(1, 0.2));
+    fade("#s08-t1", w("hr", at(1, 3)) - 0.1, 0, 1);
+    // 46 2행 이상 오류, 0행 NULL
+    ft("#s08-note", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(2, 0.1));
+    say("#s08-n1", at(2, 0.1));
+    // 47 FROM 절 = 인라인 뷰, WHERE 절 = 중첩 서브쿼리, HAVING 절에도
+    say(null, at(3, 0));
+    focus(2, at(3, 0.2));
+    focus(3, w("wh", at(3, 3)) - 0.1);
+    say("#s08-n2", w("hv", at(3, 5.5)) - 0.1);
+    // 48 ORDER BY는 인라인 뷰에만
+    say(null, at(4, 0));
+    focus(0, at(4, 0));
+    fade("#s08-t1", at(4, 0.2), 1, 0);
+    fade(["#s08-u1", "#s08-u3"], at(4, 2.6), 0, 1);
+    stamp("#s08-u2", at(4, 0.8));
+    fade("#s08-o2", at(4, 0.8), 0, 1);
+    // 49 다중 열 서브쿼리: 오라클 ✓, SQL Server ✕
+    fade("#s08-o2", at(5, 0), 1, 0);
+    fade(["#s08-code", "#s08-c1", "#s08-c2", "#s08-c3"], at(5, 0.2), 1, 0.4);
+    say("#s08-n3", at(5, 0.2));
+    fade("#s08-n3b", w("ss", at(5, 3.7)) - 0.1, 0, 1);
+    if (String(V.exit) !== "false") ft("#s08-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s08"] = tl;
+  </script>
+</template>

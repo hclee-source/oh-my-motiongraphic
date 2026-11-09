@@ -1,0 +1,61 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h2-box { position: absolute; left: 80px; top: 330px; width: 880px; height: 620px; }
+    .h2-b { position: absolute; left: 40px; width: 800px; height: 110px; border-radius: 22px; box-sizing: border-box; padding: 0 36px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 12%, #FFFFFF); opacity: 0; }
+    .h2-bt { font-size: 46px; font-weight: 800; white-space: nowrap; }
+    .h2-tag { font-size: 40px; font-weight: 900; color: var(--color-accent, #6B3FE6); white-space: nowrap; opacity: 0; }
+    #h2-b1 { top: 40px; }
+    #h2-b2 { top: 300px; }
+    #h2-fr { position: absolute; left: 40px; top: 180px; width: 800px; height: 80px; opacity: 0; }
+    .h2-fp { position: absolute; left: 10px; top: 4px; width: 6px; height: 72px; border-radius: 3px; background: #A1A1AA; }
+    .h2-ff { position: absolute; left: 20px; top: 4px; width: 80px; height: 54px; border-radius: 6px 16px 16px 6px;
+      background: var(--color-accent, #6B3FE6); color: #FFFFFF; font-size: 38px; font-weight: 900;
+      display: flex; align-items: center; justify-content: center; }
+    .h2-fl { position: absolute; left: 136px; top: 10px; font-size: 44px; font-weight: 800; white-space: nowrap; }
+    #h2-rb { left: 40px; top: 446px; height: 80px; font-size: 42px; }
+    #h2-res { position: absolute; left: 40px; right: 40px; top: 540px; text-align: center; font-size: 42px; font-weight: 900; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="h2" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,6.5,10.8]"},{"id":"dur","type":"number","label":"장면 길이","default":13.4},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"sp","type":"number","label":"SAVEPOINT A로 시각","default":2.0},{"id":"mo","type":"number","label":"한 행을 더 시각","default":4.5},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h2-all">
+      <div id="h2-box" class="x-card x-hide">
+        <div class="h2-b" id="h2-b1"><span class="h2-bt">INSERT · 행 하나</span><span class="h2-tag" id="h2-keep">그대로</span></div>
+        <div id="h2-fr"><div class="h2-fp"></div><div class="h2-ff">A</div><div class="h2-fl">SAVEPOINT A</div></div>
+        <div class="h2-b" id="h2-b2"><span class="h2-bt">INSERT · 한 행 더</span></div>
+        <div class="q-chip q-ng" id="h2-rb">ROLLBACK TO A</div>
+        <div id="h2-res"><span class="x-acc">A 뒤</span>의 한 행만 취소</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 13.4;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, i, d) => Number(V[k]) || at(i, d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+
+    // 3 행 하나 → SAVEPOINT A로 저장 지점 → 한 행 더
+    ft("#h2-box", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, -0.3));
+    ft("#h2-b1", { opacity: 0, y: 10 }, { opacity: 1, y: 0 }, at(0, 0.2));
+    stamp("#h2-fr", X("sp", 0, 1.8));
+    ft("#h2-b2", { opacity: 0, y: 10 }, { opacity: 1, y: 0 }, X("mo", 0, 4.2));
+    // 4 ROLLBACK TO A → A 뒤에 넣은 한 행만 취소
+    stamp("#h2-rb", at(1, 0.1));
+    fade("#h2-b2", at(1, 1.8), 1, 0.15);
+    fade("#h2-res", at(1, 2.2), 0, 1);
+    // 5 A보다 앞의 작업은 그대로
+    fade("#h2-keep", at(2, 0.3), 0, 1);
+    ft("#h2-b1", { scale: 1 }, { scale: 1.04, duration: 0.25 * S, yoyo: true, repeat: 1, ease: "power2.out" }, at(2, 0.4));
+    if (String(V.exit) !== "false") ft("#h2-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h2"] = tl;
+  </script>
+</template>

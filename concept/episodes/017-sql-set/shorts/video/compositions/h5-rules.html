@@ -1,0 +1,61 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h5-q { left: 100px; top: 360px; width: 840px; height: 396px; padding: 30px 0; }
+    #h5-q .q-ln { height: 84px; font-size: 46px; }
+    #h5-q .q-hi { left: 16px; right: 16px; top: 6px; bottom: 6px; }
+    .h5-b { position: absolute; right: 44px; top: 0; line-height: 84px; font-size: 40px; font-weight: 900; color: var(--color-accent-dark, #A68CFF); opacity: 0; }
+    #h5-n { position: absolute; left: 100px; top: 820px; width: 840px; height: 300px; box-sizing: border-box; }
+    .h5-t { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 14px; text-align: center; opacity: 0; }
+    .h5-t small { font-size: 38px; font-weight: 800; color: var(--color-ink2, #71717A); white-space: nowrap; }
+    .h5-t b { font-size: 56px; font-weight: 900; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="h5" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,5.88]"},{"id":"dur","type":"number","label":"장면 길이","default":8.46},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"nm","type":"number","label":"결과 열 이름은 시각","default":2.8},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h5-all">
+      <div id="h5-q" class="x-dark q-code x-hide">
+        <div class="q-ln"><div class="q-hi" id="h5-h1"></div><span><span class="q-k">SELECT</span> 이름, 점수 …</span><div class="h5-b" id="h5-b1">2열</div></div>
+        <div class="q-ln"><span class="q-k">UNION</span></div>
+        <div class="q-ln"><span><span class="q-k">SELECT</span> 이름, 점수 …</span><div class="h5-b" id="h5-b3">2열</div></div>
+        <div class="q-ln"><div class="q-hi" id="h5-h4"></div><span><span class="q-k">ORDER BY</span> 1</span></div>
+      </div>
+      <div id="h5-n" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="h5-t" id="h5-t1"><small>위아래</small><b>열 개수는 <span class="x-acc">같게</span></b></div>
+        <div class="h5-t" id="h5-t2"><small>결과 열 이름은</small><b><span class="x-acc">첫 번째</span> SELECT</b></div>
+        <div class="h5-t" id="h5-t3"><small>ORDER BY는</small><b><span class="x-acc">맨 끝</span>에 한 번</b></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 8.46;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    let note = null;
+    const say = (id, t) => { if (note) fade(note, t, 1, 0); fade(id, t + 0.1, 0, 1); note = id; };
+
+    // 9 위아래 열 개수는 같아야 / 결과 열 이름은 첫 번째 SELECT
+    ft("#h5-q", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, -0.3));
+    ft("#h5-n", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, -0.2));
+    say("#h5-t1", at(0, 0));
+    fade("#h5-b1", at(0, 0.6), 0, 1);
+    fade("#h5-b3", at(0, 0.9), 0, 1);
+    const nm = X("nm", at(0, 2.8));
+    fade(["#h5-b1", "#h5-b3"], nm - 0.1, 1, 0);
+    fade("#h5-h1", nm, 0, 1);
+    say("#h5-t2", nm);
+    // 10 ORDER BY는 맨 끝에 한 번
+    fade("#h5-h1", at(1, 0), 1, 0);
+    fade("#h5-h4", at(1, 0.1), 0, 1);
+    say("#h5-t3", at(1, 0));
+    if (String(V.exit) !== "false") ft("#h5-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h5"] = tl;
+  </script>
+</template>

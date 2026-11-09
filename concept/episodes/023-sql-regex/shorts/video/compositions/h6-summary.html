@@ -1,0 +1,32 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h6-r { position: absolute; left: 80px; width: 860px; height: 170px; display: flex; align-items: center; justify-content: center;
+      font-size: 56px; font-weight: 900; white-space: nowrap; }
+    .h6-r .x-acc { margin-right: 14px; }
+  </style>
+  <div id="root" data-composition-id="h6" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45]"},{"id":"dur","type":"number","label":"장면 길이","default":7.0},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"k1","type":"number","label":"REGEXP_REPLACE 시각","default":2.1},{"id":"k2","type":"number","label":"반복은 시각","default":4.4},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h6-all">
+      <div class="h6-r x-card x-hide" id="h6-r1" style="top:360px">일부만 맞아도 <span class="x-acc" style="margin:0 0 0 14px">참</span></div>
+      <div class="h6-r x-card x-hide" id="h6-r2" style="top:570px"><span class="x-acc" style="margin:0">REGEXP_REPLACE</span>는 모두</div>
+      <div class="h6-r x-card x-hide" id="h6-r3" style="top:780px">반복은 <span class="x-acc" style="margin:0 0 0 14px">가장 길게</span></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k] ?? d);
+    const tl = gsap.timeline({ paused: true });
+    const stamp = (sel, t) => tl.fromTo(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.35 * S, ease: "back.out(1.8)", immediateRender: false }, t);
+
+    // 12 일부만 맞아도 참, REGEXP_REPLACE는 모두 바꾸고, 반복은 가장 길게
+    stamp("#h6-r1", at(0, 0));
+    stamp("#h6-r2", X("k1", 2.1) - 0.1);
+    stamp("#h6-r3", X("k2", 4.4) - 0.1);
+    window.__timelines["h6"] = tl;
+  </script>
+</template>

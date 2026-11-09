@@ -1,0 +1,117 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 108px; text-align: center; overflow: visible;
+      font-size: 46px; font-weight: 600; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 1536px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-01a" class="cap clip" data-start="3.600" data-duration="2.170"><span>개발 부서 직원과 급여가 같은 직원을</span></div>
+    <div id="cap-01b" class="cap clip" data-start="5.770" data-duration="2.963"><span>찾으려고 이런 SQL을 적었습니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="8.833" data-duration="2.362"><span>그런데 실행하면 오류가 납니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="11.296" data-duration="2.790"><span>괄호 안 SELECT가 개발 부서 두 명의 급여,</span></div>
+    <div id="cap-03b" class="cap clip" data-start="14.086" data-duration="3.537"><span>400과 600을 한꺼번에 돌려주기 때문입니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="17.722" data-duration="2.787"><span>등호는 값 하나와만 비교할 수 있습니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="20.609" data-duration="4.870"><span>오늘은 직원 일곱 명의 표로, 여러 행이 돌아올 때 쓰는 IN과 ANY와</span></div>
+    <div id="cap-05b" class="cap clip" data-start="25.479" data-duration="4.435"><span>ALL을, 그리고 행이 있는지만 보는 EXISTS를 따라가 보겠습니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="30.564" data-duration="2.850"><span>SQL 안에 괄호로 넣은 SELECT를 서브쿼리,</span></div>
+    <div id="cap-06b" class="cap clip" data-start="33.414" data-duration="2.823"><span>바깥 SQL을 메인쿼리라고 합니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="36.337" data-duration="3.270"><span>메인쿼리와 상관없는 서브쿼리는 먼저 한 번 실행되고,</span></div>
+    <div id="cap-07b" class="cap clip" data-start="39.607" data-duration="3.450"><span>메인쿼리가 그 결과를 받아 비교합니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="43.157" data-duration="3.130"><span>오늘의 직원 표는 영업, 개발,</span></div>
+    <div id="cap-08b" class="cap clip" data-start="46.287" data-duration="3.244"><span>인사, 세 부서의 일곱 명입니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="49.631" data-duration="2.990"><span>서브쿼리 결과가 한 행이면 단일 행 서브쿼리로,</span></div>
+    <div id="cap-09b" class="cap clip" data-start="52.621" data-duration="2.470"><span>등호나 부등호로 비교합니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="55.191" data-duration="4.330"><span>결과가 여러 행이면 다중 행 서브쿼리로, IN이나 ANY,</span></div>
+    <div id="cap-10b" class="cap clip" data-start="59.521" data-duration="2.767"><span>ALL 같은 다중 행 연산자를 써야 합니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="62.938" data-duration="1.570"><span>먼저 등호를 IN으로 바꾸면,</span></div>
+    <div id="cap-11b" class="cap clip" data-start="64.508" data-duration="3.449"><span>결과 가운데 하나라도 같을 때 참이 됩니다.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="68.057" data-duration="2.490"><span>급여가 400이거나 600인 수진,</span></div>
+    <div id="cap-12b" class="cap clip" data-start="70.547" data-duration="3.636"><span>서연, 동훈, 세 행입니다.</span></div>
+    <div id="cap-13a" class="cap clip" data-start="74.283" data-duration="1.730"><span>서연은 개발 부서가 아니지만,</span></div>
+    <div id="cap-13b" class="cap clip" data-start="76.013" data-duration="2.791"><span>급여가 400이라 함께 나옵니다.</span></div>
+    <div id="cap-14a" class="cap clip" data-start="78.904" data-duration="3.070"><span>IN은 ‘= ANY’와 같은 뜻이고, 반대로 NOT</span></div>
+    <div id="cap-14b" class="cap clip" data-start="81.974" data-duration="3.644"><span>IN은 모든 값과 다르다는 ‘&lt;&gt; ALL’과 같습니다.</span></div>
+    <div id="cap-15a" class="cap clip" data-start="86.269" data-duration="1.950"><span>이번에는 개발 부서보다 급여가</span></div>
+    <div id="cap-15b" class="cap clip" data-start="88.219" data-duration="2.125"><span>많은 직원을 찾아 보겠습니다.</span></div>
+    <div id="cap-16a" class="cap clip" data-start="90.443" data-duration="3.150"><span>‘개발 부서보다’는 누구 한 명보다라는 뜻일 수도,</span></div>
+    <div id="cap-16b" class="cap clip" data-start="93.593" data-duration="2.639"><span>모두보다라는 뜻일 수도 있습니다.</span></div>
+    <div id="cap-17a" class="cap clip" data-start="96.332" data-duration="1.530"><span>앞의 뜻이 ‘&gt; ANY’,</span></div>
+    <div id="cap-17b" class="cap clip" data-start="97.862" data-duration="2.280"><span>뒤의 뜻이 ‘&gt; ALL’입니다.</span></div>
+    <div id="cap-18a" class="cap clip" data-start="100.242" data-duration="2.670"><span>‘&gt; ANY’는 400과 600 가운데 하나보다만</span></div>
+    <div id="cap-18b" class="cap clip" data-start="102.912" data-duration="3.582"><span>크면 되니, 가장 작은 400보다 크면 됩니다.</span></div>
+    <div id="cap-19a" class="cap clip" data-start="106.594" data-duration="3.210"><span>지영 500, 동훈 600,</span></div>
+    <div id="cap-19b" class="cap clip" data-start="109.804" data-duration="3.059"><span>현우 700, 세 행입니다.</span></div>
+    <div id="cap-20a" class="cap clip" data-start="112.963" data-duration="1.930"><span>‘&gt; ALL’은 둘 모두보다 커야 하니,</span></div>
+    <div id="cap-20b" class="cap clip" data-start="114.893" data-duration="2.897"><span>가장 큰 600보다 커야 합니다.</span></div>
+    <div id="cap-21a" class="cap clip" data-start="117.890" data-duration="3.042"><span>현우 700, 한 행만 남습니다.</span></div>
+    <div id="cap-22a" class="cap clip" data-start="121.032" data-duration="2.035"><span>결국 ‘&gt; ANY’는 최솟값과,</span></div>
+    <div id="cap-22b" class="cap clip" data-start="123.067" data-duration="3.158"><span>‘&gt; ALL’은 최댓값과 비교하는 셈입니다.</span></div>
+    <div id="cap-23a" class="cap clip" data-start="126.875" data-duration="2.250"><span>부등호를 뒤집으면 비교할 끝값,</span></div>
+    <div id="cap-23b" class="cap clip" data-start="129.125" data-duration="3.453"><span>곧 최솟값과 최댓값도 서로 바뀝니다.</span></div>
+    <div id="cap-24a" class="cap clip" data-start="132.678" data-duration="1.990"><span>‘&lt; ANY’는 가장 큰 600보다</span></div>
+    <div id="cap-24b" class="cap clip" data-start="134.668" data-duration="2.669"><span>작으면 되니, 다섯 행입니다.</span></div>
+    <div id="cap-25a" class="cap clip" data-start="137.437" data-duration="1.990"><span>‘&lt; ALL’은 가장 작은 400보다</span></div>
+    <div id="cap-25b" class="cap clip" data-start="139.427" data-duration="4.097"><span>작아야 하니, 민수와 예린, 두 행입니다.</span></div>
+    <div id="cap-26a" class="cap clip" data-start="143.624" data-duration="2.870"><span>ANY는 통과하기 쉬운 쪽 끝값과,</span></div>
+    <div id="cap-26b" class="cap clip" data-start="146.494" data-duration="4.048"><span>ALL은 통과하기 어려운 쪽 끝값과 비교한다고 기억하면 됩니다.</span></div>
+    <div id="cap-27a" class="cap clip" data-start="150.642" data-duration="3.370"><span>하나 더, 직원이 없는 기획 부서처럼 서브쿼리</span></div>
+    <div id="cap-27b" class="cap clip" data-start="154.012" data-duration="3.351"><span>결과가 0행이면 비교할 값이 하나도 없습니다.</span></div>
+    <div id="cap-28a" class="cap clip" data-start="157.463" data-duration="3.810"><span>그러면 ‘&gt; ALL’은 어길 값이 없어 모든 행이 참이고,</span></div>
+    <div id="cap-28b" class="cap clip" data-start="161.273" data-duration="3.209"><span>‘&gt; ANY’는 넘을 값이 없어 모든 행이 거짓입니다.</span></div>
+    <div id="cap-29a" class="cap clip" data-start="165.132" data-duration="2.850"><span>지금까지의 서브쿼리는 메인쿼리와 상관없이</span></div>
+    <div id="cap-29b" class="cap clip" data-start="167.982" data-duration="2.910"><span>한 번만 계산해도 되는 것들이었습니다.</span></div>
+    <div id="cap-30a" class="cap clip" data-start="170.992" data-duration="1.870"><span>이번에는 자기 부서의 평균보다</span></div>
+    <div id="cap-30b" class="cap clip" data-start="172.862" data-duration="2.313"><span>급여가 많은 직원을 찾습니다.</span></div>
+    <div id="cap-31a" class="cap clip" data-start="175.275" data-duration="2.430"><span>서브쿼리가 바깥 행의 부서를 가져다 쓰니,</span></div>
+    <div id="cap-31b" class="cap clip" data-start="177.705" data-duration="3.734"><span>바깥 행마다 평균을 다시 계산하는 셈입니다.</span></div>
+    <div id="cap-32a" class="cap clip" data-start="181.539" data-duration="1.990"><span>이런 서브쿼리를 연관 서브쿼리,</span></div>
+    <div id="cap-32b" class="cap clip" data-start="183.529" data-duration="3.053"><span>또는 상관 서브쿼리라고 합니다.</span></div>
+    <div id="cap-33a" class="cap clip" data-start="186.682" data-duration="2.690"><span>민수는 영업 평균 500보다 작아서 빠지고,</span></div>
+    <div id="cap-33b" class="cap clip" data-start="189.372" data-duration="3.730"><span>지영은 500으로 평균과 같아서 빠집니다.</span></div>
+    <div id="cap-34a" class="cap clip" data-start="193.202" data-duration="3.923"><span>서연은 인사 평균 375보다 커서 남습니다.</span></div>
+    <div id="cap-35a" class="cap clip" data-start="197.225" data-duration="2.010"><span>일곱 행을 모두 보면 현우,</span></div>
+    <div id="cap-35b" class="cap clip" data-start="199.235" data-duration="3.577"><span>동훈, 서연, 세 행입니다.</span></div>
+    <div id="cap-36a" class="cap clip" data-start="202.912" data-duration="1.910"><span>서연은 지영보다 급여가 적어도,</span></div>
+    <div id="cap-36b" class="cap clip" data-start="204.822" data-duration="3.309"><span>자기 부서 평균보다 많아서 남는 겁니다.</span></div>
+    <div id="cap-37a" class="cap clip" data-start="208.231" data-duration="2.970"><span>이렇게 서브쿼리는 메인쿼리의 열을 쓸 수 있지만,</span></div>
+    <div id="cap-37b" class="cap clip" data-start="211.201" data-duration="4.217"><span>메인쿼리는 WHERE 절 서브쿼리 안의 열을 쓸 수 없습니다.</span></div>
+    <div id="cap-38a" class="cap clip" data-start="216.069" data-duration="2.550"><span>이번에는 부서 표가 하나 더 있는데,</span></div>
+    <div id="cap-38b" class="cap clip" data-start="218.619" data-duration="3.215"><span>네 부서 가운데 기획에는 아직 직원이 없습니다.</span></div>
+    <div id="cap-39a" class="cap clip" data-start="221.934" data-duration="3.710"><span>EXISTS는 값을 비교하지 않고, 서브쿼리 결과가</span></div>
+    <div id="cap-39b" class="cap clip" data-start="225.644" data-duration="4.104"><span>한 행이라도 있으면 참, 한 행도 없으면 거짓입니다.</span></div>
+    <div id="cap-40a" class="cap clip" data-start="229.848" data-duration="1.170"><span>행이 있는지만 보니,</span></div>
+    <div id="cap-40b" class="cap clip" data-start="231.018" data-duration="3.521"><span>안쪽 SELECT 뒤에는 보통 1을 적습니다.</span></div>
+    <div id="cap-41a" class="cap clip" data-start="234.639" data-duration="3.190"><span>부서 행마다 직원 표를 확인하는 연관 서브쿼리로,</span></div>
+    <div id="cap-41b" class="cap clip" data-start="237.829" data-duration="5.463"><span>결과는 영업, 개발, 인사, 세 행입니다.</span></div>
+    <div id="cap-42a" class="cap clip" data-start="243.392" data-duration="1.701"><span>반대로 없는 것을 찾는 NOT</span></div>
+    <div id="cap-42b" class="cap clip" data-start="245.093" data-duration="2.801"><span>EXISTS는 기획 한 행을 돌려줍니다.</span></div>
+    <div id="cap-43a" class="cap clip" data-start="247.994" data-duration="3.964"><span>서브쿼리 결과에 NULL이 섞였다면 NOT IN은 0행이 되지만,</span></div>
+    <div id="cap-43b" class="cap clip" data-start="251.958" data-duration="3.120"><span>NOT EXISTS에는 그런 함정이 없습니다.</span></div>
+    <div id="cap-44a" class="cap clip" data-start="255.728" data-duration="3.434"><span>서브쿼리는 들어가는 자리에 따라 이름이 다릅니다.</span></div>
+    <div id="cap-45a" class="cap clip" data-start="259.262" data-duration="2.430"><span>SELECT 절에 넣으면 스칼라 서브쿼리로,</span></div>
+    <div id="cap-45b" class="cap clip" data-start="261.692" data-duration="3.367"><span>한 행, 한 열만 돌려줘야 합니다.</span></div>
+    <div id="cap-46a" class="cap clip" data-start="265.159" data-duration="4.046"><span>두 행 이상이면 오류, 0행이면 NULL이 됩니다.</span></div>
+    <div id="cap-47a" class="cap clip" data-start="269.305" data-duration="3.770"><span>FROM 절에 넣으면 인라인 뷰, WHERE 절에 넣으면 중첩</span></div>
+    <div id="cap-47b" class="cap clip" data-start="273.075" data-duration="4.132"><span>서브쿼리이고, HAVING 절에도 서브쿼리를 쓸 수 있습니다.</span></div>
+    <div id="cap-48a" class="cap clip" data-start="277.307" data-duration="2.230"><span>ORDER BY는 인라인 뷰에만 적을 수 있고,</span></div>
+    <div id="cap-48b" class="cap clip" data-start="279.537" data-duration="3.582"><span>다른 자리의 서브쿼리에는 적을 수 없습니다.</span></div>
+    <div id="cap-49a" class="cap clip" data-start="283.219" data-duration="2.810"><span>두 열을 한꺼번에 비교하는 다중 열 서브쿼리는</span></div>
+    <div id="cap-49b" class="cap clip" data-start="286.029" data-duration="3.882"><span>오라클에서는 되고, SQL Server에서는 안 됩니다.</span></div>
+    <div id="cap-50a" class="cap clip" data-start="290.561" data-duration="2.582"><span>시험장에서 챙길 것 세 가지입니다.</span></div>
+    <div id="cap-51a" class="cap clip" data-start="293.243" data-duration="3.790"><span>첫째, 단일 행 연산자에 여러 행이 돌아오면 오류이고,</span></div>
+    <div id="cap-51b" class="cap clip" data-start="297.033" data-duration="3.616"><span>이때는 IN이나 ANY, ALL을 씁니다.</span></div>
+    <div id="cap-52a" class="cap clip" data-start="300.749" data-duration="3.320"><span>둘째, ‘&gt; ANY’는 최솟값보다 크다는 뜻이고,</span></div>
+    <div id="cap-52b" class="cap clip" data-start="304.069" data-duration="3.268"><span>‘&gt; ALL’은 최댓값보다 크다는 뜻입니다.</span></div>
+    <div id="cap-53a" class="cap clip" data-start="307.437" data-duration="3.310"><span>셋째, EXISTS는 결과 행이 있는지만 보고,</span></div>
+    <div id="cap-53b" class="cap clip" data-start="310.747" data-duration="3.742"><span>없는 것을 찾을 때는 NOT EXISTS를 씁니다.</span></div>
+    <div id="cap-54a" class="cap clip" data-start="314.589" data-duration="3.690"><span>덧붙여, SELECT 절은 스칼라 서브쿼리,</span></div>
+    <div id="cap-54b" class="cap clip" data-start="318.279" data-duration="4.448"><span>FROM 절은 인라인 뷰, WHERE 절은 중첩 서브쿼리입니다.</span></div>
+    <div id="cap-55a" class="cap clip" data-start="323.377" data-duration="2.894"><span>오늘 내용을 한 줄로 정리하면 이렇습니다.</span></div>
+    <div id="cap-56a" class="cap clip" data-start="326.371" data-duration="4.050"><span>한 행이면 등호, 여러 행이면 IN과 ANY와 ALL,</span></div>
+    <div id="cap-56b" class="cap clip" data-start="330.421" data-duration="2.761"><span>있는지만 볼 때는 EXISTS입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

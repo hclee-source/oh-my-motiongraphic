@@ -1,0 +1,125 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s06-code { left: 192px; top: 262px; width: 820px; }
+    #s06-code .q-ln { font-size: 32px; }
+    .s06-in { padding-left: 268px; }
+    #s06-ul { border-bottom: 4px solid rgba(166, 140, 255, 0); padding-bottom: 2px; }
+    #s06-note { position: absolute; left: 192px; top: 590px; width: 820px; height: 256px; }
+    .s06-n { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center; font-size: 40px; font-weight: 800; line-height: 1.45; white-space: nowrap; opacity: 0; }
+    .s06-n small { display: block; font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    #s06-tb { left: 1072px; top: 262px; width: 656px; height: 584px; }
+    #s06-tb .q-th, #s06-tb .q-tr { grid-template-columns: 116px 116px 120px 156px 92px; }
+    #s06-th { top: 20px; }
+    .s06-cnt { position: relative; height: 40px; }
+    .s06-cnt > span { position: absolute; left: 0; right: 0; top: 0; text-align: center; font-size: 32px; font-weight: 900;
+      color: var(--color-accent, #6B3FE6); opacity: 0; }
+    #s06-tb .q-tr > div.s06-av { color: var(--color-ink2, #71717A); opacity: 0; }
+    #s06-tb .q-tr > div.s06-ok { color: var(--color-accent, #6B3FE6); font-weight: 900; opacity: 0; }
+    #s06-tb .q-tr > div.s06-ng { color: #8A8A93; opacity: 0; }
+    .s06-bd { position: absolute; left: 14px; right: 14px; height: 56px; border-radius: 12px;
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 12%, #FFFFFF); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s06" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,6.3,10.6,16.9,22,28.6,32.7,38.4,43.8]"},{"id":"dur","type":"number","label":"장면 길이","default":51.4},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"j1","type":"number","label":"지영은 시각","default":25.2},{"id":"r3","type":"number","label":"세 행 시각","default":36.6},{"id":"mq","type":"number","label":"메인쿼리는 시각","default":47.6},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s06-all">
+      <div id="s06-head" class="x-head">연관 서브쿼리</div>
+      <div id="s06-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">SELECT</span> a.이름 <span class="q-k">FROM</span> 직원 a</span></div>
+        <div class="q-ln"><div class="q-hi" id="s06-h2"></div><span><span class="q-k">WHERE</span> a.급여 &gt; (<span class="q-k">SELECT AVG</span>(b.급여)</span></div>
+        <div class="q-ln"><span class="s06-in"><span class="q-k">FROM</span> 직원 b</span></div>
+        <div class="q-ln"><div class="q-hi" id="s06-h4"></div><span class="s06-in"><span class="q-k">WHERE</span> b.부서 = <span id="s06-ul">a.부서</span>);</span></div>
+      </div>
+      <div id="s06-note" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s06-n" id="s06-n1"><small>지금까지</small>서브쿼리를 한 번만 계산</div>
+        <div class="s06-n" id="s06-n2"><small>바깥 행의 부서를 가져다 씀</small>바깥 행마다 평균을 다시 계산</div>
+        <div class="s06-n" id="s06-n3"><span><span class="x-acc">연관</span> 서브쿼리</span><small>= 상관 서브쿼리</small></div>
+        <div class="s06-n" id="s06-n4"><small>민수 · 영업</small>300 &gt; 평균 500 ?&nbsp; ✕</div>
+        <div class="s06-n" id="s06-n5"><small>지영 · 영업</small>500 &gt; 평균 500 ?&nbsp; ✕</div>
+        <div class="s06-n" id="s06-n6"><small>서연 · 인사</small><span>400 &gt; 평균 375 ?&nbsp; <span class="x-acc">✓</span></span></div>
+        <div class="s06-n" id="s06-n7"><small>서연 400은 지영 500보다 적어도</small><span><span class="x-acc">자기 부서 평균</span>이 기준</span></div>
+        <div class="s06-n" id="s06-n8"><span>서브쿼리 → 메인쿼리 열 <span class="x-acc">✓</span></span><span id="s06-n8b" style="opacity:0">메인쿼리 → 서브쿼리 열 ✕</span></div>
+      </div>
+      <div id="s06-tb" class="x-card q-tb x-hide">
+        <div class="q-th" id="s06-th"><div>이름</div><div>부서</div><div>급여</div><div>부서 평균</div>
+          <div class="s06-cnt"><span id="s06-c3">3행</span></div></div>
+        <div class="s06-bd" id="s06-wk" style="top:84px"></div>
+        <div class="s06-bd" id="s06-bd2" style="top:212px"></div>
+        <div class="s06-bd" id="s06-bd4" style="top:340px"></div>
+        <div class="s06-bd" id="s06-bd6" style="top:468px"></div>
+        <div class="q-tr" id="s06-r0" style="top:84px"><div>민수</div><div>영업</div><div>300</div><div class="s06-av" id="s06-a0">500</div><div class="s06-ng" id="s06-m0">✕</div></div>
+        <div class="q-tr" id="s06-r1" style="top:148px"><div>지영</div><div>영업</div><div>500</div><div class="s06-av" id="s06-a1">500</div><div class="s06-ng" id="s06-m1">✕</div></div>
+        <div class="q-tr" id="s06-r2" style="top:212px"><div>현우</div><div>영업</div><div>700</div><div class="s06-av" id="s06-a2">500</div><div class="s06-ok" id="s06-m2">✓</div></div>
+        <div class="q-tr" id="s06-r3" style="top:276px"><div>수진</div><div>개발</div><div>400</div><div class="s06-av" id="s06-a3">500</div><div class="s06-ng" id="s06-m3">✕</div></div>
+        <div class="q-tr" id="s06-r4" style="top:340px"><div>동훈</div><div>개발</div><div>600</div><div class="s06-av" id="s06-a4">500</div><div class="s06-ok" id="s06-m4">✓</div></div>
+        <div class="q-tr" id="s06-r5" style="top:404px"><div>예린</div><div>인사</div><div>350</div><div class="s06-av" id="s06-a5">375</div><div class="s06-ng" id="s06-m5">✕</div></div>
+        <div class="q-tr" id="s06-r6" style="top:468px"><div>서연</div><div>인사</div><div>400</div><div class="s06-av" id="s06-a6">375</div><div class="s06-ok" id="s06-m6">✓</div></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 51.4;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+    const w = (k, d) => (Number(V[k]) || d);
+    let note = null;
+    const say = (id, t) => { if (note) fade(note, t, 1, 0); fade(id, t + 0.15, 0, 1); note = id; };
+    // 짚는 행(띠가 그 행으로 옮겨 감)
+    let wkRow = null;
+    const walk = (i, t) => {
+      if (wkRow === null) ft("#s06-wk", { y: (i - 0) * 64, opacity: 0 }, { y: i * 64, opacity: 1 }, t);
+      else ft("#s06-wk", { y: wkRow * 64 }, { y: i * 64, duration: 0.5 * S, ease: "power2.inOut" }, t);
+      wkRow = i;
+    };
+    const check = (i, t) => { fade(`#s06-a${i}`, t, 0, 1); stamp(`#s06-m${i}`, t + 0.9); };
+
+    // 29 지금까지는 한 번만 계산하면 되는 서브쿼리
+    ft("#s06-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s06-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.2));
+    ft("#s06-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.4));
+    ft("#s06-note", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(0, 0.8));
+    say("#s06-n1", at(0, 0.8));
+    // 30 자기 부서 평균보다 급여가 많은 직원
+    fade("#s06-h2", at(1, 0.2), 0, 1);
+    // 31 바깥 행의 부서를 가져다 쓰니 바깥 행마다 다시 계산
+    fade("#s06-h2", at(2, 0), 1, 0);
+    fade("#s06-h4", at(2, 0.1), 0, 1);
+    ft("#s06-ul", { borderBottomColor: "rgba(166, 140, 255, 0)" }, { borderBottomColor: "rgba(166, 140, 255, 1)" }, at(2, 0.6));
+    say("#s06-n2", at(2, 0.8));
+    // 32 연관 서브쿼리 = 상관 서브쿼리
+    say("#s06-n3", at(3, 0.2));
+    // 33 민수: 영업 평균 500보다 작아 빠짐 / 지영: 500으로 같아서 빠짐
+    walk(0, at(4, 0.1));
+    check(0, at(4, 0.6));
+    say("#s06-n4", at(4, 0.6));
+    walk(1, w("j1", at(4, 3.2)) - 0.1);
+    check(1, w("j1", at(4, 3.2)));
+    say("#s06-n5", w("j1", at(4, 3.2)));
+    // 34 서연: 인사 평균 375보다 커서 남음
+    walk(6, at(5, 0.1));
+    check(6, at(5, 0.6));
+    say("#s06-n6", at(5, 0.6));
+    // 35 일곱 행 모두 → 현우 · 동훈 · 서연, 세 행
+    fade("#s06-wk", at(6, 0.1), 1, 0);
+    [2, 3, 4, 5].forEach((i, j) => check(i, at(6, 0.3 + j * 0.25)));
+    fade(["#s06-bd2", "#s06-bd4", "#s06-bd6"], w("r3", at(6, 4)) - 1.4, 0, 1);
+    fade(["#s06-r0", "#s06-r1", "#s06-r3", "#s06-r5"], w("r3", at(6, 4)) - 1.4, 1, 0.3);
+    stamp("#s06-c3", w("r3", at(6, 4)) - 0.1);
+    fade("#s06-h4", at(6, 0.3), 1, 0);
+    // 36 서연은 지영보다 적어도 자기 부서 평균이 기준
+    say("#s06-n7", at(7, 0.2));
+    // 37 서브쿼리 → 메인쿼리 열 ✓, 메인쿼리 → 서브쿼리 열 ✕
+    say("#s06-n8", at(8, 0.2));
+    fade("#s06-n8b", w("mq", at(8, 3.6)), 0, 1);
+    if (String(V.exit) !== "false") ft("#s06-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s06"] = tl;
+  </script>
+</template>

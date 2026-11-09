@@ -1,0 +1,116 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s02-code { left: 192px; top: 262px; width: 640px; }
+    .s02-sw { position: relative; display: block; width: 560px; height: 44px; }
+    .s02-sw > span { position: absolute; left: 0; top: 0; line-height: 44px; white-space: nowrap; opacity: 0; }
+    #s02-note { position: absolute; left: 192px; top: 462px; width: 640px; height: 384px; }
+    .s02-n { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 16px; text-align: center; font-size: 44px; font-weight: 900; line-height: 1.3; opacity: 0; }
+    .s02-n small { display: block; font-size: 34px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    #s02-tb { left: 872px; top: 262px; width: 856px; height: 584px; }
+    #s02-tb .q-th, #s02-tb .q-tr { grid-template-columns: 170px 170px 190px 270px; }
+    #s02-tb .q-th { top: 24px; }
+    #s02-tb .q-th > div { font-size: 30px; }
+    #s02-tb .q-tr > div { font-size: 42px; }
+    .s02-cell { position: relative; height: 48px; }
+    .s02-cell > span { position: absolute; left: 0; right: 0; top: 0; line-height: 48px; text-align: center; white-space: nowrap; opacity: 0; font-size: 42px; font-weight: 900; }
+    #s02-h4 { position: relative; display: block; height: 40px; }
+    #s02-h4 > span { position: absolute; left: 0; right: 0; top: 0; line-height: 40px; opacity: 0; }
+    #s02-ring { position: absolute; left: 12px; width: 832px; top: 188px; height: 168px; box-sizing: border-box; border-radius: 26px;
+      border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s02" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,5,10,15,20,25,30,35]"},{"id":"dur","type":"number","label":"장면 길이","default":40},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"t2000","type":"number","label":"2000 시각","default":8},{"id":"p12","type":"number","label":"1200 시각","default":17},{"id":"p8","type":"number","label":"800 시각","default":19},{"id":"c1","type":"number","label":"민수는 시각","default":30},{"id":"c2","type":"number","label":"800을 시각","default":33},{"id":"c4","type":"number","label":"1300 시각","default":36},{"id":"c5","type":"number","label":"2000으로 시각","default":38},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s02-all">
+      <div id="s02-head" class="x-head">집계 함수에 OVER</div>
+      <div id="s02-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">SUM</span>(급여)</span></div>
+        <div class="q-ln"><div class="s02-sw" data-layout-allow-overlap>
+          <span id="s02-o1"><span class="q-k">OVER</span> ( )</span>
+          <span id="s02-o2"><span class="q-k">OVER</span> (<span class="q-k">PARTITION BY</span> 부서)</span>
+          <span id="s02-o3"><span class="q-k">OVER</span> (<span class="q-k">ORDER BY</span> 급여)</span>
+        </div></div>
+      </div>
+      <div id="s02-note" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s02-n" id="s02-na"><span>괄호를 비우면<br />전체 합계 <span class="x-acc">2000</span></span><small>모든 행에 같은 값</small></div>
+        <div class="s02-n" id="s02-nb"><span>행은 줄지 않는다</span><small>5행 → 5행</small></div>
+        <div class="s02-n" id="s02-nc"><span>PARTITION BY 부서</span><small>부서별 합계가 행마다</small></div>
+        <div class="s02-n" id="s02-nd"><span>ORDER BY 급여</span><small>급여 순으로 차곡차곡</small></div>
+        <div class="s02-n" id="s02-ne"><span>마지막 값 = <span class="x-acc">전체 합계</span></span><small>2000</small></div>
+      </div>
+      <div id="s02-tb" class="x-card q-tb x-hide">
+        <div class="q-th"><div>이름</div><div>부서</div><div>급여</div><div id="s02-h4"><span id="s02-h4a">합계</span><span id="s02-h4b">누적</span></div></div>
+        <div class="q-tr" id="s02-r0" style="top:100px"><div>민수</div><div>영업</div><div id="s02-p0">200</div><div class="s02-cell" data-layout-allow-overlap><span id="s02-a0">2000</span><span id="s02-b0">1200</span><span id="s02-c0">200</span></div></div>
+        <div class="q-tr" id="s02-r1" style="top:196px"><div>지영</div><div>영업</div><div id="s02-p1">300</div><div class="s02-cell" data-layout-allow-overlap><span id="s02-a1">2000</span><span id="s02-b1">1200</span><span id="s02-c1">800</span></div></div>
+        <div class="q-tr" id="s02-r2" style="top:292px"><div>현우</div><div>개발</div><div id="s02-p2">300</div><div class="s02-cell" data-layout-allow-overlap><span id="s02-a2">2000</span><span id="s02-b2">800</span><span id="s02-c2">800</span></div></div>
+        <div class="q-tr" id="s02-r3" style="top:388px"><div>수진</div><div>개발</div><div>500</div><div class="s02-cell" data-layout-allow-overlap><span id="s02-a3">2000</span><span id="s02-b3">800</span><span id="s02-c3">1300</span></div></div>
+        <div class="q-tr" id="s02-r4" style="top:484px"><div>동훈</div><div>영업</div><div>700</div><div class="s02-cell" data-layout-allow-overlap><span id="s02-a4">2000</span><span id="s02-b4">1200</span><span id="s02-c4">2000</span></div></div>
+        <div id="s02-ring"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 40;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d = 0) => Number(V[k]) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const paint = (sel, t, a, b) => ft(sel, { color: a }, { color: b }, t);
+    const ACC = "#6B3FE6", INK = "#18181B";
+    const IDX = [0, 1, 2, 3, 4];
+    let note = null;
+    const say = (id, t) => { if (note) fade(note, t, 1, 0); fade(id, t + 0.15, 0, 1); note = id; };
+
+    // 7 직원 다섯 명, 급여가 같은 지영과 현우
+    ft("#s02-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s02-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    ft("#s02-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.5));
+    paint(["#s02-p1", "#s02-p2"], at(0, 3.6), INK, ACC);
+    // 8 괄호를 비우면 전체 합계 2000이 모든 행에
+    paint(["#s02-p1", "#s02-p2"], at(1, 0), ACC, INK);
+    fade("#s02-o1", at(1, 0.2), 0, 1);
+    fade("#s02-h4a", at(1, 0.2), 0, 1);
+    say("#s02-na", at(1, 0.4));
+    ft("#s02-note", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(1, 0.3));
+    IDX.forEach((i, j) => stamp(`#s02-a${i}`, X("t2000", -0.1 + j * 0.12)));
+    // 9 행을 줄이지 않고 행마다 값 하나씩
+    say("#s02-nb", at(2, 0.3));
+    // 10 PARTITION BY 부서 → 영업 1200, 개발 800
+    say("#s02-nc", at(3, 0.2));
+    fade("#s02-o1", at(3, 0.2), 1, 0);
+    fade("#s02-o2", at(3, 0.5), 0, 1);
+    fade(IDX.map(i => `#s02-a${i}`), at(3, 0.5), 1, 0);
+    [0, 1, 4].forEach((i, j) => stamp(`#s02-b${i}`, X("p12", -0.1 + j * 0.1)));
+    [2, 3].forEach((i, j) => stamp(`#s02-b${i}`, X("p8", -0.1 + j * 0.1)));
+    // 11 괄호 안에 ORDER BY 급여
+    fade(IDX.map(i => `#s02-b${i}`), at(4, 0.2), 1, 0);
+    fade("#s02-o2", at(4, 0.2), 1, 0);
+    fade("#s02-o3", at(4, 0.5), 0, 1);
+    fade("#s02-h4a", at(4, 0.2), 1, 0);
+    fade("#s02-h4b", at(4, 0.5), 0, 1);
+    // 12 급여 순으로 차곡차곡
+    say("#s02-nd", at(5, 0.2));
+    // 13 민수 200, 지영과 현우 800 똑같이
+    stamp("#s02-c0", X("c1", 0.3));
+    stamp("#s02-c1", X("c2", -0.1));
+    stamp("#s02-c2", X("c2", -0.1));
+    fade("#s02-ring", X("c2", 0), 0, 1);
+    paint(["#s02-c1", "#s02-c2"], X("c2", 0), INK, ACC);
+    // 14 수진 1300, 동훈 2000 = 전체 합계
+    fade("#s02-ring", at(7, 0), 1, 0);
+    paint(["#s02-c1", "#s02-c2"], at(7, 0), ACC, INK);
+    stamp("#s02-c3", X("c4", -0.1));
+    stamp("#s02-c4", X("c5", -0.1));
+    say("#s02-ne", X("c5", 0));
+    paint("#s02-c4", X("c5", 0.1), INK, ACC);
+    if (String(V.exit) !== "false") ft("#s02-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s02"] = tl;
+  </script>
+</template>

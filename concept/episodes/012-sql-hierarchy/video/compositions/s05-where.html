@@ -1,0 +1,86 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s05-tb { top: 262px; width: 744px; height: 584px; }
+    #s05-L { left: 192px; }
+    #s05-R { left: 984px; }
+    .s05-tb .q-th, .s05-tb .q-tr { grid-template-columns: 170px 260px 258px; }
+    .s05-tb .q-th { top: 84px; }
+    .s05-tb .q-tr > div { font-size: 36px; }
+    .s05-ti { position: absolute; left: 28px; right: 28px; top: 22px; height: 50px; }
+    .s05-ti > span { position: absolute; left: 0; right: 0; top: 0; line-height: 50px; text-align: center; font-size: 34px; font-weight: 900; white-space: nowrap; opacity: 0; }
+    .s05-cnt { position: relative; height: 40px; }
+    .s05-cnt > span { position: absolute; left: 0; right: 0; top: 0; line-height: 40px; text-align: center; font-size: 34px; font-weight: 900; color: #6B3FE6; opacity: 0; }
+    .s05-x { position: relative; height: 34px; }
+    .s05-x::before, .s05-x::after { content: ""; position: absolute; left: calc(50% - 3px); top: -2px; width: 6px; height: 38px; border-radius: 3px; background: #18181B; }
+    .s05-x::before { transform: rotate(45deg); }
+    .s05-x::after { transform: rotate(-45deg); }
+    .s05-xw { opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s05" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,4,8.3,12.8,18.9,25.3,33.8]"},{"id":"dur","type":"number","label":"장면 길이","default":39},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"x2","type":"number","label":"이부장 한 행 시각","default":14},{"id":"g3","type":"number","label":"그 아래 시각","default":15},{"id":"w6","type":"number","label":"6행입니다 시각","default":16},{"id":"tg","type":"number","label":"통째로 시각","default":28},{"id":"w3","type":"number","label":"3행만 시각","default":32},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s05-all">
+      <div id="s05-head" class="x-head">조건을 어디에 적느냐</div>
+      <div id="s05-L" class="x-card q-tb s05-tb x-hide"></div>
+      <div id="s05-R" class="x-card q-tb s05-tb x-hide"></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 39;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d = 0) => Number(V[k]) + d;
+    const ACC = "#6B3FE6", INK = "#18181B", LINE = "#E3E5EA";
+
+    const ROWS = [[1, "김대표"], [2, "이부장"], [3, "최과장"], [4, "한사원"], [3, "정대리"], [2, "박부장"], [3, "윤과장"]];
+    const build = (p, titles, counts) => {
+      let h = '<div class="s05-ti">' + titles.map((t, i) => `<span id="s05-${p}t${i}">${t}</span>`).join("") + "</div>";
+      h += '<div class="q-th"><div>LEVEL</div><div>이름</div><div class="s05-cnt">' + counts.map((t, i) => `<span id="s05-${p}c${i}">${t}</span>`).join("") + "</div></div>";
+      ROWS.forEach(([lv, nm], i) => {
+        h += `<div class="q-tr" id="s05-${p}r${i}" style="top:${148 + i * 60}px"><div class="d">${lv}</div><div class="d">${nm}</div><div class="s05-xw"><div class="s05-x"></div></div></div>`;
+      });
+      document.getElementById(`s05-${p}`).innerHTML = h;
+    };
+    build("L", ["WHERE에 적으면", "WHERE 사원번호 &lt;&gt; 2", "WHERE = 그 행만"], ["6행"]);
+    build("R", ["CONNECT BY에 적으면", "CONNECT BY ... AND 사원번호 &lt;&gt; 2", "CONNECT BY = 가지째"], ["3행"]);
+
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const paint = (sel, t, a, b) => ft(sel, { color: a }, { color: b }, t);
+    const swap = (p, a, b, t) => { fade(`#s05-${p}t${a}`, t, 1, 0); fade(`#s05-${p}t${b}`, t + 0.15, 0, 1); };
+    const drop = (p, i, t) => { fade(`#s05-${p}r${i} .d`, t, 1, 0.28); stamp(`#s05-${p}r${i} .s05-xw`, t); };
+    const border = (sel, t, a, b) => ft(sel, { borderColor: a }, { borderColor: b }, t);
+
+    // 27 조건을 어디에 적느냐
+    ft("#s05-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s05-L", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    ft("#s05-R", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.6));
+    fade("#s05-Lt0", at(0, 0.9), 0, 1);
+    fade("#s05-Rt0", at(0, 1.1), 0, 1);
+    // 28 이부장 한 사람을 빼는 조건을 WHERE에
+    swap("L", 0, 1, at(1, 0.3));
+    border("#s05-L", at(1, 0.3), LINE, ACC);
+    // 29 WHERE는 다 펼친 다음 행을 하나씩 거름
+    // 30 이부장 한 행만 빠지고, 그 아래 세 명은 그대로, 6행
+    drop("L", 1, X("x2", -0.1));
+    paint(["#s05-Lr2 .d", "#s05-Lr3 .d", "#s05-Lr4 .d"], X("g3", 0), INK, ACC);
+    fade("#s05-Lc0", X("w6", -0.1), 0, 1);
+    // 31 같은 조건을 CONNECT BY에 AND로
+    border("#s05-L", at(4, 0), ACC, LINE);
+    border("#s05-R", at(4, 0), LINE, ACC);
+    swap("R", 0, 1, at(4, 0.3));
+    // 32 이부장과 그 아래 세 명이 통째로 빠져 3행
+    [1, 2, 3, 4].forEach((i, j) => drop("R", i, X("tg", -0.1 + j * 0.15)));
+    fade("#s05-Rc0", X("w3", -0.1), 0, 1);
+    // 33 WHERE는 그 행만, CONNECT BY는 가지째
+    swap("L", 1, 2, at(6, 0.2));
+    swap("R", 1, 2, at(6, 1.4));
+    if (String(V.exit) !== "false") ft("#s05-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s05"] = tl;
+  </script>
+</template>

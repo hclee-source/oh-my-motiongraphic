@@ -1,0 +1,82 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h3-code { left: 80px; top: 320px; width: 920px; }
+    #h3-code .q-ln { font-size: 40px; height: 72px; padding: 0 44px; }
+    .h3-sw { position: relative; display: block; width: 832px; height: 52px; }
+    .h3-sw > span { position: absolute; left: 0; top: 0; line-height: 52px; white-space: nowrap; }
+    .h3-nw { opacity: 0; }
+    .h3-b { position: absolute; width: 190px; height: 130px; box-sizing: border-box; display: flex; align-items: center; justify-content: center;
+      font-size: 68px; font-weight: 900; opacity: 0; }
+    .h3-s { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center; }
+    .h3-v { opacity: 0; }
+    #h3-qq { position: absolute; left: 80px; top: 1060px; width: 880px; height: 96px; }
+    #h3-qq .q-chip { top: 0; left: 0; height: 96px; width: 420px; font-size: 48px; border-radius: 48px; }
+    .h3-x { position: absolute; left: 460px; top: 0; width: 96px; height: 96px; opacity: 0; }
+    .h3-x i { position: absolute; left: 10px; top: 43px; width: 76px; height: 10px; border-radius: 5px; background: var(--color-anchor, #18181B); }
+    .h3-x i:nth-child(1) { transform: rotate(45deg); }
+    .h3-x i:nth-child(2) { transform: rotate(-45deg); }
+  </style>
+  <div id="root" data-composition-id="h3" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,6]"},{"id":"dur","type":"number","label":"장면 길이","default":12},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"mf","type":"number","label":"맨 끝 시각","default":1.6},{"id":"sv","type":"number","label":"자기 값 시각","default":5},{"id":"wd","type":"number","label":"넓혀야 시각","default":9},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h3-all">
+      <div id="h3-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">LAST_VALUE</span>(값) <span class="q-k">OVER</span> (<span class="q-k">ORDER BY</span> 값</span></div>
+        <div class="q-ln"><div class="h3-sw" data-layout-allow-overlap>
+          <span class="q-m" id="h3-d2">&nbsp;&nbsp;RANGE BETWEEN</span>
+          <span class="h3-nw" id="h3-l2">&nbsp;&nbsp;<span class="q-k">ROWS BETWEEN</span></span></div></div>
+        <div class="q-ln"><div class="h3-sw" data-layout-allow-overlap>
+          <span class="q-m" id="h3-d3">&nbsp;&nbsp;UNBOUNDED PRECEDING</span>
+          <span class="h3-nw" id="h3-l3">&nbsp;&nbsp;<span class="q-k">UNBOUNDED PRECEDING</span></span></div></div>
+        <div class="q-ln"><div class="h3-sw" data-layout-allow-overlap>
+          <span class="q-m" id="h3-d4">&nbsp;&nbsp;AND CURRENT ROW)</span>
+          <span class="h3-nw" id="h3-l4">&nbsp;&nbsp;<span class="q-k">AND UNBOUNDED FOLLOWING</span>)</span></div></div>
+      </div>
+      <div class="h3-b x-card" id="h3-a0" style="left:80px;top:700px">40</div>
+      <div class="h3-b x-card" id="h3-a1" style="left:290px;top:700px">50</div>
+      <div class="h3-b x-card" id="h3-a2" style="left:500px;top:700px">50</div>
+      <div class="h3-b x-card" id="h3-a3" style="left:710px;top:700px">60</div>
+      <div class="h3-b x-dark" id="h3-g0" data-layout-allow-overlap style="left:80px;top:870px"><span class="h3-s h3-v" id="h3-s0">40</span><span class="h3-s h3-v" id="h3-t0">60</span></div>
+      <div class="h3-b x-dark" id="h3-g1" data-layout-allow-overlap style="left:290px;top:870px"><span class="h3-s h3-v" id="h3-s1">50</span><span class="h3-s h3-v" id="h3-t1">60</span></div>
+      <div class="h3-b x-dark" id="h3-g2" data-layout-allow-overlap style="left:500px;top:870px"><span class="h3-s h3-v" id="h3-s2">50</span><span class="h3-s h3-v" id="h3-t2">60</span></div>
+      <div class="h3-b x-dark" id="h3-g3" data-layout-allow-overlap style="left:710px;top:870px"><span class="h3-s h3-v" id="h3-s3">60</span><span class="h3-s h3-v" id="h3-t3">60</span></div>
+      <div id="h3-qq" data-layout-allow-overlap>
+        <div class="q-chip q-ng" id="h3-q">모두 60?</div>
+        <div class="h3-x" id="h3-x"><i></i><i></i></div>
+        <div class="q-chip q-ok" id="h3-ok">모두 60</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 12;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d = 0) => Number(V[k]) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const J = [0, 1, 2, 3];
+
+    // 7 LAST_VALUE는 맨 끝 값인데 기본 범위가 현재 행에서 끝나서 자기 값
+    ft("#h3-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0));
+    J.forEach((j) => stamp(`#h3-a${j}`, at(0, 0.3 + j * 0.1)));
+    J.forEach((j) => ft(`#h3-g${j}`, { opacity: 0 }, { opacity: 1, ease: "power2.out" }, X("sv", -0.2)));
+    stamp("#h3-q", X("mf", 0));
+    J.forEach((j) => stamp(`#h3-s${j}`, X("sv", -0.1 + j * 0.12)));
+    fade("#h3-x", X("sv", 0.4), 0, 1);
+    // 8 맨 끝 값을 보려면 UNBOUNDED FOLLOWING까지 넓혀야
+    fade("#h3-d2", at(1, 0.4), 1, 0); fade("#h3-l2", at(1, 0.5), 0, 1);
+    fade("#h3-d3", at(1, 0.7), 1, 0); fade("#h3-l3", at(1, 0.8), 0, 1);
+    fade("#h3-d4", at(1, 1.0), 1, 0); fade("#h3-l4", at(1, 1.1), 0, 1);
+    fade(["#h3-q", "#h3-x"], X("wd", -0.2), 1, 0);
+    J.forEach((j) => fade(`#h3-s${j}`, X("wd", 0), 1, 0));
+    J.forEach((j) => stamp(`#h3-t${j}`, X("wd", 0.1 + j * 0.1)));
+    stamp("#h3-ok", X("wd", 0.5));
+    if (String(V.exit) !== "false") ft("#h3-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h3"] = tl;
+  </script>
+</template>

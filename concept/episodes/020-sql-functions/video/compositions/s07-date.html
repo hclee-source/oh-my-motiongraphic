@@ -1,0 +1,102 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s07-one { left: 192px; top: 262px; }
+    #s07-sys { position: absolute; left: 420px; top: 262px; width: 1308px; height: 72px; }
+    .s07-sy { left: 0; top: 0; background: #FFFFFF; border: 2px solid var(--color-line, #E3E5EA); color: var(--color-ink, #18181B); }
+    #s07-sw { position: absolute; left: 192px; top: 370px; width: 1536px; height: 280px; }
+    .s07-code { left: 0; width: 1080px; }
+    .s07-code .q-ln { font-size: 41px; height: 68px; padding: 0 44px; }
+    .s07-ans { position: absolute; left: 1124px; width: 412px; height: 100px; }
+    .s07-big { left: 0; top: 0; height: 100px; padding: 0 32px; border-radius: 50px; font-size: 40px; font-weight: 900; }
+    .s07-huge { font-size: 60px; padding: 0 44px; }
+    .s07-qm { background: #FFFFFF; border: 2px solid var(--color-line, #E3E5EA); color: var(--color-ink2, #71717A); font-size: 60px; padding: 0 44px; }
+    #s07-notes { position: absolute; left: 192px; top: 684px; width: 1536px; height: 72px; }
+    .s07-note { left: 0; top: 0; }
+  </style>
+  <div id="root" data-composition-id="s07" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3,6,11.8,16.6,21.1,27]"},{"id":"dur","type":"number","label":"장면 길이","default":30.5},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"a1","type":"number","label":"11월 6일 시각","default":13.8},{"id":"a2","type":"number","label":"오전 10시 시각","default":19},{"id":"a3","type":"number","label":"4 시각","default":29.3},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s07-all">
+      <div id="s07-head" class="x-head">날짜 계산</div>
+      <div id="s07-one" class="q-chip q-ok">하루 = 1</div>
+      <div id="s07-sys" data-layout-allow-overlap>
+        <div id="s07-y1" class="q-chip s07-sy">SYSDATE = 지금 날짜와 시각</div>
+        <div id="s07-y2" class="q-chip s07-sy">SYSDATE = 11월 5일 09:00</div>
+      </div>
+      <div id="s07-sw" data-layout-allow-overlap>
+        <div id="s07-c1" class="s07-code x-dark q-code x-hide" style="top:0">
+          <div class="q-ln"><span><span class="q-k">SELECT</span> SYSDATE + 1 <span class="q-k">FROM</span> DUAL;</span></div>
+        </div>
+        <div class="s07-ans" id="s07-w1" style="top:10px">
+          <div id="s07-q1" class="q-chip s07-big s07-qm">?</div>
+          <div id="s07-a1" class="q-chip q-ok s07-big">11월 6일 09:00</div>
+        </div>
+        <div id="s07-c2" class="s07-code x-dark q-code x-hide" style="top:150px">
+          <div class="q-ln"><span><span class="q-k">SELECT</span> SYSDATE + 1/24 <span class="q-k">FROM</span> DUAL;</span></div>
+        </div>
+        <div class="s07-ans" id="s07-w2" style="top:160px">
+          <div id="s07-a2" class="q-chip q-ok s07-big">11월 5일 10:00</div>
+        </div>
+        <div id="s07-c3" class="s07-code x-dark q-code x-hide" style="top:0">
+          <div class="q-ln"><span><span class="q-k">SELECT</span> TO_DATE('20261105', 'YYYYMMDD')</span></div>
+          <div class="q-ln"><span style="margin-left:136px">- TO_DATE('20261101', 'YYYYMMDD')</span></div>
+          <div class="q-ln"><span><span class="q-k">FROM</span> DUAL;</span></div>
+        </div>
+        <div class="s07-ans" id="s07-w3" style="top:78px">
+          <div id="s07-q3" class="q-chip s07-big s07-qm">?</div>
+          <div id="s07-a3" class="q-chip q-ok s07-big s07-huge">4</div>
+        </div>
+      </div>
+      <div id="s07-notes" data-layout-allow-overlap>
+        <div class="q-chip q-ok s07-note" id="s07-n1">24분의 1 = 한 시간</div>
+        <div class="q-chip q-ok s07-note" id="s07-n2">TO_DATE = 문자를 날짜로 · 날짜 − 날짜 = 일수(숫자)</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 30.5;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+
+    // 40 날짜 계산에서는 하루가 1
+    ft("#s07-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    stamp("#s07-one", at(0, 0.8));
+    // 41 SYSDATE는 지금 날짜와 시각
+    stamp("#s07-y1", at(1, 0.2));
+    // 42 지금이 11월 5일 오전 9시, SYSDATE에 1을 더하면
+    fade("#s07-y1", at(2, 1.0), 1, 0);
+    fade("#s07-y2", at(2, 1.1), 0, 1);
+    ft("#s07-c1", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(2, 2.4));
+    stamp("#s07-q1", at(2, 4.2));
+    // 43 하루 뒤 같은 시각, 11월 6일 오전 9시
+    const a1 = X("a1", at(3, 2));
+    fade("#s07-q1", a1 - 0.1, 1, 0);
+    stamp("#s07-a1", a1);
+    // 44 24분의 1을 더하면 한 시간 뒤 오전 10시
+    fade(["#s07-c1", "#s07-w1"], at(4, 0.1), 1, 0.4);
+    ft("#s07-c2", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(4, 0.2));
+    stamp("#s07-n1", at(4, 0.6));
+    stamp("#s07-a2", X("a2", at(4, 2.4)));
+    // 45 TO_DATE로 문자를 날짜로 바꾼 두 날짜끼리 빼면 일수
+    fade(["#s07-c1", "#s07-w1"], at(5, 0.1), 0.4, 0);
+    fade(["#s07-c2", "#s07-w2", "#s07-n1"], at(5, 0.1), 1, 0);
+    fade(["#s07-one", "#s07-sys"], at(5, 0.1), 1, 0.4);
+    ft("#s07-c3", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(5, 0.3));
+    stamp("#s07-q3", at(5, 1.2));
+    stamp("#s07-n2", at(5, 2.0));
+    // 46 11월 5일에서 11월 1일을 빼면 4
+    const a3 = X("a3", at(6, 2.3));
+    fade("#s07-q3", a3 - 0.1, 1, 0);
+    stamp("#s07-a3", a3);
+    if (String(V.exit) !== "false") ft("#s07-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s07"] = tl;
+  </script>
+</template>

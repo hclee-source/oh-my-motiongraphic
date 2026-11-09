@@ -1,0 +1,42 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h5-b { position: absolute; left: 80px; width: 880px; height: 180px; padding: 0 48px; box-sizing: border-box;
+      display: flex; align-items: center; justify-content: space-between; }
+    .h5-kw { font-size: 56px; font-weight: 900; white-space: nowrap; }
+    .h5-v { font-size: 48px; font-weight: 800; white-space: nowrap; }
+    .h5-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="h5" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.2]"},{"id":"dur","type":"number","label":"장면 길이","default":7.5},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"w1","type":"number","label":"DELETE만 시각","default":0.2},{"id":"w2","type":"number","label":"TRUNCATE는 시각","default":2.2},{"id":"w3","type":"number","label":"DROP은 시각","default":3.8},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h5-all">
+      <div class="h5-b x-card x-hide" id="h5-b1" style="top:400px"><div class="h5-ring" id="h5-o1"></div>
+        <div class="h5-kw">DELETE</div><div class="h5-v x-acc">되돌릴 수 있음</div></div>
+      <div class="h5-b x-card x-hide" id="h5-b2" style="top:610px"><div class="h5-ring" id="h5-o2"></div>
+        <div class="h5-kw">TRUNCATE</div><div class="h5-v">빈 표</div></div>
+      <div class="h5-b x-card x-hide" id="h5-b3" style="top:820px"><div class="h5-ring" id="h5-o3"></div>
+        <div class="h5-kw">DROP</div><div class="h5-v">아무것도 없음</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+
+    // 10 DELETE만 되돌릴 수 있고, TRUNCATE는 빈 표를, DROP은 아무것도 남기지 않는다
+    const w = [X("w1", at(0, 0)), X("w2", at(0, 2.0)), X("w3", at(0, 3.6))];
+    w.forEach((t, j) => {
+      const k = j + 1;
+      ft(`#h5-b${k}`, { opacity: 0, x: -20 }, { opacity: 1, x: 0 }, Math.max(0, t - 0.1));
+      fade(`#h5-o${k}`, t, 0, 1);
+      if (k > 1) fade(`#h5-o${k - 1}`, t, 1, 0);
+    });
+    window.__timelines["h5"] = tl;
+  </script>
+</template>

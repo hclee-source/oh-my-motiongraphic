@@ -1,0 +1,123 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 108px; text-align: center; overflow: visible;
+      font-size: 46px; font-weight: 600; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 1536px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-01a" class="cap clip" data-start="3.600" data-duration="2.910"><span>주문 한 건에 담긴 상품을 기록하는 주문상품은,</span></div>
+    <div id="cap-01b" class="cap clip" data-start="6.510" data-duration="3.777"><span>주문번호와 상품코드를 합쳐 한 건을 구분합니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="10.387" data-duration="3.010"><span>두 칸짜리가 번거로우니, ‘주문상품번호’라는</span></div>
+    <div id="cap-02b" class="cap clip" data-start="13.397" data-duration="2.685"><span>일련번호 하나로 바꾸면 깔끔해 보입니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="16.181" data-duration="1.910"><span>그런데 이렇게 바꾸는 순간,</span></div>
+    <div id="cap-03b" class="cap clip" data-start="18.091" data-duration="2.640"><span>막지 못하는 데이터가 생깁니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="20.832" data-duration="2.130"><span>오늘은 주문 모델 하나로 식별자와</span></div>
+    <div id="cap-04b" class="cap clip" data-start="22.962" data-duration="2.946"><span>관계를 정리하며 답을 찾아보겠습니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="26.558" data-duration="2.850"><span>오늘의 모델은 고객, 주문,</span></div>
+    <div id="cap-05b" class="cap clip" data-start="29.408" data-duration="4.704"><span>상품, 주문상품, 네 엔터티입니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="34.211" data-duration="4.090"><span>상자 하나가 엔터티이고, 가로선 위에는 주식별자,</span></div>
+    <div id="cap-06b" class="cap clip" data-start="38.301" data-duration="2.733"><span>아래에는 나머지 속성을 적습니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="41.134" data-duration="2.210"><span>식별자는 엔터티 안에서 인스턴스</span></div>
+    <div id="cap-07b" class="cap clip" data-start="43.344" data-duration="2.199"><span>하나하나를 구분하는 속성입니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="46.193" data-duration="3.250"><span>엔터티를 잇는 선이 관계이고, 관계명,</span></div>
+    <div id="cap-08b" class="cap clip" data-start="49.443" data-duration="5.249"><span>관계차수, 관계선택사양, 세 가지로 표기합니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="54.792" data-duration="2.290"><span>관계차수는 관계에 참여하는 수로,</span></div>
+    <div id="cap-09b" class="cap clip" data-start="57.082" data-duration="4.154"><span>일대일, 일대다, 다대다가 있습니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="61.336" data-duration="3.390"><span>관계선택사양은 반드시 참여해야 하면 필수,</span></div>
+    <div id="cap-10b" class="cap clip" data-start="64.726" data-duration="2.511"><span>참여하지 않아도 되면 선택입니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="67.338" data-duration="2.050"><span>IE 표기법에서는 까마귀발이 ‘여러’,</span></div>
+    <div id="cap-11b" class="cap clip" data-start="69.388" data-duration="4.512"><span>동그라미가 ‘선택’, 세로줄이 ‘하나’ 또는 ‘필수’입니다.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="73.999" data-duration="1.750"><span>그래서 세로줄이 두 개 겹치면</span></div>
+    <div id="cap-12b" class="cap clip" data-start="75.749" data-duration="2.570"><span>‘반드시 딱 하나’라는 뜻입니다.</span></div>
+    <div id="cap-13a" class="cap clip" data-start="78.970" data-duration="2.750"><span>관계를 읽을 때는 기준 엔터티에서 출발해,</span></div>
+    <div id="cap-13b" class="cap clip" data-start="81.720" data-duration="2.997"><span>상대편 끝에 붙은 기호를 봅니다.</span></div>
+    <div id="cap-14a" class="cap clip" data-start="84.817" data-duration="3.450"><span>고객에서 읽으면 주문 쪽 끝이 동그라미와 까마귀발이니,</span></div>
+    <div id="cap-14b" class="cap clip" data-start="88.267" data-duration="3.353"><span>‘각 고객은 여러 주문을 때때로 한다’입니다.</span></div>
+    <div id="cap-15a" class="cap clip" data-start="91.719" data-duration="1.590"><span>가입만 하고 아직 주문하지</span></div>
+    <div id="cap-15b" class="cap clip" data-start="93.309" data-duration="2.168"><span>않은 고객도 있으니 선택입니다.</span></div>
+    <div id="cap-16a" class="cap clip" data-start="95.577" data-duration="3.110"><span>주문에서 읽으면 고객 쪽 끝이 세로줄 두 개이니,</span></div>
+    <div id="cap-16b" class="cap clip" data-start="98.687" data-duration="3.759"><span>‘각 주문은 한 고객에게 항상 속한다’입니다.</span></div>
+    <div id="cap-17a" class="cap clip" data-start="103.096" data-duration="3.381"><span>주식별자가 되려면 네 가지 특징을 갖춰야 합니다.</span></div>
+    <div id="cap-18a" class="cap clip" data-start="106.577" data-duration="2.550"><span>첫째는 유일성으로, 주문번호 하나가</span></div>
+    <div id="cap-18b" class="cap clip" data-start="109.127" data-duration="2.456"><span>주문 딱 한 건만 가리켜야 합니다.</span></div>
+    <div id="cap-19a" class="cap clip" data-start="111.683" data-duration="2.490"><span>둘째는 최소성으로, 주문번호만으로</span></div>
+    <div id="cap-19b" class="cap clip" data-start="114.173" data-duration="3.848"><span>구분되는데 주문일자까지 덧붙이면 안 됩니다.</span></div>
+    <div id="cap-20a" class="cap clip" data-start="118.121" data-duration="2.330"><span>셋째는 불변성으로, 한 번 정한</span></div>
+    <div id="cap-20b" class="cap clip" data-start="120.451" data-duration="2.868"><span>주문번호는 나중에 바뀌지 않아야 합니다.</span></div>
+    <div id="cap-21a" class="cap clip" data-start="123.419" data-duration="3.190"><span>넷째는 존재성으로, 주식별자에는 반드시</span></div>
+    <div id="cap-21b" class="cap clip" data-start="126.609" data-duration="2.847"><span>값이 있어야 하고 NULL이 올 수 없습니다.</span></div>
+    <div id="cap-22a" class="cap clip" data-start="130.105" data-duration="2.669"><span>식별자는 네 가지 기준으로 나눕니다.</span></div>
+    <div id="cap-23a" class="cap clip" data-start="132.875" data-duration="2.790"><span>대표성으로 보면, 다른 엔터티와 이어</span></div>
+    <div id="cap-23b" class="cap clip" data-start="135.665" data-duration="2.906"><span>주는 대표인 고객번호는 주식별자입니다.</span></div>
+    <div id="cap-24a" class="cap clip" data-start="138.670" data-duration="2.330"><span>이메일도 고객마다 달라 구분은 되지만,</span></div>
+    <div id="cap-24b" class="cap clip" data-start="141.000" data-duration="4.258"><span>바뀔 수 있어 대표로 쓰지 않으므로 보조식별자입니다.</span></div>
+    <div id="cap-25a" class="cap clip" data-start="145.359" data-duration="1.510"><span>스스로 만들었는지로 보면,</span></div>
+    <div id="cap-25b" class="cap clip" data-start="146.869" data-duration="4.116"><span>주문번호는 주문이 스스로 만든 내부식별자입니다.</span></div>
+    <div id="cap-26a" class="cap clip" data-start="151.084" data-duration="2.950"><span>주문에 들어 있는 고객번호는 관계를 통해 받아 온</span></div>
+    <div id="cap-26b" class="cap clip" data-start="154.034" data-duration="4.393"><span>외부식별자로, 데이터베이스에서는 외래키 역할을 합니다.</span></div>
+    <div id="cap-27a" class="cap clip" data-start="158.528" data-duration="3.350"><span>속성의 수로 보면, 주문번호는 단일식별자,</span></div>
+    <div id="cap-27b" class="cap clip" data-start="161.878" data-duration="4.011"><span>주문번호와 상품코드의 조합은 복합식별자입니다.</span></div>
+    <div id="cap-28a" class="cap clip" data-start="165.989" data-duration="5.150"><span>대체 여부로 보면, 업무에서 생긴 주문번호와 상품코드는 본질식별자,</span></div>
+    <div id="cap-28b" class="cap clip" data-start="171.139" data-duration="3.910"><span>일련번호로 만든 주문상품번호는 인조식별자입니다.</span></div>
+    <div id="cap-29a" class="cap clip" data-start="175.699" data-duration="1.950"><span>관계를 맺으면 부모 엔터티의</span></div>
+    <div id="cap-29b" class="cap clip" data-start="177.649" data-duration="2.943"><span>주식별자가 자식 엔터티로 내려옵니다.</span></div>
+    <div id="cap-30a" class="cap clip" data-start="180.692" data-duration="3.290"><span>주문의 주문번호는 주문상품에서 가로선 위,</span></div>
+    <div id="cap-30b" class="cap clip" data-start="183.982" data-duration="2.661"><span>곧 주식별자의 일부가 됩니다.</span></div>
+    <div id="cap-31a" class="cap clip" data-start="186.743" data-duration="2.670"><span>이런 관계가 식별자 관계이고,</span></div>
+    <div id="cap-31b" class="cap clip" data-start="189.413" data-duration="2.461"><span>IE 표기법에서는 실선으로 그립니다.</span></div>
+    <div id="cap-32a" class="cap clip" data-start="191.974" data-duration="2.070"><span>그래서 주문 없이는 주문상품도</span></div>
+    <div id="cap-32b" class="cap clip" data-start="194.044" data-duration="2.892"><span>생길 수 없는, 강한 연결입니다.</span></div>
+    <div id="cap-33a" class="cap clip" data-start="197.036" data-duration="2.650"><span>고객의 고객번호는 주문에서 가로선 아래,</span></div>
+    <div id="cap-33b" class="cap clip" data-start="199.686" data-duration="2.411"><span>일반 속성으로 들어갑니다.</span></div>
+    <div id="cap-34a" class="cap clip" data-start="202.197" data-duration="1.590"><span>이것이 비식별자 관계로,</span></div>
+    <div id="cap-34b" class="cap clip" data-start="203.787" data-duration="3.252"><span>약한 연결을 뜻하는 점선으로 그립니다.</span></div>
+    <div id="cap-35a" class="cap clip" data-start="207.689" data-duration="2.150"><span>주문상품 아래에 분할 배송을 기록하는</span></div>
+    <div id="cap-35b" class="cap clip" data-start="209.839" data-duration="2.621"><span>배송 엔터티를 둔다고 해 보겠습니다.</span></div>
+    <div id="cap-36a" class="cap clip" data-start="212.560" data-duration="3.590"><span>식별자 관계로 이으면 배송의 주식별자는 주문번호,</span></div>
+    <div id="cap-36b" class="cap clip" data-start="216.150" data-duration="4.418"><span>상품코드, 배송순번, 세 칸이 됩니다.</span></div>
+    <div id="cap-37a" class="cap clip" data-start="220.667" data-duration="2.530"><span>이렇게 아래로 갈수록 주식별자가 길어지고,</span></div>
+    <div id="cap-37b" class="cap clip" data-start="223.197" data-duration="2.728"><span>조인 조건도 복잡해집니다.</span></div>
+    <div id="cap-38a" class="cap clip" data-start="226.026" data-duration="2.510"><span>반대로 비식별자 관계에서는 부모의</span></div>
+    <div id="cap-38b" class="cap clip" data-start="228.536" data-duration="3.357"><span>주식별자가 그 아래로 더 내려가지 않습니다.</span></div>
+    <div id="cap-39a" class="cap clip" data-start="231.993" data-duration="1.690"><span>고객번호가 주문에서 멈추니,</span></div>
+    <div id="cap-39b" class="cap clip" data-start="233.683" data-duration="4.648"><span>고객별 주문상품을 보려면 주문을 거쳐 조인해야 합니다.</span></div>
+    <div id="cap-40a" class="cap clip" data-start="238.431" data-duration="3.450"><span>그래서 연결이 약할 때나, 자식이 독립된 식별자를</span></div>
+    <div id="cap-40b" class="cap clip" data-start="241.881" data-duration="3.792"><span>갖는 편이 나을 때 비식별자 관계를 고릅니다.</span></div>
+    <div id="cap-41a" class="cap clip" data-start="245.773" data-duration="1.790"><span>부모 없이도 자식이 생길 수 있는</span></div>
+    <div id="cap-41b" class="cap clip" data-start="247.563" data-duration="3.222"><span>선택 관계일 때도 비식별자 관계입니다.</span></div>
+    <div id="cap-42a" class="cap clip" data-start="250.885" data-duration="1.410"><span>비어 있을 수 있는 값은</span></div>
+    <div id="cap-42b" class="cap clip" data-start="252.295" data-duration="2.678"><span>주식별자가 될 수 없기 때문입니다.</span></div>
+    <div id="cap-43a" class="cap clip" data-start="255.622" data-duration="2.770"><span>처음 질문으로 돌아가, 주문상품번호를</span></div>
+    <div id="cap-43b" class="cap clip" data-start="258.392" data-duration="2.976"><span>주식별자로 두고 네 행을 넣어 보겠습니다.</span></div>
+    <div id="cap-44a" class="cap clip" data-start="261.468" data-duration="2.470"><span>그런데 첫 행과 네 번째 행은 주문번호도,</span></div>
+    <div id="cap-44b" class="cap clip" data-start="263.938" data-duration="2.455"><span>상품코드도 똑같습니다.</span></div>
+    <div id="cap-45a" class="cap clip" data-start="266.493" data-duration="2.610"><span>주문상품번호가 1번과 4번으로 다르니,</span></div>
+    <div id="cap-45b" class="cap clip" data-start="269.103" data-duration="3.509"><span>데이터베이스는 이 중복을 막지 못합니다.</span></div>
+    <div id="cap-46a" class="cap clip" data-start="272.712" data-duration="2.490"><span>주문번호와 상품코드가 주식별자였다면,</span></div>
+    <div id="cap-46b" class="cap clip" data-start="275.202" data-duration="3.617"><span>네 번째 행은 거부되고 세 행만 남습니다.</span></div>
+    <div id="cap-47a" class="cap clip" data-start="278.919" data-duration="2.350"><span>인조식별자를 두고도 중복을 막으려면,</span></div>
+    <div id="cap-47b" class="cap clip" data-start="281.269" data-duration="3.495"><span>두 속성에 UNIQUE 제약을 따로 걸어야 합니다.</span></div>
+    <div id="cap-48a" class="cap clip" data-start="284.864" data-duration="3.630"><span>그러면 주식별자 인덱스에 더해 UNIQUE 인덱스까지 생겨,</span></div>
+    <div id="cap-48b" class="cap clip" data-start="288.494" data-duration="4.365"><span>저장 공간과 입력, 수정 부담이 커집니다.</span></div>
+    <div id="cap-49a" class="cap clip" data-start="292.958" data-duration="2.830"><span>그래서 인조식별자는 본질식별자가 너무</span></div>
+    <div id="cap-49b" class="cap clip" data-start="295.788" data-duration="3.406"><span>복잡할 때처럼 꼭 필요한 경우에만 사용합니다.</span></div>
+    <div id="cap-50a" class="cap clip" data-start="299.845" data-duration="2.582"><span>시험장에서 챙길 것 세 가지입니다.</span></div>
+    <div id="cap-51a" class="cap clip" data-start="302.526" data-duration="3.530"><span>첫째, 주식별자의 특징은 유일성,</span></div>
+    <div id="cap-51b" class="cap clip" data-start="306.056" data-duration="5.793"><span>최소성, 불변성, 존재성, 네 가지입니다.</span></div>
+    <div id="cap-52a" class="cap clip" data-start="311.949" data-duration="5.530"><span>둘째, 부모의 주식별자가 자식의 주식별자로 가면 식별자 관계로 실선,</span></div>
+    <div id="cap-52b" class="cap clip" data-start="317.479" data-duration="3.904"><span>일반 속성으로 가면 비식별자 관계로 점선입니다.</span></div>
+    <div id="cap-53a" class="cap clip" data-start="321.483" data-duration="2.650"><span>셋째, 인조식별자는 단순하지만,</span></div>
+    <div id="cap-53b" class="cap clip" data-start="324.133" data-duration="4.166"><span>중복 데이터가 생길 수 있고 인덱스가 늘어납니다.</span></div>
+    <div id="cap-54a" class="cap clip" data-start="328.399" data-duration="2.790"><span>덧붙여, 부서와 사원처럼 소속 자체로</span></div>
+    <div id="cap-54b" class="cap clip" data-start="331.189" data-duration="3.147"><span>맺어지는 관계는 존재에 의한 관계입니다.</span></div>
+    <div id="cap-55a" class="cap clip" data-start="334.437" data-duration="2.110"><span>고객과 주문처럼 주문이라는 행위로</span></div>
+    <div id="cap-55b" class="cap clip" data-start="336.547" data-duration="3.068"><span>생기는 관계는 행위에 의한 관계입니다.</span></div>
+    <div id="cap-56a" class="cap clip" data-start="340.264" data-duration="2.894"><span>오늘 내용을 한 줄로 정리하면 이렇습니다.</span></div>
+    <div id="cap-57a" class="cap clip" data-start="343.258" data-duration="2.630"><span>부모의 주식별자가 자식의 가로선 위로 가면</span></div>
+    <div id="cap-57b" class="cap clip" data-start="345.888" data-duration="4.255"><span>식별자 관계, 아래로 가면 비식별자 관계입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

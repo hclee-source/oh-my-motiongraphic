@@ -1,0 +1,80 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .en { position: absolute; box-sizing: border-box; display: flex; flex-direction: column; width: 400px; padding-bottom: 8px; left: 192px; top: 300px; }
+    .en-n { height: 60px; padding-top: 8px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: 38px; font-weight: 900; }
+    .en-pk { position: relative; min-height: 56px; }
+    .en-at { position: relative; min-height: 112px; }
+    .en-dv { height: 4px; background: #18181B; border-radius: 2px; }
+    .en-r { position: relative; height: 56px; display: flex; align-items: center; padding-left: 36px; font-size: 34px; font-weight: 800; white-space: nowrap; }
+    .en-pk .en-r { color: var(--color-accent, #6B3FE6); }
+    .en-at .en-r { color: #3F3F46; }
+    .s05-pr { position: absolute; left: 206px; width: 372px; height: 56px; box-sizing: border-box; border-radius: 14px; opacity: 0; }
+    #s05-p1 { top: 362px; border: 4px solid var(--color-accent, #6B3FE6); }
+    #s05-p2 { top: 422px; border: 4px dashed #18181B; }
+    .s05-c { position: absolute; left: 760px; width: 968px; height: 118px; box-sizing: border-box; padding: 0 40px;
+      display: grid; grid-template-columns: 210px 1fr; align-items: center; }
+    #s05-c1 { top: 262px; } #s05-c2 { top: 402px; } #s05-c3 { top: 542px; } #s05-c4 { top: 682px; }
+    .s05-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    .s05-t { font-size: 48px; font-weight: 900; color: var(--color-ink2, #71717A); white-space: nowrap; }
+    .s05-d { font-size: 40px; font-weight: 800; white-space: nowrap; }
+    .s05-x { position: absolute; right: 36px; top: 33px; width: 52px; height: 52px; border-radius: 26px; background: #18181B; }
+    .s05-x > div { position: absolute; left: 12px; top: 23px; width: 28px; height: 5px; border-radius: 3px; background: #FFFFFF; }
+    .s05-x > div:first-child { transform: rotate(45deg); }
+    .s05-x > div:last-child { transform: rotate(-45deg); }
+  </style>
+  <div id="root" data-composition-id="s05" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3.5,8.6,15,20.3]"},{"id":"dur","type":"number","label":"장면 길이","default":26.5},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s05-all">
+      <div id="s05-head" class="x-head">주식별자의 네 가지 특징</div>
+      <div id="s05-e" class="en x-card x-hide">
+        <div class="en-n">주문</div>
+        <div class="en-pk"><div class="en-r">주문번호</div></div>
+        <div class="en-dv"></div>
+        <div class="en-at"><div class="en-r">주문일자</div><div class="en-r">고객번호</div></div>
+      </div>
+      <div class="s05-pr" id="s05-p1"></div>
+      <div class="s05-pr" id="s05-p2"></div>
+      <div class="s05-c x-card x-hide" id="s05-c1"><div class="s05-ring" id="s05-r1"></div><div class="s05-t" id="s05-t1">유일성</div><div class="s05-d">주문번호 하나 = 주문 한 건</div></div>
+      <div class="s05-c x-card x-hide" id="s05-c2"><div class="s05-ring" id="s05-r2"></div><div class="s05-t" id="s05-t2">최소성</div><div class="s05-d">주문번호 + 주문일자</div>
+        <div class="s05-x"><div></div><div></div></div></div>
+      <div class="s05-c x-card x-hide" id="s05-c3"><div class="s05-ring" id="s05-r3"></div><div class="s05-t" id="s05-t3">불변성</div><div class="s05-d">정한 번호는 그대로</div></div>
+      <div class="s05-c x-card x-hide" id="s05-c4"><div class="s05-ring" id="s05-r4"></div><div class="s05-t" id="s05-t4">존재성</div><div class="s05-d">값이 반드시 있다 · NULL 불가</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 26.5;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, ease: "back.out(1.6)" }, t);
+    const ACC = "#6B3FE6", INK2 = "#71717A";
+
+    // 17 네 가지 특징
+    ft("#s05-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s05-e", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.4));
+    fade("#s05-p1", at(0, 1.4), 0, 1);
+    const focus = (k, t) => {
+      stamp(`#s05-c${k}`, t);
+      fade(`#s05-r${k}`, t, 0, 1);
+      ft(`#s05-t${k}`, { color: INK2 }, { color: ACC }, t);
+      if (k > 1) {
+        fade(`#s05-r${k - 1}`, t, 1, 0);
+        ft(`#s05-t${k - 1}`, { color: ACC }, { color: INK2 }, t);
+      }
+    };
+    focus(1, at(1, 0.2));
+    focus(2, at(2, 0.2));
+    fade("#s05-p2", at(2, 2.4), 0, 1);
+    focus(3, at(3, 0.2));
+    fade("#s05-p2", at(3, 0.1), 1, 0);
+    focus(4, at(4, 0.2));
+    if (String(V.exit) !== "false") ft("#s05-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s05"] = tl;
+  </script>
+</template>

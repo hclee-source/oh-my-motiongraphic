@@ -1,0 +1,91 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s05-c { position: absolute; top: 262px; width: 744px; height: 520px; box-sizing: border-box; }
+    #s05-L { left: 192px; }
+    #s05-R { left: 984px; }
+    .s05-ti { position: absolute; left: 40px; top: 28px; font-size: 52px; font-weight: 900; white-space: nowrap; }
+    .s05-sub { position: absolute; left: 40px; top: 100px; font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); white-space: nowrap; opacity: 0; }
+    .s05-r { position: absolute; left: 100px; font-size: 38px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    .s05-lab { position: absolute; left: 40px; font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); white-space: nowrap; opacity: 0; }
+    .s05-dot { position: absolute; left: 44px; width: 16px; height: 16px; border-radius: 8px; background: #B4B4BE; opacity: 0; }
+    .s05-ck { position: absolute; left: 34px; width: 48px; height: 48px; opacity: 0; }
+    .s05-ck > div { position: absolute; height: 7px; border-radius: 3px; background: var(--color-accent, #6B3FE6); transform-origin: 0 50%; }
+    .s05-ck > div:first-child { left: 6px; top: 26px; width: 17px; transform: rotate(45deg); }
+    .s05-ck > div:last-child { left: 16px; top: 38px; width: 38px; transform: rotate(-52deg); }
+    .s05-xx { position: absolute; left: 34px; width: 48px; height: 48px; opacity: 0; }
+    .s05-xx > div { position: absolute; left: 0; top: 21px; width: 48px; height: 6px; border-radius: 3px; background: #18181B; }
+    .s05-xx > div:first-child { transform: rotate(45deg); }
+    .s05-xx > div:last-child { transform: rotate(-45deg); }
+    .s05-grp { opacity: 0; }
+    /* 아래 줄: 함정 칩 */
+    #s05-trap { left: 192px; top: 806px; height: 60px; padding-left: 88px; padding-right: 32px; font-size: 36px; }
+    #s05-trap .s05-tx { position: absolute; left: 26px; top: 14px; width: 32px; height: 32px; }
+    #s05-trap .s05-tx > div { position: absolute; left: 0; top: 13px; width: 32px; height: 6px; border-radius: 3px; background: #FFFFFF; }
+    #s05-trap .s05-tx > div:first-child { transform: rotate(45deg); }
+    #s05-trap .s05-tx > div:last-child { transform: rotate(-45deg); }
+  </style>
+  <div id="root" data-composition-id="s05" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.2,6.1,12.4,17.8,25.2,30.4]"},{"id":"dur","type":"number","label":"장면 길이","default":39},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"mx","type":"number","label":"무조건 시각","default":0},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s05-all">
+      <div id="s05-head" class="x-head">정규화하면 느려질까</div>
+      <div class="s05-c x-card x-hide" id="s05-L">
+        <div class="s05-ti">정규화</div>
+        <div class="s05-lab" id="s05-lq" style="top:112px">조회</div>
+        <div class="s05-dot" id="s05-d1" style="top:178px"></div><div class="s05-r" id="s05-t1" style="top:158px">조인이 늘면 느려질 수도</div>
+        <div class="s05-dot" id="s05-d2" style="top:248px"></div><div class="s05-r" id="s05-t2" style="top:228px">상품 목록만 볼 땐 가벼울 수도</div>
+        <div class="s05-ck" id="s05-c3" style="top:344px"><div></div><div></div></div>
+        <div class="s05-r" id="s05-t3" style="top:340px">입력 · 수정 · 삭제</div>
+        <div class="s05-lab" id="s05-s3" style="top:404px;left:100px">대체로 좋아지는 쪽</div>
+      </div>
+      <div class="s05-c x-card x-hide" id="s05-R">
+        <div class="s05-ti">반정규화</div>
+        <div class="s05-sub" id="s05-rs">조회를 위해 일부러 중복 · 통합</div>
+        <div class="s05-r" id="s05-rv" style="top:156px;left:40px;font-size:40px">정규화한 구조에 <span class="x-acc">변형</span>을 줌</div>
+        <div class="s05-dot" id="s05-e1" style="top:234px"></div><div class="s05-r" id="s05-u1" style="top:214px">주문 테이블에 고객이름을 다시 넣음</div>
+        <div class="s05-ck" id="s05-e2" style="top:280px"><div></div><div></div></div><div class="s05-r" id="s05-u2" style="top:276px">조회: 조인 없이 바로</div>
+        <div class="s05-xx" id="s05-e3" style="top:380px"><div></div><div></div></div><div class="s05-r" id="s05-u3" style="top:376px">입력 · 수정 · 삭제 부담</div>
+        <div class="s05-xx" id="s05-e4" style="top:450px"><div></div><div></div></div><div class="s05-r" id="s05-u4" style="top:446px">무결성 위험</div>
+      </div>
+      <div class="q-chip q-ng" id="s05-trap"><span class="s05-tx"><div></div><div></div></span>무조건 느려진다</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 39;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+
+    // 46 조인이 늘어 느려질 수는 있지만 무조건은 아님
+    ft("#s05-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s05-L", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    fade(["#s05-lq", "#s05-d1", "#s05-t1"], at(0, 1.2), 0, 1);
+    stamp("#s05-trap", X("mx", at(0, 4.0)));
+    // 47 상품 목록은 작은 상품 테이블 하나만 읽으면 되니 가벼울 수도
+    fade(["#s05-d2", "#s05-t2"], at(1, 1.6), 0, 1);
+    // 48 정규화하면 대체로 좋아지는 쪽은 입력, 수정, 삭제
+    fade(["#s05-t1", "#s05-d1", "#s05-t2", "#s05-d2", "#s05-lq", "#s05-trap"], at(2, 0.1), 1, 0.35);
+    fade(["#s05-c3", "#s05-t3"], at(2, 0.6), 0, 1);
+    fade("#s05-s3", at(2, 2.4), 0, 1);
+    // 49 반대로 조회 성능을 위해 일부러 중복이나 통합 = 반정규화
+    fade("#s05-L", at(3, 0.1), 1, 0.5);
+    ft("#s05-R", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(3, 0.3));
+    fade("#s05-rs", at(3, 1.4), 0, 1);
+    fade("#s05-rv", at(3, 3.6), 0, 1);
+    // 50 주문 테이블에 고객이름을 다시 넣으면 조인 없이 바로
+    fade(["#s05-e1", "#s05-u1"], at(4, 0.4), 0, 1);
+    fade(["#s05-e2", "#s05-u2"], at(4, 2.6), 0, 1);
+    // 51 대신 입력, 수정, 삭제 부담과 무결성 위험
+    fade(["#s05-e3", "#s05-u3"], at(5, 1.6), 0, 1);
+    fade(["#s05-e4", "#s05-u4"], at(5, 4.6), 0, 1);
+    if (String(V.exit) !== "false") ft("#s05-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s05"] = tl;
+  </script>
+</template>

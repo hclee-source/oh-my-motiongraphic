@@ -1,0 +1,77 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h3-a { left: 80px; top: 320px; width: 880px; height: 272px; }
+    #h3-a .q-th, #h3-a .q-tr { grid-template-columns: 274px 274px 274px; }
+    #h3-a .q-th { top: 24px; height: 64px; }
+    #h3-a .q-th > div { font-size: 36px; }
+    #h3-a .q-tr { height: 72px; }
+    #h3-a .q-tr > div { font-size: 54px; font-weight: 900; }
+    #h3-a .q-tr > div.q-null { font-size: 40px; font-weight: 700; }
+    .h3-nb { position: absolute; left: 598px; top: 176px; width: 224px; height: 72px; border-radius: 16px; border: 3px solid var(--color-accent, #6B3FE6);
+      box-sizing: border-box; opacity: 0; }
+    #h3-ar { position: absolute; left: 80px; top: 620px; width: 880px; text-align: center; font-size: 48px; font-weight: 900;
+      color: var(--color-accent, #6B3FE6); opacity: 0; }
+    #h3-b { left: 80px; top: 712px; width: 880px; height: 384px; }
+    #h3-b .q-th, #h3-b .q-tr { grid-template-columns: 220px 220px 220px 164px; }
+    #h3-b .q-th { top: 24px; height: 64px; }
+    #h3-b .q-th > div { font-size: 36px; }
+    #h3-b .q-tr { height: 64px; }
+    #h3-b .q-tr > div { font-size: 46px; }
+    #h3-b .q-tr > div.q-null { font-size: 36px; font-weight: 700; }
+    .h3-cnt { position: relative; height: 48px; }
+    .h3-cnt > span { position: absolute; left: 0; right: 0; top: 0; text-align: center; font-size: 40px; font-weight: 900; color: var(--color-accent, #6B3FE6); opacity: 0; }
+    .h3-r { opacity: 0; }
+    #h3-inc { left: 80px; top: 1134px; height: 84px; font-size: 38px; padding: 0 32px; border-radius: 42px; }
+  </style>
+  <div id="root" data-composition-id="h3" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3.18,7.07]"},{"id":"dur","type":"number","label":"장면 길이","default":10.05},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"nl","type":"number","label":"NULL 칸은 시각","default":4.6},{"id":"c3","type":"number","label":"3행 시각","default":6.1},{"id":"inc","type":"number","label":"INCLUDE 시각","default":8.2},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h3-all">
+      <div id="h3-a" class="x-card q-tb x-hide">
+        <div class="q-th"><div>이름</div><div>국어</div><div>영어</div></div>
+        <div class="h3-nb" id="h3-nb"></div>
+        <div class="q-tr" style="top:100px"><div>서연</div><div>85</div><div>95</div></div>
+        <div class="q-tr" style="top:176px"><div>도윤</div><div>75</div><div class="q-null">NULL</div></div>
+      </div>
+      <div id="h3-ar">▼ UNPIVOT</div>
+      <div id="h3-b" class="x-card q-tb x-hide">
+        <div class="q-th"><div>이름</div><div>과목</div><div>점수</div>
+          <div class="h3-cnt" data-layout-allow-overlap><span id="h3-c3">3행</span><span id="h3-c4">4행</span></div></div>
+        <div class="q-tr h3-r" id="h3-r0" style="top:100px"><div>서연</div><div>국어</div><div>85</div><div></div></div>
+        <div class="q-tr h3-r" id="h3-r1" style="top:166px"><div>서연</div><div>영어</div><div>95</div><div></div></div>
+        <div class="q-tr h3-r" id="h3-r2" style="top:232px"><div>도윤</div><div>국어</div><div>75</div><div></div></div>
+        <div class="q-tr h3-r" id="h3-r3" style="top:298px"><div>도윤</div><div>영어</div><div class="q-null">NULL</div><div></div></div>
+      </div>
+      <div id="h3-inc" class="q-chip q-ok">+ INCLUDE NULLS</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 10.05;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+
+    // 8 UNPIVOT은 반대로 열을 행으로
+    ft("#h3-a", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0));
+    fade("#h3-ar", at(0, 0.9), 0, 1);
+    ft("#h3-b", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 1.3));
+    // 9 칸 네 개 가운데 NULL 칸은 빠져 3행
+    ["#h3-r0", "#h3-r1", "#h3-r2"].forEach((r, j) => ft(r, { opacity: 0, y: -12 }, { opacity: 1, y: 0 }, at(1, 0.2 + j * 0.3)));
+    fade("#h3-nb", Number(V.nl) || at(1, 1.3), 0, 1);
+    fade("#h3-c3", Number(V.c3) || at(1, 2.8), 0, 1);
+    // 10 NULL도 남기려면 INCLUDE NULLS → 4행
+    const inc = Number(V.inc) || at(2, 1.2);
+    stamp("#h3-inc", inc - 0.2);
+    ft("#h3-r3", { opacity: 0, y: -12 }, { opacity: 1, y: 0 }, inc + 0.5);
+    fade("#h3-c3", inc + 0.6, 1, 0);
+    fade("#h3-c4", inc + 0.8, 0, 1);
+    if (String(V.exit) !== "false") ft("#h3-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h3"] = tl;
+  </script>
+</template>

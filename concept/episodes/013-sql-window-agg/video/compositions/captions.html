@@ -1,0 +1,115 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 108px; text-align: center; overflow: visible;
+      font-size: 46px; font-weight: 600; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 1536px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-01a" class="cap clip" data-start="3.600" data-duration="1.250"><span>SUM(급여) OVER (ORDER</span></div>
+    <div id="cap-01b" class="cap clip" data-start="4.850" data-duration="2.502"><span>BY 급여)로 누적합을 구했습니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="7.452" data-duration="2.690"><span>급여는 200, 300,</span></div>
+    <div id="cap-02b" class="cap clip" data-start="10.142" data-duration="4.158"><span>300, 500, 700입니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="14.400" data-duration="2.650"><span>결과는 200, 800,</span></div>
+    <div id="cap-03b" class="cap clip" data-start="17.050" data-duration="4.131"><span>800, 1300, 2000입니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="21.281" data-duration="2.270"><span>두 번째 행은 200 더하기 300,</span></div>
+    <div id="cap-04b" class="cap clip" data-start="23.551" data-duration="3.304"><span>500이어야 할 것 같은데 800이 나왔습니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="26.954" data-duration="1.410"><span>급여가 같은 두 행은 왜</span></div>
+    <div id="cap-05b" class="cap clip" data-start="28.364" data-duration="2.114"><span>똑같이 800을 받았을까요?</span></div>
+    <div id="cap-06a" class="cap clip" data-start="30.578" data-duration="2.110"><span>오늘은 이 질문으로 시작해 윈도우</span></div>
+    <div id="cap-06b" class="cap clip" data-start="32.688" data-duration="2.374"><span>함수의 범위를 정리해 보겠습니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="35.712" data-duration="2.150"><span>직원 다섯 명을 급여 순으로 놓았고,</span></div>
+    <div id="cap-07b" class="cap clip" data-start="37.862" data-duration="3.933"><span>급여가 300으로 같은 사람은 지영과 현우입니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="41.895" data-duration="2.690"><span>SUM(급여) 뒤에 OVER를 붙이고 괄호를 비워 두면,</span></div>
+    <div id="cap-08b" class="cap clip" data-start="44.585" data-duration="3.185"><span>전체 합계 2000이 모든 행에 붙습니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="47.870" data-duration="3.050"><span>순위 함수와 마찬가지로, 윈도우 함수는 행을</span></div>
+    <div id="cap-09b" class="cap clip" data-start="50.920" data-duration="3.394"><span>줄이지 않고 행마다 값을 하나씩 붙입니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="54.414" data-duration="3.510"><span>괄호 안에 PARTITION BY 부서를 적으면 부서별 합계가 붙어서,</span></div>
+    <div id="cap-10b" class="cap clip" data-start="57.924" data-duration="4.595"><span>영업 세 명은 1200, 개발 두 명은 800입니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="63.170" data-duration="1.750"><span>이번에는 괄호 안에 ORDER</span></div>
+    <div id="cap-11b" class="cap clip" data-start="64.920" data-duration="1.391"><span>BY 급여를 적습니다.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="66.411" data-duration="1.970"><span>그러면 합계가 한꺼번에 붙지 않고,</span></div>
+    <div id="cap-12b" class="cap clip" data-start="68.381" data-duration="2.906"><span>급여 순으로 차곡차곡 쌓입니다.</span></div>
+    <div id="cap-13a" class="cap clip" data-start="71.387" data-duration="2.890"><span>민수는 200, 지영과 현우는 200에</span></div>
+    <div id="cap-13b" class="cap clip" data-start="74.277" data-duration="3.049"><span>300을 두 번 더한 800을 똑같이 받습니다.</span></div>
+    <div id="cap-14a" class="cap clip" data-start="77.426" data-duration="3.370"><span>이어서 수진은 1300, 동훈은 2000으로,</span></div>
+    <div id="cap-14b" class="cap clip" data-start="80.796" data-duration="2.915"><span>마지막 값은 전체 합계와 같습니다.</span></div>
+    <div id="cap-15a" class="cap clip" data-start="84.361" data-duration="3.037"><span>이유는 적지 않고 생략한 범위에 있습니다.</span></div>
+    <div id="cap-16a" class="cap clip" data-start="87.498" data-duration="3.290"><span>OVER 안에 ORDER BY만 적으면, 범위는 RANGE BETWEEN</span></div>
+    <div id="cap-16b" class="cap clip" data-start="90.788" data-duration="3.374"><span>UNBOUNDED PRECEDING AND CURRENT ROW가 됩니다.</span></div>
+    <div id="cap-17a" class="cap clip" data-start="94.263" data-duration="3.598"><span>맨 처음 행부터 현재 행까지 더하라는 뜻입니다.</span></div>
+    <div id="cap-18a" class="cap clip" data-start="97.960" data-duration="2.270"><span>그런데 RANGE는 행을 하나씩 세지 않고,</span></div>
+    <div id="cap-18b" class="cap clip" data-start="100.230" data-duration="3.663"><span>정렬 기준인 급여 값으로 범위를 정합니다.</span></div>
+    <div id="cap-19a" class="cap clip" data-start="103.993" data-duration="1.710"><span>그래서 현재 행과 급여가 같은</span></div>
+    <div id="cap-19b" class="cap clip" data-start="105.703" data-duration="2.873"><span>행은 모두 함께 범위에 들어갑니다.</span></div>
+    <div id="cap-20a" class="cap clip" data-start="108.677" data-duration="2.750"><span>지영의 누적을 구할 때 같은 300인 현우까지</span></div>
+    <div id="cap-20b" class="cap clip" data-start="111.427" data-duration="3.656"><span>더해져서, 두 사람 모두 800이 된 겁니다.</span></div>
+    <div id="cap-21a" class="cap clip" data-start="115.733" data-duration="2.170"><span>한 행씩 더하고 싶다면 RANGE</span></div>
+    <div id="cap-21b" class="cap clip" data-start="117.903" data-duration="2.078"><span>대신 ROWS를 적습니다.</span></div>
+    <div id="cap-22a" class="cap clip" data-start="120.081" data-duration="3.970"><span>ROWS는 실제 행 개수를 세므로, 결과는 200,</span></div>
+    <div id="cap-22b" class="cap clip" data-start="124.051" data-duration="5.604"><span>500, 800, 1300, 2000입니다.</span></div>
+    <div id="cap-23a" class="cap clip" data-start="129.755" data-duration="2.710"><span>같은 300이어도 먼저 온 행은 500,</span></div>
+    <div id="cap-23b" class="cap clip" data-start="132.465" data-duration="2.624"><span>다음 행은 800으로 갈립니다.</span></div>
+    <div id="cap-24a" class="cap clip" data-start="135.189" data-duration="1.910"><span>다만 지영과 현우 가운데 누가</span></div>
+    <div id="cap-24b" class="cap clip" data-start="137.099" data-duration="2.728"><span>먼저 오는지는 정해져 있지 않습니다.</span></div>
+    <div id="cap-25a" class="cap clip" data-start="140.477" data-duration="2.750"><span>PARTITION BY 부서와 ORDER BY 급여를 함께 적으면,</span></div>
+    <div id="cap-25b" class="cap clip" data-start="143.227" data-duration="4.424"><span>부서가 바뀔 때마다 누적이 처음부터 다시 시작합니다.</span></div>
+    <div id="cap-26a" class="cap clip" data-start="147.751" data-duration="4.110"><span>영업은 200, 500, 1200,</span></div>
+    <div id="cap-26b" class="cap clip" data-start="151.861" data-duration="3.420"><span>개발은 300, 800입니다.</span></div>
+    <div id="cap-27a" class="cap clip" data-start="155.381" data-duration="1.990"><span>부서 안에는 같은 급여가 없으니,</span></div>
+    <div id="cap-27b" class="cap clip" data-start="157.371" data-duration="2.889"><span>ROWS로 적어도 결과가 같습니다.</span></div>
+    <div id="cap-28a" class="cap clip" data-start="160.910" data-duration="3.350"><span>ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING처럼 적으면,</span></div>
+    <div id="cap-28b" class="cap clip" data-start="164.260" data-duration="6.111"><span>바로 앞 행, 현재 행, 바로 뒤 행, 세 행만 더합니다.</span></div>
+    <div id="cap-29a" class="cap clip" data-start="170.471" data-duration="2.790"><span>결과는 500, 800,</span></div>
+    <div id="cap-29b" class="cap clip" data-start="173.261" data-duration="4.419"><span>1100, 1500, 1200입니다.</span></div>
+    <div id="cap-30a" class="cap clip" data-start="177.780" data-duration="2.270"><span>첫 행과 마지막 행은 이웃이 하나뿐이라,</span></div>
+    <div id="cap-30b" class="cap clip" data-start="180.050" data-duration="4.838"><span>200과 300, 500과 700처럼 두 행만 더합니다.</span></div>
+    <div id="cap-31a" class="cap clip" data-start="185.538" data-duration="1.810"><span>LAG(급여)는 범위와 상관없이,</span></div>
+    <div id="cap-31b" class="cap clip" data-start="187.348" data-duration="4.458"><span>정렬 순서상 바로 앞 행의 급여를 그대로 가져옵니다.</span></div>
+    <div id="cap-32a" class="cap clip" data-start="191.906" data-duration="2.190"><span>첫 행은 앞 행이 없어서 NULL이고,</span></div>
+    <div id="cap-32b" class="cap clip" data-start="194.096" data-duration="6.160"><span>그다음부터 200, 300, 300, 500입니다.</span></div>
+    <div id="cap-33a" class="cap clip" data-start="200.355" data-duration="4.270"><span>LAG(급여, 2, 0)처럼 적으면 두 행 앞의 급여를 가져오고,</span></div>
+    <div id="cap-33b" class="cap clip" data-start="204.625" data-duration="3.768"><span>가져올 행이 없을 때는 NULL 대신 0을 돌려줍니다.</span></div>
+    <div id="cap-34a" class="cap clip" data-start="208.493" data-duration="2.030"><span>그래서 처음 두 행은 0이고,</span></div>
+    <div id="cap-34b" class="cap clip" data-start="210.523" data-duration="4.811"><span>세 번째 행부터 200, 300, 300입니다.</span></div>
+    <div id="cap-35a" class="cap clip" data-start="215.435" data-duration="1.770"><span>LEAD(급여)는 반대로 바로 뒤 행의</span></div>
+    <div id="cap-35b" class="cap clip" data-start="217.205" data-duration="3.627"><span>급여를 가져와서, 마지막 행이 NULL입니다.</span></div>
+    <div id="cap-36a" class="cap clip" data-start="221.482" data-duration="3.427"><span>기본 범위 때문에 생기는 함정이 하나 더 있습니다.</span></div>
+    <div id="cap-37a" class="cap clip" data-start="225.009" data-duration="2.650"><span>FIRST_VALUE(급여)는 범위의 첫 값을 가져오니,</span></div>
+    <div id="cap-37b" class="cap clip" data-start="227.659" data-duration="3.703"><span>모든 행이 가장 작은 급여 200을 받습니다.</span></div>
+    <div id="cap-38a" class="cap clip" data-start="231.462" data-duration="1.730"><span>그렇다면 LAST_VALUE(급여)는</span></div>
+    <div id="cap-38b" class="cap clip" data-start="233.192" data-duration="2.806"><span>모든 행이 가장 큰 700을 받을까요?</span></div>
+    <div id="cap-39a" class="cap clip" data-start="236.098" data-duration="3.256"><span>실제로는 각자 자기 급여가 그대로 나옵니다.</span></div>
+    <div id="cap-40a" class="cap clip" data-start="239.455" data-duration="3.110"><span>급여로 정렬했으니, 현재 행에서 끝나는 기본</span></div>
+    <div id="cap-40b" class="cap clip" data-start="242.565" data-duration="3.133"><span>범위의 마지막 급여는 곧 자기 급여인 겁니다.</span></div>
+    <div id="cap-41a" class="cap clip" data-start="245.798" data-duration="3.290"><span>맨 끝까지 보려면 ROWS BETWEEN UNBOUNDED PRECEDING</span></div>
+    <div id="cap-41b" class="cap clip" data-start="249.088" data-duration="3.310"><span>AND UNBOUNDED FOLLOWING을 적어야 700이 나옵니다.</span></div>
+    <div id="cap-42a" class="cap clip" data-start="253.048" data-duration="3.370"><span>비율 함수 RATIO_TO_REPORT는 전체 합계에 대한 비율로,</span></div>
+    <div id="cap-42b" class="cap clip" data-start="256.418" data-duration="3.921"><span>급여 500인 수진은 2000의 0.25입니다.</span></div>
+    <div id="cap-43a" class="cap clip" data-start="260.439" data-duration="3.590"><span>이 함수는 오라클 전용이고, OVER 안에 ORDER</span></div>
+    <div id="cap-43b" class="cap clip" data-start="264.029" data-duration="2.560"><span>BY 없이 PARTITION BY만 적을 수 있습니다.</span></div>
+    <div id="cap-44a" class="cap clip" data-start="266.689" data-duration="3.210"><span>반면 PERCENT_RANK, CUME_DIST,</span></div>
+    <div id="cap-44b" class="cap clip" data-start="269.899" data-duration="3.025"><span>NTILE은 OVER 안에 ORDER BY가 있어야 합니다.</span></div>
+    <div id="cap-45a" class="cap clip" data-start="273.024" data-duration="2.910"><span>PERCENT_RANK는 순위 빼기 1을 행 수 빼기 1로</span></div>
+    <div id="cap-45b" class="cap clip" data-start="275.934" data-duration="4.126"><span>나눈 값이라, 맨 앞 행이 0이고 맨 뒤 행이 1입니다.</span></div>
+    <div id="cap-46a" class="cap clip" data-start="280.160" data-duration="2.710"><span>CUME_DIST는 나보다 작거나 같은 행의 비율이라,</span></div>
+    <div id="cap-46b" class="cap clip" data-start="282.870" data-duration="4.673"><span>300인 두 사람은 5행 중 3행, 0.6입니다.</span></div>
+    <div id="cap-47a" class="cap clip" data-start="287.642" data-duration="2.210"><span>NTILE(2)는 행을 두 묶음으로 나누는데,</span></div>
+    <div id="cap-47b" class="cap clip" data-start="289.852" data-duration="4.455"><span>남는 한 행은 앞 묶음이 받아서 3행과 2행이 됩니다.</span></div>
+    <div id="cap-48a" class="cap clip" data-start="294.957" data-duration="2.558"><span>시험장에서 챙길 것 네 가지입니다.</span></div>
+    <div id="cap-49a" class="cap clip" data-start="297.615" data-duration="3.330"><span>첫째, OVER에 ORDER BY만 적으면 기본 범위는</span></div>
+    <div id="cap-49b" class="cap clip" data-start="300.945" data-duration="4.082"><span>RANGE이고, 같은 값의 행은 같은 누적값을 받습니다.</span></div>
+    <div id="cap-50a" class="cap clip" data-start="305.127" data-duration="2.810"><span>둘째, ROWS는 행 개수로,</span></div>
+    <div id="cap-50b" class="cap clip" data-start="307.937" data-duration="2.911"><span>RANGE는 정렬한 값으로 범위를 정합니다.</span></div>
+    <div id="cap-51a" class="cap clip" data-start="310.949" data-duration="5.090"><span>셋째, LAG는 앞 행, LEAD는 뒤 행의 값을 가져오고,</span></div>
+    <div id="cap-51b" class="cap clip" data-start="316.039" data-duration="3.485"><span>없으면 NULL이나 세 번째 인수로 적은 값이 나옵니다.</span></div>
+    <div id="cap-52a" class="cap clip" data-start="319.624" data-duration="3.630"><span>넷째, LAST_VALUE로 마지막 값을 보려면 범위를</span></div>
+    <div id="cap-52b" class="cap clip" data-start="323.254" data-duration="2.520"><span>UNBOUNDED FOLLOWING까지 넓혀야 합니다.</span></div>
+    <div id="cap-53a" class="cap clip" data-start="326.424" data-duration="2.894"><span>오늘 내용을 한 줄로 정리하면 이렇습니다.</span></div>
+    <div id="cap-54a" class="cap clip" data-start="329.418" data-duration="2.510"><span>ORDER BY만 적으면 RANGE라서 같은 값은</span></div>
+    <div id="cap-54b" class="cap clip" data-start="331.928" data-duration="3.989"><span>함께 더해지고, 한 행씩 더하려면 ROWS를 적습니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

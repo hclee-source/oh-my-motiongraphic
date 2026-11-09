@@ -1,0 +1,50 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s09-b { position: absolute; top: 290px; width: 490px; height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .s09-kw { font-size: 52px; font-weight: 900; white-space: nowrap; }
+    .s09-v { margin-top: 26px; font-size: 44px; font-weight: 800; white-space: nowrap; }
+    .s09-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    #s09-fk { position: absolute; left: 192px; top: 630px; width: 1536px; height: 176px; display: flex; align-items: center; justify-content: center;
+      font-size: 48px; font-weight: 800; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="s09" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,3]"},{"id":"dur","type":"number","label":"장면 길이","default":16},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"w1","type":"number","label":"DELETE만 시각","default":3},{"id":"w2","type":"number","label":"TRUNCATE는 시각","default":5},{"id":"w3","type":"number","label":"DROP은 시각","default":7},{"id":"fk","type":"number","label":"외래키는 시각","default":10},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s09-all">
+      <div id="s09-head" class="x-head">한 줄 정리</div>
+      <div class="s09-b x-card x-hide" id="s09-b1" style="left:192px"><div class="s09-ring" id="s09-o1"></div>
+        <div class="s09-kw">DELETE</div><div class="s09-v x-acc">되돌릴 수 있음</div></div>
+      <div class="s09-b x-card x-hide" id="s09-b2" style="left:715px"><div class="s09-ring" id="s09-o2"></div>
+        <div class="s09-kw">TRUNCATE</div><div class="s09-v">빈 표만 남음</div></div>
+      <div class="s09-b x-card x-hide" id="s09-b3" style="left:1238px"><div class="s09-ring" id="s09-o3"></div>
+        <div class="s09-kw">DROP</div><div class="s09-v">아무것도 없음</div></div>
+      <div id="s09-fk" class="x-card x-hide"><span>외래키는 <span class="x-acc">부모에 있는 값과 NULL</span>만</span></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+
+    // 52 한 줄로 정리하면
+    ft("#s09-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    // 53 DELETE만 되돌리고, TRUNCATE는 빈 표, DROP은 아무것도 — 외래키는 부모 값과 NULL만
+    const w = [X("w1", at(1, 0)), X("w2", at(1, 2.0)), X("w3", at(1, 3.6))];
+    w.forEach((t, j) => {
+      const k = j + 1;
+      ft(`#s09-b${k}`, { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, Math.max(at(1, 0), t - 0.1));
+      fade(`#s09-o${k}`, t, 0, 1);
+      if (k > 1) fade(`#s09-o${k - 1}`, t, 1, 0);
+    });
+    const fk = X("fk", at(1, 6.0));
+    fade("#s09-o3", fk, 1, 0);
+    ft("#s09-fk", { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, fk - 0.1);
+    window.__timelines["s09"] = tl;
+  </script>
+</template>

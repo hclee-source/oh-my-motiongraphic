@@ -1,0 +1,64 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h5-code { left: 80px; top: 330px; width: 920px; }
+    #h5-code .q-ln { font-size: 40px; height: 76px; padding: 0 44px; }
+    .h5-cw { position: relative; display: block; width: 820px; height: 76px; }
+    .h5-cw > span { position: absolute; left: 0; top: 0; line-height: 76px; white-space: nowrap; opacity: 0; }
+    #h5-str { position: absolute; left: 80px; top: 590px; width: 920px; height: 220px; display: flex; align-items: center; justify-content: center; }
+    #h5-sw { position: relative; display: inline-block; padding: 6px 18px; font-size: 76px; font-weight: 900; white-space: nowrap; line-height: 1.25; }
+    .h5-ring { position: absolute; left: 0; right: 0; top: -2px; bottom: -2px; border-radius: 18px; border: 5px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    .h5-p { position: relative; display: inline-block; padding: 0 10px; }
+    .h5-t { position: relative; }
+    #h5-note { position: absolute; left: 80px; top: 860px; width: 860px; height: 120px; }
+    .h5-n { position: absolute; left: 32px; right: 32px; top: 20px; bottom: 20px; display: flex; align-items: center; justify-content: center;
+      font-size: 44px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    .h5-n .x-acc { margin: 0 14px; }
+  </style>
+  <div id="root" data-composition-id="h5" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,7.05,11.55]"},{"id":"dur","type":"number","label":"장면 길이","default":14.5},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"w1","type":"number","label":"전체가 시각","default":5.2},{"id":"w2","type":"number","label":"하나 둘만 시각","default":13},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h5-all">
+      <div id="h5-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">REGEXP_SUBSTR</span>('하나 둘 하나 둘',</span></div>
+        <div class="q-ln"><span class="h5-cw" data-layout-allow-overlap><span id="h5-v1">&nbsp;&nbsp;'하나.*둘')</span><span id="h5-v2">&nbsp;&nbsp;'하나.*?둘')</span></span></div>
+      </div>
+      <div id="h5-str" class="x-card x-hide">
+        <span id="h5-sw"><span class="h5-ring" id="h5-ra"></span><span class="h5-p"><span class="h5-ring" id="h5-rb"></span><span class="h5-t">하나 둘</span></span><span class="h5-t"> 하나 둘</span></span>
+      </div>
+      <div id="h5-note" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="h5-n" id="h5-n1">.*<span class="x-acc">→</span>가장 길게</div>
+        <div class="h5-n" id="h5-n2">.*?<span class="x-acc">→</span>가장 짧게</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 14.5;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k] ?? d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+
+    // 9 ‘하나 둘 하나 둘’에서 하나로 시작해 둘로 끝나는 부분 → 전체
+    ft("#h5-str", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0));
+    ft("#h5-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 1.6));
+    fade("#h5-v1", at(0, 1.6), 0, 1);
+    ft("#h5-ra", { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1 }, X("w1", 5.2));
+    // 10 점과 별표가 맞출 수 있는 가장 긴 부분을
+    ft("#h5-note", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(1, 0.1));
+    fade("#h5-n1", at(1, 0.2), 0, 1);
+    // 11 별표 뒤에 물음표 → 하나 둘만
+    fade("#h5-v1", at(2, 0), 1, 0);
+    fade("#h5-v2", at(2, 0.15), 0, 1);
+    fade("#h5-n1", at(2, 0.3), 1, 0);
+    fade("#h5-n2", at(2, 0.45), 0, 1);
+    fade("#h5-ra", X("w2", 13) - 0.4, 1, 0);
+    fade("#h5-rb", X("w2", 13) - 0.2, 0, 1);
+    if (String(V.exit) !== "false") ft("#h5-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h5"] = tl;
+  </script>
+</template>

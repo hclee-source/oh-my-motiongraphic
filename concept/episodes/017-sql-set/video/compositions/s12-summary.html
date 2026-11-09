@@ -1,0 +1,41 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s12-c { position: absolute; left: 192px; width: 1536px; height: 128px; box-sizing: border-box; }
+    .s12-k { position: absolute; left: 56px; top: 0; height: 128px; display: flex; align-items: center; font-size: 46px; font-weight: 800; white-space: nowrap; }
+    .s12-v { position: absolute; left: 820px; top: 0; height: 128px; display: flex; align-items: center; font-size: 56px; font-weight: 900;
+      color: var(--color-accent, #6B3FE6); white-space: nowrap; }
+    .s12-ar { position: absolute; left: 680px; top: 0; height: 128px; display: flex; align-items: center; font-size: 48px; font-weight: 900;
+      color: var(--color-ink2, #71717A); }
+  </style>
+  <div id="root" data-composition-id="s12" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3.45]"},{"id":"dur","type":"number","label":"장면 길이","default":13.9},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"w2","type":"number","label":"중복 없이 시각","default":5.6},{"id":"w3","type":"number","label":"겹치는 시각","default":7.8},{"id":"w4","type":"number","label":"위에만 시각","default":9.6},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s12-all">
+      <div id="s12-head" class="x-head">한 줄 정리</div>
+      <div class="s12-c x-card x-hide" id="s12-c1" style="top:262px"><div class="s12-k">모두 합치기</div><div class="s12-ar">→</div><div class="s12-v">UNION ALL</div></div>
+      <div class="s12-c x-card x-hide" id="s12-c2" style="top:414px"><div class="s12-k">중복 없이 합치기</div><div class="s12-ar">→</div><div class="s12-v">UNION</div></div>
+      <div class="s12-c x-card x-hide" id="s12-c3" style="top:566px"><div class="s12-k">겹치는 것만</div><div class="s12-ar">→</div><div class="s12-v">INTERSECT</div></div>
+      <div class="s12-c x-card x-hide" id="s12-c4" style="top:718px"><div class="s12-k">위에만 있는 것</div><div class="s12-ar">→</div><div class="s12-v">MINUS</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const rise = (sel, t) => ft(sel, { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, t);
+
+    // 53 한 줄로 정리하면
+    ft("#s12-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    // 54 모두 합치면 UNION ALL, 중복 없이 UNION, 겹치는 것만 INTERSECT, 위에만 MINUS
+    rise("#s12-c1", at(1, -0.1));
+    rise("#s12-c2", X("w2", at(1, 2.2)) - 0.1);
+    rise("#s12-c3", X("w3", at(1, 4.4)) - 0.1);
+    rise("#s12-c4", X("w4", at(1, 6.2)) - 0.1);
+    window.__timelines["s12"] = tl;
+  </script>
+</template>

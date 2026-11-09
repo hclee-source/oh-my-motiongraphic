@@ -1,0 +1,69 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s02-box { position: absolute; top: 262px; width: 748px; height: 290px; padding: 30px 44px; box-sizing: border-box; }
+    #s02-like { left: 192px; }
+    #s02-re { left: 980px; }
+    .s02-t { font-size: 40px; font-weight: 900; }
+    .s02-row { margin-top: 26px; display: flex; align-items: baseline; gap: 28px; white-space: nowrap; }
+    .s02-sym { width: 220px; font-size: 48px; font-weight: 900; }
+    .s02-mean { font-size: 36px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    .s02-fn { position: absolute; top: 590px; width: 288px; height: 256px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .s02-pre { font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    .s02-nm { margin-top: 4px; font-size: 46px; font-weight: 900; }
+    .s02-role { margin-top: 18px; font-size: 38px; font-weight: 800; color: var(--color-accent, #6B3FE6); }
+  </style>
+  <div id="root" data-composition-id="s02" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,7,13.8,24.3]"},{"id":"dur","type":"number","label":"장면 길이","default":30.9},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"e1","type":"number","label":"숫자 네 개 시각","default":1.5},{"id":"e2","type":"number","label":"대문자로 시각","default":3},{"id":"e3","type":"number","label":"종류 시각","default":10.5},{"id":"e4","type":"number","label":"반복 횟수 시각","default":11.5},{"id":"f1","type":"number","label":"조건을 시각","default":17},{"id":"f2","type":"number","label":"뽑는 시각","default":19},{"id":"f3","type":"number","label":"바꾸는 시각","default":21},{"id":"f4","type":"number","label":"위치를 시각","default":25},{"id":"f5","type":"number","label":"개수를 시각","default":27.5},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s02-all">
+      <div id="s02-head" class="x-head">정규 표현식과 함수 다섯 개</div>
+      <div id="s02-like" class="s02-box x-card x-hide">
+        <div class="s02-t">LIKE</div>
+        <div class="s02-row"><div class="s02-sym">%</div><div class="s02-mean">0개 이상 아무 글자</div></div>
+        <div class="s02-row"><div class="s02-sym">_</div><div class="s02-mean">아무 글자 하나</div></div>
+      </div>
+      <div id="s02-re" class="s02-box x-card x-hide">
+        <div class="s02-t">정규 표현식</div>
+        <div class="s02-row" id="s02-ra"><div class="s02-sym"><span id="s02-k">[0-9]</span><span id="s02-n">{4}</span></div><div class="s02-mean">숫자 네 개</div></div>
+        <div class="s02-row" id="s02-rb"><div class="s02-sym">^[A-Z]</div><div class="s02-mean">대문자로 시작</div></div>
+      </div>
+      <div class="s02-fn x-card x-hide" id="s02-f1" style="left:192px"><div class="s02-pre">REGEXP_</div><div class="s02-nm">LIKE</div><div class="s02-role">조건</div></div>
+      <div class="s02-fn x-card x-hide" id="s02-f2" style="left:504px"><div class="s02-pre">REGEXP_</div><div class="s02-nm">SUBSTR</div><div class="s02-role">뽑기</div></div>
+      <div class="s02-fn x-card x-hide" id="s02-f3" style="left:816px"><div class="s02-pre">REGEXP_</div><div class="s02-nm">REPLACE</div><div class="s02-role">바꾸기</div></div>
+      <div class="s02-fn x-card x-hide" id="s02-f4" style="left:1128px"><div class="s02-pre">REGEXP_</div><div class="s02-nm">INSTR</div><div class="s02-role">위치</div></div>
+      <div class="s02-fn x-card x-hide" id="s02-f5" style="left:1440px"><div class="s02-pre">REGEXP_</div><div class="s02-nm">COUNT</div><div class="s02-role">개수</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 30.9;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k] ?? d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const ACC = "#6B3FE6", INK = "#18181B";
+
+    // 6 정규 표현식 = 문자열의 모양을 기호로(‘숫자 네 개’, ‘대문자로 시작’)
+    ft("#s02-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s02-re", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    ft("#s02-ra", { opacity: 0, y: 8 }, { opacity: 1, y: 0 }, X("e1", 1.5) - 0.1);
+    ft("#s02-rb", { opacity: 0, y: 8 }, { opacity: 1, y: 0 }, X("e2", 3) - 0.1);
+    // 7 LIKE의 %와 _보다 자세하게 — 글자의 종류와 반복 횟수
+    ft("#s02-like", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(1, 0.1));
+    ft("#s02-k", { color: INK }, { color: ACC }, X("e3", 10.5));
+    ft("#s02-n", { color: INK }, { color: ACC }, X("e4", 11.5));
+    // 8 함수 다섯 개 — 조건 · 뽑기 · 바꾸기가 기본
+    fade(["#s02-like", "#s02-re"], at(2, 0.2), 1, 0.4);
+    [["#s02-f1", "f1", 17], ["#s02-f2", "f2", 19], ["#s02-f3", "f3", 21]].forEach(([id, k, d]) =>
+      ft(id, { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, X(k, d) - 0.1));
+    // 9 위치 · 개수
+    [["#s02-f4", "f4", 25], ["#s02-f5", "f5", 27.5]].forEach(([id, k, d]) =>
+      ft(id, { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, X(k, d) - 0.1));
+    if (String(V.exit) !== "false") ft("#s02-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s02"] = tl;
+  </script>
+</template>

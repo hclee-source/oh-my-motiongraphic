@@ -1,0 +1,76 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s09-c { position: absolute; left: 192px; width: 1536px; height: 160px; box-sizing: border-box; }
+    #s09-u { top: 262px; }
+    #s09-a { top: 462px; }
+    .s09-op { position: absolute; left: 56px; top: 0; height: 160px; display: flex; align-items: center; font-size: 52px; font-weight: 900; white-space: nowrap; }
+    .s09-box { position: absolute; top: 32px; height: 96px; padding: 0 36px; box-sizing: border-box; border: 3px solid var(--color-hair, #D3D6DD);
+      border-radius: 22px; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    .s09-box.s09-acc { border-color: var(--color-accent, #6B3FE6); color: var(--color-accent, #6B3FE6); }
+    .s09-ar { position: absolute; top: 0; height: 160px; display: flex; align-items: center; font-size: 48px; font-weight: 900;
+      color: var(--color-ink2, #71717A); opacity: 0; }
+    .s09-tag { position: absolute; top: 0; height: 160px; display: flex; align-items: center; font-size: 36px; font-weight: 800;
+      white-space: nowrap; opacity: 0; }
+    #s09-note { position: absolute; left: 192px; top: 662px; width: 1536px; height: 184px; box-sizing: border-box; }
+    .s09-n { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 46px; font-weight: 800; white-space: nowrap; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s09" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,5.06,11.16]"},{"id":"dur","type":"number","label":"장면 길이","default":17.7},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"dd","type":"number","label":"중복을 시각","default":1.9},{"id":"om","type":"number","label":"한 번 더 시각","default":3.4},{"id":"ua","type":"number","label":"UNION ALL이 시각","default":8.6},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s09-all">
+      <div id="s09-head" class="x-head">UNION ALL이 가벼운 이유</div>
+      <div id="s09-u" class="s09-c x-card x-hide">
+        <div class="s09-op">UNION</div>
+        <div class="s09-box" id="s09-u1" style="left:420px">합치기</div>
+        <div class="s09-ar" id="s09-ua" style="left:640px">→</div>
+        <div class="s09-box s09-acc" id="s09-u2" style="left:720px">중복 찾아 지우기</div>
+        <div class="s09-tag x-acc" id="s09-ut" style="left:1150px">한 단계 더</div>
+      </div>
+      <div id="s09-a" class="s09-c x-card x-hide">
+        <div class="s09-op">UNION ALL</div>
+        <div class="s09-box" id="s09-a1" style="left:420px">합치기</div>
+        <div class="s09-tag x-ink2" id="s09-at" style="left:680px">여기서 끝</div>
+      </div>
+      <div id="s09-note" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s09-n" id="s09-n1">중복이 없거나 상관없으면&#160;<span class="x-acc">UNION ALL</span></div>
+        <div class="s09-n" id="s09-n2">UNION 결과의 순서는&#160;<span class="x-acc">보장되지 않는다</span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 17.7;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const rise = (sel, t) => ft(sel, { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, t);
+
+    // 41 UNION은 합친 결과에서 중복을 찾아 지우는 작업을 한 번 더
+    ft("#s09-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s09-u", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.2));
+    rise("#s09-u1", at(0, 0.8));
+    const dd = X("dd", at(0, 1.9));
+    fade("#s09-ua", dd - 0.1, 0, 1);
+    rise("#s09-u2", dd);
+    fade("#s09-ut", X("om", at(0, 3.4)), 0, 1);
+    // 42 중복이 생길 수 없거나 괜찮다면 UNION ALL이 더 가볍다
+    ft("#s09-a", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(1, 0.2));
+    rise("#s09-a1", at(1, 0.7));
+    fade("#s09-at", at(1, 1.4), 0, 1);
+    const ua = X("ua", at(1, 3.6));
+    ft("#s09-note", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, ua - 0.3);
+    fade("#s09-n1", ua, 0, 1);
+    // 43 중복을 지우다 보면 정렬된 것처럼 보여도 순서는 보장되지 않는다
+    fade(["#s09-a", "#s09-u1", "#s09-ua", "#s09-ut"], at(2, 0.2), 1, 0.4);
+    fade("#s09-n1", at(2, 0.2), 1, 0);
+    fade("#s09-n2", at(2, 0.4), 0, 1);
+    if (String(V.exit) !== "false") ft("#s09-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s09"] = tl;
+  </script>
+</template>

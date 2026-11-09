@@ -1,0 +1,31 @@
+{
+  "_설명": "쇼츠(세로) 조립 설정. 장면 순서(장 번호, 여러 장을 한 장면으로 묶을 수 있음), 영상 내내 떠 있는 위쪽 제목, 효과음 위치([이름, 장면 안 문장 순번(0부터), 그 문장 시작 뒤 초]).",
+  "format": {
+    "width": 1080, "height": 1920, "resolution": "portrait",
+    "caption": { "max": 17, "deep": true, "bottom": 540, "size": 54, "weight": 700, "width": 940 }
+  },
+  "overlays": [
+    { "id": "hd", "file": "header.html" }
+  ],
+  "scenes": [
+    { "id": "h1", "file": "h1-before.html", "chapter": 1,
+      "extra": { "tw": { "sentence": 2, "at": "두 행을" }, "ob": { "sentence": 2, "at": "ORDER BY" }, "rd": { "sentence": 2, "at": "먼저 읽힌" },
+                 "so": { "sentence": 2, "at": "정렬됩니다" }, "p95": { "sentence": 3, "at": "95점이" }, "rs": { "sentence": 3, "at": "결과는" } } },
+    { "id": "h2", "file": "h2-inline.html", "chapter": 2,
+      "extra": { "ot": { "sentence": 4, "at": "바깥에서" }, "rs": { "sentence": 5, "at": "95점" } } },
+    { "id": "h3", "file": "h3-equal2.html", "chapter": 3,
+      "extra": { "nr": { "sentence": 6, "at": "한 행도" }, "a1": { "sentence": 7, "at": "1번을 받는데" }, "a2": { "sentence": 7, "at": "버려지고" },
+                 "b1": { "sentence": 7, "at": "다시 1번을" } } },
+    { "id": "h4", "file": "h4-fetch.html", "chapter": 4,
+      "extra": { "tw": { "sentence": 8, "at": "딱 두 행" }, "l9": { "sentence": 9, "at": "마지막 90점과" }, "t3": { "sentence": 9, "at": "세 행입니다" } } },
+    { "id": "h5", "file": "h5-summary.html", "chapter": 5, "exit": false,
+      "extra": { "nb": { "sentence": 10, "at": "번호는" } } }
+  ],
+  "sfx": {
+    "h1": [["pop", 0, 0.5], ["pop", 1, 1.3], ["click-soft", 1, 4.8], ["pop", 2, 1.6]],
+    "h2": [["whoosh-short", 0, 0.0], ["click-soft", 0, 3.6], ["pop", 1, 1.0]],
+    "h3": [["whoosh-short", 0, 0.0], ["pop", 0, 1.4], ["click-soft", 1, 1.0]],
+    "h4": [["whoosh-short", 0, 0.0], ["pop", 0, 4.5], ["click-soft", 1, 0.1], ["pop", 1, 2.0]],
+    "h5": [["pop", 0, 0.2]]
+  }
+}

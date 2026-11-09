@@ -1,0 +1,72 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s10-c { position: absolute; left: 192px; width: 1536px; height: 128px; padding: 0 48px; box-sizing: border-box;
+      display: grid; grid-template-columns: 96px 1fr; align-items: center; }
+    #s10-c1 { top: 262px; } #s10-c2 { top: 408px; } #s10-c3 { top: 554px; }
+    .s10-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    .s10-n { font-size: 64px; font-weight: 900; color: var(--color-ink2, #71717A); }
+    .s10-t { font-size: 42px; font-weight: 800; white-space: nowrap; }
+    .s10-d { margin-top: 4px; font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); white-space: nowrap; opacity: 0; }
+    #s10-m { position: absolute; left: 192px; top: 704px; width: 1536px; height: 142px; padding: 0 48px; box-sizing: border-box;
+      display: flex; flex-direction: column; justify-content: center; }
+    .s10-l { height: 62px; display: flex; align-items: center; font-size: 38px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    .s10-l b { color: var(--color-accent, #6B3FE6); font-weight: 900; margin-right: 18px; }
+  </style>
+  <div id="root" data-composition-id="s10" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3.1,12.1,21.6,28.6,34.6]"},{"id":"dur","type":"number","label":"장면 길이","default":39.5},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s10-all">
+      <div id="s10-head" class="x-head">시험장 체크</div>
+      <div class="s10-c x-card x-hide" id="s10-c1"><div class="s10-ring" id="s10-r1"></div><div class="s10-n" id="s10-n1">1</div>
+        <div><div class="s10-t">주식별자의 특징은 네 가지</div><div class="s10-d" id="s10-d1">유일성 · 최소성 · 불변성 · 존재성</div></div></div>
+      <div class="s10-c x-card x-hide" id="s10-c2"><div class="s10-ring" id="s10-r2"></div><div class="s10-n" id="s10-n2">2</div>
+        <div><div class="s10-t">부모의 주식별자가 어디로 가느냐</div><div class="s10-d" id="s10-d2">주식별자로 → 식별자 관계 · 실선 / 일반 속성으로 → 비식별자 관계 · 점선</div></div></div>
+      <div class="s10-c x-card x-hide" id="s10-c3"><div class="s10-ring" id="s10-r3"></div><div class="s10-n" id="s10-n3">3</div>
+        <div><div class="s10-t">인조식별자는 단순하지만</div><div class="s10-d" id="s10-d3">중복 데이터가 생길 수 있고 · 인덱스가 늘어남</div></div></div>
+      <div id="s10-m" class="x-card x-hide">
+        <div class="s10-l" id="s10-l1"><b>존재에 의한 관계</b>소속 자체로 맺어짐 (부서 – 사원)</div>
+        <div class="s10-l" id="s10-l2"><b>행위에 의한 관계</b>행위로 생김 (고객 – 주문)</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 39.5;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, ease: "back.out(1.6)" }, t);
+    const ACC = "#6B3FE6", INK2 = "#71717A";
+
+    // 50 시험장에서 챙길 것 세 가지
+    ft("#s10-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    const focus = (k, t) => {
+      stamp(`#s10-c${k}`, t);
+      fade(`#s10-r${k}`, t, 0, 1);
+      ft(`#s10-n${k}`, { color: INK2 }, { color: ACC }, t);
+      if (k > 1) {
+        fade(`#s10-r${k - 1}`, t, 1, 0);
+        ft(`#s10-n${k - 1}`, { color: ACC }, { color: INK2 }, t);
+      }
+    };
+    // 51~53 세 가지
+    focus(1, at(1, 0.2));
+    fade("#s10-d1", at(1, 1.6), 0, 1);
+    focus(2, at(2, 0.2));
+    fade("#s10-d2", at(2, 1.8), 0, 1);
+    focus(3, at(3, 0.2));
+    fade("#s10-d3", at(3, 1.6), 0, 1);
+    // 54~55 덧붙여
+    fade("#s10-r3", at(4, 0.1), 1, 0);
+    ft("#s10-n3", { color: ACC }, { color: INK2 }, at(4, 0.1));
+    ft("#s10-m", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(4, 0.2));
+    fade("#s10-l1", at(4, 0.6), 0, 1);
+    fade("#s10-l2", at(5, 0.4), 0, 1);
+    if (String(V.exit) !== "false") ft("#s10-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s10"] = tl;
+  </script>
+</template>

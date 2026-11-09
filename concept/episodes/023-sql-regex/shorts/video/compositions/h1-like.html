@@ -1,0 +1,66 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h1-code { left: 80px; top: 330px; width: 920px; }
+    #h1-code .q-ln { font-size: 40px; height: 76px; padding: 0 44px; }
+    .h1-pw { position: relative; display: inline-block; width: 300px; height: 76px; vertical-align: middle; }
+    .h1-pw > span { position: absolute; left: 0; top: 0; line-height: 76px; white-space: nowrap; opacity: 0; }
+    #h1-tb { left: 80px; top: 664px; width: 920px; height: 220px; }
+    #h1-tb .q-th, #h1-tb .q-tr { grid-template-columns: 1fr; }
+    #h1-tb .q-th { top: 24px; }
+    #h1-tb .q-th > div { font-size: 34px; }
+    #h1-tb .q-tr { top: 108px; height: 84px; }
+    #h1-tb .q-tr > div { font-size: 60px; font-weight: 900; }
+    #h1-ch { position: absolute; left: 80px; top: 930px; width: 860px; height: 84px; }
+    #h1-ch > .q-chip { left: 0; top: 0; height: 84px; font-size: 42px; padding: 0 36px; }
+  </style>
+  <div id="root" data-composition-id="h1" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0,7.4]"},{"id":"dur","type":"number","label":"장면 길이","default":12.4},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"p1","type":"number","label":"참이라서 시각","default":4.6},{"id":"t1","type":"number","label":"캐럿을 시각","default":8.6},{"id":"p2","type":"number","label":"거짓이라 시각","default":10.6},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h1-all">
+      <div id="h1-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">SELECT</span> 이름</span></div>
+        <div class="q-ln"><span><span class="q-k">FROM</span> 식물</span></div>
+        <div class="q-ln"><div class="q-hi" id="h1-h3"></div><span><span class="q-k">WHERE REGEXP_LIKE</span>(이름, <span class="h1-pw" data-layout-allow-overlap><span id="h1-v1">'나무');</span><span id="h1-v2">'^나무');</span></span></span></div>
+      </div>
+      <div id="h1-tb" class="x-card q-tb x-hide">
+        <div class="q-th"><div>이름</div></div>
+        <div class="q-tr" id="h1-r"><div>사과<span id="h1-m">나무</span></div></div>
+      </div>
+      <div id="h1-ch" data-layout-allow-overlap>
+        <div class="q-chip q-ok" id="h1-ok">참 → 이 행이 남는다</div>
+        <div class="q-chip q-ng" id="h1-ng">거짓 → 빠진다</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 12.4;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k] ?? d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+    const ACC = "#6B3FE6", INK = "#18181B";
+
+    // 1 ‘사과나무’에 나무가 있는지 REGEXP_LIKE 조건으로 → 참, 이 행이 남는다
+    ft("#h1-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0));
+    ft("#h1-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 1.2));
+    fade("#h1-v1", at(0, 1.2), 0, 1);
+    fade("#h1-h3", at(0, 2.2), 0, 1);
+    ft("#h1-m", { color: INK }, { color: ACC }, X("p1", 4.6) - 0.3);
+    stamp("#h1-ok", X("p1", 4.6));
+    // 2 시작 기호 캐럿을 붙여 나무로 시작하냐고 → 거짓이라 빠진다
+    fade("#h1-v1", X("t1", 8.6), 1, 0);
+    fade("#h1-v2", X("t1", 8.6) + 0.15, 0, 1);
+    ft("#h1-m", { color: ACC }, { color: INK }, X("t1", 8.6));
+    fade("#h1-ok", X("t1", 8.6), 1, 0);
+    stamp("#h1-ng", X("p2", 10.6));
+    fade("#h1-r", X("p2", 10.6) + 0.2, 1, 0.22);
+    if (String(V.exit) !== "false") ft("#h1-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h1"] = tl;
+  </script>
+</template>

@@ -52,3 +52,6 @@ videos/*/.work/**/*.jpg
 
 # API 키 (.env의 주석이 전제하는 규칙)
 .env*
+
+# 여러 편 동시 작업 때 무거운 명령 줄 세우기 잠금 파일
+tools/.heavy.lock

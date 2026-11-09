@@ -1,0 +1,56 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s07-c { position: absolute; left: 192px; width: 1536px; height: 128px; box-sizing: border-box; }
+    .s07-op { position: absolute; left: 56px; top: 0; height: 128px; display: flex; align-items: center; font-size: 52px; font-weight: 900; white-space: nowrap; }
+    .s07-v { position: absolute; left: 640px; top: 0; height: 128px; display: flex; align-items: center; gap: 28px; white-space: nowrap; }
+    .s07-v b { font-size: 60px; font-weight: 900; }
+    .s07-v small { font-size: 36px; font-weight: 800; color: var(--color-ink2, #71717A); opacity: 0; }
+    .s07-c .q-chip { left: auto; right: 48px; top: 28px; }
+    .s07-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s07" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,9.15]"},{"id":"dur","type":"number","label":"장면 길이","default":15.3},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"k2","type":"number","label":"UNION 4행 시각","default":2.4},{"id":"k3","type":"number","label":"INTERSECT 시각","default":3.9},{"id":"k4","type":"number","label":"MINUS 시각","default":5.6},{"id":"k5","type":"number","label":"거꾸로 시각","default":7.0},{"id":"rest","type":"number","label":"나머지 시각","default":12.6},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s07-all">
+      <div id="s07-head" class="x-head">네 결과 비교</div>
+      <div class="s07-c x-card x-hide" id="s07-c1" style="top:262px"><div class="s07-ring" id="s07-o1"></div>
+        <div class="s07-op">UNION ALL</div><div class="s07-v"><b>7행</b></div><div class="q-chip q-ok" id="s07-t1">중복 남김</div></div>
+      <div class="s07-c x-card x-hide" id="s07-c2" style="top:414px">
+        <div class="s07-op">UNION</div><div class="s07-v"><b>4행</b></div><div class="q-chip q-ng" id="s07-t2">중복 지움</div></div>
+      <div class="s07-c x-card x-hide" id="s07-c3" style="top:566px">
+        <div class="s07-op">INTERSECT</div><div class="s07-v"><b>1행</b></div><div class="q-chip q-ng" id="s07-t3">중복 지움</div></div>
+      <div class="s07-c x-card x-hide" id="s07-c4" style="top:718px">
+        <div class="s07-op">MINUS</div><div class="s07-v"><b>2행</b><small id="s07-rev">거꾸로 하면 1행</small></div><div class="q-chip q-ng" id="s07-t4">중복 지움</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 15.3;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const rise = (sel, t) => ft(sel, { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, t);
+
+    // 34 UNION ALL 7행, UNION 4행, INTERSECT 1행, MINUS 2행, 거꾸로 1행
+    ft("#s07-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    rise("#s07-c1", at(0, 0.1));
+    rise("#s07-c2", X("k2", at(0, 2.4)) - 0.1);
+    rise("#s07-c3", X("k3", at(0, 3.9)) - 0.1);
+    rise("#s07-c4", X("k4", at(0, 5.6)) - 0.1);
+    fade("#s07-rev", X("k5", at(0, 7.0)), 0, 1);
+    // 35 중복을 남기는 것은 UNION ALL 하나뿐, 나머지 셋은 중복을 지운다
+    fade("#s07-o1", at(1, 0.2), 0, 1);
+    stamp("#s07-t1", at(1, 0.6));
+    const rest = X("rest", at(1, 3.4));
+    fade("#s07-o1", rest, 1, 0);
+    ["#s07-t2", "#s07-t3", "#s07-t4"].forEach((s, j) => stamp(s, rest + 0.1 + j * 0.25));
+    if (String(V.exit) !== "false") ft("#s07-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s07"] = tl;
+  </script>
+</template>

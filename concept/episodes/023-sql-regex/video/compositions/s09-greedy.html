@@ -1,0 +1,101 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s09-code { left: 192px; top: 262px; width: 1096px; }
+    #s09-code .q-ln { height: 72px; }
+    .s09-cw { position: relative; display: block; width: 1000px; height: 72px; }
+    .s09-cw > span { position: absolute; left: 0; top: 0; line-height: 72px; white-space: nowrap; opacity: 0; }
+    #s09-res { position: absolute; left: 1328px; top: 262px; width: 400px; height: 124px; }
+    .s09-rv { position: absolute; left: 24px; right: 24px; top: 16px; bottom: 16px; display: flex; align-items: center; justify-content: center;
+      font-size: 48px; font-weight: 900; white-space: nowrap; opacity: 0; }
+    #s09-str { position: absolute; left: 192px; top: 430px; width: 1536px; height: 220px; display: flex; align-items: center; justify-content: center; }
+    #s09-sw { position: relative; display: inline-block; padding: 8px 20px; font-size: 104px; font-weight: 900; white-space: nowrap; line-height: 1.2; }
+    .s09-tg { position: relative; display: inline-block; padding: 0 12px; }
+    .s09-ring { position: absolute; left: 0; right: 0; top: -2px; bottom: -2px; border-radius: 18px; border: 5px solid #A1A1AA; opacity: 0; }
+    .s09-ring.a { border-color: var(--color-accent, #6B3FE6); }
+    .s09-t { position: relative; }
+    #s09-note { position: absolute; left: 192px; top: 694px; width: 1536px; height: 152px; }
+    .s09-n { position: absolute; left: 32px; right: 32px; top: 24px; bottom: 24px; display: flex; align-items: center; justify-content: center;
+      text-align: center; font-size: 46px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    .s09-n .x-acc { margin: 0 16px; }
+  </style>
+  <div id="root" data-composition-id="s09" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,7.2,9.4,11.6,18.5,24.2]"},{"id":"dur","type":"number","label":"장면 길이","default":30.8},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s09-all">
+      <div id="s09-head" class="x-head">가장 길게 잡는 반복</div>
+      <div id="s09-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><span class="s09-cw" data-layout-allow-overlap>
+          <span id="s09-v1"><span class="q-k">REGEXP_SUBSTR</span>('&lt;b&gt;굵게&lt;/b&gt;', '&lt;.*&gt;')</span>
+          <span id="s09-v2"><span class="q-k">REGEXP_SUBSTR</span>('&lt;b&gt;굵게&lt;/b&gt;', '&lt;.*?&gt;')</span>
+          <span id="s09-v3"><span class="q-k">REGEXP_REPLACE</span>('&lt;b&gt;굵게&lt;/b&gt;', '&lt;.*?&gt;')</span>
+        </span></div>
+      </div>
+      <div id="s09-res" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s09-rv x-ink2" id="s09-rq">?</div>
+        <div class="s09-rv x-acc" id="s09-r1">&lt;b&gt;굵게&lt;/b&gt;</div>
+        <div class="s09-rv x-acc" id="s09-r2">&lt;b&gt;</div>
+        <div class="s09-rv x-acc" id="s09-r3">굵게</div>
+      </div>
+      <div id="s09-str" class="x-card x-hide">
+        <span id="s09-sw"><span class="s09-ring a" id="s09-all-a"></span><span class="s09-tg" id="s09-t1"><span class="s09-ring" id="s09-b-g"></span><span class="s09-ring a" id="s09-b-a"></span><span class="s09-t">&lt;b&gt;</span></span><span class="s09-t" id="s09-w">굵게</span><span class="s09-tg" id="s09-t2"><span class="s09-t">&lt;/b&gt;</span></span></span>
+      </div>
+      <div id="s09-note" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s09-n" id="s09-n1">&lt;<span class="x-acc">+</span>아무 글자 0번 이상(.*)<span class="x-acc">+</span>&gt;</div>
+        <div class="s09-n" id="s09-n2">앞의 태그 하나?</div>
+        <div class="s09-n" id="s09-n3">반복은 가장 길게<span class="x-acc">→</span>맨 마지막 &gt;까지</div>
+        <div class="s09-n" id="s09-n4">반복 기호 뒤에 ?<span class="x-acc">→</span>가장 짧게</div>
+        <div class="s09-n" id="s09-n5">REGEXP_REPLACE<span class="x-acc">→</span>태그만 지워져 ‘굵게’</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 30.8;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+    let code = 0, res = null, note = null;
+    const show = (k, t) => { if (code) fade(`#s09-v${code}`, t, 1, 0); fade(`#s09-v${k}`, t + 0.15, 0, 1); code = k; };
+    const result = (id, t) => { if (res) fade(res, t, 1, 0); stamp(id, t + 0.1); res = id; };
+    const say = (id, t) => { if (note) fade(note, t, 1, 0); fade(id, t + 0.15, 0, 1); note = id; };
+
+    // 47 태그를 뽑으려고 < 뒤에 점과 별표, >로 끝
+    ft("#s09-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s09-str", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.2));
+    ft("#s09-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 1.4));
+    show(1, at(0, 1.4));
+    ft("#s09-note", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(0, 2.4));
+    say("#s09-n1", at(0, 2.4));
+    // 48 결과는 앞의 태그 하나일까?
+    ft("#s09-res", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(1, 0));
+    result("#s09-rq", at(1, 0));
+    fade("#s09-b-g", at(1, 0.2), 0, 1);
+    say("#s09-n2", at(1, 0.2));
+    // 49 답은 문자열 전체
+    fade("#s09-b-g", at(2, 0.1), 1, 0);
+    fade("#s09-all-a", at(2, 0.2), 0, 1);
+    result("#s09-r1", at(2, 0.2));
+    // 50 반복은 가장 긴 부분 → 맨 마지막 >까지
+    say("#s09-n3", at(3, 0.2));
+    // 51 반복 기호 뒤에 ? → 가장 짧게, 앞의 태그 하나
+    show(2, at(4, 0.2));
+    say("#s09-n4", at(4, 0.4));
+    fade("#s09-all-a", at(4, 2.2), 1, 0);
+    fade("#s09-b-a", at(4, 2.4), 0, 1);
+    result("#s09-r2", at(4, 3.4));
+    // 52 같은 패턴으로 REGEXP_REPLACE → 태그만 지워져 ‘굵게’
+    show(3, at(5, 0.2));
+    fade("#s09-b-a", at(5, 0.4), 1, 0);
+    fade(["#s09-t1", "#s09-t2"], at(5, 2.0), 1, 0.2);
+    ft("#s09-w", { color: "#18181B" }, { color: "#6B3FE6" }, at(5, 2.0));
+    result("#s09-r3", at(5, 2.4));
+    say("#s09-n5", at(5, 2.4));
+    if (String(V.exit) !== "false") ft("#s09-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s09"] = tl;
+  </script>
+</template>

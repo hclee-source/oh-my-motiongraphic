@@ -1,0 +1,45 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s09-line { position: absolute; left: 192px; top: 272px; font-size: 56px; font-weight: 900; white-space: nowrap; opacity: 0; }
+    #s09-out { position: absolute; left: 192px; top: 400px; width: 1536px; height: 446px; box-sizing: border-box; }
+    #s09-ol { position: absolute; left: 48px; top: 36px; display: flex; align-items: baseline; gap: 24px; opacity: 0; }
+    #s09-ol b { font-size: 44px; font-weight: 900; color: var(--color-accent, #6B3FE6); }
+    #s09-ol span { font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    #s09-in { position: absolute; left: 48px; right: 48px; top: 136px; height: 262px; border-radius: 22px; box-sizing: border-box;
+      border: 3px dashed var(--color-accent, #6B3FE6); background: color-mix(in srgb, var(--color-accent, #6B3FE6) 8%, #FFFFFF);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; opacity: 0; }
+    #s09-in b { font-size: 52px; font-weight: 900; }
+    #s09-in span { font-size: 34px; font-weight: 700; color: var(--color-ink2, #71717A); }
+  </style>
+  <div id="root" data-composition-id="s09" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3.44]"},{"id":"dur","type":"number","label":"장면 길이","default":11},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"ia","type":"number","label":"안쪽에서 시각","default":6.5},{"id":"oa","type":"number","label":"바깥에서 시각","default":8.4},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s09-all">
+      <div id="s09-head" class="x-head">한 줄 정리</div>
+      <div id="s09-line">ROWNUM은 <span class="x-acc">정렬 전에</span> 붙는 번호</div>
+      <div id="s09-out" class="x-card x-hide">
+        <div id="s09-ol"><b>바깥에서 번호</b><span>WHERE ROWNUM &lt;= N</span></div>
+        <div id="s09-in"><b>안쪽에서 정렬 먼저</b><span>ORDER BY 급여 DESC</span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d = 0) => Number(V[k]) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+
+    // 52 한 줄로 정리하면
+    ft("#s09-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    // 53 ROWNUM은 정렬 전에 붙는 번호 → 정렬은 안쪽에서 먼저, 번호는 바깥에서
+    ft("#s09-line", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(1, 0));
+    ft("#s09-out", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("ia", -0.5));
+    ft("#s09-in", { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1 }, X("ia", -0.1));
+    ft("#s09-ol", { opacity: 0, x: -16 }, { opacity: 1, x: 0 }, X("oa", -0.1));
+    window.__timelines["s09"] = tl;
+  </script>
+</template>

@@ -1,0 +1,83 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s08-code { left: 192px; width: 1080px; }
+    .s08-code .q-ln { font-size: 46px; height: 68px; padding: 0 44px; }
+    .s08-pair { border-radius: 10px; padding: 2px 8px; }
+    .s08-sw { position: relative; display: inline-block; margin-left: 14px; width: 300px; height: 56px; vertical-align: top; }
+    .s08-sw > span { position: absolute; left: 0; top: 0; line-height: 56px; white-space: nowrap; }
+    #s08-e2 { opacity: 0; }
+    .s08-ans { position: absolute; left: 1316px; width: 412px; height: 100px; }
+    .s08-big { left: 0; top: 0; height: 100px; padding: 0 44px; border-radius: 50px; font-size: 60px; font-weight: 900; }
+    .s08-qm { background: #FFFFFF; border: 2px solid var(--color-line, #E3E5EA); color: var(--color-ink2, #71717A); }
+    .s08-nul { background: #FFFFFF; border: 2px solid var(--color-line, #E3E5EA); color: #8A8A93; }
+    .s08-no { left: 1316px; background: #FFFFFF; border: 2px solid var(--color-line, #E3E5EA); color: var(--color-ink2, #71717A); }
+  </style>
+  <div id="root" data-composition-id="s08" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,8.1,9.8,15.3,19.1]"},{"id":"dur","type":"number","label":"장면 길이","default":24.4},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"p1","type":"number","label":"10이면 시각","default":3.6},{"id":"p2","type":"number","label":"20이면 시각","default":4.9},{"id":"a1","type":"number","label":"NULL 시각","default":8.7},{"id":"a2","type":"number","label":"결과는 시각","default":16.8},{"id":"a3","type":"number","label":"NULL 시각 2","default":22.8},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s08-all">
+      <div id="s08-head" class="x-head">DECODE와 CASE</div>
+      <div id="s08-c1" class="s08-code x-dark q-code x-hide" style="top:262px">
+        <div class="q-ln"><span><span class="q-k">SELECT</span> DECODE(30, <span class="s08-pair" id="s08-p1">10, '영업'</span>,</span></div>
+        <div class="q-ln"><span style="margin-left:320px"><span class="s08-pair" id="s08-p2">20, '개발'</span><span class="s08-sw" data-layout-allow-overlap><span id="s08-e1">)</span><span id="s08-e2">, '기타')</span></span></span></div>
+        <div class="q-ln"><span><span class="q-k">FROM</span> DUAL;</span></div>
+      </div>
+      <div id="s08-w1" class="s08-ans" style="top:340px" data-layout-allow-overlap>
+        <div id="s08-q1" class="q-chip s08-big s08-qm">?</div>
+        <div id="s08-a1" class="q-chip s08-big s08-nul">NULL</div>
+        <div id="s08-a2" class="q-chip q-ok s08-big">기타</div>
+      </div>
+      <div id="s08-no1" class="q-chip s08-no" style="top:456px">기본값 없음</div>
+      <div id="s08-c2" class="s08-code x-dark q-code x-hide" style="top:552px">
+        <div class="q-ln"><span><span class="q-k">SELECT CASE</span> 30 <span class="q-k">WHEN</span> 10 <span class="q-k">THEN</span> '영업'</span></div>
+        <div class="q-ln"><span style="margin-left:168px"><span class="q-k">WHEN</span> 20 <span class="q-k">THEN</span> '개발' <span class="q-k">END</span></span></div>
+        <div class="q-ln"><span><span class="q-k">FROM</span> DUAL;</span></div>
+      </div>
+      <div id="s08-w2" class="s08-ans" style="top:630px">
+        <div id="s08-a3" class="q-chip s08-big s08-nul">NULL</div>
+      </div>
+      <div id="s08-no2" class="q-chip s08-no" style="top:746px">ELSE 없음</div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 24.4;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const pair = (sel, t) => ft(sel, { backgroundColor: "rgba(166,140,255,0)" }, { backgroundColor: "rgba(166,140,255,0.3)", duration: 0.3 * S }, t);
+
+    // 47 DECODE에 30을 주고, 10이면 영업, 20이면 개발
+    ft("#s08-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s08-c1", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    pair("#s08-p1", X("p1", at(0, 3.2)));
+    pair("#s08-p2", X("p2", at(0, 4.5)));
+    stamp("#s08-q1", at(0, 5.8));
+    // 48 정답은 NULL
+    const a1 = X("a1", at(1, 0.6));
+    fade("#s08-q1", a1 - 0.1, 1, 0);
+    stamp("#s08-a1", a1);
+    // 49 같은 값도 기본값도 없다
+    stamp("#s08-no1", at(2, 2.4));
+    // 50 끝에 ‘기타’를 더 적으면 결과는 ‘기타’
+    fade("#s08-e1", at(3, 0.3), 1, 0);
+    fade("#s08-e2", at(3, 0.4), 0, 1);
+    fade("#s08-no1", at(3, 0.2), 1, 0);
+    const a2 = X("a2", at(3, 1.6));
+    fade("#s08-a1", a2 - 0.1, 1, 0);
+    stamp("#s08-a2", a2);
+    // 51 단순 CASE도 ELSE가 없으면 NULL — DECODE는 흐리게
+    fade(["#s08-c1", "#s08-w1"], at(4, 0.1), 1, 0.4);
+    ft("#s08-c2", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(4, 0.2));
+    stamp("#s08-no2", at(4, 2.4));
+    stamp("#s08-a3", X("a3", at(4, 3.7)));
+    if (String(V.exit) !== "false") ft("#s08-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s08"] = tl;
+  </script>
+</template>

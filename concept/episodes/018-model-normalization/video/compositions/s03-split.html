@@ -1,0 +1,355 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s03-c { position: absolute; top: 320px; box-sizing: border-box; }
+    #s03-big { left: 96px; width: 916px; height: 440px; }
+    #s03-big .q-th, #s03-big .q-tr { grid-template-columns: 130px 130px 130px 110px 100px 130px 130px; }
+    #s03-osp { left: 235px; width: 446px; height: 450px; }
+    #s03-prd { left: 737px; width: 446px; height: 390px; }
+    #s03-ord { left: 1239px; width: 446px; height: 330px; }
+    #s03-ord2 { left: 1114px; width: 316px; height: 330px; }
+    #s03-cus { left: 1478px; width: 316px; height: 270px; }
+    .s03-c .q-th { top: 64px; }
+    .s03-c .q-th > div { font-size: 28px; }
+    #s03-osp .q-th, #s03-osp .q-tr, #s03-prd .q-th, #s03-prd .q-tr, #s03-ord .q-th, #s03-ord .q-tr { grid-template-columns: 130px 130px 130px; }
+    #s03-ord2 .q-th, #s03-ord2 .q-tr, #s03-cus .q-th, #s03-cus .q-tr { grid-template-columns: 130px 130px; }
+    .s03-nm { position: absolute; left: 28px; top: 14px; height: 42px; display: flex; align-items: center; font-size: 34px; font-weight: 900; }
+    .s03-ct { position: absolute; right: 28px; top: 14px; height: 42px; display: flex; align-items: center; font-size: 30px; font-weight: 800;
+      color: var(--color-accent, #6B3FE6); opacity: 0; }
+    .s03-bd { position: absolute; top: 56px; height: 376px; border-radius: 14px; opacity: 0; }
+    .s03-bda { background: color-mix(in srgb, var(--color-accent, #6B3FE6) 12%, #FFFFFF); }
+    .s03-bdk { background: rgba(24, 24, 27, 0.08); }
+    .s03-lb { position: absolute; top: 10px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 900; opacity: 0; white-space: nowrap; }
+    #s03-gl { position: absolute; left: 28px; top: 10px; width: 260px; height: 40px; display: flex; align-items: center; justify-content: center; gap: 14px;
+      font-size: 28px; font-weight: 900; color: var(--color-accent, #6B3FE6); opacity: 0; }
+    #s03-gb { position: absolute; left: 48px; top: 56px; width: 220px; height: 4px; border-radius: 2px; background: var(--color-accent, #6B3FE6); opacity: 0; }
+    .s03-key { position: relative; width: 44px; height: 24px; }
+    .s03-key > i { position: absolute; display: block; background: var(--color-accent, #6B3FE6); }
+    .s03-key > i:nth-child(1) { left: 0; top: 2px; width: 20px; height: 20px; border-radius: 10px; background: transparent; border: 4px solid var(--color-accent, #6B3FE6); box-sizing: border-box; }
+    .s03-key > i:nth-child(2) { left: 18px; top: 10px; width: 26px; height: 4px; }
+    .s03-key > i:nth-child(3) { left: 36px; top: 10px; width: 4px; height: 12px; }
+    /* 화살표(페이지 좌표) */
+    .s03-ar { position: absolute; left: 0; top: 0; width: 0; height: 0; opacity: 0; }
+    .s03-ar .b, .s03-ar .t { position: absolute; background: var(--color-accent, #6B3FE6); border-radius: 2px; }
+    .s03-ar .h { position: absolute; width: 0; height: 0; border-left: 9px solid transparent; border-right: 9px solid transparent; border-top: 12px solid var(--color-accent, #6B3FE6); }
+    /* 오른쪽 목록 */
+    .s03-l { position: absolute; left: 1060px; width: 764px; height: 96px; box-sizing: border-box; }
+    .s03-no { position: absolute; left: 24px; top: 22px; width: 52px; height: 52px; border-radius: 26px; background: var(--color-accent, #6B3FE6); color: #FFFFFF;
+      font-size: 30px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+    .s03-lt { position: absolute; left: 96px; top: 0; height: 96px; display: flex; align-items: center; font-size: 32px; font-weight: 800; white-space: nowrap; }
+    .s03-lt > span { position: absolute; left: 0; white-space: nowrap; }
+    .s03-tag { position: absolute; right: 24px; top: 22px; height: 52px; padding: 0 22px; border-radius: 26px; display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: 800; opacity: 0; background: var(--color-anchor, #18181B); color: #FFFFFF; }
+    .s03-tag.ok { background: color-mix(in srgb, var(--color-accent, #6B3FE6) 14%, #FFFFFF); color: var(--color-accent, #6B3FE6); }
+    .s03-ring { position: absolute; inset: -2px; border-radius: 28px; border: 4px solid var(--color-accent, #6B3FE6); opacity: 0; }
+    #s03-def { left: 1060px; top: 320px; width: 764px; height: 250px; position: absolute; box-sizing: border-box; }
+    .s03-d { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; opacity: 0; }
+    .s03-d1 { font-size: 36px; font-weight: 800; line-height: 1.4; white-space: nowrap; }
+    .s03-d2 { font-size: 60px; font-weight: 900; white-space: nowrap; }
+    .s03-d3 { font-size: 34px; font-weight: 700; color: var(--color-ink2, #71717A); white-space: nowrap; }
+    /* 표 안 보조 */
+    .s03-sw { position: relative; }
+    .s03-sw > span { display: block; }
+    .s03-sw > span.s03-b { position: absolute; left: 0; right: 0; top: 0; opacity: 0; }
+    #s03-gh { position: absolute; left: 12px; right: 12px; top: 305px; height: 62px; box-sizing: border-box; border: 3px dashed #B4B4BE; border-radius: 14px; opacity: 0; }
+    #s03-gr { opacity: 0; }
+    #s03-ck { position: absolute; left: 331px; top: 315px; width: 44px; height: 44px; opacity: 0; }
+    #s03-ck > div { position: absolute; height: 7px; border-radius: 3px; background: var(--color-accent, #6B3FE6); transform-origin: 0 50%; }
+    #s03-ck > div:first-child { left: 5px; top: 24px; width: 16px; transform: rotate(45deg); }
+    #s03-ck > div:last-child { left: 15px; top: 35px; width: 36px; transform: rotate(-52deg); }
+    #s03-xj { position: absolute; left: 1728px; top: 506px; width: 56px; height: 56px; opacity: 0; }
+    #s03-xj > div { position: absolute; left: 0; top: 25px; width: 56px; height: 6px; border-radius: 3px; background: #18181B; }
+    #s03-xj > div:first-child { transform: rotate(45deg); }
+    #s03-xj > div:last-child { transform: rotate(-45deg); }
+    /* 조인 연결선 */
+    #s03-jn { position: absolute; left: 0; top: 0; width: 0; height: 0; opacity: 0; }
+    #s03-jn > div { position: absolute; background: var(--color-accent, #6B3FE6); border-radius: 2px; }
+    /* 아래 줄 */
+    #s03-low { position: absolute; left: 96px; top: 806px; width: 1728px; height: 56px; }
+    .s03-n { position: absolute; left: 0; top: 0; height: 56px; display: flex; align-items: center; font-size: 38px; font-weight: 800; white-space: nowrap; opacity: 0; }
+    #s03-low .q-chip { top: 0; height: 56px; font-size: 34px; }
+  </style>
+  <div id="root" data-composition-id="s03" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.2,3.78,8.67,15.08,19.0,23.69,27.77,32.57,37.29,43.43,49.12,54.14,61.55,68.14,70.93,77.95,82.69,89.03,93.5,98.78,104.71,109.56,114.92,121.07,126.81,132.02]"},{"id":"dur","type":"number","label":"장면 길이","default":139},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"t1","type":"number","label":"부분1 시각","default":0},{"id":"t2","type":"number","label":"부분2 시각","default":0},{"id":"cnt1","type":"number","label":"5행 시각","default":0},{"id":"cnt2","type":"number","label":"상품 3행 시각","default":0},{"id":"cnt3","type":"number","label":"주문 3행 시각","default":0},{"id":"gw","type":"number","label":"가위 시각","default":0},{"id":"dl","type":"number","label":"지워도 시각","default":0},{"id":"m2","type":"number","label":"민수 두 번 시각","default":0},{"id":"jy","type":"number","label":"지영 시각","default":0},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s03-all">
+      <div data-layout-allow-overlap>
+        <div id="s03-h1" class="x-head">함수 종속과 결정자</div>
+        <div id="s03-h2" class="x-head">제2정규형과 부분 함수 종속</div>
+        <div id="s03-h3" class="x-head">제3정규형과 이행 함수 종속</div>
+      </div>
+
+      <div data-layout-allow-overlap id="s03-w">
+        <!-- 5행 × 7열 원본 -->
+        <div id="s03-big" class="s03-c x-card q-tb x-hide">
+          <div class="s03-bd s03-bda" id="s03-bd1" style="left:288px;width:240px"></div>
+          <div class="s03-bd s03-bdk" id="s03-bd2" style="left:628px;width:260px"></div>
+          <div id="s03-gl"><span class="s03-key"><i></i><i></i><i></i></span><span>주식별자</span></div>
+          <div id="s03-gb"></div>
+          <div class="s03-lb x-acc" id="s03-lb1" style="left:288px;width:240px">→ 상품 테이블</div>
+          <div class="s03-lb" id="s03-lb2" style="left:628px;width:260px">→ 주문 테이블</div>
+          <div class="q-th"><div id="s03-bh0">주문번호</div><div id="s03-bh1">상품코드</div><div>상품명</div><div>단가</div><div id="s03-bh4">수량</div><div>고객번호</div><div>고객이름</div></div>
+          <div class="q-tr" style="top:128px"><div>1</div><div>P1</div><div>연필</div><div>500</div><div class="s03-bq">2</div><div>C1</div><div>민수</div></div>
+          <div class="q-tr" style="top:188px"><div>1</div><div>P2</div><div>공책</div><div>1,500</div><div class="s03-bq">1</div><div>C1</div><div>민수</div></div>
+          <div class="q-tr" style="top:248px"><div>2</div><div>P2</div><div>공책</div><div>1,500</div><div class="s03-bq">3</div><div>C2</div><div>지영</div></div>
+          <div class="q-tr" style="top:308px"><div>3</div><div>P2</div><div>공책</div><div>1,500</div><div class="s03-bq">1</div><div>C1</div><div>민수</div></div>
+          <div class="q-tr" style="top:368px"><div>3</div><div>P3</div><div>지우개</div><div>800</div><div class="s03-bq">2</div><div>C1</div><div>민수</div></div>
+        </div>
+        <!-- 제2정규형 세 테이블 -->
+        <div id="s03-osp" class="s03-c x-card q-tb x-hide">
+          <div class="s03-nm">주문상품</div><div class="s03-ct" id="s03-ct1">5행</div>
+          <div class="q-th"><div>주문번호</div><div>상품코드</div><div>수량</div></div>
+          <div class="q-tr" style="top:128px"><div>1</div><div>P1</div><div class="s03-oq">2</div></div>
+          <div class="q-tr" style="top:188px"><div>1</div><div>P2</div><div class="s03-oq">1</div></div>
+          <div class="q-tr" style="top:248px"><div>2</div><div>P2</div><div class="s03-oq">3</div></div>
+          <div class="q-tr" style="top:308px"><div>3</div><div>P2</div><div class="s03-oq">1</div></div>
+          <div class="q-tr" style="top:368px"><div>3</div><div>P3</div><div class="s03-oq">2</div></div>
+        </div>
+        <div id="s03-prd" class="s03-c x-card q-tb x-hide">
+          <div class="s03-nm">상품</div><div class="s03-ct" id="s03-ct2">3행</div>
+          <div class="q-th"><div>상품코드</div><div>상품명</div><div>단가</div></div>
+          <div class="q-tr" style="top:128px"><div>P1</div><div>연필</div><div>500</div></div>
+          <div class="q-tr" style="top:188px"><div>P2</div><div class="s03-sw"><span id="s03-pa">공책</span><span class="s03-b" id="s03-pb">노트</span></div><div>1,500</div></div>
+          <div class="q-tr" id="s03-pr3" style="top:248px"><div>P3</div><div class="s03-p3">지우개</div><div class="s03-p3">800</div></div>
+          <div id="s03-gh"></div>
+          <div class="q-tr" id="s03-gr" style="top:308px"><div>P4</div><div>가위</div><div></div></div>
+          <div id="s03-ck"><div></div><div></div></div>
+        </div>
+        <div id="s03-ord" class="s03-c x-card q-tb x-hide">
+          <div class="s03-bd s03-bda" id="s03-ob" style="left:158px;width:260px;height:260px"></div>
+          <div class="s03-nm">주문</div><div class="s03-ct" id="s03-ct3">3행</div>
+          <div class="q-th"><div>주문번호</div><div>고객번호</div><div>고객이름</div></div>
+          <div class="q-tr" style="top:128px"><div>1</div><div>C1</div><div class="s03-ms">민수</div></div>
+          <div class="q-tr" id="s03-or2" style="top:188px"><div>2</div><div>C2</div><div>지영</div></div>
+          <div class="q-tr" style="top:248px"><div>3</div><div>C1</div><div class="s03-ms">민수</div></div>
+        </div>
+        <!-- 제3정규형: 주문 + 고객 -->
+        <div id="s03-ord2" class="s03-c x-card q-tb x-hide">
+          <div class="s03-nm">주문</div><div class="s03-ct" id="s03-ct4">3행</div>
+          <div class="q-th"><div>주문번호</div><div>고객번호</div></div>
+          <div class="q-tr" style="top:128px"><div>1</div><div>C1</div></div>
+          <div class="q-tr" style="top:188px"><div>2</div><div>C2</div></div>
+          <div class="q-tr" style="top:248px"><div>3</div><div>C1</div></div>
+        </div>
+        <div id="s03-cus" class="s03-c x-card q-tb x-hide">
+          <div class="s03-nm">고객</div><div class="s03-ct" id="s03-ct5">2행</div>
+          <div class="q-th"><div>고객번호</div><div>고객이름</div></div>
+          <div class="q-tr" style="top:128px"><div>C1</div><div id="s03-cm">민수</div></div>
+          <div class="q-tr" style="top:188px"><div>C2</div><div>지영</div></div>
+        </div>
+      </div>
+
+      <!-- 화살표 -->
+      <div class="s03-ar" id="s03-a1"><div class="b" style="left:317px;top:294px;width:255px;height:5px"></div><div class="t" style="left:317px;top:294px;width:5px;height:22px"></div>
+        <div class="t" style="left:447px;top:294px;width:5px;height:10px"></div><div class="h" style="left:441px;top:304px"></div>
+        <div class="t" style="left:567px;top:294px;width:5px;height:10px"></div><div class="h" style="left:561px;top:304px"></div></div>
+      <div class="s03-ar" id="s03-a2"><div class="b" style="left:187px;top:274px;width:605px;height:5px"></div><div class="t" style="left:187px;top:274px;width:5px;height:42px"></div>
+        <div class="t" style="left:787px;top:274px;width:5px;height:30px"></div><div class="h" style="left:781px;top:304px"></div></div>
+      <div class="s03-ar" id="s03-a3"><div class="b" style="left:787px;top:294px;width:135px;height:5px"></div><div class="t" style="left:787px;top:294px;width:5px;height:22px"></div>
+        <div class="t" style="left:917px;top:294px;width:5px;height:10px"></div><div class="h" style="left:911px;top:304px"></div></div>
+      <div class="s03-ar" id="s03-a4"><div class="b" style="left:187px;top:260px;width:490px;height:5px"></div><div class="t" style="left:187px;top:260px;width:5px;height:56px"></div>
+        <div class="t" style="left:317px;top:260px;width:5px;height:56px"></div><div class="t" style="left:672px;top:260px;width:5px;height:44px"></div><div class="h" style="left:666px;top:304px"></div></div>
+      <div class="s03-ar" id="s03-a5"><div class="b" style="left:1330px;top:294px;width:265px;height:5px"></div><div class="t" style="left:1330px;top:294px;width:5px;height:22px"></div>
+        <div class="t" style="left:1460px;top:294px;width:5px;height:10px"></div><div class="h" style="left:1454px;top:304px"></div>
+        <div class="t" style="left:1590px;top:294px;width:5px;height:10px"></div><div class="h" style="left:1584px;top:304px"></div></div>
+
+      <!-- 오른쪽: 정의 카드와 목록 -->
+      <div id="s03-def" class="x-card x-hide">
+        <div class="s03-d" id="s03-dA"><div class="s03-d1">한 속성의 값이 정해지면</div><div class="s03-d1">다른 속성의 값이 <span class="x-acc">하나로</span> 정해진다</div></div>
+        <div class="s03-d" id="s03-dB"><div class="s03-d2">결정자 <span class="x-acc">→</span> 종속자</div><div class="s03-d3">값을 정하는 쪽 → 정해지는 쪽</div></div>
+      </div>
+      <div class="s03-l x-card x-hide" id="s03-l1" style="top:320px"><div class="s03-ring" id="s03-g1"></div><div class="s03-no">1</div><div class="s03-lt"><span>상품코드 → 상품명 · 단가</span></div><div class="s03-tag" id="s03-tg1">부분</div></div>
+      <div class="s03-l x-card x-hide" id="s03-l2" style="top:432px"><div class="s03-ring" id="s03-g2"></div><div class="s03-no">2</div><div class="s03-lt"><span>주문번호 → 고객번호</span></div><div class="s03-tag" id="s03-tg2">부분</div></div>
+      <div class="s03-l x-card x-hide" id="s03-l3" style="top:544px"><div class="s03-ring" id="s03-g3"></div><div class="s03-no">3</div><div class="s03-lt"><span id="s03-l3a">고객번호 → 고객이름</span><span id="s03-l3b" style="opacity:0">주문번호 → 고객번호 → 고객이름</span></div><div class="s03-tag" id="s03-tg3">부분</div></div>
+      <div class="s03-l x-card x-hide" id="s03-l4" style="top:656px"><div class="s03-ring" id="s03-g4"></div><div class="s03-no">4</div><div class="s03-lt"><span>주문번호 + 상품코드 → 수량</span></div><div class="s03-tag ok" id="s03-tg4">전체</div></div>
+
+      <div id="s03-xj"><div></div><div></div></div>
+      <div id="s03-jn">
+        <div style="left:347px;top:770px;width:4px;height:20px"></div><div style="left:841px;top:710px;width:4px;height:80px"></div>
+        <div style="left:1270px;top:650px;width:4px;height:140px"></div><div style="left:1634px;top:590px;width:4px;height:200px"></div>
+        <div style="left:347px;top:788px;width:1291px;height:4px"></div>
+      </div>
+
+      <div id="s03-low" data-layout-allow-overlap>
+        <div class="s03-n" id="s03-nA">핵심 함수 종속은 <span class="x-acc">네 개</span></div>
+        <div class="q-chip q-ng" id="s03-cp" style="left:0">부분 함수 종속</div>
+        <div class="s03-n" id="s03-nB"><span>제2정규형 = 모든 일반 속성이 <span class="x-acc">주식별자 전체</span>에 종속</span></div>
+        <div class="s03-n" id="s03-nC"><span>테이블 <span class="x-acc">세 개</span></span></div>
+        <div class="s03-n" id="s03-nC2"><span>이름은 한 번만 저장 → <span class="x-acc">한 행만 수정</span></span></div>
+        <div class="s03-n" id="s03-nC3"><span>가위는 넣을 수 있고, 지우개는 <span class="x-acc">그대로</span></span></div>
+        <div class="s03-n" id="s03-nD"><span>주문 테이블에 <span class="x-acc">민수가 두 번</span></span></div>
+        <div class="s03-n" id="s03-nE"><span>지영의 하나뿐인 주문을 지우면 <span class="x-acc">이름도 함께 사라짐</span></span></div>
+        <div class="q-chip q-ng" id="s03-ch" style="left:0">이행 함수 종속</div>
+        <div class="s03-n" id="s03-nF"><span>제3정규형 = <span class="x-acc">일반 속성끼리는</span> 종속되지 않음</span></div>
+        <div class="s03-n" id="s03-nG"><span>테이블 <span class="x-acc">네 개</span></span></div>
+        <div class="s03-n" id="s03-nH"><span>민수 이름 저장: 네 번 → <span class="x-acc">한 번</span></span></div>
+        <div class="q-chip q-ok" id="s03-cj" style="left:0">네 테이블을 조인하면 처음 5행 그대로</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 139;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    const paint = (sel, t, a, b) => ft(sel, { color: a }, { color: b }, t);
+    const ACC = "#6B3FE6", INK = "#18181B", GR = "#71717A";
+    let note = null;
+    const say = (id, t) => { if (note) fade(note, t, 1, 0); fade(id, t + 0.15, 0, 1); note = id; };
+    const burst = (sel, dx, t) => { ft(sel, { x: dx, scale: 0.94 }, { x: 0, scale: 1, duration: 0.8, ease: "power3.out" }, t); ft(sel, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.out" }, t); };
+    const quick = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, duration: 0.3, ease: "power2.out" }, t);
+
+    // ── 3장: 함수 종속과 결정자 ──
+    // 17 테이블을 어디서 나눌지는 함수 종속이 알려 줌
+    ft("#s03-h1", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s03-big", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    // 18 한 속성의 값이 정해지면 다른 속성의 값이 하나로
+    stamp("#s03-def", at(1, 0.2));
+    fade("#s03-dA", at(1, 0.5), 0, 1);
+    // 19 결정자 → 종속자
+    fade("#s03-dA", at(2, 0.1), 1, 0);
+    fade("#s03-dB", at(2, 0.4), 0, 1);
+    // 20 상품코드 → 상품명, 단가
+    fade("#s03-def", at(3, 0.0), 1, 0);
+    fade("#s03-dB", at(3, 0.0), 1, 0);
+    stamp("#s03-l1", at(3, 0.5));
+    fade("#s03-a1", at(3, 0.5), 0, 1);
+    // 21 주문번호 → 고객번호, 고객번호 → 고객이름
+    fade("#s03-a1", at(4, 0.0), 1, 0.2);
+    stamp("#s03-l2", at(4, 0.2));
+    fade("#s03-a2", at(4, 0.2), 0, 1);
+    fade("#s03-a2", at(4, 2.2), 1, 0.2);
+    stamp("#s03-l3", at(4, 2.4));
+    fade("#s03-a3", at(4, 2.4), 0, 1);
+    // 22 수량은 주문번호와 상품코드 둘 다
+    fade("#s03-a3", at(5, 0.0), 1, 0.2);
+    stamp("#s03-l4", at(5, 0.2));
+    fade("#s03-a4", at(5, 0.2), 0, 1);
+    // 23 핵심 함수 종속은 네 개
+    fade("#s03-a4", at(6, 0.2), 1, 0.35);
+    fade(["#s03-a1", "#s03-a2", "#s03-a3"], at(6, 0.2), 0.2, 0.35);
+    say("#s03-nA", at(6, 0.9));
+
+    // ── 4장: 제2정규형과 부분 함수 종속 ──
+    // 24 주식별자가 여러 속성으로 된 테이블에서 따진다
+    fade("#s03-h1", at(7, 0), 1, 0);
+    ft("#s03-h2", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(7, 0.1));
+    fade(["#s03-a1", "#s03-a2", "#s03-a3", "#s03-a4"], at(7, 0.1), 0.35, 0);
+    fade(["#s03-gl", "#s03-gb"], at(7, 1.2), 0, 1);
+    paint(["#s03-bh0", "#s03-bh1"], at(7, 1.2), GR, ACC);
+    // 25 일부에만 종속되면 부분 함수 종속
+    say("#s03-cp", X("pf", at(8, 2.8)));
+    // 26 상품명·단가는 상품코드에만, 고객번호는 주문번호에만
+    fade("#s03-a1", at(9, 0.2), 0, 1);
+    fade("#s03-a2", at(9, 0.2), 0.0, 1);
+    fade("#s03-g1", at(9, 0.2), 0, 1);
+    stamp("#s03-tg1", X("t1", at(9, 1.4)));
+    fade("#s03-g2", X("t2", at(9, 3.4)) - 0.2, 0, 1);
+    stamp("#s03-tg2", X("t2", at(9, 3.4)));
+    // 27 고객이름도 고객번호를 거쳐 주문번호에만
+    fade("#s03-a1", at(10, 0.0), 1, 0);
+    fade("#s03-g1", at(10, 0.0), 1, 0.3);
+    fade("#s03-g2", at(10, 0.0), 1, 0.3);
+    fade("#s03-l3a", at(10, 0.3), 1, 0);
+    fade("#s03-l3b", at(10, 0.4), 0, 1);
+    fade("#s03-a3", at(10, 0.5), 0.2, 1);
+    fade("#s03-g3", at(10, 0.6), 0, 1);
+    stamp("#s03-tg3", at(10, 1.8));
+    // 28 부분 함수 종속을 없애 주식별자 전체에 종속 = 제2정규형
+    fade(["#s03-a2", "#s03-a3"], at(11, 0.0), 1, 0);
+    fade(["#s03-g1", "#s03-g2", "#s03-g3"], at(11, 0.0), 0.3, 0);
+    fade(["#s03-g1", "#s03-g2", "#s03-g3"], at(11, 0.0), 0.3, 0);
+    fade("#s03-g4", at(11, 0.8), 0, 1);
+    stamp("#s03-tg4", at(11, 1.0));
+    say("#s03-nB", at(11, 1.2));
+    // 29 상품코드에 딸린 속성은 상품 테이블로, 주문번호에 딸린 속성은 주문 테이블로
+    fade(["#s03-l1", "#s03-l2", "#s03-l3", "#s03-l4", "#s03-tg1", "#s03-tg2", "#s03-tg3", "#s03-tg4", "#s03-g4"], at(12, 0.1), 1, 0);
+    fade("#s03-bd1", at(12, 0.5), 0, 1);
+    fade("#s03-lb1", at(12, 0.6), 0, 1);
+    fade("#s03-bd2", at(12, 3.0), 0, 1);
+    fade("#s03-lb2", at(12, 3.1), 0, 1);
+    // 30 수량은 주문상품 테이블에 남음 — 표가 셋으로 갈라짐
+    const sp = at(13, 0.3);
+    quick(["#s03-big"], sp, 1, 0);
+    burst("#s03-osp", -139, sp + 0.25);
+    burst("#s03-prd", -139, sp + 0.35);
+    burst("#s03-ord", -139, sp + 0.45);
+    paint(".s03-oq", at(13, 1.6), INK, ACC);
+    // 31 테이블 세 개, 주문상품 5행, 상품 3행, 주문 3행
+    paint(".s03-oq", at(14, 0.1), ACC, INK);
+    say("#s03-nC", at(14, 0.4));
+    stamp("#s03-ct1", X("cnt1", at(14, 2.6)));
+    stamp("#s03-ct2", X("cnt2", at(14, 3.8)));
+    stamp("#s03-ct3", X("cnt3", at(14, 5.0)));
+    // 32 공책이라는 이름은 한 번만 저장되니 한 행만 고치면 됨
+    say("#s03-nC2", at(15, 0.6));
+    paint("#s03-pa", at(15, 2.2), INK, ACC);
+    fade("#s03-pa", at(15, 2.9), 1, 0);
+    fade("#s03-pb", at(15, 3.0), 0, 1);
+    ft("#s03-pb", { color: ACC }, { color: ACC }, at(15, 3.0));
+    // 33 가위도 상품 테이블에 넣을 수 있고, 3번 주문을 지워도 지우개는 남음
+    fade("#s03-pb", at(16, 0.1), 1, 0);
+    fade("#s03-pa", at(16, 0.2), 0, 1);
+    paint("#s03-pa", at(16, 0.2), ACC, INK);
+    fade("#s03-gh", X("gw", at(16, 0.6)) - 0.2, 0, 1);
+    ft("#s03-gr", { opacity: 0, x: -12 }, { opacity: 1, x: 0 }, X("gw", at(16, 0.6)));
+    stamp("#s03-ck", X("gw", at(16, 0.6)) + 0.9);
+    say("#s03-nC3", at(16, 0.8));
+    paint([".s03-p3"], X("dl", at(16, 3.4)), INK, ACC);
+
+    // ── 5장: 제3정규형과 이행 함수 종속 ──
+    // 34 주문 테이블에는 민수가 아직 두 번
+    fade("#s03-h2", at(17, 0), 1, 0);
+    ft("#s03-h3", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(17, 0.1));
+    fade(["#s03-gh", "#s03-gr", "#s03-ck"], at(17, 0.0), 1, 0);
+    paint([".s03-p3"], at(17, 0.0), ACC, INK);
+    fade(["#s03-osp", "#s03-prd"], at(17, 0.2), 1, 0.3);
+    paint(".s03-ms", X("m2", at(17, 2.0)), INK, ACC);
+    say("#s03-nD", at(17, 2.2));
+    // 35 지영의 하나뿐인 주문을 지우면 이름도 함께 사라짐
+    paint(".s03-ms", at(18, 0.1), ACC, INK);
+    fade("#s03-or2", X("jy", at(18, 1.4)), 1, 0.15);
+    stamp("#s03-xj", X("jy", at(18, 1.4)) + 1.4);
+    say("#s03-nE", at(18, 0.8));
+    // 36 주문번호가 고객번호를, 고객번호가 고객이름을 정함
+    fade("#s03-or2", at(19, 0.1), 0.15, 1);
+    fade("#s03-nE", at(19, 0.1), 1, 0);
+    note = null;
+    fade("#s03-xj", at(19, 0.1), 1, 0);
+    fade("#s03-a5", at(19, 0.8), 0, 1);
+    // 37 일반 속성을 거쳐 이어지는 종속 = 이행 함수 종속
+    say("#s03-ch", at(20, 2.6));
+    // 38 일반 속성끼리는 종속되지 않게 = 제3정규형
+    fade("#s03-a5", at(21, 0.2), 1, 0.3);
+    say("#s03-nF", at(21, 1.0));
+    // 39 고객번호와 고객이름은 고객 테이블로, 주문 테이블에는 고객번호만
+    fade("#s03-ob", at(22, 0.3), 0, 1);
+    fade("#s03-a5", at(22, 2.2), 0.3, 0);
+    const s2 = at(22, 2.8);
+    quick("#s03-ord", s2, 1, 0);
+    burst("#s03-ord2", 125, s2 + 0.25);
+    burst("#s03-cus", 102, s2 + 0.35);
+    ft("#s03-osp", { x: 0 }, { x: -109, duration: 0.9, ease: "power2.inOut" }, s2 + 0.25);
+    ft("#s03-prd", { x: 0 }, { x: -117, duration: 0.9, ease: "power2.inOut" }, s2 + 0.25);
+    // 40 테이블 네 개, 주문 3행 옆에 고객 2행
+    say("#s03-nG", at(23, 0.4));
+    stamp("#s03-ct4", at(23, 2.6));
+    stamp("#s03-ct5", at(23, 4.0));
+    // 41 처음에 네 번 저장됐던 민수가 한 번만
+    paint("#s03-cm", at(24, 1.8), INK, ACC);
+    say("#s03-nH", at(24, 1.0));
+    // 42 네 테이블을 다시 조인하면 처음 5행 그대로
+    paint("#s03-cm", at(25, 0.1), ACC, INK);
+    fade(["#s03-osp", "#s03-prd"], at(25, 0.1), 0.3, 1);
+    fade("#s03-jn", at(25, 0.8), 0, 1);
+    say("#s03-cj", at(25, 1.4));
+    if (String(V.exit) !== "false") ft("#s03-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s03"] = tl;
+  </script>
+</template>

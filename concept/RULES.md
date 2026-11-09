@@ -24,6 +24,9 @@
 - 한 번에: 조립+검사 `bash concept/tools/check_episode.sh concept/episodes/<편>` → 장마다 한 장 `concept/tools/sheet.py concept/episodes/<편> [--shorts]`(boards/review/sheet.jpg를 눈으로 확인) → 렌더·소리 크기·완성본 `concept/tools/render_episode.py concept/episodes/<편> "<제목>"` → 업로드 정보 `concept/tools/youtube_info.py <정보 JSON>` → 썸네일(아래) → 마지막에 `collect_episode.py`로 완성본 영상 폴더를 다시 채운다
 - 썸네일(5번 역할, 2026-10-30 사용자 선택 = 함정 경고형 d): 바탕은 주제 묶음별 색(thumb.html의 GROUP, 모델 평가 = 노랑, 연관분석 = 하늘, 군집분석 = 연두 …, 새 편은 EPG에 묶음을 적는다), 위에 빨간 ‘ADsP · 빅분기’ 표(SQLD 편은 ‘SQLD’, 바탕은 SQL 기본 = 민트, SQL 활용 = 주황), 윗줄(9자 안팎) + 흔한 오해 한 마디(물음표 포함 4자 안팎, 흰 글자·검은 테두리)에 가는 빨간 ✕, 오른쪽 작은 그림, 아래 검은 띠에 노란 한 줄(14자 안팎). 근거 없는 숫자(‘99%가 틀림’ 등)는 쓰지 않는다. 글자·그림은 `concept/thumbnails/thumb.html`의 EP에 편마다 적고 `.venv/Scripts/python.exe concept/thumbnails/shoot.py <번호> d --badge` → 편 폴더 `thumbnail.png`로 복사(완성본에는 `collect_episode.py`가 넣는다). 쇼츠는 따로 만들지 않는다(영상 한 장면을 표지로).
 - 렌더 중에는 배치 검사(브라우저를 띄움)를 같이 돌리지 않는다(메모리 부족으로 렌더가 죽은 적 있음).
+- 무거운 명령(배치 검사·사진·받아 적기·음성·렌더)은 줄 세우기 도구 앞에 붙여 하나씩만 돌린다: `.venv/Scripts/python.exe tools/heavy.py --wait 900 <명령…>`(차례가 안 오면 종료 코드 75 → 같은 명령을 다시). 뒤에서 돌리는 창은 메모리가 모자라면 강제 종료되니 앞에서 돌린다.
+- 한 번에 한 편씩 만든다(2026-11-09 결정). 2026-11-05에 열두 편을 동시에 돌렸더니 줄 다툼으로 기다림이 길어지고, 작업자마다 토큰을 35만~44만씩 써서 사용 한도로 18시간 멈췄다. 한 편씩 하면 장면 만들기 40분 안팎 + 렌더 12~14분(본편 5분 기준)이다. 렌더는 토큰을 쓰지 않으니 다음 편 장면 만들기와 겹쳐 돌린다.
+- 본편 길이는 3~4분을 목표로 쓴다. 5~6분이면 장면·검사·렌더 시간이 1.5배로 는다(2026-11 SQLD 012~023편 실측).
 - 음성: `.venv/Scripts/python.exe concept/tools/tts_episode.py concept/episodes/<편>`
 - 조립: `.venv/Scripts/python.exe concept/tools/build_video.py concept/episodes/<편>`
 - 배치 검사: `node tools/check_layout.mjs concept/episodes/<편>`
@@ -70,7 +73,8 @@
 - 음성: `concept/tools/tts_episode.py concept/episodes/<편>/shorts --title-dur 0 --sent-gap 0.2 --chapter-gap 0.45 --tail 1.0`.
 
 ## 음성 검증(2026-11-02 SQLD 편에서 AI 음성 결함을 찾은 뒤 추가, 음성을 만든 뒤 반드시)
-- `.venv/Scripts/python.exe concept/tools/listen_episode.py concept/episodes/<편> concept/episodes/<편>/shorts`: 문장마다 받아 적어(음성 인식 large-v3-turbo) 읽을 말과 대조 → `listen/report.txt`의 ▲(일치 0.9 미만)를 하나씩 본다. 받아 적기가 소리가 같은 다른 글자로 적은 것(널을→너를, 소계→소개, 조인은→조이는)은 괜찮고, 음절·숫자가 빠졌거나 다른 말로 들리면 대본을 고친다(say_auto.py 머리말의 확인된 결함 목록 참고). 바뀐 문장만 다시 듣는다.
+- `.venv/Scripts/python.exe concept/tools/listen_episode.py concept/episodes/<편> concept/episodes/<편>/shorts`: 문장마다 받아 적어(음성 인식 large-v3-turbo) 읽을 말과 대조 → `listen/report.txt`의 ▲(일치 0.9 미만)를 하나씩 본다. 받아 적기가 소리가 같은 다른 글자로 적은 것(널을→너를, 소계→소개, 조인은→조이는)은 괜찮고, 음절·숫자가 빠졌거나 다른 말로 들리면 대본을 고친다(say_auto.py 머리말의 확인된 결함 목록 참고). 바뀐 문장만 다시 듣는다. 받아 적기는 빠른 방식(beam_size=1, 2026-11-05부터)이라 ▲가 조금 더 뜰 수 있다. 하나씩 판단한다. 받아 적은 뒤에 대본 문장을 고쳤으면 그 문장을 다시 들은 뒤 시각 맞추기를 한다(안 그러면 옛 문장의 시각이 남는다).
+- 화면 장면이 대본 ‘> 화면:’과 맞는지, 오답 칩에 ✕가 있는지, 맞는 문장 옆에 ✕를 잘못 붙이지 않았는지 사진으로 확인한다(2026-11-09 020 쇼츠 ‘-3’ 칩, 021 ‘존재성’ 카드에서 발견).
 - `.venv/Scripts/python.exe concept/tools/verify_episode.py --no-pops --write-times concept/episodes/<편>`: 그림 시각(build.json extra)·자막 나눔을 실제 말 시각과 대조하고 `word_times.json`을 만든다 → 다시 조립하면 그림·자막이 실제 말에 맞춰진다. 자동으로 못 찾은 낱말은 `word_times.manual.json`에 직접 적는다. 장면 안에 숫자를 하나씩 찍는 연출은 `listen/words.json`의 실제 시각을 넣는다(글자 수·고정 간격 추정 금지).
 - 렌더 뒤: `verify_episode.py concept/episodes/<편>`로 최종 영상의 소리 찢어짐·박자 밀림·조용한 구간 잡음·화면 번쩍임을 본다.
 

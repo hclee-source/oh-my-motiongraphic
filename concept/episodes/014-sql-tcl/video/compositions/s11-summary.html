@@ -1,0 +1,42 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s11-r { position: absolute; left: 192px; width: 1536px; height: 168px; padding: 0 56px; box-sizing: border-box;
+      display: grid; grid-template-columns: 560px 90px 1fr; align-items: center; }
+    #s11-r1 { top: 270px; }
+    #s11-r2 { top: 470px; }
+    #s11-r3 { top: 670px; }
+    .s11-k { font-size: 60px; font-weight: 900; white-space: nowrap; }
+    .s11-a { font-size: 52px; font-weight: 900; color: var(--color-ink2, #71717A); text-align: center; }
+    .s11-v { font-size: 56px; font-weight: 900; color: var(--color-accent, #6B3FE6); white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="s11" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3.4]"},{"id":"dur","type":"number","label":"장면 길이","default":11.4},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"r2","type":"number","label":"그냥 ROLLBACK 시각","default":5.6},{"id":"r3","type":"number","label":"DDL은 시각","default":8.2},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s11-all">
+      <div id="s11-head" class="x-head">한 줄 정리</div>
+      <div class="s11-r x-card x-hide" id="s11-r1"><div class="s11-k">ROLLBACK TO</div><div class="s11-a">→</div><div class="s11-v">깃발까지</div></div>
+      <div class="s11-r x-card x-hide" id="s11-r2"><div class="s11-k">ROLLBACK</div><div class="s11-a">→</div><div class="s11-v">마지막 COMMIT까지</div></div>
+      <div class="s11-r x-card x-hide" id="s11-r3"><div class="s11-k">DDL</div><div class="s11-a">→</div><div class="s11-v">그 자리에서 COMMIT</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 11.4;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, i, d) => Number(V[k]) || at(i, d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+
+    // 54 한 줄로 정리하면
+    ft("#s11-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    // 55 ROLLBACK TO는 깃발까지, 그냥 ROLLBACK은 마지막 COMMIT까지, DDL은 그 자리에서 COMMIT
+    ft("#s11-r1", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(1, 0));
+    ft("#s11-r2", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("r2", 1, 2.0) - 0.1);
+    ft("#s11-r3", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("r3", 1, 4.6) - 0.1);
+    if (String(V.exit) !== "false") ft("#s11-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s11"] = tl;
+  </script>
+</template>

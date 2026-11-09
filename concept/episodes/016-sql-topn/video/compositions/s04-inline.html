@@ -1,0 +1,110 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s04-code { left: 192px; top: 262px; width: 640px; }
+    #s04-code .q-ln { font-size: 30px; height: 54px; padding: 0 36px; }
+    #s04-code .s04-in { padding-left: 84px; }
+    #s04-bk { top: 83px; bottom: auto; height: 156px; }
+    #s04-iv { margin-left: 22px; color: var(--color-accent-dark, #A68CFF); font-weight: 900; opacity: 0; }
+    #s04-note { position: absolute; left: 192px; top: 676px; width: 640px; height: 170px; }
+    .s04-n { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 10px; text-align: center; font-size: 36px; font-weight: 800; line-height: 1.35; opacity: 0; }
+    #s04-tb { left: 892px; top: 262px; width: 836px; height: 584px; }
+    #s04-tb .q-th, #s04-tb .q-tr { grid-template-columns: 150px 180px 180px 270px; }
+    #s04-th { top: 20px; }
+    #s04-th > div:nth-child(3) { color: var(--color-accent, #6B3FE6); font-weight: 900; }
+    #s04-cnt { font-size: 32px; font-weight: 900; color: var(--color-accent, #6B3FE6); opacity: 0; }
+    .s04-cell { position: relative; height: 44px; }
+    .s04-cell > span { position: absolute; left: 0; right: 0; top: 0; line-height: 44px; text-align: center; white-space: nowrap; opacity: 0; }
+    .s04-rn { font-size: 36px; font-weight: 900; color: var(--color-accent, #6B3FE6); }
+    .s04-band { position: absolute; left: 14px; width: 530px; top: 76px; height: 196px; border-radius: 16px; opacity: 0;
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 12%, #FFFFFF); }
+    #s04-tie { position: absolute; left: 562px; top: 212px; width: 246px; height: 120px; opacity: 0; }
+    #s04-tie-bar { position: absolute; left: 0; top: 4px; width: 6px; height: 112px; border-radius: 3px; background: var(--color-accent, #6B3FE6); }
+    #s04-tie-t { position: absolute; left: 22px; right: 0; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center;
+      text-align: center; font-size: 32px; font-weight: 800; line-height: 1.3; color: var(--color-accent, #6B3FE6); }
+  </style>
+  <div id="root" data-composition-id="s04" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,5.99,12.44,19.26,27.14,33.16]"},{"id":"dur","type":"number","label":"장면 길이","default":39},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"in","type":"number","label":"괄호 안에 시각","default":8.5},{"id":"out","type":"number","label":"바깥 SELECT의 시각","default":10},{"id":"iv","type":"number","label":"인라인 뷰 시각","default":14},{"id":"u1","type":"number","label":"1번 시각","default":23.5},{"id":"u2","type":"number","label":"2번 시각","default":24.3},{"id":"u3","type":"number","label":"3번 시각","default":25.1},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s04-all">
+      <div id="s04-head" class="x-head">정렬 먼저, 번호는 바깥에서</div>
+      <div id="s04-code" class="x-dark q-code x-hide">
+        <div class="q-hi" id="s04-bk"></div>
+        <div class="q-ln"><span><span class="q-k">SELECT</span> * <span class="q-k">FROM</span> (</span></div>
+        <div class="q-ln s04-in"><span><span class="q-k">SELECT</span> 이름, 급여</span></div>
+        <div class="q-ln s04-in"><span><span class="q-k">FROM</span> 직원</span></div>
+        <div class="q-ln s04-in"><span><span class="q-k">ORDER BY</span> 급여 <span class="q-k">DESC</span></span></div>
+        <div class="q-ln"><span>)</span><span id="s04-iv">← 인라인 뷰</span></div>
+        <div class="q-ln"><div class="q-hi" id="s04-h6"></div><span><span class="q-k">WHERE</span> <span class="q-k">ROWNUM</span> &lt;= 3;</span></div>
+      </div>
+      <div id="s04-note" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s04-n" id="s04-na"><span>정렬을 먼저 끝내고<br />번호는 <span class="x-acc">그다음에</span></span></div>
+        <div class="s04-n" id="s04-nb"><span>안쪽에서 정렬<br />바깥에서 <span class="x-acc">거르기</span></span></div>
+      </div>
+      <div id="s04-tb" class="x-card q-tb x-hide">
+        <div class="s04-band" id="s04-bd"></div>
+        <div class="q-th" id="s04-th"><div>이름</div><div>급여(만 원)</div><div>ROWNUM</div><div id="s04-cnt">3행</div></div>
+        <div class="q-tr" id="s04-r0" style="top:84px"><div>지영</div><div>300</div><div></div><div></div></div>
+        <div class="q-tr" id="s04-r1" style="top:148px"><div>민수</div><div>400</div><div class="s04-cell"><span class="s04-rn" id="s04-n3">3</span></div><div></div></div>
+        <div class="q-tr" id="s04-r2" style="top:212px"><div>수진</div><div>250</div><div></div><div></div></div>
+        <div class="q-tr" id="s04-r3" style="top:276px"><div>현우</div><div>500</div><div class="s04-cell"><span class="s04-rn" id="s04-n1">1</span></div><div></div></div>
+        <div class="q-tr" id="s04-r4" style="top:340px"><div>예린</div><div>400</div><div></div><div></div></div>
+        <div class="q-tr" id="s04-r5" style="top:404px"><div>동훈</div><div>450</div><div class="s04-cell"><span class="s04-rn" id="s04-n2">2</span></div><div></div></div>
+        <div class="q-tr" id="s04-r6" style="top:468px"><div>태호</div><div>350</div><div></div><div></div></div>
+        <div id="s04-tie"><div id="s04-tie-bar"></div><div id="s04-tie-t">누가 3번일지<br />정해지지 않음</div></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 39;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d = 0) => Number(V[k]) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+    let note = null;
+    const say = (id, t) => { if (note) fade(note, t, 1, 0); fade(id, t + 0.15, 0, 1); note = id; };
+    const R = (i) => `#s04-r${i}`;
+    const ALL = [0, 1, 2, 3, 4, 5, 6].map(R);
+    // 저장된 순서 → 급여 순 자리(지영 6번째, 민수 3번째, 수진 7번째, 현우 1번째, 예린 4번째, 동훈 2번째, 태호 5번째)
+    const POS = [5, 2, 6, 0, 3, 1, 4];
+
+    // 27 정렬을 먼저 끝내고 번호를 붙이면 된다
+    ft("#s04-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s04-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.2));
+    ft("#s04-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.4));
+    ft("#s04-note", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(0, 1.0));
+    say("#s04-na", at(0, 1.0));
+    // 28 정렬하는 SELECT는 괄호 안에, 바깥 WHERE에서 ROWNUM으로 자른다
+    fade("#s04-bk", X("in", -0.1), 0, 1);
+    fade("#s04-bk", X("out", -0.1), 1, 0);
+    fade("#s04-h6", X("out", 0), 0, 1);
+    // 29 괄호 안의 SELECT = 인라인 뷰, 안쪽에서 정렬 → 바깥에서 거르기
+    fade("#s04-h6", X("iv", -0.3), 1, 0);
+    fade("#s04-bk", X("iv", -0.2), 0, 1);
+    fade("#s04-iv", X("iv", 0), 0, 1);
+    say("#s04-nb", X("iv", 0.6));
+    // 30 안쪽에서 급여 순으로 정렬 → 바깥에서 1번, 2번, 3번(움직이는 동안 흐리게)
+    const t0 = at(3, 0.2);
+    fade(ALL, t0, 1, 0.15);
+    ALL.forEach((r, i) => ft(r, { y: 0 }, { y: (POS[i] - i) * 64, duration: 0.6 * S, ease: "power2.inOut" }, t0 + 0.25));
+    fade(ALL, t0 + 0.25 + 0.6 * S, 0.15, 1);
+    fade("#s04-bk", t0 + 1.6, 1, 0);
+    fade("#s04-h6", t0 + 1.6, 0, 1);
+    [["#s04-n1", "u1"], ["#s04-n2", "u2"], ["#s04-n3", "u3"]].forEach(([n, k]) => stamp(n, X(k, -0.05)));
+    // 31 결과는 현우 500, 동훈 450, 400 한 명 → 3행
+    fade([R(4), R(6), R(0), R(2)], at(4, 0.2), 1, 0.3);
+    fade("#s04-bd", at(4, 0.4), 0, 1);
+    fade("#s04-cnt", at(4, 0.6), 0, 1);
+    // 32 민수와 예린은 둘 다 400 → 누가 3번일지 정해지지 않음
+    fade(R(4), at(5, 0.2), 0.3, 0.75);
+    ft("#s04-tie", { opacity: 0, x: 12 }, { opacity: 1, x: 0 }, at(5, 0.4));
+    if (String(V.exit) !== "false") ft("#s04-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s04"] = tl;
+  </script>
+</template>

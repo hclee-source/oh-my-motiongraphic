@@ -1,0 +1,84 @@
+<!doctype html>
+<html
+  lang="ko"
+  data-resolution="portrait"
+  data-composition-variables='[
+    {"id":"color-ground","type":"color","label":"배경","default":"#F1F2F5"},
+    {"id":"color-card","type":"color","label":"카드","default":"#FFFFFF"},
+    {"id":"color-line","type":"color","label":"카드 테두리","default":"#E3E5EA"},
+    {"id":"color-hair","type":"color","label":"가는 선","default":"#D3D6DD"},
+    {"id":"color-dot","type":"color","label":"점(보통)","default":"#CDD0D8"},
+    {"id":"color-shadow","type":"color","label":"카드 그림자","default":"rgba(20,24,40,0.06)"},
+    {"id":"color-ink","type":"color","label":"글자","default":"#18181B"},
+    {"id":"color-ink2","type":"color","label":"보조 글자","default":"#71717A"},
+    {"id":"color-accent","type":"color","label":"강조색","default":"#6B3FE6"},
+    {"id":"color-accent-dark","type":"color","label":"어두운 카드 위 강조색","default":"#A68CFF"},
+    {"id":"color-anchor","type":"color","label":"수식 카드","default":"#18181B"},
+    {"id":"font-main","type":"string","label":"글꼴","default":"Paperlogy"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-4Regular.woff2") format("woff2"); font-weight: 400; }
+      @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-6SemiBold.woff2") format("woff2"); font-weight: 600; }
+      @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-7Bold.woff2") format("woff2"); font-weight: 700; }
+      @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-8ExtraBold.woff2") format("woff2"); font-weight: 800; }
+      @font-face { font-family: "Paperlogy"; src: url("assets/fonts/Paperlogy-9Black.woff2") format("woff2"); font-weight: 900; }
+      :root {
+        --color-ground: #F1F2F5;
+        --color-card: #FFFFFF;
+        --color-line: #E3E5EA;
+        --color-hair: #D3D6DD;
+        --color-dot: #CDD0D8;
+        --color-shadow: rgba(20,24,40,0.06);
+        --color-ink: #18181B;
+        --color-ink2: #71717A;
+        --color-accent: #6B3FE6;
+        --color-accent-dark: #A68CFF;
+        --color-anchor: #18181B;
+        --font-main: "Paperlogy";
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: var(--color-ground); }
+      #root { position: relative; width: 100%; height: 100%; }
+      #bg { position: absolute; inset: 0; background: var(--color-ground); }
+    </style>
+  </head>
+  <body>
+    <!-- tools/build_video.py가 만든 파일. 손으로 고치지 말고 build.json·timeline.json을 고친 뒤 다시 만든다. -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="43.491" data-width="1080" data-height="1920">
+      <div id="bg"></div>
+      <div id="h1" data-composition-id="h1" data-composition-src="compositions/h1-compare.html"
+        data-start="0.0" data-duration="35.958" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 1"
+        data-variable-values='{"dur": 35.958, "cues": "[0.0, 3.431, 7.064, 12.885, 17.056, 20.546, 22.629, 28.029, 31.653]", "exit": true, "d1": 3.431, "d2": 4.671, "d3": 6.071, "k1": 7.904, "k2": 11.784, "rb": 13.865, "r3": 15.625, "ac": 18.476, "m1": 22.629, "m2": 24.989, "wh": 33.633, "wd": 34.753}'></div>
+      <div id="h5" data-composition-id="h5" data-composition-src="compositions/h5-summary.html"
+        data-start="35.958" data-duration="7.533" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 1"
+        data-variable-values='{"dur": 7.533, "cues": "[0.45]", "exit": false, "w1": 0.45, "w2": 1.91, "w3": 4.01}'></div>
+      <div id="hd" data-composition-id="hd" data-composition-src="compositions/header.html"
+        data-start="0" data-duration="43.491" data-track-index="0" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 3"
+        data-variable-values='{"dur": 43.491}'></div>
+      <div id="captions" data-composition-id="captions" data-composition-src="compositions/captions.html"
+        data-start="0" data-duration="43.491" data-track-index="2" data-track-kind="captions"
+        data-width="1080" data-height="1920" style="z-index: 2"></div>
+      <audio id="vo" class="clip" src="assets/vo/narration.wav" data-start="0" data-track-index="3" data-volume="1"></audio>
+      <audio id="sfx-001" class="clip" src="assets/sfx/pop.mp3" data-start="0.100" data-duration="0.72" data-track-index="4" data-volume="0.22"></audio>
+      <audio id="sfx-002" class="clip" src="assets/sfx/click-soft.mp3" data-start="3.631" data-duration="0.37" data-track-index="4" data-volume="0.3"></audio>
+      <audio id="sfx-003" class="clip" src="assets/sfx/pop.mp3" data-start="7.464" data-duration="0.72" data-track-index="4" data-volume="0.22"></audio>
+      <audio id="sfx-004" class="clip" src="assets/sfx/pop.mp3" data-start="14.085" data-duration="0.72" data-track-index="4" data-volume="0.22"></audio>
+      <audio id="sfx-005" class="clip" src="assets/sfx/click-soft.mp3" data-start="17.856" data-duration="0.37" data-track-index="4" data-volume="0.3"></audio>
+      <audio id="sfx-006" class="clip" src="assets/sfx/pop.mp3" data-start="22.929" data-duration="0.72" data-track-index="4" data-volume="0.22"></audio>
+      <audio id="sfx-007" class="clip" src="assets/sfx/pop.mp3" data-start="28.129" data-duration="0.72" data-track-index="4" data-volume="0.22"></audio>
+      <audio id="sfx-008" class="clip" src="assets/sfx/pop.mp3" data-start="33.253" data-duration="0.72" data-track-index="4" data-volume="0.22"></audio>
+      <audio id="sfx-009" class="clip" src="assets/sfx/pop.mp3" data-start="36.508" data-duration="0.72" data-track-index="4" data-volume="0.22"></audio>
+    </div>
+    <script>
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

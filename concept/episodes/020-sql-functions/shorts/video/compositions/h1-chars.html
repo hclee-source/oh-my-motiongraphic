@@ -1,0 +1,98 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #h1-codes { position: absolute; left: 80px; top: 320px; width: 920px; height: 130px; }
+    .h1-code { left: 0; top: 0; width: 920px; }
+    .h1-code .q-ln { font-size: 46px; height: 76px; padding: 0 44px; }
+    #h1-rows { position: absolute; left: 0; top: 540px; width: 1080px; height: 360px; }
+    .h1-row { position: absolute; left: 0; top: 0; width: 1080px; height: 360px; }
+    .h1-box { position: absolute; top: 0; box-sizing: border-box; display: flex; align-items: center; justify-content: center;
+      font-size: 60px; font-weight: 900; }
+    .h1-n { position: absolute; top: 150px; width: 105px; height: 50px; line-height: 50px; text-align: center; font-size: 40px; font-weight: 800;
+      color: var(--color-accent, #6B3FE6); opacity: 0; }
+    #h1-note { position: absolute; left: 80px; width: 880px; top: 220px; text-align: center; font-size: 44px; font-weight: 800;
+      color: var(--color-ink2, #71717A); opacity: 0; }
+    .h1-ans { left: 290px; top: 960px; width: 500px; height: 110px; border-radius: 55px; font-size: 64px; font-weight: 900; }
+    .h1-qm { background: #FFFFFF; border: 2px solid var(--color-line, #E3E5EA); color: var(--color-ink2, #71717A); }
+  </style>
+  <div id="root" data-composition-id="h1" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0,3,11.9]"},{"id":"dur","type":"number","label":"장면 길이","default":20.2},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"m4","type":"number","label":"-4로 시각","default":5.5},{"id":"bs","type":"number","label":"BASE 시각","default":9.8},{"id":"st","type":"number","label":"별표는 시각","default":16.6},{"id":"ab","type":"number","label":"붙습니다 시각","default":18.4},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h1-all">
+      <div id="h1-codes" data-layout-allow-overlap>
+        <div id="h1-c1" class="h1-code x-dark q-code x-hide">
+          <div class="q-ln"><span><span class="q-k">SUBSTR</span>('DATABASE', -4)</span></div>
+        </div>
+        <div id="h1-c2" class="h1-code x-dark q-code x-hide">
+          <div class="q-ln"><span><span class="q-k">RPAD</span>('AB', 5, '*')</span></div>
+        </div>
+      </div>
+      <div id="h1-rows" data-layout-allow-overlap>
+        <div class="h1-row" id="h1-r1">
+          <div class="h1-box x-card x-hide" id="h1-a1" style="left:80px;width:105px;height:130px">D</div>
+          <div class="h1-box x-card x-hide" id="h1-a2" style="left:195px;width:105px;height:130px">A</div>
+          <div class="h1-box x-card x-hide" id="h1-a3" style="left:310px;width:105px;height:130px">T</div>
+          <div class="h1-box x-card x-hide" id="h1-a4" style="left:425px;width:105px;height:130px">A</div>
+          <div class="h1-box x-card x-hide" id="h1-a5" style="left:540px;width:105px;height:130px">B</div>
+          <div class="h1-box x-card x-hide" id="h1-a6" style="left:655px;width:105px;height:130px">A</div>
+          <div class="h1-box x-card x-hide" id="h1-a7" style="left:770px;width:105px;height:130px">S</div>
+          <div class="h1-box x-card x-hide" id="h1-a8" style="left:885px;width:105px;height:130px">E</div>
+          <div class="h1-n" id="h1-n1" style="left:540px">-4</div>
+          <div class="h1-n" id="h1-n2" style="left:655px">-3</div>
+          <div class="h1-n" id="h1-n3" style="left:770px">-2</div>
+          <div class="h1-n" id="h1-n4" style="left:885px">-1</div>
+        </div>
+        <div class="h1-row" id="h1-r2">
+          <div class="h1-box x-card x-hide" id="h1-b1" style="left:105px;width:150px;height:150px">A</div>
+          <div class="h1-box x-card x-hide" id="h1-b2" style="left:275px;width:150px;height:150px">B</div>
+          <div class="h1-box x-card x-hide" id="h1-b3" style="left:445px;width:150px;height:150px">*</div>
+          <div class="h1-box x-card x-hide" id="h1-b4" style="left:615px;width:150px;height:150px">*</div>
+          <div class="h1-box x-card x-hide" id="h1-b5" style="left:785px;width:150px;height:150px">*</div>
+          <div id="h1-note">전체 길이 5 → 별표 세 개</div>
+        </div>
+      </div>
+      <div id="h1-ans" data-layout-allow-overlap>
+        <div id="h1-q1" class="q-chip h1-ans h1-qm">?</div>
+        <div id="h1-o1" class="q-chip q-ok h1-ans">BASE</div>
+        <div id="h1-q2" class="q-chip h1-ans h1-qm">?</div>
+        <div id="h1-o2" class="q-chip q-ok h1-ans">AB***</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 10;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d = 0) => Number(V[k]) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+
+    // 2 DATABASE에서 -4 → 뒤에서 네 번째 B부터 끝까지
+    ft("#h1-c1", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(1, 0.1));
+    [1, 2, 3, 4, 5, 6, 7, 8].forEach((k, j) => stamp("#h1-a" + k, at(1, 0.3 + j * 0.12)));
+    fade("#h1-q1", at(1, 1.6), 0, 1);
+    [1, 2, 3, 4].forEach((k, j) => stamp("#h1-n" + k, X("m4", 0.2 + j * 0.25)));
+    fade(["#h1-a1", "#h1-a2", "#h1-a3", "#h1-a4"], X("m4", 0.3), 1, 0.3);
+    fade("#h1-q1", X("bs", -0.2), 1, 0);
+    fade("#h1-o1", X("bs", -0.1), 0, 1);
+    // 3 RPAD ‘AB’ → 길이 5, 별표 세 개
+    const t3 = at(2, -0.3);
+    fade(["#h1-c1", "#h1-r1", "#h1-o1"], t3, 1, 0);
+    ft("#h1-c2", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, t3 + 0.4);
+    fade("#h1-q2", t3 + 0.6, 0, 1);
+    stamp("#h1-b1", t3 + 0.6);
+    stamp("#h1-b2", t3 + 0.8);
+    stamp("#h1-b3", X("st", -0.1));
+    stamp("#h1-b4", X("st", 0.2));
+    stamp("#h1-b5", X("st", 0.5));
+    fade("#h1-note", X("st", 0.6), 0, 1);
+    fade("#h1-q2", X("ab", -0.2), 1, 0);
+    fade("#h1-o2", X("ab", -0.1), 0, 1);
+    if (String(V.exit) !== "false") ft("#h1-all", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, D - 0.3);
+    window.__timelines["h1"] = tl;
+  </script>
+</template>

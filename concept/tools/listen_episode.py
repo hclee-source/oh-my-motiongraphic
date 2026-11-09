@@ -46,7 +46,9 @@ def main():
                     model = WhisperModel(MODEL, device="cpu", compute_type="int8", cpu_threads=14)
                 x, sr = sf.read(proj / f"video/assets/vo/s{s['n']:02d}.wav", dtype="float32")
                 x = librosa.resample(x, orig_sr=sr, target_sr=16000)
-                segs, _ = model.transcribe(x, language="ko", beam_size=5, vad_filter=False, word_timestamps=True,
+                # beam_size=1(가장 그럴듯한 낱말만 바로 고르기): 2026-11-05 여러 편을 함께 만들 때 5로는 한 편에 20분 가까이 걸려 줄임.
+                # 빠진 음절·숫자를 찾는 용도라 정확도 차이는 작다(▲가 조금 더 뜰 수 있으니 하나씩 확인)
+                segs, _ = model.transcribe(x, language="ko", beam_size=1, vad_filter=False, word_timestamps=True,
                                            condition_on_previous_text=False)
                 res[key] = {"say": want, "words": [[round(w.start, 3), round(w.end, 3), w.word] for g in segs for w in g.words]}
                 heard += 1

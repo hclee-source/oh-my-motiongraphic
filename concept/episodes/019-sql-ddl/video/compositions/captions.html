@@ -1,0 +1,117 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 108px; text-align: center; overflow: visible;
+      font-size: 46px; font-weight: 600; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 1536px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-01a" class="cap clip" data-start="3.600" data-duration="1.710"><span>주문 표의 다섯 행을 한꺼번에</span></div>
+    <div id="cap-01b" class="cap clip" data-start="5.310" data-duration="2.055"><span>지우는 명령은 세 가지입니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="7.465" data-duration="1.930"><span>WHERE 없이 실행하는 DELETE,</span></div>
+    <div id="cap-02b" class="cap clip" data-start="9.395" data-duration="2.607"><span>그리고 TRUNCATE와 DROP입니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="12.102" data-duration="1.810"><span>셋 다 실행하고 나면 데이터가</span></div>
+    <div id="cap-03b" class="cap clip" data-start="13.912" data-duration="2.090"><span>사라지는 건 똑같아 보입니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="16.102" data-duration="1.450"><span>그렇다면 실행한 직후에</span></div>
+    <div id="cap-04b" class="cap clip" data-start="17.552" data-duration="2.141"><span>ROLLBACK을 하면 어떻게 될까요?</span></div>
+    <div id="cap-05a" class="cap clip" data-start="19.792" data-duration="2.250"><span>DELETE는 다섯 행이 그대로 돌아오고,</span></div>
+    <div id="cap-05b" class="cap clip" data-start="22.042" data-duration="4.859"><span>TRUNCATE는 빈 표만 남고, DROP은 표 자체가 없습니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="27.001" data-duration="1.770"><span>오늘은 이 세 명령의 차이와,</span></div>
+    <div id="cap-06b" class="cap clip" data-start="28.771" data-duration="4.371"><span>잘못된 데이터를 막아 주는 제약 조건을 정리해 보겠습니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="33.792" data-duration="2.850"><span>먼저 DELETE는 데이터를 다루는 DML이라서,</span></div>
+    <div id="cap-07b" class="cap clip" data-start="36.642" data-duration="3.698"><span>COMMIT 하기 전이면 ROLLBACK으로 되돌릴 수 있습니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="40.440" data-duration="2.130"><span>다섯 행을 모두 지웠다가 ROLLBACK</span></div>
+    <div id="cap-08b" class="cap clip" data-start="42.570" data-duration="2.522"><span>하면 다섯 행이 다시 나타납니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="45.192" data-duration="1.350"><span>또 DELETE에는 WHERE를</span></div>
+    <div id="cap-09b" class="cap clip" data-start="46.542" data-duration="2.282"><span>붙여 지울 행을 고를 수 있습니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="48.924" data-duration="3.170"><span>금액이 100 미만인 행만 지우면 80과 60,</span></div>
+    <div id="cap-10b" class="cap clip" data-start="52.094" data-duration="2.764"><span>두 행이 빠지고 세 행이 남습니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="54.958" data-duration="1.830"><span>행을 다 지워도 표가 쓰던 저장</span></div>
+    <div id="cap-11b" class="cap clip" data-start="56.788" data-duration="2.134"><span>공간은 그대로 남아 있습니다.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="59.572" data-duration="2.650"><span>다음 TRUNCATE는 행을 한꺼번에 모두 지우고,</span></div>
+    <div id="cap-12b" class="cap clip" data-start="62.222" data-duration="3.075"><span>열 구성 같은 표의 구조만 남깁니다.</span></div>
+    <div id="cap-13a" class="cap clip" data-start="65.397" data-duration="2.130"><span>표를 막 만든 상태로 되돌리는 것이라,</span></div>
+    <div id="cap-13b" class="cap clip" data-start="67.527" data-duration="2.669"><span>저장 공간도 반납합니다.</span></div>
+    <div id="cap-14a" class="cap clip" data-start="70.295" data-duration="2.670"><span>그런데 TRUNCATE는 DML이 아닌 DDL이고,</span></div>
+    <div id="cap-14b" class="cap clip" data-start="72.965" data-duration="4.484"><span>오라클에서 DDL은 실행되는 순간 자동으로 커밋됩니다.</span></div>
+    <div id="cap-15a" class="cap clip" data-start="77.550" data-duration="1.950"><span>그래서 바로 ROLLBACK을 해도 지워진</span></div>
+    <div id="cap-15b" class="cap clip" data-start="79.500" data-duration="3.338"><span>행은 돌아오지 않고, 0행 그대로입니다.</span></div>
+    <div id="cap-16a" class="cap clip" data-start="82.937" data-duration="1.870"><span>일부만 골라 지울 수도 없어서,</span></div>
+    <div id="cap-16b" class="cap clip" data-start="84.807" data-duration="3.485"><span>TRUNCATE에는 WHERE를 붙일 수 없습니다.</span></div>
+    <div id="cap-17a" class="cap clip" data-start="88.943" data-duration="1.490"><span>마지막 DROP은 데이터뿐</span></div>
+    <div id="cap-17b" class="cap clip" data-start="90.433" data-duration="2.426"><span>아니라 표의 구조까지 지웁니다.</span></div>
+    <div id="cap-18a" class="cap clip" data-start="92.959" data-duration="1.990"><span>열 정의와 데이터가 함께 사라져,</span></div>
+    <div id="cap-18b" class="cap clip" data-start="94.949" data-duration="3.796"><span>그 표를 조회하면 표가 없다는 오류가 납니다.</span></div>
+    <div id="cap-19a" class="cap clip" data-start="98.845" data-duration="2.370"><span>DROP도 DDL이라 자동으로 커밋되므로,</span></div>
+    <div id="cap-19b" class="cap clip" data-start="101.215" data-duration="2.688"><span>ROLLBACK으로 되살릴 수 없습니다.</span></div>
+    <div id="cap-20a" class="cap clip" data-start="104.003" data-duration="1.450"><span>세 명령을 나란히 놓으면,</span></div>
+    <div id="cap-20b" class="cap clip" data-start="105.453" data-duration="2.658"><span>ROLLBACK은 DELETE만 됩니다.</span></div>
+    <div id="cap-21a" class="cap clip" data-start="108.210" data-duration="2.790"><span>남는 것은 DELETE가 표와 저장 공간,</span></div>
+    <div id="cap-21b" class="cap clip" data-start="111.000" data-duration="3.940"><span>TRUNCATE가 빈 표, DROP은 아무것도 없습니다.</span></div>
+    <div id="cap-22a" class="cap clip" data-start="115.591" data-duration="1.730"><span>이번에는 부서 표와 사원 표로,</span></div>
+    <div id="cap-22b" class="cap clip" data-start="117.321" data-duration="4.447"><span>잘못된 데이터를 막는 제약 조건 다섯 가지를 보겠습니다.</span></div>
+    <div id="cap-23a" class="cap clip" data-start="121.867" data-duration="4.170"><span>PRIMARY KEY, 곧 기본키는 행 하나하나를 구별하는 열로,</span></div>
+    <div id="cap-23b" class="cap clip" data-start="126.037" data-duration="2.957"><span>UNIQUE와 NOT NULL을 합친 것입니다.</span></div>
+    <div id="cap-24a" class="cap clip" data-start="129.094" data-duration="2.050"><span>기본키는 표마다 하나만 둘 수 있지만,</span></div>
+    <div id="cap-24b" class="cap clip" data-start="131.144" data-duration="4.164"><span>여러 열을 묶어 하나의 기본키로 만들 수는 있습니다.</span></div>
+    <div id="cap-25a" class="cap clip" data-start="135.408" data-duration="2.610"><span>UNIQUE는 부서명처럼 같은 값이 두 번</span></div>
+    <div id="cap-25b" class="cap clip" data-start="138.018" data-duration="3.252"><span>들어가는 것만 막고, NULL은 허용합니다.</span></div>
+    <div id="cap-26a" class="cap clip" data-start="141.370" data-duration="2.810"><span>NOT NULL은 빈칸을 막고, CHECK는 급여가</span></div>
+    <div id="cap-26b" class="cap clip" data-start="144.180" data-duration="3.532"><span>0보다 커야 한다는 식으로 값의 조건을 정합니다.</span></div>
+    <div id="cap-27a" class="cap clip" data-start="147.812" data-duration="3.310"><span>FOREIGN KEY, 곧 외래키는 사원의 부서번호가</span></div>
+    <div id="cap-27b" class="cap clip" data-start="151.122" data-duration="3.375"><span>부서 표에 실제로 있는 번호여야 한다는 조건입니다.</span></div>
+    <div id="cap-28a" class="cap clip" data-start="154.597" data-duration="2.010"><span>이때 참조되는 부서 표를 부모,</span></div>
+    <div id="cap-28b" class="cap clip" data-start="156.607" data-duration="3.238"><span>참조하는 사원 표를 자식이라고 부릅니다.</span></div>
+    <div id="cap-29a" class="cap clip" data-start="159.945" data-duration="2.570"><span>부모 쪽에서 참조되는 열은 부서번호처럼</span></div>
+    <div id="cap-29b" class="cap clip" data-start="162.515" data-duration="2.624"><span>기본키이거나 UNIQUE여야 합니다.</span></div>
+    <div id="cap-30a" class="cap clip" data-start="165.789" data-duration="4.290"><span>사원 표는 민수, 지영, 현우 세 행에서 시작하고,</span></div>
+    <div id="cap-30b" class="cap clip" data-start="170.079" data-duration="3.851"><span>부서는 10번 영업과 20번 개발입니다.</span></div>
+    <div id="cap-31a" class="cap clip" data-start="174.030" data-duration="2.490"><span>첫 번째 INSERT로 4번 수진을 20번</span></div>
+    <div id="cap-31b" class="cap clip" data-start="176.520" data-duration="2.769"><span>부서에 넣으면 성공해서 네 행이 됩니다.</span></div>
+    <div id="cap-32a" class="cap clip" data-start="179.389" data-duration="2.330"><span>두 번째, 동훈을 같은 4번으로</span></div>
+    <div id="cap-32b" class="cap clip" data-start="181.719" data-duration="3.113"><span>넣으면 기본키가 겹쳐서 실패합니다.</span></div>
+    <div id="cap-33a" class="cap clip" data-start="184.932" data-duration="2.730"><span>세 번째, 5번 사원의 이름을 NULL로</span></div>
+    <div id="cap-33b" class="cap clip" data-start="187.662" data-duration="2.739"><span>넣으면 NOT NULL에 걸려 실패합니다.</span></div>
+    <div id="cap-34a" class="cap clip" data-start="190.501" data-duration="2.990"><span>네 번째, 급여를 0으로 넣으면 0보다</span></div>
+    <div id="cap-34b" class="cap clip" data-start="193.491" data-duration="2.167"><span>커야 한다는 CHECK에 걸립니다.</span></div>
+    <div id="cap-35a" class="cap clip" data-start="195.758" data-duration="2.810"><span>다섯 번째, 부서번호를 30으로 넣으면</span></div>
+    <div id="cap-35b" class="cap clip" data-start="198.568" data-duration="3.598"><span>부서 표에 30번이 없어서 외래키에 걸립니다.</span></div>
+    <div id="cap-36a" class="cap clip" data-start="202.267" data-duration="0.990"><span>여섯 번째,</span></div>
+    <div id="cap-36b" class="cap clip" data-start="203.257" data-duration="2.964"><span>부서번호를 NULL로 넣으면 성공합니다.</span></div>
+    <div id="cap-37a" class="cap clip" data-start="206.320" data-duration="2.610"><span>이 열에는 NOT NULL을 걸지 않아서,</span></div>
+    <div id="cap-37b" class="cap clip" data-start="208.930" data-duration="2.710"><span>외래키는 NULL을 받을 수 있기 때문입니다.</span></div>
+    <div id="cap-38a" class="cap clip" data-start="211.740" data-duration="2.010"><span>여섯 번 가운데 두 번만 성공해서,</span></div>
+    <div id="cap-38b" class="cap clip" data-start="213.750" data-duration="2.790"><span>사원 표는 다섯 행이 됩니다.</span></div>
+    <div id="cap-39a" class="cap clip" data-start="217.190" data-duration="2.630"><span>이번에는 거꾸로, 부모인 부서 표에서</span></div>
+    <div id="cap-39b" class="cap clip" data-start="219.820" data-duration="2.808"><span>20번 개발 부서를 지워 보겠습니다.</span></div>
+    <div id="cap-40a" class="cap clip" data-start="222.728" data-duration="1.810"><span>사원 표에는 20번 부서에</span></div>
+    <div id="cap-40b" class="cap clip" data-start="224.538" data-duration="2.207"><span>속한 지영과 수진이 있습니다.</span></div>
+    <div id="cap-41a" class="cap clip" data-start="226.845" data-duration="2.890"><span>기본 설정에서는 자식 행이 남아 있는 부모 행을</span></div>
+    <div id="cap-41b" class="cap clip" data-start="229.735" data-duration="3.455"><span>지울 수 없어서, 이 DELETE는 실패합니다.</span></div>
+    <div id="cap-42a" class="cap clip" data-start="233.840" data-duration="1.550"><span>외래키를 만들 때 ON DELETE</span></div>
+    <div id="cap-42b" class="cap clip" data-start="235.390" data-duration="3.495"><span>옵션을 붙이면 이 동작을 바꿀 수 있습니다.</span></div>
+    <div id="cap-43a" class="cap clip" data-start="238.984" data-duration="1.990"><span>ON DELETE CASCADE는 부모 행을</span></div>
+    <div id="cap-43b" class="cap clip" data-start="240.974" data-duration="3.369"><span>지우면 거기에 딸린 자식 행도 함께 지웁니다.</span></div>
+    <div id="cap-44a" class="cap clip" data-start="244.444" data-duration="2.790"><span>20번 부서를 지우면 지영과 수진도 사라져,</span></div>
+    <div id="cap-44b" class="cap clip" data-start="247.234" data-duration="2.526"><span>사원 표는 세 행이 됩니다.</span></div>
+    <div id="cap-45a" class="cap clip" data-start="249.859" data-duration="1.610"><span>ON DELETE SET NULL은 자식</span></div>
+    <div id="cap-45b" class="cap clip" data-start="251.469" data-duration="2.845"><span>행은 남기고 부서번호만 NULL로 바꿉니다.</span></div>
+    <div id="cap-46a" class="cap clip" data-start="254.415" data-duration="2.230"><span>그래서 사원 표는 다섯 행 그대로이고,</span></div>
+    <div id="cap-46b" class="cap clip" data-start="256.645" data-duration="3.237"><span>지영과 수진의 부서번호도 NULL이 됩니다.</span></div>
+    <div id="cap-47a" class="cap clip" data-start="260.531" data-duration="2.582"><span>시험장에서 챙길 것 세 가지입니다.</span></div>
+    <div id="cap-48a" class="cap clip" data-start="263.213" data-duration="3.950"><span>첫째, 셋 중 ROLLBACK이 되는 것은 DML인 DELETE뿐이고,</span></div>
+    <div id="cap-48b" class="cap clip" data-start="267.163" data-duration="3.250"><span>TRUNCATE와 DROP은 자동 커밋됩니다.</span></div>
+    <div id="cap-49a" class="cap clip" data-start="270.512" data-duration="3.130"><span>둘째, 기본키는 UNIQUE와 NOT NULL을 합친</span></div>
+    <div id="cap-49b" class="cap clip" data-start="273.642" data-duration="4.086"><span>것으로 표마다 하나이고, UNIQUE는 NULL을 허용합니다.</span></div>
+    <div id="cap-50a" class="cap clip" data-start="277.828" data-duration="3.770"><span>셋째, 외래키 값은 부모에 있는 값이나 NULL이어야 하고,</span></div>
+    <div id="cap-50b" class="cap clip" data-start="281.598" data-duration="3.451"><span>자식이 있는 부모 행은 기본적으로 못 지웁니다.</span></div>
+    <div id="cap-51a" class="cap clip" data-start="285.149" data-duration="4.090"><span>덧붙여, 열 타입을 바꿀 때 오라클은 MODIFY를,</span></div>
+    <div id="cap-51b" class="cap clip" data-start="289.239" data-duration="2.697"><span>SQL Server는 ALTER COLUMN을 적습니다.</span></div>
+    <div id="cap-52a" class="cap clip" data-start="292.586" data-duration="2.894"><span>오늘 내용을 한 줄로 정리하면 이렇습니다.</span></div>
+    <div id="cap-53a" class="cap clip" data-start="295.579" data-duration="4.030"><span>DELETE만 되돌릴 수 있고, TRUNCATE는 빈 표를,</span></div>
+    <div id="cap-53b" class="cap clip" data-start="299.609" data-duration="6.566"><span>DROP은 아무것도 남기지 않습니다. 외래키는 부모에 있는 값과 NULL만 받습니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

@@ -1,0 +1,114 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s04-src { left: 192px; top: 262px; width: 700px; height: 500px; }
+    #s04-src .q-th, #s04-src .q-tr { grid-template-columns: 140px 110px 140px 150px 104px; }
+    #s04-src .q-th { top: 20px; }
+    .s04-dm { opacity: 0.3; }
+    .s04-bd { position: absolute; left: 14px; right: 14px; height: 56px; border-radius: 14px;
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 10%, #FFFFFF); opacity: 0; }
+    .s04-r { opacity: 0; }
+    #s04-res { left: 952px; top: 262px; width: 776px; height: 270px; }
+    #s04-res .q-th, #s04-res .q-tr { grid-template-columns: 160px 150px 150px 150px 110px; }
+    #s04-res .q-th { top: 20px; }
+    #s04-res .q-th > div.s04-cnt { color: var(--color-accent, #6B3FE6); font-weight: 900; font-size: 32px; opacity: 0; }
+    #s04-res .q-tr { height: 72px; }
+    #s04-res .q-tr > div { font-size: 42px; font-weight: 900; }
+    #s04-res .q-tr > div.q-null { font-size: 32px; font-weight: 700; }
+    .s04-v { opacity: 0; }
+    #s04-note { position: absolute; left: 952px; top: 572px; width: 776px; height: 190px; }
+    .s04-n { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center; font-size: 40px; font-weight: 800; line-height: 1.4; white-space: nowrap; opacity: 0; }
+    .s04-n small { display: block; font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); }
+  </style>
+  <div id="root" data-composition-id="s04" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,4.68,9.86,14.41,18.19,22.83,29.04,32.07]"},{"id":"dur","type":"number","label":"장면 길이","default":35.43},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"e150","type":"number","label":"150 시각","default":8.2},{"id":"q3t","type":"number","label":"3분기는 시각","default":16.3},{"id":"g3t","type":"number","label":"개발 3분기 시각","default":25.3},{"id":"nd","type":"number","label":"데이터가 없습니다 시각","default":27.2},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s04-all">
+      <div id="s04-head" class="x-head">PIVOT 결과</div>
+      <div id="s04-src" class="x-card q-tb x-hide">
+        <div class="q-th"><div>부서</div><div>분기</div><div>매출</div><div class="s04-dm">담당자</div><div style="color:#6B3FE6;font-weight:900;font-size:32px">7행</div></div>
+        <div class="s04-bd" id="s04-b0" style="top:84px"></div>
+        <div class="s04-bd" id="s04-b1" style="top:140px"></div>
+        <div class="s04-bd" id="s04-b2" style="top:196px"></div>
+        <div class="s04-bd" id="s04-b3" style="top:252px"></div>
+        <div class="s04-bd" id="s04-b5" style="top:364px"></div>
+        <div class="s04-bd" id="s04-b6" style="top:420px"></div>
+        <div class="q-tr s04-r" id="s04-r0" style="top:84px"><div>영업</div><div>1</div><div>90</div><div class="s04-dm">민수</div><div></div></div>
+        <div class="q-tr s04-r" id="s04-r1" style="top:140px"><div>영업</div><div>1</div><div>60</div><div class="s04-dm">지영</div><div></div></div>
+        <div class="q-tr s04-r" id="s04-r2" style="top:196px"><div>영업</div><div>2</div><div>120</div><div class="s04-dm">민수</div><div></div></div>
+        <div class="q-tr s04-r" id="s04-r3" style="top:252px"><div>영업</div><div>3</div><div>110</div><div class="s04-dm">민수</div><div></div></div>
+        <div class="q-tr s04-r" id="s04-r4" style="top:308px"><div>영업</div><div id="s04-q4">4</div><div>130</div><div class="s04-dm">민수</div><div></div></div>
+        <div class="q-tr s04-r" id="s04-r5" style="top:364px"><div>개발</div><div>1</div><div>70</div><div class="s04-dm">현우</div><div></div></div>
+        <div class="q-tr s04-r" id="s04-r6" style="top:420px"><div>개발</div><div>3</div><div>80</div><div class="s04-dm">현우</div><div></div></div>
+      </div>
+      <div id="s04-res" class="x-card q-tb x-hide">
+        <div class="q-th"><div>부서</div><div>Q1</div><div>Q2</div><div>Q3</div><div class="s04-cnt" id="s04-c2">2행</div></div>
+        <div class="q-tr" style="top:90px"><div class="s04-v" id="s04-ya">영업</div><div class="s04-v x-acc" id="s04-y1">150</div><div class="s04-v" id="s04-y2">120</div><div class="s04-v" id="s04-y3">110</div><div></div></div>
+        <div class="q-tr" style="top:170px"><div class="s04-v" id="s04-ga">개발</div><div class="s04-v" id="s04-g1">70</div><div class="s04-v q-null" id="s04-g2">NULL</div><div class="s04-v" id="s04-g3">80</div><div></div></div>
+      </div>
+      <div id="s04-note" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s04-n" id="s04-n1"><span>영업 1분기</span><span class="x-acc">90 + 60 = 150</span></div>
+        <div class="s04-n" id="s04-n2"><span>한 칸에 여러 행이 모이면</span><small>집계 함수로 하나로 합친다</small></div>
+        <div class="s04-n" id="s04-n3"><span>4분기 130</span><small>IN 목록에 없어 빠진다</small></div>
+        <div class="s04-n" id="s04-n4"><span>데이터가 없는 칸 → <span class="q-null">NULL</span></span></div>
+        <div class="s04-n" id="s04-n5"><span>7행 → <span class="x-acc">2행</span></span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 35.43;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const pop = (sel, t) => ft(sel, { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+    let band = [];
+    const bd = (ks, t) => { band.forEach((k) => fade(`#s04-b${k}`, t, 1, 0)); ks.forEach((k) => fade(`#s04-b${k}`, t, 0, 1)); band = ks; };
+    let note = null;
+    const say = (id, t) => { if (note) fade(note, t, 1, 0); fade(id, t + 0.15, 0, 1); note = id; };
+
+    // 18 부서마다 한 줄, 영업과 개발 두 줄
+    ft("#s04-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s04-src", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.2));
+    [0, 1, 2, 3, 4, 5, 6].forEach((k, j) => ft(`#s04-r${k}`, { opacity: 0, y: 8 }, { opacity: 1, y: 0 }, at(0, 0.5 + j * 0.08)));
+    ft("#s04-res", { opacity: 0, x: 24 }, { opacity: 1, x: 0 }, at(0, 1.0));
+    fade(["#s04-ya", "#s04-ga"], at(0, 1.8), 0, 1);
+    // 19 영업 1분기 두 건 90 + 60 = 150
+    bd([0, 1], at(1, 0.4));
+    ft("#s04-note", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(1, 1.2));
+    say("#s04-n1", at(1, 1.2));
+    pop("#s04-y1", Number(V.e150) || at(1, 3.5));
+    // 20 한 칸에 여러 행 → 집계 함수로 하나로
+    say("#s04-n2", at(2, 0.2));
+    // 21 2분기 120, 3분기 110
+    bd([2], at(3, 0.1));
+    pop("#s04-y2", at(3, 0.9));
+    const q3t = Number(V.q3t) || at(3, 1.8);
+    bd([3], q3t);
+    pop("#s04-y3", q3t + 0.6);
+    // 22 4분기 130은 IN 목록에 없어 빠진다
+    bd([], at(4, 0.1));
+    say("#s04-n3", at(4, 0.3));
+    ft("#s04-q4", { color: "#18181B" }, { color: "#6B3FE6" }, at(4, 0.4));
+    fade("#s04-r4", at(4, 2.2), 1, 0.25);
+    // 23 개발 1분기 70, 3분기 80, 2분기는 데이터 없음
+    bd([5], at(5, 0.2));
+    pop("#s04-g1", at(5, 1.2));
+    const g3t = Number(V.g3t) || at(5, 2.4);
+    bd([6], g3t);
+    pop("#s04-g3", g3t + 0.5);
+    bd([], Number(V.nd) || at(5, 4.4));
+    // 24 데이터가 없는 칸은 NULL
+    say("#s04-n4", at(6, 0.2));
+    pop("#s04-g2", at(6, 1.4));
+    // 25 7행 → 2행
+    say("#s04-n5", at(7, 0.2));
+    pop("#s04-c2", at(7, 1.6));
+    if (String(V.exit) !== "false") ft("#s04-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s04"] = tl;
+  </script>
+</template>

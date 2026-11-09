@@ -1,0 +1,46 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s11-c { position: absolute; left: 192px; width: 1536px; height: 240px; padding: 0 64px; box-sizing: border-box;
+      display: grid; grid-template-columns: 520px 120px 1fr; align-items: center; }
+    #s11-c1 { top: 300px; }
+    #s11-c2 { top: 580px; }
+    .s11-p { font-size: 60px; font-weight: 900; white-space: nowrap; }
+    .s11-ar { font-size: 56px; font-weight: 900; color: var(--color-ink2, #71717A); text-align: center; opacity: 0; }
+    .s11-f { font-size: 76px; font-weight: 900; color: var(--color-accent, #6B3FE6); white-space: nowrap; opacity: 0; }
+    .s11-f small { font-size: 52px; font-weight: 800; color: var(--color-ink, #18181B); margin-left: 14px; }
+  </style>
+  <div id="root" data-composition-id="s11" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,3.45,8.1]"},{"id":"dur","type":"number","label":"장면 길이","default":14.5},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"m2","type":"number","label":"가장 길게 시각","default":5.6},{"id":"f1","type":"number","label":"캐럿과 시각","default":9.4},{"id":"f2","type":"number","label":"물음표를 시각","default":11.6},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s11-all">
+      <div id="s11-head" class="x-head">한 줄 정리</div>
+      <div class="s11-c x-card x-hide" id="s11-c1"><div class="s11-p">일부만 맞아도 참</div><div class="s11-ar" id="s11-a1">→</div>
+        <div class="s11-f" id="s11-f1">^ · $<small>로 전체를</small></div></div>
+      <div class="s11-c x-card x-hide" id="s11-c2"><div class="s11-p">가장 길게 잡는다</div><div class="s11-ar" id="s11-a2">→</div>
+        <div class="s11-f" id="s11-f2">?<small>로 짧게</small></div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k] ?? d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+
+    // 58 한 줄로 정리하면
+    ft("#s11-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    // 59 일부만 맞아도 참, 가장 길게 잡는다
+    ft("#s11-c1", { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, at(1, 0.1));
+    ft("#s11-c2", { opacity: 0, y: 14 }, { opacity: 1, y: 0 }, X("m2", 5.6) - 0.1);
+    // 60 전체를 맞추려면 ^ · $, 짧게 잡으려면 ?
+    fade("#s11-a1", X("f1", 9.4) - 0.2, 0, 1);
+    ft("#s11-f1", { opacity: 0, x: -12 }, { opacity: 1, x: 0 }, X("f1", 9.4));
+    fade("#s11-a2", X("f2", 11.6) - 0.2, 0, 1);
+    ft("#s11-f2", { opacity: 0, x: -12 }, { opacity: 1, x: 0 }, X("f2", 11.6));
+    window.__timelines["s11"] = tl;
+  </script>
+</template>

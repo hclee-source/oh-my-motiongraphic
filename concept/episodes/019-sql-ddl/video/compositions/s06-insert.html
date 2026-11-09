@@ -1,0 +1,114 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s06-code { left: 192px; top: 262px; width: 860px; height: 472px; }
+    .s06-no { display: inline-block; width: 52px; color: #A1A1AA; }
+    .s06-r { position: absolute; right: 32px; top: 0; height: 60px; display: flex; align-items: center; font-size: 32px; font-weight: 800; opacity: 0; }
+    .s06-ok { color: var(--color-accent-dark, #A68CFF); }
+    .s06-ng { color: #FFFFFF; }
+    #s06-tb { left: 1100px; top: 262px; width: 628px; height: 584px; }
+    #s06-tb .q-th, #s06-tb .q-tr { grid-template-columns: 110px 150px 150px 162px; }
+    #s06-tb .q-th { top: 140px; }
+    #s06-name { position: absolute; left: 28px; top: 22px; height: 52px; line-height: 52px; font-size: 40px; font-weight: 900; }
+    #s06-cnt { position: absolute; right: 28px; top: 22px; width: 120px; height: 52px; }
+    #s06-cnt > span { position: absolute; right: 0; top: 0; line-height: 52px; font-size: 40px; font-weight: 900; color: var(--color-accent, #6B3FE6); opacity: 0; }
+    #s06-dept { position: absolute; left: 28px; top: 88px; height: 40px; line-height: 40px; font-size: 32px; font-weight: 700; color: var(--color-ink2, #71717A); }
+    #s06-note { position: absolute; left: 192px; top: 758px; width: 860px; height: 88px; }
+    #s06-nw { position: absolute; left: 24px; right: 24px; top: 0; bottom: 0; }
+    .s06-n { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 34px; font-weight: 800; white-space: nowrap; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s06" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.5,6,11,16,21,26,32,35,40]"},{"id":"dur","type":"number","label":"장면 길이","default":46},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"i1","type":"number","label":"성공해서 시각","default":9},{"id":"i1n","type":"number","label":"네 행 시각","default":10},{"id":"i2","type":"number","label":"겹쳐서 시각","default":14},{"id":"i3","type":"number","label":"NOT NULL에 시각","default":19},{"id":"i4","type":"number","label":"CHECK에 시각","default":24},{"id":"i5b","type":"number","label":"30번이 시각","default":29},{"id":"i5","type":"number","label":"외래키에 시각","default":30},{"id":"i6","type":"number","label":"성공합니다 시각","default":34},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s06-all">
+      <div id="s06-head" class="x-head">INSERT 여섯 번</div>
+      <div id="s06-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><span><span class="q-k">INSERT INTO</span> 사원 <span class="q-k">VALUES</span></span></div>
+        <div class="q-ln" id="s06-l1" style="opacity:0"><div class="q-hi" id="s06-h1"></div><span><span class="s06-no">1</span>(4, '수진', 380, 20)</span><div class="s06-r s06-ok" id="s06-v1">✓ 성공</div></div>
+        <div class="q-ln" id="s06-l2" style="opacity:0"><div class="q-hi" id="s06-h2"></div><span><span class="s06-no">2</span>(4, '동훈', 300, 10)</span><div class="s06-r s06-ng" id="s06-v2">✕ PK</div></div>
+        <div class="q-ln" id="s06-l3" style="opacity:0"><div class="q-hi" id="s06-h3"></div><span><span class="s06-no">3</span>(5, <span class="q-k">NULL</span>, 300, 10)</span><div class="s06-r s06-ng" id="s06-v3">✕ NOT NULL</div></div>
+        <div class="q-ln" id="s06-l4" style="opacity:0"><div class="q-hi" id="s06-h4"></div><span><span class="s06-no">4</span>(5, '동훈', 0, 10)</span><div class="s06-r s06-ng" id="s06-v4">✕ CHECK</div></div>
+        <div class="q-ln" id="s06-l5" style="opacity:0"><div class="q-hi" id="s06-h5"></div><span><span class="s06-no">5</span>(5, '동훈', 300, 30)</span><div class="s06-r s06-ng" id="s06-v5">✕ FK</div></div>
+        <div class="q-ln" id="s06-l6" style="opacity:0"><div class="q-hi" id="s06-h6"></div><span><span class="s06-no">6</span>(5, '동훈', 300, <span class="q-k">NULL</span>)</span><div class="s06-r s06-ok" id="s06-v6">✓ 성공</div></div>
+      </div>
+      <div id="s06-tb" class="x-card q-tb x-hide">
+        <div id="s06-name">사원</div>
+        <div id="s06-cnt" data-layout-allow-overlap><span id="s06-c3">3행</span><span id="s06-c4">4행</span><span id="s06-c5">5행</span></div>
+        <div id="s06-dept">부서: 10 영업 · 20 개발</div>
+        <div class="q-th"><div>사번</div><div>이름</div><div>급여</div><div>부서번호</div></div>
+        <div class="q-tr" style="top:206px"><div>1</div><div>민수</div><div>300</div><div>10</div></div>
+        <div class="q-tr" style="top:268px"><div>2</div><div>지영</div><div>400</div><div>20</div></div>
+        <div class="q-tr" style="top:330px"><div>3</div><div>현우</div><div>350</div><div>10</div></div>
+        <div class="q-tr" id="s06-r4" style="top:392px; opacity:0"><div>4</div><div>수진</div><div>380</div><div>20</div></div>
+        <div class="q-tr" id="s06-r5" style="top:454px; opacity:0"><div>5</div><div>동훈</div><div>300</div><div class="q-null">NULL</div></div>
+      </div>
+      <div id="s06-note" class="x-card x-hide">
+        <div id="s06-nw" data-layout-allow-overlap>
+          <div class="s06-n" id="s06-n1"><span>부서번호 열에 NOT NULL이 없어 <span class="x-acc">NULL 가능</span></span></div>
+          <div class="s06-n" id="s06-n2"><span>여섯 번 중 두 번 성공 → 사원 <span class="x-acc">5행</span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 46;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+    let cur = 0;
+    // k번째 INSERT 줄: 나타나며 그 줄만 밝게
+    const ins = (k, t) => { if (cur) fade(`#s06-h${cur}`, t, 1, 0); fade(`#s06-l${k}`, t, 0, 1); fade(`#s06-h${k}`, t + 0.1, 0, 1); cur = k; };
+    let cnt = null;
+    const count = (id, t) => { if (cnt) fade(cnt, t, 1, 0); fade(id, t + 0.1, 0, 1); cnt = id; };
+    let note = null;
+    const say = (id, t) => { if (note) fade(note, t, 1, 0); fade(id, t + 0.15, 0, 1); note = id; };
+    const ACC = "#6B3FE6", INK2 = "#71717A";
+
+    // 30 사원 세 행, 부서는 10번 영업과 20번 개발
+    ft("#s06-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s06-tb", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    count("#s06-c3", at(0, 0.8));
+    ft("#s06-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.6));
+    // 31 첫 번째 — 4번 수진, 성공해서 네 행
+    ins(1, at(1, 0.2));
+    stamp("#s06-v1", X("i1", at(1, 3.0)));
+    ft("#s06-r4", { opacity: 0, y: 10 }, { opacity: 1, y: 0 }, X("i1", at(1, 3.0)) + 0.2);
+    count("#s06-c4", X("i1n", at(1, 4.0)));
+    // 32 두 번째 — 같은 4번, 기본키가 겹쳐 실패
+    ins(2, at(2, 0.2));
+    stamp("#s06-v2", X("i2", at(2, 2.6)));
+    // 33 세 번째 — 이름 NULL, NOT NULL에 걸림
+    ins(3, at(3, 0.2));
+    stamp("#s06-v3", X("i3", at(3, 2.8)));
+    // 34 네 번째 — 급여 0, CHECK에 걸림
+    ins(4, at(4, 0.2));
+    stamp("#s06-v4", X("i4", at(4, 2.8)));
+    // 35 다섯 번째 — 부서 30은 없다, 외래키에 걸림
+    ins(5, at(5, 0.2));
+    const i5b = X("i5b", at(5, 2.4));
+    ft("#s06-dept", { color: INK2 }, { color: ACC }, i5b);
+    stamp("#s06-v5", X("i5", at(5, 3.6)));
+    // 36 여섯 번째 — 부서번호 NULL, 성공
+    ft("#s06-dept", { color: ACC }, { color: INK2 }, at(6, 0));
+    ins(6, at(6, 0.2));
+    const i6 = X("i6", at(6, 2.4));
+    stamp("#s06-v6", i6);
+    ft("#s06-r5", { opacity: 0, y: 10 }, { opacity: 1, y: 0 }, i6 + 0.2);
+    count("#s06-c5", i6 + 0.4);
+    // 37 이 열에는 NOT NULL이 없어서 NULL을 받을 수 있다
+    ft("#s06-note", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(7, 0.2));
+    say("#s06-n1", at(7, 0.2));
+    // 38 여섯 번 중 두 번 성공 → 다섯 행
+    fade(`#s06-h${cur}`, at(8, 0.2), 1, 0);
+    say("#s06-n2", at(8, 0.3));
+    if (String(V.exit) !== "false") ft("#s06-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s06"] = tl;
+  </script>
+</template>

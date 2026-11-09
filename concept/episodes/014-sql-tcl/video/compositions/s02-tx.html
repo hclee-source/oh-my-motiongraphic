@@ -1,0 +1,81 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s02-def { position: absolute; left: 192px; top: 262px; width: 1536px; height: 148px; }
+    .s02-d { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center;
+      gap: 22px; font-size: 46px; font-weight: 900; white-space: nowrap; opacity: 0; }
+    .s02-k { padding: 8px 22px; border-radius: 16px; background: var(--color-anchor, #18181B); color: var(--color-accent-dark, #A68CFF);
+      font-size: 38px; font-weight: 800; }
+    #s02-chips { position: absolute; left: 192px; top: 436px; width: 1536px; height: 72px; }
+    #s02-chips .q-chip { position: absolute; top: 0; width: 230px; }
+    .s02-g { background: #E7E8EC; color: var(--color-ink, #18181B); }
+    .s02-c { position: absolute; top: 536px; width: 488px; height: 186px; padding: 30px 36px; box-sizing: border-box; }
+    .s02-t { font-size: 48px; font-weight: 900; white-space: nowrap; }
+    .s02-s { margin-top: 14px; font-size: 36px; font-weight: 800; color: var(--color-accent, #6B3FE6); white-space: nowrap; }
+    #s02-note { position: absolute; left: 192px; top: 746px; width: 1536px; height: 100px; }
+    .s02-n { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 36px; font-weight: 800; white-space: nowrap; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s02" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,9,13.8,21.8,28,35.5,41.9]"},{"id":"dur","type":"number","label":"장면 길이","default":46.7},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"rb","type":"number","label":"ROLLBACK은 시각","default":25.5},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s02-all">
+      <div id="s02-head" class="x-head">트랜잭션과 세 명령</div>
+      <div id="s02-def" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s02-d" id="s02-d1"><span class="s02-k">INSERT</span><span class="s02-k">UPDATE</span><span class="s02-k">DELETE</span><span>→ 하나의 트랜잭션</span></div>
+        <div class="s02-d" id="s02-d2"><span>트랜잭션 =</span><span class="x-acc">전부 반영</span><span>또는</span><span class="x-acc">전부 취소</span></div>
+      </div>
+      <div id="s02-chips">
+        <div class="q-chip q-ok" id="s02-c1" style="left:248px">원자성</div>
+        <div class="q-chip s02-g" id="s02-c2" style="left:518px">일관성</div>
+        <div class="q-chip s02-g" id="s02-c3" style="left:788px">격리성</div>
+        <div class="q-chip s02-g" id="s02-c4" style="left:1058px">지속성</div>
+      </div>
+      <div class="s02-c x-card x-hide" id="s02-k1" style="left:192px"><div class="s02-t">COMMIT</div><div class="s02-s">변경을 확정</div></div>
+      <div class="s02-c x-card x-hide" id="s02-k2" style="left:716px"><div class="s02-t">ROLLBACK</div><div class="s02-s">마지막 COMMIT 이후 취소</div></div>
+      <div class="s02-c x-card x-hide" id="s02-k3" style="left:1240px"><div class="s02-t">SAVEPOINT</div><div class="s02-s">저장점 = 이름 붙인 깃발</div></div>
+      <div id="s02-note" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s02-n" id="s02-n1">COMMIT 전&nbsp;&nbsp;·&nbsp;&nbsp;다른 사용자는 바뀌기 전 값&nbsp;&nbsp;·&nbsp;&nbsp;바뀐 행은 잠금</div>
+        <div class="s02-n" id="s02-n2"><span class="x-acc">ROLLBACK TO</span>&nbsp;이름&nbsp;&nbsp;→&nbsp;&nbsp;그 깃발까지만 되돌린다</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 46.7;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+    let note = null;
+    const say = (id, t) => { if (note) fade(note, t, 1, 0); fade(id, t + 0.15, 0, 1); note = id; };
+
+    // 7 INSERT · UPDATE · DELETE → 하나의 트랜잭션
+    ft("#s02-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s02-def", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.6));
+    fade("#s02-d1", at(0, 0.9), 0, 1);
+    // 8 트랜잭션 = 전부 반영 또는 전부 취소
+    fade("#s02-d1", at(1, 0.2), 1, 0);
+    fade("#s02-d2", at(1, 0.4), 0, 1);
+    // 9 원자성 · 일관성 · 격리성 · 지속성
+    [1, 2, 3, 4].forEach((k, j) => stamp(`#s02-c${k}`, at(2, 0.3 + j * 0.9)));
+    // 10 COMMIT은 확정, ROLLBACK은 마지막 COMMIT 이후 취소
+    fade("#s02-chips", at(3, 0.1), 1, 0.45);
+    ft("#s02-k1", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(3, 0.2));
+    const rb = Number(V.rb) || at(3, 3);
+    ft("#s02-k2", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, rb);
+    // 11 COMMIT 전: 다른 사용자는 바뀌기 전 값, 바뀐 행은 잠금
+    ft("#s02-note", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(4, 0.2));
+    say("#s02-n1", at(4, 0.2));
+    // 12 SAVEPOINT = 저장점, 이름 붙인 깃발
+    fade(["#s02-k1", "#s02-k2"], at(5, 0.2), 1, 0.45);
+    ft("#s02-k3", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(5, 0.3));
+    // 13 ROLLBACK TO 이름 → 그 깃발까지만
+    say("#s02-n2", at(6, 0.2));
+    if (String(V.exit) !== "false") ft("#s02-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s02"] = tl;
+  </script>
+</template>

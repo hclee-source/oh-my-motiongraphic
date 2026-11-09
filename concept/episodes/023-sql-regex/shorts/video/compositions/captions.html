@@ -1,0 +1,52 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 540px; text-align: center; overflow: visible;
+      font-size: 54px; font-weight: 700; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 940px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cap-01a" class="cap clip" data-start="0.000" data-duration="1.510"><span>‘사과나무’에 나무가 있는지</span></div>
+    <div id="cap-01b" class="cap clip" data-start="1.510" data-duration="2.220"><span>REGEXP_LIKE 조건으로 물으면?</span></div>
+    <div id="cap-01c" class="cap clip" data-start="3.730" data-duration="3.619"><span>참이라서 이 행이 남습니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="7.399" data-duration="1.850"><span>패턴 앞에 시작 기호 캐럿을 붙여</span></div>
+    <div id="cap-02b" class="cap clip" data-start="9.249" data-duration="1.760"><span>나무로 시작하냐고 물으면</span></div>
+    <div id="cap-02c" class="cap clip" data-start="11.009" data-duration="1.607"><span>거짓이라 빠집니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="12.816" data-duration="1.730"><span>‘사과 12개 배 7개’에서</span></div>
+    <div id="cap-03b" class="cap clip" data-start="14.546" data-duration="1.300"><span>REGEXP_SUBSTR으로</span></div>
+    <div id="cap-03c" class="cap clip" data-start="15.846" data-duration="0.880"><span>숫자를 뽑으면?</span></div>
+    <div id="cap-03d" class="cap clip" data-start="16.726" data-duration="3.194"><span>첫 덩어리 12입니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="19.970" data-duration="1.810"><span>두 번째 덩어리를 달라고 하면</span></div>
+    <div id="cap-04b" class="cap clip" data-start="21.780" data-duration="1.003"><span>7입니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="22.982" data-duration="1.210"><span>‘홍 길 동’에서</span></div>
+    <div id="cap-05b" class="cap clip" data-start="24.192" data-duration="0.720"><span>REGEXP_REPLACE로</span></div>
+    <div id="cap-05c" class="cap clip" data-start="24.912" data-duration="0.920"><span>공백을 지우면?</span></div>
+    <div id="cap-05d" class="cap clip" data-start="25.832" data-duration="3.160"><span>공백 두 개가 모두 지워져</span></div>
+    <div id="cap-05e" class="cap clip" data-start="28.992" data-duration="1.354"><span>홍길동입니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="30.546" data-duration="0.550"><span>‘토마토’에서</span></div>
+    <div id="cap-06b" class="cap clip" data-start="31.096" data-duration="1.660"><span>REGEXP_COUNT로 토를 세면?</span></div>
+    <div id="cap-06c" class="cap clip" data-start="32.756" data-duration="2.583"><span>2개입니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="35.389" data-duration="1.890"><span>REGEXP_INSTR으로 토를 찾으면</span></div>
+    <div id="cap-07b" class="cap clip" data-start="37.279" data-duration="2.205"><span>처음 맞는 곳의 시작 위치,</span></div>
+    <div id="cap-07c" class="cap clip" data-start="39.484" data-duration="1.788"><span>첫 번째 자리라서 1입니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="41.322" data-duration="1.090"><span>맞는 곳이 없을 때</span></div>
+    <div id="cap-08b" class="cap clip" data-start="42.412" data-duration="2.080"><span>REGEXP_SUBSTR은 NULL이고,</span></div>
+    <div id="cap-08c" class="cap clip" data-start="44.492" data-duration="3.675"><span>REGEXP_INSTR과 REGEXP_COUNT는 0입니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="48.368" data-duration="1.110"><span>‘하나 둘 하나 둘’에서</span></div>
+    <div id="cap-09b" class="cap clip" data-start="49.478" data-duration="1.820"><span>하나로 시작해 둘로 끝나는</span></div>
+    <div id="cap-09c" class="cap clip" data-start="51.298" data-duration="0.740"><span>부분을 뽑으면?</span></div>
+    <div id="cap-09d" class="cap clip" data-start="52.038" data-duration="2.889"><span>전체가 나옵니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="54.977" data-duration="1.210"><span>가운데 점과 별표가</span></div>
+    <div id="cap-10b" class="cap clip" data-start="56.187" data-duration="1.900"><span>맞출 수 있는 가장 긴 부분을</span></div>
+    <div id="cap-10c" class="cap clip" data-start="58.087" data-duration="1.329"><span>잡기 때문입니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="59.466" data-duration="1.610"><span>별표 뒤에 물음표를 붙여야</span></div>
+    <div id="cap-11b" class="cap clip" data-start="61.076" data-duration="1.626"><span>하나 둘만 나옵니다.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="62.902" data-duration="1.470"><span>일부만 맞아도 참,</span></div>
+    <div id="cap-12b" class="cap clip" data-start="64.372" data-duration="1.600"><span>REGEXP_REPLACE는</span></div>
+    <div id="cap-12c" class="cap clip" data-start="65.972" data-duration="0.920"><span>모두 바꾸고,</span></div>
+    <div id="cap-12d" class="cap clip" data-start="66.892" data-duration="2.286"><span>반복은 가장 길게.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

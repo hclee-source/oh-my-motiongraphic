@@ -1,0 +1,93 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .s04-code { left: 192px; width: 1080px; }
+    .s04-code .q-ln { font-size: 46px; height: 68px; padding: 0 44px; }
+    .s04-ans { position: absolute; left: 1316px; width: 412px; height: 100px; }
+    .s04-big { left: 0; top: 0; height: 100px; padding: 0 44px; border-radius: 50px; font-size: 60px; font-weight: 900; }
+    .s04-qm { background: #FFFFFF; border: 2px solid var(--color-line, #E3E5EA); color: var(--color-ink2, #71717A); }
+    #s04-notes { position: absolute; left: 192px; top: 756px; width: 1536px; height: 72px; }
+    .s04-note { left: 0; top: 0; }
+  </style>
+  <div id="root" data-composition-id="s04" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,6.4,8.4,13,17.2,19,25,31.4]"},{"id":"dur","type":"number","label":"장면 길이","default":37.2},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"a1","type":"number","label":"007 시각","default":7},{"id":"a2","type":"number","label":"Axx 시각","default":17.8},{"id":"a3","type":"number","label":"SQL 시각","default":35.6},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s04-all">
+      <div id="s04-head" class="x-head">LPAD · LTRIM · REPLACE</div>
+      <div id="s04-c1" class="s04-code x-dark q-code x-hide" style="top:262px">
+        <div class="q-ln"><span><span class="q-k">SELECT</span> LPAD('7', 3, '0') <span class="q-k">FROM</span> DUAL;</span></div>
+      </div>
+      <div id="s04-w1" class="s04-ans" style="top:272px" data-layout-allow-overlap>
+        <div id="s04-q1" class="q-chip s04-big s04-qm">?</div>
+        <div id="s04-a1" class="q-chip q-ok s04-big">00<span style="color:#18181B">7</span></div>
+      </div>
+      <div id="s04-c2" class="s04-code x-dark q-code x-hide" style="top:430px">
+        <div class="q-ln"><span><span class="q-k">SELECT</span> LTRIM('<span id="s04-xx">xx</span>Axx', 'x') <span class="q-k">FROM</span> DUAL;</span></div>
+      </div>
+      <div id="s04-w2" class="s04-ans" style="top:440px" data-layout-allow-overlap>
+        <div id="s04-q2" class="q-chip s04-big s04-qm">?</div>
+        <div id="s04-a2" class="q-chip q-ok s04-big">Axx</div>
+      </div>
+      <div id="s04-c3" class="s04-code x-dark q-code x-hide" style="top:598px">
+        <div class="q-ln"><span><span class="q-k">SELECT</span> REPLACE('S<span id="s04-d1">-</span>Q<span id="s04-d2">-</span>L', '-') <span class="q-k">FROM</span> DUAL;</span></div>
+      </div>
+      <div id="s04-w3" class="s04-ans" style="top:608px" data-layout-allow-overlap>
+        <div id="s04-q3" class="q-chip s04-big s04-qm">?</div>
+        <div id="s04-a3" class="q-chip q-ok s04-big">SQL</div>
+      </div>
+      <div id="s04-notes" data-layout-allow-overlap>
+        <div class="q-chip q-ok s04-note" id="s04-n1">3 = 다 채운 뒤의 전체 길이 (붙일 개수 아님)</div>
+        <div class="q-chip q-ok s04-note" id="s04-n2">LTRIM 왼쪽 · RTRIM 오른쪽 · TRIM 양쪽</div>
+        <div class="q-chip q-ok s04-note" id="s04-n3">세 번째 인수 생략 = 찾은 문자를 지움</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 37.2;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, ease: "back.out(1.8)" }, t);
+
+    // 22 LPAD로 ‘7’의 왼쪽을 ‘0’으로, 두 번째 인수 3
+    ft("#s04-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s04-c1", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.3));
+    stamp("#s04-q1", at(0, 3.4));
+    // 23 정답은 007
+    const a1 = X("a1", at(1, 0.6));
+    fade("#s04-q1", a1 - 0.1, 1, 0);
+    stamp("#s04-a1", a1);
+    // 24 3은 전체 길이
+    stamp("#s04-n1", at(2, 0.3));
+    // 25 LTRIM으로 ‘xxAxx’에서 ‘x’를 지우면 — 앞 줄은 흐리게
+    fade(["#s04-c1", "#s04-w1"], at(3, 0.1), 1, 0.4);
+    fade("#s04-n1", at(3, 0.1), 1, 0);
+    ft("#s04-c2", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(3, 0.2));
+    stamp("#s04-q2", at(3, 2.2));
+    // 26 정답은 Axx — 왼쪽 xx가 지워진다
+    const a2 = X("a2", at(4, 0.6));
+    fade("#s04-xx", a2 - 0.3, 1, 0.2);
+    fade("#s04-q2", a2 - 0.1, 1, 0);
+    stamp("#s04-a2", a2);
+    // 27 왼쪽 · 오른쪽 · 양쪽
+    stamp("#s04-n2", at(5, 0.3));
+    // 28 REPLACE에 찾을 문자 하이픈만 — 앞 줄은 흐리게
+    fade(["#s04-c2", "#s04-w2"], at(6, 0.1), 1, 0.4);
+    fade("#s04-n2", at(6, 0.1), 1, 0);
+    ft("#s04-c3", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(6, 0.2));
+    stamp("#s04-q3", at(6, 4.2));
+    // 29 세 번째 인수를 생략하면 지운다, 정답은 SQL
+    stamp("#s04-n3", at(7, 0.3));
+    const a3 = X("a3", at(7, 4.2));
+    fade(["#s04-d1", "#s04-d2"], a3 - 0.4, 1, 0.2);
+    fade("#s04-q3", a3 - 0.1, 1, 0);
+    stamp("#s04-a3", a3);
+    if (String(V.exit) !== "false") ft("#s04-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s04"] = tl;
+  </script>
+</template>

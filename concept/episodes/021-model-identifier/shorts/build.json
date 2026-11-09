@@ -1,0 +1,30 @@
+{
+  "_설명": "쇼츠(세로) 조립 설정. 장면 순서(장 번호, 여러 장을 한 장면으로 묶을 수 있음), 영상 내내 떠 있는 위쪽 제목, 효과음 위치([이름, 장면 안 문장 순번(0부터), 그 문장 시작 뒤 초]).",
+  "format": {
+    "width": 1080, "height": 1920, "resolution": "portrait",
+    "caption": { "max": 17, "deep": true, "bottom": 540, "size": 48, "weight": 700, "width": 940 }
+  },
+  "overlays": [
+    { "id": "hd", "file": "header.html" }
+  ],
+  "scenes": [
+    { "id": "h1", "file": "h1-lines.html", "chapter": 1,
+      "extra": { "ls": { "sentence": 1, "at": "실선과" }, "ds": { "sentence": 1, "at": "점선," } } },
+    { "id": "h2", "file": "h2-identifying.html", "chapter": 2,
+      "extra": { "ha": { "sentence": 2, "at": "학번과" }, "hb": { "sentence": 2, "at": "과목코드를" } } },
+    { "id": "h3", "file": "h3-nonidentifying.html", "chapter": 3,
+      "extra": { "wk": { "sentence": 7, "at": "연결이" } } },
+    { "id": "h4", "file": "h4-four.html", "chapter": 4,
+      "extra": { "u1": { "sentence": 9, "at": "한 건만" }, "u2": { "sentence": 9, "at": "꼭" },
+                 "u3": { "sentence": 10, "at": "바뀌지" }, "u4": { "sentence": 10, "at": "값이" } } },
+    { "id": "h5", "file": "h5-summary.html", "chapter": 5, "exit": false,
+      "extra": { "w1": { "sentence": 11, "at": "자식의 주식별자로" }, "w2": { "sentence": 11, "at": "일반" } } }
+  ],
+  "sfx": {
+    "h1": [["pop", 0, 0.2], ["pop", 0, 1.0], ["pop", 0, 3.2]],
+    "h2": [["whoosh-short", 0, 1.4], ["whoosh-short", 0, 3.0], ["pop", 1, 3.2], ["pop", 2, 1.6]],
+    "h3": [["whoosh-short", 0, 1.2], ["pop", 1, 2.8], ["pop", 2, 0.2], ["pop", 2, 3.0]],
+    "h4": [["pop", 0, 0.5], ["pop", 1, 0.4], ["pop", 1, 2.6], ["pop", 2, 0.4], ["pop", 2, 2.4]],
+    "h5": [["pop", 0, 1.4], ["pop", 0, 3.8]]
+  }
+}

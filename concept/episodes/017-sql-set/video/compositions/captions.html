@@ -1,0 +1,108 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 108px; text-align: center; overflow: visible;
+      font-size: 46px; font-weight: 600; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 1536px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div id="cap-01a" class="cap clip" data-start="3.600" data-duration="2.070"><span>봄 이벤트 응모 기록이 4행,</span></div>
+    <div id="cap-01b" class="cap clip" data-start="5.670" data-duration="3.273"><span>여름 이벤트 응모 기록이 3행 있습니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="9.043" data-duration="1.250"><span>이 두 결과를 UNION으로</span></div>
+    <div id="cap-02b" class="cap clip" data-start="10.293" data-duration="2.110"><span>합치면 몇 행이 나올까요?</span></div>
+    <div id="cap-03a" class="cap clip" data-start="12.503" data-duration="3.894"><span>4 더하기 3, 7행이라고 답하면 틀립니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="16.497" data-duration="1.741"><span>정답은 4행입니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="18.339" data-duration="2.030"><span>오늘은 이 두 표로 집합 연산자 네</span></div>
+    <div id="cap-05b" class="cap clip" data-start="20.369" data-duration="3.270"><span>개의 결과 행 수를 직접 세어 보겠습니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="24.289" data-duration="4.210"><span>왼쪽은 봄 응모 표, 오른쪽은 여름 응모 표이고,</span></div>
+    <div id="cap-06b" class="cap clip" data-start="28.499" data-duration="2.097"><span>둘 다 이름 열 하나뿐입니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="30.696" data-duration="3.610"><span>봄에는 민수, 지영, 현우가 응모했는데,</span></div>
+    <div id="cap-07b" class="cap clip" data-start="34.306" data-duration="3.222"><span>지영이 두 번 응모해서 4행입니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="37.628" data-duration="1.930"><span>여름에는 현우와 수진이 응모했고,</span></div>
+    <div id="cap-08b" class="cap clip" data-start="39.558" data-duration="3.041"><span>수진이 두 번 응모해서 3행입니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="42.698" data-duration="2.987"><span>현우는 봄과 여름에 모두 응모했습니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="45.786" data-duration="2.910"><span>집합 연산자는 두 SELECT 문 사이에 적고,</span></div>
+    <div id="cap-10b" class="cap clip" data-start="48.696" data-duration="3.502"><span>두 결과의 행을 위아래로 합치거나 비교합니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="52.848" data-duration="1.807"><span>먼저 UNION ALL입니다.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="54.755" data-duration="2.570"><span>첫 번째 SELECT의 결과 밑에 두 번째</span></div>
+    <div id="cap-12b" class="cap clip" data-start="57.325" data-duration="2.784"><span>SELECT의 결과를 그대로 이어 붙입니다.</span></div>
+    <div id="cap-13a" class="cap clip" data-start="60.209" data-duration="1.590"><span>중복을 전혀 지우지 않으니,</span></div>
+    <div id="cap-13b" class="cap clip" data-start="61.799" data-duration="3.291"><span>4 더하기 3, 7행입니다.</span></div>
+    <div id="cap-14a" class="cap clip" data-start="65.190" data-duration="4.364"><span>지영, 현우, 수진이 모두 두 번씩 나옵니다.</span></div>
+    <div id="cap-15a" class="cap clip" data-start="70.204" data-duration="2.422"><span>이번에는 ALL을 뺀 UNION입니다.</span></div>
+    <div id="cap-16a" class="cap clip" data-start="72.726" data-duration="1.690"><span>UNION은 결과를 합친 다음,</span></div>
+    <div id="cap-16b" class="cap clip" data-start="74.416" data-duration="3.597"><span>중복된 행을 지워 한 번씩만 남깁니다.</span></div>
+    <div id="cap-17a" class="cap clip" data-start="78.113" data-duration="3.330"><span>봄과 여름 양쪽에 있는 현우는 하나만 남습니다.</span></div>
+    <div id="cap-18a" class="cap clip" data-start="81.543" data-duration="3.330"><span>여기서 놓치기 쉬운 것이 한 표 안의 중복입니다.</span></div>
+    <div id="cap-19a" class="cap clip" data-start="84.974" data-duration="2.010"><span>봄 표 안에서 두 번 나온 지영,</span></div>
+    <div id="cap-19b" class="cap clip" data-start="86.984" data-duration="3.836"><span>여름 표 안에서 두 번 나온 수진도 하나씩 지워집니다.</span></div>
+    <div id="cap-20a" class="cap clip" data-start="90.920" data-duration="4.370"><span>7행에서 세 행이 빠져, 민수, 지영,</span></div>
+    <div id="cap-20b" class="cap clip" data-start="95.290" data-duration="4.284"><span>현우, 수진, 이렇게 4행이 남습니다.</span></div>
+    <div id="cap-21a" class="cap clip" data-start="99.674" data-duration="3.319"><span>한 번이라도 응모한 사람의 명단이 된 셈입니다.</span></div>
+    <div id="cap-22a" class="cap clip" data-start="103.643" data-duration="1.590"><span>INTERSECT는 두 결과에</span></div>
+    <div id="cap-22b" class="cap clip" data-start="105.233" data-duration="2.016"><span>모두 있는 행만 남깁니다.</span></div>
+    <div id="cap-23a" class="cap clip" data-start="107.349" data-duration="1.630"><span>봄과 여름에 모두 응모한</span></div>
+    <div id="cap-23b" class="cap clip" data-start="108.979" data-duration="2.391"><span>사람은 현우뿐이라 1행입니다.</span></div>
+    <div id="cap-24a" class="cap clip" data-start="111.471" data-duration="1.890"><span>INTERSECT도 중복을 지우기 때문에,</span></div>
+    <div id="cap-24b" class="cap clip" data-start="113.361" data-duration="4.083"><span>현우가 봄에 두 번 응모했더라도 결과는 1행입니다.</span></div>
+    <div id="cap-25a" class="cap clip" data-start="118.093" data-duration="1.610"><span>MINUS는 위 결과에서</span></div>
+    <div id="cap-25b" class="cap clip" data-start="119.703" data-duration="2.100"><span>아래 결과에 있는 행을 뺍니다.</span></div>
+    <div id="cap-26a" class="cap clip" data-start="121.903" data-duration="1.650"><span>봄응모 MINUS 여름응모는</span></div>
+    <div id="cap-26b" class="cap clip" data-start="123.553" data-duration="2.543"><span>봄에만 응모한 사람을 구합니다.</span></div>
+    <div id="cap-27a" class="cap clip" data-start="126.196" data-duration="1.610"><span>봄의 4행에서 여름에도 있는</span></div>
+    <div id="cap-27b" class="cap clip" data-start="127.806" data-duration="2.986"><span>현우를 빼면 민수와 지영이 남습니다.</span></div>
+    <div id="cap-28a" class="cap clip" data-start="130.892" data-duration="2.690"><span>지영은 두 번 응모했지만, MINUS도</span></div>
+    <div id="cap-28b" class="cap clip" data-start="133.582" data-duration="3.296"><span>중복을 지우므로 한 번만 나와서 2행입니다.</span></div>
+    <div id="cap-29a" class="cap clip" data-start="136.978" data-duration="1.570"><span>이번에는 위아래를 바꿔</span></div>
+    <div id="cap-29b" class="cap clip" data-start="138.548" data-duration="3.231"><span>여름응모 MINUS 봄응모입니다.</span></div>
+    <div id="cap-30a" class="cap clip" data-start="141.879" data-duration="2.550"><span>여름의 3행에서 현우를 빼면 수진만 남고,</span></div>
+    <div id="cap-30b" class="cap clip" data-start="144.429" data-duration="2.807"><span>역시 한 번만 나와 1행입니다.</span></div>
+    <div id="cap-31a" class="cap clip" data-start="147.336" data-duration="2.090"><span>같은 두 표인데 순서를 바꾸자</span></div>
+    <div id="cap-31b" class="cap clip" data-start="149.426" data-duration="2.223"><span>2행이 1행으로 바뀌었습니다.</span></div>
+    <div id="cap-32a" class="cap clip" data-start="151.749" data-duration="2.290"><span>UNION이나 INTERSECT는 위아래를 바꿔도</span></div>
+    <div id="cap-32b" class="cap clip" data-start="154.039" data-duration="3.941"><span>나오는 행이 같지만, MINUS는 순서가 중요합니다.</span></div>
+    <div id="cap-33a" class="cap clip" data-start="158.080" data-duration="1.510"><span>SQL Server에서는 MINUS</span></div>
+    <div id="cap-33b" class="cap clip" data-start="159.590" data-duration="2.248"><span>대신 EXCEPT라고 적습니다.</span></div>
+    <div id="cap-34a" class="cap clip" data-start="162.488" data-duration="3.490"><span>UNION ALL 7행, UNION 4행,</span></div>
+    <div id="cap-34b" class="cap clip" data-start="165.978" data-duration="5.110"><span>INTERSECT 1행, MINUS 2행, 거꾸로 하면 1행입니다.</span></div>
+    <div id="cap-35a" class="cap clip" data-start="171.188" data-duration="2.150"><span>중복을 그대로 남기는 것은 UNION ALL</span></div>
+    <div id="cap-35b" class="cap clip" data-start="173.338" data-duration="3.839"><span>하나뿐이고, 나머지 셋은 모두 중복을 지웁니다.</span></div>
+    <div id="cap-36a" class="cap clip" data-start="177.827" data-duration="3.215"><span>집합 연산자에는 지켜야 할 규칙이 있습니다.</span></div>
+    <div id="cap-37a" class="cap clip" data-start="181.141" data-duration="2.630"><span>위아래 SELECT의 열 개수가 같아야 하고,</span></div>
+    <div id="cap-37b" class="cap clip" data-start="183.771" data-duration="3.553"><span>같은 자리의 열끼리는 자료형이 맞아야 합니다.</span></div>
+    <div id="cap-38a" class="cap clip" data-start="187.425" data-duration="3.370"><span>위에서는 이름에 ‘봄’이라는 표시 열을 더해 두 열,</span></div>
+    <div id="cap-38b" class="cap clip" data-start="190.795" data-duration="3.436"><span>아래에서는 이름 하나만 고르면 오류가 납니다.</span></div>
+    <div id="cap-39a" class="cap clip" data-start="194.331" data-duration="3.245"><span>결과의 열 이름은 첫 번째 SELECT를 따릅니다.</span></div>
+    <div id="cap-40a" class="cap clip" data-start="197.676" data-duration="3.170"><span>위에 응모자, 아래에 고객이라는 별칭을 붙이면,</span></div>
+    <div id="cap-40b" class="cap clip" data-start="200.846" data-duration="2.931"><span>결과 열 이름은 응모자가 됩니다.</span></div>
+    <div id="cap-41a" class="cap clip" data-start="204.427" data-duration="2.010"><span>UNION은 합친 결과에서 중복을</span></div>
+    <div id="cap-41b" class="cap clip" data-start="206.437" data-duration="2.500"><span>찾아 지우는 작업을 한 번 더 합니다.</span></div>
+    <div id="cap-42a" class="cap clip" data-start="209.037" data-duration="2.570"><span>그래서 중복이 생길 수 없거나 중복이 있어도</span></div>
+    <div id="cap-42b" class="cap clip" data-start="211.607" data-duration="3.435"><span>괜찮다면, UNION ALL이 더 가볍습니다.</span></div>
+    <div id="cap-43a" class="cap clip" data-start="215.142" data-duration="2.670"><span>중복을 지우는 과정에서 결과가 정렬된 것처럼</span></div>
+    <div id="cap-43b" class="cap clip" data-start="217.812" data-duration="3.694"><span>보일 때도 있지만, 순서는 보장되지 않습니다.</span></div>
+    <div id="cap-44a" class="cap clip" data-start="222.156" data-duration="2.110"><span>순서가 필요하면 ORDER BY를 적는데,</span></div>
+    <div id="cap-44b" class="cap clip" data-start="224.266" data-duration="3.962"><span>맨 마지막 SELECT 뒤에 한 번만 적을 수 있습니다.</span></div>
+    <div id="cap-45a" class="cap clip" data-start="228.329" data-duration="1.890"><span>첫 번째 SELECT 뒤에 ORDER</span></div>
+    <div id="cap-45b" class="cap clip" data-start="230.219" data-duration="1.824"><span>BY를 적으면 오류가 납니다.</span></div>
+    <div id="cap-46a" class="cap clip" data-start="232.142" data-duration="3.770"><span>정렬 기준에는 첫 번째 SELECT의 열 이름을 적는데,</span></div>
+    <div id="cap-46b" class="cap clip" data-start="235.912" data-duration="4.541"><span>별칭을 붙였다면 별칭을, 또는 열의 순서 번호를 적습니다.</span></div>
+    <div id="cap-47a" class="cap clip" data-start="240.553" data-duration="1.210"><span>맨 끝의 ORDER BY는</span></div>
+    <div id="cap-47b" class="cap clip" data-start="241.763" data-duration="2.696"><span>합쳐진 전체 결과를 정렬합니다.</span></div>
+    <div id="cap-48a" class="cap clip" data-start="245.109" data-duration="2.582"><span>시험장에서 챙길 것 세 가지입니다.</span></div>
+    <div id="cap-49a" class="cap clip" data-start="247.790" data-duration="3.130"><span>첫째, 중복을 남기는 것은 UNION ALL뿐이고,</span></div>
+    <div id="cap-49b" class="cap clip" data-start="250.920" data-duration="3.714"><span>나머지 셋은 한 표 안의 중복까지 지웁니다.</span></div>
+    <div id="cap-50a" class="cap clip" data-start="254.735" data-duration="2.130"><span>둘째, MINUS는 위아래</span></div>
+    <div id="cap-50b" class="cap clip" data-start="256.865" data-duration="2.700"><span>순서를 바꾸면 결과가 달라집니다.</span></div>
+    <div id="cap-51a" class="cap clip" data-start="259.664" data-duration="3.770"><span>셋째, 열 이름은 첫 번째 SELECT를 따르고,</span></div>
+    <div id="cap-51b" class="cap clip" data-start="263.434" data-duration="2.698"><span>ORDER BY는 맨 끝에 한 번만 적습니다.</span></div>
+    <div id="cap-52a" class="cap clip" data-start="266.232" data-duration="2.711"><span>덧붙여, 등호 비교와 달리 집합 연산자는</span></div>
+    <div id="cap-52b" class="cap clip" data-start="268.943" data-duration="2.801"><span>NULL끼리도 같은 값으로 봅니다.</span></div>
+    <div id="cap-53a" class="cap clip" data-start="272.394" data-duration="2.894"><span>오늘 내용을 한 줄로 정리하면 이렇습니다.</span></div>
+    <div id="cap-54a" class="cap clip" data-start="275.387" data-duration="4.130"><span>모두 합치면 UNION ALL, 중복 없이 합치면 UNION,</span></div>
+    <div id="cap-54b" class="cap clip" data-start="279.517" data-duration="4.936"><span>겹치는 것만 INTERSECT, 위에만 있는 것은 MINUS입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

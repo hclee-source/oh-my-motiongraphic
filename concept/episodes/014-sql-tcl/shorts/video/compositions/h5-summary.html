@@ -1,0 +1,33 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h5-r { position: absolute; left: 80px; width: 920px; height: 190px; padding: 0 48px; box-sizing: border-box;
+      display: flex; flex-direction: column; justify-content: center; }
+    .h5-k { font-size: 52px; font-weight: 900; white-space: nowrap; }
+    .h5-v { margin-top: 10px; font-size: 50px; font-weight: 900; color: var(--color-accent, #6B3FE6); white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="h5" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45]"},{"id":"dur","type":"number","label":"장면 길이","default":8.3},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"r2","type":"number","label":"그냥 ROLLBACK 시각","default":2.4},{"id":"r3","type":"number","label":"DDL은 시각","default":5.0},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h5-all">
+      <div class="h5-r x-card x-hide" id="h5-r1" style="top:340px"><div class="h5-k">ROLLBACK TO</div><div class="h5-v">→ 저장 지점까지</div></div>
+      <div class="h5-r x-card x-hide" id="h5-r2" style="top:560px"><div class="h5-k">ROLLBACK</div><div class="h5-v">→ 마지막 COMMIT까지</div></div>
+      <div class="h5-r x-card x-hide" id="h5-r3" style="top:780px"><div class="h5-k">DDL</div><div class="h5-v">→ 그 자리에서 COMMIT</div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, i, d) => Number(V[k]) || at(i, d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.35 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+
+    // 11 ROLLBACK TO는 저장 지점까지, 그냥 ROLLBACK은 마지막 COMMIT까지, DDL은 그 자리에서 COMMIT
+    ft("#h5-r1", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, -0.1));
+    ft("#h5-r2", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("r2", 0, 2.4) - 0.1);
+    ft("#h5-r3", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("r3", 0, 5.0) - 0.1);
+    window.__timelines["h5"] = tl;
+  </script>
+</template>

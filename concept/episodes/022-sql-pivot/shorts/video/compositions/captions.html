@@ -1,0 +1,45 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 540px; text-align: center; overflow: visible;
+      font-size: 54px; font-weight: 700; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 940px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cap-01a" class="cap clip" data-start="0.000" data-duration="0.410"><span>PIVOT은</span></div>
+    <div id="cap-01b" class="cap clip" data-start="0.410" data-duration="1.060"><span>행에 있던 값을</span></div>
+    <div id="cap-01c" class="cap clip" data-start="1.470" data-duration="1.208"><span>열로 세웁니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="2.728" data-duration="1.490"><span>과목 열의 국어와 영어가</span></div>
+    <div id="cap-02b" class="cap clip" data-start="4.218" data-duration="0.720"><span>새 열이 되고,</span></div>
+    <div id="cap-02c" class="cap clip" data-start="4.938" data-duration="3.003"><span>칸에는 집계한 점수가 들어갑니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="7.991" data-duration="1.030"><span>도윤의 영어처럼</span></div>
+    <div id="cap-03b" class="cap clip" data-start="9.021" data-duration="1.240"><span>데이터가 없는 칸은</span></div>
+    <div id="cap-03c" class="cap clip" data-start="10.261" data-duration="0.974"><span>NULL입니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="11.434" data-duration="0.910"><span>알아 둘 함정은</span></div>
+    <div id="cap-04b" class="cap clip" data-start="12.344" data-duration="1.466"><span>묶는 기준입니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="13.860" data-duration="2.110"><span>PIVOT은 집계 함수와</span></div>
+    <div id="cap-05b" class="cap clip" data-start="15.970" data-duration="1.240"><span>FOR에 나오지 않은</span></div>
+    <div id="cap-05c" class="cap clip" data-start="17.210" data-duration="0.159"><span>나머지 열 전부로</span></div>
+    <div id="cap-05d" class="cap clip" data-start="17.369" data-duration="1.059"><span>행을 묶습니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="18.478" data-duration="0.750"><span>표에 학기처럼</span></div>
+    <div id="cap-06b" class="cap clip" data-start="19.228" data-duration="1.600"><span>값이 갈리는 열이 더 있으면</span></div>
+    <div id="cap-06c" class="cap clip" data-start="20.828" data-duration="1.780"><span>그 열로도 묶여</span></div>
+    <div id="cap-06d" class="cap clip" data-start="22.608" data-duration="0.948"><span>행이 늘어납니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="23.606" data-duration="1.030"><span>그래서 인라인 뷰로</span></div>
+    <div id="cap-07b" class="cap clip" data-start="24.636" data-duration="2.140"><span>필요한 열만 골라 넣습니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="26.976" data-duration="1.150"><span>UNPIVOT은 반대로</span></div>
+    <div id="cap-08b" class="cap clip" data-start="28.126" data-duration="1.534"><span>열을 행으로 풉니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="29.710" data-duration="0.890"><span>칸 네 개 가운데</span></div>
+    <div id="cap-09b" class="cap clip" data-start="30.600" data-duration="1.820"><span>NULL 칸은 기본으로 빠져서</span></div>
+    <div id="cap-09c" class="cap clip" data-start="32.420" data-duration="1.132"><span>3행이 됩니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="33.602" data-duration="1.010"><span>NULL도 남기려면</span></div>
+    <div id="cap-10b" class="cap clip" data-start="34.612" data-duration="2.212"><span>INCLUDE NULLS를 적습니다.</span></div>
+    <div id="cap-11a" class="cap clip" data-start="37.024" data-duration="1.390"><span>행을 열로 PIVOT,</span></div>
+    <div id="cap-11b" class="cap clip" data-start="38.414" data-duration="1.716"><span>열을 행으로 UNPIVOT.</span></div>
+    <div id="cap-12a" class="cap clip" data-start="40.180" data-duration="2.170"><span>PIVOT은 남은 열로 묶이고,</span></div>
+    <div id="cap-12b" class="cap clip" data-start="42.350" data-duration="1.852"><span>UNPIVOT은 NULL을 뺍니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>

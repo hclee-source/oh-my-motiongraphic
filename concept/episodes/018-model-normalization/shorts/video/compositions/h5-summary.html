@@ -1,0 +1,36 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    .h5-c { position: absolute; left: 60px; width: 880px; height: 250px; box-sizing: border-box; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 14px; text-align: center; }
+    #h5-c1 { top: 330px; }
+    #h5-c2 { top: 610px; }
+    #h5-c3 { top: 890px; }
+    .h5-k { font-size: 46px; font-weight: 900; color: var(--color-accent, #6B3FE6); white-space: nowrap; }
+    .h5-t { font-size: 64px; font-weight: 900; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="h5" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,5.5]"},{"id":"dur","type":"number","label":"장면 길이","default":11},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":false},{"id":"w1","type":"number","label":"칸마다 시각","default":0},{"id":"w2","type":"number","label":"전체에 시각","default":0},{"id":"w3","type":"number","label":"주식별자에만 시각","default":0},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.0}]'>
+    <div id="h5-all">
+      <div class="h5-c x-card x-hide" id="h5-c1"><div class="h5-k">제1정규형</div><div class="h5-t">칸마다 <span class="x-acc">값 하나</span></div></div>
+      <div class="h5-c x-card x-hide" id="h5-c2"><div class="h5-k">제2정규형</div><div class="h5-t"><span class="x-acc">주식별자 전체</span>에</div></div>
+      <div class="h5-c x-card x-hide" id="h5-c3"><div class="h5-k">제3정규형</div><div class="h5-t"><span class="x-acc">주식별자에만</span></div></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.0;
+    const C = JSON.parse(V.cues || "[]");
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k]) || d;
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+
+    // 9 칸마다 값 하나, 주식별자 전체에, 그리고 주식별자에만 종속 / 10 이 세 줄이 제1, 제2, 제3정규형
+    ft("#h5-c1", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("w1", at(0, 0.2)) - 0.2);
+    ft("#h5-c2", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("w2", at(0, 1.8)) - 0.2);
+    ft("#h5-c3", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, X("w3", at(0, 3.4)) - 0.2);
+    window.__timelines["h5"] = tl;
+  </script>
+</template>

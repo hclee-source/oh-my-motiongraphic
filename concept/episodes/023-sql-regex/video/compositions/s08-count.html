@@ -1,0 +1,114 @@
+<template>
+  <link rel="stylesheet" href="assets/scene.css" />
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; color: var(--color-ink, #18181B); }
+    #s08-code { left: 192px; top: 262px; width: 1096px; }
+    #s08-code .q-ln { height: 72px; }
+    .s08-cw { position: relative; display: block; width: 1000px; height: 72px; }
+    .s08-cw > span { position: absolute; left: 0; top: 0; line-height: 72px; white-space: nowrap; opacity: 0; }
+    #s08-res { position: absolute; left: 1328px; top: 262px; width: 400px; height: 124px; }
+    .s08-rv { position: absolute; left: 24px; right: 24px; top: 16px; bottom: 16px; display: flex; align-items: center; justify-content: center;
+      font-size: 64px; font-weight: 900; opacity: 0; }
+    .s08-c { position: absolute; top: 430px; width: 160px; height: 160px; display: flex; align-items: center; justify-content: center; }
+    .s08-hl { position: absolute; inset: -2px; border-radius: 28px; border: 3px solid var(--color-accent, #6B3FE6);
+      background: color-mix(in srgb, var(--color-accent, #6B3FE6) 14%, #FFFFFF); opacity: 0; }
+    .s08-ch { position: relative; font-size: 88px; font-weight: 900; line-height: 1; }
+    .s08-p { position: absolute; top: 614px; width: 160px; text-align: center; font-size: 34px; font-weight: 800; color: var(--color-ink2, #71717A); opacity: 0; }
+    .s08-bar { position: absolute; height: 10px; border-radius: 5px; opacity: 0; }
+    #s08-b1 { left: 592px; width: 544px; top: 676px; background: var(--color-accent, #6B3FE6); }
+    #s08-b2 { left: 976px; width: 544px; top: 704px; background: #A1A1AA; }
+    #s08-x { position: absolute; left: 1548px; top: 686px; width: 44px; height: 44px; opacity: 0; }
+    #s08-x > i { position: absolute; left: -4px; top: 19px; width: 52px; height: 6px; border-radius: 3px; background: #71717A; }
+    #s08-x > i:first-child { transform: rotate(45deg); }
+    #s08-x > i:last-child { transform: rotate(-45deg); }
+    #s08-note { position: absolute; left: 192px; top: 756px; width: 1536px; height: 90px; display: flex; align-items: center; justify-content: center;
+      font-size: 36px; font-weight: 800; white-space: nowrap; }
+    #s08-note .x-ink2 { margin-right: 24px; }
+  </style>
+  <div id="root" data-composition-id="s08" data-width="1920" data-height="1080"
+    data-composition-variables='[{"id":"cues","type":"string","label":"문장 시작 시각","default":"[0.45,4.7,8.3,11.8,17.1,24.2]"},{"id":"dur","type":"number","label":"장면 길이","default":31.5},{"id":"exit","type":"boolean","label":"끝에서 사라짐","default":true},{"id":"a1","type":"number","label":"알파벳 a를 시각","default":2.6},{"id":"a2","type":"number","label":"답은 시각","default":10},{"id":"a3","type":"number","label":"시작 위치 시각","default":19},{"id":"a4","type":"number","label":"알파벳 n은 시각","default":20.8},{"id":"motion-scale","type":"number","label":"움직임 속도 배율","default":1.6}]'>
+    <div id="s08-all">
+      <div id="s08-head" class="x-head">REGEXP_COUNT와 REGEXP_INSTR</div>
+      <div id="s08-code" class="x-dark q-code x-hide">
+        <div class="q-ln"><span class="s08-cw" data-layout-allow-overlap>
+          <span id="s08-v1"><span class="q-k">REGEXP_COUNT</span>('banana', 'a')</span>
+          <span id="s08-v2"><span class="q-k">REGEXP_COUNT</span>('banana', 'ana')</span>
+          <span id="s08-v3"><span class="q-k">REGEXP_INSTR</span>('banana', 'n')</span>
+        </span></div>
+      </div>
+      <div id="s08-res" class="x-card x-hide" data-layout-allow-overlap>
+        <div class="s08-rv x-acc" id="s08-r1">3</div>
+        <div class="s08-rv x-ink2" id="s08-rq">?</div>
+        <div class="s08-rv x-acc" id="s08-r2">1</div>
+        <div class="s08-rv x-acc" id="s08-r3">3</div>
+      </div>
+      <div class="s08-c x-card x-hide" id="s08-c1" style="left:400px"><div class="s08-hl" id="s08-h1"></div><div class="s08-ch">b</div></div>
+      <div class="s08-c x-card x-hide" id="s08-c2" style="left:592px"><div class="s08-hl" id="s08-h2"></div><div class="s08-ch">a</div></div>
+      <div class="s08-c x-card x-hide" id="s08-c3" style="left:784px"><div class="s08-hl" id="s08-h3"></div><div class="s08-ch">n</div></div>
+      <div class="s08-c x-card x-hide" id="s08-c4" style="left:976px"><div class="s08-hl" id="s08-h4"></div><div class="s08-ch">a</div></div>
+      <div class="s08-c x-card x-hide" id="s08-c5" style="left:1168px"><div class="s08-hl" id="s08-h5"></div><div class="s08-ch">n</div></div>
+      <div class="s08-c x-card x-hide" id="s08-c6" style="left:1360px"><div class="s08-hl" id="s08-h6"></div><div class="s08-ch">a</div></div>
+      <div class="s08-p" id="s08-p1" style="left:400px">1</div>
+      <div class="s08-p" id="s08-p2" style="left:592px">2</div>
+      <div class="s08-p" id="s08-p3" style="left:784px">3</div>
+      <div class="s08-p" id="s08-p4" style="left:976px">4</div>
+      <div class="s08-p" id="s08-p5" style="left:1168px">5</div>
+      <div class="s08-p" id="s08-p6" style="left:1360px">6</div>
+      <div class="s08-bar" id="s08-b1"></div>
+      <div class="s08-bar" id="s08-b2"></div>
+      <div id="s08-x"><i></i><i></i></div>
+      <div id="s08-note" class="x-card x-hide"><span class="x-ink2">맞는 곳이 없으면</span>REGEXP_INSTR · REGEXP_COUNT = 0,&nbsp;&nbsp;REGEXP_SUBSTR = <span class="q-null">&nbsp;NULL</span></div>
+    </div>
+  </div>
+  <script>
+    const V = window.__hyperframes?.getVariables?.() || {};
+    const S = Number(V["motion-scale"]) || 1.6;
+    const C = JSON.parse(V.cues || "[]");
+    const D = Number(V.dur) || 31.5;
+    const at = (i, d = 0) => (C[i] ?? 0) + d;
+    const X = (k, d) => Number(V[k] ?? d);
+    const tl = gsap.timeline({ paused: true });
+    const ft = (sel, from, to, t) => tl.fromTo(sel, from, { duration: 0.4 * S, ease: "power3.out", immediateRender: false, ...to }, t);
+    const fade = (sel, t, a, b) => ft(sel, { opacity: a }, { opacity: b, ease: "power2.out" }, t);
+    const stamp = (sel, t) => ft(sel, { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, ease: "back.out(2)" }, t);
+    let code = 0, res = null;
+    const show = (k, t) => { if (code) fade(`#s08-v${code}`, t, 1, 0); fade(`#s08-v${k}`, t + 0.15, 0, 1); code = k; };
+    const result = (id, t) => { if (res) fade(res, t, 1, 0); stamp(id, t + 0.1); res = id; };
+    const cells = (ks) => ks.map((k) => `#s08-h${k}`);
+
+    // 41 REGEXP_COUNT로 banana에서 알파벳 a를 세면 3
+    ft("#s08-head", { opacity: 0, x: -24 }, { opacity: 1, x: 0 }, at(0, 0));
+    ft("#s08-code", { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, at(0, 0.2));
+    show(1, at(0, 0.2));
+    [1, 2, 3, 4, 5, 6].forEach((k) => ft(`#s08-c${k}`, { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(0, 0.4 + k * 0.1)));
+    ft("#s08-res", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(0, 1.0));
+    fade(cells([2, 4, 6]), X("a1", 2.6), 0, 1);
+    result("#s08-r1", X("a1", 2.6) + 1.0);
+    // 42 세 글자 ana를 세면?
+    show(2, at(1, 0.1));
+    fade(cells([2, 4, 6]), at(1, 0.1), 1, 0);
+    result("#s08-rq", at(1, 0.3));
+    // 43 겹치게 세면 두 번이지만, 답은 1
+    ft("#s08-b1", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1 }, at(2, 0.1));
+    ft("#s08-b2", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1 }, at(2, 0.6));
+    result("#s08-r2", X("a2", 10));
+    stamp("#s08-x", X("a2", 10) + 0.2);
+    fade("#s08-b2", X("a2", 10) + 0.2, 1, 0.45);
+    // 44 한 번 맞춘 글자는 건너뛰고 그 뒤에서부터
+    fade(cells([2, 3, 4]), at(3, 0.2), 0, 1);
+    // 45 REGEXP_INSTR = 처음 맞는 곳의 시작 위치, 알파벳 n은 세 번째 → 3
+    show(3, at(4, 0.1));
+    fade(cells([2, 3, 4]), at(4, 0.1), 1, 0);
+    fade(["#s08-b1", "#s08-x"], at(4, 0.1), 1, 0);
+    fade("#s08-b2", at(4, 0.1), 0.45, 0);
+    result("#s08-rq", at(4, 0.3));
+    [1, 2, 3, 4, 5, 6].forEach((k) => fade(`#s08-p${k}`, X("a3", 19) + k * 0.06, 0, 1));
+    fade("#s08-h3", X("a4", 20.8), 0, 1);
+    ft("#s08-p3", { color: "#71717A" }, { color: "#6B3FE6" }, X("a4", 20.8));
+    result("#s08-r3", X("a4", 20.8) + 1.4);
+    // 46 맞는 곳이 없으면 INSTR · COUNT는 0, SUBSTR은 NULL
+    ft("#s08-note", { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, at(5, 0.2));
+    if (String(V.exit) !== "false") ft("#s08-all", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in" }, D - 0.4);
+    window.__timelines["s08"] = tl;
+  </script>
+</template>

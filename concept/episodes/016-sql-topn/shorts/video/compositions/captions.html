@@ -1,0 +1,40 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--font-main, "Paperlogy"), sans-serif; }
+    .cap { position: absolute; left: 0; right: 0; bottom: 540px; text-align: center; overflow: visible;
+      font-size: 54px; font-weight: 700; line-height: 1.35; letter-spacing: 0; color: var(--color-ink, #18181B); }
+    .cap span { display: inline-block; max-width: 940px; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cap-01a" class="cap clip" data-start="0.000" data-duration="0.550"><span>ROWNUM은</span></div>
+    <div id="cap-01b" class="cap clip" data-start="0.550" data-duration="2.169"><span>정렬하기 전에 붙는 번호입니다.</span></div>
+    <div id="cap-02a" class="cap clip" data-start="2.769" data-duration="1.940"><span>ROWNUM으로 두 행을 자르고</span></div>
+    <div id="cap-02b" class="cap clip" data-start="4.709" data-duration="0.950"><span>ORDER BY를 함께 적으면,</span></div>
+    <div id="cap-02c" class="cap clip" data-start="5.659" data-duration="1.860"><span>먼저 읽힌 두 행만</span></div>
+    <div id="cap-02d" class="cap clip" data-start="7.519" data-duration="1.081"><span>정렬됩니다.</span></div>
+    <div id="cap-03a" class="cap clip" data-start="8.650" data-duration="1.030"><span>95점이 있어도</span></div>
+    <div id="cap-03b" class="cap clip" data-start="9.680" data-duration="3.198"><span>결과는 70점, 60점입니다.</span></div>
+    <div id="cap-04a" class="cap clip" data-start="13.078" data-duration="1.270"><span>상위 몇 개를 뽑으려면</span></div>
+    <div id="cap-04b" class="cap clip" data-start="14.348" data-duration="1.700"><span>괄호 안에서 먼저 정렬하고,</span></div>
+    <div id="cap-04c" class="cap clip" data-start="16.048" data-duration="2.750"><span>바깥에서 ROWNUM으로 자릅니다.</span></div>
+    <div id="cap-05a" class="cap clip" data-start="18.848" data-duration="0.950"><span>그러면 결과는</span></div>
+    <div id="cap-05b" class="cap clip" data-start="19.798" data-duration="2.842"><span>95점, 90점입니다.</span></div>
+    <div id="cap-06a" class="cap clip" data-start="22.839" data-duration="0.930"><span>ROWNUM = 2는</span></div>
+    <div id="cap-06b" class="cap clip" data-start="23.769" data-duration="2.064"><span>한 행도 나오지 않습니다.</span></div>
+    <div id="cap-07a" class="cap clip" data-start="25.883" data-duration="1.390"><span>첫 행은 1번을 받는데</span></div>
+    <div id="cap-07b" class="cap clip" data-start="27.273" data-duration="1.120"><span>2가 아니라 버려지고,</span></div>
+    <div id="cap-07c" class="cap clip" data-start="28.393" data-duration="3.614"><span>다음 행이 다시 1번을 받기 때문입니다.</span></div>
+    <div id="cap-08a" class="cap clip" data-start="32.207" data-duration="1.370"><span>오라클 12c부터 쓰는</span></div>
+    <div id="cap-08b" class="cap clip" data-start="33.577" data-duration="1.840"><span>FETCH FIRST 2 ROWS ONLY는</span></div>
+    <div id="cap-08c" class="cap clip" data-start="35.417" data-duration="1.040"><span>정렬한 뒤에</span></div>
+    <div id="cap-08d" class="cap clip" data-start="36.457" data-duration="1.812"><span>딱 두 행을 가져옵니다.</span></div>
+    <div id="cap-09a" class="cap clip" data-start="38.319" data-duration="1.210"><span>WITH TIES로 바꾸면</span></div>
+    <div id="cap-09b" class="cap clip" data-start="39.529" data-duration="1.900"><span>마지막 90점과 같은 행까지</span></div>
+    <div id="cap-09c" class="cap clip" data-start="41.429" data-duration="1.189"><span>세 행입니다.</span></div>
+    <div id="cap-10a" class="cap clip" data-start="42.818" data-duration="1.770"><span>정렬은 안쪽에서 먼저,</span></div>
+    <div id="cap-10b" class="cap clip" data-start="44.588" data-duration="2.520"><span>번호는 바깥에서 붙입니다.</span></div>
+  </div>
+  <script>
+    window.__timelines["captions"] = gsap.timeline({ paused: true });
+  </script>
+</template>
